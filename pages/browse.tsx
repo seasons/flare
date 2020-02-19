@@ -6,6 +6,8 @@ import { get } from "lodash"
 import { useQuery } from "@apollo/react-hooks"
 import { imageResize } from "../utils/imageResize"
 import withData from "../lib/apollo"
+import { Layout } from "../components"
+import { Sans } from "../lib/typography"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -79,7 +81,7 @@ const renderItem = ({ item }, i) => {
         ))}
       </div>
       <div>
-        <div>{product.name}</div>
+        <Sans size="0">{product.name}</Sans>
         <div>{brandName}</div>
       </div>
     </div>
@@ -99,7 +101,11 @@ const BrowsePage: NextPage<{}> = withData(props => {
 
   const products = data && data.products
 
-  return <div>{(products || []).map((product, i) => renderItem({ item: product }, i))}</div>
+  return (
+    <Layout>
+      <div>{(products || []).map((product, i) => renderItem({ item: product }, i))}</div>
+    </Layout>
+  )
 })
 
 export default BrowsePage
