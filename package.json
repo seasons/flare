@@ -17,6 +17,7 @@
     "next-fonts": "^1.0.3",
     "react": "16.12.0",
     "react-dom": "16.12.0",
+    "styled-bootstrap-grid": "^3.0.5",
     "styled-components": "^5.0.1",
     "styled-system": "^5.1.5"
   },
@@ -26,6 +27,8 @@
     "@babel/preset-react": "^7.0.0",
     "@types/node": "^13.7.2",
     "@types/react": "^16.9.20",
+    "@types/styled-components": "^4.4.3",
+    "@types/styled-system": "^5.1.6",
     "babel-plugin-styled-components": "^1.10.7",
     "typescript": "^3.7.5"
   },

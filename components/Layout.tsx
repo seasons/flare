@@ -1,5 +1,5 @@
 import { Theme } from "../lib/theme"
-import styled from "styled-components"
+import styled, { CSSObject } from "styled-components"
 import { color } from "../lib/color"
 import { fontFamily } from "../lib/typography"
 
@@ -24,7 +24,7 @@ const Logo = styled.div`
 `
 
 export const LogoText = styled.div`
-  font-family: ${fontFamily.display.regular};
+  font-family: ${fontFamily.display.regular as CSSObject};
   font-size: 20px;
   letter-spacing: 2px;
   line-height: 24px;

@@ -8,6 +8,9 @@ import { imageResize } from "../utils/imageResize"
 import withData from "../lib/apollo"
 import { Layout } from "../components"
 import { Sans } from "../lib/typography"
+import { Box } from "../components/Box"
+import { Grid, Row, Col } from "../components/Grid"
+import styled from "styled-components"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -71,22 +74,32 @@ const renderItem = ({ item }, i) => {
   }
 
   return (
-    <div key={i}>
+    <ProductContainer key={i}>
       <img src={resizedImage} />
-      <div>
-        {product.variants.map(a => (
-          <span key={a.size} style={{ marginRight: 10 }}>
-            {a.size}
-          </span>
-        ))}
-      </div>
-      <div>
-        <Sans size="0">{product.name}</Sans>
-        <div>{brandName}</div>
-      </div>
-    </div>
+      <Box py="1">
+        <Sans size="3" my="0.5" color="mediumGray">
+          {product.name}
+        </Sans>
+        <Sans size="2" mt="0.5">
+          {brandName}
+        </Sans>
+        <Sans size="3" my="1">
+          {product.variants.map(a => (
+            <span key={a.size} style={{ marginRight: 10 }}>
+              {a.size}
+            </span>
+          ))}
+        </Sans>
+      </Box>
+    </ProductContainer>
   )
 }
+
+const ProductContainer = styled(Box)`
+  margin: 5px;
+  overflow: hidden;
+  text-align: left;
+`
 
 const BrowsePage: NextPage<{}> = withData(props => {
   const [currentCategory, setCurrentCategory] = useState("all")
@@ -103,7 +116,31 @@ const BrowsePage: NextPage<{}> = withData(props => {
 
   return (
     <Layout>
-      <div>{(products || []).map((product, i) => renderItem({ item: product }, i))}</div>
+      <Box mt="3">
+        <Grid>
+          <Row>
+            <Col md="3">
+              <Sans size="4">Categories</Sans>
+              {data.categories.map(category => {
+                return (
+                  <Sans size="3" key={category.slug} my="3" opacity="0.5">
+                    {category.name}
+                  </Sans>
+                )
+              })}
+            </Col>
+            <Col md="9">
+              <Row>
+                {(products || []).map((product, i) => (
+                  <Col col md="4" sm="6">
+                    {renderItem({ item: product }, i)}
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+          </Row>
+        </Grid>
+      </Box>
     </Layout>
   )
 })
