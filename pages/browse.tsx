@@ -1,7 +1,7 @@
 import React from "react"
 import { NextPage } from "next"
 import { gql } from "apollo-boost"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { get } from "lodash"
 import { useQuery } from "@apollo/react-hooks"
 import { imageResize } from "../utils/imageResize"
@@ -68,14 +68,14 @@ const renderItem = ({ item }, i) => {
     return null
   }
 
-  console.log(product.variants)
-
   return (
     <div key={i}>
       <img src={resizedImage} />
       <div>
         {product.variants.map(a => (
-          <span key={a.size}>{a.size}</span>
+          <span key={a.size} style={{ marginRight: 10 }}>
+            {a.size}
+          </span>
         ))}
       </div>
       <div>
