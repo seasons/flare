@@ -1,5 +1,5 @@
-import { themeProps } from "./theme"
-import { FontFamily } from "./typography"
+import { themeProps } from "../../lib/theme"
+import { FontFamily } from "./Typography"
 
 /**
  * Determines which font sizes/line heights to use for typography.

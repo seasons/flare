@@ -1,5 +1,5 @@
 import React from "react"
-import { fontFamily } from "./typography"
+import { fontFamily } from "../components/Typography/Typography"
 import { ThemeProvider } from "styled-components"
 
 export const breakpoints = {

@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react"
 import styled from "styled-components"
-// import { Text } from "react-native"
+
 import {
   color,
   ColorProps,
@@ -19,7 +19,7 @@ import {
   TextAlignProps,
 } from "styled-system"
 
-import { themeProps, TypeSizes, DisplaySize, SansSize, SerifSize } from "./theme"
+import { themeProps, TypeSizes, DisplaySize, SansSize, SerifSize } from "../../lib/theme"
 import { determineFontSizes } from "./determineFontSizes"
 
 /**

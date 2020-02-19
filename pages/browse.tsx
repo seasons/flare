@@ -7,10 +7,11 @@ import { useQuery } from "@apollo/react-hooks"
 import { imageResize } from "../utils/imageResize"
 import withData from "../lib/apollo"
 import { Layout } from "../components"
-import { Sans } from "../lib/typography"
+import { Sans } from "../components/Typography/Typography"
 import { Box } from "../components/Box"
 import { Grid, Row, Col } from "../components/Grid"
 import styled from "styled-components"
+import Paginate from "react-paginate"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -22,31 +23,43 @@ const GET_BROWSE_PRODUCTS = gql`
         slug
       }
     }
-    products(category: $name, first: $first, skip: $skip, where: { status: Available }) {
-      id
-      name
-      description
-      images
-      modelSize
-      modelHeight
-      externalURL
-      tags
-      retailPrice
-      status
-      createdAt
-      updatedAt
-      brand {
-        id
-        name
+    connection: productsConnection(where: { status: Available }) {
+      aggregate {
+        count
       }
-      variants {
-        id
-        size
-        total
-        reservable
-        nonReservable
-        reserved
-        isSaved
+    }
+    products: productsConnection(category: $name, first: $first, skip: $skip, where: { status: Available }) {
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          description
+          images
+          modelSize
+          modelHeight
+          externalURL
+          tags
+          retailPrice
+          status
+          createdAt
+          updatedAt
+          brand {
+            id
+            name
+          }
+          variants {
+            id
+            size
+            total
+            reservable
+            nonReservable
+            reserved
+            isSaved
+          }
+        }
       }
     }
   }
@@ -62,7 +75,7 @@ const ABBREVIATED_SIZES = {
 }
 
 const renderItem = ({ item }, i) => {
-  const product = item
+  const product = item.node
 
   const image = get(product, "images[0]", { url: "" })
   const resizedImage = imageResize(image.url, "large")
@@ -103,16 +116,19 @@ const ProductContainer = styled(Box)`
 
 const BrowsePage: NextPage<{}> = withData(props => {
   const [currentCategory, setCurrentCategory] = useState("all")
-
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 10
   const { data, loading, fetchMore } = useQuery(GET_BROWSE_PRODUCTS, {
     variables: {
       name: currentCategory,
-      first: 10,
-      skip: 0,
+      first: currentPage * pageSize,
+      skip: (currentPage - 1) * pageSize,
     },
   })
 
-  const products = data && data.products
+  const pageCount = Math.ceil(data?.connection?.aggregate?.count / pageSize)
+  console.log("page count: ", data?.connection?.aggregate)
+  const products = data?.products?.edges
 
   return (
     <Layout>
@@ -121,7 +137,7 @@ const BrowsePage: NextPage<{}> = withData(props => {
           <Row>
             <Col md="3">
               <Sans size="4">Categories</Sans>
-              {data.categories.map(category => {
+              {data?.categories.map(category => {
                 return (
                   <Sans size="3" key={category.slug} my="3" opacity="0.5">
                     {category.name}
@@ -139,6 +155,21 @@ const BrowsePage: NextPage<{}> = withData(props => {
               </Row>
             </Col>
           </Row>
+          <Paginate
+            previousLabel={"previous"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={data => {
+              setCurrentPage(data.selected)
+            }}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+          />
         </Grid>
       </Box>
     </Layout>
