@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="140px" height="24px" viewBox="0 0 140 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>SeasonsLogo</title>
+    <desc>Created with Sketch.</desc>
+    <g id="WAITLIST-/-ACCOUNT-CREATION" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Waitlist---12" transform="translate(-568.000000, -59.000000)">
+            <g id="SeasonsLogo" transform="translate(568.000000, 59.000000)">
+                <text id="SEASONS" font-family="Apercu-Mono, Apercu Mono" font-size="20" font-weight="normal" letter-spacing="3" fill="#FFFFFF">
+                    <tspan x="36.1" y="19">SEASONS</tspan>
+                </text>
+                <g id="Group">
+                    <path d="M24,12 C24,5.372583 18.627417,0 12,0 C5.372583,0 0,5.372583 0,12 C12,12 12,12 24,12 Z" id="Oval-Copy-3" fill="#EEA30E"></path>
+                    <path d="M24,24 C24,17.372583 18.627417,12 12,12 C5.372583,12 0,17.372583 0,24 C12,24 12,24 24,24 Z" id="Oval-Copy-4" fill="#2A4BEE" transform="translate(12.000000, 18.000000) scale(1, -1) translate(-12.000000, -18.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

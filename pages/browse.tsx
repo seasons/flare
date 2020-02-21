@@ -7,11 +7,12 @@ import { useQuery } from "@apollo/react-hooks"
 import { imageResize } from "../utils/imageResize"
 import withData from "../lib/apollo"
 import { Layout } from "../components"
-import { Sans } from "../components/Typography/Typography"
+import { Sans, fontFamily } from "../components/Typography/Typography"
 import { Box } from "../components/Box"
 import { Grid, Row, Col } from "../components/Grid"
-import styled from "styled-components"
+import styled, { CSSObject } from "styled-components"
 import Paginate from "react-paginate"
+import { color } from "../helpers"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -155,25 +156,52 @@ const BrowsePage: NextPage<{}> = withData(props => {
               </Row>
             </Col>
           </Row>
-          <Paginate
-            previousLabel={"previous"}
-            nextLabel={"next"}
-            breakLabel={"..."}
-            breakClassName={"break-me"}
-            pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={data => {
-              setCurrentPage(data.selected)
-            }}
-            containerClassName={"pagination"}
-            subContainerClassName={"pages pagination"}
-            activeClassName={"active"}
-          />
+          <Pagination>
+            <Paginate
+              previousLabel={"previous"}
+              nextLabel={"next"}
+              breakLabel={"..."}
+              breakClassName={"break-me"}
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={data => {
+                console.log(data)
+                setCurrentPage(data.selected + 1)
+                window && window.scrollTo(0, 0)
+              }}
+              containerClassName={"pagination"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"}
+            />
+          </Pagination>
         </Grid>
       </Box>
     </Layout>
   )
 })
+
+const Pagination = styled.div`
+  margin-left: auto;
+  .pagination {
+    & li {
+      font-family: ${fontFamily.sans.medium as CSSObject};
+      display: inline-block;
+      margin-right: 5px;
+      color: ${color("lightGray")};
+      width: 40px;
+      height: 40px;
+
+      &.active {
+        color: black;
+      }
+
+      &.previous,
+      &.next {
+        width: auto;
+      }
+    }
+  }
+`
 
 export default BrowsePage
