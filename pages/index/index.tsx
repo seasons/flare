@@ -1,32 +1,27 @@
+import React from "react"
 import Head from "next/head"
+import { Nav } from "../../components/Nav"
+import Link from "next/link"
 
 const Home = () => (
   <>
     <Head>
-      <meta charset="utf-8" />
       <title>Seasons</title>
       <meta content="Seasons change. Your wardrobe should change with them." name="description" />
-      <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <link href="css/normalize.css" rel="stylesheet" type="text/css" />
-      <link href="css/components.css" rel="stylesheet" type="text/css" />
-      <link href="css/fonts.css" rel="stylesheet" type="text/css" />
-      <link href="css/seasons-4d21cb.css" rel="stylesheet" type="text/css" />
-      <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon" />
-      <link href="images/webclip.png" rel="apple-touch-icon" />
-      <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-35944235-1"></script>
     </Head>
     <body className="body">
+      <Nav />
       <div className="alertmessage">
         <div className="brandscarriedcontainer">
-          <a href="about.html" className="alertcopy">
-            NYC Memberships are now open 🎉 Join the waitlist to secure your spot.
+          <a href="/about" className="alertcopy">
+            NYC Memberships are now open 🎉 <br />
+            Join the waitlist to secure your spot.
           </a>
         </div>
       </div>
       <div className="herosection">
         <div className="herocontainer">
           <div className="content">
-            <div className="seasonssunset"></div>
             <h1 className="title">
               <span className="text-span-4">This is Seasons. </span>
               <br />A members only rental subscription service <br />
@@ -55,45 +50,6 @@ const Home = () => (
         </div>
         <div className="heroimage-left"></div>
         <div className="heroimage-right"></div>
-      </div>
-      <div className="menubar">
-        <div className="brandscarriedcontainer">
-          <div className="columns-5 w-row">
-            <div className="column-18 w-col w-col-2 w-col-tiny-tiny-stack">
-              <a href="#Membership" className="subheaderlink2">
-                Pricing
-              </a>
-            </div>
-            <div className="column-19 w-col w-col-2 w-col-tiny-tiny-stack">
-              <a href="#FAQ" className="subheaderlink2">
-                Who it&#x27;s for
-              </a>
-            </div>
-            <div className="column-20 w-col w-col-2 w-col-tiny-tiny-stack">
-              <a href="#FAQ" className="subheaderlink2">
-                FAQ
-              </a>
-            </div>
-            <div className="column-21 w-col w-col-2 w-col-tiny-tiny-stack">
-              <a href="#Brands" className="subheaderlink2">
-                Brands
-              </a>
-            </div>
-            <div className="column-26 w-col w-col-2 w-col-tiny-tiny-stack">
-              <a href="about.html" className="subheaderlink2">
-                About Us
-              </a>
-            </div>
-            <div className="column-27 w-col w-col-2 w-col-tiny-tiny-stack">
-              <a href="mailto:membership@seasons.nyc?subject=Hello!" className="subheaderlink2">
-                Contact
-              </a>
-            </div>
-          </div>
-          <a href="about.html" className="subheaderlinkabout">
-            About
-          </a>
-        </div>
       </div>
       <div className="howsection">
         <div className="howitowrksheader">
@@ -147,7 +103,7 @@ const Home = () => (
       <div className="justadded">
         <div className="trendingcontainer">
           <div className="trendingtitle">Just added</div>
-          <a href="https://signup.seasons.nyc/" className="trendingsubtitle">
+          <a href="/browse" className="trendingsubtitle">
             See all
           </a>
         </div>
@@ -160,7 +116,7 @@ const Home = () => (
               <div className="brandtitle">
                 <strong className="brandname">Undercover</strong>
               </div>
-              <div className="productname">S M L </div>
+              <div className="productname">S M L </div>
             </div>
             <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
               <div className="productimage2">
@@ -248,7 +204,7 @@ const Home = () => (
       <div className="weekdayfits">
         <div className="trendingcontainer">
           <div className="trendingtitle">Recently reserved</div>
-          <a href="https://signup.seasons.nyc/" className="trendingsubtitle">
+          <a href="/browse" className="trendingsubtitle">
             See all
           </a>
         </div>
@@ -696,12 +652,10 @@ const Home = () => (
               <input
                 type="email"
                 className="text-field w-input"
-                maxlength="256"
                 name="email"
                 data-name="Email"
                 placeholder="Enter your email address"
                 id="email"
-                required=""
               />
               <input type="submit" value="Submit" data-wait="Please wait..." className="submit-button w-button" />
             </form>
@@ -928,9 +882,9 @@ const Home = () => (
       </div>
       <div className="footersection">
         <div className="footercontainer">
-          <a href="terms-of-service.html" className="subheaderlink">
-            Terms of Service
-          </a>
+          <Link href="/terms-of-service">
+            <a className="subheaderlink">Terms of Service</a>
+          </Link>
           <a href="privacy-policy.html" className="subheaderlink">
             Privacy Policy
           </a>
@@ -940,13 +894,6 @@ const Home = () => (
           <div className="footerlinkright">© 2020 Seasons. All Rights Reserved.</div>
         </div>
       </div>
-      <script
-        src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js"
-        type="text/javascript"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"
-      ></script>
-      <script src="js/seasons-4d21cb.js" type="text/javascript"></script>
     </body>
   </>
 )

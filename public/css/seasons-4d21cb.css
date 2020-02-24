@@ -1693,7 +1693,7 @@
   max-width: 384px;
   margin-top: 48px;
   margin-bottom: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: grey;
   font-size: 28px;
   line-height: 38px;
@@ -1811,7 +1811,7 @@
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: grey;
   font-size: 14px;
   line-height: 20px;
@@ -1830,7 +1830,7 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   line-height: 24px;
@@ -1839,7 +1839,7 @@
 }
 
 .applycopy {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 16px;
   line-height: 24px;
@@ -2032,7 +2032,7 @@
 
 .howtitle {
   margin-top: 32px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 20px;
   line-height: 24px;
@@ -2042,7 +2042,7 @@
 .howdescription {
   max-width: 360px;
   margin-top: 8px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 28px;
@@ -2087,14 +2087,14 @@
 }
 
 .trendingtitle {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   font-size: 20px;
   line-height: 24px;
   font-weight: 500;
 }
 
 .trendingsubtitle {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 20px;
   line-height: 24px;
@@ -2162,7 +2162,7 @@
 .productname {
   max-width: 220px;
   margin-top: 2px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 14px;
   line-height: 18px;
@@ -2171,7 +2171,7 @@
 
 .productprice {
   margin-top: 2px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 24px;
@@ -2180,7 +2180,7 @@
 }
 
 .brandname {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 14px;
   line-height: 18px;
@@ -2211,7 +2211,7 @@
 }
 
 .footerlinkright {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 24px;
@@ -2229,7 +2229,7 @@
   margin-left: auto;
   padding-top: 80px;
   padding-bottom: 80px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
 }
 
@@ -2294,7 +2294,7 @@
 
 .faqtitle {
   margin-bottom: 40px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 28px;
   line-height: 28px;
@@ -2333,7 +2333,7 @@
 
 .answertitle {
   margin-bottom: 16px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 20px;
   line-height: 28px;
@@ -2341,7 +2341,7 @@
 }
 
 .answer {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 28px;
@@ -2381,7 +2381,7 @@
 .membershiptitle {
   margin-top: 0px;
   margin-bottom: 64px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 28px;
   line-height: 28px;
@@ -2532,7 +2532,7 @@
 
 .moneysign {
   margin-right: 4px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 20px;
   line-height: 24px;
@@ -2540,7 +2540,7 @@
 }
 
 .amount {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 32px;
   line-height: 32px;
@@ -2549,7 +2549,7 @@
 
 .permonth {
   margin-top: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.6);
   font-size: 16px;
   line-height: 24px;
@@ -2720,7 +2720,7 @@
 
 .mobile-promocopy1 {
   padding: 32px 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   line-height: 24px;
@@ -2785,7 +2785,7 @@
 }
 
 .inspirationtitle {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   font-size: 28px;
   line-height: 28px;
   font-weight: 500;
@@ -2911,7 +2911,7 @@
 .emailtitle {
   max-width: 530px;
   margin-bottom: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 28px;
   line-height: 38px;
@@ -2928,7 +2928,7 @@
   border: 1px solid #000;
   border-radius: 100px;
   background-color: #fff;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   line-height: 24px;
@@ -2944,7 +2944,7 @@
   border: 1.5px none #333;
   border-radius: 100px;
   background-color: #f6f6f6;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   line-height: 24px;
@@ -2959,7 +2959,7 @@
 }
 
 .text-block-4 {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 16px;
   line-height: 24px;
@@ -2967,7 +2967,7 @@
 }
 
 .text-block-5 {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: red;
   font-size: 16px;
   line-height: 24px;
@@ -2995,7 +2995,7 @@
 }
 
 .plancopyprices {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   line-height: 24px;
@@ -3008,7 +3008,7 @@
 .plandetails {
   padding-top: 8px;
   padding-bottom: 8px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   line-height: 24px;
@@ -3017,7 +3017,7 @@
 }
 
 .planjoin {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   line-height: 24px;
@@ -3361,7 +3361,7 @@
 .howitworks {
   display: none;
   margin-top: 24px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 20px;
   line-height: 24px;
@@ -3455,7 +3455,7 @@
 
 .membershiptitle-copy {
   margin-top: 112px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 28px;
   line-height: 28px;
@@ -3545,7 +3545,7 @@
   padding-left: 0px;
   border-right: 1px none #333;
   border-left: 1px none #333;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   text-align: center;
@@ -3724,7 +3724,7 @@
   max-width: 430px;
   margin-top: 0px;
   margin-bottom: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 20px;
   line-height: 28px;
@@ -3837,14 +3837,14 @@
 
 .profiletext1 {
   margin-top: 20px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
 }
 
 .profiletext2 {
   margin-top: 4px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
 }
@@ -3855,7 +3855,7 @@
   padding-left: 0px;
   border-right: 1px none #333;
   border-left: 1px none #333;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 16px;
   text-decoration: none;
@@ -3987,14 +3987,14 @@
 
 .profiletext4 {
   margin-top: 4px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
 }
 
 .abouttitledarkheader {
   width: 50%;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 28px;
   line-height: 38px;
@@ -4090,7 +4090,7 @@
 
 .contactsubheader {
   width: 70%;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 24px;
@@ -4099,7 +4099,7 @@
 .contactsubheader2 {
   width: 70%;
   margin-top: 40px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 24px;
@@ -4143,7 +4143,7 @@
 }
 
 .abouttitlelightheader {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 28px;
   line-height: 38px;
@@ -4265,7 +4265,7 @@
 .valuesdescription {
   width: 100%;
   margin-top: 16px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: hsla(0, 0%, 100%, 0.5);
   font-size: 16px;
   line-height: 24px;
@@ -4275,7 +4275,7 @@
   display: none;
   width: 45%;
   margin-top: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: hsla(0, 0%, 100%, 0.5);
   font-size: 28px;
   line-height: 38px;
@@ -4286,7 +4286,7 @@
 .abouttitledarkheaderright-copy {
   width: 70%;
   margin-top: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 28px;
   line-height: 38px;
@@ -4299,7 +4299,7 @@
   margin-top: 0px;
   padding-right: 0px;
   padding-left: 80px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: hsla(0, 0%, 100%, 0.5);
   font-size: 28px;
   line-height: 38px;
@@ -4341,7 +4341,7 @@
   padding-left: 0px;
   border-right: 1px none #333;
   border-left: 1px none #333;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   text-decoration: none;
@@ -4372,7 +4372,7 @@
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 28px;
@@ -4403,7 +4403,7 @@
 .middleemailtitle {
   max-width: 460px;
   margin-bottom: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 28px;
   line-height: 38px;
@@ -4472,7 +4472,7 @@
 }
 
 .middleapplycopy {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 16px;
   line-height: 24px;
@@ -4678,7 +4678,7 @@
 }
 
 .privacyheadertitle {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 28px;
   line-height: 32px;
@@ -4687,7 +4687,7 @@
 
 .privacyheadersubtitle {
   margin-top: 12px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: hsla(0, 0%, 100%, 0.5);
   font-size: 16px;
   line-height: 24px;
@@ -4696,7 +4696,7 @@
 
 .text-block-10 {
   margin-top: 16px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 24px;
@@ -4735,7 +4735,7 @@
   padding-left: 0px;
   border-right: 1px none #333;
   border-left: 1px none #333;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 16px;
   text-align: center;
@@ -4783,7 +4783,7 @@
 .backedlink {
   display: none;
   width: 50%;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: hsla(0, 0%, 100%, 0.5);
   font-size: 28px;
   line-height: 38px;
@@ -4821,7 +4821,7 @@
 
 .abouttitledarkheader-copy {
   width: 50%;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #000;
   font-size: 28px;
   line-height: 38px;
@@ -4854,7 +4854,7 @@
 
 .nav-link {
   padding: 24px 0px 24px 32px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 16px;
   font-weight: 500;
@@ -4862,14 +4862,14 @@
 
 .nav-link-2 {
   padding: 24px 32px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 16px;
 }
 
 .nav-link-3 {
   padding: 24px 32px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 16px;
 }
@@ -4878,7 +4878,7 @@
   width: auto;
   height: auto;
   padding: 24px 32px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: #fff;
   font-size: 16px;
   font-weight: 500;
@@ -5036,7 +5036,7 @@
   max-width: 440px;
   margin-top: 0px;
   margin-bottom: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 28px;
   line-height: 38px;
@@ -5093,25 +5093,25 @@
 }
 
 .text-block-11 {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   font-size: 16px;
   font-weight: 500;
 }
 
 .text-block-12 {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   font-size: 16px;
   font-weight: 500;
 }
 
 .categorytabtext {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   font-size: 16px;
   font-weight: 500;
 }
 
 .text-block-14 {
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
 }
 
 .categorytabbgainactive {
@@ -5414,7 +5414,7 @@
 
 .stepcount {
   margin-top: 0px;
-  font-family: "Proxima nova", sans-serif;
+  font-family: "Proxima Nova", sans-serif;
   color: rgba(0, 0, 0, 0.5);
   font-size: 20px;
   line-height: 24px;
@@ -7851,7 +7851,7 @@
     font-weight: 500;
   }
   .answer {
-    font-family: "Proxima nova", sans-serif;
+    font-family: "Proxima Nova", sans-serif;
     color: hsla(0, 0%, 100%, 0.5);
     font-size: 16px;
     font-weight: 500;
@@ -9051,7 +9051,7 @@
 }
 
 @font-face {
-  font-family: "Proxima nova";
+  font-family: "Proxima Nova";
   src: url("../fonts/Proxima-Nova-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;

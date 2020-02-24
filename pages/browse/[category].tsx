@@ -1,18 +1,20 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { NextPage } from "next"
 import { gql } from "apollo-boost"
 import { useState } from "react"
 import { get } from "lodash"
 import { useQuery } from "@apollo/react-hooks"
-import { imageResize } from "../utils/imageResize"
-import withData from "../lib/apollo"
-import { Layout } from "../components"
-import { Sans, fontFamily } from "../components/Typography/Typography"
-import { Box } from "../components/Box"
-import { Grid, Row, Col } from "../components/Grid"
+import { imageResize } from "../../utils/imageResize"
+import withData from "../../lib/apollo"
+import { Layout, Flex } from "../../components"
+import { Sans, fontFamily } from "../../components/Typography/Typography"
+import { Box } from "../../components/Box"
+import { Grid, Row, Col } from "../../components/Grid"
 import styled, { CSSObject } from "styled-components"
 import Paginate from "react-paginate"
-import { color } from "../helpers"
+import { color } from "../../helpers"
+import Link from "next/link"
+import { useRouter } from "next/router"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -115,8 +117,13 @@ const ProductContainer = styled(Box)`
   text-align: left;
 `
 
-const BrowsePage: NextPage<{}> = withData(props => {
-  const [currentCategory, setCurrentCategory] = useState("all")
+export const BrowsePage: NextPage<{}> = withData(props => {
+  const router = useRouter()
+  const { query } = router
+
+  console.log(router)
+
+  const [currentCategory, setCurrentCategory] = useState(query.category || "all")
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 10
   const { data, loading, fetchMore } = useQuery(GET_BROWSE_PRODUCTS, {
@@ -127,9 +134,17 @@ const BrowsePage: NextPage<{}> = withData(props => {
     },
   })
 
+  useEffect(() => {
+    // router.push(`${router.asPath}/?page=1`, null, { shallow: true })
+  }, [])
+
+  useEffect(() => {
+    setCurrentCategory(query.category)
+  }, [query.category])
+
   const pageCount = Math.ceil(data?.connection?.aggregate?.count / pageSize)
-  console.log("page count: ", data?.connection?.aggregate)
   const products = data?.products?.edges
+  const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
 
   return (
     <Layout>
@@ -138,11 +153,14 @@ const BrowsePage: NextPage<{}> = withData(props => {
           <Row>
             <Col md="3">
               <Sans size="4">Categories</Sans>
-              {data?.categories.map(category => {
+              {categories.map(category => {
+                const isActive = currentCategory === category.slug
                 return (
-                  <Sans size="3" key={category.slug} my="3" opacity="0.5">
-                    {category.name}
-                  </Sans>
+                  <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
+                    <Sans size="3" key={category.slug} my="3" opacity={isActive ? 1.0 : 0.5}>
+                      {category.name}
+                    </Sans>
+                  </Link>
                 )
               })}
             </Col>
@@ -156,25 +174,27 @@ const BrowsePage: NextPage<{}> = withData(props => {
               </Row>
             </Col>
           </Row>
-          <Pagination>
-            <Paginate
-              previousLabel={"previous"}
-              nextLabel={"next"}
-              breakLabel={"..."}
-              breakClassName={"break-me"}
-              pageCount={pageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={data => {
-                console.log(data)
-                setCurrentPage(data.selected + 1)
-                window && window.scrollTo(0, 0)
-              }}
-              containerClassName={"pagination"}
-              subContainerClassName={"pages pagination"}
-              activeClassName={"active"}
-            />
-          </Pagination>
+          <Flex align-items="end">
+            <Pagination>
+              <Paginate
+                previousLabel={"previous"}
+                nextLabel={"next"}
+                breakLabel={"..."}
+                breakClassName={"break-me"}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={data => {
+                  console.log(data)
+                  setCurrentPage(data.selected + 1)
+                  window && window.scrollTo(0, 0)
+                }}
+                containerClassName={"pagination"}
+                subContainerClassName={"pages pagination"}
+                activeClassName={"active"}
+              />
+            </Pagination>
+          </Flex>
         </Grid>
       </Box>
     </Layout>
@@ -191,6 +211,7 @@ const Pagination = styled.div`
       color: ${color("lightGray")};
       width: 40px;
       height: 40px;
+      text-align: center;
 
       &.active {
         color: black;

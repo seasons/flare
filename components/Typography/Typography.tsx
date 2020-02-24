@@ -206,7 +206,7 @@ function createStyledText<P extends StyledTextProps>(
     }
     return (
       <Text
-        fontFamily={fontFamilyType && themeProps.fontFamily[fontType][fontFamilyType]}
+        fontFamily={fontFamilyType && fontFamily[fontType][fontFamilyType]}
         {...determineFontSizes(fontType, size)}
         // styled-components supports calling the prop `as`, but there are
         //  issues when passing it into this component named `as`. See

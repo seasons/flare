@@ -3,8 +3,8 @@ import { HttpLink } from "apollo-boost"
 
 const config = {
   link: new HttpLink({
-    // uri: "https://monsoon-staging.seasons.nyc", // Server URL (must be absolute)
-    uri: "http://localhost:4000",
+    // Server URL (must be absolute)
+    uri: process.env.MONSOON_ENDPOINT,
   }),
 }
 

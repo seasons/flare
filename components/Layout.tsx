@@ -1,17 +1,15 @@
 import { Theme } from "../lib/theme"
 import styled, { css, CSSObject } from "styled-components"
 import { color } from "../lib/color"
-import { fontFamily, Sans } from "./Typography/Typography"
+import { Sans } from "./Typography/Typography"
 import { Grid } from "./Grid"
 import { Box } from "."
+import { Nav } from "./Nav"
 
 export const Layout = props => {
   return (
     <Theme>
-      <HeaderContainer>
-        <Logo />
-        <LogoText>Seasons</LogoText>
-      </HeaderContainer>
+      <Nav />
       {props.children}
       <FooterContainer>
         <Sans size="2" color="gray" pt="0.5" pr="3">
@@ -31,22 +29,6 @@ export const Layout = props => {
   )
 }
 
-const Logo = styled.div`
-  background: url("/img/LogoMark.svg") no-repeat center;
-  background-size: contain;
-  width: 22px;
-  height: 22px;
-  margin-right: 10px;
-`
-
-export const LogoText = styled.div`
-  font-family: ${fontFamily.display.regular as CSSObject};
-  font-size: 20px;
-  letter-spacing: 2px;
-  line-height: 24px;
-  text-transform: uppercase;
-`
-
 const containerStyles = css`
   display: flex;
   flex-direction: row;
@@ -54,11 +36,6 @@ const containerStyles = css`
   height: 58.5px;
   box-sizing: border-box;
   z-index: 100;
-`
-
-const HeaderContainer = styled(Grid)`
-  border-bottom: 1px solid ${color("lightGray")};
-  ${containerStyles};
 `
 
 const FooterContainer = styled(Grid)`
