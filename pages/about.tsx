@@ -182,8 +182,8 @@ const about = () => (
       </div>
       <div className="footersection">
         <div className="footercontainer">
-          <Link href="/terms-of-service" className="subheaderlink">
-            Terms of Service
+          <Link href="/terms-of-service">
+            <a className="subheaderlink">Terms of Service</a>
           </Link>
           <a href="privacy-policy.html" className="subheaderlink">
             Privacy Policy
