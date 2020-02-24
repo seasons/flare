@@ -101,7 +101,7 @@ const renderItem = ({ item }, i) => {
         </Sans>
         <Sans size="3" my="1">
           {product.variants.map(a => (
-            <span key={a.size} style={{ marginRight: 10 }}>
+            <span key={`${product.id}-${a.size}`} style={{ marginRight: 10 }}>
               {a.size}
             </span>
           ))}
