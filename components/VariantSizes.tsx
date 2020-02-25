@@ -1,7 +1,7 @@
 import { uniqBy } from "lodash"
 import { Flex, Box, Sans } from "."
 import styled from "styled-components"
-import { color } from "../lib/color"
+import { color } from "../helpers/color"
 
 const sizes = {
   xs: {

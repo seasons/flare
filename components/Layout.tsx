@@ -1,6 +1,6 @@
 import { Theme } from "../lib/theme"
 import styled, { css } from "styled-components"
-import { color } from "../lib/color"
+import { color } from "../helpers/color"
 import { Sans } from "./Typography/Typography"
 import { Grid } from "./Grid"
 import { Box } from "."

@@ -3838,6 +3838,7 @@
 .profiletext1 {
   margin-top: 20px;
   font-family: "Proxima Nova", sans-serif;
+  font-weight: 500;
   color: #000;
   font-size: 16px;
 }
@@ -3845,6 +3846,7 @@
 .profiletext2 {
   margin-top: 4px;
   font-family: "Proxima Nova", sans-serif;
+  font-weight: 500;
   color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
 }
@@ -3988,8 +3990,9 @@
 .profiletext4 {
   margin-top: 4px;
   font-family: "Proxima Nova", sans-serif;
-  color: rgba(0, 0, 0, 0.5);
   font-size: 16px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .abouttitledarkheader {

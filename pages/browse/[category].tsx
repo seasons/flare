@@ -39,6 +39,7 @@ const GET_BROWSE_PRODUCTS = gql`
       edges {
         node {
           id
+          slug
           name
           description
           images
@@ -83,16 +84,20 @@ const renderItem = ({ item }, i) => {
 
   return (
     <ProductContainer key={i}>
-      <img src={resizedImage} />
-      <Box py="1" pb="2">
-        <Sans size="3" mt="0.5">
-          {brandName}
-        </Sans>
-        <Sans size="2" my="0.5" color="black100">
-          {product.name}
-        </Sans>
-        <VariantSizes variants={product.variants} size="1" />
-      </Box>
+      <Link href="/product/[Product]" as={`/product/${product.slug}`}>
+        <div>
+          <img src={resizedImage} />
+          <Box py="1" pb="2">
+            <Sans size="3" mt="0.5">
+              {brandName}
+            </Sans>
+            <Sans size="2" my="0.5" color="black100">
+              {product.name}
+            </Sans>
+            <VariantSizes variants={product.variants} size="1" />
+          </Box>
+        </div>
+      </Link>
     </ProductContainer>
   )
 }

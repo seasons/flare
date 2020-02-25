@@ -30,6 +30,7 @@
     "@types/react": "^16.9.20",
     "@types/styled-components": "^4.4.3",
     "@types/styled-system": "^5.1.6",
+    "babel-plugin-root-import": "^6.4.1",
     "babel-plugin-styled-components": "^1.10.7",
     "typescript": "^3.7.5"
   },
