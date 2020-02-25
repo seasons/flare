@@ -40,14 +40,16 @@ const Product = withData(props => {
             })}
           </Col>
           <Col md="6" p={1}>
-            <ProductDetails product={product} />
-            <Box my={2} p={1}>
-              <a href="//signup.seasons.nyc">
-                <Button size="medium" block>
-                  Join the wailist
-                </Button>
-              </a>
-            </Box>
+            <DetailsContainer mr={4}>
+              <ProductDetails product={product} />
+              <Box my={2} p={1}>
+                <a href="//signup.seasons.nyc">
+                  <Button size="medium" block>
+                    Join the wailist
+                  </Button>
+                </a>
+              </Box>
+            </DetailsContainer>
           </Col>
         </Row>
       </Grid>
@@ -56,5 +58,9 @@ const Product = withData(props => {
 })
 
 const ImageContainer = styled(Box)``
+
+const DetailsContainer = styled(Box)`
+  position: fixed;
+`
 
 export default Product

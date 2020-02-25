@@ -20,7 +20,7 @@ export const Nav = ({ fixed = false }: NavProps) => {
     },
     {
       text: "Browse",
-      url: "/browse",
+      url: "/browse/all",
     },
     {
       text: "Pricing",
