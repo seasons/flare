@@ -15,6 +15,7 @@ import Paginate from "react-paginate"
 import { color } from "../../helpers"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { VariantSizes } from "../../components/VariantSizes"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -68,15 +69,6 @@ const GET_BROWSE_PRODUCTS = gql`
   }
 `
 
-const ABBREVIATED_SIZES = {
-  "X-Small": "XS",
-  Small: "S",
-  Medium: "M",
-  Large: "L",
-  "X-Large": "XL",
-  "XX-Large": "XXL",
-}
-
 const renderItem = ({ item }, i) => {
   const product = item.node
 
@@ -93,19 +85,13 @@ const renderItem = ({ item }, i) => {
     <ProductContainer key={i}>
       <img src={resizedImage} />
       <Box py="1">
-        <Sans size="3" my="0.5" color="mediumGray">
-          {product.name}
-        </Sans>
-        <Sans size="2" mt="0.5">
+        <Sans size="3" mt="0.5">
           {brandName}
         </Sans>
-        <Sans size="3" my="1">
-          {product.variants.map(a => (
-            <span key={`${product.id}-${a.size}`} style={{ marginRight: 10 }}>
-              {a.size}
-            </span>
-          ))}
+        <Sans size="2" my="0.5" color="black100">
+          {product.name}
         </Sans>
+        <VariantSizes variants={product.variants} size="1" />
       </Box>
     </ProductContainer>
   )
@@ -125,7 +111,7 @@ export const BrowsePage: NextPage<{}> = withData(props => {
 
   const [currentCategory, setCurrentCategory] = useState(query.category || "all")
   const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 10
+  const pageSize = 18
   const { data, loading, fetchMore } = useQuery(GET_BROWSE_PRODUCTS, {
     variables: {
       name: currentCategory,
@@ -134,9 +120,9 @@ export const BrowsePage: NextPage<{}> = withData(props => {
     },
   })
 
-  useEffect(() => {
-    // router.push(`${router.asPath}/?page=1`, null, { shallow: true })
-  }, [])
+  // useEffect(() => {
+  //   router.push(`${router.asPath}/?page=${currentPage}`, null, { shallow: true })
+  // }, [currentPage])
 
   useEffect(() => {
     setCurrentCategory(query.category)
@@ -152,12 +138,12 @@ export const BrowsePage: NextPage<{}> = withData(props => {
         <Grid>
           <Row>
             <Col md="3">
-              <Sans size="4">Categories</Sans>
+              <Sans size={["4", "6"]}>Categories</Sans>
               {categories.map(category => {
                 const isActive = currentCategory === category.slug
                 return (
                   <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
-                    <Sans size="3" key={category.slug} my="3" opacity={isActive ? 1.0 : 0.5}>
+                    <Sans size={["3", "5"]} key={category.slug} my="3" opacity={isActive ? 1.0 : 0.5}>
                       {category.name}
                     </Sans>
                   </Link>
@@ -208,13 +194,13 @@ const Pagination = styled.div`
       font-family: ${fontFamily.sans.medium as CSSObject};
       display: inline-block;
       margin-right: 5px;
-      color: ${color("lightGray")};
+      color: ${color("black50")};
       width: 40px;
       height: 40px;
       text-align: center;
 
       &.active {
-        color: black;
+        color: ${color("black100")};
       }
 
       &.previous,

@@ -1,12 +1,18 @@
-import styled, { css, CSSObject } from "styled-components"
+import styled, { CSSObject } from "styled-components"
 import { Grid } from "./Grid"
 import { fontFamily, Sans } from "./Typography"
 import { Box } from "."
 import { color } from "../lib/color"
 import { Flex } from "./Flex"
 import NextLink from "next/link"
+import { useRouter } from "next/router"
 
-export const Nav = () => {
+interface NavProps {
+  fixed?: boolean
+}
+
+export const Nav = ({ fixed = false }: NavProps) => {
+  const router = useRouter()
   const links = [
     {
       text: "Home",
@@ -30,7 +36,7 @@ export const Nav = () => {
     },
   ]
   return (
-    <HeaderContainer>
+    <HeaderContainer fixed={fixed}>
       <Grid>
         <Flex ml="auto" flexDirection="row" alignItems="center">
           <LogoContainer>
@@ -44,8 +50,8 @@ export const Nav = () => {
           <Flex ml="auto" flexDirection="row" alignItems="center">
             {links.map(link => (
               <NextLink href={link.url} key={link.text}>
-                <Link>
-                  <Box key={link.text} mx={2}>
+                <Link active={router.pathname === link.url}>
+                  <Box key={link.text} mx={2} height="100%">
                     <Sans size="3" color="black">
                       {link.text}
                     </Sans>
@@ -65,6 +71,7 @@ const LogoContainer = styled.div`
   flex-direction: row;
   text-decoration: none;
   color: black;
+  margin: 16px 10px;
 `
 
 const Logo = styled.div`
@@ -75,16 +82,21 @@ const Logo = styled.div`
   margin-right: 10px;
 `
 
-const Link = styled.a`
+const Link = styled.a<{ active?: boolean }>`
   color: black;
   text-decoration: none;
+  border-bottom: 2px solid ${p => (p.active ? color("black100") : color("white100"))};
+  margin-bottom: -1px;
+  height: 58.5px;
+  line-height: 58.5px;
 `
 
-const HeaderContainer = styled.div`
-  border-bottom: 1px solid ${color("lightGray")};
+const HeaderContainer = styled.div<{ fixed: boolean }>`
+  position: ${p => (p.fixed ? "fixed" : "relative")};
+  border-bottom: 1px solid ${color("black10")};
   display: flex;
   flex-direction: row;
-  padding: 16px 0px;
+  /* padding: 16px 0px; */
   height: 58.5px;
   box-sizing: border-box;
   z-index: 100;

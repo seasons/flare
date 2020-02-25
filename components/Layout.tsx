@@ -1,5 +1,5 @@
 import { Theme } from "../lib/theme"
-import styled, { css, CSSObject } from "styled-components"
+import styled, { css } from "styled-components"
 import { color } from "../lib/color"
 import { Sans } from "./Typography/Typography"
 import { Grid } from "./Grid"
@@ -39,6 +39,6 @@ const containerStyles = css`
 `
 
 const FooterContainer = styled(Grid)`
-  border-top: 1px solid ${color("lightGray")};
+  border-top: 1px solid ${color("black10")};
   ${containerStyles};
 `

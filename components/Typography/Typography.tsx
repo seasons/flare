@@ -127,6 +127,7 @@ export interface TextProps
 /** Base Text component for typography */
 export const Text = styled.div<TextProps>`
   ${({ fontFamily }) => fontFamily && renderFontValue(fontFamily)};
+  text-align: ${props => props.textAlign || "left"};
   ${fontSize};
   ${color};
   ${display};
@@ -134,7 +135,6 @@ export const Text = styled.div<TextProps>`
   ${space};
   ${lineHeight};
   ${verticalAlign};
-  text-align: ${props => props.textAlign || "left"};
 `
 
 /**
