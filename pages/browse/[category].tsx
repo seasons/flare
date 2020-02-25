@@ -84,7 +84,7 @@ const renderItem = ({ item }, i) => {
   return (
     <ProductContainer key={i}>
       <img src={resizedImage} />
-      <Box py="1">
+      <Box py="1" pb="2">
         <Sans size="3" mt="0.5">
           {brandName}
         </Sans>

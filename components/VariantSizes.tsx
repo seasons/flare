@@ -42,7 +42,7 @@ export const VariantSizes: React.FC<{
 }> = ({ variants, size }) => {
   const sortedVariants = sortVariants(variants)
   return (
-    <Flex flexDirection="row" mt={1}>
+    <Flex flexDirection="row" mt={0.5}>
       {sortedVariants.map((variant: any) => {
         const reservable = variant.reservable !== null && !!variant.reservable
         return (
