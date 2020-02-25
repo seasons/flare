@@ -1,9 +1,9 @@
-import { GET_PRODUCT } from "./ProductQueries"
+import { GET_PRODUCT } from "../../components/Product/ProductQueries"
 import React from "react"
 
 import { useQuery } from "@apollo/react-hooks"
 import withData from "../../lib/apollo"
-import { ProductDetails } from "./ProductDetails"
+import { ProductDetails } from "../../components/Product/ProductDetails"
 import { Grid, Col, Row } from "../../components/Grid"
 import { imageResize } from "../../utils/imageResize"
 import { useRouter } from "next/router"
@@ -33,7 +33,7 @@ const Product = withData(props => {
             {product?.images.map(image => {
               const imageURL = imageResize(image?.url, "x-large")
               return (
-                <ImageContainer m={2}>
+                <ImageContainer m={2} key={image?.url}>
                   <img src={imageURL} />
                 </ImageContainer>
               )
@@ -61,6 +61,7 @@ const ImageContainer = styled(Box)``
 
 const DetailsContainer = styled(Box)`
   position: fixed;
+  width: 30%;
 `
 
 export default Product

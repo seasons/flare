@@ -91,7 +91,7 @@ const renderItem = ({ item }, i) => {
             <Sans size="3" mt="0.5">
               {brandName}
             </Sans>
-            <Sans size="2" my="0.5" color="black100">
+            <Sans size="3" my="0.5" color="black50">
               {product.name}
             </Sans>
             <VariantSizes variants={product.variants} size="1" />
