@@ -10,7 +10,7 @@ const Home = () => (
       <meta content="Seasons change. Your wardrobe should change with them." name="description" />
     </Head>
     <body className="body">
-      <Nav />
+      <Nav fixed />
       <div className="alertmessage">
         <div className="brandscarriedcontainer">
           <a href="/about" className="alertcopy">

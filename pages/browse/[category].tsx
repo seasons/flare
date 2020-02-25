@@ -112,8 +112,6 @@ export const BrowsePage: NextPage<{}> = withData(props => {
   const router = useRouter()
   const { query } = router
 
-  console.log(router)
-
   const [currentCategory, setCurrentCategory] = useState(query.category || "all")
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 18
@@ -138,8 +136,8 @@ export const BrowsePage: NextPage<{}> = withData(props => {
   const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
 
   return (
-    <Layout>
-      <Box mt="3">
+    <Layout fixedNav>
+      <Box mt="100px">
         <Grid>
           <Row>
             <Col md="3">
@@ -165,7 +163,7 @@ export const BrowsePage: NextPage<{}> = withData(props => {
               </Row>
             </Col>
           </Row>
-          <Flex align-items="end">
+          <Flex align-items="end" mt={2} mb={4}>
             <Pagination>
               <Paginate
                 previousLabel={"previous"}

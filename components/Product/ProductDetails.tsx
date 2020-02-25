@@ -1,8 +1,8 @@
-import { Box, Sans, Separator, Spacer, Flex } from "../../components"
+import { Box, Sans, Separator, Spacer, Flex } from ".."
 import React from "react"
 import { ProductInfoItem } from "./ProductInfoItem"
 import { color } from "../../helpers"
-import { VariantSizes } from "../../components/VariantSizes"
+import { VariantSizes } from "../VariantSizes"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{

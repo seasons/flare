@@ -1,5 +1,5 @@
 import React from "react"
-import { Sans, Separator, Spacer, Flex } from "../../components"
+import { Sans, Separator, Spacer, Flex } from ".."
 import { color } from "../../helpers"
 
 interface Props {

@@ -6,11 +6,16 @@ import { Grid } from "./Grid"
 import { Box } from "."
 import { Nav } from "./Nav"
 
-export const Layout = props => {
+interface LayoutProps {
+  fixedNav?: boolean
+  children?: any
+}
+
+export const Layout = ({ fixedNav = false, children }: LayoutProps) => {
   return (
     <Theme>
-      <Nav />
-      {props.children}
+      <Nav fixed={fixedNav} />
+      {children}
       <FooterContainer>
         <Sans size="2" color="gray" pt="0.5" pr="3">
           Terms of Service

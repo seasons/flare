@@ -17,22 +17,27 @@ export const Nav = ({ fixed = false }: NavProps) => {
     {
       text: "Home",
       url: "/",
+      match: /^\/$/,
     },
     {
       text: "Browse",
       url: "/browse/all",
+      match: /^\/browse/,
     },
     {
       text: "Pricing",
       url: "/#Membership",
+      match: /^\/\#Membership$/,
     },
     {
       text: "Brands",
       url: "/#FAQ",
+      match: /^\/#FAQ$/,
     },
     {
       text: "About Us",
       url: "/about",
+      match: /^\/#FAQ$/,
     },
   ]
   return (
@@ -50,7 +55,7 @@ export const Nav = ({ fixed = false }: NavProps) => {
           <Flex ml="auto" flexDirection="row" alignItems="center">
             {links.map(link => (
               <NextLink href={link.url} key={link.text}>
-                <Link active={router.pathname === link.url}>
+                <Link active={!!router.pathname.match(link.match)}>
                   <Box key={link.text} mx={2} height="100%">
                     <Sans size="3" color="black">
                       {link.text}
@@ -92,6 +97,7 @@ const Link = styled.a<{ active?: boolean }>`
 `
 
 const HeaderContainer = styled.div<{ fixed: boolean }>`
+  top: 0;
   position: ${p => (p.fixed ? "fixed" : "relative")};
   border-bottom: 1px solid ${color("black10")};
   display: flex;
@@ -100,6 +106,8 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   height: 58.5px;
   box-sizing: border-box;
   z-index: 100;
+  width: 100%;
+  background: ${color("white100")};
 `
 export const LogoText = styled.div`
   font-family: ${fontFamily.display.regular as CSSObject};
