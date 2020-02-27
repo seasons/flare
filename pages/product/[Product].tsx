@@ -23,15 +23,15 @@ const Product = withData(props => {
 
   const product = data && data.product
 
-  const renderDetails = () => {
-    return <ProductDetails product={product} />
-  }
+  // const renderDetails = () => {
+  //   return
+  // }
 
   return (
     <Layout fixedNav>
       <Grid mt="100px">
         <Row>
-          <Col md="6" sm="12" xsOrder={1}>
+          <Col md="6" sm="12" xsOrder={1} smOrder={1}>
             {product?.images.map(image => {
               const imageURL = imageResize(image?.url, "x-large")
               return (
@@ -41,16 +41,16 @@ const Product = withData(props => {
               )
             })}
           </Col>
-          <Col md="5" sm="12" p={1} xsOrder={0}>
-            <Media between={["xs", "sm"]}>{renderDetails}</Media>
-            <Media greaterThan="sm">
-              <DetailsContainer mr={4}>{renderDetails}</DetailsContainer>
-            </Media>
-            <Box my={2} py={2} px={4}>
-              <Button href="//signup.seasons.nyc">
-                <Sans size="3">Join the wailist</Sans>
-              </Button>
-            </Box>
+          <Col md="5" sm="12" p={1} mdOrder={2}>
+            <DetailsContainer mr={4}>
+              <ProductDetails product={product} />
+
+              <Box my={2} py={2} px={4}>
+                <Button href="//signup.seasons.nyc">
+                  <Sans size="3">Join the wailist</Sans>
+                </Button>
+              </Box>
+            </DetailsContainer>
           </Col>
         </Row>
       </Grid>
@@ -61,8 +61,10 @@ const Product = withData(props => {
 const ImageContainer = styled(Box)``
 
 const DetailsContainer = styled(Box)<{ size?: string }>`
-  position: fixed;
-  width: 30%;
+  ${media.md`
+    position: fixed;
+    width: 30%;
+  `};
 `
 
 const Button = styled.a`
