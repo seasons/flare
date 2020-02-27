@@ -6,10 +6,10 @@ import { createMedia } from "@artsy/fresnel"
 //       serious thought.
 const newThemeBreakpoints = {
   xs: 0,
-  sm: 768,
-  md: 900,
-  lg: 1024,
-  xl: 1192,
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
 }
 
 const ReactionMedia = createMedia({

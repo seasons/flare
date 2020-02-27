@@ -52,6 +52,7 @@ export const Nav = ({ fixed = false }: NavProps) => {
               </>
             </NextLink>
           </LogoContainer>
+
           <Flex ml="auto" flexDirection="row" alignItems="center">
             {links.map(link => (
               <NextLink href={link.url} key={link.text}>
@@ -76,7 +77,7 @@ const LogoContainer = styled.div`
   flex-direction: row;
   text-decoration: none;
   color: black;
-  margin: 16px 10px;
+  margin: 16px 10px 16px 0px;
 `
 
 const Logo = styled.div`

@@ -4,15 +4,15 @@ import { ThemeProvider } from "styled-components"
 
 export const breakpoints = {
   /** Above 1192 */
-  xl: 1192,
+  xl: 1200,
   /** Between 1024 and  1191 */
-  lg: 1024,
+  lg: 992,
   /** Between 900 and 1023 */
-  md: 900,
+  md: 768,
   /** Between 768 and  899 */
-  sm: 768,
+  sm: 576,
   /** Below 767 */
-  xs: 767,
+  xs: 575,
 }
 
 export const themeProps = {
@@ -256,6 +256,13 @@ export const themeProps = {
     breakpoints,
     container: {
       padding: 0,
+      maxWidth: {
+        xl: 1200,
+        lg: 960,
+        md: 720,
+        sm: 540,
+        xs: 540,
+      },
     },
     row: {
       padding: 0,
