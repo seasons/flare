@@ -21,7 +21,7 @@ export class Button extends Component<WebButtonProps> {
     theme: themeProps,
   }
 
-  getSize(): { height: string; size: "2" | "3t"; px: number } {
+  getSize(): { height: string; size: "2" | "3t"; px: number | string } {
     const { inline } = this.props
     switch (this.props.size) {
       case "small":
@@ -38,9 +38,9 @@ export class Button extends Component<WebButtonProps> {
         }
       case "large":
         return {
-          height: inline ? "21px" : "50px",
+          height: inline ? "21px" : "56px",
           size: "3t",
-          px: inline ? 0 : 3,
+          px: inline ? 0 : 5,
         }
     }
   }
@@ -216,6 +216,7 @@ const Container = styled.button<ButtonBaseProps>`
   cursor: pointer;
   position: relative;
   white-space: nowrap;
+  border-radius: 400px;
 
   ${borders};
   ${borderRadius};

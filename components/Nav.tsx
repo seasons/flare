@@ -56,7 +56,7 @@ export const Nav = ({ fixed = false }: NavProps) => {
             {links.map(link => (
               <NextLink href={link.url} key={link.text}>
                 <Link active={!!router.pathname.match(link.match)}>
-                  <Box key={link.text} mx={2} height="100%">
+                  <Box key={link.text} mx={2} height="100%" style={{ cursor: "pointer" }}>
                     <Sans size="3" color="black">
                       {link.text}
                     </Sans>
