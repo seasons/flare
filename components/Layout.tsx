@@ -16,20 +16,22 @@ export const Layout = ({ fixedNav = false, children }: LayoutProps) => {
     <Theme>
       <Nav fixed={fixedNav} />
       {children}
-      <FooterContainer>
-        <Sans size="2" color="gray" pt="0.5" pr="3">
-          Terms of Service
-        </Sans>
-        <Sans size="2" color="gray" pt="0.5" pr="3">
-          Privacy Policy
-        </Sans>
-
-        <Box ml="auto">
+      <Footer>
+        <FooterContainer>
           <Sans size="2" color="gray" pt="0.5" pr="3">
-            (c) 2020 Seasons. All Rights Reserved.
+            Terms of Service
           </Sans>
-        </Box>
-      </FooterContainer>
+          <Sans size="2" color="gray" pt="0.5" pr="3">
+            Privacy Policy
+          </Sans>
+
+          <Box ml="auto">
+            <Sans size="2" color="gray" pt="0.5">
+              (c) 2020 Seasons. All Rights Reserved.
+            </Sans>
+          </Box>
+        </FooterContainer>
+      </Footer>
     </Theme>
   )
 }
@@ -43,7 +45,10 @@ const containerStyles = css`
   z-index: 100;
 `
 
-const FooterContainer = styled(Grid)`
+const Footer = styled(Box)`
   border-top: 1px solid ${color("black10")};
+`
+
+const FooterContainer = styled(Grid)`
   ${containerStyles};
 `

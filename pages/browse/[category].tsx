@@ -123,10 +123,6 @@ export const BrowsePage: NextPage<{}> = withData(props => {
     },
   })
 
-  // useEffect(() => {
-  //   router.push(`${router.asPath}/?page=${currentPage}`, null, { shallow: true })
-  // }, [currentPage])
-
   useEffect(() => {
     setCurrentCategory(query.category)
   }, [query.category])
@@ -140,7 +136,7 @@ export const BrowsePage: NextPage<{}> = withData(props => {
       <Box mt="100px">
         <Grid>
           <Row>
-            <Col md="3">
+            <Col md="3" xs="12" mx={["2", "0"]}>
               <Sans size={["4", "6"]}>Categories</Sans>
               {categories.map(category => {
                 const isActive = currentCategory === category.slug
@@ -153,10 +149,10 @@ export const BrowsePage: NextPage<{}> = withData(props => {
                 )
               })}
             </Col>
-            <Col md="9">
+            <Col md="9" xs="12">
               <Row>
                 {(products || []).map((product, i) => (
-                  <Col col md="4" sm="6">
+                  <Col col sm="4" xs="6">
                     {renderItem({ item: product }, i)}
                   </Col>
                 ))}

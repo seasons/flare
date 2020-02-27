@@ -109,42 +109,50 @@ const Home = () => (
         </div>
         <div className="trendingproductcontainer">
           <div className="columns w-row">
-            <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
-              <div className="productimage1">
-                <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
+            <Link href="/product/[Product]" as="/product/clockwork-orange-open-eyes-jacket-black">
+              <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                <div className="productimage1">
+                  <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
+                </div>
+                <div className="brandtitle">
+                  <strong className="brandname">Undercover</strong>
+                </div>
+                <div className="productname">S M L </div>
               </div>
-              <div className="brandtitle">
-                <strong className="brandname">Undercover</strong>
+            </Link>
+            <Link href="/product/[Product]" as="/product/hooded-floral-knit-sweater-black">
+              <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                <div className="productimage2">
+                  <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
+                </div>
+                <div className="brandtitle">
+                  <strong className="brandname">Engineered Garments</strong>
+                </div>
+                <div className="productname">S M L XL</div>
               </div>
-              <div className="productname">S M L </div>
-            </div>
-            <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
-              <div className="productimage2">
-                <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
+            </Link>
+            <Link href="/product/[Product]" as="/product/quilted-worker-jacket-blue">
+              <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                <div className="productimage3">
+                  <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
+                </div>
+                <div className="brandtitle">
+                  <strong className="brandname">Craig Green</strong>
+                </div>
+                <div className="productname">S M L XL</div>
               </div>
-              <div className="brandtitle">
-                <strong className="brandname">Engineered Garments</strong>
+            </Link>
+            <Link href="/product/[Product]" as="/product/checked-knit-jumper-brown">
+              <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                <div className="productimage4">
+                  <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
+                </div>
+                <div className="brandtitle">
+                  <strong className="brandname">Sacai</strong>
+                </div>
+                <div className="productname">S M L</div>
               </div>
-              <div className="productname">S M L XL</div>
-            </div>
-            <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
-              <div className="productimage3">
-                <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
-              </div>
-              <div className="brandtitle">
-                <strong className="brandname">Craig Green</strong>
-              </div>
-              <div className="productname">S M L XL</div>
-            </div>
-            <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
-              <div className="productimage4">
-                <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
-              </div>
-              <div className="brandtitle">
-                <strong className="brandname">Sacai</strong>
-              </div>
-              <div className="productname">S M L</div>
-            </div>
+            </Link>
           </div>
           <div className="columnsbottom w-row">
             <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">

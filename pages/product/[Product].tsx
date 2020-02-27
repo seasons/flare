@@ -9,7 +9,7 @@ import { imageResize } from "../../utils/imageResize"
 import { useRouter } from "next/router"
 import { Nav } from "../../components/Nav"
 import styled from "styled-components"
-import { Box } from "../../components"
+import { Box, Layout } from "../../components"
 import { Button } from "../../components/Button"
 
 const Product = withData(props => {
@@ -25,9 +25,8 @@ const Product = withData(props => {
   const product = data && data.product
 
   return (
-    <>
-      <Nav />
-      <Grid>
+    <Layout fixedNav>
+      <Grid mt="100px">
         <Row>
           <Col md="6">
             {product?.images.map(image => {
@@ -53,7 +52,7 @@ const Product = withData(props => {
           </Col>
         </Row>
       </Grid>
-    </>
+    </Layout>
   )
 })
 
