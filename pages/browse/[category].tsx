@@ -16,6 +16,7 @@ import { color } from "../../helpers"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { VariantSizes } from "../../components/VariantSizes"
+import { media } from "styled-bootstrap-grid"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -164,29 +165,31 @@ export const BrowsePage: NextPage<{}> = withData(props => {
                   </Col>
                 ))}
               </Row>
+              <Row>
+                <Flex align-items="center" mt={2} mb={4} width="100%">
+                  <Pagination>
+                    <Paginate
+                      previousLabel={"previous"}
+                      nextLabel={"next"}
+                      breakLabel={"..."}
+                      breakClassName={"break-me"}
+                      pageCount={pageCount}
+                      marginPagesDisplayed={2}
+                      pageRangeDisplayed={2}
+                      onPageChange={data => {
+                        console.log(data)
+                        setCurrentPage(data.selected + 1)
+                        window && window.scrollTo(0, 0)
+                      }}
+                      containerClassName={"pagination"}
+                      subContainerClassName={"pages pagination"}
+                      activeClassName={"active"}
+                    />
+                  </Pagination>
+                </Flex>
+              </Row>
             </Col>
           </Row>
-          <Flex align-items="end" mt={2} mb={4}>
-            <Pagination>
-              <Paginate
-                previousLabel={"previous"}
-                nextLabel={"next"}
-                breakLabel={"..."}
-                breakClassName={"break-me"}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={data => {
-                  console.log(data)
-                  setCurrentPage(data.selected + 1)
-                  window && window.scrollTo(0, 0)
-                }}
-                containerClassName={"pagination"}
-                subContainerClassName={"pages pagination"}
-                activeClassName={"active"}
-              />
-            </Pagination>
-          </Flex>
         </Grid>
       </Box>
     </Layout>
@@ -194,7 +197,10 @@ export const BrowsePage: NextPage<{}> = withData(props => {
 })
 
 const Pagination = styled.div`
-  margin-left: auto;
+  ${media.md`
+    margin-left: auto;
+  `};
+
   .pagination {
     & li {
       font-family: ${fontFamily.sans.medium as CSSObject};
