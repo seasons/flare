@@ -2350,7 +2350,7 @@
 
 .faqnumber {
   font-family: "Apercu mono", sans-serif;
-  color: #fff;
+  /* color: #fff; */
   font-size: 20px;
   line-height: 24px;
   font-weight: 500;
@@ -5915,7 +5915,7 @@
     padding-right: 48px;
     padding-left: 25px;
     border-style: none;
-    background-color: #1a1a1a;
+    background-color: #f6f6f6;
   }
   .mobile-answercontainer2 {
     width: 100%;
@@ -5924,7 +5924,7 @@
     padding-right: 48px;
     padding-left: 25px;
     border-style: none;
-    background-color: #1a1a1a;
+    background-color: #f6f6f6;
   }
   .mobile-brandgrid {
     margin-bottom: 40px;
@@ -6010,9 +6010,9 @@
     padding-left: 0px;
     text-align: center;
   }
-  .text-field {
+  /* .text-field {
     background-color: #1a1a1a;
-  }
+  } */
   .seasonssunset {
     margin-top: 0px;
   }
@@ -6106,7 +6106,6 @@
     padding-right: 24px;
     padding-left: 24px;
     border-style: none;
-    background-color: #000;
   }
   .faqcount {
     margin-bottom: 24px;
@@ -6341,13 +6340,13 @@
     background-size: cover;
   }
   .link-5 {
-    color: #fff;
+    color: #000;
   }
   .link-6 {
-    color: #fff;
+    color: #000;
   }
   .link-7 {
-    color: #fff;
+    color: #000;
   }
   .privacytopsection {
     height: 400px;
@@ -6864,6 +6863,7 @@
     padding-top: 24px;
     padding-bottom: 24px;
     text-align: center;
+    font-weight: 500;
   }
   .lettercontainertop {
     display: -ms-grid;
@@ -7093,7 +7093,7 @@
   .subheaderlink {
     padding-top: 24px;
     padding-bottom: 24px;
-    color: #fff;
+    font-weight: 500;
   }
   .aboutherosection {
     height: 480px;
@@ -7857,7 +7857,7 @@
   }
   .answer {
     font-family: "Proxima Nova", sans-serif;
-    color: hsla(0, 0%, 100%, 0.5);
+    color: rgba(0, 0, 0, 0.5);
     font-size: 16px;
     font-weight: 500;
   }
@@ -8012,14 +8012,14 @@
     height: 320px;
     max-height: 420px;
     border-radius: 8px;
-    background-color: #1b1b1b;
+    background-color: #f6f6f6;
   }
   .mobile-answercontainer2 {
     height: 320px;
     max-height: 420px;
     margin-top: 16px;
     border-radius: 8px;
-    background-color: #1b1b1b;
+    background-color: #f6f6f6;
   }
   .mobile-brandgrid {
     position: static;
@@ -8112,7 +8112,8 @@
   .plandetails {
     padding-top: 8px;
     padding-bottom: 8px;
-    color: hsla(0, 0%, 100%, 0.6);
+    /* color: hsla(0, 0%, 100%, 0.6); */
+    color: #000;
     line-height: 20px;
     text-align: left;
   }
@@ -8121,11 +8122,11 @@
     margin-top: 32px;
     padding: 16px 28px;
     border-style: solid;
-    border-width: 1.5px;
-    border-color: #fff;
+    border-width: 1px;
+    border-color: #000;
     border-radius: 100px;
     background-color: hsla(0, 0%, 100%, 0);
-    color: #fff;
+    color: #000;
     font-size: 16px;
     line-height: 20px;
     text-align: center;
@@ -8289,7 +8290,7 @@
     border-top-style: solid;
     border-top-color: #333;
     border-radius: 0px;
-    background-color: #000;
+    background-color: #fff;
   }
   .column-14 {
     padding-right: 0px;
@@ -8323,7 +8324,7 @@
     padding-bottom: 24px;
     border-top: 1px none #333;
     border-right-style: none;
-    color: #fff;
+    font-weight: 500;
     text-align: left;
   }
   .benefitimageearly {

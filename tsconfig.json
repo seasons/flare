@@ -15,8 +15,17 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": "src",
+    "paths": {
+      "Analytics/*": [
+        "./analytics/*"
+      ],
+      "Components/*": [
+        "./components/*"
+      ]
+    },
+    "isolatedModules": true
   },
   "exclude": [
     "node_modules"

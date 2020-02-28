@@ -1,0 +1,7 @@
+{
+  "build": {
+    "env": {
+      "MONSOON_ENDPOINT": "@monsoon-endpoint"
+    }
+  }
+}

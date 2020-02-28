@@ -3,6 +3,7 @@ import React from "react"
 import { Theme } from "../lib/theme"
 import { FontStyles } from "../lib/fonts"
 import { BaseCSS } from "styled-bootstrap-grid"
+import { createMediaStyle } from "../components/Responsive"
 import "../public/css/app.css"
 
 export default class MyApp extends App {
@@ -12,6 +13,8 @@ export default class MyApp extends App {
       <>
         <FontStyles />
         <BaseCSS />
+        <style type="text/css">{createMediaStyle()}</style>
+
         <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
         <link href="/css/components.css" rel="stylesheet" type="text/css" />
         <link href="/css/fonts.css" rel="stylesheet" type="text/css" />
