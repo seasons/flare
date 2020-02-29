@@ -117,7 +117,7 @@ export const BrowsePage: NextPage<{}> = withData(props => {
   const [currentCategory, setCurrentCategory] = useState(query.category || "all")
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 18
-  const { data, loading, fetchMore } = useQuery(GET_BROWSE_PRODUCTS, {
+  const { data } = useQuery(GET_BROWSE_PRODUCTS, {
     variables: {
       name: currentCategory,
       first: currentPage * pageSize,

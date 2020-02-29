@@ -9,7 +9,6 @@ import { imageResize } from "../../utils/imageResize"
 import { useRouter } from "next/router"
 import styled from "styled-components"
 import { Box, Layout, Sans } from "../../components"
-import { Media } from "../../components/Responsive"
 
 const Product = withData(props => {
   const router = useRouter()
@@ -22,10 +21,6 @@ const Product = withData(props => {
   })
 
   const product = data && data.product
-
-  // const renderDetails = () => {
-  //   return
-  // }
 
   return (
     <Layout fixedNav>
