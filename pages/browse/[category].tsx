@@ -144,15 +144,17 @@ export const BrowsePage: NextPage<{}> = withData(props => {
                 const isActive = currentCategory === category.slug
                 return (
                   <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
-                    <Sans
-                      size={["3", "5"]}
-                      key={category.slug}
-                      my="3"
-                      opacity={isActive ? 1.0 : 0.5}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {category.name}
-                    </Sans>
+                    <>
+                      <Sans
+                        size={["3", "5"]}
+                        key={category.slug}
+                        my="3"
+                        opacity={isActive ? 1.0 : 0.5}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {category.name}
+                      </Sans>
+                    </>
                   </Link>
                 )
               })}
