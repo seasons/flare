@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import { Box } from ".."
 
 export const Burger = props => {
   return (
@@ -12,7 +11,7 @@ export const Burger = props => {
   )
 }
 
-const Container = styled(Box)`
+const Container = styled.div`
   position: absolute;
 `
 

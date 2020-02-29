@@ -1,7 +1,6 @@
 import styled, { CSSObject } from "styled-components"
 import { fontFamily } from "../Typography"
 import NextLink from "next/link"
-import { Box } from ".."
 import { BoxProps } from "../Box"
 
 export const SeasonsLogo: React.FC<BoxProps> = () => {
@@ -17,7 +16,7 @@ export const SeasonsLogo: React.FC<BoxProps> = () => {
   )
 }
 
-const LogoContainer = styled(Box)`
+const LogoContainer = styled.div`
   display: flex;
   flex-direction: row;
   text-decoration: none;

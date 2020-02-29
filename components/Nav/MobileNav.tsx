@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 import styled from "styled-components"
 import { Box } from ".."
 import { color } from "../../helpers/color"
-import { Flex } from "../Flex"
 import { Sans } from "../Typography"
 import { Burger } from "./Burger"
 import { NavProps } from "./Types"
@@ -13,23 +12,21 @@ import { useState } from "react"
 
 export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
   const [isOpen, toggleOpen] = useState(false)
-  return (
-    <>
-      <HeaderContainer fixed={fixed}>
-        <Header>
-          <Burger
-            onClick={() => {
-              toggleOpen(!isOpen)
-            }}
-          />
 
-          <div style={{ margin: "0 auto" }}>
-            <SeasonsLogo />
-          </div>
-        </Header>
-        <Menu items={links} open={isOpen} />
-      </HeaderContainer>
-    </>
+  return (
+    <HeaderContainer fixed={fixed}>
+      <Header>
+        <Burger
+          onClick={() => {
+            toggleOpen(!isOpen)
+          }}
+        />
+        <LogoContainer>
+          <SeasonsLogo />
+        </LogoContainer>
+      </Header>
+      <Menu items={links} open={isOpen} />
+    </HeaderContainer>
   )
 }
 
@@ -65,10 +62,15 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   background: ${color("white100")};
 `
 
-const MenuContainer = styled(Box)`
+const LogoContainer = styled.div`
+  margin: 0 auto;
+`
+
+const MenuContainer = styled.div<{ height?: string }>`
   overflow: hidden;
   width: 100%;
   transition: all 0.3s linear;
+  height: ${p => p.height};
 `
 
 const Header = styled.div`
@@ -79,7 +81,7 @@ const Header = styled.div`
   align-items: center;
 `
 
-const MenuItem = styled(Box)<BoxProps & { active?: boolean }>`
+const MenuItem = styled.div<BoxProps & { active?: boolean }>`
   border-bottom: 1px solid ${color("black10")};
   background: ${color("white100")};
   flex-direction: row;
