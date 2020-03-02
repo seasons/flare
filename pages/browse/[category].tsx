@@ -28,7 +28,7 @@ const GET_BROWSE_PRODUCTS = gql`
         slug
       }
     }
-    connection: productsConnection(where: { status: Available }) {
+    connection: productsConnection(category: $name, where: { status: Available }) {
       aggregate {
         count
       }
