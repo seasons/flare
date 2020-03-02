@@ -4759,10 +4759,6 @@
   max-width: 50%;
   margin-top: 0px;
   border: 1px none #000;
-  background-image: url("../images/About-leftside.gif");
-  background-position: 0% 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
 }
 
 .heroimage-right-copy {
@@ -6119,7 +6115,6 @@
   }
   .aboutherosection {
     height: 600px;
-    background-color: #000;
   }
   .aboutherocontainer {
     max-height: 1248px;
