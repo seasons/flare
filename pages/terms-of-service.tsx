@@ -778,10 +778,10 @@ export const TermsOfService = () => (
         </div>
         <div className="footersection">
           <div className="footercontainer">
-            <a href="terms-of-service.html" className="subheaderlink w--current">
+            <a href="/terms-of-service" className="subheaderlink w--current">
               Terms of Service
             </a>
-            <a href="privacy-policy.html" className="subheaderlink">
+            <a href="/privacy-policy" className="subheaderlink">
               Privacy Policy
             </a>
             <a href="https://www.instagram.com/seasons.ny" className="subheaderlink">

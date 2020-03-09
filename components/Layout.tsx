@@ -18,15 +18,19 @@ export const Layout = ({ fixedNav = false, children }: LayoutProps) => {
       {children}
       <Footer>
         <FooterContainer>
-          <Sans size="2" color="gray" pt="0.5" pr="3">
-            Terms of Service
-          </Sans>
-          <Sans size="2" color="gray" pt="0.5" pr="3">
-            Privacy Policy
-          </Sans>
+          <a href="/terms-of-service" className="subheaderlink">
+            <Sans size="4" color="gray" pt="0.5" pr="3">
+              Terms of Service
+            </Sans>
+          </a>
+          <a href="/privacy-policy" className="subheaderlink">
+            <Sans size="4" color="gray" pt="0.5" pr="3">
+              Privacy Policy
+            </Sans>
+          </a>
 
           <Box ml="auto">
-            <Sans size="2" color="gray" pt="0.5">
+            <Sans size="4" color="gray" pt="0.5">
               (c) 2020 Seasons. All Rights Reserved.
             </Sans>
           </Box>

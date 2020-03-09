@@ -891,7 +891,7 @@ const Home = () => (
         <Link href="/terms-of-service">
           <a className="subheaderlink">Terms of Service</a>
         </Link>
-        <a href="privacy-policy.html" className="subheaderlink">
+        <a href="/privacy-policy" className="subheaderlink">
           Privacy Policy
         </a>
         <a href="https://www.instagram.com/seasons.ny" className="subheaderlink">
