@@ -35,7 +35,7 @@ const Home = () => (
             </a>
           </div>
           <div className="herodescriptioncopy">
-            NYC Memberships are now openJoin the waitlist to secure your spot and get an invite.
+            NYC Memberships are now open. Join the waitlist to secure your spot and get an invite.
           </div>
           <div className="fineprint">
             By joining the waitlist you agree to our Privacy Policy &amp; Terms of Service
