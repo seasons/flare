@@ -106,8 +106,8 @@ const Home = () => (
           See all
         </a>
       </div>
-      <div className="trendingproductcontainer">
-        <div className="columns w-row">
+      <div className="trendingproductcontainer">    
+       <div className="columns w-row">
           <Link href="/product/[Product]" as="/product/clockwork-orange-open-eyes-jacket-black">
             <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
               <div className="productimage1">
@@ -141,6 +141,7 @@ const Home = () => (
               <div className="productname">S M L XL</div>
             </div>
           </Link>
+
           <Link href="/product/[Product]" as="/product/checked-knit-jumper-brown">
             <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
               <div className="productimage4">
@@ -151,9 +152,10 @@ const Home = () => (
               </div>
               <div className="productname">S M L</div>
             </div>
-          </Link>
-        </div>
-        <div className="columnsbottom w-row">
+          </Link>    
+          </div>
+          <div className="columnsbottom w-row">    
+
           <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
             <div className="productimage7">
               <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
@@ -169,15 +171,6 @@ const Home = () => (
             </div>
             <div className="brandtitle">
               <strong className="brandname">Acne Studios</strong>
-            </div>
-            <div className="productname">S M L</div>
-          </div>
-          <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
-            <div className="productimage9">
-              <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
-            </div>
-            <div className="brandtitle">
-              <strong className="brandname">Stone Island</strong>
             </div>
             <div className="productname">S M L</div>
           </div>
@@ -240,7 +233,7 @@ const Home = () => (
               <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
             </div>
             <div className="brandtitle">
-              <strong className="brandname">CPFM.XYZ</strong>
+              <strong className="brandname">Brain Dead x A.P.C.</strong>
             </div>
             <div className="productname">S M L</div>
           </div>
@@ -249,49 +242,12 @@ const Home = () => (
               <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
             </div>
             <div className="brandtitle">
-              <strong className="brandname">Kanye West</strong>
+              <strong className="brandname">John Elliott</strong>
             </div>
             <div className="productname">S M L XL</div>
           </div>
         </div>
-        <div className="columnsbottom2 w-row">
-          <div className="item w-col w-col-3 w-col-medium-3 w-col-small-6 w-col-tiny-6">
-            <div className="productimage19">
-              <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
-            </div>
-            <div className="brandtitle">
-              <strong className="brandname">Brain Dead x A.P.C.</strong>
-            </div>
-            <div className="productname">S M L </div>
-          </div>
-          <div className="item w-col w-col-3 w-col-medium-3 w-col-small-6 w-col-tiny-6">
-            <div className="productimage20">
-              <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
-            </div>
-            <div className="brandtitle">
-              <strong className="brandname">Comme des Garçons</strong>
-            </div>
-            <div className="productname">S M L</div>
-          </div>
-          <div className="item w-col w-col-3 w-col-medium-3 w-col-small-6 w-col-tiny-6">
-            <div className="productimage21">
-              <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
-            </div>
-            <div className="brandtitle">
-              <strong className="brandname">Craig Green</strong>
-            </div>
-            <div className="productname">S M L</div>
-          </div>
-          <div className="item w-col w-col-3 w-col-medium-3 w-col-small-6 w-col-tiny-6">
-            <div className="productimage22">
-              <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
-            </div>
-            <div className="brandtitle">
-              <strong className="brandname">Sacai</strong>
-            </div>
-            <div className="productname">S M L XL</div>
-          </div>
-        </div>
+        
       </div>
     </div>
     <div id="Membership" className="membershipsection">
