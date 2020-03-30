@@ -40,15 +40,16 @@ export const VariantSizes: React.FC<{
   variants: any[]
   size: "0" | "1"
 }> = ({ variants, size }) => {
-  const sortedVariants = sortVariants(variants)
+  const availableVariants = variants.filter(a => !!a?.internalSize?.display)
+
   return (
     <Flex flexDirection="row">
-      {sortedVariants.map((variant: any) => {
+      {availableVariants.map((variant: any) => {
         const reservable = variant.reservable !== null && !!variant.reservable
         return (
           <Box key={variant.id} mr={1} mt={0.5} style={{ position: "relative" }}>
             <Sans size="3" color={reservable ? "black" : "black15"}>
-              {variant.size}
+              {variant?.internalSize?.display}
             </Sans>
             {!reservable && <Strikethrough size={size} />}
           </Box>

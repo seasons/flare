@@ -7,7 +7,9 @@ export const GET_PRODUCT = gql`
       name
       description
       retailPrice
-      modelSize
+      modelSize {
+        display
+      }
       modelHeight
       color {
         id
