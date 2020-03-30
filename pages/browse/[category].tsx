@@ -44,7 +44,9 @@ const GET_BROWSE_PRODUCTS = gql`
           name
           description
           images
-          modelSize
+          modelSize {
+            display
+          }
           modelHeight
           externalURL
           tags
@@ -59,6 +61,9 @@ const GET_BROWSE_PRODUCTS = gql`
           variants {
             id
             size
+            internalSize {
+              display
+            }
             total
             reservable
             nonReservable
