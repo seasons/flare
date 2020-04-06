@@ -2,6 +2,7 @@ import React from "react"
 import Head from "next/head"
 import { Nav } from "../../components/Nav/Nav"
 import Link from "next/link"
+import { Steps } from "./Components/Steps"
 
 const Home = () => (
   <>
@@ -65,40 +66,9 @@ const Home = () => (
           </a>
         </div>
         <div className="howitworks">How it works</div>
-        <div className="howcolumns w-row">
-          <div className="how w-col w-col-4 w-col-medium-4 w-col-small-4 w-col-tiny-tiny-stack">
-            <div className="howstep">01.</div>
-            <div className="step1image"></div>
-            <div className="stepcount">1.</div>
-            <div className="howtitle">Pick your 3 styles</div>
-            <div className="howdescription">
-              Browse our curated brands and reserve up to 3 tops at a time. We&#x27;ll deliver them straight to your
-              door with a pre-paid return shipping label.
-            </div>
-          </div>
-          <div className="how2 w-col w-col-4 w-col-medium-4 w-col-small-4 w-col-tiny-tiny-stack">
-            <div className="howstep">02.</div>
-            <div className="step2image"></div>
-            <div className="stepcount">2.</div>
-            <div className="howtitle">Rotate them out</div>
-            <div className="howdescription">
-              Wear them once or as many times as you want. Ready for something new? Return all 3 of your pieces and
-              reserve your next order.
-            </div>
-          </div>
-          <div className="how3 w-col w-col-4 w-col-medium-4 w-col-small-4 w-col-tiny-tiny-stack">
-            <div className="howstep">03.</div>
-            <div className="step3image"></div>
-            <div className="stepcount">3.</div>
-            <div className="howtitle">Shipping &amp; dry cleaning&#x27;s on us</div>
-            <div className="howdescription">
-              We handle the back and forth, restoring and cleaning each piece before it gets to you. Oh, rental
-              insurance is covered too.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+       </div>
+       </div>
+    <Steps/>
     <div className="justadded">
       <div className="trendingcontainer">
         <div className="trendingtitle">Just added</div>

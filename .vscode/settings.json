@@ -1,0 +1,18 @@
+{
+  "git.ignoreLimitWarning": true,
+  "eslint.enable": true,
+  "editor.formatOnSave": true,
+  "search.exclude": {
+    "**/node_modules": true,
+    ".vscode/.react/*": true
+  },
+  "cSpell.ignoreWords": ["Semibold"],
+  "cSpell.diagnosticLevel": "Hint",
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "autoimport.autoComplete": true,
+  "debug.node.autoAttach": "off",
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.importStringConfiguration.quoteMark": "double",
+  "importSorter.importStringConfiguration.tabSize": 2,
+  "importSorter.importStringConfiguration.hasSemicolon": false
+}
