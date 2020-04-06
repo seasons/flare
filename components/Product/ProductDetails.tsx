@@ -18,7 +18,7 @@ export const ProductDetails: React.FC<{
     brand: { name: brandName },
   } = product
 
-  const modelHeightDisplay = modelHeight => {
+  const modelHeightDisplay = (modelHeight) => {
     const height = parseInt(modelHeight)
     const feet = Math.floor(height / 12)
     const inches = height % 12
@@ -54,7 +54,7 @@ export const ProductDetails: React.FC<{
       {!!product.modelSize && !!product.modelHeight && (
         <ProductInfoItem
           detailType="Fit"
-          detailValue={`Model is ${modelHeightDisplay(product.modelHeight)} in a ${product.modelSize}`}
+          detailValue={`Model is ${modelHeightDisplay(product.modelHeight)} in a ${product.modelSize.display}`}
         />
       )}
       {product.outerMaterials && (

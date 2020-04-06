@@ -15,6 +15,11 @@ const links = [
     match: /^\/browse/,
   },
   {
+    text: "Blog",
+    url: "https://blog.seasons.nyc",
+    match: /blog.seasons.nyc/,
+  },
+  {
     text: "Pricing",
     url: "/#Membership",
     match: /^\/\#Membership$/,
