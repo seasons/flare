@@ -127,7 +127,7 @@ export interface TextProps
 /** Base Text component for typography */
 export const Text = styled.div<TextProps>`
   ${({ fontFamily }) => fontFamily && renderFontValue(fontFamily)};
-  text-align: ${props => props.textAlign || "left"};
+  text-align: ${(props) => props.textAlign || "left"};
   ${fontSize};
   ${color};
   ${display};
@@ -204,6 +204,7 @@ function createStyledText<P extends StyledTextProps>(
     if (fontFamilyType === null) {
       throw new Error("Did not expect `fontType` to be `null`.")
     }
+    console.log("textProps", determineFontSizes(fontType, size))
     return (
       <Text
         fontFamily={fontFamilyType && fontFamily[fontType][fontFamilyType]}

@@ -2,73 +2,38 @@ import React from "react"
 import Head from "next/head"
 import { Nav } from "../../components/Nav/Nav"
 import Link from "next/link"
-import { Steps } from "./Components/Steps"
+import { ColumnList } from "./Components/ColumnList"
+import { Hero } from "./Components/Hero"
+import { Spacer, Layout } from "../../components"
 
 const Home = () => (
-  <>
+  <Layout fixedNav>
     <Head>
       <title>Seasons</title>
       <meta content="Seasons change. Your wardrobe should change with them." name="description" />
     </Head>
     <Nav fixed />
-    <div className="alertmessage">
-      <div className="brandscarriedcontainer">
-        <a href="/about" className="alertcopy">
-          NYC Memberships are now open 🎉 <br />
-          Join the waitlist to secure your spot.
-        </a>
-      </div>
-    </div>
-    <div className="herosection">
-      <div className="herocontainer">
-        <div className="content">
-          <h1 className="title">
-            <span className="text-span-4">This is Seasons. </span>
-            <br />A members only rental subscription service <br />
-            for menswear &amp; streetwear.
-          </h1>
-          <div className="ctas">
-            <a href="https://signup.seasons.nyc/" className="apply w-inline-block">
-              <div className="applycopy">Join the waitlist</div>
-            </a>
-            <a href="#Membership" className="learnmore w-inline-block">
-              <div className="learnmorecopy">Learn more</div>
-            </a>
-          </div>
-          <div className="herodescriptioncopy">
-            NYC Memberships are now open. Join the waitlist to secure your spot and get an invite.
-          </div>
-          <div className="fineprint">
-            By joining the waitlist you agree to our Privacy Policy &amp; Terms of Service
-          </div>
-        </div>
-        <div className="mobiledevices">
-          <img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" alt="" />
-        </div>
-        <div className="infographics"></div>
-        <div className="herodevices"></div>
-      </div>
-      <div className="heroimage-left"></div>
-      <div className="heroimage-right"></div>
-    </div>
-    <div className="howsection">
-      <div className="howitowrksheader">
-        <div className="trendingtitle">How it works</div>
-        <a href="#Membership" className="trendingsubtitle">
-          Learn more
-        </a>
-      </div>
-      <div className="howcontainer">
-        <div className="howitworkscontainer">
-          <div className="trendingtitle">How it works</div>
-          <a href="#FAQ" className="trendingsubtitle">
-            Learn more
-          </a>
-        </div>
-        <div className="howitworks">How it works</div>
-       </div>
-       </div>
-    <Steps/>
+    <Spacer mt="100px" />
+    <Hero />
+    <ColumnList
+      items={[
+        {
+          title: "Pick your 3 styles",
+          text:
+            "Browse our curated brands and reserve up to 3 tops at a time. We'll deliver them straight to your door with a pre-paid return shipping label.",
+        },
+        {
+          title: "Rotate them out",
+          text:
+            "Wear them once or as many times as you want. Ready for something new? Return all 3 of your pieces and reserve your next order.",
+        },
+        {
+          title: "Shipping & dry cleaning's on us",
+          text:
+            "We handle the back and forth, restoring and cleaning each piece before it gets to you. Oh, rental insurance is covered too.",
+        },
+      ]}
+    />
     <div className="justadded">
       <div className="trendingcontainer">
         <div className="trendingtitle">Just added</div>
@@ -76,8 +41,8 @@ const Home = () => (
           See all
         </a>
       </div>
-      <div className="trendingproductcontainer">    
-       <div className="columns w-row">
+      <div className="trendingproductcontainer">
+        <div className="columns w-row">
           <Link href="/product/[Product]" as="/product/clockwork-orange-open-eyes-jacket-black">
             <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
               <div className="productimage1">
@@ -122,10 +87,9 @@ const Home = () => (
               </div>
               <div className="productname">S M L</div>
             </div>
-          </Link>    
-          </div>
-          <div className="columnsbottom w-row">    
-
+          </Link>
+        </div>
+        <div className="columnsbottom w-row">
           <div className="item w-col w-col-3 w-col-small-6 w-col-tiny-6">
             <div className="productimage7">
               <a href="https://signup.seasons.nyc/" className="imageclick w-inline-block"></a>
@@ -217,7 +181,6 @@ const Home = () => (
             <div className="productname">S M L XL</div>
           </div>
         </div>
-        
       </div>
     </div>
     <div id="Membership" className="membershipsection">
@@ -284,88 +247,38 @@ const Home = () => (
       <div className="membackgroundleft"></div>
       <div className="membackgroundright"></div>
     </div>
-    <div className="perks-bennefits">
-      <div className="benefitscontainer">
-        <div className="membershiptitle">Member benefits</div>
-        <div className="benefitcolumn1 w-row">
-          <div className="column-13 w-col w-col-4 w-col-small-4">
-            <div className="benefitblock">
-              <div className="benefitimage"></div>
-              <div className="answersbottom">
-                <div className="answertitle">Quick &amp; easy returns</div>
-                <div className="answer">
-                  Pack up all 3 pieces, insert the prepaid return label, and drop off at the nearest UPS location.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="column-14 w-col w-col-4 w-col-small-4">
-            <div className="benefitblock">
-              <div className="benefitimagecleaning"></div>
-              <div className="answersbottom">
-                <div className="answertitle">Free dry cleaning</div>
-                <div className="answer">
-                  Each piece is carefully inspected, cleaned and restored before being delivered to your door.{" "}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="column-15 w-col w-col-4 w-col-small-4">
-            <div className="benefitblock">
-              <div className="benefitimageshipping"></div>
-              <div className="answersbottom">
-                <div className="answertitle">2-day shipping</div>
-                <div className="answer">
-                  All orders are processed, shipped and delivered within 2 business days via UPS.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="benefitcolumn2 w-row">
-          <div className="column-13 w-col w-col-4 w-col-small-4">
-            <div className="benefitblock">
-              <div className="benefitimageinsurance"></div>
-              <div className="answersbottom">
-                <div className="answertitle">Rental insurance</div>
-                <div className="answer">
-                  Any stain, tear or damage gets fixed by us. Just pack it up and ship it back. Lost it? Things happen.
-                  We&#x27;ll just charge a fee to replace it.{" "}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="column-16 w-col w-col-4 w-col-small-4">
-            <div className="benefitblock">
-              <div className="benefitimageearly"></div>
-              <div className="answersbottom">
-                <div className="answertitle">New styles as they drop</div>
-                <div className="answer">
-                  We buy the newest and latest collections. See something you like that we don&#x27;t carry? Send us a
-                  message on{" "}
-                  <a href="#" className="link-8">
-                    Instagram
-                  </a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="column-17 w-col w-col-4 w-col-small-4">
-            <div className="benefitblock">
-              <div className="benefitimagepause"></div>
-              <div className="answersbottom">
-                <div className="answertitle">Pause or cancel anytime</div>
-                <div className="answer">
-                  Want to take a break for a month? Pause or cancel your membership right in the app. Easily renew
-                  whenever you want.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ColumnList
+      title="Members benefits"
+      items={[
+        {
+          title: "Quick & easy returns",
+          text: "Pack up all 3 pieces, insert the prepaid return label, and drop off at the nearest UPS location.",
+        },
+        {
+          title: "Free dry cleaning",
+          text: "Each piece is carefully inspected, cleaned and restored before being delivered to your door.",
+        },
+        {
+          title: "1 to 2 day shipping",
+          text: "All orders are processed, shipped and delivered within 1- 2 business days via UPS.",
+        },
+        {
+          title: "Rental insurance",
+          text:
+            "Any stain, tear or damage gets fixed by us. Just pack it up and ship it back. Lost it? Things happen. We'll just charge a fee to replace it.",
+        },
+        {
+          title: "New styles as they drop",
+          text:
+            "We buy the newest and latest collections. See something you like that we don't carry? Send us a message on Instagram.",
+        },
+        {
+          title: "Pause or cancel anytime",
+          text:
+            "Want to take a break for a month? Pause or cancel your membership right in the app. Easily renew whenever you want.",
+        },
+      ]}
+    />
     <div id="FAQ" className="faqsection">
       <div className="faqcontainer">
         <div className="faqtitle">Frequently asked questions</div>
@@ -812,21 +725,7 @@ const Home = () => (
         </div>
       </div>
     </div>
-    <div className="footersection">
-      <div className="footercontainer">
-        <Link href="/terms-of-service">
-          <a className="subheaderlink">Terms of Service</a>
-        </Link>
-        <a href="/privacy-policy" className="subheaderlink">
-          Privacy Policy
-        </a>
-        <a href="https://www.instagram.com/seasons.ny" className="subheaderlink">
-          Instagram
-        </a>
-        <div className="footerlinkright">© 2020 Seasons. All Rights Reserved.</div>
-      </div>
-    </div>
-  </>
+  </Layout>
 )
 
 export default Home

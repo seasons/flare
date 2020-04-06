@@ -23,7 +23,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
               <NextLink href={link.url} key={link.text}>
                 <Link href={link.url} active={!!router.pathname.match(link.match)}>
                   <Box key={link.text} mx={2} height="100%" style={{ cursor: "pointer" }}>
-                    <Sans size="3" color="black">
+                    <Sans size="3" color="black" style={{ lineHeight: "inherit" }}>
                       {link.text}
                     </Sans>
                   </Box>

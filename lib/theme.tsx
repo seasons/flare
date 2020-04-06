@@ -31,27 +31,26 @@ export const themeProps = {
   },
   fontFamily,
   space: {
-    // unit: px value
-    /** Equivalent to 3px  */
-    0.3: 3,
-    /** Equivalent to 5px  */
-    0.5: 5,
-    /** Equivalent to 10px  */
-    1: 10,
-    /** Equivalent to 20px  */
-    2: 20,
-    /** Equivalent to 30px  */
-    3: 30,
+    /** Equivalent to 4px  */
+    0.5: 4,
+    /** Equivalent to 8px  */
+    1: 8,
+    /** Equivalent to 16px  */
+    2: 16,
+    /** Equivalent to 24px  */
+    3: 24,
+    /** Equivalent to 32px  */
+    4: 32,
     /** Equivalent to 40px  */
-    4: 40,
-    /** Equivalent to 60px  */
-    6: 60,
-    /** Equivalent to 90px  */
-    9: 90,
-    /** Equivalent to 120px  */
-    12: 120,
-    /** Equivalent to 180px  */
-    18: 180,
+    5: 40,
+    /** Equivalent to 48px  */
+    6: 48,
+    /** Equivalent to 48px  */
+    7: 56,
+    /** Equivalent to 48px  */
+    8: 64,
+    /** Equivalent to 48px  */
+    9: 72,
   },
 
   typeSizes: {
@@ -109,7 +108,7 @@ export const themeProps = {
       },
       /** Equivalent to 28px size / 36px line-height  */
       "8": {
-        fontSize: 28,
+        fontSize: 24,
         lineHeight: 36,
       },
       /** Equivalent to 42px size / 50px line-height  */
@@ -281,7 +280,7 @@ const GridThemeProvider = ({ children }) => {
   return <StyledGrid.GridThemeProvider gridTheme={themeProps.grid}>{children}</StyledGrid.GridThemeProvider>
 }
 
-export const Theme = props => {
+export const Theme = (props) => {
   return (
     <ThemeProvider theme={themeProps}>
       <GridThemeProvider>{props.children}</GridThemeProvider>

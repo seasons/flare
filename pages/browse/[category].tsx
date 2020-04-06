@@ -2,9 +2,7 @@ import React, { useEffect } from "react"
 import { NextPage } from "next"
 import { gql } from "apollo-boost"
 import { useState } from "react"
-import { get } from "lodash"
 import { useQuery } from "@apollo/react-hooks"
-import { imageResize } from "../../utils/imageResize"
 import withData from "../../lib/apollo"
 import { Layout, Flex } from "../../components"
 import { Sans, fontFamily } from "../../components/Typography/Typography"
@@ -15,8 +13,8 @@ import Paginate from "react-paginate"
 import { color } from "../../helpers"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { VariantSizes } from "../../components/VariantSizes"
 import { media } from "styled-bootstrap-grid"
+import { ProductGridItem } from "../../components/Product/ProductGridItem"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -76,46 +74,7 @@ const GET_BROWSE_PRODUCTS = gql`
   }
 `
 
-const renderItem = ({ item }, i) => {
-  const product = item.node
-
-  const image = get(product, "images[0]", { url: "" })
-  const resizedImage = imageResize(image.url, "large")
-
-  const brandName = get(product, "brand.name")
-
-  if (!product) {
-    return null
-  }
-
-  return (
-    <ProductContainer key={i}>
-      <Link href="/product/[Product]" as={`/product/${product.slug}`}>
-        <div>
-          <img src={resizedImage} />
-          <Box py="1" pb="2">
-            <Sans size="3" mt="0.5">
-              {brandName}
-            </Sans>
-            <Sans size="3" my="0.5" color="black50">
-              {product.name}
-            </Sans>
-            <VariantSizes variants={product.variants} size="1" />
-          </Box>
-        </div>
-      </Link>
-    </ProductContainer>
-  )
-}
-
-const ProductContainer = styled(Box)`
-  margin: 5px;
-  overflow: hidden;
-  text-align: left;
-  cursor: pointer;
-`
-
-export const BrowsePage: NextPage<{}> = withData(props => {
+export const BrowsePage: NextPage<{}> = withData((props) => {
   const router = useRouter()
   const { query } = router
 
@@ -145,7 +104,7 @@ export const BrowsePage: NextPage<{}> = withData(props => {
           <Row>
             <Col md="3" xs="12" mx={["2", "0"]}>
               <Sans size={["4", "6"]}>Categories</Sans>
-              {categories.map(category => {
+              {categories.map((category) => {
                 const isActive = currentCategory === category.slug
                 return (
                   <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
@@ -166,7 +125,7 @@ export const BrowsePage: NextPage<{}> = withData(props => {
               <Row>
                 {(products || []).map((product, i) => (
                   <Col col sm="4" xs="6">
-                    {renderItem({ item: product }, i)}
+                    <ProductGridItem product={product?.node} />
                   </Col>
                 ))}
               </Row>
@@ -181,7 +140,7 @@ export const BrowsePage: NextPage<{}> = withData(props => {
                       pageCount={pageCount}
                       marginPagesDisplayed={2}
                       pageRangeDisplayed={2}
-                      onPageChange={data => {
+                      onPageChange={(data) => {
                         console.log(data)
                         setCurrentPage(data.selected + 1)
                         window && window.scrollTo(0, 0)
