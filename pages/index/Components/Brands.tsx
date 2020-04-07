@@ -50,7 +50,7 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
                   <Sans size="5">{group.letter}</Sans>
                   <Spacer mb={1} />
                   {group.data.map((brand) => (
-                    <Sans size="4" color="black50">
+                    <Sans size="4" color="black50" style={{ maxWidth: "95%" }}>
                       {brand.name}
                     </Sans>
                   ))}

@@ -20,6 +20,7 @@ const Home = withData(() => {
       <Nav fixed />
       <Spacer mt="100px" />
       <Hero />
+      <Separator />
       <ColumnList
         items={[
           {
@@ -39,7 +40,9 @@ const Home = withData(() => {
           },
         ]}
       />
+      <Spacer mb={6} />
       <ProductRail title="Just added" products={data?.justAddedProducts} />
+      <Spacer mb={6} />
       <Separator />
       <Spacer mb={6} />
       <UsaMap />
@@ -94,8 +97,6 @@ const Home = withData(() => {
       <Separator />
       <Spacer mb={6} />
       <Brands brands={data?.brands} />
-      <Spacer mb={6} />
-      <Separator />
       <Spacer mb={6} />
     </Layout>
   )
