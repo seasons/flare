@@ -2,6 +2,14 @@ import { gql } from "apollo-boost"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
+    brands {
+      id
+      slug
+      name
+      products {
+        id
+      }
+    }
     justAddedProducts: products(
       first: 4
       orderBy: createdAt_DESC
