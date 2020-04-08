@@ -3,20 +3,21 @@ import { Flex, Sans, Box, Spacer } from "../../../components"
 import { Media } from "../../../components/Responsive"
 import { Grid } from "../../../components/Grid"
 
+const vogueLogo = require("../../../public/images/homepage/Vogue.png")
+const nytLogo = require("../../../public/images/homepage/NYT.png")
+const wwdLogo = require("../../../public/images/homepage/WWD.png")
+const glossyLogo = require("../../../public/images/homepage/Glossy.png")
+const leanluxeLogo = require("../../../public/images/homepage/Leanluxe.png")
+
 const desktopIcons = [
-  { iconHref: require("../../../public/images/homepage/Vogue.png") },
-  { iconHref: require("../../../public/images/homepage/NYT.png") },
-  { iconHref: require("../../../public/images/homepage/WWD.png") },
-  { iconHref: require("../../../public/images/homepage/Glossy.png") },
-  { iconHref: require("../../../public/images/homepage/Leanluxe.png") },
+  { iconHref: vogueLogo },
+  { iconHref: nytLogo },
+  { iconHref: wwdLogo },
+  { iconHref: glossyLogo },
+  { iconHref: leanluxeLogo },
 ]
 
-const mobileIcons = [
-  { iconHref: require("../../../public/images/homepage/WWD.png") },
-  { iconHref: require("../../../public/images/homepage/Vogue.png") },
-  { iconHref: require("../../../public/images/homepage/NYT.png") },
-  { iconHref: require("../../../public/images/homepage/Glossy.png") },
-]
+const mobileIcons = [{ iconHref: wwdLogo }, { iconHref: vogueLogo }, { iconHref: nytLogo }, { iconHref: glossyLogo }]
 
 export const AsSeenIn: React.FC = () => {
   return (
