@@ -29,9 +29,9 @@ export const AsSeenIn: React.FC = () => {
               <Sans color="black50" size="5">
                 As seen in
               </Sans>
-              {desktopIcons.map((item) => {
+              {desktopIcons.map((item, index) => {
                 return (
-                  <Box p={1}>
+                  <Box p={1} key={index}>
                     <img src={item.iconHref} style={{ maxHeight: "20px" }} />
                   </Box>
                 )
@@ -46,9 +46,9 @@ export const AsSeenIn: React.FC = () => {
             </Sans>
             <Spacer mb={2} />
             <Flex flexDirection="row" flexWrap="wrap" alignItems="center" style={{ width: "100%" }}>
-              {mobileIcons.map((item) => {
+              {mobileIcons.map((item, index) => {
                 return (
-                  <Box mr={2} mb={2}>
+                  <Box mr={2} mb={2} key={index}>
                     <img src={item.iconHref} style={{ maxHeight: "20px" }} />
                   </Box>
                 )
