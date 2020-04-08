@@ -1,7 +1,16 @@
 import React from "react"
 import Head from "next/head"
 import { Nav } from "../../components/Nav/Nav"
-import { ColumnList, Hero, ProductRail, UsaMap, ChooseMembership, FAQ, MembershipBenefits } from "./Components"
+import {
+  ColumnList,
+  Hero,
+  ProductRail,
+  UsaMap,
+  ChooseMembership,
+  FAQ,
+  MembershipBenefits,
+  AsSeenIn,
+} from "./Components"
 import { Spacer, Layout, Separator } from "../../components"
 import withData from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
@@ -20,6 +29,10 @@ const Home = withData(() => {
       <Nav fixed />
       <Spacer mt="100px" />
       <Hero />
+      <Separator />
+      <Spacer mb={6} />
+      <AsSeenIn />
+      <Spacer mb={6} />
       <Separator />
       <ColumnList
         items={[
