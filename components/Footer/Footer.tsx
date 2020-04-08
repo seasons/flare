@@ -1,4 +1,3 @@
-import styled from "styled-components"
 import { Sans, Box, Flex, Spacer } from "../"
 import { color } from "../../helpers"
 import { Link } from "../Link"
@@ -14,6 +13,7 @@ export const Footer = () => {
       <Flex
         flexDirection={["column", "row"]}
         py={2}
+        px={0.5}
         style={{ maxWidth: "1200px", flex: 1 }}
         justifyContent={["flex-start", "space-between"]}
       >

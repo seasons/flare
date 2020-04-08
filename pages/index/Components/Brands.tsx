@@ -40,17 +40,19 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
 
   return (
     <Grid>
-      <Sans size="8">Brand index</Sans>
+      <Box px={[2, 0]} mx={0.5}>
+        <Sans size="8">Brand index</Sans>
+      </Box>
       <Row>
         {groupedBrands.map((group) => {
           return (
-            <Col md="2" xs="4" px={["2", "0"]}>
+            <Col md="2" xs="4" px={[2, 0.5]} key={group.letter}>
               <Flex mt={2}>
                 <Box>
                   <Sans size="5">{group.letter}</Sans>
                   <Spacer mb={1} />
                   {group.data.map((brand) => (
-                    <Sans size="4" color="black50" style={{ maxWidth: "95%" }}>
+                    <Sans size="4" color="black50" style={{ maxWidth: "95%" }} key={brand.name}>
                       {brand.name}
                     </Sans>
                   ))}

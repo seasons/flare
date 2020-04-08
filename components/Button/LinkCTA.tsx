@@ -9,7 +9,7 @@ import { FowardArrow } from "../../assets/SVG/FowardArrow"
 export const LinkCTA: React.FC<{ text: string; href: string }> = ({ text, href }) => {
   return (
     <Link href={href}>
-      <Container px={3} py={2} flexDirection="row" alignItems="center" flexWrap="nowrap" justifyContent="space-between">
+      <Container flexDirection="row" alignItems="center" flexWrap="nowrap" justifyContent="space-between">
         <Sans size="4">{text}</Sans>
         <FowardArrow />
       </Container>
@@ -18,6 +18,7 @@ export const LinkCTA: React.FC<{ text: string; href: string }> = ({ text, href }
 }
 
 export const Container = styled(Flex)`
+  padding: 9px 24px 9px;
   width: 100%;
   border: 1px solid ${color("black100")};
   color: ${color("white100")};

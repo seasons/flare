@@ -7,8 +7,8 @@ export const Hero: React.FC = () => {
   return (
     <Grid>
       <Row>
-        <Col md="4" xs="12" mx={["2", "0"]}>
-          <Flex style={{ minHeight: "500px" }} flexDirection="column">
+        <Col md="4" xs="12" px={[2, 0]}>
+          <Flex style={{ minHeight: "500px" }} flexDirection="column" mx={0.5}>
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Sans size="8" color="black100">
                 This is Seasons.
@@ -20,9 +20,12 @@ export const Hero: React.FC = () => {
               <Spacer mb={3} />
               <LinkCTA text="Join the waitlist" href="https://signup.seasons.nyc/" />
             </Flex>
-            <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
-              NYC Memberships are now open. Join the waitlist to secure your spot and get an invite.
-            </Sans>
+            <Box>
+              <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
+                NYC Memberships are now open. Join the waitlist to secure your spot and get an invite.
+              </Sans>
+              <Spacer mb={3} />
+            </Box>
           </Flex>
         </Col>
       </Row>

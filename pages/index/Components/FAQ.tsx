@@ -40,33 +40,36 @@ const items = [
 export const FAQ: React.FC = () => {
   return (
     <Grid>
-      <Sans size="8">Frequently asked questions</Sans>
+      <Box px={[2, 0]} mb={6}>
+        <Sans px={0.5} size="8">
+          Frequently asked questions
+        </Sans>
+      </Box>
       <Row>
         {items.map((step, index) => (
-          <Col md="4" xs="12" px={["2", "0"]}>
-            <Wrapper itemCount={index + 1}>
-              <Flex
-                mt={2}
-                flexDirection="column"
-                justifyContent="space-between"
-                style={{ backgroundColor: color("black04"), height: "340px" }}
-                p={3}
-              >
-                <Sans size="5" color="black50">{`0${index + 1}.`}</Sans>
-                <Box style={{ height: "182px" }}>
-                  <Sans size="5" style={{ maxWidth: "80%" }}>
-                    {step.title}
-                  </Sans>
-                  <Spacer mb={1} />
-                  <Sans
-                    size="4"
-                    color="black50"
-                    style={{ maxWidth: "80%" }}
-                    dangerouslySetInnerHTML={{ __html: step.text }}
-                  />
-                </Box>
-              </Flex>
-            </Wrapper>
+          <Col md="4" xs="12" px={["2", "0"]} key={index}>
+            <Flex
+              mt={2}
+              flexDirection="column"
+              style={{ backgroundColor: color("black04"), height: "300px", borderRadius: "8px" }}
+              p={3}
+              m={0.5}
+            >
+              <Sans size="5" color="black50">{`0${index + 1}.`}</Sans>
+              <Spacer mb={8} />
+              <Box>
+                <Sans size="5" style={{ maxWidth: "90%" }}>
+                  {step.title}
+                </Sans>
+                <Spacer mb={1} />
+                <InjectedSans
+                  size="3"
+                  color="black50"
+                  style={{ maxWidth: "90%" }}
+                  dangerouslySetInnerHTML={{ __html: step.text }}
+                />
+              </Box>
+            </Flex>
           </Col>
         ))}
       </Row>
@@ -74,14 +77,9 @@ export const FAQ: React.FC = () => {
   )
 }
 
-const Wrapper = styled(Box)<{ itemCount: number }>`
-  ${(p) => {
-    if (p.itemCount % 3 === 0) {
-      return `padding-left: ${space(1)}px;`
-    } else if (p.itemCount % 4 === 0 || p.itemCount === 1) {
-      return `padding-right: ${space(1)}px;`
-    } else {
-      return `padding-right: ${space(0.5)}px; padding-left: ${space(0.5)}px;`
-    }
-  }}
+const InjectedSans = styled(Sans)`
+  a {
+    text-decoration: underline;
+    color: ${color("black100")};
+  }
 `

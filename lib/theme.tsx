@@ -45,12 +45,15 @@ export const themeProps = {
     5: 40,
     /** Equivalent to 48px  */
     6: 48,
-    /** Equivalent to 48px  */
+    /** Equivalent to 56px  */
     7: 56,
-    /** Equivalent to 48px  */
+    /** Equivalent to 64px  */
     8: 64,
-    /** Equivalent to 48px  */
+    /** Equivalent to 72px  */
     9: 72,
+    10: 80,
+    /** Equivalent to 72px  */
+    12: 112,
   },
 
   typeSizes: {
