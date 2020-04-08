@@ -26,7 +26,7 @@ export const AsSeenIn: React.FC = () => {
         <Media greaterThanOrEqual="md">
           <Flex style={{ width: "100%" }} justifyContent="center">
             <Flex justifyContent="space-between" alignItems="center" style={{ width: "100%" }} p={0.5}>
-              <Sans color="black50" size="6">
+              <Sans color="black50" size="5">
                 As seen in
               </Sans>
               {desktopIcons.map((item) => {

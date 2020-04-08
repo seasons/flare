@@ -27,7 +27,7 @@ const Home = withData(() => {
         <meta content="Seasons change. Your wardrobe should change with them." name="description" />
       </Head>
       <Nav fixed />
-      <Spacer mt="100px" />
+      <Spacer mt="59px" />
       <Hero />
       <Separator />
       <Spacer mb={6} />
