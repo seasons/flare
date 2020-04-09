@@ -11,9 +11,9 @@ export const ProductRail: React.FC<{ products: any; title?: string }> = ({ produ
   return (
     <Grid>
       <Flex flexDirection="row" justifyContent={!!title ? "space-between" : "flex-end"} px={["2", "0"]} mx={0.5}>
-        {title && <Sans size="8">{title}</Sans>}
+        {title && <Sans size="6">{title}</Sans>}
         <Link href="/browse">
-          <Sans size="8">See all</Sans>
+          <Sans size="6">See all</Sans>
         </Link>
       </Flex>
       <Spacer mb={2} />

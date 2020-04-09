@@ -1,8 +1,7 @@
 import React from "react"
 import { Box, Sans, Spacer } from "../../../components"
 import { Grid, Row, Col } from "../../../components/Grid"
-import { Button } from "../../../components/Button"
-import { Link } from "../../../components/Link"
+import { LinkCTA } from "../../../components/Button"
 
 const imageSRC = require("../../../public/images/usa.png")
 
@@ -11,18 +10,15 @@ export const UsaMap: React.FC = () => {
     <Grid>
       <Row>
         <Col md="6" xs="12" px={[2, 0]}>
-          <Box mx={0.5}>
-            <Sans size="8" color="black100">
+          <Box mx={0.5} mr={[0, "25%"]} style={{ maxWidth: "400px" }}>
+            <Sans size="6" color="black100">
               Not in NYC?
             </Sans>
-            <Spacer mb={1} />
-            <Sans size="8" color="black50" style={{ maxWidth: "80%" }}>
+            <Sans size="5" color="black50" style={{ maxWidth: "80%" }}>
               Join the waitlist to be the first to know when we launch in other cities.
             </Sans>
             <Spacer mb={2} />
-            <Link href="https://signup.seasons.nyc/">
-              <Button>Join the waitlist</Button>
-            </Link>
+            <LinkCTA text="Join the waitlist" href="https://signup.seasons.nyc/" variant="primaryWhite" />
           </Box>
         </Col>
         <Col md="6" xs="12" px={[2, 0]}>

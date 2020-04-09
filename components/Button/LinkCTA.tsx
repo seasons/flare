@@ -1,35 +1,56 @@
 import React from "react"
 import { Sans } from "../Typography"
 import { color } from "../../helpers/color"
-import { Link } from "../Link"
 import styled from "styled-components"
 import { Flex } from "../Flex"
 import { FowardArrow } from "../../assets/SVG/FowardArrow"
 
-export const LinkCTA: React.FC<{ text: string; href: string }> = ({ text, href }) => {
+type CTAVariant = "primaryWhite" | "primaryBlack"
+
+export const LinkCTA: React.FC<{ text: string; href: string; variant?: CTAVariant }> = ({ text, href, variant }) => {
   return (
-    <Link href={href}>
-      <Container flexDirection="row" alignItems="center" flexWrap="nowrap" justifyContent="space-between">
+    <StyledAnchor href={href}>
+      <Container
+        flexDirection="row"
+        variant={variant}
+        alignItems="center"
+        flexWrap="nowrap"
+        justifyContent="space-between"
+      >
         <Sans size="4">{text}</Sans>
         <FowardArrow />
       </Container>
-    </Link>
+    </StyledAnchor>
   )
 }
 
-export const Container = styled(Flex)`
+const StyledAnchor = styled("a")`
+  text-decoration: none;
+  color: inherit;
+  &:hover,
+  &:focus {
+    background-color: transparent !important;
+  }
+`
+
+export const Container = styled(Flex)<{ variant: CTAVariant }>`
   padding: 9px 24px 9px;
   width: 100%;
   border: 1px solid ${color("black100")};
-  color: ${color("white100")};
-  background-color: ${color("black100")};
+  color: ${(p) => (p.variant === "primaryWhite" ? color("black100") : color("white100"))};
+  background-color: ${(p) => (p.variant === "primaryWhite" ? color("white100") : color("black100"))};
   text-decoration: none;
+  svg {
+    g {
+      stroke: ${(p) => (p.variant === "primaryWhite" ? color("black100") : color("white100"))};
+    }
+  }
   &:hover {
-    color: ${color("black100")};
-    background-color: ${color("white100")};
+    color: ${(p) => (p.variant === "primaryWhite" ? color("white100") : color("black100"))};
+    background-color: ${(p) => (p.variant === "primaryWhite" ? color("black100") : color("white100"))};
     svg {
       g {
-        stroke: ${color("black100")};
+        stroke: ${(p) => (p.variant === "primaryWhite" ? color("white100") : color("black100"))};
       }
     }
   }

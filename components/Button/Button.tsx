@@ -1,9 +1,7 @@
 import React, { Component } from "react"
 import styled, { css } from "styled-components"
-
 import { Spinner } from "../Spinner"
 import { Sans, SansProps } from "../Typography"
-
 import { borderRadius, borders, height, space, textAlign, width } from "styled-system"
 import { ButtonBaseProps, ButtonProps, defaultSize, defaultVariant } from "./Button.shared"
 import { themeProps } from "../../lib/theme"
@@ -49,7 +47,7 @@ export class Button extends Component<WebButtonProps> {
     switch (this.props.variant) {
       case "primaryBlack":
         return css`
-          ${props => {
+          ${(props) => {
             const { colors } = props.theme
 
             return `
@@ -69,7 +67,7 @@ export class Button extends Component<WebButtonProps> {
         `
       case "primaryWhite":
         return css`
-          ${props => {
+          ${(props) => {
             const { colors } = props.theme
 
             return `
@@ -89,7 +87,7 @@ export class Button extends Component<WebButtonProps> {
         `
       case "secondaryGray":
         return css`
-          ${props => {
+          ${(props) => {
             const { colors } = props.theme
 
             return `
@@ -109,7 +107,7 @@ export class Button extends Component<WebButtonProps> {
         `
       case "secondaryOutline":
         return css`
-          ${props => {
+          ${(props) => {
             const { colors } = props.theme
             return `
                 background-color: ${colors.white100};
@@ -128,7 +126,7 @@ export class Button extends Component<WebButtonProps> {
         `
       case "noOutline":
         return css`
-          ${props => {
+          ${(props) => {
             const { colors } = props.theme
             return `
                 background-color: transparent;
@@ -160,7 +158,7 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
     borderRadius: 3,
   }
 
-  onClick = event => {
+  onClick = (event) => {
     if (!this.props.loading && this.props.onClick) {
       this.props.onClick(event)
     }
@@ -225,7 +223,7 @@ const Container = styled.button<ButtonBaseProps>`
   ${width};
   ${height};
 
-  ${props => {
+  ${(props) => {
     if (!props.loading) {
       return `
         transition: 0.25s ease;
@@ -233,7 +231,7 @@ const Container = styled.button<ButtonBaseProps>`
     }
   }};
 
-  ${props => props.variantStyles};
+  ${(props) => props.variantStyles};
 
   &.loading {
     transition: none;
@@ -244,7 +242,7 @@ const Container = styled.button<ButtonBaseProps>`
   }
 
   &.disabled {
-    ${props => {
+    ${(props) => {
       const { colors } = props.theme
 
       return `

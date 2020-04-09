@@ -21,7 +21,9 @@ export const ProductGridItem = ({ product }) => {
     <ProductContainer key={product.id}>
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
         <div>
-          <img src={resizedImage} />
+          <ImageWrapper>
+            <img src={resizedImage} style={{ width: "100%" }} />
+          </ImageWrapper>
           <Box py="1" pb="2">
             <Sans size="3" mt="0.5">
               {brandName}
@@ -36,6 +38,10 @@ export const ProductGridItem = ({ product }) => {
     </ProductContainer>
   )
 }
+
+const ImageWrapper = styled(Box)`
+  width: 100%;
+`
 
 const ProductContainer = styled(Box)`
   margin: 5px;

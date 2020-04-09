@@ -1,8 +1,7 @@
 import React from "react"
 import { Flex, Sans, Spacer, Box } from "../../../components"
 import styled from "styled-components"
-import { color, space } from "../../../helpers"
-import { Link } from "../../../components/Link"
+import { color } from "../../../helpers"
 
 type MembershipType = "essential" | "allAccess"
 
@@ -59,11 +58,11 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
               </Sans>
             </Flex>
             <SelectButton justifyContent="center" py="2">
-              <Link href="http://signup.seasons.nyc/">
+              <StyledAnchor href="http://signup.seasons.nyc/">
                 <Sans size="5" style={{ textDecoration: "underline" }}>
                   Select
                 </Sans>
-              </Link>
+              </StyledAnchor>
             </SelectButton>
           </Flex>
         </Flex>
@@ -71,6 +70,14 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
     </Container>
   )
 }
+
+const StyledAnchor = styled("a")`
+  color: inherit;
+  &:hover,
+  &:focus {
+    background-color: transparent !important;
+  }
+`
 
 const Container = styled(Box)`
   width: 100%;
