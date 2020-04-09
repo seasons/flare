@@ -34,6 +34,7 @@ export const HOME_QUERY = gql`
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
       id
+      slug
       images
       brand {
         id
@@ -57,6 +58,7 @@ export const HOME_QUERY = gql`
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
       id
+      slug
       images
       brand {
         id

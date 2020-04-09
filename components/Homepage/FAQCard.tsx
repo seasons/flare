@@ -45,12 +45,12 @@ export const FAQCard: React.FC<{
       <Flex
         mt={2}
         flexDirection="column"
-        style={{ backgroundColor: color("black04"), borderRadius: "8px", minHeight: minHeight + 175 + "px" }}
+        style={{ backgroundColor: color("black04"), borderRadius: "8px", minHeight: minHeight + 155 + "px" }}
         p={3}
         m={0.5}
       >
         <Sans size="5" color="black50">{`0${index + 1}.`}</Sans>
-        <Spacer mb={8} />
+        <Spacer mb={6} />
         <Box ref={container}>
           <Sans size="5" style={{ maxWidth: "90%" }}>
             {step.title}

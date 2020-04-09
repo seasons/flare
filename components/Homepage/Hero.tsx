@@ -24,13 +24,11 @@ const DesktopHero = () => {
               </Sans>
               <Spacer mb={3} />
               <LinkCTA text="Join the waitlist" href="https://signup.seasons.nyc/" />
-            </Flex>
-            <Box>
+              <Spacer mb={4} />
               <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
                 NYC Memberships are now open. Join the waitlist to secure your spot and get an invite.
               </Sans>
-              <Spacer mb={3} />
-            </Box>
+            </Flex>
           </Flex>
         </Col>
         <Col md="8" xs="12" px={[2, 0]}>
