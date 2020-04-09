@@ -1,5 +1,3 @@
 {
-  "env": {
-    "MONSOON_ENDPOINT": "@monsoon-endpoint"
-  }
+  "env": {}
 }
