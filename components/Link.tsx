@@ -7,7 +7,7 @@ import { color } from "../helpers/color"
 
 interface LinkProps extends NextLinkProps {}
 
-export const Link: React.FC<LinkProps> = props => {
+export const Link: React.FC<LinkProps> = (props) => {
   return (
     <NextLink {...props}>
       <Anchor>{props.children}</Anchor>
@@ -23,6 +23,7 @@ export const Anchor = styled.a`
   color: ${color("black100")};
   transition: color 0.25s;
   text-decoration: none;
+  cursor: pointer;
   &:hover {
     color: ${color("black100")};
   }

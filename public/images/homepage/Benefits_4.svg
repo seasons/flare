@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Benefits_4</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Final" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Seasons---Homepage" transform="translate(-202.000000, -3896.000000)">
+            <g id="Group-13" transform="translate(0.000000, 1683.000000)">
+                <g id="Benefits" transform="translate(0.000000, 1776.000000)">
+                    <g id="Group-19" transform="translate(65.000000, 221.000000)">
+                        <g id="4" transform="translate(0.000000, 216.000000)">
+                            <g id="Benefits_4" transform="translate(137.000000, 0.000000)">
+                                <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="56" height="56"></rect>
+                                <path d="M17.6019901,12.5680976 C19.1435777,12.7243513 20.609581,12.5349854 22,12 C25.2283497,10.757842 25.6481934,7.99804688 28,7.99804688 C30.3518066,7.99804688 30.7283497,10.7411814 34,12 C35.403127,12.539875 36.8692556,12.7324422 38.3983859,12.5777015 C39.6971551,12.4462678 40.8565605,13.3925842 40.9879898,14.6913539 C40.9959915,14.7704262 41,14.8498516 41,14.9293277 L41,29.8047438 C41,34.4781887 38.5274438,38.8028521 34.5,41.1736712 L30.3981258,43.588305 C28.9180751,44.4595604 27.0819249,44.4595604 25.6018742,43.588305 L21.5,41.1736712 C17.4725562,38.8028521 15,34.4781887 15,29.8047438 L15,14.9196776 C15.0000075,13.6142815 16.0582402,12.5560488 17.3636364,12.5560488 C17.4432398,12.5560488 17.5227924,12.5600702 17.6019901,12.5680976 Z" id="Rectangle" stroke="#000000" fill="#FFFFFF"></path>
+                                <g id="Group-18" transform="translate(21.500000, 20.000000)" fill="#000000">
+                                    <rect id="Rectangle" x="6" y="0" width="1" height="12" rx="0.5"></rect>
+                                    <rect id="Rectangle-Copy-5" transform="translate(6.500000, 6.000000) rotate(90.000000) translate(-6.500000, -6.000000) " x="6" y="0" width="1" height="12" rx="0.5"></rect>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

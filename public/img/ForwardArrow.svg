@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="14px" viewBox="0 0 23 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Final" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Seasons---Homepage" transform="translate(-386.000000, -475.000000)" stroke="#FFFFFF">
+            <g id="Copy/CTAs" transform="translate(24.000000, 338.000000)">
+                <g id="Right" transform="translate(0.000000, 120.000000)">
+                    <g id="Group-5" transform="translate(363.000000, 17.000000)">
+                        <line x1="21" y1="7" x2="14" y2="1.30104261e-17" id="Path-2"></line>
+                        <line x1="21" y1="14" x2="14" y2="7" id="Path-2-Copy" transform="translate(17.500000, 10.500000) scale(1, -1) translate(-17.500000, -10.500000) "></line>
+                        <line x1="0" y1="7" x2="20" y2="7" id="Path"></line>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

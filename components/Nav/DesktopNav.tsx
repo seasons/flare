@@ -17,19 +17,32 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
       <Grid>
         <Flex ml="auto" flexDirection="row" alignItems="center">
           <SeasonsLogo />
-
           <Flex ml="auto" flexDirection="row" alignItems="center">
-            {links.map((link) => (
-              <NextLink href={link.url} key={link.text}>
-                <Link href={link.url} active={!!router.pathname.match(link.match)}>
-                  <Box key={link.text} mx={2} height="100%" style={{ cursor: "pointer" }}>
-                    <Sans size="3" color="black">
-                      {link.text}
-                    </Sans>
-                  </Box>
-                </Link>
-              </NextLink>
-            ))}
+            {links.map((link) => {
+              if (link.external) {
+                return (
+                  <Link key={link.url} href={link.url} active={!!router.pathname.match(link.match)}>
+                    <Box mx={2} height="100%" style={{ cursor: "pointer" }}>
+                      <Sans size="3" color="black" style={{ lineHeight: "inherit" }}>
+                        {link.text}
+                      </Sans>
+                    </Box>
+                  </Link>
+                )
+              } else {
+                return (
+                  <NextLink href={link.url} key={link.text}>
+                    <Link href={link.url} active={!!router.pathname.match(link.match)}>
+                      <Box key={link.text} mx={2} height="100%" style={{ cursor: "pointer" }}>
+                        <Sans size="3" color="black" style={{ lineHeight: "inherit" }}>
+                          {link.text}
+                        </Sans>
+                      </Box>
+                    </Link>
+                  </NextLink>
+                )
+              }
+            })}
           </Flex>
         </Flex>
       </Grid>

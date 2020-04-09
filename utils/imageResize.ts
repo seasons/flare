@@ -19,7 +19,7 @@ export const sizes = {
     fit: "clip",
   },
   large: {
-    w: 288,
+    w: 290,
     fit: "clip",
   },
   "x-large": {

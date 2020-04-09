@@ -9,12 +9,12 @@ export function determineFontSizes(fontType: keyof FontFamily, size: string | st
     const match = themeProps.typeSizes[fontType][size]
     return {
       fontSize: `${match.fontSize}px`,
-      lineheight: `${match.lineHeight}px`,
+      lineHeight: `${match.lineHeight}px`,
     }
   }
 
   return size
-    .map(s => themeProps.typeSizes[fontType][s])
+    .map((s) => themeProps.typeSizes[fontType][s])
     .reduce(
       (accumulator, current) => {
         return {
