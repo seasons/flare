@@ -14,7 +14,7 @@ const DesktopHero = () => {
     <Grid>
       <Row>
         <Col md="4" xs="12" px={[2, 0]}>
-          <Flex style={{ minHeight: "500px" }} flexDirection="column" px={0.5}>
+          <Flex style={{ minHeight: "500px", height: "100%" }} flexDirection="column" px={0.5} justifyContent="center">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Sans size="8" color="black100">
                 This is Seasons.
