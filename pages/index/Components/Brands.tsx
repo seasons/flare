@@ -3,12 +3,65 @@ import { Grid, Row, Col } from "../../../components/Grid"
 import { Sans, Box, Spacer, Flex } from "../../../components"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 
+const includedBrands = [
+  "acne-studios",
+  "aime-leon-dore",
+  "amiri",
+  "brain-dead",
+  "barbour",
+  "bode",
+  "burberry",
+  "cav-empt",
+  "comme-des-garcons",
+  "cactus-plant-flea-market",
+  "craig-green",
+  "deveaux",
+  "dries-van-noten",
+  "fear-of-god",
+  "gucci",
+  "heron-preston",
+  "jil-sander",
+  "john-elliott",
+  "junya-watanabe",
+  "kanye-west",
+  "kenzo",
+  "landlord",
+  "mammut",
+  "margaret-howell",
+  "martine-rose",
+  "moncler",
+  "nike",
+  "noah",
+  "north-face",
+  "off-white",
+  "our-legacy",
+  "palm-angels",
+  "prada",
+  "rhude",
+  "sacai",
+  "saturdays-nyc",
+  "stone-island",
+  "stussy",
+  "woolrich",
+  "y-3",
+  "yeezy",
+]
+
 export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
   const [groupedBrands, setGroupedBrands] = useState([])
 
+  const filterBrands = (brands) => {
+    const filteredBrands = brands.filter((brand) => {
+      return includedBrands.includes(brand.slug)
+    })
+    return filteredBrands
+  }
+
   const groupBrands = (brands) => {
+    const filtered = filterBrands(brands)
+
     const brandPairs = toPairs(
-      groupBy(brands, ({ name }) => {
+      groupBy(filtered, ({ name }) => {
         const char = name.charAt(0)
         if (char.match(/[a-z]/i)) {
           return char
@@ -38,10 +91,12 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
     return null
   }
 
+  console.log("groupedBrands", groupedBrands)
+
   return (
     <Grid>
       <Box px={[2, 0]} mx={0.5}>
-        <Sans size="8">Brand index</Sans>
+        <Sans size="6">Brand index</Sans>
       </Box>
       <Row>
         {groupedBrands.map((group) => {
