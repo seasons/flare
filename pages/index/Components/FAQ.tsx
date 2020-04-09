@@ -1,7 +1,8 @@
-import React, { useState } from "react"
-import { Grid, Row } from "../Grid"
-import { Sans, Box } from ".."
-import { FAQCard } from "./FAQCard"
+import React from "react"
+import { Grid, Row, Col } from "../../../components/Grid"
+import { Sans, Box, Spacer, Flex } from "../../../components"
+import { color, space } from "../../../helpers"
+import styled from "styled-components"
 
 const items = [
   {
@@ -37,7 +38,6 @@ const items = [
 ]
 
 export const FAQ: React.FC = () => {
-  const [minHeight, setMinHeight] = useState(150)
   return (
     <Grid>
       <Box px={[2, 0]} mb={6}>
@@ -47,9 +47,39 @@ export const FAQ: React.FC = () => {
       </Box>
       <Row>
         {items.map((step, index) => (
-          <FAQCard step={step} index={index} key={index} minHeight={minHeight} setMinHeight={setMinHeight} />
+          <Col md="4" xs="12" px={["2", "0"]} key={index}>
+            <Flex
+              mt={2}
+              flexDirection="column"
+              style={{ backgroundColor: color("black04"), borderRadius: "8px" }}
+              p={3}
+              m={0.5}
+            >
+              <Sans size="5" color="black50">{`0${index + 1}.`}</Sans>
+              <Spacer mb={8} />
+              <Box>
+                <Sans size="5" style={{ maxWidth: "90%" }}>
+                  {step.title}
+                </Sans>
+                <Spacer mb={1} />
+                <InjectedSans
+                  size="3"
+                  color="black50"
+                  style={{ maxWidth: "90%" }}
+                  dangerouslySetInnerHTML={{ __html: step.text }}
+                />
+              </Box>
+            </Flex>
+          </Col>
         ))}
       </Row>
     </Grid>
   )
 }
+
+const InjectedSans = styled(Sans)`
+  a {
+    text-decoration: underline;
+    color: ${color("black100")};
+  }
+`
