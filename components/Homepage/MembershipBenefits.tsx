@@ -45,11 +45,11 @@ export const MembershipBenefits: React.FC = () => {
       <Flex px={[2, 0]} mx={0.5} justifyContent="center">
         <Flex flexDirection="column" justifyContent="center">
           <Sans size="8" style={{ textAlign: "center" }}>
-            Membership benefits
+            The benefits
           </Sans>
           <Spacer mb={0.5} />
           <Sans size="4" color="black50" style={{ textAlign: "center" }}>
-            What's included in both memberships
+            What’s included in both memberships
           </Sans>
         </Flex>
       </Flex>

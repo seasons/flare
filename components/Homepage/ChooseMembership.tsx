@@ -14,7 +14,7 @@ export const ChooseMembership: React.FC = () => {
           </Sans>
           <Spacer mb={0.5} />
           <Sans size="4" color="black50" style={{ textAlign: "center" }}>
-            What's included in both memberships
+            Two options to best match your lifestyle
           </Sans>
         </Flex>
       </Flex>
