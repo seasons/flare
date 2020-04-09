@@ -19,9 +19,8 @@ const DesktopHero = () => {
               <Sans size="8" color="black100">
                 This is Seasons.
               </Sans>
-              <Spacer mb={1} />
               <Sans size="8" color="black50">
-                An invite-only rental subscription service for menswear & streetware.
+                An invite-only rental subscription service for menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
               <LinkCTA text="Join the waitlist" href="https://signup.seasons.nyc/" />
