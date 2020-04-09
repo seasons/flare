@@ -34,6 +34,7 @@ export const HOME_QUERY = gql`
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
       id
+      slug
       images
       brand {
         id
@@ -57,6 +58,7 @@ export const HOME_QUERY = gql`
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
       id
+      slug
       images
       brand {
         id
@@ -89,9 +91,9 @@ const Home = withData(() => {
       <Spacer mt="59px" />
       <Hero />
       <Separator />
-      <Spacer mb={6} />
+      <Spacer mb={5} />
       <AsSeenIn />
-      <Spacer mb={6} />
+      <Spacer mb={5} />
       <Separator />
       <ColumnList
         items={[
@@ -114,7 +116,7 @@ const Home = withData(() => {
       />
       <Spacer mb={6} />
       <ProductRail title="Just added tops" products={data?.justAddedTops} />
-      <Spacer mb={6} />
+      <Spacer mb={2} />
       <Separator />
       <Spacer mb={6} />
       <UsaMap />
@@ -122,7 +124,7 @@ const Home = withData(() => {
       <Separator />
       <Spacer mb={6} />
       <ProductRail title="Just added pants" products={data?.justAddedPants} />
-      <Spacer mb={6} />
+      <Spacer mb={2} />
       <Separator />
       <Spacer mb={6} />
       <ChooseMembership />
@@ -134,9 +136,9 @@ const Home = withData(() => {
       <Separator />
       <Spacer mb={6} />
       <FAQ />
-      <Spacer mb={6} />
+      <Spacer mb={5} />
       <Separator />
-      <Spacer mb={6} />
+      <Spacer mb={5} />
       <Brands brands={data?.brands} />
       <Spacer mb={6} />
     </Layout>

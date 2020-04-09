@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Sans, Spacer } from "../"
+import { Box, Sans, Spacer, Flex } from "../"
 import { Grid, Row, Col } from "../Grid"
 import { LinkCTA } from "../Button"
 
@@ -10,7 +10,13 @@ export const UsaMap: React.FC = () => {
     <Grid>
       <Row>
         <Col md="6" xs="12" px={[2, 0]}>
-          <Box mx={0.5} mr={[0, "25%"]} style={{ maxWidth: "400px" }}>
+          <Flex
+            mx={0.5}
+            mr={[0, "25%"]}
+            style={{ maxWidth: "400px", height: "100%" }}
+            justifyContent="center"
+            flexDirection="column"
+          >
             <Sans size="6" color="black100">
               Not in NYC?
             </Sans>
@@ -19,7 +25,7 @@ export const UsaMap: React.FC = () => {
             </Sans>
             <Spacer mb={2} />
             <LinkCTA text="Join the waitlist" href="https://signup.seasons.nyc/" variant="primaryWhite" />
-          </Box>
+          </Flex>
         </Col>
         <Col md="6" xs="12" px={[2, 0]}>
           <Box mx={[0.5, 5]} mt={[3, 0.5]}>

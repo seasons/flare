@@ -32,7 +32,7 @@ export const AsSeenIn: React.FC = () => {
               {desktopIcons.map((item, index) => {
                 return (
                   <Box p={1} key={index}>
-                    <img src={item.iconHref} style={{ maxHeight: "20px" }} />
+                    <img src={item.iconHref} style={{ maxHeight: "22px" }} />
                   </Box>
                 )
               })}

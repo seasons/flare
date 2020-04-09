@@ -57,10 +57,10 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
                 per \ month
               </Sans>
             </Flex>
-            <SelectButton justifyContent="center" py="2">
+            <SelectButton justifyContent="center" py="4">
               <StyledAnchor href="http://signup.seasons.nyc/">
-                <Sans size="5" style={{ textDecoration: "underline" }}>
-                  Select
+                <Sans size="4" style={{ textDecoration: "underline" }}>
+                  Select Plan
                 </Sans>
               </StyledAnchor>
             </SelectButton>
@@ -89,5 +89,6 @@ const Border = styled("div")`
 `
 
 const SelectButton = styled(Flex)`
+  border-top: 1px solid ${color("black15")};
   width: 100%;
 `

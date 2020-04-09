@@ -13,7 +13,7 @@ export const ColumnList: React.FC<{ items: ColumnListItems; title?: string }> = 
       <Row>
         {items.map((step, index) => (
           <Col md="4" xs="12" px={[2, 0]} key={index}>
-            <Box mt={8} mx={0.5}>
+            <Box mt={6} mx={0.5}>
               <Sans size="5" color="black50">{`0${index + 1}.`}</Sans>
               <Spacer mb={2} />
               <Sans size="5" style={{ maxWidth: "80%" }}>
