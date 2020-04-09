@@ -91,8 +91,6 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
     return null
   }
 
-  console.log("groupedBrands", groupedBrands)
-
   return (
     <Grid>
       <Box px={[2, 0]} mx={0.5}>

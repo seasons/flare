@@ -54,7 +54,7 @@ const Home = withData(() => {
         ]}
       />
       <Spacer mb={6} />
-      <ProductRail title="Just added" products={data?.justAddedProducts} />
+      <ProductRail title="Just added tops" products={data?.justAddedTops} />
       <Spacer mb={6} />
       <Separator />
       <Spacer mb={6} />
@@ -62,7 +62,7 @@ const Home = withData(() => {
       <Spacer mb={6} />
       <Separator />
       <Spacer mb={6} />
-      <ProductRail title="Just added" products={data?.justAddedProducts} />
+      <ProductRail title="Just added pants" products={data?.justAddedPants} />
       <Spacer mb={6} />
       <Separator />
       <Spacer mb={6} />
