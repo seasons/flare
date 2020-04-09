@@ -1,7 +1,7 @@
 import React from "react"
-import { Flex, Sans, Spacer, Box } from "../../../components"
+import { Flex, Sans, Spacer, Box } from "../"
 import styled from "styled-components"
-import { color } from "../../../helpers"
+import { color } from "../../helpers"
 
 type MembershipType = "essential" | "allAccess"
 

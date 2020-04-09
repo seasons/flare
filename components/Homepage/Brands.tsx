@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-import { Grid, Row, Col } from "../../../components/Grid"
-import { Sans, Box, Spacer, Flex } from "../../../components"
+import { Grid, Row, Col } from "../Grid"
+import { Sans, Box, Spacer, Flex } from "../"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 
 const includedBrands = [

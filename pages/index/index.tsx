@@ -8,14 +8,73 @@ import {
   UsaMap,
   ChooseMembership,
   FAQ,
+  Brands,
   MembershipBenefits,
   AsSeenIn,
-} from "./Components"
+} from "../../components/Homepage"
 import { Spacer, Layout, Separator } from "../../components"
 import withData from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
-import { HOME_QUERY } from "./homeQuery"
-import { Brands } from "./Components/Brands"
+import { gql } from "apollo-boost"
+
+export const HOME_QUERY = gql`
+  query GetBrowseProducts {
+    brands {
+      id
+      slug
+      name
+      products {
+        id
+      }
+    }
+    justAddedTops: products(
+      first: 4
+      category: "tops"
+      orderBy: createdAt_DESC
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
+    ) {
+      id
+      images
+      brand {
+        id
+        name
+      }
+      variants {
+        id
+        total
+        reservable
+        nonReservable
+        reserved
+        internalSize {
+          display
+        }
+      }
+    }
+    justAddedPants: products(
+      first: 4
+      category: "pants"
+      orderBy: createdAt_DESC
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
+    ) {
+      id
+      images
+      brand {
+        id
+        name
+      }
+      variants {
+        id
+        total
+        reservable
+        nonReservable
+        reserved
+        internalSize {
+          display
+        }
+      }
+    }
+  }
+`
 
 const Home = withData(() => {
   const { data } = useQuery(HOME_QUERY, {})

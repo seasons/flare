@@ -1,13 +1,13 @@
 import React from "react"
-import { Flex, Sans, Box, Spacer } from "../../../components"
-import { Media } from "../../../components/Responsive"
-import { Grid } from "../../../components/Grid"
+import { Flex, Sans, Box, Spacer } from ".."
+import { Media } from "../Responsive"
+import { Grid } from "../Grid"
 
-const vogueLogo = require("../../../public/images/homepage/Vogue.png")
-const nytLogo = require("../../../public/images/homepage/NYT.png")
-const wwdLogo = require("../../../public/images/homepage/WWD.png")
-const glossyLogo = require("../../../public/images/homepage/Glossy.png")
-const leanluxeLogo = require("../../../public/images/homepage/Leanluxe.png")
+const vogueLogo = require("../../public/images/homepage/Vogue.png")
+const nytLogo = require("../../public/images/homepage/NYT.png")
+const wwdLogo = require("../../public/images/homepage/WWD.png")
+const glossyLogo = require("../../public/images/homepage/Glossy.png")
+const leanluxeLogo = require("../../public/images/homepage/Leanluxe.png")
 
 const desktopIcons = [
   { iconHref: vogueLogo },

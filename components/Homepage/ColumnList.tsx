@@ -1,6 +1,6 @@
 import React from "react"
-import { Box, Sans, Spacer } from "../../../components"
-import { Grid, Row, Col } from "../../../components/Grid"
+import { Box, Sans, Spacer } from "../"
+import { Grid, Row, Col } from "../Grid"
 
 type ColumnListItems = { title: string; text: string }[]
 

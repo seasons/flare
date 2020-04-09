@@ -1,6 +1,6 @@
 import React from "react"
-import { Flex, Sans, Spacer, Box } from "../../../components"
-import { Grid, Row, Col } from "../../../components/Grid"
+import { Flex, Sans, Spacer } from "../"
+import { Grid, Row, Col } from "../Grid"
 import { MembershipCard } from "./MembershipCard"
 
 export const ChooseMembership: React.FC = () => {

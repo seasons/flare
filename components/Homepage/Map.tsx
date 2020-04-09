@@ -1,9 +1,9 @@
 import React from "react"
-import { Box, Sans, Spacer } from "../../../components"
-import { Grid, Row, Col } from "../../../components/Grid"
-import { LinkCTA } from "../../../components/Button"
+import { Box, Sans, Spacer } from "../"
+import { Grid, Row, Col } from "../Grid"
+import { LinkCTA } from "../Button"
 
-const imageSRC = require("../../../public/images/usa.png")
+const imageSRC = require("../../public/images/usa.png")
 
 export const UsaMap: React.FC = () => {
   return (

@@ -1,8 +1,8 @@
 import React from "react"
-import { Grid, Row, Col } from "../../../components/Grid"
-import { Sans, Box, Spacer, Flex } from "../../../components"
-import { color, space } from "../../../helpers"
+import { Grid, Row, Col } from "../Grid"
+import { Sans, Box, Spacer, Flex } from ".."
 import styled from "styled-components"
+import { color } from "../../helpers"
 
 const items = [
   {
@@ -51,7 +51,7 @@ export const FAQ: React.FC = () => {
             <Flex
               mt={2}
               flexDirection="column"
-              style={{ backgroundColor: color("black04"), height: "300px", borderRadius: "8px" }}
+              style={{ backgroundColor: color("black04"), height: "320px", borderRadius: "8px" }}
               p={3}
               m={0.5}
             >

@@ -1,13 +1,13 @@
 import React from "react"
-import { Flex, Sans, Spacer, Box } from "../../../components"
-import { Grid, Row, Col } from "../../../components/Grid"
-import { LinkCTA } from "../../../components/Button"
 import styled from "styled-components"
-import { Media } from "../../../components/Responsive"
+import { Grid, Row, Col } from "../Grid"
+import { Flex, Sans, Spacer, Box } from ".."
+import { LinkCTA } from "../Button"
+import { Media } from "../Responsive"
 
-const image1 = require("../../../public/images/homepage/HeroImage_1.png")
-const image2 = require("../../../public/images/homepage/HeroImage_2.png")
-const image3 = require("../../../public/images/homepage/HeroImage_3.png")
+const image1 = require("../../public/images/homepage/HeroImage_1.png")
+const image2 = require("../../public/images/homepage/HeroImage_2.png")
+const image3 = require("../../public/images/homepage/HeroImage_3.png")
 
 const DesktopHero = () => {
   return (

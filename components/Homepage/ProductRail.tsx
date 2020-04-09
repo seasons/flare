@@ -1,8 +1,8 @@
 import React from "react"
-import { Sans, Flex, Spacer } from "../../../components"
-import { Grid, Row, Col } from "../../../components/Grid"
-import { Link } from "../../../components/Link"
-import { ProductGridItem } from "../../../components/Product/ProductGridItem"
+import { Sans, Flex, Spacer } from "../"
+import { Grid, Row, Col } from "../Grid"
+import { Link } from "../Link"
+import { ProductGridItem } from "../Product/ProductGridItem"
 
 export const ProductRail: React.FC<{ products: any; title?: string }> = ({ products, title }) => {
   if (!products) {
