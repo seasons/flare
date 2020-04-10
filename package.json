@@ -24,6 +24,7 @@
     "react-paginate": "^6.3.2",
     "react-spring": "^8.0.27",
     "react-tracking": "^7.3.0",
+    "sitemap": "^6.1.0",
     "styled-bootstrap-grid": "^3.0.5",
     "styled-components": "^5.0.1",
     "styled-system": "^5.1.5"
