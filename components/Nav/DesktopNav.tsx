@@ -1,13 +1,12 @@
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import styled from "styled-components"
-import { Box } from ".."
 import { color } from "../../helpers/color"
 import { Flex } from "../Flex"
 import { Grid } from "../Grid"
-import { Sans } from "../Typography"
 import { NavProps } from "./Types"
 import { SeasonsLogo } from "./SeasonsLogo"
+import { NavItem } from "./NavItem"
 
 export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const router = useRouter()
@@ -22,22 +21,14 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
               if (link.external) {
                 return (
                   <Link key={link.url} href={link.url} active={!!router.pathname.match(link.match)}>
-                    <Box mx={2} height="100%" style={{ cursor: "pointer" }}>
-                      <Sans size="3" color="black" style={{ lineHeight: "inherit" }}>
-                        {link.text}
-                      </Sans>
-                    </Box>
+                    <NavItem link={link} />
                   </Link>
                 )
               } else {
                 return (
                   <NextLink href={link.url} key={link.text}>
                     <Link href={link.url} active={!!router.pathname.match(link.match)}>
-                      <Box key={link.text} mx={2} height="100%" style={{ cursor: "pointer" }}>
-                        <Sans size="3" color="black" style={{ lineHeight: "inherit" }}>
-                          {link.text}
-                        </Sans>
-                      </Box>
+                      <NavItem link={link} />
                     </Link>
                   </NextLink>
                 )
@@ -67,10 +58,8 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
 const Link = styled.a<{ active?: boolean }>`
   color: black;
   text-decoration: none;
-  border-bottom: 4px solid ${(p) => (p.active ? color("black100") : color("white100"))};
-  margin-bottom: -3px;
-  height: 58.5px;
-  line-height: 58.5px;
+  height: 60px;
+  line-height: 60px;
 
   &:after {
     display: block;

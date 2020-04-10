@@ -18,6 +18,7 @@ export const SeasonsLogo: React.FC<BoxProps> = () => {
 
 const LogoContainer = styled.div`
   display: flex;
+  padding-left: 16px;
   flex-direction: row;
   text-decoration: none;
   color: black;
