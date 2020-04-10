@@ -15,6 +15,8 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { media } from "styled-bootstrap-grid"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
+import { BrowseLoader } from "../../components/Browse/BrowseLoader"
+import { Media } from "../../components/Responsive"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -81,7 +83,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const [currentCategory, setCurrentCategory] = useState(query.category || "all")
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 18
-  const { data } = useQuery(GET_BROWSE_PRODUCTS, {
+  const { data, loading } = useQuery(GET_BROWSE_PRODUCTS, {
     variables: {
       name: currentCategory,
       first: currentPage * pageSize,
@@ -97,37 +99,56 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const products = data?.products?.edges
   const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
 
+  const Categories = () => {
+    return (
+      <>
+        <Sans size={["4", "5"]}>Categories</Sans>
+        {categories.map((category) => {
+          const isActive = currentCategory === category.slug
+          return (
+            <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
+              <Sans
+                size={["3", "5"]}
+                key={category.slug}
+                my="2"
+                opacity={isActive ? 1.0 : 0.5}
+                style={{ cursor: "pointer" }}
+              >
+                {category.name}
+              </Sans>
+            </Link>
+          )
+        })}
+      </>
+    )
+  }
+
   return (
     <Layout fixedNav>
-      <Box mt="100px">
+      <Box mt={["76px", "100px"]}>
         <Grid>
           <Row>
             <Col md="3" xs="12" mx={["2", "0"]}>
-              <Sans size={["4", "6"]}>Categories</Sans>
-              {categories.map((category) => {
-                const isActive = currentCategory === category.slug
-                return (
-                  <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
-                    <Sans
-                      size={["3", "5"]}
-                      key={category.slug}
-                      my="3"
-                      opacity={isActive ? 1.0 : 0.5}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {category.name}
-                    </Sans>
-                  </Link>
-                )
-              })}
+              <Media greaterThanOrEqual="md">
+                <FixedBox>
+                  <Categories />
+                </FixedBox>
+              </Media>
+              <Media lessThan="md">
+                <Categories />
+              </Media>
             </Col>
             <Col md="9" xs="12">
               <Row>
-                {(products || []).map((product, i) => (
-                  <Col col sm="4" xs="6" key={i}>
-                    <ProductGridItem product={product?.node} />
-                  </Col>
-                ))}
+                {!data ? (
+                  <BrowseLoader />
+                ) : (
+                  (products || []).map((product, i) => (
+                    <Col col sm="4" xs="6" key={i}>
+                      <ProductGridItem product={product?.node} />
+                    </Col>
+                  ))
+                )}
               </Row>
               <Row>
                 <Flex align-items="center" mt={2} mb={4} width="100%">
@@ -141,7 +162,6 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                       marginPagesDisplayed={2}
                       pageRangeDisplayed={2}
                       onPageChange={(data) => {
-                        console.log(data)
                         setCurrentPage(data.selected + 1)
                         window && window.scrollTo(0, 0)
                       }}
@@ -166,7 +186,9 @@ const Pagination = styled.div`
   `};
 
   .pagination {
+    cursor: pointer;
     & li {
+      cursor: pointer;
       font-family: ${fontFamily.sans.medium as CSSObject};
       display: inline-block;
       margin-right: 5px;
@@ -185,6 +207,10 @@ const Pagination = styled.div`
       }
     }
   }
+`
+
+const FixedBox = styled.div`
+  position: fixed;
 `
 
 export default BrowsePage
