@@ -30,6 +30,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     smStream.write({ url: "/browse", lastmod: process.env.siteUpdatedAt, changefreq: EnumChangefreq.WEEKLY })
     smStream.write({ url: "/about", lastmod: process.env.siteUpdatedAt, changefreq: EnumChangefreq.WEEKLY })
     smStream.write({ url: "/contact", lastmod: process.env.siteUpdatedAt, changefreq: EnumChangefreq.MONTHLY })
+    smStream.write({ url: "/privacy-policy", lastmod: process.env.siteUpdatedAt, changefreq: EnumChangefreq.MONTHLY })
+    smStream.write({ url: "/terms-of-service", lastmod: process.env.siteUpdatedAt, changefreq: EnumChangefreq.MONTHLY })
     // E.g. we create a sitemap.xml for articles
     // Set products change frequencey is weekly
     const products = await fetchProducts()
