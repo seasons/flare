@@ -16,6 +16,7 @@ import { useRouter } from "next/router"
 import { media } from "styled-bootstrap-grid"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
 import { BrowseLoader } from "../../components/Browse/BrowseLoader"
+import { Media } from "../../components/Responsive"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
@@ -98,33 +99,48 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const products = data?.products?.edges
   const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
 
+  const Categories = () => {
+    return (
+      <>
+        <Sans size={["4", "5"]}>Categories</Sans>
+        {categories.map((category) => {
+          const isActive = currentCategory === category.slug
+          return (
+            <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
+              <Sans
+                size={["3", "5"]}
+                key={category.slug}
+                my="2"
+                opacity={isActive ? 1.0 : 0.5}
+                style={{ cursor: "pointer" }}
+              >
+                {category.name}
+              </Sans>
+            </Link>
+          )
+        })}
+      </>
+    )
+  }
+
   return (
     <Layout fixedNav>
-      <Box mt="100px">
+      <Box mt={["76px", "100px"]}>
         <Grid>
           <Row>
             <Col md="3" xs="12" mx={["2", "0"]}>
-              <Sans size={["4", "5"]}>Categories</Sans>
-              {categories.map((category) => {
-                const isActive = currentCategory === category.slug
-                return (
-                  <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
-                    <Sans
-                      size={["3", "5"]}
-                      key={category.slug}
-                      my="2"
-                      opacity={isActive ? 1.0 : 0.5}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {category.name}
-                    </Sans>
-                  </Link>
-                )
-              })}
+              <Media greaterThanOrEqual="md">
+                <FixedBox>
+                  <Categories />
+                </FixedBox>
+              </Media>
+              <Media lessThan="md">
+                <Categories />
+              </Media>
             </Col>
             <Col md="9" xs="12">
               <Row>
-                {loading ? (
+                {!data ? (
                   <BrowseLoader />
                 ) : (
                   (products || []).map((product, i) => (
@@ -191,6 +207,10 @@ const Pagination = styled.div`
       }
     }
   }
+`
+
+const FixedBox = styled.div`
+  position: fixed;
 `
 
 export default BrowsePage
