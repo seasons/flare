@@ -15,7 +15,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { media } from "styled-bootstrap-grid"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
-import { BrowseLoader } from "../../components/Browse/BrowseLoader"
+import { BrowseLoader, CategoryLoader } from "../../components/Browse/BrowseLoader"
 import { Media } from "../../components/Responsive"
 
 const GET_BROWSE_PRODUCTS = gql`
@@ -103,22 +103,26 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
     return (
       <>
         <Sans size={["4", "5"]}>Categories</Sans>
-        {categories.map((category) => {
-          const isActive = currentCategory === category.slug
-          return (
-            <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
-              <Sans
-                size={["3", "5"]}
-                key={category.slug}
-                my="2"
-                opacity={isActive ? 1.0 : 0.5}
-                style={{ cursor: "pointer" }}
-              >
-                {category.name}
-              </Sans>
-            </Link>
-          )
-        })}
+        {!data ? (
+          <CategoryLoader />
+        ) : (
+          categories.map((category) => {
+            const isActive = currentCategory === category.slug
+            return (
+              <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
+                <Sans
+                  size={["3", "5"]}
+                  key={category.slug}
+                  my="2"
+                  opacity={isActive ? 1.0 : 0.5}
+                  style={{ cursor: "pointer" }}
+                >
+                  {category.name}
+                </Sans>
+              </Link>
+            )
+          })
+        )}
       </>
     )
   }
