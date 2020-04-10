@@ -34,7 +34,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
             alignItems="center"
             justifyContent="center"
           >
-            <Flex style={{ height: "100%" }} p={5} flexDirection="column" justifyContent="space-between">
+            <Flex style={{ height: "100%" }} p={[3, 5]} flexDirection="column" justifyContent="space-between">
               <Sans size="6">{planInfo.planName}</Sans>
               <Box>
                 <Sans size="6">{planInfo.boldText}</Sans>

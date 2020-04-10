@@ -64,7 +64,6 @@ const MobileHero = () => {
               <Sans size="8" color="black100">
                 This is Seasons.
               </Sans>
-              <Spacer mb={1} />
               <Sans size="8" color="black50">
                 An invite-only rental subscription service for menswear & streetware.
               </Sans>
