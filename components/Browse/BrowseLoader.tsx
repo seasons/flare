@@ -5,6 +5,7 @@ import styled from "styled-components"
 const imageHeight = 362
 const cardWidth = 290
 const cardHeight = 462
+const rows = 3
 
 export const BrowseLoader = () => {
   const renderCard = ({ x, y }) => (
@@ -18,7 +19,7 @@ export const BrowseLoader = () => {
 
   return (
     <Container width="100%">
-      {[...Array(2)].map((_, index) => {
+      {[...Array(rows)].map((_, index) => {
         const yTopPosition = index * cardHeight
         return (
           <React.Fragment key={index}>
@@ -33,6 +34,6 @@ export const BrowseLoader = () => {
 }
 
 const Container = styled(ContentLoader)`
-  height: ${cardHeight * 2}px;
+  height: ${cardHeight * rows}px;
   width: 100%;
 `
