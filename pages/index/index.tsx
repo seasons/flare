@@ -1,5 +1,4 @@
 import React from "react"
-import Head from "next/head"
 import { Nav } from "../../components/Nav/Nav"
 import {
   ColumnList,
@@ -83,10 +82,6 @@ const Home = withData(() => {
 
   return (
     <Layout fixedNav>
-      <Head>
-        <title>Seasons</title>
-        <meta content="Seasons change. Your wardrobe should change with them." name="description" />
-      </Head>
       <Nav fixed />
       <Spacer mt="59px" />
       <Hero />

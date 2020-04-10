@@ -124,7 +124,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
             <Col md="9" xs="12">
               <Row>
                 {(products || []).map((product, i) => (
-                  <Col col sm="4" xs="6">
+                  <Col col sm="4" xs="6" key={i}>
                     <ProductGridItem product={product?.node} />
                   </Col>
                 ))}
