@@ -27,7 +27,7 @@ export const NavItem = ({ link }) => {
   )
 }
 
-const HoverBox = styled(Box)`
+const HoverBox = styled("div")`
   width: 100%;
   position: absolute;
   bottom: 0;
@@ -35,4 +35,4 @@ const HoverBox = styled(Box)`
   background-color: ${color("black100")};
 `
 
-const NavHover = animated(HoverBox)
+const NavHover = animated((props) => <HoverBox {...props} />)

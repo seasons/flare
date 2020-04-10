@@ -10,11 +10,13 @@ interface LayoutProps {
 
 export const Layout = ({ fixedNav = false, children }: LayoutProps) => {
   return (
-    <Theme>
+    <>
       <LayoutHead />
-      <Nav fixed={fixedNav} />
-      {children}
-      <Footer />
-    </Theme>
+      <Theme>
+        <Nav fixed={fixedNav} />
+        {children}
+        <Footer />
+      </Theme>
+    </>
   )
 }

@@ -78,7 +78,7 @@ const Menu = ({ items, open }) => {
   )
 }
 
-const Wrapper = styled(Box)`
+const Wrapper = styled("div")`
   position: absolute;
   height: ${MENU_HEIGHT};
   top: 0;
@@ -105,11 +105,10 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   background: ${color("white100")};
 `
 
-const MenuContainer = styled.div<{ height?: string }>`
+const MenuContainer = styled.div`
   overflow: hidden;
   padding-top: ${MENU_HEIGHT};
   width: 100%;
-  height: ${(p) => p.height};
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
   transform: translateY(-100%);
 `
@@ -138,4 +137,4 @@ const MenuItem = styled.div<BoxProps & { active?: boolean }>`
   text-align: center;
 `
 
-const AnimatedContainer = animated(MenuContainer)
+const AnimatedContainer = animated((props) => <MenuContainer {...props} />)
