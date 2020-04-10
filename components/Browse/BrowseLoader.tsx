@@ -8,16 +8,16 @@ const cardWidth = 290
 const cardHeight = 462
 const rows = 3
 const categoryRows = 7
-const categorySpace = 44
+const categorySpace = 35
 
 export const CategoryLoader = () => {
   return (
-    <Box mt="30px" height={categoryRows * categorySpace + "px"}>
+    <Box mt="20px" height={categoryRows * categorySpace + "px"}>
       <ContentLoader height={categoryRows * categorySpace + "px"}>
         {[...Array(categoryRows)].map((_, index) => {
           return (
             <React.Fragment key={index}>
-              <rect x={0} y={index * categorySpace} width="80" height={16} />
+              <rect x={0} y={index * categorySpace} width="80" height={18} />
             </React.Fragment>
           )
         })}
