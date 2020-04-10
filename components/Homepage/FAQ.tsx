@@ -41,7 +41,7 @@ export const FAQ: React.FC = () => {
   return (
     <Grid>
       <Box px={[2, 0]} mb={6}>
-        <Sans px={0.5} size="5">
+        <Sans px={0.5} size={["8", "5"]}>
           Frequently asked questions
         </Sans>
       </Box>

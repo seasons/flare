@@ -48,7 +48,7 @@ export const AsSeenIn: React.FC = () => {
             <Flex flexDirection="row" flexWrap="wrap" alignItems="center" style={{ width: "100%" }}>
               {mobileIcons.map((item, index) => {
                 return (
-                  <Box mr={2} mb={2} key={index}>
+                  <Box mr="20px" mb={3} key={index}>
                     <img src={item.iconHref} style={{ maxHeight: "20px" }} />
                   </Box>
                 )
