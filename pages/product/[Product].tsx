@@ -56,7 +56,7 @@ const Product = withData((props) => {
                 {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
                 <Box my={2} py={2} px={4}>
                   <Button href="//signup.seasons.nyc">
-                    <Sans size="3">Join the wailist</Sans>
+                    <Sans size="3">Join the waitlist</Sans>
                   </Button>
                 </Box>
               </DetailsContainer>
