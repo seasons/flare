@@ -83,17 +83,23 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const [currentCategory, setCurrentCategory] = useState(query.category || "all")
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 18
-  const { data, loading } = useQuery(GET_BROWSE_PRODUCTS, {
+  const skip = (currentPage - 1) * pageSize
+
+  const { data } = useQuery(GET_BROWSE_PRODUCTS, {
     variables: {
       name: currentCategory,
-      first: currentPage * pageSize,
-      skip: (currentPage - 1) * pageSize,
+      first: pageSize,
+      skip,
     },
   })
 
   useEffect(() => {
     setCurrentCategory(query.category)
   }, [query.category])
+
+  useEffect(() => {
+    window && window.scrollTo(0, 0)
+  }, [data])
 
   const pageCount = Math.ceil(data?.connection?.aggregate?.count / pageSize)
   const products = data?.products?.edges
@@ -158,20 +164,19 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                 <Flex align-items="center" mt={2} mb={4} width="100%">
                   <Pagination>
                     <Paginate
-                      previousLabel={"previous"}
-                      nextLabel={"next"}
-                      breakLabel={"..."}
-                      breakClassName={"break-me"}
+                      previousLabel="previous"
+                      nextLabel="next"
+                      breakLabel="..."
+                      breakClassName="break-me"
                       pageCount={pageCount}
                       marginPagesDisplayed={2}
                       pageRangeDisplayed={2}
                       onPageChange={(data) => {
                         setCurrentPage(data.selected + 1)
-                        window && window.scrollTo(0, 0)
                       }}
-                      containerClassName={"pagination"}
-                      subContainerClassName={"pages pagination"}
-                      activeClassName={"active"}
+                      containerClassName="pagination"
+                      subContainerClassName="pages pagination"
+                      activeClassName="active"
                     />
                   </Pagination>
                 </Flex>
@@ -190,7 +195,6 @@ const Pagination = styled.div`
   `};
 
   .pagination {
-    cursor: pointer;
     & li {
       cursor: pointer;
       font-family: ${fontFamily.sans.medium as CSSObject};
@@ -208,6 +212,13 @@ const Pagination = styled.div`
       &.previous,
       &.next {
         width: auto;
+      }
+
+      & a {
+        padding: 20px;
+        & :focus {
+          outline: none !important;
+        }
       }
     }
   }
