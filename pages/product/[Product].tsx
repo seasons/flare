@@ -9,7 +9,7 @@ import { imageResize } from "../../utils/imageResize"
 import { useRouter } from "next/router"
 import styled from "styled-components"
 import { Box, Layout, Sans } from "../../components"
-import { ImageLoader } from "../../components/Product/ImageLoader"
+import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { color } from "../../helpers"
 
 const Product = withData((props) => {
@@ -53,7 +53,7 @@ const Product = withData((props) => {
             </Col>
             <Col md="5" sm="12" p={1} mdOrder={2}>
               <DetailsContainer mr={4}>
-                <ProductDetails product={product} />
+                {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
                 <Box my={2} py={2} px={4}>
                   <Button href="//signup.seasons.nyc">
                     <Sans size="3">Join the wailist</Sans>
