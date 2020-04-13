@@ -115,17 +115,19 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
           categories.map((category) => {
             const isActive = currentCategory === category.slug
             return (
-              <Link href="/browse/[category]" as={`/browse/${category.slug}`} key={category.slug}>
-                <Sans
-                  size={["3", "5"]}
-                  key={category.slug}
-                  my="2"
-                  opacity={isActive ? 1.0 : 0.5}
-                  style={{ cursor: "pointer" }}
-                >
-                  {category.name}
-                </Sans>
-              </Link>
+              <div onClick={() => setCurrentPage(1)} key={category.slug}>
+                <Link href="/browse/[category]" as={`/browse/${category.slug}`}>
+                  <Sans
+                    size={["3", "5"]}
+                    key={category.slug}
+                    my="2"
+                    opacity={isActive ? 1.0 : 0.5}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {category.name}
+                  </Sans>
+                </Link>
+              </div>
             )
           })
         )}
@@ -171,6 +173,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                       pageCount={pageCount}
                       marginPagesDisplayed={2}
                       pageRangeDisplayed={2}
+                      forcePage={currentPage - 1}
                       onPageChange={(data) => {
                         setCurrentPage(data.selected + 1)
                       }}
