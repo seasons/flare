@@ -47,7 +47,9 @@ const Product = withData((props) => {
         <Grid>
           <Row>
             <Col md="6" sm="12" xsOrder={1} smOrder={1}>
-              <Products />
+              <Box style={{ minHeight: "calc(100vh - 160px)" }}>
+                <Products />
+              </Box>
             </Col>
             <Col md="5" sm="12" p={1} mdOrder={2}>
               <DetailsContainer mr={4}>
