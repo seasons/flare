@@ -15,6 +15,7 @@ import { Spacer, Layout, Separator } from "../../components"
 import withData from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
+import { TheApp } from "../../components/Homepage/TheApp"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
@@ -85,6 +86,8 @@ const Home = withData(() => {
       <Nav fixed />
       <Spacer mt="59px" />
       <Hero />
+      <Separator />
+      <TheApp />
       <Separator />
       <Spacer mb={5} />
       <AsSeenIn />
