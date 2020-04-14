@@ -77,7 +77,7 @@ const Mobile = () => {
         <Sans size="4" color="black50">
           {subtitle}
         </Sans>
-        <Spacer mb={2} />
+        <Spacer mb={3} />
         <Flex flexDirection="row" justifyContent="center" style={{ maxHeight: "768px", overflow: "hidden" }}>
           <Flex flexDirection="column" pr={1}>
             <img src={image1} alt="image of the iOS app" />
@@ -94,7 +94,7 @@ const Mobile = () => {
       </Box>
       <Separator />
       {textItems?.map((item) => (
-        <Box pl={2} pr={4}>
+        <Box pl={2} pr={4} key={item.title}>
           <Spacer mt={5} />
           <Sans size="4">{item.title}</Sans>
           <Sans size="4" color="black50">

@@ -26,13 +26,13 @@ export const TextList: React.FC<{ listItems: ListItem[]; title: string; subtitle
             {subtitle}
           </Sans>
           {listItems?.map((item) => (
-            <>
+            <React.Fragment key={item.title}>
               <Spacer mt={5} />
               <Sans size="4">{item.title}</Sans>
               <Sans size="4" color="black50">
                 {item.text}
               </Sans>
-            </>
+            </React.Fragment>
           ))}
         </Box>
       </Flex>
