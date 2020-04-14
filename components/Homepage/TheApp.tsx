@@ -44,21 +44,21 @@ const Desktop = () => {
       <Box style={{ position: "relative", width: "60%", overflow: "hidden" }}>
         <Flex height="100%" flexDirection="row" flexWrap="nowrap" alignItems="center">
           <Flex flexDirection="column" justifyContent="center" m={2}>
-            <ImageWrapper height={["492px"]} width={["228px"]}>
+            <ImageWrapper>
               <img src={image1} />
             </ImageWrapper>
           </Flex>
           <Flex flexDirection="column" justifyContent="center" m={2}>
-            <ImageWrapper height={["492px"]} width={["228px"]}>
+            <ImageWrapper>
               <img src={image2} />
             </ImageWrapper>
             <Spacer mb={4} />
-            <ImageWrapper height={["492px"]} width={["228px"]}>
+            <ImageWrapper>
               <img src={image3} />
             </ImageWrapper>
           </Flex>
           <Flex flexDirection="column" justifyContent="center" m={2}>
-            <ImageWrapper height={["492px"]} width={["228px"]}>
+            <ImageWrapper>
               <img src={image4} />
             </ImageWrapper>
           </Flex>
@@ -122,4 +122,6 @@ export const TheApp: React.FC = () => {
 
 const ImageWrapper = styled(Box)`
   overflow: hidden;
+  height: 492px;
+  width: 228px;
 `
