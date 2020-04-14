@@ -10,6 +10,8 @@ import {
   Brands,
   MembershipBenefits,
   AsSeenIn,
+  TheBag,
+  TheApp,
 } from "../../components/Homepage"
 import { Spacer, Layout, Separator } from "../../components"
 import withData from "../../lib/apollo"
@@ -127,6 +129,12 @@ const Home = withData(() => {
       <Separator />
       <Spacer mb={6} />
       <MembershipBenefits />
+      <Spacer mb={6} />
+      <Separator />
+      <TheApp />
+      <Separator />
+      <Spacer mb={6} />
+      <TheBag />
       <Spacer mb={6} />
       <Separator />
       <Spacer mb={6} />
