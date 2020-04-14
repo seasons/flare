@@ -14,6 +14,7 @@ export const LayoutHead: React.FC<{ title?: string }> = ({ title }) => {
       <meta property="og:url" content="https://www.seasons.nyc" />
       <meta property="og:image" content="https://flare-public-assets.s3.amazonaws.com/logo.png" />
       <meta property="twitter:card" content="summary" />
+      <meta http-equiv="content-language" content="en-us" />
     </Head>
   )
 }

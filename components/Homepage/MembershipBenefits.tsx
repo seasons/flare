@@ -57,7 +57,7 @@ export const MembershipBenefits: React.FC = () => {
           <Col md="4" xs="12" px={[2, 0]} key={index}>
             <Box mt={8} mx={0.5}>
               <Flex justifyContent="center" flexDirection="column" alignItems="center">
-                <img src={step.icon} />
+                <img src={step.icon} alt="icon" />
                 <Spacer mb={2} />
                 <Sans size="5" style={{ maxWidth: "80%", textAlign: "center" }}>
                   {step.title}

@@ -45,21 +45,21 @@ const Desktop = () => {
         <Flex height="100%" flexDirection="row" flexWrap="nowrap" alignItems="center">
           <Flex flexDirection="column" justifyContent="center" m={2}>
             <ImageWrapper>
-              <img src={image1} />
+              <img src={image1} alt="image of the iOS app" />
             </ImageWrapper>
           </Flex>
           <Flex flexDirection="column" justifyContent="center" m={2}>
             <ImageWrapper>
-              <img src={image2} />
+              <img src={image2} alt="image of the iOS app" />
             </ImageWrapper>
             <Spacer mb={4} />
             <ImageWrapper>
-              <img src={image3} />
+              <img src={image3} alt="image of the iOS app" />
             </ImageWrapper>
           </Flex>
           <Flex flexDirection="column" justifyContent="center" m={2}>
             <ImageWrapper>
-              <img src={image4} />
+              <img src={image4} alt="image of the iOS app" />
             </ImageWrapper>
           </Flex>
         </Flex>
@@ -80,15 +80,15 @@ const Mobile = () => {
         <Spacer mb={2} />
         <Flex flexDirection="row" justifyContent="center" style={{ maxHeight: "768px", overflow: "hidden" }}>
           <Flex flexDirection="column" pr={1}>
-            <img src={image1} />
+            <img src={image1} alt="image of the iOS app" />
             <Spacer mb={2} />
-            <img src={image2} />
+            <img src={image2} alt="image of the iOS app" />
           </Flex>
           <Flex flexDirection="column" pl={1}>
             <Spacer mb="120px" />
-            <img src={image3} />
+            <img src={image3} alt="image of the iOS app" />
             <Spacer mb={2} />
-            <img src={image4} />
+            <img src={image4} alt="image of the iOS app" />
           </Flex>
         </Flex>
       </Box>
