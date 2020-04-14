@@ -35,15 +35,19 @@ const DesktopHero = () => {
           <ImageWrapper px={0.5}>
             <Flex flexDirection="column" style={{ flex: 2 }}>
               <Flex mb={0.5} style={{ flex: 2.2 }}>
-                <img src={image2} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img
+                  src={image2}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  alt="White shoes with red pants"
+                />
               </Flex>
               <Flex style={{ flex: 3.4 }}>
-                <img src={image1} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={image1} style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="Model with ball" />
               </Flex>
             </Flex>
             <Flex ml={0.5} style={{ flex: 2 }} pr={1}>
               <Box>
-                <img src={image3} />
+                <img src={image3} alt="Model with jacket" />
               </Box>
             </Flex>
           </ImageWrapper>
@@ -77,15 +81,15 @@ const MobileHero = () => {
           <MobileImageWrapper>
             <Flex flexDirection="column" style={{ flex: 2 }}>
               <Box mb={0.5} style={{ width: "100%" }}>
-                <img src={image2} style={{ width: "100%" }} />
+                <img src={image2} style={{ width: "100%" }} alt="White shoes with red pants" />
               </Box>
               <Box style={{ width: "100%" }}>
-                <img src={image1} style={{ width: "100%" }} />
+                <img src={image1} style={{ width: "100%" }} alt="Model with ball" />
               </Box>
             </Flex>
             <Flex ml={0.5} style={{ flex: 2 }}>
               <Box>
-                <img src={image3} />
+                <img src={image3} alt="Model with jacket" />
               </Box>
             </Flex>
           </MobileImageWrapper>

@@ -45,16 +45,16 @@ const Desktop = () => {
         <Flex height="100%" flexDirection="row" flexWrap="nowrap" alignItems="center">
           <Grid p={2} style={{ columnCount: 2, gridColumnGap: 0 }}>
             <ImageWrapper>
-              <img src={imageResize(image1, "medium")} />
+              <img src={imageResize(image1, "medium")} alt="image of the delivery bag" />
             </ImageWrapper>
             <ImageWrapper>
-              <img src={imageResize(image3, "medium")} />
+              <img src={imageResize(image3, "medium")} alt="image of the delivery bag" />
             </ImageWrapper>
             <ImageWrapper>
-              <img src={imageResize(image2, "medium")} />
+              <img src={imageResize(image2, "medium")} alt="image of the delivery bag" />
             </ImageWrapper>
             <ImageWrapper>
-              <img src={imageResize(image4, "medium")} />
+              <img src={imageResize(image4, "medium")} alt="image of the delivery bag" />
             </ImageWrapper>
           </Grid>
         </Flex>
@@ -76,13 +76,13 @@ const Mobile = () => {
           {subtitle}
         </Sans>
         <Spacer mb={4} />
-        <img src={imageResize(image1, "medium")} />
+        <img src={imageResize(image1, "medium")} alt="image of the delivery bag" />
         <Spacer mb={1} />
-        <img src={imageResize(image3, "medium")} />
+        <img src={imageResize(image3, "medium")} alt="image of the delivery bag" />
         <Spacer mb={1} />
-        <img src={imageResize(image2, "medium")} />
+        <img src={imageResize(image2, "medium")} alt="image of the delivery bag" />
         <Spacer mb={1} />
-        <img src={imageResize(image4, "medium")} />
+        <img src={imageResize(image4, "medium")} alt="image of the delivery bag" />
       </Box>
       <Spacer mb={4} />
       <Separator />

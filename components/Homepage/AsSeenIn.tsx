@@ -10,14 +10,19 @@ const glossyLogo = require("../../public/images/homepage/Glossy.png")
 const leanluxeLogo = require("../../public/images/homepage/Leanluxe.png")
 
 const desktopIcons = [
-  { iconHref: vogueLogo },
-  { iconHref: nytLogo },
-  { iconHref: wwdLogo },
-  { iconHref: glossyLogo },
-  { iconHref: leanluxeLogo },
+  { iconHref: vogueLogo, alt: "Vogue logo" },
+  { iconHref: nytLogo, alt: "New York Times logo" },
+  { iconHref: wwdLogo, alt: "WWD logo" },
+  { iconHref: glossyLogo, alt: "Glossy logo" },
+  { iconHref: leanluxeLogo, alt: "Lean Luxe logo" },
 ]
 
-const mobileIcons = [{ iconHref: wwdLogo }, { iconHref: vogueLogo }, { iconHref: nytLogo }, { iconHref: glossyLogo }]
+const mobileIcons = [
+  { iconHref: wwdLogo, alt: "WWD logo" },
+  { iconHref: vogueLogo, alt: "Vogue logo" },
+  { iconHref: nytLogo, alt: "New York Times logo" },
+  { iconHref: glossyLogo, alt: "Glossy logo" },
+]
 
 export const AsSeenIn: React.FC = () => {
   return (
@@ -32,7 +37,7 @@ export const AsSeenIn: React.FC = () => {
               {desktopIcons.map((item, index) => {
                 return (
                   <Box p={1} key={index}>
-                    <img src={item.iconHref} style={{ maxHeight: "22px" }} />
+                    <img src={item.iconHref} style={{ maxHeight: "22px" }} alt={item.alt} />
                   </Box>
                 )
               })}
@@ -49,7 +54,7 @@ export const AsSeenIn: React.FC = () => {
               {mobileIcons.map((item, index) => {
                 return (
                   <Box mr="20px" mb={3} key={index}>
-                    <img src={item.iconHref} style={{ maxHeight: "20px" }} />
+                    <img src={item.iconHref} style={{ maxHeight: "20px" }} alt={item.alt} />
                   </Box>
                 )
               })}

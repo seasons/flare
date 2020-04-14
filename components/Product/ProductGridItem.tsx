@@ -22,7 +22,7 @@ export const ProductGridItem = ({ product }) => {
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
         <div>
           <ImageWrapper>
-            <img src={resizedImage} style={{ width: "100%" }} />
+            <img src={resizedImage} style={{ width: "100%" }} alt="image of the product" />
           </ImageWrapper>
           <Box py="1" pb="2">
             <Sans size="3" mt="0.5">

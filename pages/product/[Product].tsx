@@ -34,7 +34,7 @@ const Product = withData((props) => {
         const imageURL = imageResize(image?.url, "x-large")
         return (
           <ImageContainer m={2} key={image?.url}>
-            <img src={imageURL} />
+            <img src={imageURL} alt="image of the product" />
           </ImageContainer>
         )
       })
