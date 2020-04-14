@@ -87,8 +87,6 @@ const Home = withData(() => {
       <Spacer mt="59px" />
       <Hero />
       <Separator />
-      <TheApp />
-      <Separator />
       <Spacer mb={5} />
       <AsSeenIn />
       <Spacer mb={5} />
@@ -131,6 +129,8 @@ const Home = withData(() => {
       <Spacer mb={6} />
       <MembershipBenefits />
       <Spacer mb={6} />
+      <Separator />
+      <TheApp />
       <Separator />
       <Spacer mb={6} />
       <FAQ />
