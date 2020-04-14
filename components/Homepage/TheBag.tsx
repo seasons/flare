@@ -24,7 +24,7 @@ const textItems = [
   {
     title: "Durable",
     text:
-      "Our bag is made from a tough, recycled, polyethylene material that’s meant to last. It’s also be cleaned & sanitized after every use.",
+      "Our bag is made from a tough, recycled, polyethylene material that’s meant to last. It’s also cleaned & sanitized after every use.",
   },
   {
     title: "Discreet",
@@ -55,7 +55,6 @@ const Desktop = () => {
             </ImageWrapper>
             <ImageWrapper>
               <img src={imageResize(image4, "medium")} />
-              />
             </ImageWrapper>
           </Grid>
         </Flex>

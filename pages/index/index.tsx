@@ -92,6 +92,7 @@ const Home = withData(() => {
       <AsSeenIn />
       <Spacer mb={5} />
       <Separator />
+      <Spacer mb={6} />
       <ColumnList
         items={[
           {
@@ -123,27 +124,27 @@ const Home = withData(() => {
       <ProductRail title="Just added pants" products={data?.justAddedPants} />
       <Spacer mb={2} />
       <Separator />
-      <Spacer mb={6} />
+      <Spacer mb={15} />
       <ChooseMembership />
-      <Spacer mb={6} />
+      <Spacer mb={15} />
       <Separator />
-      <Spacer mb={6} />
+      <Spacer mb={15} />
       <MembershipBenefits />
-      <Spacer mb={6} />
+      <Spacer mb={15} />
       <Separator />
       <TheApp />
       <Separator />
-      <Spacer mb={6} />
+      <Spacer mb={13} />
       <TheBag />
-      <Spacer mb={6} />
+      <Spacer mb={13} />
       <Separator />
-      <Spacer mb={6} />
+      <Spacer mb={15} />
       <FAQ />
-      <Spacer mb={5} />
+      <Spacer mb={15} />
       <Separator />
-      <Spacer mb={5} />
+      <Spacer mb={15} />
       <Brands brands={data?.brands} />
-      <Spacer mb={6} />
+      <Spacer mb={15} />
     </Layout>
   )
 })

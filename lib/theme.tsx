@@ -53,7 +53,11 @@ export const themeProps = {
     9: 72,
     10: 80,
     /** Equivalent to 72px  */
-    12: 112,
+    11: 88,
+    12: 96,
+    13: 104,
+    14: 112,
+    15: 120,
   },
 
   typeSizes: {

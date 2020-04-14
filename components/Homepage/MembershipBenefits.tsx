@@ -41,7 +41,6 @@ const items = [
 export const MembershipBenefits: React.FC = () => {
   return (
     <Grid>
-      <Spacer mb={6} />
       <Flex px={[2, 0]} mx={0.5} justifyContent="center">
         <Flex flexDirection="column" justifyContent="center">
           <Sans size="8" style={{ textAlign: "center" }}>
