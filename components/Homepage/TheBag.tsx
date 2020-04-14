@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { Media } from "../Responsive"
 import { Separator } from "../Separator"
 import { Grid } from "../Grid"
+import { imageResize } from "../../utils/imageResize"
 
 const title = "The Bag"
 const subtitle = "Each member receives their own custom Seasons shipping bag with every order."
@@ -44,16 +45,17 @@ const Desktop = () => {
         <Flex height="100%" flexDirection="row" flexWrap="nowrap" alignItems="center">
           <Grid p={2} style={{ columnCount: 2, gridColumnGap: 0 }}>
             <ImageWrapper>
-              <img src={image1} />
+              <img src={imageResize(image1, "medium")} />
             </ImageWrapper>
             <ImageWrapper>
-              <img src={image2} />
+              <img src={imageResize(image2, "medium")} />
             </ImageWrapper>
             <ImageWrapper>
-              <img src={image3} />
+              <img src={imageResize(image3, "medium")} />
             </ImageWrapper>
             <ImageWrapper>
-              <img src={image4} />
+              <img src={imageResize(image4, "medium")} />
+              />
             </ImageWrapper>
           </Grid>
         </Flex>
@@ -75,13 +77,13 @@ const Mobile = () => {
           {subtitle}
         </Sans>
         <Spacer mb={4} />
-        <img src={image1} />
+        <img src={imageResize(image1, "medium")} />
         <Spacer mb={1} />
-        <img src={image2} />
+        <img src={imageResize(image2, "medium")} />
         <Spacer mb={1} />
-        <img src={image3} />
+        <img src={imageResize(image3, "medium")} />
         <Spacer mb={1} />
-        <img src={image4} />
+        <img src={imageResize(image4, "medium")} />
       </Box>
       <Spacer mb={4} />
       <Separator />
