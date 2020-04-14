@@ -86,9 +86,8 @@ const Mobile = () => {
       </Box>
       <Spacer mb={4} />
       <Separator />
-
       {textItems?.map((item) => (
-        <Box pl={2} pr={4}>
+        <Box pl={2} pr={4} key={item.title}>
           <Spacer mt={5} />
           <Sans size="4">{item.title}</Sans>
           <Sans size="4" color="black50">
