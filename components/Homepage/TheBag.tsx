@@ -48,10 +48,10 @@ const Desktop = () => {
               <img src={imageResize(image1, "medium")} />
             </ImageWrapper>
             <ImageWrapper>
-              <img src={imageResize(image2, "medium")} />
+              <img src={imageResize(image3, "medium")} />
             </ImageWrapper>
             <ImageWrapper>
-              <img src={imageResize(image3, "medium")} />
+              <img src={imageResize(image2, "medium")} />
             </ImageWrapper>
             <ImageWrapper>
               <img src={imageResize(image4, "medium")} />
@@ -79,9 +79,9 @@ const Mobile = () => {
         <Spacer mb={4} />
         <img src={imageResize(image1, "medium")} />
         <Spacer mb={1} />
-        <img src={imageResize(image2, "medium")} />
-        <Spacer mb={1} />
         <img src={imageResize(image3, "medium")} />
+        <Spacer mb={1} />
+        <img src={imageResize(image2, "medium")} />
         <Spacer mb={1} />
         <img src={imageResize(image4, "medium")} />
       </Box>
