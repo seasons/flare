@@ -10,12 +10,13 @@ import {
   Brands,
   MembershipBenefits,
   AsSeenIn,
+  TheBag,
+  TheApp,
 } from "../../components/Homepage"
 import { Spacer, Layout, Separator } from "../../components"
 import withData from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
-import { TheApp } from "../../components/Homepage/TheApp"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
@@ -131,6 +132,10 @@ const Home = withData(() => {
       <Spacer mb={6} />
       <Separator />
       <TheApp />
+      <Separator />
+      <Spacer mb={6} />
+      <TheBag />
+      <Spacer mb={6} />
       <Separator />
       <Spacer mb={6} />
       <FAQ />
