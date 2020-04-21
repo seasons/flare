@@ -1,5 +1,5 @@
 import React from "react"
-import { imageResize } from "../../utils/imageResize"
+import { imageResize, IMAGE_ASPECT_RATIO } from "../../utils/imageResize"
 import styled from "styled-components"
 import { Box } from "../Box"
 import { Link } from "../Link"
@@ -40,7 +40,10 @@ export const ProductGridItem = ({ product }) => {
 }
 
 const ImageWrapper = styled(Box)`
+  height: 0;
+  padding-bottom: calc(100% * ${IMAGE_ASPECT_RATIO});
   width: 100%;
+  overflow: hidden;
 `
 
 const ProductContainer = styled(Box)`

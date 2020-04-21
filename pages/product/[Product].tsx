@@ -5,10 +5,10 @@ import { useQuery } from "@apollo/react-hooks"
 import withData from "../../lib/apollo"
 import { ProductDetails } from "../../components/Product/ProductDetails"
 import { Grid, Col, Row } from "../../components/Grid"
-import { imageResize } from "../../utils/imageResize"
+import { imageResize, IMAGE_ASPECT_RATIO } from "../../utils/imageResize"
 import { useRouter } from "next/router"
 import styled from "styled-components"
-import { Box, Layout, Sans } from "../../components"
+import { Box, Layout, Sans, Spacer } from "../../components"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { color } from "../../helpers"
 
@@ -28,14 +28,16 @@ const Product = withData((props) => {
     if (!data) {
       return <ImageLoader />
     } else if (!product?.images) {
-      return <Box m={2} pb="125%" style={{ height: 0, backgroundColor: color("black04") }} />
+      return <ImageContainer />
     } else {
       return product?.images.map((image) => {
         const imageURL = imageResize(image?.url, "x-large")
         return (
-          <ImageContainer m={2} key={image?.url}>
-            <img src={imageURL} alt="image of the product" />
-          </ImageContainer>
+          <Box p={2}>
+            <ImageContainer key={image?.url}>
+              <img src={imageURL} alt="image of the product" />
+            </ImageContainer>
+          </Box>
         )
       })
     }
@@ -49,6 +51,7 @@ const Product = withData((props) => {
             <Col md="6" sm="12" xsOrder={1} smOrder={1}>
               <Box style={{ minHeight: "calc(100vh - 160px)" }}>
                 <Products />
+                <Spacer mb={2} />
               </Box>
             </Col>
             <Col md="5" sm="12" p={1} mdOrder={2}>
@@ -68,7 +71,13 @@ const Product = withData((props) => {
   )
 })
 
-const ImageContainer = styled(Box)``
+const ImageContainer = styled(Box)`
+  height: 0;
+  width: 100%;
+  background-color: ${color("black04")};
+  overflow: hidden;
+  padding-bottom: calc(100% * ${IMAGE_ASPECT_RATIO});
+`
 
 const DetailsContainer = styled(Box)<{ size?: string }>`
   ${media.md`

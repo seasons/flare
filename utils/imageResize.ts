@@ -9,6 +9,8 @@ interface ImageResizerOptions {
 const IMGIX_BASE = "https://seasons-nyc.imgix.net/"
 const AIRTABLE_BASE = "https://dl.airtable.com/.attachments/"
 
+export const IMAGE_ASPECT_RATIO = 1.25
+
 export const sizes = {
   small: {
     w: 200,
