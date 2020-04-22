@@ -104,8 +104,3 @@ export const TheBag: React.FC = () => {
     </>
   )
 }
-
-const ImageWrapper = styled(Flex)`
-  flex: 1;
-  padding: 4px;
-`
