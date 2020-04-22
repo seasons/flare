@@ -42,20 +42,12 @@ const Desktop = () => {
       style={{ overflow: "hidden", maxWidth: "1200px", margin: "0 auto" }}
     >
       <Box style={{ position: "relative", width: "60%", overflow: "hidden" }}>
-        <Flex height="100%" flexDirection="row" flexWrap="nowrap" alignItems="center">
-          <Grid p={2} style={{ columnCount: 2, gridColumnGap: 0 }}>
-            <ImageWrapper>
-              <img src={imageResize(image1, "medium")} alt="image of the delivery bag" />
-            </ImageWrapper>
-            <ImageWrapper>
-              <img src={imageResize(image3, "medium")} alt="image of the delivery bag" />
-            </ImageWrapper>
-            <ImageWrapper>
-              <img src={imageResize(image2, "medium")} alt="image of the delivery bag" />
-            </ImageWrapper>
-            <ImageWrapper>
-              <img src={imageResize(image4, "medium")} alt="image of the delivery bag" />
-            </ImageWrapper>
+        <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
+          <Grid p={2} style={{ columnCount: 2, gridColumnGap: 0, rowCount: 2 }}>
+            <img src={imageResize(image1, "medium")} alt="image of the delivery bag" style={{ padding: "4px" }} />
+            <img src={imageResize(image3, "medium")} alt="image of the delivery bag" style={{ padding: "4px" }} />
+            <img src={imageResize(image2, "medium")} alt="image of the delivery bag" style={{ padding: "4px" }} />
+            <img src={imageResize(image4, "medium")} alt="image of the delivery bag" style={{ padding: "4px" }} />
           </Grid>
         </Flex>
       </Box>
