@@ -53,6 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       throw e
     })
   } catch (e) {
+    console.log("error creating sitemap", e)
     res.status(500).end()
   }
 }
