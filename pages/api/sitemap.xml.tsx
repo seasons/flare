@@ -38,7 +38,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Set products change frequencey is weekly
     const products = await fetchProducts()
     products?.data?.products.map((product) => {
-      console.log("product", product.slug)
       smStream.write({
         url: `/product/${product.slug}`,
         lastmod: product.updatedAt,
