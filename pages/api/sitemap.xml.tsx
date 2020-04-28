@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { SitemapStream, streamToPromise, EnumChangefreq } from "sitemap"
 import { createGzip } from "zlib"
 
+const fetch = require("node-fetch")
+
 const fetchProducts = () => {
   return fetch(`https://monsoon.seasons.nyc/graphql`, {
     method: "POST",
@@ -36,7 +38,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Set products change frequencey is weekly
     const products = await fetchProducts()
     products?.data?.products.map((product) => {
-      console.log("product", product.slug)
       smStream.write({
         url: `/product/${product.slug}`,
         lastmod: product.updatedAt,
