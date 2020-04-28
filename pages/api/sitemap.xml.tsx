@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { SitemapStream, streamToPromise, EnumChangefreq } from "sitemap"
 import { createGzip } from "zlib"
 
+const fetch = require("node-fetch")
+
 const fetchProducts = () => {
   return fetch(`https://monsoon.seasons.nyc/graphql`, {
     method: "POST",
