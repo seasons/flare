@@ -94,7 +94,7 @@ export const AboutWhoWeAre: React.FC = () => {
       <Spacer mb={1} />
       <Row>
         {gridItems.map((item, index) => (
-          <Col lg="3" md="6" xs="12" p="2px" key={index}>
+          <Col lg="3" md="6" xs="12" px={[2, "2px"]} py={[0, "2px"]} key={index}>
             <Spacer mb={4} />
             <img src={item.image} />
             <Box mx={0.5}>
