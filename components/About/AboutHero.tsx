@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
-import { Flex, Sans, Spacer, Box } from ".."
+import { Flex, Sans, Spacer, Box, Separator } from ".."
 import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
-import { space } from "../../helpers"
+import { space, color } from "../../helpers"
 
 const imageImport1 = require("../../public/images/about/About-HeroImage-1.png")
 const imageImport2 = require("../../public/images/about/About-HeroImage-2.png")
@@ -17,25 +17,29 @@ const DesktopHero = () => {
       <Box px={0.5} style={{ position: "relative" }}>
         <Spacer pb="122px" />
         <Flex
-          style={{ flex: 1, maxWidth: "50%" }}
+          style={{ flex: 1, maxWidth: "60%" }}
           pr="40px"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
         >
           <Sans size="6" color="black100">
-            Seasons is a New York-based fashion rental platform designed to foster access, community, and
-            sustainability. We’ve curated a mix of luxury menswear, streetwear, and avant-garde designers, creating an
-            exclusive rental library for our members in NYC. Seasons offers an alternative to the constant consumption
-            of the seasonal fashion cycle and fast fashion, combining the fun of newness with the sustainability of
-            re-use.
+            <span style={{ display: "inline", backgroundColor: color("white100"), padding: "5px 0px" }}>
+              Seasons is a New York-based fashion rental platform designed to foster access, community, and
+              sustainability. We’ve curated a mix of luxury menswear, streetwear, and avant-garde designers, creating an
+              exclusive rental library for our members in NYC. Seasons offers an alternative to the constant consumption
+              of the seasonal fashion cycle and fast fashion, combining the fun of newness with the sustainability of
+              re-use.
+            </span>
           </Sans>
           <Spacer mb={2} />
           <Sans size="6" color="black100">
-            We compile data and member feedback in order to provide our brand partners with valuable insight about
-            customer impressions, unlocking new customers via the potential of rental’s “try before you buy” ethos.
-            We’re building technology and systems that push the boundaries of traditional retail and e-commerce, and we
-            believe the future of this industry is contextual, personalized, and sustainable.
+            <span style={{ display: "inline", backgroundColor: color("white100"), padding: "5px 0px" }}>
+              We compile data and member feedback in order to provide our brand partners with valuable insight about
+              customer impressions, unlocking new customers via the potential of rental’s “try before you buy” ethos.
+              We’re building technology and systems that push the boundaries of traditional retail and e-commerce, and
+              we believe the future of this industry is contextual, personalized, and sustainable.
+            </span>
           </Sans>
         </Flex>
         <Spacer pb="80px" />
@@ -93,6 +97,7 @@ export const AboutHero: React.FC = () => {
       <Media lessThan="md">
         <MobileHero />
       </Media>
+      <Separator />
     </>
   )
 }
