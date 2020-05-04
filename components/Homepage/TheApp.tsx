@@ -4,14 +4,19 @@ import { TextList } from "./TextList"
 import styled from "styled-components"
 import { Media } from "../Responsive"
 import { Separator } from "../Separator"
+import { imageResize } from "../../utils/imageResize"
 
 const title = "The app"
 const subtitle = "After receiving an invite, you’ll get a link to download the Seasons app."
 
-const image1 = require("../../public/images/homepage/Device_1.png")
-const image2 = require("../../public/images/homepage/Device_2.png")
-const image3 = require("../../public/images/homepage/Device_3.png")
-const image4 = require("../../public/images/homepage/Device_4.png")
+const imageImport1 = require("../../public/images/homepage/Device_1.png")
+const imageImport2 = require("../../public/images/homepage/Device_2.png")
+const imageImport3 = require("../../public/images/homepage/Device_3.png")
+const imageImport4 = require("../../public/images/homepage/Device_4.png")
+const image1 = imageResize(imageImport1, "large")
+const image2 = imageResize(imageImport2, "large")
+const image3 = imageResize(imageImport3, "large")
+const image4 = imageResize(imageImport4, "large")
 
 const textItems = [
   {
