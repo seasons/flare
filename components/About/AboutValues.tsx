@@ -47,10 +47,12 @@ export const AboutValues: React.FC = () => {
         ))}
       </Row>
       <Spacer mb={10} />
-      <Sans size="3" color="black50">
-        PSA: If the number of times a garment was worn were doubled, the greenhouse gas emissions over it’s lifetime
-        would be 44% lower.
-      </Sans>
+      <Box px={[2, 0]} mx={0.5}>
+        <Sans size="3" color="black50">
+          PSA: If the number of times a garment was worn were doubled, the greenhouse gas emissions over it’s lifetime
+          would be 44% lower.
+        </Sans>
+      </Box>
       <Spacer mb={10} />
     </Grid>
   )

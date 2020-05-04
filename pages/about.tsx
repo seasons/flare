@@ -1,6 +1,6 @@
 import { Nav } from "../components/Nav/Nav"
 import { Layout, Spacer, Separator } from "../components"
-import { AboutHero, AboutValues } from "../components/About"
+import { AboutHero, AboutValues, AboutWhoWeAre } from "../components/About"
 
 const about = () => (
   <Layout fixedNav>
@@ -9,6 +9,7 @@ const about = () => (
     <Spacer mb={10} />
     <AboutValues />
     <Separator />
+    <AboutWhoWeAre />
   </Layout>
 )
 
