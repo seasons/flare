@@ -51,9 +51,11 @@ const Menu = ({ items, open }) => {
                   style={{ cursor: "pointer" }}
                   active={!!router.pathname.match(link.match)}
                 >
-                  <Sans size="3" p={2} color="black">
-                    {link.text}
-                  </Sans>
+                  <Box p={2}>
+                    <Sans size="3" p={2} color="black">
+                      {link.text}
+                    </Sans>
+                  </Box>
                 </MenuItem>
               </StyledAnchor>
             )
@@ -66,9 +68,11 @@ const Menu = ({ items, open }) => {
                   style={{ cursor: "pointer" }}
                   active={!!router.pathname.match(link.match)}
                 >
-                  <Sans size="3" p={2} color="black">
-                    {link.text}
-                  </Sans>
+                  <Box p={2}>
+                    <Sans size="3" p={2} color="black">
+                      {link.text}
+                    </Sans>
+                  </Box>
                 </MenuItem>
               </NextLink>
             )
