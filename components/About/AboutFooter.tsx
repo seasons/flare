@@ -8,31 +8,31 @@ import { Media } from "../Responsive"
 const backers = [
   {
     name: "Intialized Capital",
-    link: "",
+    link: "https://initialized.com",
   },
   {
     name: "Kindred Ventures",
-    link: "",
+    link: "https://kindredventures.com",
   },
   {
     name: "Notation",
-    link: "",
+    link: "https://notation.vc",
   },
   {
     name: "Boxgroup",
-    link: "",
+    link: "https://www.boxgroup.com",
   },
   {
     name: "WndrCo",
-    link: "",
+    link: "https://www.wndrco.com",
   },
   {
     name: "Rogue Capital",
-    link: "",
+    link: "http://www.roguecapital.co",
   },
   {
     name: "Nas",
-    link: "",
+    link: "https://www.nasirjones.com",
   },
 ]
 
@@ -66,7 +66,7 @@ export const AboutFooter: React.FC = () => {
       <Grid>
         <Row>
           <Col md="6" xs="12">
-            <Box py={5} px={[2, 5]} style={{ width: "100%" }}>
+            <Box py={[10, 5]} px={[2, 0]} style={{ width: "100%" }}>
               <Sans size="6">Who we’re backed by</Sans>
               <Spacer mb={5} />
               {backers.map((backer) => (
@@ -94,6 +94,7 @@ export const AboutFooter: React.FC = () => {
           </Col>
         </Row>
       </Grid>
+      <Spacer mb={5} />
     </>
   )
 }
