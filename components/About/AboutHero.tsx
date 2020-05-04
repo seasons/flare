@@ -14,11 +14,12 @@ const image2 = imageResize(imageImport2, "large")
 const DesktopHero = () => {
   return (
     <Grid>
-      <Box px={0.5} style={{ position: "relative" }}>
+      <Box mx={0.5} style={{ position: "relative", overflow: "hidden" }}>
         <Spacer pb="122px" />
         <Flex
-          style={{ flex: 1, maxWidth: "60%" }}
+          style={{ flex: 1 }}
           pr="40px"
+          width={["70%", "75%", "60%"]}
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
@@ -44,10 +45,10 @@ const DesktopHero = () => {
         </Flex>
         <Spacer pb="80px" />
         <ImageWrapper1>
-          <img src={image1} style={{ height: "100%" }} alt="Office interior" />
+          <img src={image1} style={{ maxHeight: "100%" }} alt="Office interior" />
         </ImageWrapper1>
         <ImageWrapper2>
-          <img src={image2} style={{ height: "100%" }} alt="Planning on a white board" />
+          <img src={image2} style={{ maxHeight: "100%" }} alt="Planning on a white board" />
         </ImageWrapper2>
       </Box>
     </Grid>
@@ -106,7 +107,7 @@ const ImageWrapper1 = styled.div`
   height: calc(50% + 26px);
   position: absolute;
   top: 0;
-  right: 135px;
+  right: 130px;
   z-index: -1;
 `
 
