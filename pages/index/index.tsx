@@ -85,7 +85,6 @@ const Home = withData(() => {
   return (
     <Layout fixedNav>
       <Nav fixed />
-      <Spacer mt="59px" />
       <Hero />
       <Separator />
       <Spacer mb={5} />

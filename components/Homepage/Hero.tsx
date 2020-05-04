@@ -68,6 +68,7 @@ const MobileHero = () => {
         <Col xs="12" px={[2, 0]}>
           <Flex flexDirection="column" px={0.5}>
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
+              <Spacer pb="60px" />
               <Spacer mb={6} />
               <Sans size="8" color="black100">
                 This is Seasons.
