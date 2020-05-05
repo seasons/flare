@@ -9,6 +9,7 @@ import { SeasonsLogo } from "./SeasonsLogo"
 import { BoxProps, Box } from "../Box"
 import { useState } from "react"
 import { useSpring, animated } from "react-spring"
+import { Spacer } from ".."
 
 const MENU_HEIGHT = "60px"
 
@@ -50,9 +51,11 @@ const Menu = ({ items, open }) => {
                   style={{ cursor: "pointer" }}
                   active={!!router.pathname.match(link.match)}
                 >
-                  <Sans size="3" p={2} color="black">
-                    {link.text}
-                  </Sans>
+                  <Box p={2}>
+                    <Sans size="3" p={2} color="black">
+                      {link.text}
+                    </Sans>
+                  </Box>
                 </MenuItem>
               </StyledAnchor>
             )
@@ -65,9 +68,11 @@ const Menu = ({ items, open }) => {
                   style={{ cursor: "pointer" }}
                   active={!!router.pathname.match(link.match)}
                 >
-                  <Sans size="3" p={2} color="black">
-                    {link.text}
-                  </Sans>
+                  <Box p={2}>
+                    <Sans size="3" p={2} color="black">
+                      {link.text}
+                    </Sans>
+                  </Box>
                 </MenuItem>
               </NextLink>
             )

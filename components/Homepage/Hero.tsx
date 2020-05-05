@@ -4,10 +4,14 @@ import { Grid, Row, Col } from "../Grid"
 import { Flex, Sans, Spacer, Box } from ".."
 import { LinkCTA } from "../Button"
 import { Media } from "../Responsive"
+import { imageResize } from "../../utils/imageResize"
 
-const image1 = require("../../public/images/homepage/HeroImage_1.png")
-const image2 = require("../../public/images/homepage/HeroImage_2.png")
-const image3 = require("../../public/images/homepage/HeroImage_3.png")
+const imageImport1 = require("../../public/images/homepage/HeroImage_1.png")
+const imageImport2 = require("../../public/images/homepage/HeroImage_2.png")
+const imageImport3 = require("../../public/images/homepage/HeroImage_3.png")
+const image1 = imageResize(imageImport1, "large")
+const image2 = imageResize(imageImport2, "large")
+const image3 = imageResize(imageImport3, "large")
 
 const DesktopHero = () => {
   return (
@@ -64,6 +68,7 @@ const MobileHero = () => {
         <Col xs="12" px={[2, 0]}>
           <Flex flexDirection="column" px={0.5}>
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
+              <Spacer pb="60px" />
               <Spacer mb={6} />
               <Sans size="8" color="black100">
                 This is Seasons.

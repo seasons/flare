@@ -4,7 +4,7 @@ import { gql } from "apollo-boost"
 import { useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
 import withData from "../../lib/apollo"
-import { Layout, Flex } from "../../components"
+import { Layout, Flex, Spacer } from "../../components"
 import { Sans, fontFamily } from "../../components/Typography/Typography"
 import { Box } from "../../components/Box"
 import { Grid, Row, Col } from "../../components/Grid"
@@ -109,6 +109,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
     return (
       <>
         <Sans size={["4", "5"]}>Categories</Sans>
+        <Spacer mb={2} />
         {!data ? (
           <CategoryLoader />
         ) : (
@@ -121,6 +122,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                     {category.name}
                   </Sans>
                 </Link>
+                <Spacer mb={2} />
               </div>
             )
           })

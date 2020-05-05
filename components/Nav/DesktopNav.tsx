@@ -7,37 +7,41 @@ import { Grid } from "../Grid"
 import { NavProps } from "./Types"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavItem } from "./NavItem"
+import { Spacer } from ".."
 
 export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const router = useRouter()
 
   return (
-    <HeaderContainer fixed={fixed}>
-      <Grid>
-        <Flex ml="auto" flexDirection="row" alignItems="center">
-          <SeasonsLogo />
+    <>
+      <HeaderContainer fixed={fixed}>
+        <Grid>
           <Flex ml="auto" flexDirection="row" alignItems="center">
-            {links.map((link) => {
-              if (link.external) {
-                return (
-                  <Link key={link.url} href={link.url} active={!!router.pathname.match(link.match)}>
-                    <NavItem link={link} />
-                  </Link>
-                )
-              } else {
-                return (
-                  <NextLink href={link.url} key={link.text}>
-                    <Link href={link.url} active={!!router.pathname.match(link.match)}>
+            <SeasonsLogo />
+            <Flex ml="auto" flexDirection="row" alignItems="center">
+              {links.map((link) => {
+                if (link.external) {
+                  return (
+                    <Link key={link.url} href={link.url} active={!!router.pathname.match(link.match)}>
                       <NavItem link={link} />
                     </Link>
-                  </NextLink>
-                )
-              }
-            })}
+                  )
+                } else {
+                  return (
+                    <NextLink href={link.url} key={link.text}>
+                      <Link href={link.url} active={!!router.pathname.match(link.match)}>
+                        <NavItem link={link} />
+                      </Link>
+                    </NextLink>
+                  )
+                }
+              })}
+            </Flex>
           </Flex>
-        </Flex>
-      </Grid>
-    </HeaderContainer>
+        </Grid>
+      </HeaderContainer>
+      <Spacer mb="60px" />
+    </>
   )
 }
 
