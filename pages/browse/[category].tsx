@@ -49,7 +49,6 @@ const GET_BROWSE_PRODUCTS = gql`
           }
           modelHeight
           externalURL
-          tags
           retailPrice
           status
           createdAt
