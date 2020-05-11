@@ -15,7 +15,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { media } from "styled-bootstrap-grid"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
-import { BrowseLoader, CategoryLoader } from "../../components/Browse/BrowseLoader"
+import { CategoryLoader } from "../../components/Browse/BrowseLoader"
 import { Media } from "../../components/Responsive"
 
 const GET_BROWSE_PRODUCTS = gql`
