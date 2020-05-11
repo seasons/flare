@@ -47,7 +47,7 @@ const ImageWrapper = styled(Box)`
 `
 
 const ProductContainer = styled(Box)`
-  margin: 5px;
+  margin: 2px;
   overflow: hidden;
   text-align: left;
   cursor: pointer;

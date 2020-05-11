@@ -81,7 +81,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
 
   const [currentCategory, setCurrentCategory] = useState(query.category || "all")
   const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 18
+  const pageSize = 20
   const skip = (currentPage - 1) * pageSize
 
   const { data } = useQuery(GET_BROWSE_PRODUCTS, {
@@ -107,7 +107,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const Categories = () => {
     return (
       <>
-        <Sans size={["4", "5"]}>Categories</Sans>
+        <Sans size="3">Categories</Sans>
         <Spacer mb={2} />
         {!data ? (
           <CategoryLoader />
@@ -117,11 +117,14 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
             return (
               <div onClick={() => setCurrentPage(1)} key={category.slug}>
                 <Link href="/browse/[category]" as={`/browse/${category.slug}`}>
-                  <Sans size={["3", "5"]} my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer" }}>
-                    {category.name}
-                  </Sans>
+                  <Flex flexDirection="row" alignItems="center">
+                    {isActive && <ActiveLine />}
+                    <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer" }}>
+                      {category.name}
+                    </Sans>
+                  </Flex>
                 </Link>
-                <Spacer mb={2} />
+                <Spacer mb={1} />
               </div>
             )
           })
@@ -135,7 +138,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
       <Box mt={["76px", "100px"]}>
         <Grid>
           <Row>
-            <Col md="3" xs="12" mx={["2", "0"]}>
+            <Col md="2" xs="12" mx={["2", "0"]}>
               <Media greaterThanOrEqual="md">
                 <FixedBox>
                   <Categories />
@@ -145,13 +148,13 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                 <Categories />
               </Media>
             </Col>
-            <Col md="9" xs="12">
+            <Col md="10" xs="12">
               <Row>
                 {!data ? (
                   <BrowseLoader />
                 ) : (
                   (products || []).map((product, i) => (
-                    <Col col sm="4" xs="6" key={i}>
+                    <Col col sm="3" xs="6" key={i}>
                       <ProductGridItem product={product?.node} />
                     </Col>
                   ))
@@ -159,20 +162,21 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
               </Row>
               <Row>
                 <Flex align-items="center" mt={2} mb={4} width="100%">
-                  <Pagination>
+                  <Pagination currentPage={currentPage} pageCount={pageCount}>
                     <Paginate
                       previousLabel="previous"
                       nextLabel="next"
-                      breakLabel="..."
                       breakClassName="break-me"
                       pageCount={pageCount}
-                      marginPagesDisplayed={2}
+                      marginPagesDisplayed={25}
                       pageRangeDisplayed={2}
                       forcePage={currentPage - 1}
                       onPageChange={(data) => {
                         setCurrentPage(data.selected + 1)
                       }}
                       containerClassName="pagination"
+                      previousLinkClassName="previous-button"
+                      nextLinkClassName="next-button"
                       subContainerClassName="pages pagination"
                       activeClassName="active"
                     />
@@ -187,24 +191,34 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   )
 })
 
-const Pagination = styled.div`
+const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
   ${media.md`
-    margin-left: auto;
+    margin: 0 auto;
   `};
 
   .pagination {
+    padding: 0;
+    .previous-button {
+      display: ${(p) => (p.currentPage === 1 ? "none" : "block")};
+    }
+
+    .next-button {
+      display: ${(p) => (p.currentPage === p.pageCount ? "none" : "block")};
+    }
+
     & li {
       cursor: pointer;
       font-family: ${fontFamily.sans.medium as CSSObject};
       display: inline-block;
       margin-right: 5px;
-      color: ${color("black50")};
-      width: 40px;
-      height: 40px;
+      min-width: 24px;
+      height: 24px;
       text-align: center;
+      border-radius: 2px;
+      color: ${color("black100")};
 
       &.active {
-        color: ${color("black100")};
+        background-color: ${color("black10")};
       }
 
       &.previous,
@@ -213,7 +227,10 @@ const Pagination = styled.div`
       }
 
       & a {
-        padding: 20px;
+        height: 24px;
+        min-width: 24px;
+        top: 2px;
+        position: relative;
         & :focus {
           outline: none !important;
         }
@@ -223,7 +240,14 @@ const Pagination = styled.div`
 `
 
 const FixedBox = styled.div`
-  position: fixed;
+  position: absolute;
+`
+
+const ActiveLine = styled.div`
+  width: 16px;
+  height: 2px;
+  margin-right: 8px;
+  background-color: ${color("black100")};
 `
 
 export default BrowsePage
