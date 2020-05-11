@@ -24,7 +24,7 @@ const sizes = {
   },
 }
 
-export const sortVariants = variants => {
+export const sortVariants = (variants) => {
   // The higher the sortWeight the sooner it will be displayed, e.g. "xxl, xl, l, m"
   const uniqueArray = uniqBy(variants, "size")
   return uniqueArray.sort((variantA, variantB) => {
@@ -40,14 +40,14 @@ export const VariantSizes: React.FC<{
   variants: any[]
   size: "0" | "1"
 }> = ({ variants, size }) => {
-  const availableVariants = variants.filter(a => !!a?.internalSize?.display)
+  const availableVariants = variants.filter((a) => !!a?.internalSize?.display)
 
   return (
     <Flex flexDirection="row">
       {availableVariants.map((variant: any) => {
         const reservable = variant.reservable !== null && !!variant.reservable
         return (
-          <Box key={variant.id} mr={1} mt={0.5} style={{ position: "relative" }}>
+          <Box key={variant.id} mr={1} style={{ position: "relative" }}>
             <Sans size="3" color={reservable ? "black" : "black15"}>
               {variant?.internalSize?.display}
             </Sans>
@@ -64,6 +64,6 @@ const Strikethrough = styled.div<{ size: string }>`
   height: 2;
   width: 100%;
   position: absolute;
-  top: ${p => (p.size === "0" ? 7 : 11)};
+  top: ${(p) => (p.size === "0" ? 7 : 11)};
   left: 0;
 `
