@@ -3,12 +3,12 @@ import React from "react"
 import styled from "styled-components"
 import { Box } from "../Box"
 
-const imageHeight = 362
-const cardWidth = 290
-const cardHeight = 462
+const imageHeight = 315
+const cardWidth = 252
+const cardHeight = 362
 const rows = 3
 const categoryRows = 7
-const categorySpace = 35
+const categorySpace = 32
 
 export const CategoryLoader = () => {
   return (
@@ -17,7 +17,7 @@ export const CategoryLoader = () => {
         {[...Array(categoryRows)].map((_, index) => {
           return (
             <React.Fragment key={index}>
-              <rect x={0} y={index * categorySpace} width="80" height={18} />
+              <rect x={0} y={index * categorySpace} width="80" height={15} />
             </React.Fragment>
           )
         })}
@@ -30,8 +30,9 @@ export const BrowseLoader = () => {
   const renderCard = ({ x, y }) => (
     <>
       <rect x={x} y={y} width={cardWidth} height={imageHeight} />
-      <rect x={x} y={y + imageHeight + 8} width="80" height={12} />
+      <rect x={x} y={y + imageHeight + 8} width="100%" height={12} />
       <rect x={x} y={y + imageHeight + 26} width="110" height={12} />
+      <rect x={x} y={y + imageHeight + 50} width="60" height={12} />
       <rect x={x} y={y + imageHeight + 50} width="60" height={12} />
     </>
   )

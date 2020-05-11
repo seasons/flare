@@ -150,15 +150,11 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
             </Col>
             <Col md="10" xs="12">
               <Row>
-                {!data ? (
-                  <BrowseLoader />
-                ) : (
-                  (products || []).map((product, i) => (
-                    <Col col sm="3" xs="6" key={i}>
-                      <ProductGridItem product={product?.node} />
-                    </Col>
-                  ))
-                )}
+                {(products || []).map((product, i) => (
+                  <Col col sm="3" xs="6" key={i}>
+                    <ProductGridItem product={product?.node} />
+                  </Col>
+                ))}
               </Row>
               <Row>
                 <Flex align-items="center" mt={2} mb={4} width="100%">
