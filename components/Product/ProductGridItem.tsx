@@ -7,6 +7,7 @@ import { get } from "lodash"
 import { Sans } from "../Typography"
 import { VariantSizes } from "../VariantSizes"
 import ContentLoader from "react-content-loader"
+import { color } from "../../helpers"
 
 export const ProductGridItem = ({ product }) => {
   if (!product) {
@@ -23,13 +24,16 @@ export const ProductGridItem = ({ product }) => {
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
         <div>
           <ImageWrapper>
-            {!product ? (
+            <LoaderWrapper>
               <ContentLoader viewBox="0 0 100 125">
                 <rect x={0} y={0} width="100%" height="100%" />
               </ContentLoader>
-            ) : (
-              <img src={resizedImage} style={{ width: "100%" }} alt="image of the product" />
-            )}
+            </LoaderWrapper>
+            <img
+              src={resizedImage}
+              style={{ width: "100%", backgroundColor: color("black04") }}
+              alt="image of the product"
+            />
           </ImageWrapper>
           <Box py="1" pb="2">
             {!product ? (
@@ -57,6 +61,16 @@ const ImageWrapper = styled(Box)`
   padding-bottom: calc(100% * ${IMAGE_ASPECT_RATIO});
   width: 100%;
   overflow: hidden;
+  position: relative;
+`
+
+const LoaderWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 `
 
 const ProductContainer = styled(Box)`

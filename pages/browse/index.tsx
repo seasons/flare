@@ -1,2 +1,2 @@
-import BrowsePage from "./[category]"
+import BrowsePage from "./[filter]"
 export default BrowsePage

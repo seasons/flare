@@ -5,6 +5,8 @@ export const GET_PRODUCT = gql`
     product(where: { slug: $slug }) {
       id
       name
+      createdAt
+      updatedAt
       description
       retailPrice
       modelSize {

@@ -19,7 +19,14 @@ import { CategoryLoader } from "../../components/Browse/BrowseLoader"
 import { Media } from "../../components/Responsive"
 
 const GET_BROWSE_PRODUCTS = gql`
-  query GetBrowseProducts($name: String!, $first: Int!, $skip: Int!) {
+  query GetBrowseProducts(
+    $categoryName: String!
+    $brandName: String!
+    $first: Int!
+    $skip: Int!
+    $orderBy: ProductOrderByInput!
+    $brandOrderBy: BrandOrderByInput!
+  ) {
     categories(where: { visible: true }) {
       id
       slug
@@ -28,12 +35,24 @@ const GET_BROWSE_PRODUCTS = gql`
         slug
       }
     }
-    connection: productsConnection(category: $name, where: { status: Available }) {
+    brands(orderBy: $brandOrderBy, where: { products_some: { id_not: null }, name_not: null }) {
+      id
+      slug
+      name
+    }
+    connection: productsConnection(category: $categoryName, brand: $brandName, where: { status: Available }) {
       aggregate {
         count
       }
     }
-    products: productsConnection(category: $name, first: $first, skip: $skip, where: { status: Available }) {
+    products: productsConnection(
+      category: $categoryName
+      brand: $brandName
+      orderBy: $orderBy
+      first: $first
+      skip: $skip
+      where: { status: Available }
+    ) {
       aggregate {
         count
       }
@@ -42,8 +61,10 @@ const GET_BROWSE_PRODUCTS = gql`
           id
           slug
           name
+          images {
+            url
+          }
           description
-          images
           modelSize {
             display
           }
@@ -80,21 +101,36 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const { query } = router
 
   const [currentCategory, setCurrentCategory] = useState(query.category || "all")
+  const [currentBrand, setCurrentBrand] = useState(query.brand || "all")
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 20
   const skip = (currentPage - 1) * pageSize
 
-  const { data } = useQuery(GET_BROWSE_PRODUCTS, {
+  const { data, error } = useQuery(GET_BROWSE_PRODUCTS, {
     variables: {
-      name: currentCategory,
+      brandName: currentBrand,
+      categoryName: currentCategory,
       first: pageSize,
+      orderBy: "createdAt_DESC",
+      brandOrderBy: "name_ASC",
       skip,
     },
   })
 
+  if (error) {
+    console.log("error browse.tsx ", error)
+  }
+
+  console.log("data", data)
+
   useEffect(() => {
-    setCurrentCategory(query.category)
-  }, [query.category])
+    if (query.brand) {
+      setCurrentBrand(query.brand)
+    }
+    if (query.category) {
+      setCurrentCategory(query.category)
+    }
+  }, [query])
 
   useEffect(() => {
     window && window.scrollTo(0, 0)
@@ -103,6 +139,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const pageCount = Math.ceil(data?.connection?.aggregate?.count / pageSize)
   const products = data?.products?.edges
   const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
+  const brands = [{ slug: "all", name: "All" }, ...(data?.brands ?? [])]
 
   const Categories = () => {
     return (
@@ -116,7 +153,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
             const isActive = currentCategory === category.slug
             return (
               <div onClick={() => setCurrentPage(1)} key={category.slug}>
-                <Link href="/browse/[category]" as={`/browse/${category.slug}`}>
+                <Link href={{ pathname: "/browse", query: { category: category.slug, brand: currentBrand } }}>
                   <Flex flexDirection="row" alignItems="center">
                     {isActive && <ActiveLine />}
                     <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer" }}>
@@ -133,31 +170,77 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
     )
   }
 
+  const Brands = () => {
+    return (
+      <>
+        <Sans size="3">Designers</Sans>
+        <Spacer mb={2} />
+        {!data ? (
+          <CategoryLoader />
+        ) : (
+          brands.map((brand) => {
+            const isActive = currentBrand === brand.slug
+            return (
+              <div onClick={() => setCurrentPage(1)} key={brand.slug}>
+                <Link href={{ pathname: "/browse", query: { category: currentCategory, brand: brand.slug } }}>
+                  <Flex flexDirection="row" alignItems="center">
+                    {isActive && <ActiveLine />}
+                    <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer" }}>
+                      {brand.name}
+                    </Sans>
+                  </Flex>
+                </Link>
+                <Spacer mb={1} />
+              </div>
+            )
+          })
+        )}
+      </>
+    )
+  }
+
   return (
     <Layout fixedNav>
-      <Box mt={["76px", "100px"]}>
-        <Grid>
-          <Row>
-            <Col md="2" xs="12" mx={["2", "0"]}>
-              <Media greaterThanOrEqual="md">
-                <FixedBox>
+      <Spacer mb={5} />
+      <Grid>
+        <Row style={{ minHeight: "calc(100vh - 160px)" }}>
+          <Col md="2" xs="12" mx={["2", "0"]}>
+            <Media greaterThanOrEqual="md">
+              <FixedBox>
+                <Box pr={1}>
                   <Categories />
-                </FixedBox>
-              </Media>
-              <Media lessThan="md">
-                <Categories />
-              </Media>
-            </Col>
-            <Col md="10" xs="12">
-              <Row>
-                {(products || []).map((product, i) => (
+                  <Spacer mb={3} />
+                  <Brands />
+                  <Spacer mb={2} />
+                </Box>
+              </FixedBox>
+            </Media>
+            <Media lessThan="md">
+              <Categories />
+              <Brands />
+            </Media>
+          </Col>
+          <Col md="10" xs="12">
+            <Row>
+              {!!products?.length ? (
+                (products || []).map((product, i) => (
                   <Col col sm="3" xs="6" key={i}>
-                    <ProductGridItem product={product?.node} />
+                    <Box pb={5}>
+                      <ProductGridItem product={product?.node} />
+                    </Box>
                   </Col>
-                ))}
-              </Row>
-              <Row>
-                <Flex align-items="center" mt={2} mb={4} width="100%">
+                ))
+              ) : (
+                <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
+                  <Sans size="3" style={{ textAlign: "center" }}>
+                    Your filters returned no results.
+                  </Sans>
+                </Flex>
+              )}
+            </Row>
+            <Row>
+              <Flex align-items="center" mt={2} mb={4} width="100%">
+                {!!products?.length && (
                   <Pagination currentPage={currentPage} pageCount={pageCount}>
                     <Paginate
                       previousLabel="previous"
@@ -177,12 +260,12 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                       activeClassName="active"
                     />
                   </Pagination>
-                </Flex>
-              </Row>
-            </Col>
-          </Row>
-        </Grid>
-      </Box>
+                )}
+              </Flex>
+            </Row>
+          </Col>
+        </Row>
+      </Grid>
     </Layout>
   )
 })
@@ -194,12 +277,16 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
 
   .pagination {
     padding: 0;
-    .previous-button {
-      display: ${(p) => (p.currentPage === 1 ? "none" : "block")};
+    text-align: center;
+
+    .previous-button,
+    .previous {
+      display: ${(p) => (p.currentPage === 1 ? "none" : "inline-block")};
     }
 
-    .next-button {
-      display: ${(p) => (p.currentPage === p.pageCount ? "none" : "block")};
+    .next-button,
+    .next {
+      display: ${(p) => (p.currentPage === p.pageCount ? "none" : "inline-block")};
     }
 
     & li {
@@ -237,6 +324,11 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
 
 const FixedBox = styled.div`
   position: absolute;
+  height: 100%;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const ActiveLine = styled.div`
