@@ -144,6 +144,30 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
 
   return (
     <Layout fixedNav>
+      <Media lessThan="md">
+        <MobileFilters
+          BrandsListComponent={
+            <BrowseFilters
+              setCurrentPage={setCurrentPage}
+              currentCategory={currentCategory}
+              listItems={brands}
+              title="Designers"
+              hideTitle
+              currentBrand={currentBrand}
+            />
+          }
+          CategoriesListComponent={
+            <BrowseFilters
+              title="Categories"
+              setCurrentPage={setCurrentPage}
+              currentCategory={currentCategory}
+              listItems={categories}
+              hideTitle
+              currentBrand={currentBrand}
+            />
+          }
+        />
+      </Media>
       <Spacer mb={5} />
       <Grid>
         <Row style={{ minHeight: "calc(100vh - 160px)" }}>
@@ -170,28 +194,6 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                 </Box>
               </FixedBox>
             </Media>
-            <Media lessThan="md">
-              <MobileFilters
-                BrandsListComponent={() => (
-                  <BrowseFilters
-                    title="Categories"
-                    setCurrentPage={setCurrentPage}
-                    currentCategory={currentCategory}
-                    listItems={categories}
-                    currentBrand={currentBrand}
-                  />
-                )}
-                CategoriesListComponent={() => (
-                  <BrowseFilters
-                    setCurrentPage={setCurrentPage}
-                    currentCategory={currentCategory}
-                    listItems={brands}
-                    title="Designers"
-                    currentBrand={currentBrand}
-                  />
-                )}
-              />
-            </Media>
           </Col>
           <Col md="10" xs="12">
             <Row>
@@ -204,7 +206,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
               ) : (
                 (products || []).map((product, i) => (
                   <Col col sm="3" xs="6" key={i}>
-                    <Box pb={5}>
+                    <Box pt={[2, 0]} pb={[2, 5]}>
                       <ProductGridItem product={product?.node} />
                     </Box>
                   </Col>
@@ -242,12 +244,6 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
     </Layout>
   )
 })
-
-const MobileFilterWrapper = styled.div`
-  position: relative;
-  height: 60;
-  width: 100%;
-`
 
 const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
   ${media.md`

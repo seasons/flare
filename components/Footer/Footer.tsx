@@ -20,19 +20,19 @@ export const Footer = () => {
           justifyContent={["flex-start", "space-between"]}
         >
           <Link href="/terms-of-service">
-            <Sans size="4" color={color("black50")} pt="0.5" pr="3">
+            <Sans size={["2", "4"]} color={color("black50")} pt="0.5" pr="3">
               Terms of Service
             </Sans>
           </Link>
           <Spacer mb={[1, 0]} mr={[0, 2]} />
           <Link href="/privacy-policy">
-            <Sans size="4" color={color("black50")} pt="0.5" pr="3">
+            <Sans size={["2", "4"]} color={color("black50")} pt="0.5" pr="3">
               Privacy Policy
             </Sans>
           </Link>
           <Spacer mb={[1, 0]} />
           <Box ml={[0, "auto"]}>
-            <Sans size="4" color={color("black50")} pt="0.5">
+            <Sans size={["2", "4"]} color={color("black50")} pt="0.5">
               (c) 2020 Seasons. All Rights Reserved.
             </Sans>
           </Box>
