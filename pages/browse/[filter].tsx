@@ -11,12 +11,12 @@ import { Grid, Row, Col } from "../../components/Grid"
 import styled, { CSSObject } from "styled-components"
 import Paginate from "react-paginate"
 import { color } from "../../helpers"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import { media } from "styled-bootstrap-grid"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
-import { CategoryLoader } from "../../components/Browse/BrowseLoader"
 import { Media } from "../../components/Responsive"
+import { MobileFilters } from "../../components/Browse/MobileFilters"
+import { BrowseFilters } from "../../components/Browse"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts(
@@ -62,6 +62,7 @@ const GET_BROWSE_PRODUCTS = gql`
           slug
           name
           images {
+            id
             url
           }
           description
@@ -141,64 +142,6 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
   const brands = [{ slug: "all", name: "All" }, ...(data?.brands ?? [])]
 
-  const Categories = () => {
-    return (
-      <>
-        <Sans size="3">Categories</Sans>
-        <Spacer mb={2} />
-        {!data ? (
-          <CategoryLoader />
-        ) : (
-          categories.map((category) => {
-            const isActive = currentCategory === category.slug
-            return (
-              <div onClick={() => setCurrentPage(1)} key={category.slug}>
-                <Link href={{ pathname: "/browse", query: { category: category.slug, brand: currentBrand } }}>
-                  <Flex flexDirection="row" alignItems="center">
-                    {isActive && <ActiveLine />}
-                    <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer" }}>
-                      {category.name}
-                    </Sans>
-                  </Flex>
-                </Link>
-                <Spacer mb={1} />
-              </div>
-            )
-          })
-        )}
-      </>
-    )
-  }
-
-  const Brands = () => {
-    return (
-      <>
-        <Sans size="3">Designers</Sans>
-        <Spacer mb={2} />
-        {!data ? (
-          <CategoryLoader />
-        ) : (
-          brands.map((brand) => {
-            const isActive = currentBrand === brand.slug
-            return (
-              <div onClick={() => setCurrentPage(1)} key={brand.slug}>
-                <Link href={{ pathname: "/browse", query: { category: currentCategory, brand: brand.slug } }}>
-                  <Flex flexDirection="row" alignItems="center">
-                    {isActive && <ActiveLine />}
-                    <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer" }}>
-                      {brand.name}
-                    </Sans>
-                  </Flex>
-                </Link>
-                <Spacer mb={1} />
-              </div>
-            )
-          })
-        )}
-      </>
-    )
-  }
-
   return (
     <Layout fixedNav>
       <Spacer mb={5} />
@@ -208,21 +151,57 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
             <Media greaterThanOrEqual="md">
               <FixedBox>
                 <Box pr={1}>
-                  <Categories />
+                  <BrowseFilters
+                    setCurrentPage={setCurrentPage}
+                    currentCategory={currentCategory}
+                    title="Categories"
+                    listItems={categories}
+                    currentBrand={currentBrand}
+                  />
                   <Spacer mb={3} />
-                  <Brands />
+                  <BrowseFilters
+                    setCurrentPage={setCurrentPage}
+                    title="Designers"
+                    currentCategory={currentCategory}
+                    listItems={brands}
+                    currentBrand={currentBrand}
+                  />
                   <Spacer mb={2} />
                 </Box>
               </FixedBox>
             </Media>
             <Media lessThan="md">
-              <Categories />
-              <Brands />
+              <MobileFilters
+                BrandsListComponent={() => (
+                  <BrowseFilters
+                    title="Categories"
+                    setCurrentPage={setCurrentPage}
+                    currentCategory={currentCategory}
+                    listItems={categories}
+                    currentBrand={currentBrand}
+                  />
+                )}
+                CategoriesListComponent={() => (
+                  <BrowseFilters
+                    setCurrentPage={setCurrentPage}
+                    currentCategory={currentCategory}
+                    listItems={brands}
+                    title="Designers"
+                    currentBrand={currentBrand}
+                  />
+                )}
+              />
             </Media>
           </Col>
           <Col md="10" xs="12">
             <Row>
-              {!!products?.length ? (
+              {data && !products?.length ? (
+                <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
+                  <Sans size="3" style={{ textAlign: "center" }}>
+                    Your filters returned no results.
+                  </Sans>
+                </Flex>
+              ) : (
                 (products || []).map((product, i) => (
                   <Col col sm="3" xs="6" key={i}>
                     <Box pb={5}>
@@ -230,17 +209,11 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                     </Box>
                   </Col>
                 ))
-              ) : (
-                <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
-                  <Sans size="3" style={{ textAlign: "center" }}>
-                    Your filters returned no results.
-                  </Sans>
-                </Flex>
               )}
             </Row>
             <Row>
               <Flex align-items="center" mt={2} mb={4} width="100%">
-                {!!products?.length && (
+                {!!products?.length && products?.length > 20 && (
                   <Pagination currentPage={currentPage} pageCount={pageCount}>
                     <Paginate
                       previousLabel="previous"
@@ -269,6 +242,12 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
     </Layout>
   )
 })
+
+const MobileFilterWrapper = styled.div`
+  position: relative;
+  height: 60;
+  width: 100%;
+`
 
 const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
   ${media.md`

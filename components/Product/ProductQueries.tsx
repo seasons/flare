@@ -29,7 +29,10 @@ export const GET_PRODUCT = gql`
       }
       outerMaterials
       innerMaterials
-      images
+      images {
+        id
+        url
+      }
       isSaved
       variants {
         id

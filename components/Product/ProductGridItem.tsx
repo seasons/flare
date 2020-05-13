@@ -1,5 +1,4 @@
 import React from "react"
-import { imageResize, IMAGE_ASPECT_RATIO } from "../../utils/imageResize"
 import styled from "styled-components"
 import { Box } from "../Box"
 import { Link } from "../Link"
@@ -7,15 +6,10 @@ import { get } from "lodash"
 import { Sans } from "../Typography"
 import { VariantSizes } from "../VariantSizes"
 import ContentLoader from "react-content-loader"
-import { color } from "../../helpers"
+import { ProgressiveImage } from "../Image"
 
 export const ProductGridItem = ({ product }) => {
-  if (!product) {
-    return null
-  }
-
   const image = get(product, "images[0]", { url: "" })
-  const resizedImage = imageResize(image.url, "large")
 
   const brandName = get(product, "brand.name")
 
@@ -23,18 +17,7 @@ export const ProductGridItem = ({ product }) => {
     <ProductContainer key={product.id}>
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
         <div>
-          <ImageWrapper>
-            <LoaderWrapper>
-              <ContentLoader viewBox="0 0 100 125">
-                <rect x={0} y={0} width="100%" height="100%" />
-              </ContentLoader>
-            </LoaderWrapper>
-            <img
-              src={resizedImage}
-              style={{ width: "100%", backgroundColor: color("black04") }}
-              alt="image of the product"
-            />
-          </ImageWrapper>
+          <ProgressiveImage image={image} size="small" />
           <Box py="1" pb="2">
             {!product ? (
               <ContentLoader width="100%" height="56px">
@@ -43,10 +26,10 @@ export const ProductGridItem = ({ product }) => {
               </ContentLoader>
             ) : (
               <>
-                <Sans size="3" mt="0.5">
+                <Sans size="2" mt="0.5">
                   {brandName}
                 </Sans>
-                <VariantSizes variants={product.variants} size="1" />
+                <VariantSizes variants={product.variants} size="0" />
               </>
             )}
           </Box>
@@ -55,14 +38,6 @@ export const ProductGridItem = ({ product }) => {
     </ProductContainer>
   )
 }
-
-const ImageWrapper = styled(Box)`
-  height: 0;
-  padding-bottom: calc(100% * ${IMAGE_ASPECT_RATIO});
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-`
 
 const LoaderWrapper = styled.div`
   position: absolute;
