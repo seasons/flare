@@ -24,7 +24,7 @@ export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
   return (
     <>
       {title && !hideTitle && <Sans size="3">{title}</Sans>}
-      <Spacer mb={2} />
+      <Spacer mb={[0, 2]} />
       {!listItems ? (
         <CategoryLoader />
       ) : (

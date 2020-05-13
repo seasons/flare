@@ -122,8 +122,6 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
     console.log("error browse.tsx ", error)
   }
 
-  console.log("data", data)
-
   useEffect(() => {
     if (query.brand) {
       setCurrentBrand(query.brand)
@@ -168,7 +166,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
           }
         />
       </Media>
-      <Spacer mb={5} />
+      <Spacer mb={[0, 5]} />
       <Grid>
         <Row style={{ minHeight: "calc(100vh - 160px)" }}>
           <Col md="2" xs="12" mx={["2", "0"]}>
@@ -195,6 +193,11 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
               </FixedBox>
             </Media>
           </Col>
+          <Media lessThan="md">
+            <Box px={2} pt={2}>
+              <Sans size="4">Browse</Sans>
+            </Box>
+          </Media>
           <Col md="10" xs="12">
             <Row>
               {data && !products?.length ? (

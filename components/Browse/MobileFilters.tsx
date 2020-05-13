@@ -27,7 +27,7 @@ export const MobileFilters: React.FC<{
             toggleBrandsOpen(false)
           }}
         >
-          Categories
+          Categories +
         </Button>
         <Button
           style={{ borderLeft: `1px solid ${color("black10")}` }}
@@ -37,13 +37,12 @@ export const MobileFilters: React.FC<{
             toggleCategoriesOpen(false)
           }}
         >
-          Designers
+          Designers +
         </Button>
       </ButtonWrapper>
       {brandsOpen && (
         <ListWrapper
           p={2}
-          pt={60}
           onClick={() => {
             toggleBrandsOpen(false)
             toggleCategoriesOpen(false)
@@ -55,7 +54,6 @@ export const MobileFilters: React.FC<{
       {categoriesOpen && (
         <ListWrapper
           p={2}
-          pt={60}
           onClick={() => {
             toggleBrandsOpen(false)
             toggleCategoriesOpen(false)
@@ -78,12 +76,14 @@ const ListWrapper = styled(Box)`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  height: 44px;
+  height: 59px;
   position: fixed;
   background-color: ${color("white100")};
   width: 100%;
   z-index: 3;
-  border-bottom: 1px solid ${color("black10")};
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid ${color("black10")};
 `
 
 const Button = styled.div<{ active: boolean }>`
