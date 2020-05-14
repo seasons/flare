@@ -8,7 +8,7 @@ import { VariantSizes } from "../VariantSizes"
 import ContentLoader from "react-content-loader"
 import { ProgressiveImage } from "../Image"
 
-export const ProductGridItem = ({ product }) => {
+export const ProductGridItem: React.FC<{ product: any; loading?: boolean }> = ({ product, loading }) => {
   const image = get(product, "images[0]", { url: "" })
 
   const brandName = get(product, "brand.name")
@@ -17,12 +17,18 @@ export const ProductGridItem = ({ product }) => {
     <ProductContainer key={product.id}>
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
         <div>
-          <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
+          {loading ? (
+            <ContentLoader viewBox="0 0 100 125">
+              <rect x={0} y={0} width="100%" height="100%" />
+            </ContentLoader>
+          ) : (
+            <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
+          )}
           <Box py="1" pb="2">
-            {!product ? (
+            {loading ? (
               <ContentLoader width="100%" height="56px">
-                <rect x={0} y={7} width="40%" height={13} />
-                <rect x={0} y={26} width={37} height={13} />
+                <rect x={0} y={0} width="40%" height={12} />
+                <rect x={0} y={19} width={37} height={12} />
               </ContentLoader>
             ) : (
               <>

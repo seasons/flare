@@ -107,7 +107,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const pageSize = 20
   const skip = (currentPage - 1) * pageSize
 
-  const { data, error } = useQuery(GET_BROWSE_PRODUCTS, {
+  const { data, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
     variables: {
       brandName: currentBrand,
       categoryName: currentCategory,
@@ -135,10 +135,12 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
     window && window.scrollTo(0, 0)
   }, [data])
 
-  const pageCount = Math.ceil(data?.connection?.aggregate?.count / pageSize)
+  const aggregateCount = data?.connection?.aggregate?.count
+  const pageCount = Math.ceil(aggregateCount / pageSize)
   const products = data?.products?.edges
   const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
   const brands = [{ slug: "all", name: "All" }, ...(data?.brands ?? [])]
+  const showPagination = !!products?.length && aggregateCount > 20
 
   return (
     <Layout fixedNav>
@@ -210,7 +212,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
                 (products || []).map((product, i) => (
                   <Col col sm="3" xs="6" key={i}>
                     <Box pt={[2, 0]} pb={[2, 5]}>
-                      <ProductGridItem product={product?.node} />
+                      <ProductGridItem product={product?.node} loading={loading} />
                     </Box>
                   </Col>
                 ))
@@ -218,7 +220,7 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
             </Row>
             <Row>
               <Flex align-items="center" mt={2} mb={4} width="100%">
-                {!!products?.length && products?.length > 20 && (
+                {showPagination && (
                   <Pagination currentPage={currentPage} pageCount={pageCount}>
                     <Paginate
                       previousLabel="previous"
