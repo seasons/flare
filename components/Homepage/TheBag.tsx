@@ -6,14 +6,15 @@ import { Media } from "../Responsive"
 import { Separator } from "../Separator"
 import { Grid } from "../Grid"
 import { imageResize } from "../../utils/imageResize"
+import { ProgressiveImage } from "../Image"
+import { HomepageCarousel } from "./HomepageCarousel"
 
 const title = "The Bag"
 const subtitle = "Each member receives their own custom Seasons shipping bag with every order."
 
-const image1 = require("../../public/images/homepage/Bag_1.png")
-const image2 = require("../../public/images/homepage/Bag_2.png")
-const image3 = require("../../public/images/homepage/Bag_3.png")
-const image4 = require("../../public/images/homepage/Bag_4.png")
+const image1 = require("../../public/images/homepage/Bag-Image-1.png")
+const image2 = require("../../public/images/homepage/Bag-Image-2.png")
+const image3 = require("../../public/images/homepage/Bag-Image-3.png")
 
 const textItems = [
   {
@@ -33,6 +34,12 @@ const textItems = [
   },
 ]
 
+const images: ProgressiveImage[] = [
+  { imageUrl: image1, alt: "image of the delivery bag", aspectRatio: 1, size: "xlarge" },
+  { imageUrl: image2, alt: "image of the delivery bag", aspectRatio: 1, size: "xlarge" },
+  { imageUrl: image3, alt: "image of the delivery bag", aspectRatio: 1, size: "xlarge" },
+]
+
 const Desktop = () => {
   return (
     <Flex
@@ -42,14 +49,7 @@ const Desktop = () => {
       style={{ overflow: "hidden", maxWidth: "1200px", margin: "0 auto" }}
     >
       <Box style={{ position: "relative", width: "60%", overflow: "hidden" }}>
-        <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
-          <Grid p={2} style={{ columnCount: 2, gridColumnGap: 0, rowCount: 2 }}>
-            <img src={imageResize(image1, "medium")} alt="image of the delivery bag" style={{ padding: "4px" }} />
-            <img src={imageResize(image3, "medium")} alt="image of the delivery bag" style={{ padding: "4px" }} />
-            <img src={imageResize(image2, "medium")} alt="image of the delivery bag" style={{ padding: "4px" }} />
-            <img src={imageResize(image4, "medium")} alt="image of the delivery bag" style={{ padding: "4px" }} />
-          </Grid>
-        </Flex>
+        <HomepageCarousel images={images} />
       </Box>
       <Box width="40%">
         <TextList title={title} subtitle={subtitle} listItems={textItems} />
@@ -68,16 +68,8 @@ const Mobile = () => {
           {subtitle}
         </Sans>
         <Spacer mb={4} />
-        <img src={imageResize(image1, "medium")} alt="image of the delivery bag" />
-        <Spacer mb={1} />
-        <img src={imageResize(image3, "medium")} alt="image of the delivery bag" />
-        <Spacer mb={1} />
-        <img src={imageResize(image2, "medium")} alt="image of the delivery bag" />
-        <Spacer mb={1} />
-        <img src={imageResize(image4, "medium")} alt="image of the delivery bag" />
+        <HomepageCarousel images={images} />
       </Box>
-      <Spacer mb={4} />
-      <Separator />
       {textItems?.map((item) => (
         <Box pl={2} pr={4} key={item.title}>
           <Spacer mt={5} />

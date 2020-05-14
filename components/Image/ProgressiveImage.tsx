@@ -4,12 +4,21 @@ import { imageResize, IMAGE_ASPECT_RATIO, ImageSize } from "../../utils/imageRes
 import React, { useState, useRef, useEffect } from "react"
 import { color } from "../../helpers"
 
-interface Props {
+export interface ProgressiveImage {
   size: ImageSize
-  image: { url: string; id?: string }
+  imageUrl: string
+  aspectRatio?: number
+  alt: string
+  hideBackground?: boolean
 }
 
-export const ProgressiveImage: React.FC<Props> = ({ image, size }) => {
+export const ProgressiveImage: React.FC<ProgressiveImage> = ({
+  imageUrl,
+  size,
+  aspectRatio = IMAGE_ASPECT_RATIO,
+  alt,
+  hideBackground,
+}) => {
   const [loaded, setLoaded] = useState(false)
   const fullImageRef = useRef(null)
   useEffect(() => {
@@ -19,22 +28,22 @@ export const ProgressiveImage: React.FC<Props> = ({ image, size }) => {
     }
   }, [fullImageRef])
 
-  const initialImage = imageResize(image.url, "initial")
-  const fullImage = imageResize(image.url, size)
+  const initialImage = imageResize(imageUrl, "initial")
+  const fullImage = imageResize(imageUrl, size)
 
   return (
-    <ImageWrapper>
+    <ImageWrapper aspectRatio={aspectRatio} hideBackground={hideBackground}>
       <FullImage
         src={fullImage}
         key={initialImage}
-        alt="image of the product"
+        alt={alt}
         ref={fullImageRef}
         loaded={loaded}
         onLoad={() => {
           setLoaded(true)
         }}
       />
-      <InitialImage src={initialImage} alt="image of the product" />
+      <InitialImage src={initialImage} alt={alt} />
     </ImageWrapper>
   )
 }
@@ -47,6 +56,7 @@ const FullImage = styled.img<{ loaded: boolean }>`
   width: 100%;
   transition: opacity 1s linear;
   z-index: 1;
+  background-color: ${color("white100")};
 `
 
 const InitialImage = styled.img`
@@ -55,11 +65,11 @@ const InitialImage = styled.img`
   width: 100%;
 `
 
-const ImageWrapper = styled(Box)`
+const ImageWrapper = styled(Box)<{ aspectRatio: number; hideBackground: boolean }>`
   height: 0;
-  padding-bottom: calc(100% * ${IMAGE_ASPECT_RATIO});
+  padding-bottom: calc(100% * ${(p) => p.aspectRatio});
   width: 100%;
   overflow: hidden;
   position: relative;
-  background-color: ${color("black04")};
+  background-color: ${(p) => (p.hideBackground ? "transparent" : color("black04"))};
 `

@@ -36,7 +36,10 @@ export const HOME_QUERY = gql`
     ) {
       id
       slug
-      images
+      images {
+        url
+        id
+      }
       brand {
         id
         name
@@ -60,7 +63,10 @@ export const HOME_QUERY = gql`
     ) {
       id
       slug
-      images
+      images {
+        url
+        id
+      }
       brand {
         id
         name
@@ -131,7 +137,9 @@ const Home = withData(() => {
       <MembershipBenefits />
       <Spacer mb={15} />
       <Separator />
+      <Spacer mb={10} />
       <TheApp />
+      <Spacer mb={10} />
       <Separator />
       <Spacer mb={13} />
       <TheBag />

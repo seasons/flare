@@ -4,19 +4,15 @@ import { TextList } from "./TextList"
 import styled from "styled-components"
 import { Media } from "../Responsive"
 import { Separator } from "../Separator"
-import { imageResize } from "../../utils/imageResize"
+import { HomepageCarousel } from "./HomepageCarousel"
+import { ProgressiveImage } from "../Image"
 
 const title = "The app"
 const subtitle = "After receiving an invite, you’ll get a link to download the Seasons app."
 
-const imageImport1 = require("../../public/images/homepage/Device_1.png")
-const imageImport2 = require("../../public/images/homepage/Device_2.png")
-const imageImport3 = require("../../public/images/homepage/Device_3.png")
-const imageImport4 = require("../../public/images/homepage/Device_4.png")
-const image1 = imageResize(imageImport1, "large")
-const image2 = imageResize(imageImport2, "large")
-const image3 = imageResize(imageImport3, "large")
-const image4 = imageResize(imageImport4, "large")
+const imageImport1 = require("../../public/images/homepage/App-Image-1.png")
+const imageImport2 = require("../../public/images/homepage/App-Image-2.png")
+const imageImport3 = require("../../public/images/homepage/App-Image-3.png")
 
 const textItems = [
   {
@@ -34,40 +30,31 @@ const textItems = [
   },
 ]
 
+const desktopImages: ProgressiveImage[] = [
+  { imageUrl: imageImport1, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
+  { imageUrl: imageImport2, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
+  { imageUrl: imageImport3, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
+]
+
+const mobileImages: ProgressiveImage[] = [
+  { imageUrl: imageImport1, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },
+  { imageUrl: imageImport2, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },
+  { imageUrl: imageImport3, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },
+]
+
 const Desktop = () => {
   return (
     <Flex
       flexDirection="row"
       flexWrap="nowrap"
-      height="813px"
       justifyContent="space-between"
       style={{ overflow: "hidden", maxWidth: "1200px", margin: "0 auto" }}
     >
       <Box width="40%">
         <TextList title={title} subtitle={subtitle} listItems={textItems} />
       </Box>
-      <Box style={{ position: "relative", width: "60%", overflow: "hidden" }}>
-        <Flex height="100%" flexDirection="row" flexWrap="nowrap" alignItems="center">
-          <Flex flexDirection="column" justifyContent="center" m={2}>
-            <ImageWrapper>
-              <img src={image1} alt="image of the iOS app" />
-            </ImageWrapper>
-          </Flex>
-          <Flex flexDirection="column" justifyContent="center" m={2}>
-            <ImageWrapper>
-              <img src={image2} alt="image of the iOS app" />
-            </ImageWrapper>
-            <Spacer mb={4} />
-            <ImageWrapper>
-              <img src={image3} alt="image of the iOS app" />
-            </ImageWrapper>
-          </Flex>
-          <Flex flexDirection="column" justifyContent="center" m={2}>
-            <ImageWrapper>
-              <img src={image4} alt="image of the iOS app" />
-            </ImageWrapper>
-          </Flex>
-        </Flex>
+      <Box style={{ position: "relative", width: "60%", height: "100%" }}>
+        <HomepageCarousel images={desktopImages} />
       </Box>
     </Flex>
   )
@@ -84,20 +71,9 @@ const Mobile = () => {
         </Sans>
         <Spacer mb={3} />
         <Flex flexDirection="row" justifyContent="center" style={{ maxHeight: "768px", overflow: "hidden" }}>
-          <Flex flexDirection="column" pr={1}>
-            <img src={image1} alt="image of the iOS app" />
-            <Spacer mb={2} />
-            <img src={image2} alt="image of the iOS app" />
-          </Flex>
-          <Flex flexDirection="column" pl={1}>
-            <Spacer mb="120px" />
-            <img src={image3} alt="image of the iOS app" />
-            <Spacer mb={2} />
-            <img src={image4} alt="image of the iOS app" />
-          </Flex>
+          <HomepageCarousel images={mobileImages} />
         </Flex>
       </Box>
-      <Separator />
       {textItems?.map((item) => (
         <Box pl={2} pr={4} key={item.title}>
           <Spacer mt={5} />

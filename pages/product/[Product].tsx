@@ -11,7 +11,7 @@ import { Box, Layout, Sans, Spacer } from "../../components"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { ProgressiveImage } from "../../components/Image"
 
-const Product = withData((props) => {
+const Product = withData(() => {
   const router = useRouter()
   const slug = router.query.Product
 
@@ -36,7 +36,7 @@ const Product = withData((props) => {
                   product?.images.map((image) => {
                     return (
                       <Box p={2} key={image.url}>
-                        <ProgressiveImage image={image} size="large" />
+                        <ProgressiveImage imageUrl={image.url} size="large" alt="product image" />
                       </Box>
                     )
                   })

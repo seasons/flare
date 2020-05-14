@@ -17,7 +17,7 @@ export const ProductGridItem = ({ product }) => {
     <ProductContainer key={product.id}>
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
         <div>
-          <ProgressiveImage image={image} size="small" />
+          <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
           <Box py="1" pb="2">
             {!product ? (
               <ContentLoader width="100%" height="56px">
