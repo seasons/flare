@@ -40,7 +40,6 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
           </Flex>
         </Grid>
       </HeaderContainer>
-      <Spacer mb="60px" />
     </>
   )
 }

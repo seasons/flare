@@ -2,6 +2,7 @@ import { Theme } from "../lib/theme"
 import { Nav } from "./Nav"
 import { Footer } from "./Footer"
 import { LayoutHead } from "./LayoutHead"
+import { Box } from "./Box"
 
 interface LayoutProps {
   fixedNav?: boolean
@@ -13,9 +14,11 @@ export const Layout = ({ fixedNav = false, children }: LayoutProps) => {
     <>
       <LayoutHead />
       <Theme>
-        <Nav fixed={fixedNav} />
-        {children}
-        <Footer />
+        <Box pt={60} pb={60} style={{ minHeight: "100vh", position: "relative" }}>
+          <Nav fixed={fixedNav} />
+          {children}
+          <Footer />
+        </Box>
       </Theme>
     </>
   )

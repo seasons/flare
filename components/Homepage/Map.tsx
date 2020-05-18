@@ -2,6 +2,7 @@ import React from "react"
 import { Box, Sans, Spacer, Flex } from "../"
 import { Grid, Row, Col } from "../Grid"
 import { LinkCTA } from "../Button"
+import { ProgressiveImage } from "../Image"
 
 const imageSRC = require("../../public/images/usa.png")
 
@@ -29,7 +30,13 @@ export const UsaMap: React.FC = () => {
         </Col>
         <Col md="6" xs="12" px={[2, 0]}>
           <Box mx={[0.5, 5]} mt={[3, 0.5]}>
-            <img src={imageSRC} alt="Map of the United States" />
+            <ProgressiveImage
+              imageUrl={imageSRC}
+              alt="Map of the United States"
+              size="small"
+              aspectRatio={0.63}
+              hideBackground
+            />
           </Box>
         </Col>
       </Row>
