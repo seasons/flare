@@ -7,7 +7,7 @@ import { Media } from "../Responsive"
 
 const backers = [
   {
-    name: "Intialized Capital",
+    name: "Initialized Capital",
     link: "https://initialized.com",
   },
   {

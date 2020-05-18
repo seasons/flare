@@ -54,7 +54,7 @@ const FullImage = styled.img<{ loaded: boolean }>`
   top: 0;
   left: 0;
   width: 100%;
-  transition: opacity 1s linear;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 1;
   background-color: ${color("white100")};
 `
