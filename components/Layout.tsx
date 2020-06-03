@@ -3,7 +3,6 @@ import { Nav } from "./Nav"
 import { Footer } from "./Footer"
 import { LayoutHead } from "./LayoutHead"
 import { Box } from "./Box"
-import { BlackOverlay } from "./BlackOverlay"
 
 interface LayoutProps {
   fixedNav?: boolean
