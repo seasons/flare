@@ -1,7 +1,7 @@
 import { Media } from "../Responsive"
-import { NavProps } from "./Types"
 import { DesktopNav } from "./DesktopNav"
 import { MobileNav } from "./MobileNav"
+import { NavProps } from "./Types"
 
 const links = [
   {
@@ -23,7 +23,13 @@ const links = [
     external: true,
   },
   {
-    text: "About",
+    text: "Grant",
+    url: "https://blog.seasons.nyc/creative-project",
+    match: /blog.seasons.nyc\/creative-project/,
+    external: true,
+  },
+  {
+    text: "About Us",
     url: "/about",
     match: /^\/#FAQ$/,
     external: false,
