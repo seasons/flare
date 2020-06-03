@@ -16,7 +16,6 @@ export const Layout = ({ fixedNav = false, children }: LayoutProps) => {
       <LayoutHead />
       <Theme>
         <Box pt={60} pb={60} style={{ minHeight: "100vh", position: "relative" }}>
-          <BlackOverlay />
           <Nav fixed={fixedNav} />
           {children}
           <Footer />
