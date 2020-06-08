@@ -29,9 +29,14 @@ const getDirectoryFilesRecursive = (dir, ignores = []) => {
 // the <buildid> is exposed by nextJS and it's unique per deployment.
 // See: https://nextjs.org/blog/next-7/#static-cdn-support
 const generateFileKey = (fileName) => {
-  // I'm interested in only the last part of the file: '/some/path/.next/build-manifest.json',
-  const S3objectPath = fileName.split("/.next/static/")[1]
-  return `${S3objectPath}`
+  // Removes the generated hash and returns just the original static name
+  // E.G. https://flare-web-staging.s3.amazonaws.com/images/CouchPhoto_final.png
+  const removeInitialRoute = fileName.split("/.next/static/")[1]
+  const splitByPeriod = removeInitialRoute.split(".")
+  const suffix = splitByPeriod[splitByPeriod.length - 1]
+  const splitByDash = removeInitialRoute.split("-")
+  const assetPath = splitByDash.slice(0, splitByDash.length - 1).join("-")
+  return assetPath + "." + suffix
 }
 
 const s3 = new AWS.S3({

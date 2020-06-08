@@ -109,14 +109,6 @@ export const Hero: React.FC = () => {
   )
 }
 
-const ImageWrapper = styled(Flex)`
-  position: relative;
-  height: 100%;
-  width: 100%;
-  padding-left: 60px;
-  overflow: hidden;
-`
-
 const MobileImageWrapper = styled(Flex)`
   position: relative;
   height: 100%;
