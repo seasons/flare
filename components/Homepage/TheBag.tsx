@@ -1,11 +1,7 @@
 import React from "react"
 import { Box, Sans, Spacer, Flex } from "../"
 import { TextList } from "./TextList"
-import styled from "styled-components"
 import { Media } from "../Responsive"
-import { Separator } from "../Separator"
-import { Grid } from "../Grid"
-import { imageResize } from "../../utils/imageResize"
 import { ProgressiveImage } from "../Image"
 import { HomepageCarousel } from "./HomepageCarousel"
 
