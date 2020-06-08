@@ -2,12 +2,14 @@ import qs from "querystring"
 import { identity, pickBy } from "lodash"
 
 export type ImageSize = "initial" | "thumb" | "small" | "medium" | "large" | "xlarge"
+type ImageFormat = "webp" | "jpg" | "png" | "gif" | "mp4"
 
 interface ImageResizerOptions {
   fit?: "clip"
   w?: number
   h?: number
   retina?: boolean
+  fm?: ImageFormat
 }
 
 interface ImageSizeOptions {
@@ -66,6 +68,7 @@ export const imageResize = (
     {
       fit: "clip",
       retina: true,
+      fm: "webp",
       ...passedOptions,
     },
     identity

@@ -55,9 +55,9 @@ export const HOME_QUERY = gql`
         }
       }
     }
-    justAddedPants: products(
+    justAddedBottoms: products(
       first: 4
-      category: "pants"
+      category: "bottoms"
       orderBy: createdAt_DESC
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
@@ -126,7 +126,7 @@ const Home = withData(() => {
       <Spacer mb={6} />
       <Separator />
       <Spacer mb={6} />
-      <ProductRail title="Just added pants" products={data?.justAddedPants} />
+      <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
       <Spacer mb={2} />
       <Separator />
       <Spacer mb={15} />
