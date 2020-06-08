@@ -22,8 +22,8 @@ type ImageSizeMap = {
   [key in ImageSize]: ImageSizeOptions
 }
 
-const IMGIX_BASE = "https://seasons-nyc.imgix.net/"
-const AIRTABLE_BASE = "https://dl.airtable.com/.attachments/"
+const IMGIX_BASE = "https://seasons-nyc.imgix.net"
+const S3_BASE = "https://seasons-images.s3.amazonaws.com"
 
 export const IMAGE_ASPECT_RATIO = 1.25
 
@@ -62,7 +62,7 @@ export const imageResize = (
   passedOptions: ImageResizerOptions = { fit: "clip" }
 ) => {
   const [path] = url.split("?")
-  const newURL = path.replace(AIRTABLE_BASE, IMGIX_BASE)
+  const newURL = path.replace(S3_BASE, IMGIX_BASE)
 
   const options: ImageResizerOptions = pickBy(
     {
