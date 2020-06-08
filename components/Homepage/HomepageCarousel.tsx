@@ -5,6 +5,8 @@ import { Box } from "../Box"
 import { space, color } from "../../helpers"
 import styled from "styled-components"
 import { Flex } from "../Flex"
+import { Picture } from "../Picture"
+import { imageResize } from "../../utils/imageResize"
 
 export const HomepageCarousel: React.FC<{ images: ProgressiveImage[] }> = ({ images }) => {
   const snapList = useRef(null)
@@ -16,6 +18,8 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImage[] }> = ({ ima
     <Wrapper>
       <SnapList direction="horizontal" width="100%" ref={snapList}>
         {images.map((image, index) => {
+          const imageJpg = imageResize(image.imageUrl, "large", { fm: "jpg" })
+          const imageWebp = imageResize(image.imageUrl, "large", { fm: "webp" })
           return (
             <SnapItem
               width="100%"
@@ -24,12 +28,9 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImage[] }> = ({ ima
               key={image.imageUrl}
             >
               <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
-                <ProgressiveImage
-                  imageUrl={image.imageUrl}
-                  alt={image.alt}
-                  aspectRatio={image.aspectRatio}
-                  size={image.size}
-                />
+                <ImageWrapper>
+                  <Picture webpSrc={imageWebp} jpgSrc={imageJpg} alt={image.alt} />
+                </ImageWrapper>
               </Box>
             </SnapItem>
           )
@@ -70,4 +71,13 @@ const Pager = styled.div<{ active: boolean }>`
   height: 2px;
   width: 100%;
   background-color: ${(p) => (p.active ? color("black100") : color("black10"))};
+`
+
+const ImageWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+
+  img {
+    width: 100%;
+  }
 `

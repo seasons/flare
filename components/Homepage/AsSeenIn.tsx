@@ -2,12 +2,15 @@ import React from "react"
 import { Flex, Sans, Box, Spacer } from ".."
 import { Media } from "../Responsive"
 import { Grid } from "../Grid"
+import { FLARE_IMGIX_BASE } from "../../helpers/constants"
+import { Picture } from "../Picture"
+import { imageResize } from "../../utils/imageResize"
 
-const vogueLogo = require("../../public/images/homepage/Vogue.png")
-const nytLogo = require("../../public/images/homepage/NYT.png")
-const wwdLogo = require("../../public/images/homepage/WWD.png")
-const glossyLogo = require("../../public/images/homepage/Glossy.png")
-const leanluxeLogo = require("../../public/images/homepage/Leanluxe.png")
+const vogueLogo = `${FLARE_IMGIX_BASE}/Vogue.png`
+const nytLogo = `${FLARE_IMGIX_BASE}/NYT.png`
+const wwdLogo = `${FLARE_IMGIX_BASE}/WWD.png`
+const glossyLogo = `${FLARE_IMGIX_BASE}/Glossy.png`
+const leanluxeLogo = `${FLARE_IMGIX_BASE}/Leanluxe.png`
 
 const desktopIcons = [
   { iconHref: vogueLogo, alt: "Vogue logo" },
@@ -37,7 +40,11 @@ export const AsSeenIn: React.FC = () => {
               {desktopIcons.map((item, index) => {
                 return (
                   <Box p={1} key={index}>
-                    <img src={item.iconHref} style={{ maxHeight: "22px" }} alt={item.alt} />
+                    <Picture
+                      webpSrc={item.iconHref + "?h=22&fit=clip&fm=webp"}
+                      jpgSrc={item.iconHref + "?h=22&fit=clip&fm=jpg"}
+                      alt={item.alt}
+                    />
                   </Box>
                 )
               })}
@@ -54,7 +61,11 @@ export const AsSeenIn: React.FC = () => {
               {mobileIcons.map((item, index) => {
                 return (
                   <Box mr="20px" mb={3} key={index}>
-                    <img src={item.iconHref} style={{ maxHeight: "20px" }} alt={item.alt} />
+                    <Picture
+                      webpSrc={item.iconHref + "?h=20&fit=clip&fm=webp"}
+                      jpgSrc={item.iconHref + "?h=20&fit=clip&fm=jpg"}
+                      alt={item.alt}
+                    />
                   </Box>
                 )
               })}

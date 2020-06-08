@@ -5,8 +5,9 @@ import { Flex, Sans, Spacer, Box } from ".."
 import { LinkCTA } from "../Button"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
+import { FLARE_IMGIX_BASE } from "../../helpers/constants"
 
-const imageImport = require("../../public/images/homepage/CouchPhoto_final.png")
+const imageURL = `${FLARE_IMGIX_BASE}/CouchPhoto_final.png`
 
 const DesktopHero = () => {
   return (
@@ -38,7 +39,7 @@ const DesktopHero = () => {
         </Col>
         <Col md="8" xs="12" px={[2, 0]}>
           <ProgressiveImage
-            imageUrl={imageImport}
+            imageUrl={imageURL}
             size="xlarge"
             aspectRatio={0.66}
             alt="hero product image of model on couch"
@@ -73,7 +74,7 @@ const MobileHero = () => {
         <Col xs="12">
           <MobileImageWrapper>
             <ProgressiveImage
-              imageUrl={imageImport}
+              imageUrl={imageURL}
               size="medium"
               aspectRatio={0.66}
               alt="hero product image of model on couch"

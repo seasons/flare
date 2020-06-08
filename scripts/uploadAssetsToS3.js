@@ -50,7 +50,7 @@ const s3 = new AWS.S3({
 const uploadToS3 = async () => {
   try {
     const fileArray = await getDirectoryFilesRecursive(directoryPath, ["BUILD_ID"])
-    fileArray.map((file) => {
+    fileArray.forEach((file) => {
       // Configuring parameters for S3 Object
       const S3params = {
         Bucket: process.env.NODE_ENV === "production" ? "flare-web" : "flare-web-staging",

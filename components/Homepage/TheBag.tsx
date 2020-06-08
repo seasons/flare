@@ -4,13 +4,14 @@ import { TextList } from "./TextList"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
 import { HomepageCarousel } from "./HomepageCarousel"
+import { FLARE_IMGIX_BASE } from "../../helpers/constants"
 
 const title = "The Bag"
 const subtitle = "Each member receives their own custom Seasons shipping bag with every order."
 
-const image1 = require("../../public/images/homepage/Bag-Image-1.png")
-const image2 = require("../../public/images/homepage/Bag-Image-2.png")
-const image3 = require("../../public/images/homepage/Bag-Image-3.png")
+const image1 = `${FLARE_IMGIX_BASE}/Bag-Image-1.png`
+const image2 = `${FLARE_IMGIX_BASE}/Bag-Image-2.png`
+const image3 = `${FLARE_IMGIX_BASE}/Bag-Image-3.png`
 
 const textItems = [
   {

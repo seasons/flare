@@ -30,29 +30,32 @@ export const ProgressiveImage: React.FC<ProgressiveImage> = ({
   }, [fullImageRef])
 
   const initialImageJpg = imageResize(imageUrl, "initial", { fm: "jpg" })
-  const initialImageWebP = imageResize(imageUrl, "initial")
+  const initialImageWebP = imageResize(imageUrl, "initial", { fm: "webp" })
   const fullImageJpg = imageResize(imageUrl, size, { fm: "jpg" })
-  const fullImageWebp = imageResize(imageUrl, size)
+  const fullImageWebp = imageResize(imageUrl, size, { fm: "webp" })
 
   return (
     <ImageWrapper aspectRatio={aspectRatio} hideBackground={hideBackground}>
-      <FullImage
-        webpSrc={fullImageWebp}
-        jpgSrc={fullImageJpg}
-        key={fullImageJpg}
-        alt={alt}
-        imgRef={fullImageRef}
-        loaded={loaded}
-        onLoad={() => {
-          setLoaded(true)
-        }}
-      />
-      <InitialImage webpSrc={initialImageWebP} jpgSrc={initialImageJpg} alt={alt} />
+      <FullImageWrapper loaded={loaded}>
+        <Picture
+          webpSrc={fullImageWebp}
+          jpgSrc={fullImageJpg}
+          key={fullImageJpg}
+          alt={alt}
+          imgRef={fullImageRef}
+          onLoad={() => {
+            setLoaded(true)
+          }}
+        />
+      </FullImageWrapper>
+      <InitialImageWrapper>
+        <Picture webpSrc={initialImageWebP} jpgSrc={initialImageJpg} alt={alt} />
+      </InitialImageWrapper>
     </ImageWrapper>
   )
 }
 
-const FullImage = styled(Picture)<{ loaded: boolean }>`
+const FullImageWrapper = styled.div<{ loaded: boolean }>`
   position: absolute;
   opacity: ${(p) => (p.loaded ? 1 : 0)};
   top: 0;
@@ -63,16 +66,19 @@ const FullImage = styled(Picture)<{ loaded: boolean }>`
   background-color: ${color("white100")};
 `
 
-const InitialImage = styled(Picture)`
-  filter: blur(8px);
-  transform: scale(1);
-  width: 100%;
+const InitialImageWrapper = styled.div`
+  img {
+    filter: blur(8px);
+    transform: scale(1);
+    width: 100%;
+  }
 `
 
 const ImageWrapper = styled(Box)<{ aspectRatio: number; hideBackground: boolean }>`
   height: 0;
   padding-bottom: calc(100% * ${(p) => p.aspectRatio});
   width: 100%;
+  max-height: 100%;
   overflow: hidden;
   position: relative;
   background-color: ${(p) => (p.hideBackground ? "transparent" : color("black04"))};

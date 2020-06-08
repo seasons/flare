@@ -2,84 +2,74 @@ import React from "react"
 import { Box, Sans, Spacer } from "../"
 import { Grid, Row, Col } from "../Grid"
 import { imageResize } from "../../utils/imageResize"
-
-const regy = require("../../public/images/about/regy.png")
-const faiyam = require("../../public/images/about/Faiyam.png")
-const frank = require("../../public/images/about/francisco.png")
-const jesse = require("../../public/images/about/jesse.png")
-const kieran = require("../../public/images/about/Kieran.png")
-const luc = require("../../public/images/about/luc.png")
-const myles = require("../../public/images/about/myles.png")
-const perla = require("../../public/images/about/perla.png")
-const rob = require("../../public/images/about/rob.png")
-const san = require("../../public/images/about/san.png")
-const solea = require("../../public/images/about/solea.png")
+import { FLARE_IMGIX_BASE } from "../../helpers/constants"
+import { ProgressiveImage } from "../Image"
 
 const gridItems = [
   {
     name: "Regy Perlera",
     text: "CEO & Founder",
-    image: imageResize(regy, "large"),
+    image: `${FLARE_IMGIX_BASE}/regy.png`,
     subText: "",
   },
   {
     name: "Luc Succes",
     text: "CTO & Co-Founder",
-    image: imageResize(luc, "large"),
+    image: `${FLARE_IMGIX_BASE}/luc.png`,
     subText: "",
   },
   {
     name: "San Pham",
     text: "Merchandise Planning",
-    image: imageResize(san, "large"),
+    image: `${FLARE_IMGIX_BASE}/san.png`,
     subText: "",
   },
   {
     name: "Perla Trejo",
     text: "Operations",
-    image: imageResize(perla, "large"),
+    image: `${FLARE_IMGIX_BASE}/perla.png`,
     subText: "",
   },
   {
     name: "Francisco Sanchez",
     text: "Finance",
-    image: imageResize(frank, "large"),
+    image: `${FLARE_IMGIX_BASE}/francisco.png`,
     subText: "",
   },
   {
     name: "Kieran Gillen",
     text: "Engineering",
-    image: imageResize(kieran, "large"),
+    image: `${FLARE_IMGIX_BASE}/Kieran.png`,
     subText: "",
   },
   {
     name: "Myles Thompson",
     text: "Art direction",
-    image: imageResize(myles, "large"),
+    image: `${FLARE_IMGIX_BASE}/myles.png`,
     subText: "",
   },
   {
     name: "Jesse Hudnutt",
     text: "Buying & Strategy",
-    image: imageResize(jesse, "large"),
+    image: `${FLARE_IMGIX_BASE}/jesse.png`,
     subText: "",
   },
   {
     name: "Faiyam Rahman",
     text: "Engineering",
-    image: imageResize(faiyam, "large"),
+    image: `${FLARE_IMGIX_BASE}/Faiyam.png`,
     subText: "",
   },
   {
     name: "Solea Van Heyningan",
     text: "Photography",
-    image: imageResize(solea, "large"),
+    image: `${FLARE_IMGIX_BASE}/solea.png`,
     subText: "",
   },
   {
     name: "Rob Kelly",
     text: "Content & Social",
-    image: imageResize(rob, "large"),
+    image: `${FLARE_IMGIX_BASE}/rob.png`,
     subText: "(Joined 1 day before quarantine)",
   },
 ]
@@ -96,7 +86,7 @@ export const AboutWhoWeAre: React.FC = () => {
         {gridItems.map((item, index) => (
           <Col lg="3" md="6" xs="12" px={[2, "2px"]} py={[0, "2px"]} key={index}>
             <Spacer mb={4} />
-            <img src={item.image} />
+            <ProgressiveImage imageUrl={item.image} alt={item.name} size="small" />
             <Box mx={0.5}>
               <Sans size="3" style={{ maxWidth: "80%" }}>
                 {item.name}
