@@ -36,6 +36,7 @@ export const HOME_QUERY = gql`
     ) {
       id
       slug
+      name
       images {
         url
         id
@@ -63,6 +64,7 @@ export const HOME_QUERY = gql`
     ) {
       id
       slug
+      name
       images {
         url
         id

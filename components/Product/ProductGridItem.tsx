@@ -12,6 +12,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean }> = ({
   const image = get(product, "images[0]", { url: "" })
 
   const brandName = get(product, "brand.name")
+  const text = brandName === "Vintage" ? product?.name : brandName
 
   return (
     <ProductContainer key={product.id}>
@@ -33,7 +34,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean }> = ({
             ) : (
               <>
                 <Sans size="2" mt="0.5">
-                  {brandName}
+                  {text}
                 </Sans>
                 <VariantSizes variants={product.variants} size="0" />
               </>

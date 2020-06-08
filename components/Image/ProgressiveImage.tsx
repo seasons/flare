@@ -3,6 +3,7 @@ import { Box } from "../Box"
 import { imageResize, IMAGE_ASPECT_RATIO, ImageSize } from "../../utils/imageResize"
 import React, { useState, useRef, useEffect } from "react"
 import { color } from "../../helpers"
+import { Picture } from "../Picture"
 
 export interface ProgressiveImage {
   size: ImageSize
@@ -28,27 +29,30 @@ export const ProgressiveImage: React.FC<ProgressiveImage> = ({
     }
   }, [fullImageRef])
 
-  const initialImage = imageResize(imageUrl, "initial")
-  const fullImage = imageResize(imageUrl, size)
+  const initialImageJpg = imageResize(imageUrl, "initial", { fm: "jpg" })
+  const initialImageWebP = imageResize(imageUrl, "initial")
+  const fullImageJpg = imageResize(imageUrl, size, { fm: "jpg" })
+  const fullImageWebp = imageResize(imageUrl, size)
 
   return (
     <ImageWrapper aspectRatio={aspectRatio} hideBackground={hideBackground}>
       <FullImage
-        src={fullImage}
-        key={initialImage}
+        webpSrc={fullImageWebp}
+        jpgSrc={fullImageJpg}
+        key={fullImageJpg}
         alt={alt}
-        ref={fullImageRef}
+        imgRef={fullImageRef}
         loaded={loaded}
         onLoad={() => {
           setLoaded(true)
         }}
       />
-      <InitialImage src={initialImage} alt={alt} />
+      <InitialImage webpSrc={initialImageWebP} jpgSrc={initialImageJpg} alt={alt} />
     </ImageWrapper>
   )
 }
 
-const FullImage = styled.img<{ loaded: boolean }>`
+const FullImage = styled(Picture)<{ loaded: boolean }>`
   position: absolute;
   opacity: ${(p) => (p.loaded ? 1 : 0)};
   top: 0;
@@ -59,7 +63,7 @@ const FullImage = styled.img<{ loaded: boolean }>`
   background-color: ${color("white100")};
 `
 
-const InitialImage = styled.img`
+const InitialImage = styled(Picture)`
   filter: blur(8px);
   transform: scale(1);
   width: 100%;
