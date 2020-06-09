@@ -2,6 +2,7 @@ import React from "react"
 import { Flex, Sans, Box, Spacer } from ".."
 import { Media } from "../Responsive"
 import { Grid } from "../Grid"
+import { Picture } from "../Picture"
 
 const vogueLogo = require("../../public/images/homepage/Vogue.png")
 const nytLogo = require("../../public/images/homepage/NYT.png")
@@ -37,7 +38,7 @@ export const AsSeenIn: React.FC = () => {
               {desktopIcons.map((item, index) => {
                 return (
                   <Box p={1} key={index}>
-                    <img src={item.iconHref} style={{ maxHeight: "22px" }} alt={item.alt} />
+                    <img style={{ height: "22px" }} src={item.iconHref} alt={item.alt} />
                   </Box>
                 )
               })}
@@ -54,7 +55,7 @@ export const AsSeenIn: React.FC = () => {
               {mobileIcons.map((item, index) => {
                 return (
                   <Box mr="20px" mb={3} key={index}>
-                    <img src={item.iconHref} style={{ maxHeight: "20px" }} alt={item.alt} />
+                    <img style={{ height: "20px" }} src={item.iconHref} alt={item.alt} />
                   </Box>
                 )
               })}

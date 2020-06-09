@@ -1,6 +1,6 @@
 import * as React from "react"
 
-export const FowardArrow = (props) => {
+export const ForwardArrow = (props) => {
   return (
     <svg width={23} height={14} viewBox="0 0 23 14" {...props}>
       <g stroke="#FFF" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">

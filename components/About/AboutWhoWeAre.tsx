@@ -1,7 +1,7 @@
 import React from "react"
 import { Box, Sans, Spacer } from "../"
 import { Grid, Row, Col } from "../Grid"
-import { imageResize } from "../../utils/imageResize"
+import { ProgressiveImage } from "../Image"
 
 const regy = require("../../public/images/about/regy.png")
 const faiyam = require("../../public/images/about/Faiyam.png")
@@ -19,67 +19,67 @@ const gridItems = [
   {
     name: "Regy Perlera",
     text: "CEO & Founder",
-    image: imageResize(regy, "large"),
+    image: regy,
     subText: "",
   },
   {
     name: "Luc Succes",
     text: "CTO & Co-Founder",
-    image: imageResize(luc, "large"),
+    image: luc,
     subText: "",
   },
   {
     name: "San Pham",
     text: "Merchandise Planning",
-    image: imageResize(san, "large"),
+    image: san,
     subText: "",
   },
   {
     name: "Perla Trejo",
     text: "Operations",
-    image: imageResize(perla, "large"),
+    image: perla,
     subText: "",
   },
   {
     name: "Francisco Sanchez",
     text: "Finance",
-    image: imageResize(frank, "large"),
+    image: frank,
     subText: "",
   },
   {
     name: "Kieran Gillen",
     text: "Engineering",
-    image: imageResize(kieran, "large"),
+    image: kieran,
     subText: "",
   },
   {
     name: "Myles Thompson",
     text: "Art direction",
-    image: imageResize(myles, "large"),
+    image: myles,
     subText: "",
   },
   {
     name: "Jesse Hudnutt",
     text: "Buying & Strategy",
-    image: imageResize(jesse, "large"),
+    image: jesse,
     subText: "",
   },
   {
     name: "Faiyam Rahman",
     text: "Engineering",
-    image: imageResize(faiyam, "large"),
+    image: faiyam,
     subText: "",
   },
   {
     name: "Solea Van Heyningan",
     text: "Photography",
-    image: imageResize(solea, "large"),
+    image: solea,
     subText: "",
   },
   {
     name: "Rob Kelly",
     text: "Content & Social",
-    image: imageResize(rob, "large"),
+    image: rob,
     subText: "(Joined 1 day before quarantine)",
   },
 ]
@@ -96,7 +96,7 @@ export const AboutWhoWeAre: React.FC = () => {
         {gridItems.map((item, index) => (
           <Col lg="3" md="6" xs="12" px={[2, "2px"]} py={[0, "2px"]} key={index}>
             <Spacer mb={4} />
-            <img src={item.image} />
+            <ProgressiveImage imageUrl={item.image} alt={item.name} size="small" />
             <Box mx={0.5}>
               <Sans size="3" style={{ maxWidth: "80%" }}>
                 {item.name}

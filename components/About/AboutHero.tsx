@@ -5,11 +5,12 @@ import { Flex, Sans, Spacer, Box, Separator } from ".."
 import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
 import { space, color } from "../../helpers"
+import { Picture } from "../Picture"
 
 const imageImport1 = require("../../public/images/about/About-HeroImage-1.png")
 const imageImport2 = require("../../public/images/about/About-HeroImage-2.png")
-const image1 = imageResize(imageImport1, "large")
-const image2 = imageResize(imageImport2, "large")
+const image1 = imageResize(imageImport1, "medium")
+const image2 = imageResize(imageImport2, "medium")
 
 const DesktopHero = () => {
   return (
@@ -45,10 +46,10 @@ const DesktopHero = () => {
         </Flex>
         <Spacer pb="80px" />
         <ImageWrapper1>
-          <img src={image1} style={{ maxHeight: "100%" }} alt="Office interior" />
+          <Picture src={image1} alt="Planning on whiteboard" />
         </ImageWrapper1>
         <ImageWrapper2>
-          <img src={image2} style={{ maxHeight: "100%" }} alt="Planning on a white board" />
+          <Picture src={image2} alt="Office interior" />
         </ImageWrapper2>
       </Box>
     </Grid>
@@ -80,9 +81,9 @@ const MobileHero = () => {
           <Spacer pb="40px" />
         </Col>
         <Col xs="12" md="12">
-          <img src={image1} style={{ width: "100%" }} alt="Office interior" />
+          <Picture src={image1} alt="Planning on whiteboard" />
           <Spacer mb={0.5} />
-          <img src={image2} style={{ width: "100%" }} alt="Planning on a white board" />
+          <Picture src={image2} alt="Office interior" />
         </Col>
       </Row>
     </Grid>
@@ -109,6 +110,10 @@ const ImageWrapper1 = styled.div`
   top: 0;
   right: 130px;
   z-index: -1;
+
+  img {
+    height: 100%;
+  }
 `
 
 const ImageWrapper2 = styled.div`
@@ -117,4 +122,8 @@ const ImageWrapper2 = styled.div`
   bottom: 0;
   right: ${space(0.5)}px;
   z-index: -1;
+
+  img {
+    height: 100%;
+  }
 `

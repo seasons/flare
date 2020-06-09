@@ -6,7 +6,7 @@ import { LinkCTA } from "../Button"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
 
-const imageImport = require("../../public/images/homepage/CouchPhoto_final.png")
+const imageURL = require("../../public/images/homepage/CouchPhoto_final.png")
 
 const DesktopHero = () => {
   return (
@@ -38,7 +38,7 @@ const DesktopHero = () => {
         </Col>
         <Col md="8" xs="12" px={[2, 0]}>
           <ProgressiveImage
-            imageUrl={imageImport}
+            imageUrl={imageURL}
             size="xlarge"
             aspectRatio={0.66}
             alt="hero product image of model on couch"
@@ -73,7 +73,7 @@ const MobileHero = () => {
         <Col xs="12">
           <MobileImageWrapper>
             <ProgressiveImage
-              imageUrl={imageImport}
+              imageUrl={imageURL}
               size="medium"
               aspectRatio={0.66}
               alt="hero product image of model on couch"
@@ -108,14 +108,6 @@ export const Hero: React.FC = () => {
     </>
   )
 }
-
-const ImageWrapper = styled(Flex)`
-  position: relative;
-  height: 100%;
-  width: 100%;
-  padding-left: 60px;
-  overflow: hidden;
-`
 
 const MobileImageWrapper = styled(Flex)`
   position: relative;
