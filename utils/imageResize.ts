@@ -22,9 +22,6 @@ type ImageSizeMap = {
   [key in ImageSize]: ImageSizeOptions
 }
 
-const IMGIX_BASE = "https://seasons-nyc.imgix.net"
-const S3_BASE = "https://seasons-images.s3.amazonaws.com"
-
 export const IMAGE_ASPECT_RATIO = 1.25
 
 export const sizes: ImageSizeMap = {
@@ -61,9 +58,6 @@ export const imageResize = (
   sizeName: ImageResizerSize,
   passedOptions: ImageResizerOptions = { fit: "clip" }
 ) => {
-  const [path] = url.split("?")
-  const newURL = path.replace(S3_BASE, IMGIX_BASE)
-
   const options: ImageResizerOptions = pickBy(
     {
       fit: "clip",
@@ -75,7 +69,6 @@ export const imageResize = (
 
   let params: any
   const { retina, ...remainingOptions } = options
-
   if (sizeName) {
     const size = sizes[sizeName]
     params = pickBy(
@@ -90,5 +83,12 @@ export const imageResize = (
   } else {
     params = remainingOptions
   }
-  return newURL + "?" + qs.stringify(params)
+
+  if (/seasons-images\./.test(url)) {
+    return url.replace(`seasons-images.s3.amazonaws.com`, `seasons-s3.imgix.net`) + "?" + qs.stringify(params)
+  }
+
+  return (
+    url.replace(`seasons-images-staging.s3.amazonaws.com`, `seasons-s3-staging.imgix.net`) + "?" + qs.stringify(params)
+  )
 }

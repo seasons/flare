@@ -1,5 +1,6 @@
 import React from "react"
-import { color } from "../helpers"
+
+const isProd = process.env.NODE_ENV === "production"
 
 export const Picture: React.FC<{
   src: string
@@ -7,9 +8,8 @@ export const Picture: React.FC<{
   onLoad?: () => void
   imgRef?: any
 }> = ({ src, alt, imgRef, onLoad }) => {
-  const isProd = process.env.NODE_ENV === "production"
   let prefix
-  if (src.includes("seasons-s3.imgix.net")) {
+  if (src.includes("seasons-s3.imgix.net") || src.includes("seasons-s3-staging.imgix.net")) {
     prefix = ""
   } else if (isProd) {
     prefix = "https://flare-web.imgix.net"
@@ -20,13 +20,7 @@ export const Picture: React.FC<{
     <picture>
       <source type="image/webp" srcSet={prefix + src + "&fm=webp"} />
       <source type="image/jpeg" srcSet={prefix + src + "&fm=jpg"} />
-      <img
-        style={{ backgroundColor: color("black04") }}
-        src={prefix + src + "&fm=jpg"}
-        ref={imgRef}
-        alt={alt}
-        onLoad={onLoad}
-      />
+      <img src={prefix + src + "&fm=jpg"} ref={imgRef} alt={alt} onLoad={onLoad} />
     </picture>
   )
 }
