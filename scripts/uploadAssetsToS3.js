@@ -52,7 +52,7 @@ const uploadToS3 = async () => {
         Body: fs.createReadStream(file),
         Key: generateFileKey(file),
         ACL: "public-read",
-        ContentType: mime.lookup(file),
+        ContentType: JSON.stringify(mime.lookup(file)),
         ContentEncoding: "utf-8",
         CacheControl: "immutable,max-age=31536000,public",
       }
