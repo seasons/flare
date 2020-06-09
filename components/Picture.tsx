@@ -1,6 +1,6 @@
 import React from "react"
 
-const isProd = process.env.NODE_ENV === "production"
+const isProd = process.env.ENVIRONMENT === "production"
 
 export const Picture: React.FC<{
   src: string
@@ -16,6 +16,7 @@ export const Picture: React.FC<{
   } else {
     prefix = "https://flare-web-staging.imgix.net"
   }
+
   return (
     <picture>
       <source type="image/webp" srcSet={prefix + src + "&fm=webp"} />

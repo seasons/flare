@@ -48,7 +48,7 @@ const uploadToS3 = async () => {
     fileArray.forEach((file) => {
       // Configuring parameters for S3 Object
       const S3params = {
-        Bucket: process.env.NODE_ENV === "production" ? "flare-web" : "flare-web-staging",
+        Bucket: process.env.ENVIRONMENT === "production" ? "flare-web" : "flare-web-staging",
         Body: fs.createReadStream(file),
         Key: generateFileKey(file),
         ACL: "public-read",
