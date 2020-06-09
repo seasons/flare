@@ -16,6 +16,7 @@ export const Picture: React.FC<{
   } else {
     prefix = "https://flare-web-staging.imgix.net"
   }
+
   return (
     <picture>
       <source type="image/webp" srcSet={prefix + src + "&fm=webp"} />
