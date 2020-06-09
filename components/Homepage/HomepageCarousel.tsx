@@ -18,8 +18,7 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImage[] }> = ({ ima
     <Wrapper>
       <SnapList direction="horizontal" width="100%" ref={snapList}>
         {images.map((image, index) => {
-          const imageJpg = imageResize(image.imageUrl, "large", { fm: "jpg" })
-          const imageWebp = imageResize(image.imageUrl, "large", { fm: "webp" })
+          const imageSRC = imageResize(image.imageUrl, "large")
           return (
             <SnapItem
               width="100%"
@@ -29,7 +28,7 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImage[] }> = ({ ima
             >
               <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
                 <ImageWrapper>
-                  <Picture webpSrc={imageWebp} jpgSrc={imageJpg} alt={image.alt} />
+                  <Picture src={imageSRC} alt={image.alt} />
                 </ImageWrapper>
               </Box>
             </SnapItem>

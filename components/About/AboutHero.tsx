@@ -5,15 +5,12 @@ import { Flex, Sans, Spacer, Box, Separator } from ".."
 import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
 import { space, color } from "../../helpers"
-import { FLARE_IMGIX_BASE } from "../../helpers/constants"
 import { Picture } from "../Picture"
 
-const image1 = `${FLARE_IMGIX_BASE}/About-HeroImage-1.png`
-const image2 = `${FLARE_IMGIX_BASE}/About-HeroImage-2.png`
-const image1Jpg = imageResize(image1, "medium", { fm: "jpg" })
-const image1Webp = imageResize(image1, "medium", { fm: "webp" })
-const image2Jpg = imageResize(image2, "medium", { fm: "jpg" })
-const image2Webp = imageResize(image2, "medium", { fm: "webp" })
+const imageImport1 = require("../../public/images/about/About-HeroImage-1.png")
+const imageImport2 = require("../../public/images/about/About-HeroImage-2.png")
+const image1 = imageResize(imageImport1, "medium")
+const image2 = imageResize(imageImport2, "medium")
 
 const DesktopHero = () => {
   return (
@@ -49,10 +46,10 @@ const DesktopHero = () => {
         </Flex>
         <Spacer pb="80px" />
         <ImageWrapper1>
-          <Picture webpSrc={image1Webp} jpgSrc={image1Jpg} alt="Planning on whiteboard" />
+          <Picture src={image1} alt="Planning on whiteboard" />
         </ImageWrapper1>
         <ImageWrapper2>
-          <Picture webpSrc={image2Webp} jpgSrc={image2Jpg} alt="Office interior" />
+          <Picture src={image2} alt="Office interior" />
         </ImageWrapper2>
       </Box>
     </Grid>
@@ -84,9 +81,9 @@ const MobileHero = () => {
           <Spacer pb="40px" />
         </Col>
         <Col xs="12" md="12">
-          <Picture webpSrc={image1Webp} jpgSrc={image1Jpg} alt="Planning on a white board" />
+          <Picture src={image1} alt="Planning on whiteboard" />
           <Spacer mb={0.5} />
-          <Picture webpSrc={image2Webp} jpgSrc={image2Jpg} alt="Office interior" />
+          <Picture src={image2} alt="Office interior" />
         </Col>
       </Row>
     </Grid>

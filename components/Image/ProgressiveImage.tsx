@@ -29,18 +29,15 @@ export const ProgressiveImage: React.FC<ProgressiveImage> = ({
     }
   }, [fullImageRef])
 
-  const initialImageJpg = imageResize(imageUrl, "initial", { fm: "jpg" })
-  const initialImageWebP = imageResize(imageUrl, "initial", { fm: "webp" })
-  const fullImageJpg = imageResize(imageUrl, size, { fm: "jpg" })
-  const fullImageWebp = imageResize(imageUrl, size, { fm: "webp" })
+  const initialImage = imageResize(imageUrl, "initial")
+  const fullImage = imageResize(imageUrl, size)
 
   return (
     <ImageWrapper aspectRatio={aspectRatio} hideBackground={hideBackground}>
       <FullImageWrapper loaded={loaded}>
         <Picture
-          webpSrc={fullImageWebp}
-          jpgSrc={fullImageJpg}
-          key={fullImageJpg}
+          src={fullImage}
+          key={fullImage}
           alt={alt}
           imgRef={fullImageRef}
           onLoad={() => {
@@ -49,7 +46,7 @@ export const ProgressiveImage: React.FC<ProgressiveImage> = ({
         />
       </FullImageWrapper>
       <InitialImageWrapper>
-        <Picture webpSrc={initialImageWebP} jpgSrc={initialImageJpg} alt={alt} />
+        <Picture src={initialImage} alt={alt} />
       </InitialImageWrapper>
     </ImageWrapper>
   )

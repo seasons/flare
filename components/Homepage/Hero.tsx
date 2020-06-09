@@ -5,9 +5,8 @@ import { Flex, Sans, Spacer, Box } from ".."
 import { LinkCTA } from "../Button"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
-import { FLARE_IMGIX_BASE } from "../../helpers/constants"
 
-const imageURL = `${FLARE_IMGIX_BASE}/CouchPhoto_final.png`
+const imageURL = require("../../public/images/homepage/CouchPhoto_final.png")
 
 const DesktopHero = () => {
   return (

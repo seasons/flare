@@ -68,7 +68,6 @@ export const imageResize = (
     {
       fit: "clip",
       retina: true,
-      fm: "webp",
       ...passedOptions,
     },
     identity

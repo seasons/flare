@@ -1,18 +1,16 @@
 import React from "react"
 import { Box, Sans, Spacer, Flex } from "../"
 import { TextList } from "./TextList"
-import styled from "styled-components"
 import { Media } from "../Responsive"
 import { HomepageCarousel } from "./HomepageCarousel"
 import { ProgressiveImage } from "../Image"
-import { FLARE_IMGIX_BASE } from "../../helpers/constants"
 
 const title = "The app"
 const subtitle = "After receiving an invite, you’ll get a link to download the Seasons app."
 
-const image1 = `${FLARE_IMGIX_BASE}/App-Image-1.png`
-const image2 = `${FLARE_IMGIX_BASE}/App-Image-2.png`
-const image3 = `${FLARE_IMGIX_BASE}/App-Image-3.png`
+const image1 = require("../../public/images/homepage/App-Image-1.png")
+const image2 = require("../../public/images/homepage/App-Image-2.png")
+const image3 = require("../../public/images/homepage/App-Image-3.png")
 
 const textItems = [
   {

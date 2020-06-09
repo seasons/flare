@@ -1,17 +1,25 @@
 import React from "react"
 
 export const Picture: React.FC<{
-  webpSrc: string
-  jpgSrc: string
+  src: string
   alt: string
   onLoad?: () => void
   imgRef?: any
-}> = ({ webpSrc, jpgSrc, alt, imgRef, onLoad }) => {
+}> = ({ src, alt, imgRef, onLoad }) => {
+  const isProd = process.env.NODE_ENV === "production"
+  let prefix
+  if (src.includes("seasons-s3.imgix.net")) {
+    prefix = ""
+  } else if (isProd) {
+    prefix = "https://flare-web.imgix.net"
+  } else {
+    prefix = "https://flare-web-staging.imgix.net"
+  }
   return (
     <picture>
-      <source type="image/webp" srcSet={webpSrc} />
-      <source type="image/jpeg" srcSet={jpgSrc} />
-      <img src={jpgSrc} ref={imgRef} alt={alt} onLoad={onLoad} />
+      <source type="image/webp" srcSet={prefix + src + "&fm=webp"} />
+      <source type="image/jpeg" srcSet={prefix + src + "&fm=jpg"} />
+      <img src={prefix + src + "&fm=jpg"} ref={imgRef} alt={alt} onLoad={onLoad} />
     </picture>
   )
 }

@@ -3,7 +3,7 @@ import { Sans } from "../Typography"
 import { color } from "../../helpers/color"
 import styled from "styled-components"
 import { Flex } from "../Flex"
-import { FowardArrow } from "../../assets/SVG/FowardArrow"
+import { ForwardArrow } from "../SVGs"
 
 type CTAVariant = "primaryWhite" | "primaryBlack"
 
@@ -18,7 +18,7 @@ export const LinkCTA: React.FC<{ text: string; href: string; variant?: CTAVarian
         justifyContent="space-between"
       >
         <Sans size="4">{text}</Sans>
-        <FowardArrow />
+        <ForwardArrow />
       </Container>
     </StyledAnchor>
   )

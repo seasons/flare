@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p $PORT",
-    "upload-image-assets": "node scripts/uploadAssetsToS3.js"
+    "upload-assets": "node scripts/uploadAssetsToS3.js"
   },
   "engines": {
     "node": "12"

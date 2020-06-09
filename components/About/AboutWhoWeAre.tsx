@@ -1,75 +1,85 @@
 import React from "react"
 import { Box, Sans, Spacer } from "../"
 import { Grid, Row, Col } from "../Grid"
-import { imageResize } from "../../utils/imageResize"
-import { FLARE_IMGIX_BASE } from "../../helpers/constants"
 import { ProgressiveImage } from "../Image"
+
+const regy = require("../../public/images/about/regy.png")
+const faiyam = require("../../public/images/about/Faiyam.png")
+const frank = require("../../public/images/about/francisco.png")
+const jesse = require("../../public/images/about/jesse.png")
+const kieran = require("../../public/images/about/Kieran.png")
+const luc = require("../../public/images/about/luc.png")
+const myles = require("../../public/images/about/myles.png")
+const perla = require("../../public/images/about/perla.png")
+const rob = require("../../public/images/about/rob.png")
+const san = require("../../public/images/about/san.png")
+const solea = require("../../public/images/about/solea.png")
 
 const gridItems = [
   {
     name: "Regy Perlera",
     text: "CEO & Founder",
-    image: `${FLARE_IMGIX_BASE}/regy.png`,
+    image: regy,
     subText: "",
   },
   {
     name: "Luc Succes",
     text: "CTO & Co-Founder",
-    image: `${FLARE_IMGIX_BASE}/luc.png`,
+    image: luc,
     subText: "",
   },
   {
     name: "San Pham",
     text: "Merchandise Planning",
-    image: `${FLARE_IMGIX_BASE}/san.png`,
+    image: san,
     subText: "",
   },
   {
     name: "Perla Trejo",
     text: "Operations",
-    image: `${FLARE_IMGIX_BASE}/perla.png`,
+    image: perla,
     subText: "",
   },
   {
     name: "Francisco Sanchez",
     text: "Finance",
-    image: `${FLARE_IMGIX_BASE}/francisco.png`,
+    image: frank,
     subText: "",
   },
   {
     name: "Kieran Gillen",
     text: "Engineering",
-    image: `${FLARE_IMGIX_BASE}/Kieran.png`,
+    image: kieran,
     subText: "",
   },
   {
     name: "Myles Thompson",
     text: "Art direction",
-    image: `${FLARE_IMGIX_BASE}/myles.png`,
+    image: myles,
     subText: "",
   },
   {
     name: "Jesse Hudnutt",
     text: "Buying & Strategy",
-    image: `${FLARE_IMGIX_BASE}/jesse.png`,
+    image: jesse,
     subText: "",
   },
   {
     name: "Faiyam Rahman",
     text: "Engineering",
-    image: `${FLARE_IMGIX_BASE}/Faiyam.png`,
+    image: faiyam,
     subText: "",
   },
   {
     name: "Solea Van Heyningan",
     text: "Photography",
-    image: `${FLARE_IMGIX_BASE}/solea.png`,
+    image: solea,
     subText: "",
   },
   {
     name: "Rob Kelly",
     text: "Content & Social",
-    image: `${FLARE_IMGIX_BASE}/rob.png`,
+    image: rob,
     subText: "(Joined 1 day before quarantine)",
   },
 ]

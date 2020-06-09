@@ -16,7 +16,7 @@ Every deployment is immutable. Cache will be invalidated every time you deploy.
 
 */
 
-const directoryPath = path.resolve(__dirname, "../.next/static/images")
+const directoryPath = path.resolve(__dirname, "../.next")
 
 // Retrive al the files path in the build directory
 const getDirectoryFilesRecursive = (dir, ignores = []) => {
@@ -30,13 +30,8 @@ const getDirectoryFilesRecursive = (dir, ignores = []) => {
 // See: https://nextjs.org/blog/next-7/#static-cdn-support
 const generateFileKey = (fileName) => {
   // Removes the generated hash and returns just the original static name
-  // E.G. https://flare-web-staging.s3.amazonaws.com/images/CouchPhoto_final.png
-  const removeInitialRoute = fileName.split("/.next/static/")[1]
-  const splitByPeriod = removeInitialRoute.split(".")
-  const suffix = splitByPeriod[splitByPeriod.length - 1]
-  const splitByDash = removeInitialRoute.split("-")
-  const assetPath = splitByDash.slice(0, splitByDash.length - 1).join("-")
-  return assetPath + "." + suffix
+  const S3objectPath = fileName.split("/.next/")[1]
+  return `_next/${S3objectPath}`
 }
 
 const s3 = new AWS.S3({
