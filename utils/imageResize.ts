@@ -58,6 +58,7 @@ export const imageResize = (
   sizeName: ImageResizerSize,
   passedOptions: ImageResizerOptions = { fit: "clip" }
 ) => {
+  const removedParams = url.split("?")[0]
   const options: ImageResizerOptions = pickBy(
     {
       fit: "clip",
@@ -85,10 +86,12 @@ export const imageResize = (
   }
 
   if (/seasons-images\./.test(url)) {
-    return url.replace(`seasons-images.s3.amazonaws.com`, `seasons-s3.imgix.net`) + "?" + qs.stringify(params)
+    return removedParams.replace(`seasons-images.s3.amazonaws.com`, `seasons-s3.imgix.net`) + "?" + qs.stringify(params)
   }
 
   return (
-    url.replace(`seasons-images-staging.s3.amazonaws.com`, `seasons-s3-staging.imgix.net`) + "?" + qs.stringify(params)
+    removedParams.replace(`seasons-images-staging.s3.amazonaws.com`, `seasons-s3-staging.imgix.net`) +
+    "?" +
+    qs.stringify(params)
   )
 }
