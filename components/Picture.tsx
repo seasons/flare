@@ -1,4 +1,5 @@
 import React from "react"
+import { color } from "../helpers"
 
 export const Picture: React.FC<{
   src: string
@@ -19,7 +20,13 @@ export const Picture: React.FC<{
     <picture>
       <source type="image/webp" srcSet={prefix + src + "&fm=webp"} />
       <source type="image/jpeg" srcSet={prefix + src + "&fm=jpg"} />
-      <img src={prefix + src + "&fm=jpg"} ref={imgRef} alt={alt} onLoad={onLoad} />
+      <img
+        style={{ backgroundColor: color("black04") }}
+        src={prefix + src + "&fm=jpg"}
+        ref={imgRef}
+        alt={alt}
+        onLoad={onLoad}
+      />
     </picture>
   )
 }
