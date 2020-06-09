@@ -1,6 +1,6 @@
 import React from "react"
 
-const isProd = process.env.NODE_ENV === "production"
+const isProd = process.env.ENVIRONMENT === "production"
 
 export const Picture: React.FC<{
   src: string
