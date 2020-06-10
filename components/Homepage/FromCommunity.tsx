@@ -5,7 +5,6 @@ import styled from "styled-components"
 import { Media } from "../Responsive"
 
 export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
-  console.log("blogPosts", blogPosts)
   if (!blogPosts) {
     return null
   }
