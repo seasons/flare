@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid, Row, Col } from "../Grid"
+import { Grid } from "../Grid"
 import { Sans, Spacer, Box, Flex } from "../"
 import styled from "styled-components"
 import { Media } from "../Responsive"

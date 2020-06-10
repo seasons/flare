@@ -98,8 +98,6 @@ export const HOME_QUERY = gql`
 const Home = withData(() => {
   const { data } = useQuery(HOME_QUERY, {})
 
-  console.log("data", data)
-
   return (
     <Layout fixedNav>
       <Nav fixed />
