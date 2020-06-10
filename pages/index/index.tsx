@@ -12,6 +12,7 @@ import {
   AsSeenIn,
   TheBag,
   TheApp,
+  FromCommunity,
 } from "../../components/Homepage"
 import { Spacer, Layout, Separator } from "../../components"
 import withData from "../../lib/apollo"
@@ -27,6 +28,13 @@ export const HOME_QUERY = gql`
       products {
         id
       }
+    }
+    blogPosts(collection: "5e72a4bad1075fcf7313bf38", count: 3) {
+      id
+      url
+      name
+      author
+      imageURL
     }
     justAddedTops: products(
       first: 4
@@ -90,16 +98,21 @@ export const HOME_QUERY = gql`
 const Home = withData(() => {
   const { data } = useQuery(HOME_QUERY, {})
 
+  console.log("data", data)
+
   return (
     <Layout fixedNav>
       <Nav fixed />
       <Hero />
       <Separator />
+
       <Spacer mb={5} />
       <AsSeenIn />
       <Spacer mb={5} />
+
       <Separator />
       <Spacer mb={6} />
+
       <ColumnList
         items={[
           {
@@ -119,39 +132,59 @@ const Home = withData(() => {
           },
         ]}
       />
-      <Spacer mb={6} />
+
+      <Spacer mb={10} />
       <ProductRail title="Just added tops" products={data?.justAddedTops} />
-      <Spacer mb={2} />
+      <Spacer mb={8} />
+
       <Separator />
-      <Spacer mb={6} />
-      <UsaMap />
-      <Spacer mb={6} />
+
+      <Spacer mb={10} />
+      <FromCommunity blogPosts={data?.blogPosts} />
+      <Spacer mb={10} />
+
       <Separator />
+
       <Spacer mb={6} />
       <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
       <Spacer mb={2} />
+
       <Separator />
+
       <Spacer mb={15} />
       <ChooseMembership />
       <Spacer mb={15} />
+
       <Separator />
+
       <Spacer mb={15} />
       <MembershipBenefits />
       <Spacer mb={15} />
+
       <Separator />
+
       <Spacer mb={10} />
       <TheApp />
       <Spacer mb={10} />
+
       <Separator />
+
       <Spacer mb={13} />
       <TheBag />
       <Spacer mb={13} />
+
       <Separator />
+
       <Spacer mb={15} />
       <FAQ />
       <Spacer mb={15} />
+
       <Separator />
+
       <Spacer mb={15} />
+      <UsaMap />
+      <Spacer mb={15} />
+
       <Brands brands={data?.brands} />
       <Spacer mb={15} />
     </Layout>
