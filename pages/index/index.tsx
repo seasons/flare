@@ -114,19 +114,19 @@ const Home = withData(() => {
       <ColumnList
         items={[
           {
-            title: "Pick your 3 styles",
+            title: "Choose your items",
             text:
-              "Browse our curated brands and reserve up to 3 tops at a time. We'll deliver them straight to your door with a pre-paid return shipping label.",
+              "Browse from over 40 different brands and reserve up to 3 pieces per order. Not sure what to get? We’ll recommend some.",
           },
           {
-            title: "Rotate them out",
+            title: "Wear, swap & repeat",
             text:
-              "Wear them once or as many times as you want. Ready for something new? Return all 3 of your pieces and reserve your next order.",
+              "Wear them once or as many times as you want. Ready for something new? Choose what to return or buy (at discount) and start your next order.",
           },
           {
-            title: "Shipping & dry cleaning's on us",
+            title: "Returns & dry cleaning’s on us",
             text:
-              "We handle the back and forth, restoring and cleaning each piece before it gets to you. Oh, rental insurance is covered too.",
+              "We handle the shipping back and forth, restoring and cleaning each piece for you. Oh, we cover rental insurance too.",
           },
         ]}
       />

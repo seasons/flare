@@ -25,13 +25,13 @@ const DesktopHero = () => {
                 This is Seasons.
               </Sans>
               <Sans size="8" color="black50">
-                Exclusive access to a closet full of luxury menswear & streetwear.
+                A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
               <LinkCTA text="Apply for membership" href="https://signup.seasons.nyc/" />
               <Spacer mb={4} />
               <Sans size="3" color="black50">
-                Applications reviewed on a first come, first serve basis. Exclusively in New York, Atlanta, and Miami.
+                Memberships are now open. Join the waitlist to secure your spot and get an invite.
               </Sans>
             </Flex>
           </Flex>
@@ -62,7 +62,7 @@ const MobileHero = () => {
                 This is Seasons.
               </Sans>
               <Sans size="8" color="black50">
-                Exclusive access to a closet full of luxury menswear & streetwear.
+                A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
               <LinkCTA text="Apply for membership" href="https://signup.seasons.nyc/" />
@@ -85,7 +85,7 @@ const MobileHero = () => {
             <Box>
               <Spacer mb={3} />
               <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
-                Applications reviewed on a first come, first serve basis. Exclusively in New York, Atlanta, and Miami.
+                Memberships are now open. Join the waitlist to secure your spot and get an invite.
               </Sans>
               <Spacer mb={3} />
             </Box>
