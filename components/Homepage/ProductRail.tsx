@@ -5,7 +5,7 @@ import { Link } from "../Link"
 import { ProductGridItem } from "../Product/ProductGridItem"
 
 export const ProductRail: React.FC<{ products: any; title?: string }> = ({ products, title }) => {
-  if (!products) {
+  if (!products?.length) {
     return null
   }
   return (
