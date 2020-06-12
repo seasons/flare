@@ -29,7 +29,7 @@ export const HOME_QUERY = gql`
         id
       }
     }
-    blogPosts(collection: "5e72a4bad1075fcf7313bf38", count: 3) {
+    blogPosts(count: 3) {
       id
       url
       name
@@ -141,11 +141,15 @@ const Home = withData(() => {
       <FromCommunity blogPosts={data?.blogPosts} />
       <Spacer mb={10} />
 
-      <Separator />
+      {data?.justAddedBottoms?.length && (
+        <>
+          <Separator />
 
-      <Spacer mb={6} />
-      <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
-      <Spacer mb={2} />
+          <Spacer mb={6} />
+          <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
+          <Spacer mb={2} />
+        </>
+      )}
 
       <Separator />
 
