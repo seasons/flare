@@ -36,7 +36,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean }> = ({
                 <Sans size="2" mt="0.5">
                   {text}
                 </Sans>
-                <VariantSizes variants={product.variants} size="0" />
+                <VariantSizes variants={product.variants} size="2" />
               </>
             )}
           </Box>

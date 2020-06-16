@@ -47,4 +47,5 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
+  background-color: ${color("white100")};
 `

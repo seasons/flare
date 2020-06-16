@@ -30,7 +30,7 @@ export class Button extends Component<WebButtonProps> {
         }
       case "medium":
         return {
-          height: inline ? "21px" : "41px",
+          height: inline ? "21px" : "48px",
           size: "3t",
           px: inline ? 0 : 2,
         }
@@ -72,14 +72,14 @@ export class Button extends Component<WebButtonProps> {
 
             return `
                 background-color: ${colors.white100};
-                border-color: ${colors.white100};
+                border-color: ${colors.black100};
                 color: ${colors.black100};
 
                 @media ${themeProps.mediaQueries.hover} {
                   &:hover {
-                    background-color: ${colors.purple100};
-                    border-color: ${colors.purple100};
-                    color: ${colors.white100};
+                    background-color: ${colors.white100};
+                    border-color: ${colors.black25};
+                    color: ${colors.black100};
                   }
                 }
               `
@@ -179,20 +179,9 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
       >
         {loading && <Spinner size={this.props.buttonSize} />}
 
-        {longestText ? (
-          <>
-            <VisibleText pt="1px" weight={weight || "medium"} color={color} size={size}>
-              {children}
-            </VisibleText>
-            <HiddenText role="presentation" pt="1px" weight={weight || "medium"} size={size}>
-              {longestText}
-            </HiddenText>
-          </>
-        ) : (
-          <Sans pt="1px" weight={weight || "medium"} size={size}>
-            {children}
-          </Sans>
-        )}
+        <Sans pt="1px" weight={weight || "medium"} size={size} style={{ textAlign: "center" }}>
+          {children}
+        </Sans>
       </Container>
     )
   }
@@ -222,6 +211,8 @@ const Container = styled.button<ButtonBaseProps>`
   ${textAlign};
   ${width};
   ${height};
+
+  border-style: solid;
 
   ${(props) => {
     if (!props.loading) {
