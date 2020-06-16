@@ -9,7 +9,6 @@ export const Carousel: React.FC<{
   images: any[]
 }> = ({ images }) => {
   const snapList = useRef(null)
-  console.log("images", images)
   const selected = useVisibleElements({ debounce: 10, ref: snapList }, ([element]) => element)
   const goToSnapItem = useScroll({ ref: snapList })
   return (

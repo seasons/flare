@@ -29,8 +29,6 @@ export const ProductDetails: React.FC<{
     }
   }
 
-  console.log("product", product)
-
   return (
     <Box px={2} mb={3}>
       <Flex flexDirection="row" justifyContent="space-between">
