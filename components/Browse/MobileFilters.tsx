@@ -1,12 +1,7 @@
-import NextLink from "next/link"
-import { useRouter } from "next/router"
 import styled from "styled-components"
 import { color } from "../../helpers/color"
-import { Sans } from "../Typography"
-import { BoxProps, Box } from "../Box"
+import { Box } from "../Box"
 import { useState } from "react"
-import { useSpring, animated } from "react-spring"
-import { Spacer } from ".."
 
 const MENU_HEIGHT = 59
 
