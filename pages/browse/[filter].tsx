@@ -143,110 +143,114 @@ export const BrowsePage: NextPage<{}> = withData((props) => {
   const showPagination = !!products?.length && aggregateCount > 20
 
   return (
-    <Layout fixedNav>
-      <Media lessThan="md">
-        <MobileFilters
-          BrandsListComponent={
-            <BrowseFilters
-              setCurrentPage={setCurrentPage}
-              currentCategory={currentCategory}
-              listItems={brands}
-              title="Designers"
-              hideTitle
-              currentBrand={currentBrand}
-            />
-          }
-          CategoriesListComponent={
-            <BrowseFilters
-              title="Categories"
-              setCurrentPage={setCurrentPage}
-              currentCategory={currentCategory}
-              listItems={categories}
-              hideTitle
-              currentBrand={currentBrand}
-            />
-          }
-        />
-      </Media>
-      <Spacer mb={[0, 5]} />
-      <Grid>
-        <Row style={{ minHeight: "calc(100vh - 160px)" }}>
-          <Col md="2" xs="12" mx={["2", "0"]}>
-            <Media greaterThanOrEqual="md">
-              <FixedBox>
-                <Box pr={1}>
-                  <BrowseFilters
-                    setCurrentPage={setCurrentPage}
-                    currentCategory={currentCategory}
-                    title="Categories"
-                    listItems={categories}
-                    currentBrand={currentBrand}
-                  />
-                  <Spacer mb={3} />
-                  <BrowseFilters
-                    setCurrentPage={setCurrentPage}
-                    title="Designers"
-                    currentCategory={currentCategory}
-                    listItems={brands}
-                    currentBrand={currentBrand}
-                  />
-                  <Spacer mb={2} />
-                </Box>
-              </FixedBox>
-            </Media>
-          </Col>
-          <Media lessThan="md">
-            <Box px={2} pt={2}>
-              <Sans size="4">Browse</Sans>
-            </Box>
-          </Media>
-          <Col md="10" xs="12">
-            <Row>
-              {data && !products?.length ? (
-                <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
-                  <Sans size="3" style={{ textAlign: "center" }}>
-                    Your filters returned no results.
-                  </Sans>
-                </Flex>
-              ) : (
-                (products || []).map((product, i) => (
-                  <Col col sm="3" xs="6" key={i}>
-                    <Box pt={[2, 0]} pb={[2, 5]}>
-                      <ProductGridItem product={product?.node} loading={loading} />
-                    </Box>
-                  </Col>
-                ))
-              )}
-            </Row>
-            <Row>
-              <Flex align-items="center" mt={2} mb={4} width="100%">
-                {showPagination && (
-                  <Pagination currentPage={currentPage} pageCount={pageCount}>
-                    <Paginate
-                      previousLabel="previous"
-                      nextLabel="next"
-                      breakClassName="break-me"
-                      pageCount={pageCount}
-                      marginPagesDisplayed={25}
-                      pageRangeDisplayed={2}
-                      forcePage={currentPage - 1}
-                      onPageChange={(data) => {
-                        setCurrentPage(data.selected + 1)
-                      }}
-                      containerClassName="pagination"
-                      previousLinkClassName="previous-button"
-                      nextLinkClassName="next-button"
-                      subContainerClassName="pages pagination"
-                      activeClassName="active"
+    <>
+      <Layout fixedNav>
+        <Media lessThan="md">
+          <MobileFilters
+            BrandsListComponent={
+              <BrowseFilters
+                setCurrentPage={setCurrentPage}
+                currentCategory={currentCategory}
+                listItems={brands}
+                title="Designers"
+                hideTitle
+                currentBrand={currentBrand}
+              />
+            }
+            CategoriesListComponent={
+              <BrowseFilters
+                title="Categories"
+                setCurrentPage={setCurrentPage}
+                currentCategory={currentCategory}
+                listItems={categories}
+                hideTitle
+                currentBrand={currentBrand}
+              />
+            }
+          />
+        </Media>
+        <Spacer mb={[0, 5]} />
+        <Grid>
+          <Row style={{ minHeight: "calc(100vh - 160px)" }}>
+            <Col md="2" xs="12" mx={["2", "0"]}>
+              <Media greaterThanOrEqual="md">
+                <FixedBox>
+                  <Box pr={1}>
+                    <BrowseFilters
+                      setCurrentPage={setCurrentPage}
+                      currentCategory={currentCategory}
+                      title="Categories"
+                      listItems={categories}
+                      currentBrand={currentBrand}
                     />
-                  </Pagination>
+                    <Spacer mb={3} />
+                    <BrowseFilters
+                      setCurrentPage={setCurrentPage}
+                      title="Designers"
+                      currentCategory={currentCategory}
+                      listItems={brands}
+                      currentBrand={currentBrand}
+                    />
+                    <Spacer mb={2} />
+                  </Box>
+                </FixedBox>
+              </Media>
+            </Col>
+            <Media lessThan="md">
+              <Box px={2} pt={2}>
+                <Sans size="4">Browse</Sans>
+              </Box>
+            </Media>
+            <Col md="10" xs="12">
+              <Row>
+                {data && !products?.length ? (
+                  <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
+                    <Sans size="3" style={{ textAlign: "center" }}>
+                      Your filters returned no results.
+                    </Sans>
+                  </Flex>
+                ) : (
+                  (products || []).map((product, i) => (
+                    <Col col sm="3" xs="6" key={i}>
+                      <Box pt={[2, 0]} pb={[2, 5]}>
+                        <ProductGridItem product={product?.node} loading={loading} />
+                      </Box>
+                    </Col>
+                  ))
                 )}
-              </Flex>
-            </Row>
-          </Col>
-        </Row>
-      </Grid>
-    </Layout>
+              </Row>
+              <Row>
+                <Flex align-items="center" mt={2} mb={4} width="100%">
+                  {showPagination && (
+                    <Pagination currentPage={currentPage} pageCount={pageCount}>
+                      <Paginate
+                        previousLabel="previous"
+                        nextLabel="next"
+                        breakClassName="break-me"
+                        pageCount={pageCount}
+                        marginPagesDisplayed={25}
+                        pageRangeDisplayed={2}
+                        forcePage={currentPage - 1}
+                        onPageChange={(data) => {
+                          setCurrentPage(data.selected + 1)
+                        }}
+                        containerClassName="pagination"
+                        previousLinkClassName="previous-button"
+                        nextLinkClassName="next-button"
+                        subContainerClassName="pages pagination"
+                        activeClassName="active"
+                      />
+                    </Pagination>
+                  )}
+                </Flex>
+              </Row>
+            </Col>
+          </Row>
+          <Spacer pb={["59px", 0]} />
+        </Grid>
+      </Layout>
+      <Spacer pb={["59px", 0]} />
+    </>
   )
 })
 

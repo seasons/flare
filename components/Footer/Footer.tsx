@@ -8,7 +8,7 @@ export const Footer = () => {
     <Wrapper>
       <Flex
         px={2}
-        pb={[1, 0]}
+        py={[1, 0]}
         style={{ borderTop: `1px solid ${color("black10")}`, width: "100%" }}
         justifyContent={["flex-start", "center"]}
       >
