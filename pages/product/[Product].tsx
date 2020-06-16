@@ -56,9 +56,11 @@ const Product = withData(() => {
               <Box mr={[0, 4]}>
                 {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
                 <Box px={2}>
-                  <Button width="100%" block variant="primaryWhite" onClick={null}>
-                    Join the waitlist
-                  </Button>
+                  <a href="//signup.seasons.nyc">
+                    <Button width="100%" block variant="primaryWhite" onClick={null}>
+                      Join the waitlist
+                    </Button>
+                  </a>
                 </Box>
                 <HowItWorks />
               </Box>
