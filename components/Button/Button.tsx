@@ -77,9 +77,9 @@ export class Button extends Component<WebButtonProps> {
 
                 @media ${themeProps.mediaQueries.hover} {
                   &:hover {
-                    background-color: ${colors.white100};
-                    border-color: ${colors.black25};
-                    color: ${colors.black100};
+                    background-color: ${colors.black100};
+                    border-color: ${colors.black100};
+                    color: ${colors.white100};
                   }
                 }
               `
