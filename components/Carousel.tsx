@@ -1,6 +1,5 @@
 import React, { useRef } from "react"
 import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplist-carousel"
-import { imageResize } from "../utils/imageResize"
 import { space, color } from "../helpers"
 import { Box, Picture, Flex } from "./"
 import styled from "styled-components"
@@ -11,27 +10,33 @@ export const Carousel: React.FC<{
   const snapList = useRef(null)
   const selected = useVisibleElements({ debounce: 10, ref: snapList }, ([element]) => element)
   const goToSnapItem = useScroll({ ref: snapList })
+
   return (
     <Box>
-      <SnapList direction="horizontal" width="100%" ref={snapList}>
-        {images?.map((image, index) => {
-          const imageSRC = imageResize(image.url, "large")
-          return (
-            <SnapItem
-              width="85%"
-              margin={{ left: index === 0 ? space(2) + "px" : space(1) + "px" }}
-              snapAlign="center"
-              key={image?.url}
-            >
-              <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
-                <ImageWrapper>
-                  <Picture src={imageSRC} alt={image.alt} />
-                </ImageWrapper>
-              </Box>
-            </SnapItem>
-          )
-        })}
-      </SnapList>
+      <CarouselWrapper>
+        <SnapList direction="horizontal" width="100%" ref={snapList}>
+          {images?.map((image, index) => {
+            return (
+              <SnapItem
+                margin={{ left: index === 0 ? space(2) + "px" : space(1) + "px" }}
+                snapAlign="center"
+                key={image?.url}
+                width="85%"
+              >
+                <Box
+                  onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}
+                  height="100%"
+                  width="100%"
+                >
+                  <ImageWrapper>
+                    <Picture src={image.url} alt={image.alt} key={image.url} />
+                  </ImageWrapper>
+                </Box>
+              </SnapItem>
+            )
+          })}
+        </SnapList>
+      </CarouselWrapper>
       <PagerWrapper>
         <Box px={0.5}>
           <Flex flexDirection="row" flexWrap="nowrap" px={1} py={2}>
@@ -58,10 +63,12 @@ const PagerWrapper = styled.div`
   z-index: 1;
 `
 
-const Wrapper = styled.div`
+const CarouselWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 0;
+  padding-bottom: 106%;
+  overflow: hidden;
   cursor: pointer;
 `
 
