@@ -3,6 +3,7 @@ import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplis
 import { space, color } from "../helpers"
 import { Box, Picture, Flex } from "./"
 import styled from "styled-components"
+import { imageResize } from "../utils/imageResize"
 
 export const Carousel: React.FC<{
   images: any[]
@@ -16,6 +17,7 @@ export const Carousel: React.FC<{
       <CarouselWrapper>
         <SnapList direction="horizontal" width="100%" ref={snapList}>
           {images?.map((image, index) => {
+            const imageSRC = imageResize(image.url, "large")
             return (
               <SnapItem
                 margin={{ left: index === 0 ? space(2) + "px" : space(1) + "px" }}
@@ -25,7 +27,7 @@ export const Carousel: React.FC<{
               >
                 <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
                   <ImageWrapper>
-                    <Picture src={image.url} alt={image.alt} key={image.url} />
+                    <Picture src={imageSRC} alt={image.alt} key={imageSRC} />
                   </ImageWrapper>
                 </Box>
               </SnapItem>
