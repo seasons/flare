@@ -20,7 +20,7 @@ export const Carousel: React.FC<{
             const imageSRC = imageResize(image.url, "large")
             return (
               <SnapItem
-                margin={{ left: index === 0 ? space(2) + "px" : space(1) + "px" }}
+                margin={{ left: index === 0 ? "0px" : space(1) + "px" }}
                 snapAlign="center"
                 key={image?.url}
                 width="100%"
