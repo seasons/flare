@@ -5,7 +5,7 @@ import withData from "../../lib/apollo"
 import { ProductDetails } from "../../components/Product/ProductDetails"
 import { Grid, Col, Row } from "../../components/Grid"
 import { useRouter } from "next/router"
-import { Box, Layout, Sans, Spacer } from "../../components"
+import { Box, Layout, Spacer } from "../../components"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { ProgressiveImage } from "../../components/Image"
 import { HowItWorks } from "../../components/Product/HowItWorks"
@@ -27,7 +27,7 @@ const Product = withData(() => {
 
   return (
     <Layout fixedNav>
-      <Box pt={[3, 5]}>
+      <Box pt={[1, 5]}>
         <Grid>
           <Row>
             <Col md="6" sm="12">
