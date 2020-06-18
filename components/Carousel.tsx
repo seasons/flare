@@ -21,13 +21,9 @@ export const Carousel: React.FC<{
                 margin={{ left: index === 0 ? space(2) + "px" : space(1) + "px" }}
                 snapAlign="center"
                 key={image?.url}
-                width="85%"
+                width="100%"
               >
-                <Box
-                  onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}
-                  height="100%"
-                  width="100%"
-                >
+                <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
                   <ImageWrapper>
                     <Picture src={image.url} alt={image.alt} key={image.url} />
                   </ImageWrapper>
@@ -67,7 +63,7 @@ const CarouselWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 106%;
+  padding-bottom: calc(100% * 1.25);
   overflow: hidden;
   cursor: pointer;
 `
@@ -84,5 +80,6 @@ const ImageWrapper = styled.div`
 
   img {
     width: 100%;
+    height: 100%;
   }
 `
