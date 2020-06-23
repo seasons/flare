@@ -8,7 +8,7 @@ export const Footer = () => {
     <Wrapper>
       <Flex
         px={2}
-        pb={[1, 0]}
+        py={[1, 0]}
         style={{ borderTop: `1px solid ${color("black10")}`, width: "100%" }}
         justifyContent={["flex-start", "center"]}
       >
@@ -47,4 +47,5 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
+  background-color: ${color("white100")};
 `

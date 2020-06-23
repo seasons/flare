@@ -36,7 +36,11 @@ export const GET_PRODUCT = gql`
       isSaved
       variants {
         id
-        size
+        internalSize {
+          id
+          productType
+          display
+        }
         total
         reservable
         nonReservable

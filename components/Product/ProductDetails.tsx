@@ -30,10 +30,10 @@ export const ProductDetails: React.FC<{
   }
 
   return (
-    <Box pt={2} px={2} mb={3}>
+    <Box px={2} mb={3}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Box>
-          <VariantSizes variants={product.variants} size="1" />
+          <VariantSizes variants={product.variants} size="3" />
           <Box my={2}>
             <Sans size="5" color="black">
               {name}

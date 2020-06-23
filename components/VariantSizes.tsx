@@ -1,44 +1,11 @@
-import { uniqBy } from "lodash"
 import { Flex, Box, Sans } from "."
 import styled from "styled-components"
 import { color } from "../helpers/color"
-
-const sizes = {
-  xs: {
-    sortWeight: 0,
-  },
-  s: {
-    sortWeight: 1,
-  },
-  m: {
-    sortWeight: 2,
-  },
-  l: {
-    sortWeight: 3,
-  },
-  xl: {
-    sortWeight: 4,
-  },
-  xxl: {
-    sortWeight: 5,
-  },
-}
-
-export const sortVariants = (variants) => {
-  // The higher the sortWeight the sooner it will be displayed, e.g. "xxl, xl, l, m"
-  const uniqueArray = uniqBy(variants, "size")
-  return uniqueArray.sort((variantA, variantB) => {
-    const sortWeightA =
-      (variantA.size && sizes[variantA.size.toLowerCase()] && sizes[variantA.size.toLowerCase()].sortWeight) || 0
-    const sortWeightB =
-      (variantB.size && sizes[variantB.size.toLowerCase()] && sizes[variantB.size.toLowerCase()].sortWeight) || 0
-    return sortWeightA - sortWeightB
-  })
-}
+import { SansSize } from "../lib/theme"
 
 export const VariantSizes: React.FC<{
   variants: any[]
-  size: "0" | "1"
+  size: SansSize
 }> = ({ variants, size }) => {
   const availableVariants = variants.filter((a) => !!a?.internalSize?.display)
 
@@ -48,7 +15,7 @@ export const VariantSizes: React.FC<{
         const reservable = variant.reservable !== null && !!variant.reservable
         return (
           <Box key={variant.id} mr={1} style={{ position: "relative" }}>
-            <Sans size="2" color={reservable ? "black" : "black15"}>
+            <Sans size={size} color={reservable ? "black" : "black25"}>
               {variant?.internalSize?.display}
             </Sans>
             {!reservable && <Strikethrough size={size} />}
@@ -59,11 +26,11 @@ export const VariantSizes: React.FC<{
   )
 }
 
-const Strikethrough = styled.div<{ size: string }>`
-  background-color: ${color("black15")};
-  height: 2;
+const Strikethrough = styled.div<{ size: SansSize }>`
+  background-color: ${color("black25")};
+  height: 2px;
   width: 100%;
   position: absolute;
-  top: ${(p) => (p.size === "0" ? 7 : 11)};
+  top: ${(p) => (p.size === "2" ? 7 : 11)}px;
   left: 0;
 `

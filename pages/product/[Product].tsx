@@ -1,15 +1,17 @@
 import { GET_PRODUCT } from "../../components/Product/ProductQueries"
 import React from "react"
-import { media } from "styled-bootstrap-grid"
 import { useQuery } from "@apollo/react-hooks"
 import withData from "../../lib/apollo"
 import { ProductDetails } from "../../components/Product/ProductDetails"
 import { Grid, Col, Row } from "../../components/Grid"
 import { useRouter } from "next/router"
-import styled from "styled-components"
-import { Box, Layout, Sans, Spacer } from "../../components"
+import { Box, Layout, Spacer } from "../../components"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { ProgressiveImage } from "../../components/Image"
+import { HowItWorks } from "../../components/Product/HowItWorks"
+import { Button } from "../../components/Button"
+import { Media } from "../../components/Responsive"
+import { Carousel } from "../../components/Carousel"
 
 const Product = withData(() => {
   const router = useRouter()
@@ -25,67 +27,50 @@ const Product = withData(() => {
 
   return (
     <Layout fixedNav>
-      <Box pt={5}>
+      <Box pt={[1, 5]}>
         <Grid>
           <Row>
-            <Col md="6" sm="12" xsOrder={1} smOrder={1}>
-              <Box style={{ minHeight: "calc(100vh - 160px)" }}>
-                {!product ? (
-                  <ImageLoader />
-                ) : (
-                  product?.images.map((image) => {
-                    return (
-                      <Box p={2} key={image.url}>
-                        <ProgressiveImage imageUrl={image.url} size="large" alt="product image" />
-                      </Box>
-                    )
-                  })
-                )}
-                <Spacer mb={2} />
-              </Box>
-            </Col>
-            <Col md="5" sm="12" p={1} mdOrder={2}>
-              <DetailsContainer mr={4}>
-                {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
-                <Box my={2} py={2} px={4}>
-                  <Button href="//signup.seasons.nyc">
-                    <Sans size="3">Join the waitlist</Sans>
-                  </Button>
+            <Col md="6" sm="12">
+              <Media greaterThanOrEqual="md">
+                <Box>
+                  {!product ? (
+                    <ImageLoader />
+                  ) : (
+                    product?.images.map((image) => {
+                      return (
+                        <Box px={2} mb={0.5} key={image.url}>
+                          <ProgressiveImage imageUrl={image.url} size="large" alt="product image" />
+                        </Box>
+                      )
+                    })
+                  )}
+                  <Spacer mb={0.5} />
                 </Box>
-              </DetailsContainer>
+              </Media>
+              <Media lessThan="md">
+                <Carousel images={product?.images} />
+                <Spacer mb={5} />
+              </Media>
+            </Col>
+            <Col md="5" sm="12">
+              <Box mr={[0, 4]}>
+                {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
+                <Box px={2}>
+                  <a href="//signup.seasons.nyc">
+                    <Button width="100%" block variant="primaryWhite" onClick={null}>
+                      Join the waitlist
+                    </Button>
+                  </a>
+                </Box>
+                <HowItWorks />
+              </Box>
             </Col>
           </Row>
         </Grid>
       </Box>
+      <Spacer mb="125px" />
     </Layout>
   )
 })
-
-const DetailsContainer = styled(Box)<{ size?: string }>`
-  ${media.md`
-    position: fixed;
-    width: 30%;
-  `};
-`
-
-const Button = styled.a`
-  display: flex;
-  width: 100%;
-  height: 56px;
-  margin-left: 0px;
-  padding-right: 16px;
-  padding-left: 16px;
-  justify-content: center;
-  align-items: center;
-  border-style: none;
-  border-width: 1px;
-  border-color: #fff;
-  border-radius: 400px;
-  background-color: #000;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  color: white;
-`
 
 export default Product
