@@ -6,10 +6,11 @@ import { Box } from "./Box"
 
 interface LayoutProps {
   fixedNav?: boolean
+  hideFooter?: boolean
   children?: any
 }
 
-export const Layout = ({ fixedNav = false, children }: LayoutProps) => {
+export const Layout = ({ fixedNav = false, children, hideFooter }: LayoutProps) => {
   return (
     <>
       <LayoutHead />
@@ -17,7 +18,7 @@ export const Layout = ({ fixedNav = false, children }: LayoutProps) => {
         <Box pt={60} pb={60} style={{ minHeight: "100vh", position: "relative" }}>
           <Nav fixed={fixedNav} />
           {children}
-          <Footer />
+          {!hideFooter && <Footer />}
         </Box>
       </Theme>
     </>
