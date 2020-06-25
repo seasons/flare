@@ -10,7 +10,7 @@ import { IncludesAtLeastOne } from "../../utils/includesAtLeastOne"
 import { SelectField } from "../Fields/SelectField"
 import { color } from "../../helpers"
 import { BackArrow } from "../SVGs/BackArrow"
-import { Box, Flex, Spacer } from "../"
+import { Box, Flex, Spacer, MaxWidth, Sans } from "../"
 import { Button } from "../Button"
 
 export interface FormProps {
@@ -22,7 +22,7 @@ export interface FormTemplateProps {
   HeaderDetail?: React.ReactFragment
   FooterDetail?: React.ReactFragment
   buttonText?: string
-  FieldDefinitionList: FieldDefinition[]
+  fieldDefinitionList: FieldDefinition[]
   backButton?: boolean
   titleBottomSpacing?: number
 }
@@ -36,18 +36,19 @@ export interface FieldDefinition {
   customElement?: React.ReactNode
   type?: string
   initialValue?: string
+  title: string
 }
 
-export function FormTemplate({
+export const FormTemplate = ({
   context,
   headerText,
   HeaderDetail,
   FooterDetail,
   buttonText,
-  FieldDefinitionList,
+  fieldDefinitionList,
   backButton,
   titleBottomSpacing,
-}: FormTemplateProps) {
+}: FormTemplateProps) => {
   const {
     form: {
       handleChange,
@@ -61,18 +62,14 @@ export function FormTemplate({
     },
     wizard: { previous },
   } = context
+  console.log("context", context)
   const [thisFormIsValid, setThisFormIsValid] = useState(false)
-  // @ts-ignore
-  const nonCustomFieldNames = FieldDefinitionList.reduce(function addFieldNameIfNotCustomElem(
-    acc,
-    currentFieldDefinition
-  ) {
+  const nonCustomFieldNames = fieldDefinitionList.reduce((acc, currentFieldDefinition) => {
     if (!currentFieldDefinition.customElement) {
       return [...acc, currentFieldDefinition.name]
     }
     return acc
-  },
-  [])
+  }, [])
 
   useEffect(() => {
     // Does the form pass validation? Note that we don't check for custom Elements,
@@ -94,32 +91,47 @@ export function FormTemplate({
       </Box>
       <Spacer height={titleBottomSpacing || 40} />
       <FieldsContainer>
-        {FieldDefinitionList.map((props) => (
-          <Box key={props.label}>{RenderFormRow(props)}</Box>
+        {fieldDefinitionList.map((props, index) => (
+          <Box key={props.label} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
+            <Box>
+              <Spacer mt={4} />
+              <Sans size="3">{props.title}</Sans>
+              {RenderFormRow(props)}
+            </Box>
+          </Box>
         ))}
         <Spacer height={20} />
       </FieldsContainer>
       <FormFooterWrapper>
         <FormFooter flexDirection="row" justifyContent="center">
-          <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={2} style={{ width: "100%" }}>
-            {!!FooterDetail ? (
-              <DetailText my={2} size="4">
-                {FooterDetail}
-              </DetailText>
-            ) : null}
-            {!!buttonText && (
-              <Button
-                variant="primaryBlack"
-                onClick={handleSubmit}
-                loading={isSubmitting}
-                size="large"
-                type="submit"
-                disabled={!thisFormIsValid}
-              >
-                {buttonText}
-              </Button>
-            )}
-          </Flex>
+          <MaxWidth>
+            <Flex
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+              py={1}
+              style={{ width: "100%" }}
+              px={[2, 0]}
+            >
+              {!!FooterDetail ? (
+                <DetailText my={2} size="4">
+                  {FooterDetail}
+                </DetailText>
+              ) : null}
+              {!!buttonText && (
+                <Button
+                  variant="primaryBlack"
+                  onClick={handleSubmit}
+                  loading={isSubmitting}
+                  size="medium"
+                  type="submit"
+                  disabled={!thisFormIsValid}
+                >
+                  {buttonText}
+                </Button>
+              )}
+            </Flex>
+          </MaxWidth>
         </FormFooter>
       </FormFooterWrapper>
     </>
@@ -133,7 +145,7 @@ export function FormTemplate({
     ) : (
       <Field
         component={isSelectField ? SelectField : TextField}
-        onChange={isSelectField ? (e) => setFieldValue(name, e.target.value) : handleChange}
+        // onChange={isSelectField ? (e) => setFieldValue(name, e.target.value) : handleChange}
         select={isSelectField}
         onBlur={handleBlur}
         id={id}
@@ -143,7 +155,6 @@ export function FormTemplate({
       >
         {isSelectField && !!selectOptions
           ? selectOptions.map((v) => {
-              console.log("v", v)
               return (
                 <StyledMenuItem value={v} key={uuidv1()}>
                   {v}
@@ -169,6 +180,7 @@ const FormFooterWrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
+  background-color: ${color("white100")};
 `
 
 const FormFooter = styled(Flex)`
@@ -178,7 +190,8 @@ const FormFooter = styled(Flex)`
 
 const FieldsContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
 
   input:-webkit-autofill {
     -webkit-text-fill-color: black !important;
@@ -228,11 +241,11 @@ export function StyledMenuItem(props: MenuItemProps): React.ReactElement {
       {...props}
       style={{
         ...props.style,
+        fontSize: "16px",
         fontFamily: "ProximaNova-Medium, sans-serif",
         backgroundColor: props.selected ? "#e8e8e8" : "#f6f6f6",
         color: "black",
         borderBottom: "1px solid #d2d2d2",
-        padding: "12px 16px",
       }}
     />
   )

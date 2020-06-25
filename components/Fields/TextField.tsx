@@ -5,26 +5,26 @@ import { color } from "../../helpers"
 
 export const sharedInputStyled = css`
   width: 100%;
+  height: 36px;
 
   .MuiInputBase-input {
     color: black;
     opacity: 0.8;
     font-family: ProximaNova-Medium, sans-serif;
-    padding: 6px 0px 16px;
   }
 
   .muiinputlabel-root.mui-focused {
     color: black;
   }
 
-  .MuiInputBase-root {
-    margin-bottom: 8px;
+  label {
+    font-family: ProximaNova-Medium, sans-serif;
+    font-size: 16px;
   }
 
   .MuiFormLabel-root {
     font-family: ProximaNova-Medium, sans-serif;
     color: ${color("black50")};
-    margin-bottom: -20px;
   }
 
   .MuiInputBase-input {
@@ -35,8 +35,17 @@ export const sharedInputStyled = css`
   }
 
   .MuiFormHelperText-root {
-    margin-top: 0px;
-    margin-bottom: 4px;
+    margin: 0px;
+  }
+
+  .MuiInput-formControl {
+    margin: 0px;
+  }
+
+  .MuiInputLabel-formControl {
+    transform: none;
+    margin: 0 !important;
+    top: 8px;
   }
 
   .MuiInputBase-input:focus {
@@ -58,11 +67,11 @@ export const sharedInputStyled = css`
     background: white;
     color: black;
     opacity: 0.84;
-    margin-bottom: 8px;
   }
 
   .MuiFormLabel-root.Mui-focused {
     color: ${color("black50")};
+    margin: 0;
     background: white !important;
   }
 
@@ -101,7 +110,7 @@ export const TextField = (props: TextFieldProps) => {
   const { field, form } = props
   const fieldName = field.name || ""
   const values = form.values || {}
-  const value = values?.[fieldName] || "test"
+  const value = values?.[fieldName] || ""
 
-  return <StyledTextField {...props} InputLabelProps={{ shrink: value?.length > 0 }} />
+  return <StyledTextField {...props} InputLabelProps={{ shrink: value.length > 0 }} />
 }

@@ -4,6 +4,8 @@ import * as Yup from "yup"
 import { FormTemplate, FormProps } from "./FormsTemplate"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
 import ExternalLink from "../ExternalLink"
+import { Field } from "formik"
+import { SelectField } from "../Fields/SelectField"
 
 export interface CreateAccountFormFields {
   firstName: string
@@ -18,7 +20,7 @@ export interface CustomerDetailCreateInput {
   phoneNumber: string
 }
 
-export const CreateAccountValidationSchema = Yup.object().shape({
+export const createAccountValidationSchema = Yup.object().shape({
   email: Yup.string().required("Required").email("Invalid email"),
   firstName: Yup.string().required("Required"),
   lastName: Yup.string().required("Required"),
@@ -39,10 +41,11 @@ export const CreateAccountValidationSchema = Yup.object().shape({
     .matches(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "e.g 123-456-7890"),
 })
 
-export function CreateAccountForm({ context }: FormProps) {
+export const CreateAccountForm = ({ context }: FormProps) => {
+  console.log("createFormcontext", context)
   // If a token is set in local storage, the checkJWT middleware on the server
   // will throw a hissy fit. So remove it here.
-  useEffect(function removeLocalStorageIdenitifiers() {
+  useEffect(() => {
     localStorage.removeItem("email")
     localStorage.removeItem("token")
   }, [])
@@ -60,35 +63,63 @@ export function CreateAccountForm({ context }: FormProps) {
           <ExternalLink href="https://www.seasons.nyc/privacy-policy">Privacy Policy</ExternalLink>
         </>
       }
-      buttonText="Create Account"
-      FieldDefinitionList={[
-        { id: "firstName", name: "firstName", label: "First Name" },
+      buttonText="Create account"
+      fieldDefinitionList={[
+        { id: "firstName", name: "firstName", label: "Will", title: "First name" },
         {
           id: "lastName",
           name: "lastName",
-          label: "Last Name",
+          label: "Smith",
+          title: "Last name",
         },
         {
           id: "email",
           name: "email",
-          label: "Email Address",
           type: "email",
+          label: "will.smith@gmail.com",
+          title: "Email",
+        },
+        {
+          title: "Phone number",
+          label: "(000) - 000 - 0000",
+          customElement: <TelephoneMaskField context={context} />,
         },
         {
           id: "password",
           name: "password",
-          label: "Password",
+          label: "Must have at least 7 characters",
           type: "password",
+          title: "Password",
         },
         {
           id: "confirmPassword",
           name: "confirmPassword",
-          label: "Confirm Password",
+          label: "Confirm password",
           type: "password",
+          title: "Confirm password",
         },
         {
-          label: "Phone Number",
-          customElement: <TelephoneMaskField context={context} />,
+          id: "zipCode",
+          name: "zipcode",
+          type: "zipcode",
+          label: "00000",
+          title: "ZIP code",
+        },
+        {
+          customElement: (
+            <Field
+              component={SelectField}
+              onChange={null}
+              onBlur={null}
+              type="text"
+              id="deviceType"
+              name="deviceType"
+              label="Select"
+              autoFocus
+            />
+          ),
+          label: "Select",
+          title: "Device type",
         },
       ]}
     />

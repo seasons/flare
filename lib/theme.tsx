@@ -158,10 +158,6 @@ export const themeProps = {
 
   // https://github.com/dragma/styled-bootstrap-grid#styled-bootstrap-grid
   grid: {
-    /**
-     * Breakpoints for the Artsy grid,
-     * https://www.notion.so/artsy/Grid-e489a52e26bd4319b6ee7898044a8a53
-     */
     breakpoints,
     container: {
       padding: 0,

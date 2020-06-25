@@ -4,5 +4,6 @@ export { Flex } from "./Flex"
 export { Separator } from "./Separator"
 export { Spacer } from "./Spacer"
 export { Picture } from "./Picture"
+export { MaxWidth } from "./MaxWidth"
 
 export * from "./Typography"

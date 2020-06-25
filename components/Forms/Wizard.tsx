@@ -51,7 +51,7 @@ interface WizardState {
  */
 export class Wizard extends React.Component<WizardProps, WizardState> {
   static defaultProps = {
-    initialValues: null,
+    initialValues: undefined,
   }
 
   state = {
@@ -138,6 +138,7 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
   render() {
     const { initialValues, children } = this.props
     const { validate, validationSchema } = this.currentStep.props
+    console.log("initialValues", initialValues)
     return (
       <Formik
         initialValues={initialValues}
@@ -147,7 +148,8 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
         validationSchema={validationSchema}
         validateOnChange={true}
         onSubmit={this.handleSubmit}
-        render={(formikRenderProps) => {
+      >
+        {(formikRenderProps) => {
           const context: WizardContext = {
             wizard: this.wizardProps,
             form: formikRenderProps,
@@ -163,7 +165,7 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
             </form>
           )
         }}
-      />
+      </Formik>
     )
   }
 }

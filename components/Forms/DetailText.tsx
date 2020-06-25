@@ -7,7 +7,7 @@ export interface DetailTextProps extends Partial<SansProps> {
 export default function DetailText(props: DetailTextProps): React.ReactElement {
   let { children, ...sansProps } = props
   return (
-    <Sans size="3" color="black50" {...sansProps}>
+    <Sans size="4" color="black50" {...sansProps}>
       {props.children}
     </Sans>
   )

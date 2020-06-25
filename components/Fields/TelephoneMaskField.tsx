@@ -64,7 +64,7 @@ export function TelephoneMaskField({ context }: FormProps) {
       type="tel"
       id="tel"
       name="tel"
-      label="Phone Number"
+      label="(000) - 000 - 0000"
     />
   )
 }

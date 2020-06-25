@@ -1,6 +1,8 @@
 import styled from "styled-components"
-import { Box } from "./Box"
+import { Container } from "styled-bootstrap-grid"
 
-export const MaxWidth = styled(Box)`
-  max-width: ${(props) => props.theme.grid.breakpoints.xl}px;
+export const MaxWidth = styled(Container)`
+  width: 100%;
+  margin: 0 auto;
+  max-width: ${(props) => props.theme.grid.container.xl}px;
 `
