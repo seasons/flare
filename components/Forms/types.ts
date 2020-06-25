@@ -20,7 +20,7 @@ export interface StepProps {
   validate?: (values: FormValues) => FormErrors
   validationSchema?: object
   children: React.ComponentClass<WizardStepChildProps> | React.SFC<WizardStepChildProps>
-  onSubmit?: (values: FormValues, actions?: any) => any
+  onSubmit?: (values: FormValues, actions?: FormikHelpers<FormValues>) => any
 }
 
 export interface WizardRenderProps {

@@ -100,8 +100,10 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
   }
 
   handleSubmit: (values: FormValues, actions?: FormikHelpers<FormValues>) => void = (values, actions) => {
+    console.log("values1", values)
     const { onComplete } = this.props
     if (this.isLastStep) {
+      console.log("onComplete", onComplete)
       onComplete && onComplete(values, actions)
     } else {
       actions && actions.setSubmitting(false)
