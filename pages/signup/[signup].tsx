@@ -25,6 +25,16 @@ const SIGN_UP_USER = gql`
 
 const SignUpPage = withData(() => {
   const [signUpUser] = useMutation(SIGN_UP_USER)
+  const initialValues = {
+    email: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    password: "",
+    zipCode: "",
+    device: "",
+    dob: "",
+  }
 
   return (
     <Layout fixedNav hideFooter>
@@ -33,14 +43,11 @@ const SignUpPage = withData(() => {
           <Flex flexDirection="column">
             <Spacer mt={100} />
             <Flex flexDirection="row" width="100%" justifyContent="center">
-              <Wizard>
+              <Wizard initialValues={initialValues}>
                 <Step
                   validationSchema={createAccountValidationSchema}
-                  onSubmit={async (values, actions) => {
+                  onSubmit={(values, actions) => {
                     console.log("values", values)
-                    if (!values) {
-                      return
-                    }
                     const resp = await signUpUser({
                       variables: {
                         email: values.email,
@@ -60,13 +67,13 @@ const SignUpPage = withData(() => {
                       //@ts-ignore
                       window.analytics.identify(data.signup.user.id)
                     } else {
-                      const error = ""
-                      if (JSON.stringify(error).includes("email already in db")) {
-                        actions.setFieldError("email", "User with that email already exists")
-                      } else {
-                        // showGlobalErrorCallback("Something went wrong. Please try again later.")
-                      }
-                      return { didError: true }
+                      // const error = ""
+                      // if (JSON.stringify(error).includes("email already in db")) {
+                      //   actions.setFieldError("email", "User with that email already exists")
+                      // } else {
+                      //   // showGlobalErrorCallback("Something went wrong. Please try again later.")
+                      // }
+                      // return { didError: true }
                     }
                   }}
                 >

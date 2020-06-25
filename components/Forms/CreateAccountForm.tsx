@@ -4,8 +4,6 @@ import * as Yup from "yup"
 import { FormTemplate, FormProps } from "./FormsTemplate"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
 import ExternalLink from "../ExternalLink"
-import { Field } from "formik"
-import { SelectField } from "../Fields/SelectField"
 
 export interface CreateAccountFormFields {
   firstName: string
@@ -14,11 +12,16 @@ export interface CreateAccountFormFields {
   password: string
   confirmPassword: string
   tel: string
+  dob: string
+  zipcode: string
+  device: string
 }
 
 export interface CustomerDetailCreateInput {
   phoneNumber: string
 }
+
+const deviceOptions = ["iOS", "Android"]
 
 export const createAccountValidationSchema = Yup.object().shape({
   email: Yup.string().required("Required").email("Invalid email"),
@@ -26,7 +29,7 @@ export const createAccountValidationSchema = Yup.object().shape({
   lastName: Yup.string().required("Required"),
   password: Yup.string()
     .required("Required")
-    .min(8, "Must be at least 8 characters")
+    .min(7, "Must be at least 7 characters")
     .max(20, "Must be no more than 20 characters")
     .matches(/[A-Z]/, "Must include at least one uppercase letter")
     .matches(/[a-z]/, "Must include at least one lowercase letter")
@@ -39,10 +42,12 @@ export const createAccountValidationSchema = Yup.object().shape({
   tel: Yup.string()
     .required("Required")
     .matches(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "e.g 123-456-7890"),
+  dob: Yup.string(),
+  zipcode: Yup.string().matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
+  device: Yup.string(),
 })
 
 export const CreateAccountForm = ({ context }: FormProps) => {
-  console.log("createFormcontext", context)
   // If a token is set in local storage, the checkJWT middleware on the server
   // will throw a hissy fit. So remove it here.
   useEffect(() => {
@@ -65,61 +70,58 @@ export const CreateAccountForm = ({ context }: FormProps) => {
       }
       buttonText="Create account"
       fieldDefinitionList={[
-        { id: "firstName", name: "firstName", label: "Will", title: "First name" },
+        { id: "firstName", name: "firstName", placeholder: "Will", label: "First name" },
         {
           id: "lastName",
           name: "lastName",
-          label: "Smith",
-          title: "Last name",
+          placeholder: "Smith",
+          label: "Last name",
         },
         {
           id: "email",
           name: "email",
-          type: "email",
-          label: "will.smith@gmail.com",
-          title: "Email",
+          placeholder: "will.smith@gmail.com",
+          label: "Email",
         },
         {
-          title: "Phone number",
-          label: "(000) - 000 - 0000",
+          label: "Phone number",
+          placeholder: "(000) - 000 - 0000",
           customElement: <TelephoneMaskField context={context} />,
         },
         {
           id: "password",
           name: "password",
-          label: "Must have at least 7 characters",
+          placeholder: "Must have at least 7 characters",
           type: "password",
-          title: "Password",
+          label: "Password",
         },
         {
           id: "confirmPassword",
           name: "confirmPassword",
-          label: "Confirm password",
+          placeholder: "Confirm password",
           type: "password",
-          title: "Confirm password",
+          label: "Confirm password",
         },
         {
-          id: "zipCode",
+          id: "zipcode",
           name: "zipcode",
           type: "zipcode",
-          label: "00000",
-          title: "ZIP code",
+          placeholder: "00000",
+          label: "ZIP code",
         },
         {
-          customElement: (
-            <Field
-              component={SelectField}
-              onChange={null}
-              onBlur={null}
-              type="text"
-              id="deviceType"
-              name="deviceType"
-              label="Select"
-              autoFocus
-            />
-          ),
-          label: "Select",
-          title: "Device type",
+          id: "dob",
+          name: "dob",
+          type: "date",
+          placeholder: "MM / DD / YY",
+          label: "Date of birth",
+        },
+        {
+          id: "device",
+          name: "device",
+          selectOptions: deviceOptions,
+          placeholder: "Select",
+          label: "Device type",
         },
       ]}
     />

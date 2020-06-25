@@ -50,10 +50,6 @@ interface WizardState {
  * ```
  */
 export class Wizard extends React.Component<WizardProps, WizardState> {
-  static defaultProps = {
-    initialValues: undefined,
-  }
-
   state = {
     currentStepIndex: 0,
   }

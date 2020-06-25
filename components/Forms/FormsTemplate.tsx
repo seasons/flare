@@ -30,13 +30,13 @@ export interface FormTemplateProps {
 export interface FieldDefinition {
   id?: string
   name?: string
-  label: string
+  placeholder: string
   selectOptions?: string[]
   onClick?: () => void
   customElement?: React.ReactNode
   type?: string
   initialValue?: string
-  title: string
+  label: string
 }
 
 export const FormTemplate = ({
@@ -62,7 +62,6 @@ export const FormTemplate = ({
     },
     wizard: { previous },
   } = context
-  console.log("context", context)
   const [thisFormIsValid, setThisFormIsValid] = useState(false)
   const nonCustomFieldNames = fieldDefinitionList.reduce((acc, currentFieldDefinition) => {
     if (!currentFieldDefinition.customElement) {
@@ -92,10 +91,10 @@ export const FormTemplate = ({
       <Spacer height={titleBottomSpacing || 40} />
       <FieldsContainer>
         {fieldDefinitionList.map((props, index) => (
-          <Box key={props.label} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
+          <Box key={props.placeholder} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
             <Box>
               <Spacer mt={4} />
-              <Sans size="3">{props.title}</Sans>
+              <Sans size="3">{props.label}</Sans>
               {RenderFormRow(props)}
             </Box>
           </Box>
@@ -138,19 +137,19 @@ export const FormTemplate = ({
   )
 
   // *****************************************
-  function RenderFormRow({ selectOptions, id, name, label, customElement, type, initialValue }: FieldDefinition) {
+  function RenderFormRow({ selectOptions, id, name, placeholder, customElement, type, initialValue }: FieldDefinition) {
     const isSelectField = !!selectOptions && Array.isArray(selectOptions)
     return !!customElement ? (
       customElement
     ) : (
       <Field
         component={isSelectField ? SelectField : TextField}
-        // onChange={isSelectField ? (e) => setFieldValue(name, e.target.value) : handleChange}
+        onChange={isSelectField ? (e) => setFieldValue(name, e.target.value) : handleChange}
         select={isSelectField}
         onBlur={handleBlur}
         id={id}
         name={name}
-        label={label}
+        placeholder={placeholder}
         type={type || "text"}
       >
         {isSelectField && !!selectOptions
