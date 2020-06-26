@@ -13,16 +13,16 @@ const SIGN_UP_USER = gql`
     $password: String!
     $firstName: String!
     $lastName: String!
+    $zipCode: String!
     $details: CustomerDetailCreateInput!
-    $billingInfo: BillingInfoCreateInput!
   ) {
     signup(
       email: $email
+      zipCode: $zipCode
       password: $password
       firstName: $firstName
       lastName: $lastName
       details: $details
-      billingInfo: $billingInfo
     ) {
       token
       user {
@@ -41,7 +41,7 @@ const SignUpPage = withData(() => {
     lastName: "",
     tel: "",
     password: "",
-    zipcode: "",
+    zipCode: "",
     device: "",
     dob: "",
   }
@@ -77,13 +77,11 @@ const SignUpPage = withData(() => {
                         password: values.password,
                         firstName: values.firstName,
                         lastName: values.lastName,
+                        zipCode: values.zipCode,
                         details: {
                           phoneNumber: values.tel,
                           birthday: values.dob,
                           phoneOS: values.device,
-                        },
-                        billingInfo: {
-                          postal_code: values.zipcode,
                         },
                       },
                     })
@@ -91,17 +89,15 @@ const SignUpPage = withData(() => {
                       actions.setSubmitting(false)
                       localStorage.setItem("email", values.email)
                       localStorage.setItem("token", response.data.signup.token)
-                      //@ts-ignore
-                      window.analytics.identify(response.data.signup.user.id)
                     }
                   } catch (error) {
                     if (JSON.stringify(error).includes("email already in db")) {
                       actions.setFieldError("email", "User with that email already exists")
-                      actions.setSubmitting(false)
                     } else {
+                      console.log("error", error)
                       setShowSnackBar(true)
                     }
-                    return { didError: true }
+                    actions.setSubmitting(false)
                   }
                 }}
               >

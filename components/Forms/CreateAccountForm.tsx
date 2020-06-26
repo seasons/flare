@@ -13,7 +13,7 @@ export interface CreateAccountFormFields {
   confirmPassword: string
   tel: string
   dob: string
-  zipcode: string
+  zipCode: string
   device: string
 }
 
@@ -42,9 +42,11 @@ export const createAccountValidationSchema = Yup.object().shape({
   tel: Yup.string()
     .required("Required")
     .matches(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "e.g 123-456-7890"),
-  dob: Yup.string(),
-  zipcode: Yup.string().matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
-  device: Yup.string(),
+  dob: Yup.string().required("Required"),
+  zipCode: Yup.string()
+    .required("Required")
+    .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
+  device: Yup.string().required("Required"),
 })
 
 export const CreateAccountForm = ({ context }: FormProps) => {
@@ -103,9 +105,9 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           label: "Confirm password",
         },
         {
-          id: "zipcode",
-          name: "zipcode",
-          type: "zipcode",
+          id: "zipCode",
+          name: "zipCode",
+          type: "zipCode",
           placeholder: "00000",
           label: "ZIP code",
         },
