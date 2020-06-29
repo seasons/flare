@@ -134,6 +134,11 @@ export const FormTemplate = ({
     return acc
   }, [])
 
+  if (typeof window === "undefined") {
+    // the SSR forms look way different from the formik version so return null from the server
+    return null
+  }
+
   useEffect(() => {
     // Does the form pass validation? Note that we don't check for custom Elements,
     // so a form with only custom elements will fail this validation

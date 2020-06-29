@@ -110,7 +110,13 @@ export const TextField = (props: TextFieldProps) => {
   const { field, form } = props
   const fieldName = field.name || ""
   const values = form.values || {}
-  const value = values?.[fieldName] || ""
+  let value = values?.[fieldName] || ""
+
+  if (fieldName === "email") {
+    value = value.toLowerCase()
+  } else if (fieldName === "firstName" || fieldName === "lastName") {
+    value = value.charAt(0).toUpperCase() + value.slice(1)
+  }
 
   return <StyledTextField {...props} InputLabelProps={{ shrink: value.length > 0 }} />
 }

@@ -88,9 +88,9 @@ const SignUpPage = withData(() => {
               },
             })
             if (response) {
-              actions.setSubmitting(false)
               localStorage.setItem("email", values.email)
               localStorage.setItem("token", response.data.signup.token)
+              actions.setSubmitting(false)
               setStep(2)
             }
           } catch (error) {
