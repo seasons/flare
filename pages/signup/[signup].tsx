@@ -48,6 +48,7 @@ const SignUpPage = withData(() => {
     firstName: "",
     lastName: "",
     tel: "",
+    confirmPassword: "",
     password: "",
     zipCode: "",
     device: "",

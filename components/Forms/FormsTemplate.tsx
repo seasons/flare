@@ -12,7 +12,6 @@ import { color } from "../../helpers"
 import { BackArrow } from "../SVGs/BackArrow"
 import { Box, Flex, Spacer, MaxWidth, Sans } from "../"
 import { Button } from "../Button"
-import Link from "next/link"
 
 export interface FormProps {
   context: any
@@ -206,6 +205,7 @@ export const FormTemplate = ({
       customElement
     ) : (
       <Field
+        labelId="open-select-label"
         component={isSelectField ? SelectField : TextField}
         onChange={isSelectField ? (e) => setFieldValue(name, e.target.value) : handleChange}
         select={isSelectField}
