@@ -9,7 +9,8 @@ export const Picture: React.FC<{
   alt: string
   onLoad?: () => void
   imgRef?: any
-}> = ({ src, alt, imgRef, onLoad }) => {
+  hideBackground?: boolean
+}> = ({ src, alt, imgRef, onLoad, hideBackground }) => {
   let prefix
   if (src.includes("seasons-s3.imgix.net") || src.includes("seasons-s3-staging.imgix.net")) {
     prefix = ""
@@ -20,7 +21,7 @@ export const Picture: React.FC<{
   }
 
   return (
-    <ImageWrapper>
+    <ImageWrapper hideBackground={hideBackground}>
       <picture>
         <source type="image/webp" srcSet={prefix + src + "&fm=webp"} />
         <source type="image/jpeg" srcSet={prefix + src + "&fm=jpg"} />
@@ -30,8 +31,8 @@ export const Picture: React.FC<{
   )
 }
 
-const ImageWrapper = styled("div")`
+const ImageWrapper = styled("div")<{ hideBackground?: boolean }>`
   width: 100%;
   height: 100%;
-  background-color: ${color("black04")};
+  background-color: ${(p) => (p.hideBackground ? "transparent" : color("black04"))};
 `

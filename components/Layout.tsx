@@ -15,7 +15,7 @@ export const Layout = ({ fixedNav = false, children, hideFooter }: LayoutProps) 
     <>
       <LayoutHead />
       <Theme>
-        <Box pt={60} pb={60} style={{ minHeight: "100vh", position: "relative" }}>
+        <Box pt={60} pb={60} style={{ height: "100%", position: "relative" }}>
           <Nav fixed={fixedNav} />
           {children}
           {!hideFooter && <Footer />}

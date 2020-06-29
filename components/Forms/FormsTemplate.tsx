@@ -72,7 +72,6 @@ export const FormFooter: React.FC<FooterProps> = ({
     )
   }
 
-  console.log("FooterProps", buttonLink)
   return (
     <FormFooterWrapper>
       <FormFooterInnerWrapper flexDirection="row" justifyContent="center">
@@ -145,27 +144,29 @@ export const FormTemplate = ({
   }, [thisFormIsValid, values, formContextIsValid])
 
   return (
-    <>
-      {backButton && <BackButton onClick={previous} />}
-      <Spacer height={10} />
-      <Box>
-        <HeaderText>{headerText}</HeaderText>
-        <Spacer height={8} />
-        {!!HeaderDetail ? <StyledDetailText>{HeaderDetail}</StyledDetailText> : null}
-      </Box>
-      <Spacer height={titleBottomSpacing || 40} />
-      <FieldsContainer>
-        {fieldDefinitionList.map((props, index) => (
-          <Box key={props.placeholder} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
-            <Box>
-              <Spacer mt={4} />
-              <Sans size="3">{props.label}</Sans>
-              {RenderFormRow(props)}
+    <Flex style={{ height: "100%" }}>
+      <Wrapper px={2}>
+        {backButton && <BackButton onClick={previous} />}
+        <Spacer height={10} />
+        <Box>
+          <HeaderText>{headerText}</HeaderText>
+          <Spacer height={8} />
+          {!!HeaderDetail ? <StyledDetailText>{HeaderDetail}</StyledDetailText> : null}
+        </Box>
+        <Spacer height={titleBottomSpacing || 40} />
+        <FieldsContainer>
+          {fieldDefinitionList.map((props, index) => (
+            <Box key={props.placeholder} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
+              <Box>
+                <Spacer mt={4} />
+                <Sans size="3">{props.label}</Sans>
+                {RenderFormRow(props)}
+              </Box>
             </Box>
-          </Box>
-        ))}
-        <Spacer height={20} />
-      </FieldsContainer>
+          ))}
+          <Spacer height={20} />
+        </FieldsContainer>
+      </Wrapper>
       <FormFooter
         buttonText={buttonText}
         handleSubmit={handleSubmit}
@@ -173,7 +174,7 @@ export const FormTemplate = ({
         footerText={footerText}
         disabled={!thisFormIsValid}
       />
-    </>
+    </Flex>
   )
 
   // *****************************************
@@ -213,6 +214,13 @@ function BackButton({ onClick }) {
     </BackButtonContainer>
   )
 }
+
+const Wrapper = styled(Flex)`
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+`
 
 const FormFooterWrapper = styled.div`
   position: fixed;

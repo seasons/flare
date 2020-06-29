@@ -42,7 +42,7 @@ const SIGN_UP_USER = gql`
 const SignUpPage = withData(() => {
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [showSnackBar, setShowSnackBar] = useState(false)
-  const [step, setStep] = useState<Steps>(Steps.AccountAccepted)
+  const [step, setStep] = useState<Steps>(Steps.SignUp)
   const initialValues = {
     email: "",
     firstName: "",
@@ -69,53 +69,45 @@ const SignUpPage = withData(() => {
 
   const SignUpView = () => {
     return (
-      <Box style={{ height: "100%" }}>
-        <Flex flexDirection="column">
-          <Spacer mt={100} />
-          <Flex flexDirection="row" width="100%" justifyContent="center">
-            <Wizard
-              initialValues={initialValues}
-              onComplete={async (values, actions) => {
-                try {
-                  const response = await signUpUser({
-                    variables: {
-                      email: values.email,
-                      password: values.password,
-                      firstName: values.firstName,
-                      lastName: values.lastName,
-                      zipCode: values.zipCode,
-                      details: {
-                        phoneNumber: values.tel,
-                        birthday: values.dob,
-                        phoneOS: values.device,
-                      },
-                    },
-                  })
-                  if (response) {
-                    actions.setSubmitting(false)
-                    localStorage.setItem("email", values.email)
-                    localStorage.setItem("token", response.data.signup.token)
-                    setStep(2)
-                  }
-                } catch (error) {
-                  if (JSON.stringify(error).includes("email already in db")) {
-                    actions.setFieldError("email", "User with that email already exists")
-                  } else {
-                    console.log("error", error)
-                    setShowSnackBar(true)
-                  }
-                  actions.setSubmitting(false)
-                }
-              }}
-            >
-              <Step validationSchema={createAccountValidationSchema}>
-                {(context) => <CreateAccountForm context={context} />}
-              </Step>
-            </Wizard>
-          </Flex>
-          <Spacer mb={8} />
-        </Flex>
-      </Box>
+      <Wizard
+        initialValues={initialValues}
+        onComplete={async (values, actions) => {
+          try {
+            const response = await signUpUser({
+              variables: {
+                email: values.email,
+                password: values.password,
+                firstName: values.firstName,
+                lastName: values.lastName,
+                zipCode: values.zipCode,
+                details: {
+                  phoneNumber: values.tel,
+                  birthday: values.dob,
+                  phoneOS: values.device,
+                },
+              },
+            })
+            if (response) {
+              actions.setSubmitting(false)
+              localStorage.setItem("email", values.email)
+              localStorage.setItem("token", response.data.signup.token)
+              setStep(2)
+            }
+          } catch (error) {
+            if (JSON.stringify(error).includes("email already in db")) {
+              actions.setFieldError("email", "User with that email already exists")
+            } else {
+              console.log("error", error)
+              setShowSnackBar(true)
+            }
+            actions.setSubmitting(false)
+          }
+        }}
+      >
+        <Step validationSchema={createAccountValidationSchema}>
+          {(context) => <CreateAccountForm context={context} />}
+        </Step>
+      </Wizard>
     )
   }
 

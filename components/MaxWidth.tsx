@@ -3,6 +3,8 @@ import { Container } from "styled-bootstrap-grid"
 
 export const MaxWidth = styled(Container)`
   width: 100%;
+  height: 100%;
   margin: 0 auto;
+  position: relative;
   max-width: ${(props) => props.theme.grid.container.xl}px;
 `
