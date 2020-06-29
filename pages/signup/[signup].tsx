@@ -1,4 +1,4 @@
-import { Layout, Flex, Box, Spacer, MaxWidth, SnackBar, Sans } from "../../components"
+import { Layout, MaxWidth, SnackBar, Sans } from "../../components"
 import { CreateAccountForm, createAccountValidationSchema } from "../../components/Forms/CreateAccountForm"
 import { Wizard } from "../../components/Forms/Wizard"
 import { Step } from "../../components/Forms/Step"
@@ -42,7 +42,7 @@ const SIGN_UP_USER = gql`
 const SignUpPage = withData(() => {
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [showSnackBar, setShowSnackBar] = useState(false)
-  const [step, setStep] = useState<Steps>(Steps.AccountQueued)
+  const [step, setStep] = useState<Steps>(Steps.SignUp)
   const initialValues = {
     email: "",
     firstName: "",
