@@ -3,11 +3,7 @@
     "apps": [],
     "details": [{
       "appID": "QY3QKXPU37.com.seasons.Seasons",
-      "paths": [ "*" ]
-    },
-    {
-      "appID": "J5N33F356B.com.seasons.Seasons",
-      "paths": [ "*" ]
+      "paths": [  ]
     }]
   }
 }
