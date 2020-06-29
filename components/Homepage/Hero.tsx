@@ -28,7 +28,7 @@ const DesktopHero = () => {
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
-              <LinkCTA text="Apply for membership" href="https://signup.seasons.nyc/" />
+              <LinkCTA text="Create an account" href="/signup" />
               <Spacer mb={4} />
               <Sans size="3" color="black50">
                 Memberships are now open. Join the waitlist to secure your spot and get an invite.

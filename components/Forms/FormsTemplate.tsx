@@ -49,6 +49,23 @@ interface FooterProps {
   buttonLink?: string
 }
 
+export const StyledMenuItem: React.FC<MenuItemProps> = (props) => {
+  return (
+    // @ts-ignore
+    <MenuItem
+      {...props}
+      style={{
+        ...props.style,
+        fontSize: "16px",
+        fontFamily: "ProximaNova-Medium, sans-serif",
+        backgroundColor: props.selected ? "#e8e8e8" : "#f6f6f6",
+        color: "black",
+        borderBottom: "1px solid #d2d2d2",
+      }}
+    />
+  )
+}
+
 export const FormFooter: React.FC<FooterProps> = ({
   buttonText,
   handleSubmit,
@@ -74,14 +91,14 @@ export const FormFooter: React.FC<FooterProps> = ({
 
   return (
     <FormFooterWrapper>
-      <FormFooterInnerWrapper flexDirection="row" justifyContent="center">
+      <FormFooterInnerWrapper flexDirection="row" justifyContent="center" alignContent="centers">
         <MaxWidth>
           <Flex
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between"
             py={1}
-            style={{ width: "100%" }}
+            style={{ width: "100%", height: "63px" }}
             px={[2, 0]}
           >
             {!!footerText ? (
@@ -94,7 +111,7 @@ export const FormFooter: React.FC<FooterProps> = ({
                 <ButtonComponent />
               </a>
             ) : (
-              <ButtonComponent />
+              !!buttonText && <ButtonComponent />
             )}
           </Flex>
         </MaxWidth>
@@ -283,22 +300,4 @@ const BackButtonContainer = styled.div`
 const StyledDetailText = styled(DetailText)`
   position: relative;
   max-width: 150%;
-}
 `
-
-export function StyledMenuItem(props: MenuItemProps): React.ReactElement {
-  return (
-    // @ts-ignore
-    <MenuItem
-      {...props}
-      style={{
-        ...props.style,
-        fontSize: "16px",
-        fontFamily: "ProximaNova-Medium, sans-serif",
-        backgroundColor: props.selected ? "#e8e8e8" : "#f6f6f6",
-        color: "black",
-        borderBottom: "1px solid #d2d2d2",
-      }}
-    />
-  )
-}

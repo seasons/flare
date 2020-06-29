@@ -65,7 +65,7 @@ export const CreateAccountForm = ({ context }: FormProps) => {
     <FormTemplate
       context={context}
       headerText="Create an account"
-      HeaderDetail={<>You’ll use this to sign into the app, choose your plan, & manage your membership</>}
+      HeaderDetail={<>You’ll use this to sign into the app, choose your plan, & manage your membership.</>}
       footerText={
         <>
           {"By creating an account, you agree to our "}

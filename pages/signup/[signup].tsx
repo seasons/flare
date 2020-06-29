@@ -42,7 +42,7 @@ const SIGN_UP_USER = gql`
 const SignUpPage = withData(() => {
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [showSnackBar, setShowSnackBar] = useState(false)
-  const [step, setStep] = useState<Steps>(Steps.SignUp)
+  const [step, setStep] = useState<Steps>(Steps.AccountQueued)
   const initialValues = {
     email: "",
     firstName: "",
@@ -124,7 +124,7 @@ const SignUpPage = withData(() => {
     return (
       <FormConfirmation
         headerText="You’ve successfully created your account."
-        bodyText="Download the Seasons iOS app to finish creating your profile, see your place in line and get notified when you’re ready to choose your plan. In the meantime, follow us on Instagram for updates."
+        bodyText="Download the Seasons iOS app on TestFlight to finish creating your profile, see your account status and get notified when you’re ready to choose your plan. In the meantime, follow us on Instagram for updates."
       />
     )
   }

@@ -8,7 +8,6 @@ import styled from "styled-components"
 import { color } from "../../helpers"
 
 export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }> = ({ headerText, bodyText }) => {
-  const buttonText = "Return to home"
   const footerText = (
     <>
       {"Have a question about Seasons or your application? Contact us at "}
@@ -31,7 +30,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
           <AppleWrapper>
             <ExternalLink href="https://testflight.apple.com/join/fpXqUY0v">
               <Button>
-                <Flex>
+                <Flex flexDirection="row" alignContent="center">
                   <AppleSVG width="17px" height="20px" />
                   <Spacer mr={1} />
                   <Sans size="3">Get the app</Sans>
@@ -43,7 +42,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
           <IGWrapper>
             <ExternalLink href="https://www.instagram.com/seasons.ny">
               <Button variant="primaryWhite">
-                <Flex>
+                <Flex flexDirection="row" alignContent="center">
                   <InstagramSVG />
                   <Spacer mr={1} />
                   <Sans size="3">Follow us</Sans>
@@ -53,14 +52,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
           </IGWrapper>
         </Flex>
       </Wrapper>
-      <FormFooter
-        buttonLink="/"
-        buttonText={buttonText}
-        handleSubmit={null}
-        isSubmitting={null}
-        footerText={footerText}
-        disabled={false}
-      />
+      <FormFooter handleSubmit={null} isSubmitting={null} footerText={footerText} disabled={false} />
     </>
   )
 }
