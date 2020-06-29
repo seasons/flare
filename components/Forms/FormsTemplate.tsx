@@ -12,6 +12,7 @@ import { color } from "../../helpers"
 import { BackArrow } from "../SVGs/BackArrow"
 import { Box, Flex, Spacer, MaxWidth, Sans } from "../"
 import { Button } from "../Button"
+import Link from "next/link"
 
 export interface FormProps {
   context: any
@@ -20,7 +21,7 @@ export interface FormTemplateProps {
   context: any
   headerText: string
   HeaderDetail?: React.ReactFragment
-  FooterDetail?: React.ReactFragment
+  footerText?: React.ReactFragment
   buttonText?: string
   fieldDefinitionList: FieldDefinition[]
   backButton?: boolean
@@ -39,11 +40,75 @@ export interface FieldDefinition {
   label: string
 }
 
+interface FooterProps {
+  buttonText?: string
+  handleSubmit?: () => void
+  isSubmitting?: boolean
+  disabled?: boolean
+  footerText?: any
+  buttonLink?: string
+}
+
+export const FormFooter: React.FC<FooterProps> = ({
+  buttonText,
+  handleSubmit,
+  isSubmitting,
+  disabled,
+  footerText,
+  buttonLink,
+}) => {
+  const ButtonComponent = () => {
+    return (
+      <Button
+        variant="primaryBlack"
+        onClick={handleSubmit}
+        loading={isSubmitting}
+        size="medium"
+        type="submit"
+        disabled={disabled}
+      >
+        {buttonText}
+      </Button>
+    )
+  }
+
+  console.log("FooterProps", buttonLink)
+  return (
+    <FormFooterWrapper>
+      <FormFooterInnerWrapper flexDirection="row" justifyContent="center">
+        <MaxWidth>
+          <Flex
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            py={1}
+            style={{ width: "100%" }}
+            px={[2, 0]}
+          >
+            {!!footerText ? (
+              <DetailText my={2} size="4">
+                {footerText}
+              </DetailText>
+            ) : null}
+            {!!buttonText && !!buttonLink ? (
+              <a href={buttonLink}>
+                <ButtonComponent />
+              </a>
+            ) : (
+              <ButtonComponent />
+            )}
+          </Flex>
+        </MaxWidth>
+      </FormFooterInnerWrapper>
+    </FormFooterWrapper>
+  )
+}
+
 export const FormTemplate = ({
   context,
   headerText,
   HeaderDetail,
-  FooterDetail,
+  footerText,
   buttonText,
   fieldDefinitionList,
   backButton,
@@ -101,38 +166,13 @@ export const FormTemplate = ({
         ))}
         <Spacer height={20} />
       </FieldsContainer>
-      <FormFooterWrapper>
-        <FormFooter flexDirection="row" justifyContent="center">
-          <MaxWidth>
-            <Flex
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between"
-              py={1}
-              style={{ width: "100%" }}
-              px={[2, 0]}
-            >
-              {!!FooterDetail ? (
-                <DetailText my={2} size="4">
-                  {FooterDetail}
-                </DetailText>
-              ) : null}
-              {!!buttonText && (
-                <Button
-                  variant="primaryBlack"
-                  onClick={handleSubmit}
-                  loading={isSubmitting}
-                  size="medium"
-                  type="submit"
-                  disabled={!thisFormIsValid}
-                >
-                  {buttonText}
-                </Button>
-              )}
-            </Flex>
-          </MaxWidth>
-        </FormFooter>
-      </FormFooterWrapper>
+      <FormFooter
+        buttonText={buttonText}
+        handleSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+        footerText={footerText}
+        disabled={!thisFormIsValid}
+      />
     </>
   )
 
@@ -182,7 +222,7 @@ const FormFooterWrapper = styled.div`
   background-color: ${color("white100")};
 `
 
-const FormFooter = styled(Flex)`
+const FormFooterInnerWrapper = styled(Flex)`
   border-top: 1px solid ${color("black10")};
   width: 100%;
 `

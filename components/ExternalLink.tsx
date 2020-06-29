@@ -4,7 +4,7 @@ import styled from "styled-components"
 /* Note for later typescript modding -- the color prop on this needs to be
 a theme color */
 export interface ExternalLinkProps {
-  children: string
+  children: any
   href: string
 }
 function ExternalLink(props: ExternalLinkProps) {

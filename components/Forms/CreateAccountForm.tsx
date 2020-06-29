@@ -62,7 +62,7 @@ export const CreateAccountForm = ({ context }: FormProps) => {
       context={context}
       headerText="Create an account"
       HeaderDetail={<>You’ll use this to sign into the app, choose your plan, & manage your membership</>}
-      FooterDetail={
+      footerText={
         <>
           {"By creating an account, you agree to our "}
           <ExternalLink href="https://www.seasons.nyc/terms-of-service">Terms of Service</ExternalLink>
@@ -109,7 +109,7 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           name: "zipCode",
           type: "zipCode",
           placeholder: "00000",
-          label: "ZIP code",
+          label: "Shipping ZIP code",
         },
         {
           id: "dob",
