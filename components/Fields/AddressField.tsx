@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react"
 import PlacesAutocomplete from "react-places-autocomplete"
 import styled from "styled-components"
-import { StyledMenuItem } from "../Forms/FormsTemplate"
-import uuidv1 from "uuid/v1"
 import { TextFieldProps } from "formik-material-ui"
-import { TextField as MuiTextField } from "@material-ui/core"
+import { TextField as MuiTextField, MenuItem } from "@material-ui/core"
 import { sharedInputStyled } from "./TextField"
 
 interface AddressFieldProps extends TextFieldProps {
@@ -82,9 +80,21 @@ export const AddressField = ({ field, form, id, onSelect, ...props }: AddressFie
                 })
 
                 return (
-                  <StyledMenuItem {...suggestionProps} value={suggestion} key={uuidv1()} selected={suggestion.active}>
+                  <MenuItem
+                    {...suggestionProps}
+                    value={suggestion}
+                    key={suggestion.description}
+                    selected={suggestion.active}
+                    style={{
+                      fontSize: "16px",
+                      fontFamily: "ProximaNova-Medium, sans-serif",
+                      backgroundColor: suggestion.active ? "#e8e8e8" : "#f6f6f6",
+                      color: "black",
+                      borderBottom: "1px solid #d2d2d2",
+                    }}
+                  >
                     {suggestion.description}
-                  </StyledMenuItem>
+                  </MenuItem>
                 )
               })}
             </AddressesContainer>

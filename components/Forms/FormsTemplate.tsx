@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem"
-import uuidv1 from "uuid/v1"
 import HeaderText from "./HeaderText"
 import DetailText from "./DetailText"
 import { Field } from "formik"
@@ -13,6 +12,7 @@ import { BackArrow } from "../SVGs/BackArrow"
 import { Box, Flex, Spacer, MaxWidth, Sans } from "../"
 import { Button } from "../Button"
 import { Media } from "../Responsive"
+import { ValuesOfCorrectType } from "graphql/validation/rules/ValuesOfCorrectType"
 
 export interface FormProps {
   context: any
@@ -49,20 +49,11 @@ interface FooterProps {
   buttonLink?: string
 }
 
-export const StyledMenuItem: React.FC<MenuItemProps> = (props) => {
+const BackButton = ({ onClick }) => {
   return (
-    // @ts-ignore
-    <MenuItem
-      {...props}
-      style={{
-        ...props.style,
-        fontSize: "16px",
-        fontFamily: "ProximaNova-Medium, sans-serif",
-        backgroundColor: props.selected ? "#e8e8e8" : "#f6f6f6",
-        color: "black",
-        borderBottom: "1px solid #d2d2d2",
-      }}
-    />
+    <BackButtonContainer onClick={onClick}>
+      <BackArrow />
+    </BackButtonContainer>
   )
 }
 
@@ -130,7 +121,6 @@ export const FormTemplate = ({
   buttonText,
   fieldDefinitionList,
   backButton,
-  titleBottomSpacing,
 }: FormTemplateProps) => {
   const {
     form: { handleChange, handleBlur, handleSubmit, isValid: formContextIsValid, isSubmitting, setFieldValue, values },
@@ -176,6 +166,59 @@ export const FormTemplate = ({
     )
   }
 
+  const RenderField = (props, breakpoint) => {
+    const { selectOptions, id, name, placeholder, customElement, type }: FieldDefinition = props
+    const isSelectField = !!selectOptions && Array.isArray(selectOptions)
+    return !!customElement ? (
+      customElement
+    ) : (
+      <Field
+        component={isSelectField ? SelectField : TextField}
+        onChange={
+          isSelectField
+            ? (e) => setFieldValue(name, e.target.value)
+            : (e) => {
+                console.log("onChange")
+                handleChange(e)
+              }
+        }
+        select={isSelectField}
+        onBlur={(e) => {
+          // if (type === "email") {
+          //   value = value.toLowerCase()
+          // } else if (fieldName === "firstName" || fieldName === "lastName") {
+          //   value = value.charAt(0).toUpperCase() + value.slice(1)
+          // }
+          console.log("ONBLUR", props)
+          handleBlur(e)
+        }}
+        name={name}
+        placeholder={placeholder}
+        type={type || "text"}
+      >
+        {isSelectField && !!selectOptions
+          ? selectOptions.map((v) => {
+              return (
+                <MenuItem
+                  key={v}
+                  value={v}
+                  style={{
+                    fontSize: "16px",
+                    fontFamily: "ProximaNova-Medium, sans-serif",
+                    backgroundColor: props.selected ? "#e8e8e8" : "#f6f6f6",
+                    color: "black",
+                    borderBottom: "1px solid #d2d2d2",
+                  }}
+                >
+                  {v}
+                </MenuItem>
+              )
+            })
+          : null}
+      </Field>
+    )
+  }
+
   return (
     <Flex style={{ height: "100%" }}>
       <Media greaterThanOrEqual="md">
@@ -188,7 +231,7 @@ export const FormTemplate = ({
                   <Box>
                     <Spacer mt={4} />
                     <Sans size="3">{props.label}</Sans>
-                    {RenderFormRow(props)}
+                    {RenderField(props, "md")}
                   </Box>
                 </Box>
               ))}
@@ -207,7 +250,7 @@ export const FormTemplate = ({
                   <Box>
                     <Spacer mt={4} />
                     <Sans size="3">{props.label}</Sans>
-                    {RenderFormRow(props)}
+                    {RenderField(props, "xs")}
                   </Box>
                 </Box>
               )
@@ -223,43 +266,6 @@ export const FormTemplate = ({
         disabled={!thisFormIsValid}
       />
     </Flex>
-  )
-
-  // *****************************************
-  function RenderFormRow({ selectOptions, id, name, placeholder, customElement, type, initialValue }: FieldDefinition) {
-    const isSelectField = !!selectOptions && Array.isArray(selectOptions)
-    return !!customElement ? (
-      customElement
-    ) : (
-      <Field
-        component={isSelectField ? SelectField : TextField}
-        onChange={isSelectField ? (e) => setFieldValue(name, e.target.value) : handleChange}
-        select={isSelectField}
-        onBlur={handleBlur}
-        id={id}
-        name={name}
-        placeholder={placeholder}
-        type={type || "text"}
-      >
-        {isSelectField && !!selectOptions
-          ? selectOptions.map((v) => {
-              return (
-                <StyledMenuItem value={v} key={uuidv1()}>
-                  {v}
-                </StyledMenuItem>
-              )
-            })
-          : null}
-      </Field>
-    )
-  }
-}
-
-function BackButton({ onClick }) {
-  return (
-    <BackButtonContainer onClick={onClick}>
-      <BackArrow />
-    </BackButtonContainer>
   )
 }
 

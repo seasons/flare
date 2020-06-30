@@ -62,7 +62,6 @@ export function TelephoneMaskField({ context }: FormProps) {
       }}
       onBlur={handleBlur}
       type="tel"
-      id="tel"
       name="tel"
       placeholder="000-000-0000"
     />

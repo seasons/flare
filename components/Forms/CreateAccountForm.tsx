@@ -75,15 +75,13 @@ export const CreateAccountForm = ({ context }: FormProps) => {
       }
       buttonText="Create account"
       fieldDefinitionList={[
-        { id: "firstName", name: "firstName", placeholder: "Will", label: "First name" },
+        { name: "firstName", placeholder: "Will", label: "First name" },
         {
-          id: "lastName",
           name: "lastName",
           placeholder: "Smith",
           label: "Last name",
         },
         {
-          id: "email",
           name: "email",
           placeholder: "will.smith@gmail.com",
           label: "Email",
@@ -94,35 +92,30 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           customElement: <TelephoneMaskField context={context} />,
         },
         {
-          id: "password",
           name: "password",
           placeholder: "Must have at least 7 characters",
           type: "password",
           label: "Password",
         },
         {
-          id: "confirmPassword",
           name: "confirmPassword",
           placeholder: "Confirm password",
           type: "password",
           label: "Confirm password",
         },
         {
-          id: "zipCode",
           name: "zipCode",
           type: "zipCode",
           placeholder: "00000",
           label: "Shipping ZIP code",
         },
         {
-          id: "dob",
           name: "dob",
           type: "date",
           placeholder: "MM / DD / YY",
           label: "Date of birth",
         },
         {
-          id: "device",
           name: "device",
           selectOptions: deviceOptions,
           placeholder: "Select",
