@@ -2,6 +2,7 @@ import React from "react"
 import styled, { css } from "styled-components"
 import { TextField as MuiTextField, TextFieldProps } from "formik-material-ui"
 import { color } from "../../helpers"
+import { DateTime } from "luxon"
 
 export const sharedInputStyled = css`
   width: 100%;
@@ -116,7 +117,10 @@ export const TextField = (props: TextFieldProps) => {
     value = value.toLowerCase()
   } else if (fieldName === "firstName" || fieldName === "lastName") {
     value = value.charAt(0).toUpperCase() + value.slice(1)
+  } else if (fieldName == "dob" && !!value?.length) {
+    const date = new Date(value)
+    value = !!date && DateTime.fromJSDate(date).toISO()
   }
 
-  return <StyledTextField {...props} InputLabelProps={{ shrink: value.length > 0 }} />
+  return <StyledTextField {...props} InputLabelProps={{ shrink: value?.length > 0 }} />
 }
