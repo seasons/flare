@@ -155,7 +155,7 @@ export class Button extends Component<WebButtonProps> {
 export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
   static defaultProps = {
     border: 1,
-    borderRadius: 3,
+    borderRadius: 0,
   }
 
   onClick = (event) => {

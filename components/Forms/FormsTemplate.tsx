@@ -12,6 +12,7 @@ import { color } from "../../helpers"
 import { BackArrow } from "../SVGs/BackArrow"
 import { Box, Flex, Spacer, MaxWidth, Sans } from "../"
 import { Button } from "../Button"
+import { Media } from "../Responsive"
 
 export interface FormProps {
   context: any
@@ -76,6 +77,7 @@ export const FormFooter: React.FC<FooterProps> = ({
   const ButtonComponent = () => {
     return (
       <Button
+        ml={2}
         variant="primaryBlack"
         onClick={handleSubmit}
         loading={isSubmitting}
@@ -97,11 +99,12 @@ export const FormFooter: React.FC<FooterProps> = ({
             alignItems="center"
             justifyContent="space-between"
             py={1}
-            style={{ width: "100%", height: "63px" }}
+            height={["auto", "63px"]}
+            style={{ width: "100%" }}
             px={[2, 0]}
           >
             {!!footerText ? (
-              <DetailText my={2} size="4">
+              <DetailText my={2} size={["2", "4"]}>
                 {footerText}
               </DetailText>
             ) : null}
@@ -130,16 +133,7 @@ export const FormTemplate = ({
   titleBottomSpacing,
 }: FormTemplateProps) => {
   const {
-    form: {
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isValid: formContextIsValid,
-      isSubmitting,
-      setFieldValue,
-      values,
-      touched,
-    },
+    form: { handleChange, handleBlur, handleSubmit, isValid: formContextIsValid, isSubmitting, setFieldValue, values },
     wizard: { previous },
   } = context
   const [clientSide, setClientSide] = useState(false)
@@ -167,30 +161,60 @@ export const FormTemplate = ({
     }
   }, [])
 
-  return (
-    <Flex style={{ height: "100%" }}>
-      <Wrapper px={2} clientSide={clientSide}>
+  const TextContent = () => {
+    return (
+      <Box px={2}>
         {backButton && <BackButton onClick={previous} />}
-        <Spacer height={10} />
+        <Spacer mb={[5, 0]} />
         <Box>
           <HeaderText>{headerText}</HeaderText>
           <Spacer height={8} />
           {!!HeaderDetail ? <StyledDetailText>{HeaderDetail}</StyledDetailText> : null}
         </Box>
-        <Spacer height={titleBottomSpacing || 40} />
-        <FieldsContainer>
-          {fieldDefinitionList.map((props, index) => (
-            <Box key={props.placeholder} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
-              <Box>
-                <Spacer mt={4} />
-                <Sans size="3">{props.label}</Sans>
-                {RenderFormRow(props)}
-              </Box>
-            </Box>
-          ))}
-          <Spacer height={20} />
-        </FieldsContainer>
-      </Wrapper>
+        <Spacer height={[5, 40]} />
+      </Box>
+    )
+  }
+
+  return (
+    <Flex style={{ height: "100%" }}>
+      <Media greaterThanOrEqual="md">
+        <Flex height="100%" flexDirection="row" alignItems="center">
+          <Wrapper clientSide={clientSide}>
+            <TextContent />
+            <FieldsContainer px={2}>
+              {fieldDefinitionList.map((props, index) => (
+                <Box key={props.placeholder} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
+                  <Box>
+                    <Spacer mt={4} />
+                    <Sans size="3">{props.label}</Sans>
+                    {RenderFormRow(props)}
+                  </Box>
+                </Box>
+              ))}
+            </FieldsContainer>
+          </Wrapper>
+        </Flex>
+      </Media>
+      <Media lessThan="md">
+        <Wrapper clientSide={clientSide}>
+          <TextContent />
+          <FieldsContainer px={1} pb={150}>
+            {fieldDefinitionList.map((props, index) => {
+              const width = props.label === "Email" ? "100%" : "50%"
+              return (
+                <Box key={props.placeholder} width={width} px={1}>
+                  <Box>
+                    <Spacer mt={4} />
+                    <Sans size="3">{props.label}</Sans>
+                    {RenderFormRow(props)}
+                  </Box>
+                </Box>
+              )
+            })}
+          </FieldsContainer>
+        </Wrapper>
+      </Media>
       <FormFooter
         buttonText={buttonText}
         handleSubmit={handleSubmit}
@@ -260,8 +284,7 @@ const FormFooterInnerWrapper = styled(Flex)`
   width: 100%;
 `
 
-const FieldsContainer = styled.div`
-  display: flex;
+const FieldsContainer = styled(Flex)`
   flex-direction: row;
   flex-wrap: wrap;
 

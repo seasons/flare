@@ -28,6 +28,7 @@ html {
 }
 #__next {
   height: 100%;
+  display: flex;
 }
 body {
   margin: 0;
