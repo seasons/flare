@@ -1,11 +1,11 @@
-import { Sans, Box, Spacer, Flex } from "../"
+import { Sans, Box, Spacer, Flex, ExternalLink } from "../"
 import { Button } from "../Button/Button"
-import { AppleSVG, InstagramSVG, CheckSVG } from "../SVGs"
+import { InstagramSVG, CheckSVG } from "../SVGs"
 import { FormFooter } from "./FormsTemplate"
 import HeaderText from "./HeaderText"
-import ExternalLink from "../ExternalLink"
 import styled from "styled-components"
 import { color } from "../../helpers"
+import { GetTheAppButton } from "../Button/GetTheApp"
 
 export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }> = ({ headerText, bodyText }) => {
   const footerText = (
@@ -27,17 +27,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
         </Sans>
         <Spacer mb={3} />
         <Flex flexDirection="row">
-          <AppleWrapper>
-            <ExternalLink href="https://testflight.apple.com/join/fpXqUY0v">
-              <Button>
-                <Flex flexDirection="row" alignContent="center">
-                  <AppleSVG width="17px" height="20px" />
-                  <Spacer mr={1} />
-                  <Sans size="3">Get the app</Sans>
-                </Flex>
-              </Button>
-            </ExternalLink>
-          </AppleWrapper>
+          <GetTheAppButton />
           <Spacer mr={1} />
           <IGWrapper>
             <ExternalLink href="https://www.instagram.com/seasons.ny">
@@ -52,7 +42,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
           </IGWrapper>
         </Flex>
       </Wrapper>
-      <FormFooter handleSubmit={null} isSubmitting={null} footerText={footerText} disabled={false} />
+      <FormFooter footerText={footerText} disabled={false} />
     </>
   )
 }
@@ -61,16 +51,6 @@ const Wrapper = styled(Box)`
   transform: translateY(-50%);
   top: 50%;
   position: absolute;
-`
-
-const AppleWrapper = styled("div")`
-  &:hover {
-    svg {
-      .apple-fill {
-        fill: ${color("black100")} !important;
-      }
-    }
-  }
 `
 
 const IGWrapper = styled("div")`

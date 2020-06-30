@@ -142,6 +142,7 @@ export const FormTemplate = ({
     },
     wizard: { previous },
   } = context
+  const [clientSide, setClientSide] = useState(false)
   const [thisFormIsValid, setThisFormIsValid] = useState(false)
   const nonCustomFieldNames = fieldDefinitionList.reduce((acc, currentFieldDefinition) => {
     if (!currentFieldDefinition.customElement) {
@@ -149,11 +150,6 @@ export const FormTemplate = ({
     }
     return acc
   }, [])
-
-  if (typeof window === "undefined") {
-    // the SSR forms look way different from the formik version so return null from the server
-    return null
-  }
 
   useEffect(() => {
     // Does the form pass validation? Note that we don't check for custom Elements,
@@ -164,9 +160,16 @@ export const FormTemplate = ({
     setThisFormIsValid(!!formContextIsValid && !!formValuesIncludesThisForm)
   }, [thisFormIsValid, values, formContextIsValid])
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && !clientSide) {
+      // the SSR forms look way different from the client version so hide render from the server
+      setClientSide(true)
+    }
+  }, [])
+
   return (
     <Flex style={{ height: "100%" }}>
-      <Wrapper px={2}>
+      <Wrapper px={2} clientSide={clientSide}>
         {backButton && <BackButton onClick={previous} />}
         <Spacer height={10} />
         <Box>
@@ -205,7 +208,6 @@ export const FormTemplate = ({
       customElement
     ) : (
       <Field
-        labelId="open-select-label"
         component={isSelectField ? SelectField : TextField}
         onChange={isSelectField ? (e) => setFieldValue(name, e.target.value) : handleChange}
         select={isSelectField}
@@ -237,11 +239,12 @@ function BackButton({ onClick }) {
   )
 }
 
-const Wrapper = styled(Flex)`
+const Wrapper = styled(Flex)<{ clientSide }>`
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
   flex: 1;
+  opacity: ${(p) => (p.clientSide ? "1" : "0")};
 `
 
 const FormFooterWrapper = styled.div`

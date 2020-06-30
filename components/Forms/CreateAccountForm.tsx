@@ -1,9 +1,8 @@
 import React, { useEffect } from "react"
 import * as Yup from "yup"
-
 import { FormTemplate, FormProps } from "./FormsTemplate"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
-import ExternalLink from "../ExternalLink"
+import { ExternalLink } from "../"
 
 export interface CreateAccountFormFields {
   firstName: string
