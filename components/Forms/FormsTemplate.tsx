@@ -174,24 +174,9 @@ export const FormTemplate = ({
     ) : (
       <Field
         component={isSelectField ? SelectField : TextField}
-        onChange={
-          isSelectField
-            ? (e) => setFieldValue(name, e.target.value)
-            : (e) => {
-                console.log("onChange")
-                handleChange(e)
-              }
-        }
+        onChange={isSelectField ? (e) => setFieldValue(name, e.target.value) : handleChange}
         select={isSelectField}
-        onBlur={(e) => {
-          // if (type === "email") {
-          //   value = value.toLowerCase()
-          // } else if (fieldName === "firstName" || fieldName === "lastName") {
-          //   value = value.charAt(0).toUpperCase() + value.slice(1)
-          // }
-          console.log("ONBLUR", props)
-          handleBlur(e)
-        }}
+        onBlur={handleBlur}
         name={name}
         placeholder={placeholder}
         type={type || "text"}
