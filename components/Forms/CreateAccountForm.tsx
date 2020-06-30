@@ -96,12 +96,14 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           placeholder: "Must have at least 7 characters",
           type: "password",
           label: "Password",
+          id: "password",
         },
         {
           name: "confirmPassword",
           placeholder: "Confirm password",
           type: "password",
           label: "Confirm password",
+          id: "confirmPassword",
         },
         {
           name: "zipCode",
