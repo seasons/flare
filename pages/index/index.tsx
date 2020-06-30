@@ -188,12 +188,6 @@ const Home = screenTrack(() => ({
 
         <Separator />
 
-        <Spacer mb={5} />
-        <UsaMap />
-        <Spacer mb={5} />
-
-        <Separator />
-
         <Spacer mb={10} />
         <Brands brands={data?.brands} />
         <Spacer mb={15} />
