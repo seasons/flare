@@ -17,7 +17,7 @@ import { ProductGridItem } from "../../components/Product/ProductGridItem"
 import { Media } from "../../components/Responsive"
 import { MobileFilters } from "../../components/Browse/MobileFilters"
 import { BrowseFilters } from "../../components/Browse"
-import { Schema, screenTrack } from "../../utils/analytics"
+import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 
 const GET_BROWSE_PRODUCTS = gql`
   query GetBrowseProducts(
@@ -103,6 +103,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   path: "/browse",
 }))(
   withData(() => {
+    const tracking = useTracking()
     const router = useRouter()
     const { query } = router
 
@@ -238,6 +239,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                           forcePage={currentPage - 1}
                           onPageChange={(data) => {
                             setCurrentPage(data.selected + 1)
+                            tracking.trackEvent({
+                              actionName: Schema.ActionNames.ProductPageNumberChanged,
+                              actionType: Schema.ActionTypes.Tap,
+                              page: data.selected + 1,
+                            })
                           }}
                           containerClassName="pagination"
                           previousLinkClassName="previous-button"
