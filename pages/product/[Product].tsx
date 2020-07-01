@@ -4,7 +4,6 @@ import { useQuery } from "@apollo/react-hooks"
 import withData from "../../lib/apollo"
 import { ProductDetails } from "../../components/Product/ProductDetails"
 import { Grid, Col, Row } from "../../components/Grid"
-import { useRouter } from "next/router"
 import { Box, Layout, Spacer } from "../../components"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { ProgressiveImage } from "../../components/Image"
@@ -13,18 +12,18 @@ import { Button } from "../../components/Button"
 import { Media } from "../../components/Responsive"
 import { Carousel } from "../../components/Carousel"
 import { Schema, screenTrack } from "../../utils/analytics"
+import { withRouter } from "next/router"
 
 const Product = withData(
-  screenTrack((props) => {
-    console.log("props", props)
+  screenTrack(({ router }) => {
     return {
       name: Schema.PageNames.ProductPage,
       properties: {
-        path: "/product",
+        path: router?.asPath,
+        product: router?.query?.Product,
       },
     }
-  })(() => {
-    const router = useRouter()
+  })(({ router }) => {
     const slug = router.query.Product
 
     const { data } = useQuery(GET_PRODUCT, {
@@ -84,4 +83,4 @@ const Product = withData(
   })
 )
 
-export default Product
+export default withRouter(Product)
