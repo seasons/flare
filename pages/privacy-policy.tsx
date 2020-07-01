@@ -1,7 +1,11 @@
 import React from "react"
 import { Layout } from "../components"
+import { screenTrack, Schema } from "../utils/analytics"
 
-const PrivacyPolicy = () => {
+const PrivacyPolicy = screenTrack(() => ({
+  page: Schema.PageNames.PrivacyPolicy,
+  path: "/privacy-policy",
+}))(() => {
   return (
     <Layout>
       <div className="privacytopsection">
@@ -391,6 +395,6 @@ const PrivacyPolicy = () => {
       </div>
     </Layout>
   )
-}
+})
 
 export default PrivacyPolicy
