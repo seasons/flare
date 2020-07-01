@@ -9,12 +9,13 @@ import { SeasonsLogo } from "./SeasonsLogo"
 import { BoxProps, Box } from "../Box"
 import { useState } from "react"
 import { useSpring, animated } from "react-spring"
-import { Spacer } from ".."
+import { useTracking, Schema } from "../../utils/analytics"
 
 const MENU_HEIGHT = "60px"
 
 export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
   const [isOpen, toggleOpen] = useState(false)
+  const tracking = useTracking()
 
   return (
     <HeaderContainer fixed={fixed}>
@@ -22,6 +23,10 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
         <SeasonsLogo />
         <Burger
           onClick={() => {
+            tracking.trackEvent({
+              actionName: Schema.ActionNames.BurgerClicked,
+              actionType: Schema.ActionTypes.Tap,
+            })
             toggleOpen(!isOpen)
           }}
         />
@@ -33,10 +38,19 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
 
 const Menu = ({ items, open }) => {
   const router = useRouter()
+  const tracking = useTracking()
   const openAnimation = useSpring({
     transform: open ? `translateY(0)` : "translateY(-100%)",
     config: { tension: 500, friction: 33 },
   })
+
+  const trackClick = (url) => {
+    tracking.trackEvent({
+      actionName: Schema.ActionNames.NavigationButtonClicked,
+      actionType: Schema.ActionTypes.Tap,
+      url,
+    })
+  }
 
   return (
     <Wrapper>
@@ -44,7 +58,7 @@ const Menu = ({ items, open }) => {
         {items.map((link) => {
           if (link.external) {
             return (
-              <StyledAnchor href={link.url} key={link.text}>
+              <StyledAnchor href={link.url} key={link.text} onClick={() => trackClick(link.url)}>
                 <MenuItem
                   key={link.text}
                   width="100%"
@@ -67,6 +81,7 @@ const Menu = ({ items, open }) => {
                   width="100%"
                   style={{ cursor: "pointer" }}
                   active={!!router.pathname.match(link.match)}
+                  onClick={() => trackClick(link.url)}
                 >
                   <Box p={2}>
                     <Sans size="3" p={2} color="black">

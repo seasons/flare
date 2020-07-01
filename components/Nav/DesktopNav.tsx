@@ -7,10 +7,19 @@ import { Grid } from "../Grid"
 import { NavProps } from "./Types"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavItem } from "./NavItem"
-import { Spacer } from ".."
+import { useTracking, Schema } from "../../utils/analytics"
 
 export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const router = useRouter()
+  const tracking = useTracking()
+
+  const trackClick = (url) => {
+    tracking.trackEvent({
+      actionName: Schema.ActionNames.NavigationButtonClicked,
+      actionType: Schema.ActionTypes.Tap,
+      url,
+    })
+  }
 
   return (
     <>
@@ -22,14 +31,23 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
               {links.map((link) => {
                 if (link.external) {
                   return (
-                    <Link key={link.url} href={link.url} active={!!router.pathname.match(link.match)}>
+                    <Link
+                      key={link.url}
+                      href={link.url}
+                      active={!!router.pathname.match(link.match)}
+                      onClick={() => trackClick(link.url)}
+                    >
                       <NavItem link={link} />
                     </Link>
                   )
                 } else {
                   return (
                     <NextLink href={link.url} key={link.text}>
-                      <Link href={link.url} active={!!router.pathname.match(link.match)}>
+                      <Link
+                        href={link.url}
+                        active={!!router.pathname.match(link.match)}
+                        onClick={() => trackClick(link.url)}
+                      >
                         <NavItem link={link} />
                       </Link>
                     </NextLink>
