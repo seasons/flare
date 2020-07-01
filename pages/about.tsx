@@ -1,8 +1,14 @@
 import { Nav } from "../components/Nav/Nav"
 import { Layout, Spacer, Separator } from "../components"
 import { AboutFooter, AboutHero, AboutValues, AboutWhoWeAre } from "../components/About"
+import { screenTrack, Schema } from "../utils/analytics"
 
-const about = () => (
+const about = screenTrack(() => ({
+  name: Schema.PageNames.AboutPage,
+  properties: {
+    path: "/about",
+  },
+}))(() => (
   <Layout fixedNav>
     <Nav fixed />
     <AboutHero />
@@ -12,6 +18,6 @@ const about = () => (
     <AboutWhoWeAre />
     <AboutFooter />
   </Layout>
-)
+))
 
 export default about
