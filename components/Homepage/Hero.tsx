@@ -2,9 +2,11 @@ import React from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
 import { Flex, Sans, Spacer, Box } from ".."
-import { LinkCTA } from "../Button"
+import { LinkCTA, Button } from "../Button"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
+import { GetTheAppButton } from "../Button/GetTheApp"
+import Link from "next/link"
 
 const imageURL = require("../../public/images/homepage/CouchPhoto_final.png")
 
@@ -28,7 +30,13 @@ const DesktopHero = () => {
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
-              <LinkCTA text="Apply for membership" href="https://signup.seasons.nyc/" />
+              <Flex>
+                <GetTheAppButton />
+                <Spacer mr={1} />
+                <Link href="/signup">
+                  <Button variant="primaryWhite">Sign up</Button>
+                </Link>
+              </Flex>
               <Spacer mb={4} />
               <Sans size="3" color="black50">
                 Memberships are now open. Join the waitlist to secure your spot and get an invite.

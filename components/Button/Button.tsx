@@ -30,9 +30,9 @@ export class Button extends Component<WebButtonProps> {
         }
       case "medium":
         return {
-          height: inline ? "21px" : "48px",
+          height: inline ? "21px" : "46px",
           size: "3t",
-          px: inline ? 0 : 2,
+          px: inline ? 0 : 3,
         }
       case "large":
         return {
@@ -57,9 +57,9 @@ export class Button extends Component<WebButtonProps> {
 
                 @media ${themeProps.mediaQueries.hover} {
                   &:hover {
-                    background-color: ${colors.purple100};
-                    border-color: ${colors.purple100};
-                    color: ${colors.white100};
+                    background-color: ${colors.white100};
+                    border-color: ${colors.black100};
+                    color: ${colors.black100};
                   }
                 }
               `
@@ -155,7 +155,7 @@ export class Button extends Component<WebButtonProps> {
 export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
   static defaultProps = {
     border: 1,
-    borderRadius: 3,
+    borderRadius: 0,
   }
 
   onClick = (event) => {
@@ -165,7 +165,7 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
   }
 
   render() {
-    const { children, loading, disabled, color, size, longestText, weight, onClick, ...rest } = this.props
+    const { children, loading, disabled, color, size, weight, onClick, ...rest } = this.props
 
     const loadingClass = loading ? "loading" : ""
     const disabledClass = disabled ? "disabled" : ""
@@ -178,26 +178,17 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
         disabled={disabled}
       >
         {loading && <Spinner size={this.props.buttonSize} />}
-
-        <Sans pt="1px" weight={weight || "medium"} size={size} style={{ textAlign: "center" }}>
-          {children}
-        </Sans>
+        {typeof children === "string" ? (
+          <Sans weight={weight || "medium"} size={size} style={{ textAlign: "center" }}>
+            {children}
+          </Sans>
+        ) : (
+          children
+        )}
       </Container>
     )
   }
 }
-
-const VisibleText = styled(Sans)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`
-
-const HiddenText = styled(Sans)`
-  opacity: 0;
-  pointer-events: none;
-`
 
 const Container = styled.button<ButtonBaseProps>`
   cursor: pointer;

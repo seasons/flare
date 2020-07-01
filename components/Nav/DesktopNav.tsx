@@ -22,9 +22,10 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   }
 
   return (
-    <>
-      <HeaderContainer fixed={fixed}>
-        <Grid>
+    <HeaderContainer fixed={fixed}>
+      <Grid>
+        <Flex ml="auto" flexDirection="row" alignItems="center">
+          <SeasonsLogo />
           <Flex ml="auto" flexDirection="row" alignItems="center">
             <SeasonsLogo />
             <Flex ml="auto" flexDirection="row" alignItems="center">
@@ -56,9 +57,9 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
               })}
             </Flex>
           </Flex>
-        </Grid>
-      </HeaderContainer>
-    </>
+        </Flex>
+      </Grid>
+    </HeaderContainer>
   )
 }
 

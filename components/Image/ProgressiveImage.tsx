@@ -18,7 +18,7 @@ export const ProgressiveImage: React.FC<ProgressiveImage> = ({
   size,
   aspectRatio = IMAGE_ASPECT_RATIO,
   alt,
-  hideBackground,
+  hideBackground = false,
 }) => {
   const [loaded, setLoaded] = useState(false)
   const fullImageRef = useRef(null)
@@ -40,13 +40,14 @@ export const ProgressiveImage: React.FC<ProgressiveImage> = ({
           key={fullImage}
           alt={alt}
           imgRef={fullImageRef}
+          hideBackground={hideBackground}
           onLoad={() => {
             setLoaded(true)
           }}
         />
       </FullImageWrapper>
       <InitialImageWrapper>
-        <Picture src={initialImage} alt={alt} />
+        <Picture src={initialImage} alt={alt} hideBackground={hideBackground} />
       </InitialImageWrapper>
     </ImageWrapper>
   )
@@ -78,5 +79,4 @@ const ImageWrapper = styled(Box)<{ aspectRatio: number; hideBackground: boolean 
   max-height: 100%;
   overflow: hidden;
   position: relative;
-  background-color: ${(p) => (p.hideBackground ? "transparent" : color("black04"))};
 `
