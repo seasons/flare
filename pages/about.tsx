@@ -4,10 +4,8 @@ import { AboutFooter, AboutHero, AboutValues, AboutWhoWeAre } from "../component
 import { screenTrack, Schema } from "../utils/analytics"
 
 const about = screenTrack(() => ({
-  name: Schema.PageNames.AboutPage,
-  properties: {
-    path: "/about",
-  },
+  page: Schema.PageNames.AboutPage,
+  path: "/about",
 }))(() => (
   <Layout fixedNav>
     <Nav fixed />

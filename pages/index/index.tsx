@@ -97,10 +97,8 @@ export const HOME_QUERY = gql`
 `
 
 const Home = screenTrack(() => ({
-  name: Schema.PageNames.HomePage,
-  properties: {
-    path: "/",
-  },
+  page: Schema.PageNames.HomePage,
+  path: "/",
 }))(
   withData(() => {
     const { data } = useQuery(HOME_QUERY, {})

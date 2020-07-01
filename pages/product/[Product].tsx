@@ -17,11 +17,9 @@ import { withRouter } from "next/router"
 const Product = withData(
   screenTrack(({ router }) => {
     return {
-      name: Schema.PageNames.ProductPage,
-      properties: {
-        path: router?.asPath,
-        product: router?.query?.Product,
-      },
+      page: Schema.PageNames.ProductPage,
+      entitySlug: router?.query?.Product,
+      path: router?.asPath,
     }
   })(({ router }) => {
     const slug = router.query.Product

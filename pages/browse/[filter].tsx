@@ -99,10 +99,8 @@ const GET_BROWSE_PRODUCTS = gql`
 `
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
-  name: Schema.PageNames.BrowsePage,
-  properties: {
-    path: "/browse",
-  },
+  page: Schema.PageNames.BrowsePage,
+  path: "/browse",
 }))(
   withData(() => {
     const router = useRouter()
