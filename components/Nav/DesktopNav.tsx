@@ -27,35 +27,32 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
         <Flex ml="auto" flexDirection="row" alignItems="center">
           <SeasonsLogo />
           <Flex ml="auto" flexDirection="row" alignItems="center">
-            <SeasonsLogo />
-            <Flex ml="auto" flexDirection="row" alignItems="center">
-              {links.map((link) => {
-                if (link.external) {
-                  return (
+            {links.map((link) => {
+              if (link.external) {
+                return (
+                  <Link
+                    key={link.url}
+                    href={link.url}
+                    active={!!router.pathname.match(link.match)}
+                    onClick={() => trackClick(link.url)}
+                  >
+                    <NavItem link={link} />
+                  </Link>
+                )
+              } else {
+                return (
+                  <NextLink href={link.url} key={link.text}>
                     <Link
-                      key={link.url}
                       href={link.url}
                       active={!!router.pathname.match(link.match)}
                       onClick={() => trackClick(link.url)}
                     >
                       <NavItem link={link} />
                     </Link>
-                  )
-                } else {
-                  return (
-                    <NextLink href={link.url} key={link.text}>
-                      <Link
-                        href={link.url}
-                        active={!!router.pathname.match(link.match)}
-                        onClick={() => trackClick(link.url)}
-                      >
-                        <NavItem link={link} />
-                      </Link>
-                    </NextLink>
-                  )
-                }
-              })}
-            </Flex>
+                  </NextLink>
+                )
+              }
+            })}
           </Flex>
         </Flex>
       </Grid>
