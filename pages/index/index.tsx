@@ -141,7 +141,7 @@ const Home = withData(() => {
       <FromCommunity blogPosts={data?.blogPosts} />
       <Spacer mb={10} />
 
-      {data?.justAddedBottoms?.length && (
+      {!!data?.justAddedBottoms?.length && (
         <>
           <Separator />
 
