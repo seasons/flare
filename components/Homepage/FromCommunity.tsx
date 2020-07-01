@@ -49,9 +49,9 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
               pl = 0.5
             }
             return (
-              <Box key={"desktop" + index} pr={pr} pl={pl}>
+              <Flex key={"desktop" + index} pr={pr} pl={pl} style={{ flex: 3 }}>
                 <BlogPost post={post} />
-              </Box>
+              </Flex>
             )
           })}
         </Flex>
