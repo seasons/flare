@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react"
 import PlacesAutocomplete from "react-places-autocomplete"
 import styled from "styled-components"
 import { TextFieldProps } from "formik-material-ui"
-import { TextField as MuiTextField, MenuItem } from "@material-ui/core"
-import { sharedInputStyled } from "./TextField"
+import { MenuItem } from "@material-ui/core"
+import { TextField } from "./TextField"
 
 interface AddressFieldProps extends TextFieldProps {
   onSelect?: (address: any) => void
@@ -104,10 +104,6 @@ export const AddressField = ({ field, form, id, onSelect, ...props }: AddressFie
     </PlacesAutocomplete>
   )
 }
-
-export const TextField = styled(MuiTextField)`
-  ${sharedInputStyled}
-`
 
 const FieldContainer = styled.div`
   position: relative;
