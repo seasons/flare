@@ -65,6 +65,7 @@ export enum PageNames {
   SignUpPage = "SignUp",
   AboutPage = "About",
   PrivacyPolicy = "PrivacyPolicy",
+  TermsOfService = "TermsOfService",
 }
 
 export enum EntityTypes {
