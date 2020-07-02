@@ -19,7 +19,7 @@ export class Button extends Component<WebButtonProps> {
     theme: themeProps,
   }
 
-  getSize(): { height: string; size: "2" | "3t"; px: number | string } {
+  getSize(): { height: string; size: "2" | "4"; px: number | string } {
     const { inline } = this.props
     switch (this.props.size) {
       case "small":
@@ -31,13 +31,13 @@ export class Button extends Component<WebButtonProps> {
       case "medium":
         return {
           height: inline ? "21px" : "46px",
-          size: "3t",
-          px: inline ? 0 : 3,
+          size: "4",
+          px: inline ? 0 : 2,
         }
       case "large":
         return {
           height: inline ? "21px" : "56px",
-          size: "3t",
+          size: "4",
           px: inline ? 0 : 5,
         }
     }

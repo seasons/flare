@@ -29,7 +29,7 @@ const links = [
     external: true,
   },
   {
-    text: "About us",
+    text: "About",
     url: "/about",
     match: /^\/about/,
     external: false,

@@ -15,7 +15,6 @@ import {
   space,
   SpaceProps,
   style,
-  textAlign,
   TextAlignProps,
 } from "styled-system"
 
@@ -209,7 +208,6 @@ function createStyledText<P extends StyledTextProps>(
         // styled-components supports calling the prop `as`, but there are
         //  issues when passing it into this component named `as`. See
         //  https://github.com/styled-components/styled-components/issues/2448
-        //  & https://github.com/artsy/palette/pull/327#issuecomment-473434537
         //  for context.
         // So we are naming it `element` on the way into this component, and
         //  renaming it to `as` when we pass it to through.
