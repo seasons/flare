@@ -30,15 +30,16 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
           <GetTheAppButton />
           <Spacer mr={1} />
           <IGWrapper>
-            <ExternalLink href="https://www.instagram.com/seasons.ny">
-              <Button variant="primaryWhite">
-                <Flex flexDirection="row" alignContent="center">
-                  <InstagramSVG />
-                  <Spacer mr={1} />
-                  <Sans size="3">Follow us</Sans>
-                </Flex>
-              </Button>
-            </ExternalLink>
+            <Button
+              variant="primaryWhite"
+              onClick={() => window.open("https://www.instagram.com/seasons.ny/", "_blank")}
+            >
+              <Flex flexDirection="row" alignContent="center">
+                <InstagramSVG />
+                <Spacer mr={1} />
+                <Sans size="3">Follow us</Sans>
+              </Flex>
+            </Button>
           </IGWrapper>
         </Flex>
       </Wrapper>
