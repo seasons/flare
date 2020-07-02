@@ -204,7 +204,7 @@ export const FormTemplate = ({
   }
 
   return (
-    <Flex style={{ height: "100%" }}>
+    <Flex style={{ minHeight: "100%" }}>
       <Media greaterThanOrEqual="md">
         <Flex height="100%" flexDirection="row" alignItems="center">
           <Wrapper clientSide={clientSide}>
@@ -277,6 +277,10 @@ const FormFooterInnerWrapper = styled(Flex)`
 const FieldsContainer = styled(Flex)`
   flex-direction: row;
   flex-wrap: wrap;
+
+  .MuiFormControl-root {
+    width: 100%;
+  }
 
   input:-webkit-autofill {
     -webkit-text-fill-color: black !important;
