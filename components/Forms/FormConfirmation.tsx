@@ -37,7 +37,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
               <Flex flexDirection="row" alignContent="center">
                 <InstagramSVG />
                 <Spacer mr={1} />
-                <Sans size="3">Follow us</Sans>
+                <Sans size="4">Follow us</Sans>
               </Flex>
             </Button>
           </IGWrapper>
