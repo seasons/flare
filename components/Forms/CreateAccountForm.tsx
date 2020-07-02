@@ -3,6 +3,7 @@ import * as Yup from "yup"
 import { FormTemplate, FormProps } from "./FormsTemplate"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
 import { ExternalLink } from "../"
+import { Schema } from "../../utils/analytics"
 
 export interface CreateAccountFormFields {
   firstName: string
@@ -74,6 +75,7 @@ export const CreateAccountForm = ({ context }: FormProps) => {
         </>
       }
       buttonText="Create account"
+      buttonActionName={Schema.ActionNames.CreateAccountSubmitButtonClicked}
       fieldDefinitionList={[
         { name: "firstName", placeholder: "Will", label: "First name" },
         {

@@ -12,6 +12,7 @@ import { BackArrow } from "../SVGs/BackArrow"
 import { Box, Flex, Spacer, MaxWidth, Sans } from "../"
 import { Button } from "../Button"
 import { Media } from "../Responsive"
+import { useTracking, Schema } from "../../utils/analytics"
 
 export interface FormProps {
   context: any
@@ -25,6 +26,7 @@ export interface FormTemplateProps {
   fieldDefinitionList: FieldDefinition[]
   backButton?: boolean
   titleBottomSpacing?: number
+  buttonActionName?: string
 }
 
 export interface FieldDefinition {
@@ -40,6 +42,7 @@ export interface FieldDefinition {
 }
 
 interface FooterProps {
+  buttonActionName?: string
   buttonText?: string
   handleSubmit?: () => void
   isSubmitting?: boolean
@@ -63,13 +66,23 @@ export const FormFooter: React.FC<FooterProps> = ({
   disabled,
   footerText,
   buttonLink,
+  buttonActionName,
 }) => {
+  const tracking = useTracking()
   const ButtonComponent = () => {
     return (
       <Button
         ml={2}
         variant="primaryBlack"
-        onClick={handleSubmit}
+        onClick={() => {
+          if (!!buttonActionName) {
+            tracking.trackEvent({
+              actionName: buttonActionName,
+              actionType: Schema.ActionTypes.Tap,
+            })
+          }
+          handleSubmit()
+        }}
         loading={isSubmitting}
         size="medium"
         type="submit"
@@ -120,6 +133,7 @@ export const FormTemplate = ({
   buttonText,
   fieldDefinitionList,
   backButton,
+  buttonActionName,
 }: FormTemplateProps) => {
   const {
     form: { handleChange, handleBlur, handleSubmit, isValid: formContextIsValid, isSubmitting, setFieldValue, values },
@@ -243,6 +257,7 @@ export const FormTemplate = ({
         </Wrapper>
       </Media>
       <FormFooter
+        buttonActionName={buttonActionName}
         buttonText={buttonText}
         handleSubmit={handleSubmit}
         isSubmitting={isSubmitting}
