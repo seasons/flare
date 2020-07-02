@@ -2,6 +2,7 @@ import React from "react"
 import { Flex, Sans, Spacer, Box } from "../"
 import styled from "styled-components"
 import { color } from "../../helpers"
+import { Link } from "../Link"
 
 type MembershipType = "essential" | "allAccess"
 
@@ -58,11 +59,11 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
               </Sans>
             </Flex>
             <SelectButton justifyContent="center" py="4">
-              <StyledAnchor href="http://signup.seasons.nyc/">
+              <Link href="/signup">
                 <Sans size="4" style={{ textDecoration: "underline" }}>
-                  Select Plan
+                  Sign up
                 </Sans>
-              </StyledAnchor>
+              </Link>
             </SelectButton>
           </Flex>
         </Flex>

@@ -77,8 +77,16 @@ const MobileHero = () => {
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
-              <LinkCTA text="Apply for membership" href="https://signup.seasons.nyc/" />
-              <Spacer mb={10} />
+              <Flex flexWrap="nowrap">
+                <Box mb={1}>
+                  <GetTheAppButton />
+                </Box>
+                <Spacer mr={1} />
+                <Link href="/signup">
+                  <Button variant="primaryWhite">Apply for membership</Button>
+                </Link>
+              </Flex>
+              <Spacer mb={3} />
             </Flex>
           </Flex>
         </Col>
