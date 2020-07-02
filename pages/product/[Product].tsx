@@ -13,6 +13,7 @@ import { Media } from "../../components/Responsive"
 import { Carousel } from "../../components/Carousel"
 import { Schema, screenTrack } from "../../utils/analytics"
 import { withRouter } from "next/router"
+import { Link } from "../../components/Link"
 
 const Product = withData(
   screenTrack(({ router }) => {
@@ -63,11 +64,11 @@ const Product = withData(
                 <Box mr={[0, 4]}>
                   {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
                   <Box px={2}>
-                    <a href="//signup.seasons.nyc">
+                    <Link href="/signup">
                       <Button width="100%" block variant="primaryWhite" onClick={null}>
                         Join the waitlist
                       </Button>
-                    </a>
+                    </Link>
                   </Box>
                   <HowItWorks />
                 </Box>
