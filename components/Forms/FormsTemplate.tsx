@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem"
+import MenuItem from "@material-ui/core/MenuItem"
 import HeaderText from "./HeaderText"
 import DetailText from "./DetailText"
 import { Field } from "formik"
@@ -12,7 +12,6 @@ import { BackArrow } from "../SVGs/BackArrow"
 import { Box, Flex, Spacer, MaxWidth, Sans } from "../"
 import { Button } from "../Button"
 import { Media } from "../Responsive"
-import { ValuesOfCorrectType } from "graphql/validation/rules/ValuesOfCorrectType"
 
 export interface FormProps {
   context: any
