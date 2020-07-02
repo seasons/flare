@@ -12,7 +12,7 @@ export const GetTheAppButton = () => {
           <Flex flexDirection="row" alignContent="center">
             <AppleSVG width="17px" height="20px" />
             <Spacer mr={1} />
-            <Sans size="3">Get the app</Sans>
+            <Sans size="4">Get the app</Sans>
           </Flex>
         </Button>
       </ExternalLink>

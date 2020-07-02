@@ -23,23 +23,27 @@ const DesktopHero = () => {
             justifyContent="center"
           >
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Sans size="8" color="black100">
+              <Sans size="7" color="black100">
                 This is Seasons.
               </Sans>
-              <Sans size="8" color="black50">
+              <Sans size="7" color="black50">
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
-              <Flex>
-                <GetTheAppButton />
+              <Flex flexWrap="wrap">
+                <Box mb={1}>
+                  <GetTheAppButton />
+                </Box>
                 <Spacer mr={1} />
                 <Link href="/signup">
-                  <Button variant="primaryWhite">Sign up</Button>
+                  <Button variant="primaryWhite">Apply for membership</Button>
                 </Link>
+                <Spacer mb={1} />
               </Flex>
-              <Spacer mb={4} />
+              <Spacer mb={3} />
               <Sans size="3" color="black50">
-                Memberships are now open. Join the waitlist to secure your spot and get an invite.
+                Exclusively in select cities. Apply for membership to secure your place in line and to be notified when
+                we've got your spot ready.
               </Sans>
             </Flex>
           </Flex>
@@ -66,10 +70,10 @@ const MobileHero = () => {
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Spacer pb="60px" />
               <Spacer mb={6} />
-              <Sans size="8" color="black100">
+              <Sans size="7" color="black100">
                 This is Seasons.
               </Sans>
-              <Sans size="8" color="black50">
+              <Sans size="7" color="black50">
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
@@ -93,7 +97,8 @@ const MobileHero = () => {
             <Box>
               <Spacer mb={3} />
               <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
-                Memberships are now open. Join the waitlist to secure your spot and get an invite.
+                Exclusively in select cities. Apply for membership to secure your place in line and to be notified when
+                we've got your spot ready.
               </Sans>
               <Spacer mb={3} />
             </Box>
