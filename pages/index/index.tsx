@@ -19,6 +19,7 @@ import withData from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { screenTrack, Schema } from "../../utils/analytics"
+import { Media } from "../../components/Responsive"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
@@ -111,9 +112,10 @@ const Home = screenTrack(() => ({
 
         <Spacer mb={5} />
         <AsSeenIn />
-        <Spacer mb={5} />
-
-        <Separator />
+        <Media greaterThanOrEqual="md">
+          <Spacer mb={5} />
+          <Separator />
+        </Media>
         <Spacer mb={6} />
 
         <ColumnList
