@@ -68,8 +68,7 @@ const MobileHero = () => {
         <Col xs="12" px={[2, 0]}>
           <Flex flexDirection="column" px={0.5}>
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer pb="60px" />
-              <Spacer mb={6} />
+              <Spacer mb={7} />
               <Sans size="7" color="black100">
                 This is Seasons.
               </Sans>
@@ -77,16 +76,17 @@ const MobileHero = () => {
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
-              <Flex flexWrap="nowrap">
-                <Box mb={1}>
-                  <GetTheAppButton />
-                </Box>
-                <Spacer mr={1} />
-                <Link href="/signup">
-                  <Button variant="primaryWhite">Apply for membership</Button>
-                </Link>
-              </Flex>
-              <Spacer mb={3} />
+              <GetTheAppButton block />
+              <Spacer mb={1} />
+              <Link href="/signup">
+                <Button variant="primaryWhite">Apply for membership</Button>
+              </Link>
+              <Spacer mb={2} />
+              <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
+                Exclusively in select cities. Apply for membership to secure your place in line and to be notified when
+                we've got your spot ready.
+              </Sans>
+              <Spacer mb={4} />
             </Flex>
           </Flex>
         </Col>
@@ -99,18 +99,6 @@ const MobileHero = () => {
               alt="hero product image of model on couch"
             />
           </MobileImageWrapper>
-        </Col>
-        <Col xs="12" px={2}>
-          <Flex flexDirection="column" px={0.5}>
-            <Box>
-              <Spacer mb={3} />
-              <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
-                Exclusively in select cities. Apply for membership to secure your place in line and to be notified when
-                we've got your spot ready.
-              </Sans>
-              <Spacer mb={3} />
-            </Box>
-          </Flex>
         </Col>
       </Row>
     </Grid>
