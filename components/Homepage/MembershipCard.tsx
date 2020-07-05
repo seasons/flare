@@ -12,7 +12,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
   if (type === "essential") {
     planInfo = {
       planName: "Essential",
-      price: "155",
+      price: "125",
       boldText: "1 Swap",
       subText: "3 items per month",
       text: "A wardrobe refresh to make getting dressed more exciting.",
@@ -20,7 +20,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
   } else if (type === "allAccess") {
     planInfo = {
       planName: "All Access",
-      price: "195",
+      price: "175",
       boldText: "Unlimited Swaps",
       subText: "3 items at a time",
       text: "Experience that new-clothes feeling every single week.",
