@@ -10,7 +10,7 @@ interface Props {
 
 export const GetTheAppButton: React.FC<Props> = ({ block }) => {
   return (
-    <GetAppWrapper block>
+    <GetAppWrapper block={block}>
       <Button
         width={block ? "100%" : "auto"}
         onClick={() => window.open("https://testflight.apple.com/join/fpXqUY0v", "_blank")}
