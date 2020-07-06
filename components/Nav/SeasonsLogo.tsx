@@ -1,20 +1,27 @@
 import styled, { CSSObject } from "styled-components"
 import { fontFamily } from "../Typography"
-import NextLink from "next/link"
 import { BoxProps } from "../Box"
+import Link from "next/link"
 
 export const SeasonsLogo: React.FC<BoxProps> = () => {
   return (
-    <LogoContainer>
-      <NextLink href="/">
-        <>
-          <Logo />
-          <LogoText>Seasons</LogoText>
-        </>
-      </NextLink>
-    </LogoContainer>
+    <Link href="/">
+      <StyledAnchor href="/">
+        <LogoContainer>
+          <>
+            <Logo />
+            <LogoText>Seasons</LogoText>
+          </>
+        </LogoContainer>
+      </StyledAnchor>
+    </Link>
   )
 }
+
+const StyledAnchor = styled("a")`
+  text-decoration: none;
+  color: inherit;
+`
 
 const LogoContainer = styled.div`
   display: flex;

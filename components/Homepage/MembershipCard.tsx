@@ -2,6 +2,7 @@ import React from "react"
 import { Flex, Sans, Spacer, Box } from "../"
 import styled from "styled-components"
 import { color } from "../../helpers"
+import { Link } from "../Link"
 
 type MembershipType = "essential" | "allAccess"
 
@@ -11,7 +12,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
   if (type === "essential") {
     planInfo = {
       planName: "Essential",
-      price: "155",
+      price: "125",
       boldText: "1 Swap",
       subText: "3 items per month",
       text: "A wardrobe refresh to make getting dressed more exciting.",
@@ -19,7 +20,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
   } else if (type === "allAccess") {
     planInfo = {
       planName: "All Access",
-      price: "195",
+      price: "175",
       boldText: "Unlimited Swaps",
       subText: "3 items at a time",
       text: "Experience that new-clothes feeling every single week.",
@@ -58,11 +59,11 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
               </Sans>
             </Flex>
             <SelectButton justifyContent="center" py="4">
-              <StyledAnchor href="http://signup.seasons.nyc/">
+              <Link href="/signup">
                 <Sans size="4" style={{ textDecoration: "underline" }}>
-                  Select Plan
+                  Sign up
                 </Sans>
-              </StyledAnchor>
+              </Link>
             </SelectButton>
           </Flex>
         </Flex>

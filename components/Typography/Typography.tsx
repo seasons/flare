@@ -15,11 +15,10 @@ import {
   space,
   SpaceProps,
   style,
-  textAlign,
   TextAlignProps,
 } from "styled-system"
 
-import { themeProps, TypeSizes, DisplaySize, SansSize, SerifSize } from "../../lib/theme"
+import { themeProps, TypeSizes, SansSize } from "../../lib/theme"
 import { determineFontSizes } from "./determineFontSizes"
 
 /**
@@ -144,10 +143,6 @@ export const Text = styled.p<TextProps>`
  */
 export type FontTypes = keyof TypeSizes
 
-export interface TypeSizeKeys {
-  display: DisplaySize
-}
-
 /**
  * Any valid font family
  */
@@ -213,7 +208,6 @@ function createStyledText<P extends StyledTextProps>(
         // styled-components supports calling the prop `as`, but there are
         //  issues when passing it into this component named `as`. See
         //  https://github.com/styled-components/styled-components/issues/2448
-        //  & https://github.com/artsy/palette/pull/327#issuecomment-473434537
         //  for context.
         // So we are naming it `element` on the way into this component, and
         //  renaming it to `as` when we pass it to through.
@@ -255,47 +249,6 @@ export const Sans = createStyledText<SansProps>("sans", (weight, italic) => {
 })
 
 /**
- * Serif
- */
-
-export interface SerifProps extends Partial<TextProps> {
-  italic?: boolean
-
-  size: SerifSize
-
-  /**
-   * Explicitly specify `null` to inherit weight from parent, otherwise default
-   * to `regular`.
-   */
-  weight?: null | "regular"
-}
-
-/**
- * The Serif typeface is used as the primary Artsy voice, guiding users through
- * flows, instruction, and communications.
- *
- * @example
- *
- * <Serif color="black10" size="3t" weight="semibold">Hi</Serif>
- */
-export const Serif = createStyledText<SerifProps>("serif", (weight, italic) => {
-  if (italic && weight && weight !== "regular") {
-    throw new Error(`The serif font does not have an italic font with weight \`${weight}\``)
-  }
-  return _selectFontFamilyType(weight, italic)
-})
-
-export interface DisplayProps extends Partial<TextProps> {
-  size: DisplaySize
-
-  /**
-   * Explicitly specify `null` to inherit weight from parent, otherwise default
-   * to `regular`.
-   */
-  weight?: null | "regular"
-}
-
-/**
  * The Display typeface has limited utility and is in the process of being
  * phased out in most places. Ask your friendly neighborhood design team member
  * if you're unsure if it should be used.
@@ -304,8 +257,4 @@ export interface DisplayProps extends Partial<TextProps> {
  *
  * <Display color="black10" size="3t">Hi</Display>
  */
-export const Display = createStyledText<DisplayProps>("display")
-
 Sans.displayName = "Sans"
-Serif.displayName = "Serif"
-Display.displayName = "Display"

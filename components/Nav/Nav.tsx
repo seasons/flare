@@ -29,9 +29,15 @@ const links = [
     external: true,
   },
   {
-    text: "About Us",
+    text: "About",
     url: "/about",
-    match: /^\/#FAQ$/,
+    match: /^\/about/,
+    external: false,
+  },
+  {
+    text: "Sign up",
+    url: "/signup",
+    match: /^\/signup/,
     external: false,
   },
 ]

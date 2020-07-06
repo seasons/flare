@@ -94,7 +94,6 @@ export const AboutFooter: React.FC = () => {
           </Col>
         </Row>
       </Grid>
-      <Spacer mb={5} />
     </>
   )
 }

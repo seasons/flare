@@ -114,9 +114,14 @@ export const themeProps = {
         fontSize: 20,
         lineHeight: 30,
       },
+      /** Equivalent to 22px size / 30px line-height  */
+      "7": {
+        fontSize: 24,
+        lineHeight: 32,
+      },
       /** Equivalent to 28px size / 36px line-height  */
       "8": {
-        fontSize: 24,
+        fontSize: 28,
         lineHeight: 36,
       },
       /** Equivalent to 42px size / 50px line-height  */
@@ -140,104 +145,6 @@ export const themeProps = {
         lineHeight: 104,
       },
     },
-
-    /** Garamond  */
-    serif: {
-      /** Equivalent to 12px size / 16px line-height  */
-      "1": {
-        fontSize: 12,
-        lineHeight: 16,
-      },
-      /** Equivalent to 14px size / 18px line-height  */
-      "2": {
-        fontSize: 14,
-        lineHeight: 18,
-      },
-      /** Equivalent to 16px size / 24px line-height  */
-      "3": {
-        fontSize: 16,
-        lineHeight: 24,
-      },
-      /** Equivalent to 16px size / 20px line-height  */
-      "3t": {
-        fontSize: 16,
-        lineHeight: 20,
-      },
-      /** Equivalent to 18px size / 26px line-height  */
-      "4": {
-        fontSize: 18,
-        lineHeight: 26,
-      },
-      /** Equivalent to 18px size / 22px line-height  */
-      "4t": {
-        fontSize: 18,
-        lineHeight: 22,
-      },
-      /** Equivalent to 22px size / 32px line-height  */
-      "5": {
-        fontSize: 22,
-        lineHeight: 32,
-      },
-      /** Equivalent to 22px size / 28px line-height  */
-      "5t": {
-        fontSize: 22,
-        lineHeight: 28,
-      },
-      /** Equivalent to 26px size / 32px line-height  */
-      "6": {
-        fontSize: 26,
-        lineHeight: 32,
-      },
-      /** Equivalent to 32px size / 38px line-height  */
-      "8": {
-        fontSize: 32,
-        lineHeight: 38,
-      },
-      /** Equivalent to 44px size / 50px line-height  */
-      "10": {
-        fontSize: 44,
-        lineHeight: 50,
-      },
-      /** Equivalent to 60px size / 70px line-height  */
-      "12": {
-        fontSize: 60,
-        lineHeight: 70,
-      },
-    },
-
-    /** Avant Garde  */
-    display: {
-      /** Equivalent to 10px size / 12px line-height  */
-      "2": {
-        fontSize: 10,
-        lineHeight: 12,
-      },
-      /** Equivalent to 12px size / 16px line-height  */
-      "3t": {
-        fontSize: 12,
-        lineHeight: 16,
-      },
-      /** Equivalent to 14px size / 18px line-height  */
-      "4t": {
-        fontSize: 14,
-        lineHeight: 18,
-      },
-      /** Equivalent to 16px size / 20px line-height  */
-      "5t": {
-        fontSize: 16,
-        lineHeight: 20,
-      },
-      /** Equivalent to 18px size / 22px line-height  */
-      "6": {
-        fontSize: 18,
-        lineHeight: 22,
-      },
-      /** Equivalent to 22px size / 24px line-height  */
-      "8": {
-        fontSize: 22,
-        lineHeight: 24,
-      },
-    },
   },
 
   radii: {
@@ -256,10 +163,6 @@ export const themeProps = {
 
   // https://github.com/dragma/styled-bootstrap-grid#styled-bootstrap-grid
   grid: {
-    /**
-     * Breakpoints for the Artsy grid,
-     * https://www.notion.so/artsy/Grid-e489a52e26bd4319b6ee7898044a8a53
-     */
     breakpoints,
     container: {
       padding: 0,
@@ -306,8 +209,4 @@ export type Breakpoint = keyof typeof breakpoints
 /** All available type sizes */
 export type TypeSizes = typeof themeProps.typeSizes
 /** All available sizes for our serif font */
-export type SerifSize = keyof TypeSizes["serif"] | Array<keyof TypeSizes["serif"]>
-/** All available sizes for our serif font */
 export type SansSize = keyof TypeSizes["sans"] | Array<keyof TypeSizes["sans"]>
-/** All available sizes for our display font */
-export type DisplaySize = keyof TypeSizes["display"] | Array<keyof TypeSizes["display"]>

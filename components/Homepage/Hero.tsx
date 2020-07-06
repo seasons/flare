@@ -2,9 +2,11 @@ import React from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
 import { Flex, Sans, Spacer, Box } from ".."
-import { LinkCTA } from "../Button"
+import { LinkCTA, Button } from "../Button"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
+import { GetTheAppButton } from "../Button/GetTheApp"
+import Link from "next/link"
 
 const imageURL = require("../../public/images/homepage/CouchPhoto_final.png")
 
@@ -21,17 +23,27 @@ const DesktopHero = () => {
             justifyContent="center"
           >
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Sans size="8" color="black100">
+              <Sans size="7" color="black100">
                 This is Seasons.
               </Sans>
-              <Sans size="8" color="black50">
+              <Sans size="7" color="black50">
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
-              <LinkCTA text="Apply for membership" href="https://signup.seasons.nyc/" />
-              <Spacer mb={4} />
+              <Flex flexWrap="wrap">
+                <Box mb={1}>
+                  <GetTheAppButton />
+                </Box>
+                <Spacer mr={1} />
+                <Link href="/signup">
+                  <Button variant="primaryWhite">Apply for membership</Button>
+                </Link>
+                <Spacer mb={1} />
+              </Flex>
+              <Spacer mb={3} />
               <Sans size="3" color="black50">
-                Memberships are now open. Join the waitlist to secure your spot and get an invite.
+                Exclusively in select cities. Apply for membership to secure your place in line and to be notified when
+                we've got your spot ready.
               </Sans>
             </Flex>
           </Flex>
@@ -56,17 +68,25 @@ const MobileHero = () => {
         <Col xs="12" px={[2, 0]}>
           <Flex flexDirection="column" px={0.5}>
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer pb="60px" />
-              <Spacer mb={6} />
-              <Sans size="8" color="black100">
+              <Spacer mb={7} />
+              <Sans size="7" color="black100">
                 This is Seasons.
               </Sans>
-              <Sans size="8" color="black50">
+              <Sans size="7" color="black50">
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
-              <LinkCTA text="Apply for membership" href="https://signup.seasons.nyc/" />
-              <Spacer mb={10} />
+              <GetTheAppButton block />
+              <Spacer mb={1} />
+              <Link href="/signup">
+                <Button variant="primaryWhite">Apply for membership</Button>
+              </Link>
+              <Spacer mb={2} />
+              <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
+                Exclusively in select cities. Apply for membership to secure your place in line and to be notified when
+                we've got your spot ready.
+              </Sans>
+              <Spacer mb={4} />
             </Flex>
           </Flex>
         </Col>
@@ -79,17 +99,6 @@ const MobileHero = () => {
               alt="hero product image of model on couch"
             />
           </MobileImageWrapper>
-        </Col>
-        <Col xs="12" px={2}>
-          <Flex flexDirection="column" px={0.5}>
-            <Box>
-              <Spacer mb={3} />
-              <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
-                Memberships are now open. Join the waitlist to secure your spot and get an invite.
-              </Sans>
-              <Spacer mb={3} />
-            </Box>
-          </Flex>
         </Col>
       </Row>
     </Grid>
