@@ -7,7 +7,7 @@ const items = [
   {
     title: "Where is Seasons available?",
     text:
-      "We're exclusively servicing New York City right now. Manhattan, Brooklyn, Queens, The Bronx, and Staten Island. Sign up for updates to get notified when we roll out service in more cities.",
+      "We're exclusively servicing select cities in the North and Southeast. Create an account with your ZIP code and we'll let you know if we're in your area.",
   },
   {
     title: "Who is Seasons for?",
