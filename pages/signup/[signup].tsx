@@ -17,17 +17,9 @@ const SIGN_UP_USER = gql`
     $password: String!
     $firstName: String!
     $lastName: String!
-    $zipCode: String!
     $details: CustomerDetailCreateInput!
   ) {
-    signup(
-      email: $email
-      zipCode: $zipCode
-      password: $password
-      firstName: $firstName
-      lastName: $lastName
-      details: $details
-    ) {
+    signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName, details: $details) {
       token
       user {
         id
@@ -98,11 +90,13 @@ const SignUpPage = screenTrack(() => ({
                         password: values.password,
                         firstName: values.firstName,
                         lastName: values.lastName,
-                        zipCode: values.zipCode,
                         details: {
                           phoneNumber: values.tel,
                           birthday: values.dob,
                           phoneOS: values.device,
+                          shippingAddress: {
+                            create: { zipCode: values.zipCode },
+                          },
                         },
                       },
                     })
