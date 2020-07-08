@@ -10,7 +10,7 @@ const items = [
   {
     title: "Wear, swap & repeat",
     text:
-      "Wear them once or as many times as you want. Ready for something new? Choose what to return or buy (at discount) and start your next order.",
+      "Wear the styles you want to try, but aren’t sure if you want to buy. A new way to discover your style without the commitment or buyers remorse.",
   },
   {
     title: "Returns & dry cleaning's on us",
