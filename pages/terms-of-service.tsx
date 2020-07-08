@@ -36,10 +36,10 @@ export const TermsOfService = screenTrack(() => ({
             These Terms of Use (the “Terms”) are a binding contract between you and <strong>SZNS, Inc.</strong>{" "}
             (“Seasons,” “we” and “us”). Your use of the Services in any way means that you agree to all of these Terms,
             and these Terms will remain in effect while you use the Services. These Terms include the provisions in this
-            document as well as those in the <a href="privacy-policy.html">Privacy Policy</a>,{" "}
-            <a href="index.html">Frequently Asked Questions</a>, <a href="index.html">Shipping and Returns</a>,
-            Copyright Dispute Policy, and any other accompanying terms and conditions entered into between you and us
-            for the rental or sale of any Products.
+            document as well as those in the <a href="/privacy-policy">Privacy Policy</a>,{" "}
+            <a href="/">Frequently Asked Questions</a>, <a href="/">Shipping and Returns</a>, Copyright Dispute Policy,
+            and any other accompanying terms and conditions entered into between you and us for the rental or sale of
+            any Products.
             <strong>
               {" "}
               Your use of or participation in certain Services may also be subject to additional policies, rules and/or
@@ -94,7 +94,7 @@ export const TermsOfService = screenTrack(() => ({
               <br />‍
             </strong>
             Seasons takes the privacy of its users very seriously. For the current Seasons Privacy Policy, please click{" "}
-            <a href="privacy-policy.html">here</a>.
+            <a href="/privacy-policy">here</a>.
             <br />
             <br />‍
             <em className="bodyheader">
@@ -276,10 +276,8 @@ export const TermsOfService = screenTrack(() => ({
             </em>
             In order to display your User Submissions on the Services, and to allow other users to enjoy them (where
             applicable), you grant us certain rights in those User Submissions (see below for more information). Please
-            note that all of the following licenses are subject to our <a href="privacy-policy.html">
-              Privacy Policy
-            </a>{" "}
-            to the extent they relate to User Submissions that are also your personally-identifiable information.
+            note that all of the following licenses are subject to our <a href="/privacy-policy">Privacy Policy</a> to
+            the extent they relate to User Submissions that are also your personally-identifiable information.
             <br />
             <br />
             By submitting User Submissions through the Services, you hereby do and shall grant Seasons a worldwide,
@@ -391,18 +389,17 @@ export const TermsOfService = screenTrack(() => ({
               <br />
               <br />‍
             </strong>
-            You can rent or purchase Products at the prices set forth on our <a href="index.html">Membership</a> page.
-            You may choose to rent or purchase Products through the www.seasons.nyc website or our mobile applications.
-            Seasons may limit or cancel quantities of Products rented or purchased, and it reserves the right to refuse
-            any order. In the event Seasons needs to make a change to an order, it will attempt to notify you by
-            contacting the email address, billing address, and/or phone number provided at the time the order was made.
-            The prices displayed are quoted in U.S. currency and are valid only in the United States. Prices are subject
-            to change at any time. Sales tax will be determined by the shipping address of the order and will
-            automatically be added to the order. Seasons is required by law to apply sales tax to orders to certain
-            states. Rented or purchased Products will be shipped to the shipping address of the order. Information about
-            our shipping rates and return policy can all be found on our{" "}
-            <a href="index.html">Frequently Asked Questions</a> page.  Any payment terms presented to you in the process
-            of purchasing Products are deemed part of these Terms.
+            You can rent or purchase Products at the prices set forth on our <a href="/">Membership</a> page. You may
+            choose to rent or purchase Products through the www.seasons.nyc website or our mobile applications. Seasons
+            may limit or cancel quantities of Products rented or purchased, and it reserves the right to refuse any
+            order. In the event Seasons needs to make a change to an order, it will attempt to notify you by contacting
+            the email address, billing address, and/or phone number provided at the time the order was made. The prices
+            displayed are quoted in U.S. currency and are valid only in the United States. Prices are subject to change
+            at any time. Sales tax will be determined by the shipping address of the order and will automatically be
+            added to the order. Seasons is required by law to apply sales tax to orders to certain states. Rented or
+            purchased Products will be shipped to the shipping address of the order. Information about our shipping
+            rates and return policy can all be found on our <a href="/">Frequently Asked Questions</a> page.  Any
+            payment terms presented to you in the process of purchasing Products are deemed part of these Terms.
             <br />
             <br />
             Note that if you elect to receive text messages through the Services, data and message rates may apply. Any
@@ -492,7 +489,7 @@ export const TermsOfService = screenTrack(() => ({
               <br />‍
             </strong>
             You’re free to do that at any time by contacting us at membership@seasons.nyc; please refer to our{" "}
-            <a href="privacy-policy.html">Privacy Policy</a>, as well as the licenses above, to understand how we treat
+            <a href="/privacy-policy">Privacy Policy</a>, as well as the licenses above, to understand how we treat
             information you provide to us after you have stopped using our Services.
             <br />
             <br />
