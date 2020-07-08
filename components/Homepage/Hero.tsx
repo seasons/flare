@@ -2,13 +2,16 @@ import React from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
 import { Flex, Sans, Spacer, Box } from ".."
-import { LinkCTA, Button } from "../Button"
+import { Button } from "../Button"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"
 
 const imageURL = require("../../public/images/homepage/CouchPhoto_final.png")
+
+const descriptionText =
+  "Exclusively in select cities. Apply for membership to secure your place in line & to be notified when your spot is ready."
 
 const DesktopHero = () => {
   return (
@@ -42,8 +45,7 @@ const DesktopHero = () => {
               </Flex>
               <Spacer mb={3} />
               <Sans size="3" color="black50">
-                Exclusively in select cities. Apply for membership to secure your place in line and to be notified when
-                we've got your spot ready.
+                {descriptionText}
               </Sans>
             </Flex>
           </Flex>
@@ -83,8 +85,7 @@ const MobileHero = () => {
               </Link>
               <Spacer mb={2} />
               <Sans size="3" color="black50" style={{ maxWidth: "80%" }}>
-                Exclusively in select cities. Apply for membership to secure your place in line and to be notified when
-                we've got your spot ready.
+                {descriptionText}
               </Sans>
               <Spacer mb={4} />
             </Flex>

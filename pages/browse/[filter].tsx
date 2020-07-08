@@ -20,7 +20,7 @@ import { BrowseFilters } from "../../components/Browse"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 
 const GET_BROWSE_PRODUCTS = gql`
-  query GetBrowseProducts(
+  query GetBrowse(
     $categoryName: String!
     $brandName: String!
     $first: Int!
@@ -28,7 +28,7 @@ const GET_BROWSE_PRODUCTS = gql`
     $orderBy: ProductOrderByInput!
     $brandOrderBy: BrandOrderByInput!
   ) {
-    categories(where: { visible: true }) {
+    categories(where: { visible: true }, orderBy: name_ASC) {
       id
       slug
       name

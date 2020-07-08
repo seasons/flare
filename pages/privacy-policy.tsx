@@ -27,8 +27,8 @@ const PrivacyPolicy = screenTrack(() => ({
               and share your information in the following ways. <br />
               <br />
               Remember that your use of Seasons&#x27; Services is at all times subject to our{" "}
-              <a href="terms-of-service.html">Terms of Use</a>, which incorporates this Privacy Policy. Any terms we use
-              in this Policy without defining them have the definitions given to them in the Terms of Use. <br />
+              <a href="/terms-of-service">Terms of Use</a>, which incorporates this Privacy Policy. Any terms we use in
+              this Policy without defining them have the definitions given to them in the Terms of Use. <br />
               <br />‍
               <strong className="bodyheader">
                 What this Privacy Policy Covers
