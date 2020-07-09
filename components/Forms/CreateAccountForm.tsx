@@ -46,7 +46,7 @@ export const createAccountValidationSchema = Yup.object().shape({
     .trim()
     .required("Required")
     .matches(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "e.g 123-456-7890"),
-  dob: Yup.date().required("Required"),
+  dob: Yup.date().max(new Date(), "You can't be born in the future!").required("Required"),
   zipCode: Yup.string()
     .trim()
     .required("Required")

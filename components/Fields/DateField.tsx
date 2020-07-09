@@ -64,6 +64,7 @@ export const DateField: React.FC<Props> = ({ context, inputName }) => {
         },
       }}
       type="text"
+      placeholder="mm/dd/yyyy"
       onBlur={handleBlur}
       name={inputName}
     />
