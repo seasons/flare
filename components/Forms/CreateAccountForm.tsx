@@ -4,6 +4,7 @@ import { FormTemplate, FormProps } from "./FormsTemplate"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
 import { ExternalLink } from "../"
 import { Schema } from "../../utils/analytics"
+import { DateField } from "../Fields/DateField"
 
 export interface CreateAccountFormFields {
   firstName: string
@@ -45,7 +46,7 @@ export const createAccountValidationSchema = Yup.object().shape({
     .trim()
     .required("Required")
     .matches(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "e.g 123-456-7890"),
-  dob: Yup.date().required("Required"),
+  dob: Yup.date().max(new Date(), "You can't be born in the future!").required("Required"),
   zipCode: Yup.string()
     .trim()
     .required("Required")
@@ -114,10 +115,9 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           label: "Shipping ZIP code",
         },
         {
-          name: "dob",
-          type: "date",
-          placeholder: "MM / DD / YY",
           label: "Date of birth",
+          placeholder: "mm/dd/yyyy",
+          customElement: <DateField context={context} inputName="dob" />,
         },
         {
           name: "device",
