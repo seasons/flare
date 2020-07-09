@@ -8,6 +8,7 @@ import { useMutation } from "@apollo/react-hooks"
 import { useState } from "react"
 import { FormConfirmation } from "../../components/Forms/FormConfirmation"
 import { screenTrack, Schema } from "../../utils/analytics"
+import { DateTime } from "luxon"
 
 type ConfirmTextOptions = "accountQueued" | "accountAccepted"
 
@@ -84,15 +85,19 @@ const SignUpPage = screenTrack(() => ({
                 validationSchema={createAccountValidationSchema}
                 onSubmit={async (values, actions) => {
                   try {
+                    const date = new Date(values.dob)
+                    const dateToIso = DateTime.fromJSDate(date).toISO()
+                    const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
+                    const lastName = values.lastName.charAt(0).toUpperCase() + values.lastName.slice(1)
                     const response = await signUpUser({
                       variables: {
                         email: values.email,
                         password: values.password,
-                        firstName: values.firstName,
-                        lastName: values.lastName,
+                        firstName,
+                        lastName,
                         details: {
                           phoneNumber: values.tel,
-                          birthday: values.dob,
+                          birthday: dateToIso,
                           phoneOS: values.device,
                           shippingAddress: {
                             create: { zipCode: values.zipCode },
