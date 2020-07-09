@@ -4,6 +4,7 @@ import { FormTemplate, FormProps } from "./FormsTemplate"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
 import { ExternalLink } from "../"
 import { Schema } from "../../utils/analytics"
+import { DateField } from "../Fields/DateField"
 
 export interface CreateAccountFormFields {
   firstName: string
@@ -114,10 +115,9 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           label: "Shipping ZIP code",
         },
         {
-          name: "dob",
-          type: "date",
-          placeholder: "MM / DD / YY",
           label: "Date of birth",
+          placeholder: "mm/dd/yyyy",
+          customElement: <DateField context={context} inputName="dob" />,
         },
         {
           name: "device",

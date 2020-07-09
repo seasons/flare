@@ -4,7 +4,6 @@ import {
   ColumnList,
   Hero,
   ProductRail,
-  UsaMap,
   ChooseMembership,
   FAQ,
   Brands,
