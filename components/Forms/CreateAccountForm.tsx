@@ -46,7 +46,6 @@ export const createAccountValidationSchema = Yup.object().shape({
     .trim()
     .required("Required")
     .matches(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "e.g 123-456-7890"),
-  dob: Yup.date().max(new Date(), "You can't be born in the future!").required("Required"),
   zipCode: Yup.string()
     .trim()
     .required("Required")
@@ -113,11 +112,6 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           type: "zipCode",
           placeholder: "00000",
           label: "Shipping ZIP code",
-        },
-        {
-          label: "Date of birth",
-          placeholder: "mm/dd/yyyy",
-          customElement: <DateField context={context} inputName="dob" />,
         },
         {
           name: "device",
