@@ -33,16 +33,14 @@ const DesktopHero = () => {
                 A privately shared community for luxury menswear & streetwear.
               </Sans>
               <Spacer mb={3} />
-              <Flex flexWrap="wrap">
-                <Box mb={1}>
-                  <GetTheAppButton />
-                </Box>
-                <Spacer mr={1} />
-                <Link href="/signup">
-                  <Button variant="primaryWhite">Apply for membership</Button>
-                </Link>
-                <Spacer mb={1} />
-              </Flex>
+              <GetTheAppButton block />
+              <Spacer mb={1} />
+              <Link href="/signup">
+                <Button variant="primaryWhite" block width="100%">
+                  Apply for membership
+                </Button>
+              </Link>
+              <Spacer mb={1} />
               <Spacer mb={3} />
               <Sans size="3" color="black50">
                 {descriptionText}
