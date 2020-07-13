@@ -151,9 +151,9 @@ const Home = screenTrack(() => ({
           <>
             <Separator />
 
-            <Spacer mb={6} />
+            <Spacer mb={10} />
             <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
-            <Spacer mb={2} />
+            <Spacer mb={10} />
           </>
         )}
 
@@ -165,6 +165,12 @@ const Home = screenTrack(() => ({
 
         <Separator />
 
+        <Spacer mb={10} />
+        <TheApp />
+        <Spacer mb={10} />
+
+        <Separator />
+
         <Spacer mb={15} />
         <MembershipBenefits />
         <Spacer mb={15} />
@@ -172,14 +178,8 @@ const Home = screenTrack(() => ({
         <Separator />
 
         <Spacer mb={10} />
-        <TheApp />
-        <Spacer mb={10} />
-
-        <Separator />
-
-        <Spacer mb={13} />
         <TheBag />
-        <Spacer mb={13} />
+        <Spacer mb={10} />
 
         <Separator />
 

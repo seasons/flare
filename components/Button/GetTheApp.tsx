@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Button } from "./Button"
 import { Flex, Spacer, Sans } from "../"
 import { AppleSVG } from "../SVGs"
+import { themeProps } from "../../lib/theme"
 
 interface Props {
   block?: boolean
@@ -30,7 +31,17 @@ const GetAppWrapper = styled("div")<{ block: boolean }>`
   &:hover {
     svg {
       .apple-fill {
-        fill: ${color("black100")} !important;
+        fill: ${color("black100")};
+      }
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    &:hover {
+      svg {
+        .apple-fill {
+          fill: ${color("white100")};
+        }
       }
     }
   }
