@@ -35,7 +35,9 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
               onClick={() => window.open("https://www.instagram.com/seasons.ny/", "_blank")}
             >
               <Flex flexDirection="row" alignContent="center">
-                <InstagramSVG />
+                <Box pt="3px">
+                  <InstagramSVG />
+                </Box>
                 <Spacer mr={1} />
                 <Sans size="4">Follow us</Sans>
               </Flex>

@@ -46,7 +46,6 @@ const SignUpPage = screenTrack(() => ({
       password: "",
       zipCode: "",
       device: "",
-      dob: "",
     }
 
     const confirmTextOptions = {

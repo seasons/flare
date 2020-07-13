@@ -39,6 +39,7 @@ export interface FieldDefinition {
   type?: string
   initialValue?: string
   label: string
+  mobileOrder?: number
 }
 
 interface FooterProps {
@@ -217,6 +218,10 @@ export const FormTemplate = ({
     )
   }
 
+  const mobileFieldDefinitionList = [...fieldDefinitionList].sort((a, b) => {
+    return a.mobileOrder - b.mobileOrder
+  })
+
   return (
     <Flex style={{ minHeight: "100%" }}>
       <Media greaterThanOrEqual="md">
@@ -241,8 +246,11 @@ export const FormTemplate = ({
         <Wrapper clientSide={clientSide}>
           <TextContent />
           <FieldsContainer px={1} pb={150}>
-            {fieldDefinitionList.map((props, index) => {
-              const width = props.label === "Email" ? "100%" : "50%"
+            {mobileFieldDefinitionList.map((props, index) => {
+              const width =
+                props.label === "Email" || props.label === "Password" || props.label === "Confirm password"
+                  ? "100%"
+                  : "50%"
               return (
                 <Box key={props.placeholder} width={width} px={1}>
                   <Box>

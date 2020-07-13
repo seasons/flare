@@ -4,7 +4,6 @@ import { FormTemplate, FormProps } from "./FormsTemplate"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
 import { ExternalLink } from "../"
 import { Schema } from "../../utils/analytics"
-import { DateField } from "../Fields/DateField"
 
 export interface CreateAccountFormFields {
   firstName: string
@@ -31,7 +30,7 @@ export const createAccountValidationSchema = Yup.object().shape({
   password: Yup.string()
     .trim()
     .required("Required")
-    .min(7, "Must be at least 7 characters")
+    .min(8, "Must be at least 8 characters")
     .max(20, "Must be no more than 20 characters")
     .matches(/[A-Z]/, "Must include at least one uppercase letter")
     .matches(/[a-z]/, "Must include at least one lowercase letter")
@@ -46,7 +45,6 @@ export const createAccountValidationSchema = Yup.object().shape({
     .trim()
     .required("Required")
     .matches(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "e.g 123-456-7890"),
-  dob: Yup.date().max(new Date(), "You can't be born in the future!").required("Required"),
   zipCode: Yup.string()
     .trim()
     .required("Required")
@@ -78,28 +76,32 @@ export const CreateAccountForm = ({ context }: FormProps) => {
       buttonText="Create account"
       buttonActionName={Schema.ActionNames.CreateAccountSubmitButtonClicked}
       fieldDefinitionList={[
-        { name: "firstName", placeholder: "Will", label: "First name" },
+        { name: "firstName", placeholder: "Will", label: "First name", mobileOrder: 1 },
         {
           name: "lastName",
           placeholder: "Smith",
           label: "Last name",
+          mobileOrder: 2,
         },
         {
           name: "email",
           placeholder: "will.smith@gmail.com",
           label: "Email",
+          mobileOrder: 3,
         },
         {
           label: "Phone number",
           placeholder: "(000) - 000 - 0000",
           customElement: <TelephoneMaskField context={context} />,
+          mobileOrder: 6,
         },
         {
           name: "password",
-          placeholder: "Must have at least 7 characters",
+          placeholder: "Must have at least 8 characters",
           type: "password",
           label: "Password",
           id: "password",
+          mobileOrder: 4,
         },
         {
           name: "confirmPassword",
@@ -107,23 +109,21 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           type: "password",
           label: "Confirm password",
           id: "confirmPassword",
+          mobileOrder: 5,
         },
         {
           name: "zipCode",
           type: "zipCode",
           placeholder: "00000",
           label: "Shipping ZIP code",
-        },
-        {
-          label: "Date of birth",
-          placeholder: "mm/dd/yyyy",
-          customElement: <DateField context={context} inputName="dob" />,
+          mobileOrder: 7,
         },
         {
           name: "device",
           selectOptions: deviceOptions,
           placeholder: "Select",
           label: "Device type",
+          mobileOrder: 8,
         },
       ]}
     />
