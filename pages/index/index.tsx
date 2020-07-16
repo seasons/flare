@@ -40,7 +40,7 @@ export const HOME_QUERY = gql`
     justAddedTops: products(
       first: 4
       category: "tops"
-      orderBy: createdAt_DESC
+      orderBy: publishedAt_DESC
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
       id
@@ -68,7 +68,7 @@ export const HOME_QUERY = gql`
     justAddedBottoms: products(
       first: 4
       category: "bottoms"
-      orderBy: createdAt_DESC
+      orderBy: publishedAt_DESC
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
       id
