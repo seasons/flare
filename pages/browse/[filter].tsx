@@ -118,7 +118,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         brandName: currentBrand,
         categoryName: currentCategory,
         first: pageSize,
-        orderBy: "createdAt_DESC",
+        orderBy: "publishedAt_DESC",
         brandOrderBy: "name_ASC",
         skip,
       },
