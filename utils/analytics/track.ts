@@ -1,7 +1,9 @@
-import _track, { Track as _Track, TrackingInfo, useTracking as _useTracking, TrackingProp } from "react-tracking"
-import { PageViewEvent } from "./schema"
+import _track, {
+  Track as _Track, TrackingInfo, TrackingProp, useTracking as _useTracking
+} from "react-tracking"
+
 import * as Schema from "./schema"
-import { setupAnalytics } from "./setupAnalytics"
+
 export { Schema }
 
 let analytics = null
@@ -9,7 +11,6 @@ let analytics = null
 declare const window: any
 
 if (typeof window !== "undefined") {
-  setupAnalytics()
   analytics = window?.analytics
 }
 
@@ -79,7 +80,7 @@ export const track: Track = _track
  *
  */
 
-export function screenTrack<P>(trackingInfo?: TrackingInfo<PageViewEvent, P, null>) {
+export function screenTrack<P>(trackingInfo?: TrackingInfo<Schema.PageViewEvent, P, null>) {
   return _track(trackingInfo as any, {
     dispatch: (data) => {
       data.anonymousId = analytics?.user?.().anonymousId?.()
