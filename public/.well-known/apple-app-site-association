@@ -7,8 +7,11 @@
         "/a/account",
         "/a/account/create",
         "/a/account/login",
+        "/a/account/*",
+        
+        "/browse",
         "/browse/*",
-        "/product/*/", 
+        "/product/*",
       ]
     }]
   }
