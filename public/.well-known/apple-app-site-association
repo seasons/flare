@@ -3,7 +3,13 @@
     "apps": [],
     "details": [{
       "appID": "QY3QKXPU37.com.seasons.Seasons",
-      "paths": [ "/product" ]
+      "paths": [
+        "/a/account",
+        "/a/account/create",
+        "/a/account/login",
+        "/browse/*",
+        "/product/*/", 
+      ]
     }]
   }
 }
