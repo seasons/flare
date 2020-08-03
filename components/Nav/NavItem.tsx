@@ -1,38 +1,33 @@
 import { Box, Sans } from ".."
-import { animated, useSpring } from "react-spring"
-import { useState } from "react"
 import styled from "styled-components"
 import { color } from "../../helpers"
 
 export const NavItem = ({ link }) => {
-  const [isHovering, setIsHovering] = useState(false)
-  const hoverAnimation = useSpring({
-    height: isHovering ? 4 : 0,
-    config: { tension: 500, friction: 33 },
-  })
-
   return (
-    <Box
-      px={2}
-      height="100%"
-      style={{ cursor: "pointer", position: "relative" }}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
+    <Wrapper ml={3} height="100%" style={{ cursor: "pointer", position: "relative" }}>
       <Sans size="3" color="black" style={{ lineHeight: "inherit" }}>
         {link.text}
       </Sans>
-      <NavHover style={hoverAnimation} />
-    </Box>
+      <Underline />
+    </Wrapper>
   )
 }
 
-const HoverBox = styled("div")`
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color: ${color("black100")};
+const Wrapper = styled(Box)`
+  position: relative;
+  &:hover {
+    div {
+      display: block;
+    }
+  }
 `
 
-const NavHover = animated((props) => <HoverBox {...props} />)
+const Underline = styled.div`
+  height: 2px;
+  display: none;
+  position: absolute;
+  left: 0;
+  bottom: 14px;
+  width: 100%;
+  background-color: ${color("black100")};
+`

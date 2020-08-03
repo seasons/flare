@@ -1,4 +1,4 @@
-import { Sans, Box, Flex, Spacer } from "../"
+import { Sans, Box, Flex, Spacer, MaxWidth } from "../"
 import { color } from "../../helpers"
 import { Link } from "../Link"
 import styled from "styled-components"
@@ -6,17 +6,12 @@ import styled from "styled-components"
 export const Footer = () => {
   return (
     <Wrapper>
-      <Flex
-        px={2}
-        py={[1, 0]}
-        style={{ borderTop: `1px solid ${color("black10")}`, width: "100%" }}
-        justifyContent={["flex-start", "center"]}
-      >
+      <Flex px={2} py={[1, 0]} style={{ width: "100%" }} justifyContent={["flex-start", "center"]}>
         <Flex
           flexDirection={["column", "row"]}
           py={2}
-          px={0.5}
-          style={{ maxWidth: "1200px", flex: 1 }}
+          width="100%"
+          style={{ flex: 1 }}
           justifyContent={["flex-start", "space-between"]}
         >
           <Link href="/terms-of-service">
@@ -44,8 +39,6 @@ export const Footer = () => {
 
 const Wrapper = styled.div`
   position: relative;
-  bottom: 0;
-  left: 0;
   width: 100%;
   background-color: ${color("white100")};
 `

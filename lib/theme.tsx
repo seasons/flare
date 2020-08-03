@@ -84,30 +84,15 @@ export const themeProps = {
         fontSize: 14,
         lineHeight: 24,
       },
-      /** Equivalent to 14px size / 20px line-height  */
-      "3t": {
-        fontSize: 14,
-        lineHeight: 20,
-      },
       /** Equivalent to 16px size / 26px line-height  */
       "4": {
         fontSize: 16,
         lineHeight: 26,
       },
-      /** Equivalent to 16px size / 22px line-height  */
-      "4t": {
-        fontSize: 16,
-        lineHeight: 22,
-      },
       /** Equivalent to 18px size / 30px line-height  */
       "5": {
         fontSize: 18,
         lineHeight: 30,
-      },
-      /** Equivalent to 18px size / 26px line-height  */
-      "5t": {
-        fontSize: 18,
-        lineHeight: 26,
       },
       /** Equivalent to 22px size / 30px line-height  */
       "6": {
@@ -128,6 +113,10 @@ export const themeProps = {
       "10": {
         fontSize: 42,
         lineHeight: 50,
+      },
+      "11": {
+        fontSize: 48,
+        lineHeight: 56,
       },
       /** Equivalent to 60px size / 66px line-height  */
       "12": {
@@ -167,7 +156,7 @@ export const themeProps = {
     container: {
       padding: 0,
       maxWidth: {
-        xl: 1200,
+        xl: 1800,
         lg: 960,
         md: 720,
         sm: 540,

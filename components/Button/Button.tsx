@@ -32,7 +32,7 @@ export class Button extends Component<WebButtonProps> {
         return {
           height: inline ? "21px" : "46px",
           size: "4",
-          px: inline ? 0 : 2,
+          px: inline ? 0 : 3,
         }
       case "large":
         return {
@@ -155,7 +155,7 @@ export class Button extends Component<WebButtonProps> {
 export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
   static defaultProps = {
     border: 1,
-    borderRadius: 0,
+    borderRadius: 4,
   }
 
   onClick = (event) => {

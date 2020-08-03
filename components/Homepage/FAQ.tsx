@@ -40,7 +40,7 @@ export const FAQ: React.FC = () => {
   const [minHeight, setMinHeight] = useState(150)
   return (
     <Grid>
-      <Box px={[2, 0]} mb={6}>
+      <Box px={2} mb={6}>
         <Sans px={0.5} size={["8", "5"]}>
           Frequently asked questions
         </Sans>

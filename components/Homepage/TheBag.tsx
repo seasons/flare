@@ -43,6 +43,7 @@ const Desktop = () => {
       flexWrap="nowrap"
       justifyContent="space-between"
       style={{ overflow: "hidden", maxWidth: "1200px", margin: "0 auto" }}
+      px={2}
     >
       <Box style={{ position: "relative", width: "60%", overflow: "hidden" }}>
         <HomepageCarousel images={images} />

@@ -36,10 +36,10 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImage[] }> = ({ ima
         })}
       </SnapList>
       <PagerWrapper>
-        <Flex flexDirection="row" flexWrap="nowrap" p={1} py={2}>
+        <Flex flexDirection="row" flexWrap="nowrap" justifyContent="flex-end" px={1} py={2}>
           {images.map((_image, index) => {
             return (
-              <Box key={index} px={1} style={{ display: "flex", flex: images.length }}>
+              <Box key={index} pr={0.5}>
                 <Pager active={selected === index} />
               </Box>
             )
@@ -67,9 +67,10 @@ const Wrapper = styled.div`
 `
 
 const Pager = styled.div<{ active: boolean }>`
-  height: 2px;
-  width: 100%;
-  background-color: ${(p) => (p.active ? color("black100") : color("black10"))};
+  height: 8px;
+  width: 8px;
+  border: 1px solid ${color("black100")};
+  background-color: ${(p) => (p.active ? color("black100") : "transparent")};
 `
 
 const ImageWrapper = styled.div`

@@ -8,17 +8,15 @@ import {
   FAQ,
   Brands,
   MembershipBenefits,
-  AsSeenIn,
   TheBag,
   TheApp,
   FromCommunity,
 } from "../../components/Homepage"
-import { Spacer, Layout, Separator } from "../../components"
+import { Spacer, Layout, Separator, Box } from "../../components"
 import withData from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { screenTrack, Schema } from "../../utils/analytics"
-import { Media } from "../../components/Responsive"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
@@ -107,15 +105,8 @@ const Home = screenTrack(() => ({
       <Layout fixedNav>
         <Nav fixed />
         <Hero />
-        <Separator />
 
-        <Spacer mb={5} />
-        <AsSeenIn />
-        <Media greaterThanOrEqual="md">
-          <Spacer mb={5} />
-          <Separator />
-        </Media>
-        <Spacer mb={6} />
+        <Spacer mb={10} />
 
         <ColumnList
           items={[
@@ -141,7 +132,9 @@ const Home = screenTrack(() => ({
         <ProductRail title="Just added tops" products={data?.justAddedTops} />
         <Spacer mb={8} />
 
-        <Separator />
+        <Box px="2">
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <FromCommunity blogPosts={data?.blogPosts} />
@@ -149,7 +142,9 @@ const Home = screenTrack(() => ({
 
         {!!data?.justAddedBottoms?.length && (
           <>
-            <Separator />
+            <Box px="2">
+              <Separator />
+            </Box>
 
             <Spacer mb={10} />
             <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
@@ -157,37 +152,49 @@ const Home = screenTrack(() => ({
           </>
         )}
 
-        <Separator />
+        <Box px="2">
+          <Separator />
+        </Box>
 
         <Spacer mb={15} />
         <ChooseMembership />
         <Spacer mb={15} />
 
-        <Separator />
+        <Box px="2">
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <TheApp />
         <Spacer mb={10} />
 
-        <Separator />
+        <Box px="2">
+          <Separator />
+        </Box>
 
         <Spacer mb={15} />
         <MembershipBenefits />
         <Spacer mb={15} />
 
-        <Separator />
+        <Box px="2">
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <TheBag />
         <Spacer mb={10} />
 
-        <Separator />
+        <Box px="2">
+          <Separator />
+        </Box>
 
         <Spacer mb={15} />
         <FAQ />
         <Spacer mb={15} />
 
-        <Separator />
+        <Box px="2">
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <Brands brands={data?.brands} />

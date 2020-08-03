@@ -47,6 +47,7 @@ const Desktop = () => {
       flexWrap="nowrap"
       justifyContent="space-between"
       style={{ overflow: "hidden", maxWidth: "1200px", margin: "0 auto" }}
+      px={2}
     >
       <Box width="40%">
         <TextList title={title} subtitle={subtitle} listItems={textItems} />

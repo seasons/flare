@@ -42,7 +42,7 @@ const items = [
 export const MembershipBenefits: React.FC = () => {
   return (
     <Grid>
-      <Flex px={[2, 0]} mx={0.5} justifyContent="center">
+      <Flex px={2} justifyContent="center">
         <Flex flexDirection="column" justifyContent="center">
           <Sans size="8" style={{ textAlign: "center" }}>
             The benefits
@@ -53,10 +53,10 @@ export const MembershipBenefits: React.FC = () => {
           </Sans>
         </Flex>
       </Flex>
-      <Row>
+      <Row px={1}>
         {items.map((step, index) => (
-          <Col md="4" xs="12" px={[2, 0]} key={index}>
-            <Box mt={8} mx={0.5}>
+          <Col md="4" xs="12" px={1} key={index}>
+            <Box mt={8}>
               <Flex justifyContent="center" flexDirection="column" alignItems="center">
                 {step.icon()}
                 <Spacer mb={2} />

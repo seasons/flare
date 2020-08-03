@@ -3,6 +3,7 @@ import { Nav } from "./Nav"
 import { Footer } from "./Footer"
 import { LayoutHead } from "./LayoutHead"
 import { Box } from "./Box"
+import { MaxWidth } from "./MaxWidth"
 
 interface LayoutProps {
   fixedNav?: boolean
@@ -15,11 +16,13 @@ export const Layout = ({ fixedNav = false, children, hideFooter }: LayoutProps) 
     <>
       <LayoutHead />
       <Theme>
-        <Box pt={60} pb={60} style={{ flexGrow: 1, position: "relative" }}>
-          <Nav fixed={fixedNav} />
-          {children}
-          {!hideFooter && <Footer />}
-        </Box>
+        <Nav fixed={fixedNav} />
+        <MaxWidth>
+          <Box pt={60} pb={60} style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+            {children}
+            {!hideFooter && <Footer />}
+          </Box>
+        </MaxWidth>
       </Theme>
     </>
   )
