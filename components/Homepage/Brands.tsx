@@ -21,7 +21,7 @@ const includedBrands = [
   "fear-of-god",
   "gucci",
   "heron-preston",
-  "jocquemus",
+  "jacquemus",
   "john-elliott",
   "judy-turner",
   "junya-watanabe",
