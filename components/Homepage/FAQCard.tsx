@@ -43,11 +43,11 @@ export const FAQCard: React.FC<{
 
   return (
     <Col md="4" xs="12">
-      <Flex mt={5} flexDirection="column" px={2}>
-        <Sans size="5" color="black50">{`${index + 1}.`}</Sans>
+      <Flex mb={5} flexDirection="column" px={2}>
+        <Sans size="4" color="black50">{`${index + 1}.`}</Sans>
         <Spacer mb={2} />
         <Box ref={container}>
-          <Sans size="5" style={{ maxWidth: "90%" }}>
+          <Sans size="4" style={{ maxWidth: "90%" }}>
             {step.title}
           </Sans>
           <Spacer mb={1} />

@@ -44,7 +44,7 @@ export const MembershipBenefits: React.FC = () => {
     <Grid>
       <Flex px={2} justifyContent="center">
         <Flex flexDirection="column" justifyContent="center">
-          <Sans size="8" style={{ textAlign: "center" }}>
+          <Sans size="9" style={{ textAlign: "center" }}>
             The benefits
           </Sans>
           <Spacer mb={0.5} />

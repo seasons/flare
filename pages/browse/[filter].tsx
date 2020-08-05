@@ -150,7 +150,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
     return (
       <>
-        <Layout fixedNav>
+        <Layout fixedNav footerBottomPadding={["59px", "0px"]}>
           <Media lessThan="md">
             <MobileFilters
               BrandsListComponent={
@@ -176,7 +176,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             />
           </Media>
           <Spacer mb={[0, 5]} />
-          <Grid>
+          <Grid px={2}>
             <Row style={{ minHeight: "calc(100vh - 160px)" }}>
               <Col md="2" xs="12" mx={["2", "0"]}>
                 <Media greaterThanOrEqual="md">
@@ -226,7 +226,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                   )}
                 </Row>
                 <Row>
-                  <Flex align-items="center" mt={2} mb={4} width="100%">
+                  <Flex align-items="center" mt={2} mb={[0, 4]} width="100%">
                     {showPagination && (
                       <Pagination currentPage={currentPage} pageCount={pageCount}>
                         <Paginate
@@ -257,10 +257,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 </Row>
               </Col>
             </Row>
-            <Spacer pb={["59px", 0]} />
           </Grid>
         </Layout>
-        <Spacer pb={["59px", 0]} />
       </>
     )
   })
@@ -325,13 +323,6 @@ const FixedBox = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-`
-
-const ActiveLine = styled.div`
-  width: 16px;
-  height: 2px;
-  margin-right: 8px;
-  background-color: ${color("black100")};
 `
 
 export default BrowsePage

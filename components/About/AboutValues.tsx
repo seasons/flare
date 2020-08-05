@@ -4,19 +4,19 @@ import { Grid, Row, Col } from "../Grid"
 
 const items = [
   {
-    title: "01 Sustainability",
+    title: "Sustainability",
     text: "Reduce consumption, recycle raw textiles, and maximize the number of times our garments are worn.",
   },
   {
-    title: "02 Transparency",
+    title: "Transparency",
     text: "Talk about the issues within our industry, hold ourselves accountable to change, and keep an open dialogue.",
   },
   {
-    title: "03 Perspective",
+    title: "Perspective",
     text: "Include and embrace a wide range of perspectives to better inform product, design, and content.",
   },
   {
-    title: "04 Community",
+    title: "Community",
     text: "Create real relationships with members and bridge the communication gap between fashion and social.",
   },
 ]
@@ -29,16 +29,15 @@ export const AboutValues: React.FC = () => {
           Company values
         </Sans>
       </Box>
-      <Spacer mb={6} />
+      <Spacer mb={3} />
       <Row>
         {items.map((step, index) => (
           <Col lg="3" md="6" xs="12" px={[2, 0]} key={index}>
-            <Spacer mb={[4]} />
             <Box mx={0.5}>
               <Sans size="6" color="black50" style={{ maxWidth: "80%" }}>
                 {step.title}
               </Sans>
-              <Spacer mb={3} />
+              <Spacer mb={2} />
               <Sans size="6" style={{ maxWidth: "80%" }}>
                 {step.text}
               </Sans>

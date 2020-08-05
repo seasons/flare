@@ -9,9 +9,10 @@ interface LayoutProps {
   fixedNav?: boolean
   hideFooter?: boolean
   children?: any
+  footerBottomPadding?: string | string[]
 }
 
-export const Layout = ({ fixedNav = false, children, hideFooter }: LayoutProps) => {
+export const Layout = ({ fixedNav = false, children, hideFooter, footerBottomPadding }: LayoutProps) => {
   return (
     <>
       <LayoutHead />
@@ -20,7 +21,7 @@ export const Layout = ({ fixedNav = false, children, hideFooter }: LayoutProps) 
         <MaxWidth>
           <Box pt={60} pb={60} style={{ flexGrow: 1, position: "relative", width: "100%" }}>
             {children}
-            {!hideFooter && <Footer />}
+            {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
           </Box>
         </MaxWidth>
       </Theme>

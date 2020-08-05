@@ -53,7 +53,9 @@ const Desktop = () => {
         <TextList title={title} subtitle={subtitle} listItems={textItems} />
       </Box>
       <Box style={{ position: "relative", width: "60%", height: "100%" }}>
-        <HomepageCarousel images={desktopImages} />
+        <Flex flexDirection="row" height="100%" width="100%" alignItems="center" style={{ backgroundColor: "red" }}>
+          <HomepageCarousel images={desktopImages} />
+        </Flex>
       </Box>
     </Flex>
   )
@@ -64,7 +66,8 @@ const Mobile = () => {
     <>
       <Box px={2}>
         <Spacer mb={5} />
-        <Sans size="8">{title}</Sans>
+        <Sans size="9">{title}</Sans>
+        <Spacer mb={1} />
         <Sans size="4" color="black50">
           {subtitle}
         </Sans>

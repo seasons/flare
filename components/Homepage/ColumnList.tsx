@@ -7,8 +7,8 @@ type ColumnListItems = { title: string; text: string }[]
 export const ColumnList: React.FC<{ items: ColumnListItems; title?: string }> = ({ items, title }) => {
   return (
     <Grid>
-      <Box px={2} mx={0.5}>
-        {title && <Sans size="8">{title}</Sans>}
+      <Box px={2} pb={2}>
+        {title && <Sans size="6">{title}</Sans>}
       </Box>
       <Row>
         {items.map((step, index) => (

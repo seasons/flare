@@ -105,10 +105,14 @@ const Home = screenTrack(() => ({
       <Layout fixedNav>
         <Nav fixed />
         <Hero />
-
+        <Spacer mb={10} />
+        <Box px="2">
+          <Separator />
+        </Box>
         <Spacer mb={10} />
 
         <ColumnList
+          title="How it works"
           items={[
             {
               title: "Choose your items",
@@ -127,6 +131,11 @@ const Home = screenTrack(() => ({
             },
           ]}
         />
+
+        <Spacer mb={10} />
+        <Box px="2">
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <ProductRail title="Just added tops" products={data?.justAddedTops} />
@@ -156,9 +165,9 @@ const Home = screenTrack(() => ({
           <Separator />
         </Box>
 
-        <Spacer mb={15} />
+        <Spacer mb={12} />
         <ChooseMembership />
-        <Spacer mb={15} />
+        <Spacer mb={12} />
 
         <Box px="2">
           <Separator />
@@ -172,9 +181,9 @@ const Home = screenTrack(() => ({
           <Separator />
         </Box>
 
-        <Spacer mb={15} />
+        <Spacer mb={10} />
         <MembershipBenefits />
-        <Spacer mb={15} />
+        <Spacer mb={10} />
 
         <Box px="2">
           <Separator />
@@ -188,9 +197,9 @@ const Home = screenTrack(() => ({
           <Separator />
         </Box>
 
-        <Spacer mb={15} />
+        <Spacer mb={10} />
         <FAQ />
-        <Spacer mb={15} />
+        <Spacer mb={10} />
 
         <Box px="2">
           <Separator />

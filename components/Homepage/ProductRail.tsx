@@ -23,7 +23,7 @@ export const ProductRail: React.FC<{ products: any; title?: string }> = ({ produ
         <Row>
           {products.map((product, index) => {
             return (
-              <Col md="3" xs="6" key={index}>
+              <Col md="3" xs="6" sm="6" key={index}>
                 <ProductGridItem product={product} />
               </Col>
             )

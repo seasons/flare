@@ -8,8 +8,8 @@ export const ChooseMembership: React.FC = () => {
     <Grid>
       <Flex px={2} justifyContent="center">
         <Flex flexDirection="column" justifyContent="center">
-          <Sans size="8" style={{ textAlign: "center" }}>
-            Membership options
+          <Sans size="9" style={{ textAlign: "center" }}>
+            Choose your plan
           </Sans>
           <Spacer mb={0.5} />
           <Sans size="4" color="black50" style={{ textAlign: "center" }}>

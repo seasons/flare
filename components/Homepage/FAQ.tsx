@@ -40,10 +40,8 @@ export const FAQ: React.FC = () => {
   const [minHeight, setMinHeight] = useState(150)
   return (
     <Grid>
-      <Box px={2} mb={6}>
-        <Sans px={0.5} size={["8", "5"]}>
-          Frequently asked questions
-        </Sans>
+      <Box px={2} mb={[2, 6]}>
+        <Sans size="7">Frequently asked questions</Sans>
       </Box>
       <Row>
         {items.map((step, index) => (

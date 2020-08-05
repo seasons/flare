@@ -19,7 +19,7 @@ export function determineFontSizes(fontType: keyof FontFamily, size: string | st
       (accumulator, current) => {
         return {
           fontSize: [...(accumulator.fontSize ?? []), `${current.fontSize}px`],
-          lineheight: [...(accumulator.lineHeight ?? []), `${current.lineHeight}px`],
+          lineHeight: [...(accumulator.lineHeight ?? []), `${current.lineHeight}px`],
         }
       },
       { fontSize: [], lineHeight: [] }

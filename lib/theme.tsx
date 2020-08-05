@@ -109,10 +109,14 @@ export const themeProps = {
         fontSize: 28,
         lineHeight: 36,
       },
+      "9": {
+        fontSize: 32,
+        lineHeight: 40,
+      },
       /** Equivalent to 42px size / 50px line-height  */
       "10": {
         fontSize: 42,
-        lineHeight: 50,
+        lineHeight: 56,
       },
       "11": {
         fontSize: 48,

@@ -45,10 +45,10 @@ const Desktop = () => {
       style={{ overflow: "hidden", maxWidth: "1200px", margin: "0 auto" }}
       px={2}
     >
-      <Box style={{ position: "relative", width: "60%", overflow: "hidden" }}>
+      <Box py={3} style={{ position: "relative", width: "60%", height: "60%", overflow: "hidden" }}>
         <HomepageCarousel images={images} />
       </Box>
-      <Box width="40%">
+      <Box width="40%" pl={2}>
         <TextList title={title} subtitle={subtitle} listItems={textItems} />
       </Box>
     </Flex>

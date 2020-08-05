@@ -100,7 +100,7 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
       <Row px={1}>
         {groupedBrands.map((group) => {
           return (
-            <Col md="2" xs="6" px={1} key={group.letter}>
+            <Col lg="2" md="3" sm="6" xs="6" px={1} key={group.letter}>
               <Flex mt={2}>
                 <Box>
                   <Sans size="5">{group.letter}</Sans>
