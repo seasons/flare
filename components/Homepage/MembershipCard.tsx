@@ -15,7 +15,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
       price: "125",
       boldText: "1 Swap",
       subText: "3 items per month",
-      text: "A wardrobe refresh to make getting dressed more exciting.",
+      text: "A monthly wardrobe refresh to make weekends more exciting.",
     }
   } else if (type === "allAccess") {
     planInfo = {
@@ -23,7 +23,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
       price: "175",
       boldText: "Unlimited Swaps",
       subText: "3 items at a time",
-      text: "Experience that new-clothes feeling every single week.",
+      text: "Experience that new-clothes feeling every week.",
     }
   }
   return (
@@ -31,7 +31,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
       <Border>
         <Flex>
           <Flex
-            style={{ flex: 2, borderRight: `1px solid ${color("black15")}`, minHeight: "430px" }}
+            style={{ flex: 2, borderRight: `1px solid ${color("black15")}`, minHeight: "480px" }}
             alignItems="center"
             justifyContent="center"
           >
@@ -39,11 +39,11 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
               <Sans size="6">{planInfo.planName}</Sans>
               <Box>
                 <Sans size="6">{planInfo.boldText}</Sans>
-                <Sans size="3" color="black50">
+                <Sans size="4" color="black50">
                   {planInfo.subText}
                 </Sans>
                 <Spacer mb={3} />
-                <Sans size="3" color="black50">
+                <Sans size="4" color="black50">
                   {planInfo.text}
                 </Sans>
               </Box>
@@ -52,7 +52,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
           <Flex style={{ flex: 2 }} flexDirection="column">
             <Flex flexDirection="column" style={{ flex: 1 }} alignItems="center" justifyContent="center">
               <Box>
-                <Sans size="10">${planInfo.price}</Sans>
+                <Sans size="11">${planInfo.price}</Sans>
               </Box>
               <Sans size="4" color="black50">
                 per \ month

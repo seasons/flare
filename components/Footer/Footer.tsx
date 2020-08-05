@@ -6,7 +6,7 @@ import styled from "styled-components"
 export const Footer: React.FC<{ footerBottomPadding?: string | string[] }> = ({ footerBottomPadding }) => {
   return (
     <Wrapper pb={footerBottomPadding ?? 0}>
-      <Flex px={2} py={[1, 0]} style={{ width: "100%" }} justifyContent={["flex-start", "flex-start", "center"]}>
+      <Flex px={[2, 4]} py={[1, 0]} style={{ width: "100%" }} justifyContent={["flex-start", "flex-start", "center"]}>
         <Flex
           flexDirection={["column", "column", "row"]}
           py={2}

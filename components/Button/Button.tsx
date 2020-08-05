@@ -30,7 +30,7 @@ export class Button extends Component<WebButtonProps> {
         }
       case "medium":
         return {
-          height: inline ? "21px" : "46px",
+          height: inline ? "21px" : "48px",
           size: "4",
           px: inline ? 0 : 3,
         }

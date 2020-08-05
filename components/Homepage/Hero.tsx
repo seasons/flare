@@ -14,7 +14,7 @@ const imageURL2 = require("../../public/images/homepage/HeroImage-2.png")
 const imageURL3 = require("../../public/images/homepage/HeroImage-3.png")
 const imageURL4 = require("../../public/images/homepage/HeroImage-4.png")
 
-const aspectRatio = 592 / 740
+const aspectRatio = 0.8
 
 const heroImages: ProgressiveImage[] = [
   { imageUrl: imageURL4, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
@@ -23,66 +23,33 @@ const heroImages: ProgressiveImage[] = [
   { imageUrl: imageURL3, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
 ]
 
-const mainText = "Seasons is a curated,\nmembers-only rental platform for\ndesigner menswear & streetwear."
-const mainTextMobile = "Seasons is a curated, members-only rental platform for designer menswear & streetwear."
-
+const mainText = "A members-only rental platform for designer menswear & streetwear."
+const carouselBlipWidth = 16
 const descriptionText =
   "Exclusively in select cities. Apply for membership to secure your\nplace in line & to be notified when your spot is ready."
 
 const DesktopHero = () => {
   return (
     <MaxWidth>
-      <Flex flexDirection="row" justifyContent="flex-end" width="100%" px={2}>
-        <DesktopTextContent px={2} top="196px">
+      <Flex flexDirection="row" justifyContent="flex-end" width="100%" alignItems="center" px={4}>
+        <DesktopTextContent px={4}>
           <Flex flexDirection="column" justifyContent="center">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Sans size="11" color="black100" style={{ whiteSpace: "pre-line" }}>
+              <Sans size="11" color="black100">
+                This is Seasons.
+              </Sans>
+              <Sans size="11" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "750px" }}>
                 {mainText}
               </Sans>
-              <Spacer mb={3} />
+              <Spacer mb={4} />
               <Flex flexDirection="row">
-                <GetTheAppButton />
-                <Spacer mr={1} />
                 <Link href="/signup">
-                  <Button variant="primaryWhite">Apply for membership</Button>
+                  <Button>Apply for membership</Button>
                 </Link>
-              </Flex>
-              <Spacer mb={1} />
-              <Spacer mb={3} />
-              <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
-                {descriptionText}
-              </Sans>
-            </Flex>
-          </Flex>
-        </DesktopTextContent>
-        <CarouselWrapperDesktop>
-          <HomepageCarousel images={heroImages} />
-        </CarouselWrapperDesktop>
-      </Flex>
-    </MaxWidth>
-  )
-}
-
-const DesktopHeroMd = () => {
-  return (
-    <MaxWidth>
-      <Flex flexDirection="row" justifyContent="flex-end" width="100%" px={2}>
-        <DesktopTextContent px={2} top="100px">
-          <Flex flexDirection="column" justifyContent="center">
-            <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Sans size="10" color="black100" style={{ whiteSpace: "pre-line" }}>
-                {mainTextMobile}
-              </Sans>
-              <Spacer mb={3} />
-              <Flex flexDirection="row">
-                <GetTheAppButton />
                 <Spacer mr={1} />
-                <Link href="/signup">
-                  <Button variant="primaryWhite">Apply for membership</Button>
-                </Link>
+                <GetTheAppButton />
               </Flex>
-              <Spacer mb={1} />
-              <Spacer mb={3} />
+              <Spacer mb={4} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                 {descriptionText}
               </Sans>
@@ -92,6 +59,11 @@ const DesktopHeroMd = () => {
         <CarouselWrapper>
           <HomepageCarousel images={heroImages} />
         </CarouselWrapper>
+        <BottomTextWrapper px={4}>
+          <Sans size="4" color="black50">
+            — Experience over 500+ styles from a carefully curated list of brands.
+          </Sans>
+        </BottomTextWrapper>
       </Flex>
     </MaxWidth>
   )
@@ -104,21 +76,24 @@ const MobileHero = () => {
         <Col xs="12" px={2}>
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer mb={3} />
-              <Sans size="8" color="black100" style={{ whiteSpace: "pre-line" }}>
-                {mainTextMobile}
+              <Spacer mb={4} />
+              <Sans size="8" color="black100">
+                This is Seasons.
               </Sans>
-              <Spacer mb={3} />
-              <GetTheAppButton block />
-              <Spacer mb={1} />
+              <Sans size="8" color="black50" style={{ whiteSpace: "pre-line" }}>
+                {mainText}
+              </Sans>
+              <Spacer mb={4} />
               <Link href="/signup">
-                <Button variant="primaryWhite">Apply for membership</Button>
+                <Button>Apply for membership</Button>
               </Link>
-              <Spacer mb={2} />
+              <Spacer mb={1} />
+              <GetTheAppButton block />
+              <Spacer mb={4} />
               <Sans size="4" color="black50" style={{ maxWidth: "85%" }}>
                 {descriptionText}
               </Sans>
-              <Spacer mb={3} />
+              <Spacer mb={4} />
               <Box style={{ position: "relative", height: "100%", maxHeight: "700px" }}>
                 <HomepageCarousel images={heroImages} />
               </Box>
@@ -133,11 +108,8 @@ const MobileHero = () => {
 export const Hero: React.FC = () => {
   return (
     <>
-      <Media greaterThanOrEqual="lg">
+      <Media greaterThanOrEqual="md">
         <DesktopHero />
-      </Media>
-      <Media between={["md", "lg"]}>
-        <DesktopHeroMd />
       </Media>
       <Media lessThan="md">
         <MobileHero />
@@ -145,6 +117,13 @@ export const Hero: React.FC = () => {
     </>
   )
 }
+
+const BottomTextWrapper = styled(Box)`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 3;
+`
 
 const DesktopTextContent = styled(Box)`
   position: absolute;
@@ -154,14 +133,6 @@ const DesktopTextContent = styled(Box)`
 
 const CarouselWrapper = styled(Box)`
   position: relative;
-  width: 60%;
-  height: 100%;
-  max-width: 55%;
-`
-
-const CarouselWrapperDesktop = styled(Box)`
-  position: relative;
-  width: 60%;
-  height: 100%;
-  max-width: 50%;
+  width: ${624 + carouselBlipWidth}px;
+  height: 780px;
 `
