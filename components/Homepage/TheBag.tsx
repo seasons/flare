@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Sans, Spacer, Flex } from "../"
+import { Box, Sans, Spacer, Flex, MaxWidth } from "../"
 import { TextList } from "./TextList"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
@@ -38,20 +38,16 @@ const images: ProgressiveImage[] = [
 
 const Desktop = () => {
   return (
-    <Flex
-      flexDirection="row"
-      flexWrap="nowrap"
-      justifyContent="space-between"
-      style={{ overflow: "hidden", maxWidth: "1200px", margin: "0 auto" }}
-      px={2}
-    >
-      <Box py={3} style={{ position: "relative", width: "60%", height: "60%", overflow: "hidden" }}>
-        <HomepageCarousel images={images} />
-      </Box>
-      <Box width="40%" pl={2}>
-        <TextList title={title} subtitle={subtitle} listItems={textItems} />
-      </Box>
-    </Flex>
+    <MaxWidth>
+      <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" px={4} width="100%">
+        <Box py={3} style={{ maxWidth: "800px" }}>
+          <HomepageCarousel images={images} />
+        </Box>
+        <Box width="40%" pl={2}>
+          <TextList title={title} subtitle={subtitle} listItems={textItems} />
+        </Box>
+      </Flex>
+    </MaxWidth>
   )
 }
 

@@ -44,10 +44,10 @@ export const MembershipBenefits: React.FC = () => {
     <Grid>
       <Flex px={2} justifyContent="center">
         <Flex flexDirection="column" justifyContent="center">
-          <Sans size="9" style={{ textAlign: "center" }}>
+          <Sans size="11" style={{ textAlign: "center" }}>
             The benefits
           </Sans>
-          <Spacer mb={0.5} />
+          <Spacer mb={2} />
           <Sans size="4" color="black50" style={{ textAlign: "center" }}>
             What’s included in both memberships
           </Sans>
@@ -64,7 +64,7 @@ export const MembershipBenefits: React.FC = () => {
                   {step.title}
                 </Sans>
                 <Spacer mb={1} />
-                <Sans size="3" color="black50" style={{ maxWidth: "80%", textAlign: "center" }}>
+                <Sans size="4" color="black50" style={{ maxWidth: "80%", textAlign: "center" }}>
                   {step.text}
                 </Sans>
               </Flex>

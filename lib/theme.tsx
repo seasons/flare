@@ -87,7 +87,7 @@ export const themeProps = {
       /** Equivalent to 16px size / 26px line-height  */
       "4": {
         fontSize: 16,
-        lineHeight: 26,
+        lineHeight: 28,
       },
       /** Equivalent to 18px size / 30px line-height  */
       "5": {

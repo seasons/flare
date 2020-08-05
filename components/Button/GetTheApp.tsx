@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { Flex, Sans, Spacer } from "../"
+import { Flex, Sans, Spacer, Box } from "../"
 import { color } from "../../helpers"
 import { themeProps } from "../../lib/theme"
 import { AppleSVG } from "../SVGs"
@@ -13,9 +13,15 @@ interface Props {
 export const GetTheAppButton: React.FC<Props> = ({ block }) => {
   return (
     <GetAppWrapper block={block}>
-      <Button width={block ? "100%" : "auto"} onClick={() => window.open("https://szns.co/app", "_blank")}>
+      <Button
+        variant="primaryWhite"
+        width={block ? "100%" : "auto"}
+        onClick={() => window.open("https://szns.co/app", "_blank")}
+      >
         <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
-          <AppleSVG width="17px" height="20px" />
+          <Box top="2px" style={{ position: "relative" }}>
+            <AppleSVG width="17px" height="20px" />
+          </Box>
           <Spacer mr={1} />
           <Sans size="4">Get the app</Sans>
         </Flex>
@@ -29,7 +35,7 @@ const GetAppWrapper = styled("div")<{ block: boolean }>`
   &:hover {
     svg {
       .apple-fill {
-        fill: ${color("black100")};
+        fill: ${color("white100")};
       }
     }
   }
@@ -38,7 +44,7 @@ const GetAppWrapper = styled("div")<{ block: boolean }>`
     &:hover {
       svg {
         .apple-fill {
-          fill: ${color("white100")};
+          fill: ${color("black100")};
         }
       }
     }

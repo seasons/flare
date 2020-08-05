@@ -8,53 +8,64 @@ import { Flex } from "../Flex"
 import { Picture } from "../Picture"
 import { imageResize } from "../../utils/imageResize"
 
-export const HomepageCarousel: React.FC<{ images: ProgressiveImage[] }> = ({ images }) => {
+export const HomepageCarousel: React.FC<{ images: ProgressiveImage[]; pagersRight?: boolean }> = ({
+  images,
+  pagersRight = true,
+}) => {
   const snapList = useRef(null)
 
   const selected = useVisibleElements({ debounce: 10, ref: snapList }, ([element]) => element)
   const goToSnapItem = useScroll({ ref: snapList })
 
-  return (
-    <Wrapper>
-      <SnapList direction="horizontal" width="100%" ref={snapList}>
-        {images.map((image, index) => {
-          const imageSRC = imageResize(image.imageUrl, "large")
-          return (
-            <SnapItem
-              width="100%"
-              margin={{ left: space(1) + "px", right: space(1) + "px" }}
-              snapAlign="center"
-              key={image.imageUrl}
-            >
-              <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
-                <ImageWrapper>
-                  <Picture src={imageSRC} alt={image.alt} />
-                </ImageWrapper>
-              </Box>
-            </SnapItem>
-          )
-        })}
-      </SnapList>
+  const Pagers = () => {
+    return (
       <PagerWrapper>
-        <Flex flexDirection="row" flexWrap="nowrap" justifyContent="flex-end" px={1} py={2}>
+        <Flex flexDirection="column" justifyContent="flex-end" pl={1} height="100%">
           {images.map((_image, index) => {
             return (
-              <Box key={index} pr={0.5}>
+              <Box key={index} pt={0.5}>
                 <Pager active={selected === index} />
               </Box>
             )
           })}
         </Flex>
       </PagerWrapper>
-    </Wrapper>
+    )
+  }
+
+  return (
+    <Flex flexDirection="row" height="100%" width="100%">
+      {!pagersRight && <Pagers />}
+      <Wrapper>
+        <SnapList direction="horizontal" width="100%" ref={snapList}>
+          {images.map((image, index) => {
+            const imageSRC = imageResize(image.imageUrl, "large")
+            return (
+              <SnapItem
+                width="100%"
+                margin={{ left: space(1) + "px", right: space(1) + "px" }}
+                snapAlign="center"
+                key={image.imageUrl}
+              >
+                <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
+                  <ImageWrapper>
+                    <Picture src={imageSRC} alt={image.alt} />
+                  </ImageWrapper>
+                </Box>
+              </SnapItem>
+            )
+          })}
+        </SnapList>
+      </Wrapper>
+      {pagersRight && <Pagers />}
+    </Flex>
   )
 }
 
 const PagerWrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  left: 0;
+  position: relative;
+  height: 100%;
+  width: 16px;
   pointer-events: none;
   z-index: 1;
 `

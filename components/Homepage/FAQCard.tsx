@@ -43,16 +43,16 @@ export const FAQCard: React.FC<{
 
   return (
     <Col md="4" xs="12">
-      <Flex mb={5} flexDirection="column" px={2}>
-        <Sans size="4" color="black50">{`${index + 1}.`}</Sans>
-        <Spacer mb={2} />
+      <Flex mb={5} flexDirection="column" px={[2, 4]}>
+        <Sans size="11" color="black15">{`0${index + 1}`}</Sans>
+        <Spacer mb={1} />
         <Box ref={container}>
           <Sans size="4" style={{ maxWidth: "90%" }}>
             {step.title}
           </Sans>
           <Spacer mb={1} />
           <InjectedSans
-            size="3"
+            size="4"
             color="black50"
             style={{ maxWidth: "90%" }}
             dangerouslySetInnerHTML={{ __html: step.text }}

@@ -176,7 +176,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             />
           </Media>
           <Spacer mb={[0, 5]} />
-          <Grid px={2}>
+          <Grid px={[2, 4]}>
             <Row style={{ minHeight: "calc(100vh - 160px)" }}>
               <Col md="2" xs="12" mx={["2", "0"]}>
                 <Media greaterThanOrEqual="md">

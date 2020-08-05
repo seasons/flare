@@ -25,7 +25,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   return (
     <HeaderContainer fixed={fixed}>
       <MaxWidth>
-        <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={2}>
+        <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={4}>
           <SeasonsLogo />
           <Flex ml="auto" flexDirection="row" alignItems="center">
             {links.map((link) => {
