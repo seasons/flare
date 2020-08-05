@@ -237,9 +237,6 @@ export interface SansProps extends Partial<TextProps> {
 }
 
 /**
- * The Sans typeface is used for presenting objective dense information
- * (such as tables) and intervening communications (such as error feedback).
- *
  * @example
  *
  * <Sans color="black10" size="3t" weight="medium" italic>Hi</Sans>
@@ -249,10 +246,6 @@ export const Sans = createStyledText<SansProps>("sans", (weight, italic) => {
 })
 
 /**
- * The Display typeface has limited utility and is in the process of being
- * phased out in most places. Ask your friendly neighborhood design team member
- * if you're unsure if it should be used.
- *
  * @example
  *
  * <Display color="black10" size="3t">Hi</Display>

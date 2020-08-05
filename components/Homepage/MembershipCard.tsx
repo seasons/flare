@@ -27,7 +27,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
     }
   }
   return (
-    <Container px={0.5}>
+    <Container>
       <Border>
         <Flex>
           <Flex

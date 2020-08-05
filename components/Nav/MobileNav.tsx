@@ -7,11 +7,12 @@ import { Burger } from "./Burger"
 import { NavProps } from "./Types"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { BoxProps, Box } from "../Box"
+import { MaxWidth } from "../"
 import { useState } from "react"
 import { useSpring, animated } from "react-spring"
 import { useTracking, Schema } from "../../utils/analytics"
 
-const MENU_HEIGHT = "60px"
+const MENU_HEIGHT = "59px"
 
 export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
   const [isOpen, toggleOpen] = useState(false)
@@ -19,19 +20,21 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
 
   return (
     <HeaderContainer fixed={fixed}>
-      <Header>
-        <SeasonsLogo />
-        <Burger
-          onClick={() => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames.BurgerClicked,
-              actionType: Schema.ActionTypes.Tap,
-            })
-            toggleOpen(!isOpen)
-          }}
-        />
-      </Header>
-      <Menu items={links} open={isOpen} />
+      <MaxWidth>
+        <Header pl={2}>
+          <SeasonsLogo />
+          <Burger
+            onClick={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.BurgerClicked,
+                actionType: Schema.ActionTypes.Tap,
+              })
+              toggleOpen(!isOpen)
+            }}
+          />
+        </Header>
+        <Menu items={links} open={isOpen} />
+      </MaxWidth>
     </HeaderContainer>
   )
 }
@@ -53,7 +56,7 @@ const Menu = ({ items, open }) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper px={2}>
       <AnimatedContainer style={openAnimation}>
         {items.map((link) => {
           if (link.external) {
@@ -65,8 +68,8 @@ const Menu = ({ items, open }) => {
                   style={{ cursor: "pointer" }}
                   active={!!router.pathname.match(link.match)}
                 >
-                  <Box p={2}>
-                    <Sans size="3" p={2} color="black">
+                  <Box py={2}>
+                    <Sans size="3" py={2} color="black">
                       {link.text}
                     </Sans>
                   </Box>
@@ -83,8 +86,8 @@ const Menu = ({ items, open }) => {
                   active={!!router.pathname.match(link.match)}
                   onClick={() => trackClick(link.url)}
                 >
-                  <Box p={2}>
-                    <Sans size="3" p={2} color="black">
+                  <Box py={2}>
+                    <Sans size="3" py={2} color="black">
                       {link.text}
                     </Sans>
                   </Box>
@@ -98,7 +101,7 @@ const Menu = ({ items, open }) => {
   )
 }
 
-const Wrapper = styled("div")`
+const Wrapper = styled(Box)`
   position: absolute;
   height: ${MENU_HEIGHT};
   top: 0;
@@ -122,23 +125,25 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   z-index: 100;
   width: 100%;
   top: 0;
-  background: ${color("white100")};
+  left: 0;
+  background-color: ${color("white100")};
 `
 
 const MenuContainer = styled.div`
   overflow: hidden;
   padding-top: ${MENU_HEIGHT};
   width: 100%;
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2); */
   transform: translateY(-100%);
 `
 
-const Header = styled.div`
+const Header = styled(Box)`
   height: 59px;
   z-index: 101;
+  width: 100%;
   position: relative;
   background-color: ${color("white100")};
-  border-bottom: 1px solid ${color("black10")};
+  /* border-bottom: 1px solid ${color("black10")}; */
   display: flex;
   flex-direction: row;
   align-items: center;

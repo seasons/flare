@@ -42,18 +42,12 @@ export const FAQCard: React.FC<{
   }, [])
 
   return (
-    <Col md="4" xs="12" px={["2", "0"]}>
-      <Flex
-        mt={2}
-        flexDirection="column"
-        style={{ backgroundColor: color("black04"), borderRadius: "8px", minHeight: minHeight + 155 + "px" }}
-        p={3}
-        m={0.5}
-      >
-        <Sans size="5" color="black50">{`0${index + 1}.`}</Sans>
-        <Spacer mb={6} />
+    <Col md="4" xs="12">
+      <Flex mb={5} flexDirection="column" px={2}>
+        <Sans size="4" color="black50">{`${index + 1}.`}</Sans>
+        <Spacer mb={2} />
         <Box ref={container}>
-          <Sans size="5" style={{ maxWidth: "90%" }}>
+          <Sans size="4" style={{ maxWidth: "90%" }}>
             {step.title}
           </Sans>
           <Spacer mb={1} />

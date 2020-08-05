@@ -7,10 +7,11 @@ const includedBrands = [
   "acne-studios",
   "aime-leon-dore",
   "amiri",
+  "auralee",
   "brain-dead",
-  "barbour",
   "bode",
   "burberry",
+  "casablanca",
   "cav-empt",
   "comme-des-garcons",
   "cactus-plant-flea-market",
@@ -20,30 +21,30 @@ const includedBrands = [
   "fear-of-god",
   "gucci",
   "heron-preston",
-  "jil-sander",
+  "jocquemus",
   "john-elliott",
+  "judy-turner",
   "junya-watanabe",
-  "kanye-west",
-  "kenzo",
+  "keenkee",
   "landlord",
   "mammut",
   "margaret-howell",
   "martine-rose",
   "moncler",
-  "nike",
+  "nanushka",
   "noah",
   "north-face",
   "off-white",
   "our-legacy",
   "palm-angels",
+  "phipps",
   "prada",
   "rhude",
   "sacai",
-  "saturdays-nyc",
   "stone-island",
   "stussy",
+  "whales-bonner",
   "woolrich",
-  "y-3",
   "yeezy",
 ]
 
@@ -93,14 +94,14 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
 
   return (
     <Grid>
-      <Box px={[2, 0]} mx={0.5}>
+      <Box px={2}>
         <Sans size="6">Brand index</Sans>
       </Box>
-      <Row>
+      <Row px={1}>
         {groupedBrands.map((group) => {
           return (
-            <Col md="2" xs="6" px={[2, 0.5]} key={group.letter}>
-              <Flex mt={2} mx={0.5}>
+            <Col lg="2" md="3" sm="6" xs="6" px={1} key={group.letter}>
+              <Flex mt={2}>
                 <Box>
                   <Sans size="5">{group.letter}</Sans>
                   <Spacer mb={1} />
