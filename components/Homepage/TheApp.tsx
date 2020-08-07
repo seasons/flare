@@ -4,6 +4,7 @@ import { TextList } from "./TextList"
 import { Media } from "../Responsive"
 import { HomepageCarousel } from "./HomepageCarousel"
 import { ProgressiveImage } from "../Image"
+import { Grid, Col, Row } from "../Grid"
 
 const title = "The app"
 const subtitle = "After receiving an invite, you’ll get a link to download the Seasons app."
@@ -43,15 +44,45 @@ const mobileImages: ProgressiveImage[] = [
 const Desktop = () => {
   return (
     <MaxWidth>
-      <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" px={4} width="100%">
-        <Box width="40%">
+      <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" px={[2, 2, 2, 5, 5]} width="100%">
+        <Flex flexDirection="row" justifyContent="center" width="100%" pr={2}>
           <TextList title={title} subtitle={subtitle} listItems={textItems} />
-        </Box>
-        <Flex flexDirection="row" height="100%" width="100%" alignItems="center" style={{ maxWidth: "800px" }}>
-          <HomepageCarousel images={desktopImages} />
         </Flex>
+        <HomepageCarousel images={desktopImages} maxWidth="750px" />
       </Flex>
     </MaxWidth>
+  )
+}
+
+const Tablet = () => {
+  return (
+    <Grid px={[2, 2, 2, 5, 5]}>
+      <Box pb={4}>
+        {title && <Sans size="11">{title}</Sans>}
+        <Spacer mb={1} />
+        {subtitle && (
+          <Sans size="6" color="black50">
+            {subtitle}
+          </Sans>
+        )}
+      </Box>
+      <Row>
+        {textItems.map((step, index) => (
+          <Col md="4" key={index}>
+            <Sans size="6">{step.title}</Sans>
+            <Spacer mb={1} />
+            <Sans size="4" color="black50" style={{ maxWidth: "80%" }}>
+              {step.text}
+            </Sans>
+          </Col>
+        ))}
+      </Row>
+
+      <Row md={12}>
+        <Spacer mb={5} />
+        <HomepageCarousel images={desktopImages} />
+      </Row>
+    </Grid>
   )
 }
 
@@ -60,8 +91,7 @@ const Mobile = () => {
     <>
       <Box px={2}>
         <Spacer mb={5} />
-        <Sans size="9">{title}</Sans>
-        <Spacer mb={1} />
+        <Sans size="11">{title}</Sans>
         <Sans size="4" color="black50">
           {subtitle}
         </Sans>
@@ -87,8 +117,11 @@ const Mobile = () => {
 export const TheApp: React.FC = () => {
   return (
     <>
-      <Media greaterThanOrEqual="md">
+      <Media greaterThanOrEqual="lg">
         <Desktop />
+      </Media>
+      <Media between={["md", "lg"]}>
+        <Tablet />
       </Media>
       <Media lessThan="md">
         <Mobile />

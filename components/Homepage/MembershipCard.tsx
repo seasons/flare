@@ -6,7 +6,7 @@ import { Link } from "../Link"
 
 type MembershipType = "essential" | "allAccess"
 
-export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => {
+export const MembershipCard: React.FC<{ type: MembershipType; maxWidth?: string }> = ({ type, maxWidth }) => {
   let planInfo = null
 
   if (type === "essential") {
@@ -43,7 +43,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
                   {planInfo.subText}
                 </Sans>
                 <Spacer mb={3} />
-                <Sans size="4" color="black50">
+                <Sans size="4" color="black50" style={{ maxWidth: maxWidth ?? "auto" }}>
                   {planInfo.text}
                 </Sans>
               </Box>

@@ -3,15 +3,10 @@ import { fontFamily } from "../components/Typography/Typography"
 import { ThemeProvider } from "styled-components"
 
 export const breakpoints = {
-  /** Above 1192 */
   xl: 1200,
-  /** Between 1024 and  1191 */
   lg: 992,
-  /** Between 900 and 1023 */
-  md: 768,
-  /** Between 768 and  899 */
+  md: 832,
   sm: 576,
-  /** Below 767 */
   xs: 575,
 }
 

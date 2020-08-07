@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 import styled from "styled-components"
 import { color } from "../../helpers/color"
 import { Flex } from "../Flex"
-import { Grid } from "../Grid"
 import { NavProps } from "./Types"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavItem } from "./NavItem"
@@ -25,7 +24,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   return (
     <HeaderContainer fixed={fixed}>
       <MaxWidth>
-        <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={4}>
+        <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
           <SeasonsLogo />
           <Flex ml="auto" flexDirection="row" alignItems="center">
             {links.map((link) => {

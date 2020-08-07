@@ -106,7 +106,7 @@ const Home = screenTrack(() => ({
         <Nav fixed />
         <Hero />
         <Spacer mb={10} />
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
         <Spacer mb={10} />
@@ -133,7 +133,7 @@ const Home = screenTrack(() => ({
         />
 
         <Spacer mb={10} />
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
 
@@ -141,7 +141,7 @@ const Home = screenTrack(() => ({
         <ProductRail title="Just added tops" products={data?.justAddedTops} />
         <Spacer mb={8} />
 
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
 
@@ -151,7 +151,7 @@ const Home = screenTrack(() => ({
 
         {!!data?.justAddedBottoms?.length && (
           <>
-            <Box px={[2, 4]}>
+            <Box px={[2, 2, 2, 5, 5]}>
               <Separator />
             </Box>
 
@@ -161,7 +161,7 @@ const Home = screenTrack(() => ({
           </>
         )}
 
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
 
@@ -169,7 +169,7 @@ const Home = screenTrack(() => ({
         <ChooseMembership />
         <Spacer mb={12} />
 
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
 
@@ -177,7 +177,7 @@ const Home = screenTrack(() => ({
         <TheApp />
         <Spacer mb={10} />
 
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
 
@@ -185,7 +185,7 @@ const Home = screenTrack(() => ({
         <MembershipBenefits />
         <Spacer mb={10} />
 
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
 
@@ -193,7 +193,7 @@ const Home = screenTrack(() => ({
         <TheBag />
         <Spacer mb={10} />
 
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
 
@@ -201,7 +201,7 @@ const Home = screenTrack(() => ({
         <FAQ />
         <Spacer mb={10} />
 
-        <Box px={[2, 4]}>
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
 
