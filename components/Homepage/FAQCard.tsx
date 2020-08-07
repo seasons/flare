@@ -43,7 +43,7 @@ export const FAQCard: React.FC<{
 
   return (
     <Col md="4" xs="12">
-      <Flex mb={5} flexDirection="column" px={[2, 4]}>
+      <Flex mb={5} flexDirection="column" px={[2, 2, 5]}>
         <Sans size="11" color="black15">{`0${index + 1}`}</Sans>
         <Spacer mb={1} />
         <Box ref={container}>

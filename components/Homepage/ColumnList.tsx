@@ -7,12 +7,12 @@ type ColumnListItems = { title: string; text: string }[]
 export const ColumnList: React.FC<{ items: ColumnListItems; title?: string }> = ({ items, title }) => {
   return (
     <Grid>
-      <Box px={[2, 4]} pb={4}>
+      <Box px={[2, 2, 2, 5, 5]} pb={4}>
         {title && <Sans size="11">{title}</Sans>}
       </Box>
-      <Row>
+      <Row px={[2, 2, 2, 5, 5]}>
         {items.map((step, index) => (
-          <Col md="4" xs="12" px={[2, 4]} key={index}>
+          <Col md="4" xs="12" key={index}>
             {index > 0 && <Spacer mb={[3, 0]} />}
             <Sans size="11" color="black15">{`0${index + 1}`}</Sans>
             <Spacer mb={2} />

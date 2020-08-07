@@ -43,7 +43,7 @@ export const MembershipCard: React.FC<{ type: MembershipType }> = ({ type }) => 
                   {planInfo.subText}
                 </Sans>
                 <Spacer mb={3} />
-                <Sans size="4" color="black50">
+                <Sans size="4" color="black50" style={{ maxWidth: "75%" }}>
                   {planInfo.text}
                 </Sans>
               </Box>

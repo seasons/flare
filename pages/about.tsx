@@ -9,7 +9,7 @@ const about = screenTrack(() => ({
 }))(() => (
   <Layout fixedNav>
     <Nav fixed />
-    <Box px={2}>
+    <Box px={[2, 2, 2, 5, 5]}>
       <AboutHero />
       <Spacer mb={10} />
       <AboutValues />

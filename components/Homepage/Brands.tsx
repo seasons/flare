@@ -94,11 +94,11 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
 
   return (
     <Grid>
-      <Box px={[2, 4]}>
+      <Box px={[2, 2, 5]}>
         <Sans size="11">Brand index</Sans>
       </Box>
-      <Spacer mb={[0, 2]} />
-      <Row px={[1, 2]}>
+      <Spacer mb={[0, 3]} />
+      <Row px={[1, 3]}>
         {groupedBrands.map((group) => {
           return (
             <Col lg="2" md="3" sm="6" xs="6" px={[1, 2]} key={group.letter}>
