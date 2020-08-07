@@ -97,7 +97,7 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
       <Box px={[2, 2, 5]}>
         <Sans size="11">Brand index</Sans>
       </Box>
-      <Spacer mb={[0, 3]} />
+      <Spacer mb={3} />
       <Row px={[1, 3]}>
         {groupedBrands.map((group) => {
           return (

@@ -91,8 +91,7 @@ const Mobile = () => {
     <>
       <Box px={2}>
         <Spacer mb={5} />
-        <Sans size="9">{title}</Sans>
-        <Spacer mb={1} />
+        <Sans size="11">{title}</Sans>
         <Sans size="4" color="black50">
           {subtitle}
         </Sans>

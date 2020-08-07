@@ -119,11 +119,11 @@ const MobileHero = () => {
         <Col xs="12" px={2}>
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer mb={4} />
-              <Sans size="8" color="black100">
+              <Spacer mb={10} />
+              <Sans size="9" color="black100">
                 This is Seasons.
               </Sans>
-              <Sans size="8" color="black50" style={{ whiteSpace: "pre-line" }}>
+              <Sans size="9" color="black50" style={{ whiteSpace: "pre-line" }}>
                 {mainText}
               </Sans>
               <Spacer mb={4} />
@@ -133,7 +133,7 @@ const MobileHero = () => {
               <Spacer mb={1} />
               <GetTheAppButton block />
               <Spacer mb={4} />
-              <Sans size="4" color="black50" style={{ maxWidth: "85%" }}>
+              <Sans size="4" color="black50">
                 {descriptionText}
               </Sans>
               <Spacer mb={4} />
