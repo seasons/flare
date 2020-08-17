@@ -41,7 +41,7 @@ const Desktop = () => {
   return (
     <MaxWidth>
       <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" px={5} width="100%">
-        <HomepageCarousel images={images} maxWidth="750px" />
+        <HomepageCarousel images={images} maxWidth="50%" />
         <Flex justifyContent="center" width="100%" px={5}>
           <TextList title={title} subtitle={subtitle} listItems={textItems} />
         </Flex>

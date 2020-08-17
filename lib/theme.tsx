@@ -156,10 +156,10 @@ export const themeProps = {
       padding: 0,
       maxWidth: {
         xl: 1800,
-        lg: 960,
-        md: 720,
-        sm: 540,
-        xs: 540,
+        lg: 1800,
+        md: 1800,
+        sm: 1800,
+        xs: 1800,
       },
     },
     row: {

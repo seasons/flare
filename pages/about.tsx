@@ -9,14 +9,14 @@ const about = screenTrack(() => ({
 }))(() => (
   <Layout fixedNav>
     <Nav fixed />
+    <AboutHero />
+    <Spacer mb={15} />
+    <AboutValues />
     <Box px={[2, 2, 2, 5, 5]}>
-      <AboutHero />
-      <Spacer mb={10} />
-      <AboutValues />
       <Separator />
-      <AboutWhoWeAre />
-      <AboutFooter />
     </Box>
+    <AboutWhoWeAre />
+    <AboutFooter />
   </Layout>
 ))
 
