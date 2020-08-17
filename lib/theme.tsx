@@ -3,15 +3,10 @@ import { fontFamily } from "../components/Typography/Typography"
 import { ThemeProvider } from "styled-components"
 
 export const breakpoints = {
-  /** Above 1192 */
   xl: 1200,
-  /** Between 1024 and  1191 */
   lg: 992,
-  /** Between 900 and 1023 */
-  md: 768,
-  /** Between 768 and  899 */
+  md: 832,
   sm: 576,
-  /** Below 767 */
   xs: 575,
 }
 
@@ -84,30 +79,15 @@ export const themeProps = {
         fontSize: 14,
         lineHeight: 24,
       },
-      /** Equivalent to 14px size / 20px line-height  */
-      "3t": {
-        fontSize: 14,
-        lineHeight: 20,
-      },
       /** Equivalent to 16px size / 26px line-height  */
       "4": {
         fontSize: 16,
-        lineHeight: 26,
-      },
-      /** Equivalent to 16px size / 22px line-height  */
-      "4t": {
-        fontSize: 16,
-        lineHeight: 22,
+        lineHeight: 28,
       },
       /** Equivalent to 18px size / 30px line-height  */
       "5": {
         fontSize: 18,
         lineHeight: 30,
-      },
-      /** Equivalent to 18px size / 26px line-height  */
-      "5t": {
-        fontSize: 18,
-        lineHeight: 26,
       },
       /** Equivalent to 22px size / 30px line-height  */
       "6": {
@@ -124,10 +104,18 @@ export const themeProps = {
         fontSize: 28,
         lineHeight: 36,
       },
+      "9": {
+        fontSize: 32,
+        lineHeight: 40,
+      },
       /** Equivalent to 42px size / 50px line-height  */
       "10": {
         fontSize: 42,
-        lineHeight: 50,
+        lineHeight: 56,
+      },
+      "11": {
+        fontSize: 48,
+        lineHeight: 56,
       },
       /** Equivalent to 60px size / 66px line-height  */
       "12": {
@@ -167,11 +155,11 @@ export const themeProps = {
     container: {
       padding: 0,
       maxWidth: {
-        xl: 1200,
-        lg: 960,
-        md: 720,
-        sm: 540,
-        xs: 540,
+        xl: 1800,
+        lg: 1800,
+        md: 1800,
+        sm: 1800,
+        xs: 1800,
       },
     },
     row: {

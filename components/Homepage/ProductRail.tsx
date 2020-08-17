@@ -10,7 +10,7 @@ export const ProductRail: React.FC<{ products: any; title?: string }> = ({ produ
   }
   return (
     <Grid>
-      <Flex flexDirection="row" justifyContent={!!title ? "space-between" : "flex-end"} px={["2", "0"]} mx={0.5}>
+      <Flex flexDirection="row" justifyContent={!!title ? "space-between" : "flex-end"} px={[2, 2, 2, 5, 5]}>
         {title && <Sans size={["5", "6"]}>{title}</Sans>}
         <Link href="/browse">
           <Sans size={["5", "6"]} color="black50">
@@ -19,11 +19,11 @@ export const ProductRail: React.FC<{ products: any; title?: string }> = ({ produ
         </Link>
       </Flex>
       <Spacer mb={2} />
-      <Box px={[2, 0]}>
+      <Box px={[2, 2, 2, 5, 5]}>
         <Row>
           {products.map((product, index) => {
             return (
-              <Col md="3" xs="6" key={index}>
+              <Col md="3" xs="6" sm="6" key={index}>
                 <ProductGridItem product={product} />
               </Col>
             )

@@ -21,7 +21,8 @@ export const TextList: React.FC<{ listItems: ListItem[]; title: string; subtitle
         alignItems="center"
       >
         <Box style={{ maxWidth: "320px" }}>
-          <Sans size="8">{title}</Sans>
+          <Sans size="11">{title}</Sans>
+          <Spacer mb={2} />
           <Sans size="4" color="black50">
             {subtitle}
           </Sans>

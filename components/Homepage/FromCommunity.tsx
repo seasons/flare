@@ -29,32 +29,22 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
   }
   return (
     <Grid>
-      <Box px={[2, 0]}>
-        <Sans size={["5", "6"]} px={0.5}>
-          Latest from our community
-        </Sans>
+      <Box px={[2, 2, 2, 5, 5]}>
+        <Sans size={["5", "6"]}>Latest from our community</Sans>
       </Box>
       <Spacer mb={2} />
       <Media greaterThanOrEqual="md">
-        <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" px={0.5}>
-          {blogPosts.map((post, index) => {
-            let pr = 1
-            let pl = 1
-            if (index === 0) {
-              pl = 0
-            } else if (index === blogPosts.length - 1) {
-              pr = 0
-            } else {
-              pr = 0.5
-              pl = 0.5
-            }
-            return (
-              <Flex key={"desktop" + index} pr={pr} pl={pl} style={{ flex: 3 }}>
-                <BlogPost post={post} />
-              </Flex>
-            )
-          })}
-        </Flex>
+        <Box px={[0, 0, 0, 3, 3]}>
+          <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
+            {blogPosts.map((post, index) => {
+              return (
+                <Flex key={"desktop" + index} px={2} style={{ flex: 3 }}>
+                  <BlogPost post={post} />
+                </Flex>
+              )
+            })}
+          </Flex>
+        </Box>
       </Media>
       <Media lessThan="md">
         {blogPosts.map((post, index) => {

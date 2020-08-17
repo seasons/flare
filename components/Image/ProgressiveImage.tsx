@@ -10,7 +10,6 @@ export interface ProgressiveImage {
   imageUrl: string
   aspectRatio?: number
   alt: string
-  hideBackground?: boolean
 }
 
 export const ProgressiveImage: React.FC<ProgressiveImage> = ({
@@ -18,7 +17,6 @@ export const ProgressiveImage: React.FC<ProgressiveImage> = ({
   size,
   aspectRatio = IMAGE_ASPECT_RATIO,
   alt,
-  hideBackground = false,
 }) => {
   const [loaded, setLoaded] = useState(false)
   const fullImageRef = useRef(null)
@@ -33,21 +31,20 @@ export const ProgressiveImage: React.FC<ProgressiveImage> = ({
   const fullImage = imageResize(imageUrl, size)
 
   return (
-    <ImageWrapper aspectRatio={aspectRatio} hideBackground={hideBackground}>
+    <ImageWrapper aspectRatio={aspectRatio}>
       <FullImageWrapper loaded={loaded}>
         <Picture
           src={fullImage}
           key={fullImage}
           alt={alt}
           imgRef={fullImageRef}
-          hideBackground={hideBackground}
           onLoad={() => {
             setLoaded(true)
           }}
         />
       </FullImageWrapper>
       <InitialImageWrapper>
-        <Picture src={initialImage} alt={alt} hideBackground={hideBackground} />
+        <Picture src={initialImage} alt={alt} />
       </InitialImageWrapper>
     </ImageWrapper>
   )
@@ -72,7 +69,7 @@ const InitialImageWrapper = styled.div`
   }
 `
 
-const ImageWrapper = styled(Box)<{ aspectRatio: number; hideBackground: boolean }>`
+const ImageWrapper = styled(Box)<{ aspectRatio: number }>`
   height: 0;
   padding-bottom: calc(100% * ${(p) => p.aspectRatio});
   width: 100%;

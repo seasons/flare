@@ -1,9 +1,10 @@
 import React from "react"
-import { Box, Sans, Spacer, Flex } from "../"
+import { Box, Sans, Spacer, Flex, MaxWidth } from "../"
 import { TextList } from "./TextList"
 import { Media } from "../Responsive"
 import { ProgressiveImage } from "../Image"
 import { HomepageCarousel } from "./HomepageCarousel"
+import { Grid, Row, Col } from "../Grid"
 
 const title = "The Bag"
 const subtitle = "Each member receives their own custom Seasons shipping bag with every order."
@@ -38,19 +39,46 @@ const images: ProgressiveImage[] = [
 
 const Desktop = () => {
   return (
-    <Flex
-      flexDirection="row"
-      flexWrap="nowrap"
-      justifyContent="space-between"
-      style={{ overflow: "hidden", maxWidth: "1200px", margin: "0 auto" }}
-    >
-      <Box style={{ position: "relative", width: "60%", overflow: "hidden" }}>
+    <MaxWidth>
+      <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" px={5} width="100%">
+        <HomepageCarousel images={images} maxWidth="50%" />
+        <Flex justifyContent="center" width="100%" px={5}>
+          <TextList title={title} subtitle={subtitle} listItems={textItems} />
+        </Flex>
+      </Flex>
+    </MaxWidth>
+  )
+}
+
+const Tablet = () => {
+  return (
+    <Grid px={[2, 2, 2, 5, 5]}>
+      <Box pb={4}>
+        {title && <Sans size="11">{title}</Sans>}
+        <Spacer mb={1} />
+        {subtitle && (
+          <Sans size="6" color="black50">
+            {subtitle}
+          </Sans>
+        )}
+      </Box>
+      <Row>
+        {textItems.map((step, index) => (
+          <Col md="4" key={index}>
+            <Sans size="6">{step.title}</Sans>
+            <Spacer mb={1} />
+            <Sans size="4" color="black50" style={{ maxWidth: "80%" }}>
+              {step.text}
+            </Sans>
+          </Col>
+        ))}
+      </Row>
+
+      <Row md={12}>
+        <Spacer mb={5} />
         <HomepageCarousel images={images} />
-      </Box>
-      <Box width="40%">
-        <TextList title={title} subtitle={subtitle} listItems={textItems} />
-      </Box>
-    </Flex>
+      </Row>
+    </Grid>
   )
 }
 
@@ -59,7 +87,7 @@ const Mobile = () => {
     <>
       <Box px={2}>
         <Spacer mb={5} />
-        <Sans size="8">{title}</Sans>
+        <Sans size="11">{title}</Sans>
         <Sans size="4" color="black50">
           {subtitle}
         </Sans>
@@ -83,8 +111,11 @@ const Mobile = () => {
 export const TheBag: React.FC = () => {
   return (
     <>
-      <Media greaterThanOrEqual="md">
+      <Media greaterThanOrEqual="lg">
         <Desktop />
+      </Media>
+      <Media between={["md", "lg"]}>
+        <Tablet />
       </Media>
       <Media lessThan="md">
         <Mobile />

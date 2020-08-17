@@ -3,11 +3,11 @@ import { useRouter } from "next/router"
 import styled from "styled-components"
 import { color } from "../../helpers/color"
 import { Flex } from "../Flex"
-import { Grid } from "../Grid"
 import { NavProps } from "./Types"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavItem } from "./NavItem"
 import { useTracking, Schema } from "../../utils/analytics"
+import { MaxWidth } from ".."
 
 export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const router = useRouter()
@@ -23,8 +23,8 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
 
   return (
     <HeaderContainer fixed={fixed}>
-      <Grid>
-        <Flex ml="auto" flexDirection="row" alignItems="center">
+      <MaxWidth>
+        <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
           <SeasonsLogo />
           <Flex ml="auto" flexDirection="row" alignItems="center">
             {links.map((link) => {
@@ -55,21 +55,21 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
             })}
           </Flex>
         </Flex>
-      </Grid>
+      </MaxWidth>
     </HeaderContainer>
   )
 }
 
 const HeaderContainer = styled.div<{ fixed: boolean }>`
   top: 0;
+  left: 0;
+  background-color: ${color("white100")};
   position: ${(p) => (p.fixed ? "fixed" : "relative")};
-  border-bottom: 1px solid ${color("black10")};
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
   z-index: 100;
   width: 100%;
-  background: ${color("white100")};
   height: 58.5px;
   align-items: center;
 `

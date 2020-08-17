@@ -8,7 +8,7 @@ export const TermsOfService = screenTrack(() => ({
   path: "/terms-of-service",
 }))(() => (
   <Layout fixedNav>
-    <Grid>
+    <Grid px={[2, 2, 2, 5, 5]}>
       <div className="termsofservicetopsection">
         <div className="privacytopcontainer">
           <div className="privacyheadertitle">Terms of Service</div>

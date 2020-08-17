@@ -46,7 +46,7 @@ const Product = withData(
                     ) : (
                       product?.images.map((image) => {
                         return (
-                          <Box px={2} mb={0.5} key={image.url}>
+                          <Box px={[2, 2, 2, 5, 5]} mb={0.5} key={image.url}>
                             <ProgressiveImage imageUrl={image.url} size="large" alt="product image" />
                           </Box>
                         )

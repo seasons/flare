@@ -8,17 +8,15 @@ import {
   FAQ,
   Brands,
   MembershipBenefits,
-  AsSeenIn,
   TheBag,
   TheApp,
   FromCommunity,
 } from "../../components/Homepage"
-import { Spacer, Layout, Separator } from "../../components"
+import { Spacer, Layout, Separator, Box } from "../../components"
 import withData from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { screenTrack, Schema } from "../../utils/analytics"
-import { Media } from "../../components/Responsive"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
@@ -107,22 +105,19 @@ const Home = screenTrack(() => ({
       <Layout fixedNav>
         <Nav fixed />
         <Hero />
-        <Separator />
-
-        <Spacer mb={5} />
-        <AsSeenIn />
-        <Media greaterThanOrEqual="md">
-          <Spacer mb={5} />
+        <Spacer mb={10} />
+        <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
-        </Media>
-        <Spacer mb={6} />
+        </Box>
+        <Spacer mb={10} />
 
         <ColumnList
+          title="How membership works"
           items={[
             {
-              title: "Choose your items",
+              title: "You choose your items",
               text:
-                "Browse from over 40 different brands and reserve up to 3 pieces per order. Not sure what to get? We’ll recommend some.",
+                "Browse from a curated list of brands and reserve up to 3 pieces at a time. Save your favorites for later & build a queue.",
             },
             {
               title: "Wear, swap & repeat",
@@ -132,16 +127,23 @@ const Home = screenTrack(() => ({
             {
               title: "Returns & dry cleaning’s on us",
               text:
-                "We handle the shipping back and forth, restoring and cleaning each piece for you. Oh, we cover rental insurance too.",
+                "We handle the shipping back and forth, restoring and cleaning each piece for you. We cover rental insurance too.",
             },
           ]}
         />
 
         <Spacer mb={10} />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
+
+        <Spacer mb={10} />
         <ProductRail title="Just added tops" products={data?.justAddedTops} />
         <Spacer mb={8} />
 
-        <Separator />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <FromCommunity blogPosts={data?.blogPosts} />
@@ -149,7 +151,9 @@ const Home = screenTrack(() => ({
 
         {!!data?.justAddedBottoms?.length && (
           <>
-            <Separator />
+            <Box px={[2, 2, 2, 5, 5]}>
+              <Separator />
+            </Box>
 
             <Spacer mb={10} />
             <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
@@ -157,37 +161,49 @@ const Home = screenTrack(() => ({
           </>
         )}
 
-        <Separator />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
 
-        <Spacer mb={15} />
+        <Spacer mb={12} />
         <ChooseMembership />
-        <Spacer mb={15} />
+        <Spacer mb={12} />
 
-        <Separator />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <TheApp />
         <Spacer mb={10} />
 
-        <Separator />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
 
-        <Spacer mb={15} />
+        <Spacer mb={10} />
         <MembershipBenefits />
-        <Spacer mb={15} />
+        <Spacer mb={10} />
 
-        <Separator />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <TheBag />
         <Spacer mb={10} />
 
-        <Separator />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
 
-        <Spacer mb={15} />
+        <Spacer mb={10} />
         <FAQ />
-        <Spacer mb={15} />
+        <Spacer mb={10} />
 
-        <Separator />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
 
         <Spacer mb={10} />
         <Brands brands={data?.brands} />
