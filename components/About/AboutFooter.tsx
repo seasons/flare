@@ -61,12 +61,12 @@ const ContactContent = () => {
 
 export const AboutFooter: React.FC = () => {
   return (
-    <>
+    <Box px={[2, 2, 2, 5, 5]}>
       <Separator />
       <Grid>
         <Row>
           <Col md="6" xs="12">
-            <Box py={[10, 5]} px={[2, 0]} width="100%">
+            <Box py={[10, 5]} width="100%">
               <Sans size="6">Who we’re backed by</Sans>
               <Spacer mb={5} />
               {backers.map((backer) => (
@@ -94,6 +94,6 @@ export const AboutFooter: React.FC = () => {
           </Col>
         </Row>
       </Grid>
-    </>
+    </Box>
   )
 }

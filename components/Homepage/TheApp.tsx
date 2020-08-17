@@ -48,7 +48,7 @@ const Desktop = () => {
         <Flex flexDirection="row" justifyContent="center" width="100%" pr={2}>
           <TextList title={title} subtitle={subtitle} listItems={textItems} />
         </Flex>
-        <HomepageCarousel images={desktopImages} maxWidth="750px" />
+        <HomepageCarousel images={desktopImages} maxWidth="50%" />
       </Flex>
     </MaxWidth>
   )

@@ -88,13 +88,13 @@ export const AboutWhoWeAre: React.FC = () => {
   return (
     <Grid>
       <Spacer mb={10} />
-      <Box px={[2, 0]} mx={0.5}>
+      <Box px={[2, 2, 2, 5, 5]}>
         <Sans size="6">Who we are</Sans>
       </Box>
       <Spacer mb={1} />
-      <Row>
+      <Row px={["10px", "10px", "10px", "38px", "38px"]}>
         {gridItems.map((item, index) => (
-          <Col lg="3" md="6" xs="12" px={[2, "2px"]} py={[0, "2px"]} key={index}>
+          <Col lg="3" md="6" xs="12" px="2px" py={[0, "2px"]} key={index}>
             <Spacer mb={4} />
             <ProgressiveImage imageUrl={item.image} alt={item.name} size="small" />
             <Box mx={0.5}>
