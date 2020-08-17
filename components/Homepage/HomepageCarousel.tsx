@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplist-carousel"
 import { ProgressiveImage } from "../Image"
 import { Box } from "../Box"
@@ -10,15 +10,22 @@ import { imageResize } from "../../utils/imageResize"
 
 export const HomepageCarousel: React.FC<{ images: ProgressiveImage[]; maxWidth?: string }> = ({ images, maxWidth }) => {
   const snapList = useRef(null)
-
+  const [clientSide, setClientSide] = useState(false)
+  const [imagesToUse, setImagesToUse] = useState([images[0]])
   const selected = useVisibleElements({ debounce: 10, ref: snapList }, ([element]) => element)
   const goToSnapItem = useScroll({ ref: snapList })
+  useEffect(() => {
+    if (typeof window !== "undefined" && !clientSide) {
+      setClientSide(true)
+      setImagesToUse(images)
+    }
+  }, [])
 
   return (
     <Flex flexDirection="row" style={{ position: "relative", maxWidth: maxWidth ? maxWidth : "auto" }}>
       <Wrapper>
         <SnapList direction="horizontal" width="calc(100% - 16px)" ref={snapList}>
-          {images.map((image, index) => {
+          {imagesToUse.map((image, index) => {
             const imageSRC = imageResize(image.imageUrl, "large")
             return (
               <SnapItem width="100%" margin={{ right: space(1) + "px" }} snapAlign="center" key={image.imageUrl}>
@@ -37,7 +44,7 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImage[]; maxWidth?:
               {images.map((_image, index) => {
                 return (
                   <Box key={index} pt={0.5}>
-                    <Pager active={selected === index} />
+                    <Pager active={selected === index} clientSide={clientSide} />
                   </Box>
                 )
               })}
@@ -66,12 +73,13 @@ const Wrapper = styled.div`
   position: relative;
 `
 
-const Pager = styled.div<{ active: boolean }>`
+const Pager = styled.div<{ active: boolean; clientSide: boolean }>`
   height: 8px;
   box-sizing: border-box;
   width: 8px;
   border: 1px solid ${color("black100")};
   background-color: ${(p) => (p.active ? color("black100") : "transparent")};
+  opacity: ${(p) => (p.clientSide ? "1" : "0")};
 `
 
 const ImageWrapper = styled.div`
