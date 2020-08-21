@@ -16,7 +16,7 @@ Every deployment is immutable. Cache will be invalidated every time you deploy.
 
 */
 
-const directoryPath = path.resolve(__dirname, "../.next")
+const directoryPath = path.resolve(__dirname, "../.next/static/images")
 
 // Retrive al the files path in the build directory
 const getDirectoryFilesRecursive = (dir, ignores = []) => {

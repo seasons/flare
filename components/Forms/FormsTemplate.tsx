@@ -105,7 +105,7 @@ export const FormFooter: React.FC<FooterProps> = ({
             py={1}
             height={["auto", "63px"]}
             style={{ width: "100%" }}
-            px={[2, 0]}
+            px={[2, 2, 2, 5, 5]}
           >
             {!!footerText ? (
               <DetailText my={2} size={["2", "4"]}>
@@ -167,7 +167,7 @@ export const FormTemplate = ({
 
   const TextContent = () => {
     return (
-      <Box px={2}>
+      <Box px={[2, 2, 2, 5, 5]}>
         {backButton && <BackButton onClick={previous} />}
         <Spacer mb={[5, 0]} />
         <Box>
@@ -228,7 +228,7 @@ export const FormTemplate = ({
         <Flex height="100%" flexDirection="row" alignItems="center">
           <Wrapper clientSide={clientSide}>
             <TextContent />
-            <FieldsContainer px={2}>
+            <FieldsContainer px={[2, 2, 2, 5, 5]}>
               {fieldDefinitionList.map((props, index) => (
                 <Box key={props.placeholder} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
                   <Box>
