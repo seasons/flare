@@ -9,15 +9,15 @@ import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"
 import { HomepageCarousel } from "."
 
-const imageURL1 = require("../../public/images/homepage/Hero-1.png")
-const imageURL2 = require("../../public/images/homepage/Hero-2.png")
-const imageURL3 = require("../../public/images/homepage/Hero-3.png")
+const imageURL1 = require("../../public/images/homepage/Hero-1-1.png")
+const imageURL2 = require("../../public/images/homepage/Hero-2-1.png")
+const imageURL3 = require("../../public/images/homepage/Hero-3-1.png")
 
 const aspectRatio = 0.8
 
 const heroImages: ProgressiveImage[] = [
-  { imageUrl: imageURL2, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
   { imageUrl: imageURL1, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
+  { imageUrl: imageURL2, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
   { imageUrl: imageURL3, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
 ]
 
