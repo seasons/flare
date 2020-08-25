@@ -153,7 +153,7 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
           context.wizard.shouldAllowNext = isEmpty(formikRenderProps.errors) && !isEmpty(formikRenderProps.touched)
 
           return (
-            <form onSubmit={formikRenderProps.handleSubmit} style={{ height: "100%" }}>
+            <form onSubmit={formikRenderProps.handleSubmit} style={{ height: "100%", width: "100%" }}>
               <WizardContextProvider {...context}>
                 {!!this.props.steps ? React.createElement(children as any, context) : this.currentStep}
               </WizardContextProvider>

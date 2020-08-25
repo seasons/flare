@@ -1,6 +1,4 @@
-import _track, {
-  Track as _Track, TrackingInfo, TrackingProp, useTracking as _useTracking
-} from "react-tracking"
+import _track, { Track as _Track, TrackingInfo, TrackingProp, useTracking as _useTracking } from "react-tracking"
 
 import * as Schema from "./schema"
 
@@ -85,12 +83,12 @@ export function screenTrack<P>(trackingInfo?: TrackingInfo<Schema.PageViewEvent,
     dispatch: (data) => {
       data.anonymousId = analytics?.user?.().anonymousId?.()
       if (process.env.ENVIRONMENT !== "production") {
-        console.log("[Event tracked]", JSON.stringify(data, null, 2))
+        console.log("[Event tracked]", JSON.stringify({ ...data, device: "web" }, null, 2))
       }
       if (data.actionName) {
-        return analytics?.track(data.screen, data)
+        return analytics?.track(data.screen, { ...data, device: "web" })
       } else {
-        return analytics?.page(data)
+        return analytics?.page({ ...data, device: "web" })
       }
     },
     dispatchOnMount: true,

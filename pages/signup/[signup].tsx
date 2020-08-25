@@ -7,8 +7,12 @@ import withData from "../../lib/apollo"
 import { useMutation } from "@apollo/react-hooks"
 import { useState } from "react"
 import { FormConfirmation } from "../../components/Forms/FormConfirmation"
-import { screenTrack, Schema } from "../../utils/analytics"
+import { screenTrack, Schema, useTracking } from "../../utils/analytics"
 import { DateTime } from "luxon"
+import {
+  CustomerMeasurementsForm,
+  customerMeasurementsValidationSchema,
+} from "../../components/Forms/CustomerMeasurementsForm"
 
 type ConfirmTextOptions = "accountQueued" | "accountAccepted"
 
@@ -29,12 +33,30 @@ const SIGN_UP_USER = gql`
   }
 `
 
+const ADD_MEASUREMENTS = gql`
+  mutation addMeasurements(
+    $height: Int
+    $weight: CustomerDetailCreateweightInput
+    $topSizes: CustomerDetailCreatetopSizesInput
+    $waistSizes: CustomerDetailCreatewaistSizesInput
+  ) {
+    addCustomerDetails(
+      details: { height: $height, weight: $weight, topSizes: $topSizes, waistSizes: $waistSizes }
+      event: CompletedWaitlistForm
+    ) {
+      id
+    }
+  }
+`
+
 const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(
   withData(() => {
+    const tracking = useTracking()
     const [signUpUser] = useMutation(SIGN_UP_USER)
+    const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
     const [showSnackBar, setShowSnackBar] = useState(false)
     const [confirmText, setConfirmText] = useState<ConfirmTextOptions>("accountAccepted")
     const initialValues = {
@@ -46,6 +68,10 @@ const SignUpPage = screenTrack(() => ({
       password: "",
       zipCode: "",
       device: "",
+      weight: "",
+      height: "",
+      topSizes: [""],
+      waistSizes: [""],
     }
 
     const confirmTextOptions = {
@@ -78,7 +104,7 @@ const SignUpPage = screenTrack(() => ({
       <Layout fixedNav hideFooter>
         <MaxWidth>
           <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-          <Flex height="100%" flexDirection="row" alignItems="center" justifyContent="center">
+          <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
             <Wizard initialValues={initialValues}>
               <Step
                 validationSchema={createAccountValidationSchema}
@@ -108,7 +134,6 @@ const SignUpPage = screenTrack(() => ({
                       localStorage.setItem("email", values.email)
                       localStorage.setItem("token", response.data.signup.token)
                       actions.setSubmitting(false)
-                      // FIXME: When we have the logic for a user being queued or immediately accepted change the text here from response
                       return true
                     }
                   } catch (error) {
@@ -123,6 +148,35 @@ const SignUpPage = screenTrack(() => ({
                 }}
               >
                 {(context) => <CreateAccountForm context={context} />}
+              </Step>
+              <Step
+                validationSchema={customerMeasurementsValidationSchema}
+                onSubmit={async (values, actions) => {
+                  const { height, weight, topSizes, waistSizes } = values
+                  const filteredWaistSizes = waistSizes.filter((i) => i !== "")
+                  const filteredTopSizes = topSizes.filter((i) => i !== "")
+                  try {
+                    const response = await addMeasurements({
+                      variables: {
+                        height,
+                        weight: { set: weight },
+                        topSizes: { set: filteredTopSizes },
+                        waistSizes: { set: filteredWaistSizes },
+                      },
+                    })
+                    if (response) {
+                      actions.setSubmitting(false)
+                      return true
+                    }
+                  } catch (error) {
+                    console.log("error", error)
+                    setShowSnackBar(true)
+
+                    actions.setSubmitting(false)
+                  }
+                }}
+              >
+                {(context) => <CustomerMeasurementsForm context={context} />}
               </Step>
               <Step>
                 {() => (

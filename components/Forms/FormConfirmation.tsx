@@ -17,7 +17,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
   )
   return (
     <>
-      <Wrapper px={2}>
+      <Wrapper px={[2, 2, 2, 5, 5]}>
         <CheckSVG />
         <Spacer mb={3} />
         <HeaderText>{headerText}</HeaderText>
