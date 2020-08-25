@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import MenuItem from "@material-ui/core/MenuItem"
 import HeaderText from "./HeaderText"
 import DetailText from "./DetailText"
 import { Field } from "formik"
@@ -13,6 +12,8 @@ import { Box, Flex, Spacer, MaxWidth, Sans } from "../"
 import { Button } from "../Button"
 import { Media } from "../Responsive"
 import { useTracking, Schema } from "../../utils/analytics"
+import SelectItem from "./SelectItem"
+import { MenuItem, makeStyles } from "@material-ui/core"
 
 export interface FormProps {
   context: any
@@ -27,19 +28,21 @@ export interface FormTemplateProps {
   backButton?: boolean
   titleBottomSpacing?: number
   buttonActionName?: string
+  stepText?: string
 }
 
 export interface FieldDefinition {
   id?: string
   name?: string
   placeholder: string
-  selectOptions?: string[]
+  selectOptions?: SelectItem[]
   onClick?: () => void
   customElement?: React.ReactNode
   type?: string
   initialValue?: string
   label: string
   mobileOrder?: number
+  multiple?: boolean
 }
 
 interface FooterProps {
@@ -135,11 +138,14 @@ export const FormTemplate = ({
   fieldDefinitionList,
   backButton,
   buttonActionName,
+  stepText,
 }: FormTemplateProps) => {
+  const menuItemStyle = useStyles()
   const {
     form: { handleChange, handleBlur, handleSubmit, isValid: formContextIsValid, isSubmitting, setFieldValue, values },
     wizard: { previous },
   } = context
+
   const [clientSide, setClientSide] = useState(false)
   const [thisFormIsValid, setThisFormIsValid] = useState(false)
   const nonCustomFieldNames = fieldDefinitionList.reduce((acc, currentFieldDefinition) => {
@@ -170,9 +176,17 @@ export const FormTemplate = ({
       <Box px={[2, 2, 2, 5, 5]}>
         {backButton && <BackButton onClick={previous} />}
         <Spacer mb={[5, 0]} />
+        {stepText && (
+          <>
+            <Sans color="black50" size="4">
+              {stepText}
+            </Sans>
+            <Spacer mb={2} />
+          </>
+        )}
         <Box>
           <HeaderText>{headerText}</HeaderText>
-          <Spacer height={8} />
+          <Spacer mb={1} />
           {!!HeaderDetail ? <StyledDetailText>{HeaderDetail}</StyledDetailText> : null}
         </Box>
         <Spacer height={[5, 40]} />
@@ -180,8 +194,8 @@ export const FormTemplate = ({
     )
   }
 
-  const RenderField = (props, breakpoint) => {
-    const { selectOptions, id, name, placeholder, customElement, type }: FieldDefinition = props
+  const RenderField = (props) => {
+    const { selectOptions, id, name, placeholder, customElement, type, multiple }: FieldDefinition = props
     const isSelectField = !!selectOptions && Array.isArray(selectOptions)
     return !!customElement ? (
       customElement
@@ -192,15 +206,18 @@ export const FormTemplate = ({
         select={isSelectField}
         onBlur={handleBlur}
         name={name}
+        value={values[name]}
         placeholder={placeholder}
         type={type || "text"}
+        multiple={isSelectField && multiple}
       >
         {isSelectField && !!selectOptions
-          ? selectOptions.map((v) => {
+          ? selectOptions.map((input, index) => {
               return (
                 <MenuItem
-                  key={v}
-                  value={v}
+                  className={menuItemStyle.root}
+                  key={index}
+                  value={multiple ? input.value || [] : input.value}
                   style={{
                     fontSize: "16px",
                     fontFamily: "ProximaNova-Medium, sans-serif",
@@ -209,7 +226,7 @@ export const FormTemplate = ({
                     borderBottom: "1px solid #d2d2d2",
                   }}
                 >
-                  {v}
+                  {input.label}
                 </MenuItem>
               )
             })
@@ -224,39 +241,39 @@ export const FormTemplate = ({
 
   return (
     <Flex style={{ minHeight: "100%" }}>
-      <Media greaterThanOrEqual="md">
-        <Flex height="100%" flexDirection="row" alignItems="center">
+      <DesktopMedia greaterThanOrEqual="md">
+        <Flex height="100%" width="100%" flexDirection="row" alignItems="center">
           <Wrapper clientSide={clientSide}>
             <TextContent />
             <FieldsContainer px={[2, 2, 2, 5, 5]}>
               {fieldDefinitionList.map((props, index) => (
-                <Box key={props.placeholder} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
+                <Box key={props.label} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
                   <Box>
                     <Spacer mt={4} />
                     <Sans size="3">{props.label}</Sans>
-                    {RenderField(props, "md")}
+                    {RenderField(props)}
                   </Box>
                 </Box>
               ))}
             </FieldsContainer>
           </Wrapper>
         </Flex>
-      </Media>
+      </DesktopMedia>
       <Media lessThan="md">
         <Wrapper clientSide={clientSide}>
           <TextContent />
           <FieldsContainer px={1} pb={150}>
-            {mobileFieldDefinitionList.map((props, index) => {
+            {mobileFieldDefinitionList.map((props) => {
               const width =
                 props.label === "Email" || props.label === "Password" || props.label === "Confirm password"
                   ? "100%"
                   : "50%"
               return (
-                <Box key={props.placeholder} width={width} px={1}>
+                <Box key={props.label} width={width} px={1}>
                   <Box>
                     <Spacer mt={4} />
                     <Sans size="3">{props.label}</Sans>
-                    {RenderField(props, "xs")}
+                    {RenderField(props)}
                   </Box>
                 </Box>
               )
@@ -275,6 +292,15 @@ export const FormTemplate = ({
     </Flex>
   )
 }
+
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: "white !important",
+    "&.Mui-selected": {
+      color: "#e8e8e8 !important",
+    },
+  },
+})
 
 const Wrapper = styled(Flex)<{ clientSide }>`
   align-items: flex-start;
@@ -300,6 +326,7 @@ const FormFooterInnerWrapper = styled(Flex)`
 const FieldsContainer = styled(Flex)`
   flex-direction: row;
   flex-wrap: wrap;
+  width: 100%;
 
   .MuiFormControl-root {
     width: 100%;
@@ -343,4 +370,8 @@ const BackButtonContainer = styled.div`
 const StyledDetailText = styled(DetailText)`
   position: relative;
   max-width: 150%;
+`
+
+const DesktopMedia = styled(Media)`
+  width: 100%;
 `

@@ -4,6 +4,7 @@ import { FormTemplate, FormProps } from "./FormsTemplate"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
 import { ExternalLink } from "../"
 import { Schema } from "../../utils/analytics"
+import SelectItem from "./SelectItem"
 
 export interface CreateAccountFormFields {
   firstName: string
@@ -21,7 +22,10 @@ export interface CustomerDetailCreateInput {
   phoneNumber: string
 }
 
-const deviceOptions = ["iOS", "Android"]
+const deviceOptions: SelectItem[] = [
+  { label: "iOS", value: "iOS" },
+  { label: "Android", value: "Android" },
+]
 
 export const createAccountValidationSchema = Yup.object().shape({
   email: Yup.string().trim().required("Required").email("Invalid email"),
@@ -63,8 +67,9 @@ export const CreateAccountForm = ({ context }: FormProps) => {
   return (
     <FormTemplate
       context={context}
+      stepText="Step 1 of 2"
       headerText="Create an account"
-      HeaderDetail={<>You’ll use this to sign into the app, choose your plan, & manage your membership.</>}
+      HeaderDetail={<>You’ll use this to sign into the app, choose your plan, and manage your membership.</>}
       footerText={
         <>
           {"By creating an account, you agree to our "}
@@ -73,7 +78,7 @@ export const CreateAccountForm = ({ context }: FormProps) => {
           <ExternalLink href="https://www.seasons.nyc/privacy-policy">Privacy Policy</ExternalLink>
         </>
       }
-      buttonText="Create account"
+      buttonText="Next"
       buttonActionName={Schema.ActionNames.CreateAccountSubmitButtonClicked}
       fieldDefinitionList={[
         { name: "firstName", placeholder: "Will", label: "First name", mobileOrder: 1 },

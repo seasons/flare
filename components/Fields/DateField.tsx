@@ -45,7 +45,6 @@ export const DateField: React.FC<Props> = ({ context, inputName }) => {
             // If they autocompleted the field, apply the mask
             // Filter out anything that's not a number
             maskVal = e.target.value.replace(/[^0-9]/g, "")
-            console.log("maskVal", maskVal)
             // If 3rd character isn't a slash, replace it.
             if (maskVal.length >= 3 && maskVal[2] !== "/") {
               maskVal = `${maskVal.slice(0, 2)}/${maskVal.slice(2)}`
