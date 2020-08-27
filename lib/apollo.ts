@@ -9,6 +9,7 @@ const authLink = setContext((_, { headers }) => {
 
   // return the headers to the context so httpLink can read them
   const allHeaders = headers || {}
+  allHeaders.application = "flare"
   if (token) {
     allHeaders.authorization = `Bearer ${token}`
   }
