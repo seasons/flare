@@ -81,14 +81,15 @@ export const track: Track = _track
 export function screenTrack<P>(trackingInfo?: TrackingInfo<Schema.PageViewEvent, P, null>) {
   return _track(trackingInfo as any, {
     dispatch: (data) => {
+      const newData = { ...data, platform: "web", application: "flare" }
       data.anonymousId = analytics?.user?.().anonymousId?.()
       if (process.env.ENVIRONMENT !== "production") {
-        console.log("[Event tracked]", JSON.stringify({ ...data, device: "web" }, null, 2))
+        console.log("[Event tracked]", JSON.stringify(newData, null, 2))
       }
       if (data.actionName) {
-        return analytics?.track(data.screen, { ...data, device: "web" })
+        return analytics?.track(data.screen, newData)
       } else {
-        return analytics?.page({ ...data, device: "web" })
+        return analytics?.page(newData)
       }
     },
     dispatchOnMount: true,
