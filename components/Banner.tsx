@@ -1,61 +1,67 @@
 import React, { useState } from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { MaxWidth } from "./MaxWidth"
-import { Formik, Field, Form, FormikHelpers } from "formik"
+// import { Formik, Field, Form, FormikHelpers } from "formik"
+// import { Field } from "./Forms/FormsTemplate"
+import * as Yup from "yup"
 import { Sans, Flex } from "./"
 import { Button } from "./Button"
 import { gql } from "apollo-boost"
-import { useMutation } from "@apollo/react-hooks"
-
-// import { color } from "./helpers/color"
+import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks"
+import { color } from "../helpers/color"
+import Link from "next/link"
+import { buttonStyle } from "styled-system"
 
 enum ViewOptions {
-  EnterZip = 1,
-  Thanks = 2,
-  Sorry = 3,
-  GoodNews = 4,
+  EnterZip = "EnterZip",
+  Thanks = "Thanks",
+  Sorry = "Sorry",
+  GoodNews = "GoodNews",
+}
+
+const Color = {
+  EnterZip: color("black04"),
+  ThankYou: color("black100"),
+  VerySorry: color("black50"),
+  BuenoNews: color("black25"),
 }
 
 const SUBMIT_ZIP_CODE_EMAIL = gql`
-  mutation SubmitZipCodeEmail($email: String!, $zipCode: String!) {
-    submitZipCodeAndEmail(email: $email, zipCode: $zipCode) {
+  mutation createInterestedUser($email: String!, $zipCode: String) {
+    createInterestedUser(email: $email, zipCode: $zipCode) {
       id
     }
   }
 `
 
-const SUBMIT_ZIP_CODE= gql`
-  mutation SubmitZipCode( $zipCode: String!) {
-    submitZipCode( zipCode: $zipCode) {
-      id
-    }
+const SUBMIT_ZIP_CODE = gql`
+  query zipcodeServiced($zipCode: String!) {
+    zipcodeServiced(zipCode: $zipCode)
   }
 `
 
-const Banner: React.FC = () => {
+const zipCodeAndEmailValidation = Yup.object().shape({
+  email: Yup.string().trim().required("Required").email("Invalid email"),
+  zipCode: Yup.string()
+    .trim()
+    .required("Please enter a ZIP")
+    .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
+})
+
+const Banner: React.FC<{}> = () => {
   const [currentView, setCurrentView] = useState(ViewOptions.EnterZip)
+  const [showBanner, setShowBanner] = useState(false)
+  //   const [changeColor, setChangeColor] = useState(ViewOptionsColors.GetZip)
   const [email, setEmail] = useState("")
   const [zipCode, setZipCode] = useState("")
   const [submitZipCodeAndEmail] = useMutation(SUBMIT_ZIP_CODE_EMAIL)
-  const [submitZipCode] = useMutation(SUBMIT_ZIP_CODE)
+  const [getZip, { data }] = useLazyQuery(SUBMIT_ZIP_CODE)
+
   let text = ""
 
-  const zipCodeSubmit = async () => {
-    await submitZipCode({
-      variables: {
-        zipCode,
-      },
-    })
-  }
-
-  const emailSubmit = async () => {
-    await submitZipCodeAndEmail({
-      variables: {
-        email,
-        zipCode,
-      },
-    })
-  }
+  //   const isValidUSZip = () => {
+  //     return /^\d{5}(-\d{4})?$/.test
+  //   }
 
   switch (currentView) {
     case ViewOptions.EnterZip:
@@ -73,88 +79,188 @@ const Banner: React.FC = () => {
       break
   }
 
-  const ZipLink= () => {
+  const EnterYourZipCode = () => {
+    // if (isValidUSZip) {
+    //   setZipCode
+    // } else {
+    //   value: "Please enter valid Zipcode"
+    // }
     return (
       <Flex>
-        <Field
-          name="zipCode"
-          placeholder="Enter your ZIP"
-          onChange={(e) => {
-            setZipCode(e.target.value) //here I'd need to do a hyperLink to membership form
+        <ZipContainer>
+          <form>
+            <input
+              type="text"
+              name="zipCode"
+              value={zipCode}
+              placeholder="Enter your ZIP"
+              onChange={(e) => {
+                setZipCode(e.target.value)
+              }}
+            ></input>
+          </form>
+          {/* validationSchema={zipCodeAndEmailValidation} */}
+        </ZipContainer>
+        <Button
+          onClick={() => {
+            console.log(`Hi I am working!`)
           }}
-        />
-        <Button onClick={zipCodeSubmit}>Submit</Button>
+        >
+          Submit
+        </Button>
       </Flex>
     )
   }
-  
+
+  const ZipLink = () => {
+    return (
+      <Flex>
+        <Link href="/signup">
+          <Button onClick={() => setCurrentView(ViewOptions.GoodNews)}>Apply for membership</Button>
+        </Link>
+      </Flex>
+    )
+  }
 
   const EnterYourEmail = () => {
     return (
       <Flex>
-        <Field
-          name="email"
-          placeholder="Enter your email"
-          onChange={(e) => {
-            setEmail(e.target.value)
-          }}
-        />
-        <Button onClick={emailSubmit}>Submit</Button>
+        <EmailContainer>
+          <form>
+            <input
+              type="text"
+              name="email"
+              value={email}
+              placeholder="Enter your email"
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }}
+            ></input>
+          </form>
+          {/* validationSchema={zipCodeAndEmailValidation} */}
+        </EmailContainer>
+        {/* <Button onClick={emailHandleSubmit}>Submit</Button> */}
       </Flex>
     )
   }
-  
-  const onClose = () => {void}
+
+  zipCodeAndEmailValidation.isValid(EnterYourZipCode, EnterYourEmail).then(function (valid) {
+    valid
+  })
+
+  //   const zipcodeHandleSubmit = (e, valid) => {
+  //     getZip({
+  //       variables: {
+  //         zipCode,
+  //       },
+  //     })
+  //     if (e === valid) {
+  //       return ViewOptions.GoodNews
+  //     } else {
+  //       return ViewOptions.Sorry
+  //     }
+  //     e.preventDefault()
+  //   }
+
+  //   const emailHandleSubmit = (e, valid) => {
+  //     submitZipCodeAndEmail({
+  //       variables: {
+  //         email,
+  //         zipCode,
+  //       },
+  //     })
+  //     if (e === valid) {
+  //       return ViewOptions.Thanks
+  //     } else {
+  //       e.preventDefault()
+  //     }
+  //   }
+
+  const Step = ({ view }) => {
+    switch (view) {
+      case ViewOptions.EnterZip:
+        return <EnterYourZipCode />
+      case ViewOptions.GoodNews:
+        return <ZipLink />
+      case ViewOptions.Sorry:
+        return <EnterYourEmail />
+      case ViewOptions.Thanks:
+        return <>{text}</>
+      default:
+        return <></>
+    }
+  }
+  //   let show = Boolean
+
+  // setShowBanner(false)
+
+  // const onClose = () => void
 
   return (
-    <BannerContainer>
+    <BannerContainer background={Color[currentView]}>
       <MaxWidth>
-        <Flex justifyContent="space-between">
+        <Flex flexDirection="row" width="100%" justifyContent="space-between" px={[2, 2, 2, 5, 5]}>
           <Flex>
-            <CloseWrap onClick={onClose}>
-              <span>X</span>
+            <CloseWrap>
+              <span
+                id="close"
+                onClick={() => {
+                  diplay: "none"
+                }}
+              >
+                X
+              </span>
             </CloseWrap>
-            <Sans size="4">{text}</Sans>
+            <TextContainer>
+              <Sans size="4">{text}</Sans>
+            </TextContainer>
           </Flex>
 
-          {() => {
-              if (currentView === ViewOptions.GoodNews) {
-                  return <ZipLink />
-              } else { 
-                  return null 
-              }
-          }}
-
-          {() => {
-            if (currentView === ViewOptions.Sorry) {
-              return <EnterYourEmail />
-            } else {
-              return null
-            }
-          }}
+          <Step view={currentView} />
         </Flex>
-
       </MaxWidth>
     </BannerContainer>
   )
 }
 
-const StyleDiv = styled.div``
+const CloseWrap = styled.div`
+  margin-top: 4px;
+  padding-right: 20px;
+  padding-top: 10px;
+`
+const ZipContainer = styled.div`
+  height: 100px;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+`
 
-const CloseWrap = styled.div``
-/**
- * div color temporary just testing it out
- */
-const BannerContainer = styled.div`
+const TextContainer = styled.div`
+  padding-top: 10px;
+`
+
+const EmailContainer = styled.div`
+  height: 100px;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+`
+
+const BannerContainer = styled.div<{ background: string }>`
   bottom: 0;
   left: 0;
-  background-color: pink;
+  position: fixed;
+  background: ${(p) => p.background};
+  color: ${color("black50")};
   display: flex;
-  flex-direction: row;
+  flex-direction: column, row;
   box-sizing: border-box;
+  margin: auto;
+  border-top: solid ${color("black25")};
   width: 100%;
   height: 58.5px;
   align-items: center;
+  z-index: 50;
 `
 
 export default Banner
