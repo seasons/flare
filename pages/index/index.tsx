@@ -12,11 +12,12 @@ import {
   TheApp,
   FromCommunity,
 } from "../../components/Homepage"
-import { Spacer, Layout, Separator, Box } from "../../components"
+import { Spacer, Layout, Separator, Box, Flex } from "../../components"
 import withData from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { screenTrack, Schema } from "../../utils/analytics"
+import Banner from "../../components/Banner"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
@@ -110,6 +111,10 @@ const Home = screenTrack(() => ({
           <Separator />
         </Box>
         <Spacer mb={10} />
+
+        <Box>
+          <Banner />
+        </Box>
 
         <ColumnList
           title="How membership works"
