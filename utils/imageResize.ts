@@ -1,7 +1,7 @@
 import qs from "querystring"
 import { identity, pickBy } from "lodash"
 
-export type ImageSize = "initial" | "thumb" | "small" | "medium" | "large" | "xlarge"
+export type ImageSize = "initial" | "thumb" | "small" | "medium" | "large" | "xlarge" | "hero"
 type ImageFormat = "webp" | "jpg" | "png" | "gif" | "mp4"
 
 interface ImageResizerOptions {
@@ -47,6 +47,10 @@ export const sizes: ImageSizeMap = {
   },
   xlarge: {
     w: 702,
+    fit: "clip",
+  },
+  hero: {
+    w: 2000,
     fit: "clip",
   },
 }

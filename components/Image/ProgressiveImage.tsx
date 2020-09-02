@@ -5,14 +5,14 @@ import React, { useState, useRef, useEffect } from "react"
 import { color } from "../../helpers"
 import { Picture } from "../Picture"
 
-export interface ProgressiveImage {
+export interface ProgressiveImageProps {
   size: ImageSize
   imageUrl: string
   aspectRatio?: number
   alt: string
 }
 
-export const ProgressiveImage: React.FC<ProgressiveImage> = ({
+export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   imageUrl,
   size,
   aspectRatio = IMAGE_ASPECT_RATIO,

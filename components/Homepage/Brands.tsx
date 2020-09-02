@@ -93,15 +93,15 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
   }
 
   return (
-    <Grid>
-      <Box px={[2, 2, 5]}>
+    <Grid px={[1, 1, 1, 4, 4]}>
+      <Box px={1}>
         <Sans size="11">Brand index</Sans>
       </Box>
       <Spacer mb={3} />
-      <Row px={[1, 3]}>
+      <Row>
         {groupedBrands.map((group) => {
           return (
-            <Col lg="2" md="3" sm="6" xs="6" px={[1, 2]} key={group.letter}>
+            <Col lg="2" md="3" sm="6" xs="6" px={1} key={group.letter}>
               <Flex mt={2}>
                 <Box>
                   <Sans size="5">{group.letter}</Sans>

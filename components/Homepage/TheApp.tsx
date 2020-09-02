@@ -3,8 +3,8 @@ import { Box, Sans, Spacer, Flex, MaxWidth } from "../"
 import { TextList } from "./TextList"
 import { Media } from "../Responsive"
 import { HomepageCarousel } from "./HomepageCarousel"
-import { ProgressiveImage } from "../Image"
 import { Grid, Col, Row } from "../Grid"
+import { ProgressiveImageProps } from "../Image/ProgressiveImage"
 
 const title = "The app"
 const subtitle = "After receiving an invite, you’ll get a link to download the Seasons app."
@@ -29,13 +29,13 @@ const textItems = [
   },
 ]
 
-const desktopImages: ProgressiveImage[] = [
+const desktopImages: ProgressiveImageProps[] = [
   { imageUrl: image1, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
   { imageUrl: image2, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
   { imageUrl: image3, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
 ]
 
-const mobileImages: ProgressiveImage[] = [
+const mobileImages: ProgressiveImageProps[] = [
   { imageUrl: image1, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },
   { imageUrl: image2, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },
   { imageUrl: image3, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },

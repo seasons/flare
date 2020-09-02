@@ -26,6 +26,7 @@ export const MembershipCard: React.FC<{ type: MembershipType; maxWidth?: string 
       text: "Experience that new-clothes feeling every week.",
     }
   }
+
   return (
     <Container>
       <Border>
