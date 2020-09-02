@@ -1,14 +1,17 @@
 import React, { useRef, useState, useEffect } from "react"
 import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplist-carousel"
-import { ProgressiveImage } from "../Image"
 import { Box } from "../Box"
 import { space, color } from "../../helpers"
 import styled from "styled-components"
 import { Flex } from "../Flex"
 import { Picture } from "../Picture"
 import { imageResize } from "../../utils/imageResize"
+import { ProgressiveImageProps } from "../Image/ProgressiveImage"
 
-export const HomepageCarousel: React.FC<{ images: ProgressiveImage[]; maxWidth?: string }> = ({ images, maxWidth }) => {
+export const HomepageCarousel: React.FC<{ images: ProgressiveImageProps[]; maxWidth?: string }> = ({
+  images,
+  maxWidth,
+}) => {
   const snapList = useRef(null)
   const [clientSide, setClientSide] = useState(false)
   const [imagesToUse, setImagesToUse] = useState([images[0]])

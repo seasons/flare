@@ -120,7 +120,7 @@ const Home = screenTrack(() => ({
                 "Browse from a curated list of brands and reserve up to 3 pieces at a time. Save your favorites for later & build a queue.",
             },
             {
-              title: "Wear, swap & repeat",
+              title: "Wear them for up to 30-days",
               text:
                 "Wear the styles you want to try, but aren’t sure if you want to buy. A new way to discover your style without the commitment or buyers remorse.",
             },

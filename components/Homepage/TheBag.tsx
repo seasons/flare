@@ -2,9 +2,9 @@ import React from "react"
 import { Box, Sans, Spacer, Flex, MaxWidth } from "../"
 import { TextList } from "./TextList"
 import { Media } from "../Responsive"
-import { ProgressiveImage } from "../Image"
 import { HomepageCarousel } from "./HomepageCarousel"
 import { Grid, Row, Col } from "../Grid"
+import { ProgressiveImageProps } from "../Image/ProgressiveImage"
 
 const title = "The Bag"
 const subtitle = "Each member receives their own custom Seasons shipping bag with every order."
@@ -31,7 +31,7 @@ const textItems = [
   },
 ]
 
-const images: ProgressiveImage[] = [
+const images: ProgressiveImageProps[] = [
   { imageUrl: image1, alt: "image of the delivery bag", aspectRatio: 1, size: "xlarge" },
   { imageUrl: image2, alt: "image of the delivery bag", aspectRatio: 1, size: "xlarge" },
   { imageUrl: image3, alt: "image of the delivery bag", aspectRatio: 1, size: "xlarge" },
