@@ -9,7 +9,7 @@ import { Media } from "../Responsive"
 import { Button } from "../Button"
 import { ListCheck } from "../SVGs"
 
-const imageURL = require("../../public/images/homepage/Hero-Collage.png")
+const imageURL = require("../../public/images/homepage/Collage.png")
 const imageAlt = "Collage of editorial product images"
 
 const headerText = "Wear, swap & repeat."
