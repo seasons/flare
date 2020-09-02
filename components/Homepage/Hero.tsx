@@ -9,7 +9,7 @@ import { Media } from "../Responsive"
 import { Button } from "../Button"
 import { ListCheck } from "../SVGs"
 
-const imageURL = require("../../public/images/homepage/Hero-Collage.png")
+const imageURL = require("../../public/images/homepage/Collage.png")
 const imageAlt = "Collage of editorial product images"
 
 const headerText = "Wear, swap & repeat."
@@ -42,7 +42,7 @@ const DesktopAndTabletContent = ({ height }) => {
           </Flex>
           <Spacer mb={4} />
           {listText.map((listItem) => (
-            <Flex mb={2}>
+            <Flex mb={2} key={listItem}>
               <ListCheck />
               <Spacer mr={2} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
@@ -117,6 +117,7 @@ const MobileHero = () => {
               <Sans size="9" color="black100">
                 {headerText}
               </Sans>
+              <Spacer mb={1} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                 Access hundreds of styles and discover new brands, all with zero commimtment.
               </Sans>
@@ -131,7 +132,7 @@ const MobileHero = () => {
               <GetTheAppButton block />
               <Spacer mb={4} />
               {listText.map((listItem) => (
-                <Flex mb={2}>
+                <Flex mb={2} key={listItem}>
                   <ListCheck />
                   <Spacer mr={2} />
                   <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
@@ -180,7 +181,7 @@ const TabletImageWrapper = styled(Box)`
   height: 600px;
   min-width: 1120px;
   top: 40px;
-  left: 376px;
+  left: 400px;
 
   img {
     height: 100%;
