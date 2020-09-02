@@ -20,7 +20,7 @@ const Desktop = () => {
       </Flex>
       <Spacer mb={6} />
       <Row px={[1, 1, 1, 3, 3]}>
-        <Col md="6" xs="12" px={[1, 1, 1, 2, 2]} mb={[2, 0]}>
+        <Col md="6" xs="12" px={[1, 1, 1, 2, 2]} mb={[2, 2, 2, 0, 0]}>
           <MembershipCard type="essential" maxWidth="75%" />
         </Col>
         <Col md="6" xs="12" px={[1, 1, 1, 2, 2]}>

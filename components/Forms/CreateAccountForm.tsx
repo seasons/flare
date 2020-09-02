@@ -60,8 +60,8 @@ export const CreateAccountForm = ({ context }: FormProps) => {
   // If a token is set in local storage, the checkJWT middleware on the server
   // will throw a hissy fit. So remove it here.
   useEffect(() => {
-    localStorage.removeItem("email")
-    localStorage.removeItem("token")
+    localStorage?.removeItem("email")
+    localStorage?.removeItem("token")
   }, [])
 
   return (

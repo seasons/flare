@@ -131,8 +131,8 @@ const SignUpPage = screenTrack(() => ({
                       },
                     })
                     if (response) {
-                      localStorage.setItem("email", values.email)
-                      localStorage.setItem("token", response.data.signup.token)
+                      localStorage?.setItem("email", values.email)
+                      localStorage?.setItem("token", response.data.signup.token)
                       actions.setSubmitting(false)
                       return true
                     }
