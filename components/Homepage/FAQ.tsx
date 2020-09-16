@@ -39,8 +39,8 @@ const items = [
 export const FAQ: React.FC = () => {
   const [minHeight, setMinHeight] = useState(150)
   return (
-    <Grid>
-      <Box px={[2, 2, 5]} mb={5}>
+    <Grid px={[1, 1, 1, 4, 4]}>
+      <Box mb={5} px={1}>
         <Sans size="11">Frequently asked questions</Sans>
       </Box>
       <Row>

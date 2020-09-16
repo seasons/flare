@@ -99,6 +99,7 @@ export enum ActionNames {
   SignUpButtonClicked = "Sign up button clicked",
   // Sign up page
   CreateAccountSubmitButtonClicked = "Create account submit button clicked",
+  CustomerMeasurementsSubmitButtonClicked = "Customer measurements submit button clicked",
   // Browse
   ProductPageNumberChanged = "Product Page Number Changed",
   // Forms

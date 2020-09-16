@@ -1,67 +1,83 @@
 import React from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
-import { Flex, Sans, Spacer, Box, MaxWidth } from ".."
-import { Button } from "../Button"
-import { Media } from "../Responsive"
-import { ProgressiveImage } from "../Image"
+import { Flex, Sans, Spacer, Box, MaxWidth, Picture } from "../"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"
-import { HomepageCarousel } from "."
+import { imageResize } from "../../utils/imageResize"
+import { Media } from "../Responsive"
+import { Button } from "../Button"
+import { ListCheck } from "../SVGs"
 
-const imageURL1 = require("../../public/images/homepage/Hero-1-1.png")
-const imageURL2 = require("../../public/images/homepage/Hero-2-1.png")
-const imageURL3 = require("../../public/images/homepage/Hero-3-1.png")
+const imageURL = require("../../public/images/homepage/Collage.png")
+const imageAlt = "Collage of editorial product images"
 
-const aspectRatio = 0.8
+const headerText = "Wear, swap & repeat."
 
-const heroImages: ProgressiveImage[] = [
-  { imageUrl: imageURL1, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
-  { imageUrl: imageURL2, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
-  { imageUrl: imageURL3, alt: "image of the iOS app", aspectRatio, size: "xlarge" },
+const listText = [
+  "Free shipping, returns & dry cleaning",
+  "Purchase items you like at a discount",
+  "Pause or cancel anytime",
 ]
 
-const mainText = "A members-only rental platform for designer menswear & streetwear."
-const carouselBlipWidth = 16
-const descriptionText =
-  "Exclusively in select cities. Apply for membership to secure your\nplace in line & to be notified when your spot is ready."
-const descriptionTextTablet =
-  "Exclusively in select cities. Apply for membership to secure your place in line & to be notified when your spot is ready."
+const desktopHeight = "800px"
+const tableHeight = "600px"
+const mobileHeight = "550px"
+
+const DesktopAndTabletContent = ({ height }) => {
+  return (
+    <Box height={height} maxWidth="500px" style={{ zIndex: 3, position: "relative" }}>
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
+        <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
+          <Sans size="11" color="black100">
+            {headerText}
+          </Sans>
+          <Spacer mb={1} />
+          <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
+            Access hundreds of styles and discover new brands, all with zero commimtment. Exclusively in select cities.
+          </Sans>
+          <Spacer mb={4} />
+          <Flex flexDirection="row">
+            <Link href="/signup">
+              <Button>Apply for membership</Button>
+            </Link>
+            <Spacer mr={1} />
+            <GetTheAppButton />
+          </Flex>
+          <Spacer mb={4} />
+          {listText.map((listItem) => (
+            <Flex mb={2} key={listItem}>
+              <ListCheck />
+              <Spacer mr={2} />
+              <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
+                {listItem}
+              </Sans>
+            </Flex>
+          ))}
+        </Flex>
+      </Flex>
+    </Box>
+  )
+}
 
 const DesktopHero = () => {
   return (
-    <MaxWidth>
-      <Flex flexDirection="row" justifyContent="flex-end" width="100%" alignItems="center" px={5} pt={5}>
-        <DesktopTextContent px={5}>
-          <Flex flexDirection="column" justifyContent="center">
-            <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Sans size="11" color="black100">
-                This is Seasons.
-              </Sans>
-              <Sans size="11" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "750px" }}>
-                {mainText}
-              </Sans>
-              <Spacer mb={4} />
-              <Flex flexDirection="row">
-                <Link href="/signup">
-                  <Button>Apply for membership</Button>
-                </Link>
-                <Spacer mr={1} />
-                <GetTheAppButton />
-              </Flex>
-              <Spacer mb={4} />
-              <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
-                {descriptionText}
-              </Sans>
-            </Flex>
-          </Flex>
-        </DesktopTextContent>
-        <CarouselWrapper>
-          <HomepageCarousel images={heroImages} />
-        </CarouselWrapper>
-        <BottomTextWrapper px={5}>
+    <MaxWidth style={{ overflow: "hidden" }}>
+      <Flex
+        flexDirection="row"
+        justifyContent="flex-start"
+        width="100%"
+        alignItems="center"
+        pl={[2, 2, 2, 5, 5]}
+        pt={5}
+      >
+        <DesktopAndTabletContent height={desktopHeight} />
+        <DesktopImageWrapper>
+          <Picture src={imageResize(imageURL, "hero")} alt={imageAlt} />
+        </DesktopImageWrapper>
+        <BottomTextWrapper px={[2, 2, 2, 5, 5]}>
           <Sans size="4" color="black50">
-            — Experience over 500+ styles from a carefully curated list of brands.
+            — Over 500+ curated, in-season, and vintage styles.
           </Sans>
         </BottomTextWrapper>
       </Flex>
@@ -71,41 +87,25 @@ const DesktopHero = () => {
 
 const TabletHero = () => {
   return (
-    <MaxWidth>
-      <TabletTextContent px={2} mt="120px">
-        <Flex flexDirection="column" justifyContent="center">
-          <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-            <Sans size="10" color="black100">
-              This is Seasons.
-            </Sans>
-            <Sans size="10" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "750px" }}>
-              {mainText}
-            </Sans>
-            <Spacer mb={4} />
-            <Flex flexDirection="row">
-              <Link href="/signup">
-                <Button>Apply for membership</Button>
-              </Link>
-              <Spacer mr={1} />
-              <GetTheAppButton />
-            </Flex>
-            <Spacer mb={4} />
-            <Sans size="4" color="black50" style={{ maxWidth: "70%" }}>
-              {descriptionTextTablet}
-            </Sans>
-          </Flex>
-        </Flex>
-      </TabletTextContent>
-      <Flex flexDirection="row" justifyContent="flex-end" width="100%" alignItems="center" mt="420px">
-        <Box width="80%" height="100%" style={{ position: "relative" }}>
-          <HomepageCarousel images={heroImages} />
-        </Box>
+    <MaxWidth style={{ overflow: "hidden" }}>
+      <Flex
+        flexDirection="row"
+        justifyContent="flex-start"
+        width="100%"
+        alignItems="center"
+        pl={[2, 2, 2, 5, 5]}
+        pt={5}
+      >
+        <DesktopAndTabletContent height={tableHeight} />
+        <TabletImageWrapper>
+          <Picture src={imageResize(imageURL, "large")} alt={imageAlt} />
+        </TabletImageWrapper>
+        <BottomTextWrapper px={[2, 2, 2, 5, 5]}>
+          <Sans size="4" color="black50">
+            — Over 500+ curated, in-season, and vintage styles.
+          </Sans>
+        </BottomTextWrapper>
       </Flex>
-      <BottomTextWrapper px={2}>
-        <Sans size="4" color="black50" style={{ maxWidth: "60%" }}>
-          — Experience over 500+ styles from a carefully curated list of brands.
-        </Sans>
-      </BottomTextWrapper>
     </MaxWidth>
   )
 }
@@ -119,10 +119,14 @@ const MobileHero = () => {
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Spacer mb={10} />
               <Sans size="9" color="black100">
-                This is Seasons.
+                {headerText}
               </Sans>
-              <Sans size="9" color="black50" style={{ whiteSpace: "pre-line" }}>
-                {mainText}
+              <Spacer mb={1} />
+              <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
+                Access hundreds of styles and discover new brands, all with zero commimtment.
+              </Sans>
+              <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
+                Exclusively in select cities.
               </Sans>
               <Spacer mb={4} />
               <Link href="/signup">
@@ -131,13 +135,19 @@ const MobileHero = () => {
               <Spacer mb={1} />
               <GetTheAppButton block />
               <Spacer mb={4} />
-              <Sans size="4" color="black50">
-                {descriptionText}
-              </Sans>
+              {listText.map((listItem) => (
+                <Flex mb={2} key={listItem}>
+                  <ListCheck />
+                  <Spacer mr={2} />
+                  <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
+                    {listItem}
+                  </Sans>
+                </Flex>
+              ))}
               <Spacer mb={4} />
-              <Box style={{ position: "relative", height: "100%", maxHeight: "700px" }}>
-                <HomepageCarousel images={heroImages} />
-              </Box>
+              <MobileImageWrapper>
+                <Picture src={imageResize(imageURL, "large")} alt={imageAlt} />
+              </MobileImageWrapper>
             </Flex>
           </Flex>
         </Col>
@@ -169,20 +179,39 @@ const BottomTextWrapper = styled(Box)`
   z-index: 3;
 `
 
-const TabletTextContent = styled(Box)`
+const TabletImageWrapper = styled(Box)`
   position: absolute;
-  left: 0;
-  z-index: 3;
+  overflow: hidden;
+  height: ${tableHeight};
+  min-width: 1120px;
+  top: 40px;
+  left: 400px;
+
+  img {
+    height: 100%;
+    max-width: none !important;
+  }
 `
 
-const DesktopTextContent = styled(Box)`
+const DesktopImageWrapper = styled(Box)`
   position: absolute;
-  left: 0;
-  z-index: 3;
+  overflow: hidden;
+  height: ${desktopHeight};
+  min-width: 1120px;
+  left: 600px;
+
+  img {
+    height: 100%;
+    max-width: none !important;
+  }
 `
 
-const CarouselWrapper = styled(Box)`
+const MobileImageWrapper = styled(Box)`
   position: relative;
-  width: ${624 + carouselBlipWidth}px;
-  height: 780px;
+  overflow: hidden;
+  height: ${mobileHeight};
+  img {
+    height: 100%;
+    max-width: none !important;
+  }
 `
