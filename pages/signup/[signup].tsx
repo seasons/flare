@@ -42,6 +42,7 @@ const ADD_MEASUREMENTS = gql`
   ) {
     addCustomerDetails(
       details: { height: $height, weight: $weight, topSizes: $topSizes, waistSizes: $waistSizes }
+      status: Waitlisted
       event: CompletedWaitlistForm
     ) {
       id
