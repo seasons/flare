@@ -7,7 +7,7 @@ import * as Yup from "yup"
 import { Sans, Flex } from "./"
 import { Button } from "./Button"
 import { gql } from "apollo-boost"
-import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks"
+import { useMutation, useLazyQuery } from "@apollo/react-hooks"
 import { color } from "../helpers/color"
 import Link from "next/link"
 import { buttonStyle } from "styled-system"
@@ -90,7 +90,8 @@ const Banner: React.FC<{}> = () => {
         <ZipContainer>
           <form>
             <input
-              type="text"
+              type="tel"
+              inputMode="numeric"
               name="zipCode"
               value={zipCode}
               placeholder="Enter your ZIP"
@@ -102,6 +103,7 @@ const Banner: React.FC<{}> = () => {
           {/* validationSchema={zipCodeAndEmailValidation} */}
         </ZipContainer>
         <Button
+          size="medium"
           onClick={() => {
             console.log(`Hi I am working!`)
           }}
@@ -205,7 +207,9 @@ const Banner: React.FC<{}> = () => {
               <span
                 id="close"
                 onClick={() => {
-                  diplay: "none"
+                  css`
+                    diplay: "none";
+                  `
                 }}
               >
                 X
@@ -234,6 +238,16 @@ const ZipContainer = styled.div`
   padding: 10px;
   margin: 10px;
 `
+
+// const ButtonContainer = styled.div`
+//   display: flex;
+//   position: fixed;
+//   background-color: ${color("white100")};
+//   width: 100%;
+//   z-index: 3;
+//   bottom: 0;
+//   border-top: 1px solid ${color("black10")};
+// `
 
 const TextContainer = styled.div`
   padding-top: 10px;
