@@ -20,6 +20,10 @@ const listText = [
   "Pause or cancel anytime",
 ]
 
+const desktopHeight = "800px"
+const tableHeight = "600px"
+const mobileHeight = "550px"
+
 const DesktopAndTabletContent = ({ height }) => {
   return (
     <Box height={height} maxWidth="500px" style={{ zIndex: 3, position: "relative" }}>
@@ -67,7 +71,7 @@ const DesktopHero = () => {
         pl={[2, 2, 2, 5, 5]}
         pt={5}
       >
-        <DesktopAndTabletContent height="928px" />
+        <DesktopAndTabletContent height={desktopHeight} />
         <DesktopImageWrapper>
           <Picture src={imageResize(imageURL, "hero")} alt={imageAlt} />
         </DesktopImageWrapper>
@@ -92,7 +96,7 @@ const TabletHero = () => {
         pl={[2, 2, 2, 5, 5]}
         pt={5}
       >
-        <DesktopAndTabletContent height="600px" />
+        <DesktopAndTabletContent height={tableHeight} />
         <TabletImageWrapper>
           <Picture src={imageResize(imageURL, "large")} alt={imageAlt} />
         </TabletImageWrapper>
@@ -178,7 +182,7 @@ const BottomTextWrapper = styled(Box)`
 const TabletImageWrapper = styled(Box)`
   position: absolute;
   overflow: hidden;
-  height: 600px;
+  height: ${tableHeight};
   min-width: 1120px;
   top: 40px;
   left: 400px;
@@ -192,7 +196,7 @@ const TabletImageWrapper = styled(Box)`
 const DesktopImageWrapper = styled(Box)`
   position: absolute;
   overflow: hidden;
-  height: 928px;
+  height: ${desktopHeight};
   min-width: 1120px;
   left: 600px;
 
@@ -205,7 +209,7 @@ const DesktopImageWrapper = styled(Box)`
 const MobileImageWrapper = styled(Box)`
   position: relative;
   overflow: hidden;
-  height: 550px;
+  height: ${mobileHeight};
   img {
     height: 100%;
     max-width: none !important;
