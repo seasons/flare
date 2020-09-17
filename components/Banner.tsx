@@ -50,7 +50,7 @@ const zipCodeAndEmailValidation = Yup.object().shape({
 
 const Banner: React.FC<{}> = () => {
   const [currentView, setCurrentView] = useState(ViewOptions.EnterZip)
-  const [showBanner, setShowBanner] = useState(false)
+  const [showBanner, setShowBanner] = useState(true)
   //   const [changeColor, setChangeColor] = useState(ViewOptionsColors.GetZip)
   const [email, setEmail] = useState("")
   const [zipCode, setZipCode] = useState("")
@@ -150,33 +150,33 @@ const Banner: React.FC<{}> = () => {
     valid
   })
 
-  //   const zipcodeHandleSubmit = (e, valid) => {
-  //     getZip({
-  //       variables: {
-  //         zipCode,
-  //       },
-  //     })
-  //     if (e === valid) {
-  //       return ViewOptions.GoodNews
-  //     } else {
-  //       return ViewOptions.Sorry
-  //     }
-  //     e.preventDefault()
-  //   }
+  const zipcodeHandleSubmit = (e, valid) => {
+    getZip({
+      variables: {
+        zipCode,
+      },
+    })
+    if (e === valid) {
+      return ViewOptions.GoodNews
+    } else {
+      return ViewOptions.Sorry
+    }
+    e.preventDefault()
+  }
 
-  //   const emailHandleSubmit = (e, valid) => {
-  //     submitZipCodeAndEmail({
-  //       variables: {
-  //         email,
-  //         zipCode,
-  //       },
-  //     })
-  //     if (e === valid) {
-  //       return ViewOptions.Thanks
-  //     } else {
-  //       e.preventDefault()
-  //     }
-  //   }
+  const emailHandleSubmit = (e, valid) => {
+    submitZipCodeAndEmail({
+      variables: {
+        email,
+        zipCode,
+      },
+    })
+    if (e === valid) {
+      return ViewOptions.Thanks
+    } else {
+      e.preventDefault()
+    }
+  }
 
   const Step = ({ view }) => {
     switch (view) {
@@ -194,7 +194,7 @@ const Banner: React.FC<{}> = () => {
   }
   //   let show = Boolean
 
-  // setShowBanner(false)
+  // const handleClose = () => setShowBanner(false)
 
   // const onClose = () => void
 
@@ -204,14 +204,7 @@ const Banner: React.FC<{}> = () => {
         <Flex flexDirection="row" width="100%" justifyContent="space-between" px={[2, 2, 2, 5, 5]}>
           <Flex>
             <CloseWrap>
-              <span
-                id="close"
-                onClick={() => {
-                  css`
-                    diplay: "none";
-                  `
-                }}
-              >
+              <span id="close" onClick={() => setShowBanner(false)}>
                 X
               </span>
             </CloseWrap>
