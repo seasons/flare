@@ -59,10 +59,6 @@ const Banner: React.FC<{}> = () => {
 
   let text = ""
 
-  //   const isValidUSZip = () => {
-  //     return /^\d{5}(-\d{4})?$/.test
-  //   }
-
   switch (currentView) {
     case ViewOptions.EnterZip:
       text = "Exclusively in select cities. Make sure we're in your area:"
@@ -80,11 +76,6 @@ const Banner: React.FC<{}> = () => {
   }
 
   const EnterYourZipCode = () => {
-    // if (isValidUSZip) {
-    //   setZipCode
-    // } else {
-    //   value: "Please enter valid Zipcode"
-    // }
     return (
       <Flex>
         <ZipContainer>
