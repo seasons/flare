@@ -1,6 +1,6 @@
 import { Sans, Box, Spacer, Flex, ExternalLink } from "../"
 import { Button } from "../Button/Button"
-import { InstagramSVG, CheckSVG } from "../SVGs"
+import { InstagramSVG, CheckWithBackground } from "../SVGs"
 import { FormFooter } from "./FormsTemplate"
 import HeaderText from "./HeaderText"
 import styled from "styled-components"
@@ -18,7 +18,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
   return (
     <>
       <Wrapper px={[2, 2, 2, 5, 5]}>
-        <CheckSVG />
+        <CheckWithBackground />
         <Spacer mb={3} />
         <HeaderText>{headerText}</HeaderText>
         <Spacer mb={1} />
