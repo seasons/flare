@@ -20,6 +20,16 @@ import { screenTrack, Schema } from "../../utils/analytics"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
+    paymentPlans(where: { status: "active" }) {
+      id
+      name
+      description
+      tagline
+      price
+      planID
+      tier
+      itemCount
+    }
     brands {
       id
       slug
@@ -165,9 +175,7 @@ const Home = screenTrack(() => ({
           <Separator />
         </Box>
 
-        <Spacer mb={12} />
-        <ChooseMembership />
-        <Spacer mb={12} />
+        <ChooseMembership paymentPlans={data?.paymentPlans} />
 
         <Box px={[2, 2, 2, 5, 5]}>
           <Separator />

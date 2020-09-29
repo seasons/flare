@@ -7,7 +7,7 @@ import Link from "next/link"
 import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
 import { Button } from "../Button"
-import { ListCheck } from "../SVGs"
+import { CheckWithOutline } from "../SVGs"
 
 const imageURL = require("../../public/images/homepage/Collage.png")
 const imageAlt = "Collage of editorial product images"
@@ -47,7 +47,7 @@ const DesktopAndTabletContent = ({ height }) => {
           <Spacer mb={4} />
           {listText.map((listItem) => (
             <Flex mb={2} key={listItem}>
-              <ListCheck />
+              <CheckWithOutline />
               <Spacer mr={2} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                 {listItem}
@@ -137,7 +137,7 @@ const MobileHero = () => {
               <Spacer mb={4} />
               {listText.map((listItem) => (
                 <Flex mb={2} key={listItem}>
-                  <ListCheck />
+                  <CheckWithOutline />
                   <Spacer mr={2} />
                   <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                     {listItem}
