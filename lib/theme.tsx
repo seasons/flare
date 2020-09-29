@@ -57,6 +57,20 @@ export const themeProps = {
   },
 
   typeSizes: {
+    display: {
+      "4": {
+        fontSize: 16,
+        lineHeight: 28,
+      },
+      "7": {
+        fontSize: 32,
+        lineHeight: 32,
+      },
+      "9": {
+        fontSize: 32,
+        lineHeight: 40,
+      },
+    },
     /** Unica  */
     sans: {
       /** Equivalent to 8px size / 8px line-height  */
@@ -198,3 +212,5 @@ export type Breakpoint = keyof typeof breakpoints
 export type TypeSizes = typeof themeProps.typeSizes
 /** All available sizes for our serif font */
 export type SansSize = keyof TypeSizes["sans"] | Array<keyof TypeSizes["sans"]>
+
+export type DisplaySize = keyof TypeSizes["display"] | Array<keyof TypeSizes["display"]>

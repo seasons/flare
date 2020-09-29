@@ -2,12 +2,13 @@ import React from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
 import { Flex, Sans, Spacer, Box, MaxWidth, Picture } from "../"
+import { Display } from "../Typography"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"
 import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
 import { Button } from "../Button"
-import { CheckWithOutline } from "../SVGs"
+import { Check } from "../SVGs"
 
 const imageURL = require("../../public/images/homepage/Collage.png")
 const imageAlt = "Collage of editorial product images"
@@ -29,9 +30,9 @@ const DesktopAndTabletContent = ({ height }) => {
     <Box height={height} maxWidth="500px" style={{ zIndex: 3, position: "relative" }}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
         <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-          <Sans size="11" color="black100">
+          <Display size="9" color="black100">
             {headerText}
-          </Sans>
+          </Display>
           <Spacer mb={1} />
           <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
             Access hundreds of styles and discover new brands, all with zero commimtment. Exclusively in select cities.
@@ -47,7 +48,7 @@ const DesktopAndTabletContent = ({ height }) => {
           <Spacer mb={4} />
           {listText.map((listItem) => (
             <Flex mb={2} key={listItem}>
-              <CheckWithOutline />
+              <Check />
               <Spacer mr={2} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                 {listItem}
@@ -137,7 +138,7 @@ const MobileHero = () => {
               <Spacer mb={4} />
               {listText.map((listItem) => (
                 <Flex mb={2} key={listItem}>
-                  <CheckWithOutline />
+                  <Check />
                   <Spacer mr={2} />
                   <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                     {listItem}

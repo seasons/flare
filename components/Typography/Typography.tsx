@@ -18,7 +18,7 @@ import {
   TextAlignProps,
 } from "styled-system"
 
-import { themeProps, TypeSizes, SansSize } from "../../lib/theme"
+import { themeProps, TypeSizes, SansSize, DisplaySize } from "../../lib/theme"
 import { determineFontSizes } from "./determineFontSizes"
 
 /**
@@ -177,6 +177,16 @@ interface StyledTextProps extends Partial<TextProps> {
   italic?: boolean
 }
 
+export interface DisplayProps extends Partial<TextProps> {
+  size: DisplaySize
+
+  /**
+   * Explicitly specify `null` to inherit weight from parent, otherwise default
+   * to `regular`.
+   */
+  weight?: null | "regular"
+}
+
 /**
  * Creates a wrapper around the generic `Text` component for a font type defined
  * in the palette’s theme (sans, serif, or display).
@@ -246,8 +256,18 @@ export const Sans = createStyledText<SansProps>("sans", (weight, italic) => {
 })
 
 /**
+ * This is our Apercu font used mainly for headers
+ *
+ * @example
+ *
+ * <Display color="black10" size="3t">Hi</Display>
+ */
+export const Display = createStyledText<DisplayProps>("display")
+
+/**
  * @example
  *
  * <Display color="black10" size="3t">Hi</Display>
  */
 Sans.displayName = "Sans"
+Display.displayName = "Display"
