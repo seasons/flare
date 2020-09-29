@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Grid, Row, Col } from "../Grid"
 import { Sans, Box, Spacer, Flex } from "../"
+import { Display } from "../Typography"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 
 const includedBrands = [
@@ -95,7 +96,7 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
   return (
     <Grid px={[1, 1, 1, 4, 4]}>
       <Box px={1}>
-        <Sans size="11">Brand index</Sans>
+        <Display size="9">Brand index</Display>
       </Box>
       <Spacer mb={3} />
       <Row>

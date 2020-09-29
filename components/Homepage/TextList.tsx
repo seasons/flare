@@ -1,5 +1,6 @@
 import React from "react"
 import { Box, Sans, Spacer, Flex } from "../"
+import { Display } from "../Typography"
 
 type ListItem = {
   title: string
@@ -21,8 +22,8 @@ export const TextList: React.FC<{ listItems: ListItem[]; title: string; subtitle
         alignItems="center"
       >
         <Box style={{ maxWidth: "320px" }}>
-          <Sans size="11">{title}</Sans>
-          <Spacer mb={2} />
+          <Display size="9">{title}</Display>
+          <Spacer mb={1} />
           <Sans size="4" color="black50">
             {subtitle}
           </Sans>

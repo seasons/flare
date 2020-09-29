@@ -1,5 +1,6 @@
 import React from "react"
 import { Sans, Flex, Spacer, Box } from "../"
+import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import { Link } from "../Link"
 import { ProductGridItem } from "../Product/ProductGridItem"
@@ -11,7 +12,7 @@ export const ProductRail: React.FC<{ products: any; title?: string }> = ({ produ
   return (
     <Grid>
       <Flex flexDirection="row" justifyContent={!!title ? "space-between" : "flex-end"} px={[2, 2, 2, 5, 5]}>
-        {title && <Sans size={["5", "6"]}>{title}</Sans>}
+        {title && <Display size="7">{title}</Display>}
         <Link href="/browse">
           <Sans size={["5", "6"]} color="black50">
             See all

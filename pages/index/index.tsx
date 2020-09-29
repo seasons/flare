@@ -38,7 +38,7 @@ export const HOME_QUERY = gql`
         id
       }
     }
-    blogPosts(count: 3) {
+    blogPosts(count: 2) {
       id
       url
       name
@@ -116,13 +116,8 @@ const Home = screenTrack(() => ({
         <Nav fixed />
         <Hero />
         <Spacer mb={10} />
-        <Box px={[2, 2, 2, 5, 5]}>
-          <Separator />
-        </Box>
-        <Spacer mb={10} />
 
         <ColumnList
-          title="How membership works"
           items={[
             {
               title: "You choose your items",

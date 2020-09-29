@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Grid, Row } from "../Grid"
 import { Sans, Box } from ".."
 import { FAQCard } from "./FAQCard"
+import { Display } from "../Typography"
 
 const items = [
   {
@@ -40,8 +41,8 @@ export const FAQ: React.FC = () => {
   const [minHeight, setMinHeight] = useState(150)
   return (
     <Grid px={[1, 1, 1, 4, 4]}>
-      <Box mb={5} px={1}>
-        <Sans size="11">Frequently asked questions</Sans>
+      <Box mb={[5, 5, 5, 3, 3]} px={1}>
+        <Display size="9">Frequently asked questions</Display>
       </Box>
       <Row>
         {items.map((step, index) => (

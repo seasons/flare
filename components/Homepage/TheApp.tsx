@@ -2,6 +2,7 @@ import React from "react"
 import { Box, Sans, Spacer, Flex, MaxWidth } from "../"
 import { TextList } from "./TextList"
 import { Media } from "../Responsive"
+import { Display } from "../Typography"
 import { HomepageCarousel } from "./HomepageCarousel"
 import { Grid, Col, Row } from "../Grid"
 import { ProgressiveImageProps } from "../Image/ProgressiveImage"
@@ -9,9 +10,9 @@ import { ProgressiveImageProps } from "../Image/ProgressiveImage"
 const title = "The app"
 const subtitle = "After receiving an invite, you’ll get a link to download the Seasons app."
 
-const image1 = require("../../public/images/homepage/App-Image-1.png")
-const image2 = require("../../public/images/homepage/App-Image-2.png")
-const image3 = require("../../public/images/homepage/App-Image-3.png")
+const image1 = require("../../public/images/homepage/AppImage1.png")
+const image2 = require("../../public/images/homepage/AppImage2.png")
+const image3 = require("../../public/images/homepage/AppImage3.png")
 
 const textItems = [
   {
@@ -58,7 +59,7 @@ const Tablet = () => {
   return (
     <Grid px={[2, 2, 2, 5, 5]}>
       <Box pb={4}>
-        {title && <Sans size="11">{title}</Sans>}
+        {title && <Display size="9">{title}</Display>}
         <Spacer mb={1} />
         {subtitle && (
           <Sans size="6" color="black50">
@@ -68,7 +69,7 @@ const Tablet = () => {
       </Box>
       <Row>
         {textItems.map((step, index) => (
-          <Col md="4" key={index}>
+          <Col md="4" key={index} mb={3}>
             <Sans size="6">{step.title}</Sans>
             <Spacer mb={1} />
             <Sans size="4" color="black50" style={{ maxWidth: "80%" }}>
@@ -79,7 +80,7 @@ const Tablet = () => {
       </Row>
 
       <Row md={12}>
-        <Spacer mb={5} />
+        <Spacer mb={2} />
         <HomepageCarousel images={desktopImages} />
       </Row>
     </Grid>
@@ -91,7 +92,7 @@ const Mobile = () => {
     <>
       <Box px={2}>
         <Spacer mb={5} />
-        <Sans size="11">{title}</Sans>
+        <Display size="9">{title}</Display>
         <Sans size="4" color="black50">
           {subtitle}
         </Sans>

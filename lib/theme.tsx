@@ -58,12 +58,16 @@ export const themeProps = {
 
   typeSizes: {
     display: {
+      "3": {
+        fontSize: 14,
+        lineHeight: 24,
+      },
       "4": {
         fontSize: 16,
         lineHeight: 28,
       },
       "7": {
-        fontSize: 32,
+        fontSize: 24,
         lineHeight: 32,
       },
       "9": {
