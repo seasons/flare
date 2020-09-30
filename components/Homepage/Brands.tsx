@@ -3,7 +3,7 @@ import { Grid, Row, Col } from "../Grid"
 import { Sans, Box, Spacer, Flex } from "../"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 
-const includedBrands = [
+export const BRAND_LIST = [
   "acne-studios",
   "aime-leon-dore",
   "amiri",
@@ -51,18 +51,9 @@ const includedBrands = [
 export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
   const [groupedBrands, setGroupedBrands] = useState([])
 
-  const filterBrands = (brands) => {
-    const filteredBrands = brands.filter((brand) => {
-      return includedBrands.includes(brand.slug)
-    })
-    return filteredBrands
-  }
-
   const groupBrands = (brands) => {
-    const filtered = filterBrands(brands)
-
     const brandPairs = toPairs(
-      groupBy(filtered, ({ name }) => {
+      groupBy(brands, ({ name }) => {
         const char = name.charAt(0)
         if (char.match(/[a-z]/i)) {
           return char
