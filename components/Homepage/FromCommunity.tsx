@@ -1,6 +1,7 @@
 import React from "react"
 import { Grid } from "../Grid"
 import { Sans, Spacer, Box, Flex } from "../"
+import { Display } from "../Typography"
 import styled from "styled-components"
 import { Media } from "../Responsive"
 
@@ -13,13 +14,13 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
       <StyledAnchor href={post.url}>
         <Box>
           <img src={post.imageURL} alt={post.name} />
-          <Spacer mb={3} />
-          <Sans size={["5", "6"]}>{post.name}</Sans>
+          <Spacer mb={2} />
+          <Sans size="7">{post.name}</Sans>
           {post.author && (
             <>
               <Spacer mb={1} />
               <Sans size="3" color="black50">
-                By {post.author === "Seasons" ? "The Seasons Team" : post.author}
+                {post.author === "Seasons" ? "The Seasons Team" : post.author}
               </Sans>
             </>
           )}
@@ -30,7 +31,7 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
   return (
     <Grid>
       <Box px={[2, 2, 2, 5, 5]}>
-        <Sans size={["5", "6"]}>Latest from our community</Sans>
+        <Display size="7">Latest thoughts</Display>
       </Box>
       <Spacer mb={2} />
       <Media greaterThanOrEqual="md">

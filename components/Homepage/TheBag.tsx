@@ -4,6 +4,7 @@ import { TextList } from "./TextList"
 import { Media } from "../Responsive"
 import { HomepageCarousel } from "./HomepageCarousel"
 import { Grid, Row, Col } from "../Grid"
+import { Display } from "../Typography"
 import { ProgressiveImageProps } from "../Image/ProgressiveImage"
 
 const title = "The Bag"
@@ -54,7 +55,7 @@ const Tablet = () => {
   return (
     <Grid px={[2, 2, 2, 5, 5]}>
       <Box pb={4}>
-        {title && <Sans size="11">{title}</Sans>}
+        {title && <Display size="9">{title}</Display>}
         <Spacer mb={1} />
         {subtitle && (
           <Sans size="6" color="black50">
@@ -64,8 +65,8 @@ const Tablet = () => {
       </Box>
       <Row>
         {textItems.map((step, index) => (
-          <Col md="4" key={index}>
-            <Sans size="6">{step.title}</Sans>
+          <Col md="4" key={index} mb={3}>
+            <Display size="4">{step.title}</Display>
             <Spacer mb={1} />
             <Sans size="4" color="black50" style={{ maxWidth: "80%" }}>
               {step.text}
@@ -75,7 +76,7 @@ const Tablet = () => {
       </Row>
 
       <Row md={12}>
-        <Spacer mb={5} />
+        <Spacer mb={2} />
         <HomepageCarousel images={images} />
       </Row>
     </Grid>
@@ -87,7 +88,7 @@ const Mobile = () => {
     <>
       <Box px={2}>
         <Spacer mb={5} />
-        <Sans size="11">{title}</Sans>
+        <Display size="9">{title}</Display>
         <Sans size="4" color="black50">
           {subtitle}
         </Sans>
@@ -97,7 +98,7 @@ const Mobile = () => {
       {textItems?.map((item) => (
         <Box pl={2} pr={4} key={item.title}>
           <Spacer mt={5} />
-          <Sans size="4">{item.title}</Sans>
+          <Display size="4">{item.title}</Display>
           <Sans size="4" color="black50">
             {item.text}
           </Sans>

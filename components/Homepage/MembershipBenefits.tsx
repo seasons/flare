@@ -3,6 +3,7 @@ import { Box, Sans, Spacer, Flex } from "../"
 import { Grid, Row, Col } from "../Grid"
 import { Return, Cleaning, Shipping, Rental, NewStyles, PauseCancel } from "../SVGs"
 import { Media } from "../Responsive"
+import { Display } from "../Typography"
 
 const items = [
   {
@@ -45,10 +46,10 @@ const Desktop: React.FC = () => {
     <Grid>
       <Flex px={[2, 2, 5]} justifyContent="center">
         <Flex flexDirection="column" justifyContent="center">
-          <Sans size="11" style={{ textAlign: "center" }}>
+          <Display size="9" style={{ textAlign: "center" }}>
             The benefits
-          </Sans>
-          <Spacer mb={2} />
+          </Display>
+          <Spacer mb={1} />
           <Sans size="4" color="black50" style={{ textAlign: "center" }}>
             What’s included in both memberships
           </Sans>
@@ -61,9 +62,9 @@ const Desktop: React.FC = () => {
               <Flex justifyContent="center" flexDirection="column" alignItems="center">
                 {step.icon()}
                 <Spacer mb={2} />
-                <Sans size="5" style={{ maxWidth: "80%", textAlign: "center" }}>
+                <Display size="4" style={{ maxWidth: "80%", textAlign: "center" }}>
                   {step.title}
-                </Sans>
+                </Display>
                 <Spacer mb={1} />
                 <Sans size="4" color="black50" style={{ maxWidth: "80%", textAlign: "center" }}>
                   {step.text}
@@ -82,7 +83,7 @@ const Mobile: React.FC = () => {
     <Grid>
       <Flex px={[2, 2, 5]}>
         <Flex flexDirection="column">
-          <Sans size="11">The benefits</Sans>
+          <Display size="9">The benefits</Display>
           <Sans size="4" color="black50">
             What’s included in both memberships
           </Sans>

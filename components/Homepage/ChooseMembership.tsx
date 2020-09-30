@@ -1,6 +1,7 @@
 import React from "react"
 import { Flex, Sans, Separator, Spacer } from "../"
 import { Box } from "../Box"
+import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import { Media } from "../Responsive"
 import { uniq } from "lodash"
@@ -12,8 +13,8 @@ import { Link } from "../Link"
 const Content = ({ tier, descriptionLines, group }) => {
   return (
     <>
-      <Sans size="11">{tier === "AllAccess" ? "All Access" : tier}</Sans>
-      <Spacer mb={3} />
+      <Display size="9">{tier === "AllAccess" ? "All Access" : tier}</Display>
+      <Spacer mb={1} />
       <Sans size="4" color="black50">
         Here's what's included in this plan:
       </Sans>
