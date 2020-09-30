@@ -50,7 +50,7 @@ const Product = withData(
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="Seasons" />
           <meta property="og:url" content={`https://www.seasons.nyc/product/${slug}`} />
-          <meta property="og:image" content={product?.images?.[0].url} />
+          <meta property="og:image" content={product?.images?.[0].url.replace("fm=webp", "fm=jpg")} />
           <meta property="twitter:card" content="summary" />
         </Head>
         <Box pt={[1, 5]}>
