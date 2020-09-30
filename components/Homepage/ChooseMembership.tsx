@@ -102,7 +102,7 @@ const Mobile = ({ plansGroupedByTier }) => {
           const descriptionLines = group?.[0]?.description?.split("\n") || []
 
           return (
-            <Col md="6" xs="12" style={{ height: "100%" }}>
+            <Col md="6" xs="12" style={{ height: "100%" }} key={index}>
               <Box px={[1, 1, 1, 2, 2]}>
                 <Box pb={10}>
                   <Content tier={tier} descriptionLines={descriptionLines} group={group} />
