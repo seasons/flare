@@ -14,7 +14,7 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImageProps[]; maxWi
 }) => {
   const snapList = useRef(null)
   const [clientSide, setClientSide] = useState(false)
-  const [imagesToUse, setImagesToUse] = useState([images[0]])
+  const [imagesToUse, setImagesToUse] = useState([images?.[0]])
   const selected = useVisibleElements({ debounce: 10, ref: snapList }, ([element]) => element)
   const goToSnapItem = useScroll({ ref: snapList })
   useEffect(() => {
@@ -24,14 +24,18 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImageProps[]; maxWi
     }
   }, [])
 
+  if (!images) {
+    return null
+  }
+
   return (
     <Flex flexDirection="row" style={{ position: "relative", maxWidth: maxWidth ? maxWidth : "auto" }}>
       <Wrapper>
         <SnapList direction="horizontal" width="calc(100% - 16px)" ref={snapList}>
-          {imagesToUse.map((image, index) => {
-            const imageSRC = imageResize(image.imageUrl, "large")
+          {imagesToUse?.map((image, index) => {
+            const imageSRC = (!!image?.imageUrl && imageResize(image?.imageUrl, "large")) || ""
             return (
-              <SnapItem width="100%" margin={{ right: space(1) + "px" }} snapAlign="center" key={image.imageUrl}>
+              <SnapItem width="100%" margin={{ right: space(1) + "px" }} snapAlign="center" key={image?.imageUrl}>
                 <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
                   <ImageWrapper>
                     <Picture src={imageSRC} alt={image.alt} />

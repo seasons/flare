@@ -80,6 +80,7 @@ const GET_BROWSE_PRODUCTS = gql`
           updatedAt
           brand {
             id
+            slug
             name
           }
           variants {
@@ -92,7 +93,6 @@ const GET_BROWSE_PRODUCTS = gql`
             reservable
             nonReservable
             reserved
-            isSaved
           }
         }
       }
@@ -219,7 +219,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       </Sans>
                     </Flex>
                   ) : (
-                    (products || []).map((product, i) => (
+                    products?.map((product, i) => (
                       <Col col sm="3" xs="6" key={i}>
                         <Box pt={[2, 0]} pb={[2, 5]}>
                           <ProductGridItem product={product?.node} loading={loading} />
