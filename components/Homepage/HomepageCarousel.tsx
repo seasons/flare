@@ -15,7 +15,8 @@ export const HomepageCarousel: React.FC<{
 }> = ({ images, maxWidth, pagerHorizontal }) => {
   const snapList = useRef(null)
   const [clientSide, setClientSide] = useState(false)
-  const [imagesToUse, setImagesToUse] = useState([images?.[0]] || [])
+  const firstImage = (!!images?.[0] && [images?.[0]]) || []
+  const [imagesToUse, setImagesToUse] = useState(firstImage)
   const selected = useVisibleElements({ debounce: 10, ref: snapList }, ([element]) => element)
   const goToSnapItem = useScroll({ ref: snapList })
   useEffect(() => {
