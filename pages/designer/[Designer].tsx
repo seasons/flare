@@ -1,21 +1,22 @@
 import Head from "next/head"
-import { withRouter } from "next/router"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
 import { Box, Layout, Sans, Spacer, Separator, Flex } from "../../components"
 import { Col, Grid, Row } from "../../components/Grid"
-import { Media } from "../../components/Responsive"
 import { DateTime } from "luxon"
-import withData from "../../lib/apollo"
+import withApollo from "../../lib/apollo"
 import { Schema, screenTrack } from "../../utils/analytics"
 import { gql } from "apollo-boost"
 import { HomepageCarousel } from "../../components/Homepage/HomepageCarousel"
 import { ProgressiveImageProps } from "../../components/Image/ProgressiveImage"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
+import { ReadMore } from "../../components/ReadMore"
+import { withRouter } from "next/router"
 
 const GET_BRAND = gql`
   query GetBrand($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
     brand(where: { slug: $slug }) {
+      __typename
       id
       name
       logo
@@ -60,7 +61,7 @@ const GET_BRAND = gql`
   }
 `
 
-const Designer = withData(
+const Designer = withApollo({ ssr: true })(
   screenTrack(({ router }) => {
     return {
       page: Schema.PageNames.BrandPage,
@@ -68,6 +69,7 @@ const Designer = withData(
       path: router?.asPath,
     }
   })(({ router }) => {
+    const [readMoreExpanded, setReadMoreExpanded] = useState(false)
     const slug = router.query.Designer
     const imageContainer = useRef(null)
 
@@ -78,6 +80,7 @@ const Designer = withData(
         skip: 0,
         orderBy: "createdAt_DESC",
       },
+      // fetchPolicy: "no-cache",
     })
 
     const products = data?.brand?.products?.edges
@@ -86,7 +89,6 @@ const Designer = withData(
     let isFetchingMore = false
 
     const onScroll = () => {
-      console.log("aggregateCount", aggregateCount)
       if (
         !loading &&
         !isFetchingMore &&
@@ -94,7 +96,6 @@ const Designer = withData(
         aggregateCount > products?.length &&
         window.innerHeight >= imageContainer?.current?.getBoundingClientRect().bottom - 200
       ) {
-        console.log("fetching more")
         isFetchingMore = true
         fetchMore({
           variables: {
@@ -134,8 +135,6 @@ const Designer = withData(
       }
       return () => window.removeEventListener("scroll", onScroll)
     }, [data])
-
-    console.log("data", data)
 
     const brand = data && data.brand
 
@@ -243,9 +242,12 @@ const Designer = withData(
                   <>
                     <Spacer mb={3} />
                     <Sans size="3">About</Sans>
-                    <Sans size="3" color="black50">
-                      {brand?.description}
-                    </Sans>
+                    <ReadMore
+                      readMoreExpanded={readMoreExpanded}
+                      setReadMoreExpanded={setReadMoreExpanded}
+                      content={brand?.description}
+                      maxChars={250}
+                    />
                   </>
                 )}
                 <Spacer mb={6} />

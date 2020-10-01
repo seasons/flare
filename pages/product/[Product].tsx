@@ -15,10 +15,10 @@ import { ProductDetails } from "../../components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { GET_PRODUCT } from "../../components/Product/ProductQueries"
 import { Media } from "../../components/Responsive"
-import withData from "../../lib/apollo"
+import withApollo from "../../lib/apollo"
 import { Schema, screenTrack } from "../../utils/analytics"
 
-const Product = withData(
+const Product = withApollo({ ssr: true })(
   screenTrack(({ router }) => {
     return {
       page: Schema.PageNames.ProductPage,

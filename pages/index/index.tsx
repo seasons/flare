@@ -13,7 +13,7 @@ import {
   FromCommunity,
 } from "../../components/Homepage"
 import { Spacer, Layout, Separator, Box } from "../../components"
-import withData from "../../lib/apollo"
+import withApollo from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { screenTrack, Schema } from "../../utils/analytics"
@@ -109,7 +109,7 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(
-  withData(() => {
+  withApollo({ ssr: true })(() => {
     const { data } = useQuery(HOME_QUERY, {
       variables: {
         brandSlugs: BRAND_LIST,

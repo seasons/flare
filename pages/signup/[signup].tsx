@@ -3,7 +3,7 @@ import { CreateAccountForm, createAccountValidationSchema } from "../../componen
 import { Wizard } from "../../components/Forms/Wizard"
 import { Step } from "../../components/Forms/Step"
 import gql from "graphql-tag"
-import withData from "../../lib/apollo"
+import withApollo from "../../lib/apollo"
 import { useMutation } from "@apollo/react-hooks"
 import { useState } from "react"
 import { FormConfirmation } from "../../components/Forms/FormConfirmation"
@@ -54,7 +54,7 @@ const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(
-  withData(() => {
+  withApollo({ ssr: true })(() => {
     const tracking = useTracking()
     const [signUpUser] = useMutation(SIGN_UP_USER)
     const [addMeasurements] = useMutation(ADD_MEASUREMENTS)

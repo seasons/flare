@@ -3,7 +3,7 @@ import { NextPage } from "next"
 import { gql } from "apollo-boost"
 import { useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
-import withData from "../../lib/apollo"
+import withApollo from "../../lib/apollo"
 import { Layout, Flex, Spacer } from "../../components"
 import { Sans, fontFamily } from "../../components/Typography/Typography"
 import { Box } from "../../components/Box"
@@ -104,7 +104,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   page: Schema.PageNames.BrowsePage,
   path: "/browse",
 }))(
-  withData(() => {
+  withApollo({ ssr: true })(() => {
     const tracking = useTracking()
     const router = useRouter()
     const { query } = router
