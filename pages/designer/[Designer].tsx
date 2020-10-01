@@ -1,6 +1,6 @@
 import Head from "next/head"
 import { withRouter } from "next/router"
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { useQuery } from "@apollo/react-hooks"
 import { Box, Layout, Sans, Spacer, Separator, Flex } from "../../components"
 import { Col, Grid, Row } from "../../components/Grid"
@@ -27,10 +27,12 @@ const GET_BRAND = gql`
         id
         url
       }
-      products: productsConnection(first: $first, skip: $skip, orderBy: $orderBy, where: { status: Available }) {
+      productsAggregate: productsConnection(where: { status: Available }) {
         aggregate {
           count
         }
+      }
+      products: productsConnection(first: $first, skip: $skip, orderBy: $orderBy, where: { status: Available }) {
         edges {
           node {
             id
@@ -67,15 +69,71 @@ const Designer = withData(
     }
   })(({ router }) => {
     const slug = router.query.Designer
+    const imageContainer = useRef(null)
 
-    const { data } = useQuery(GET_BRAND, {
+    const { data, fetchMore, loading } = useQuery(GET_BRAND, {
       variables: {
         slug,
-        first: 12,
+        first: 8,
         skip: 0,
         orderBy: "createdAt_DESC",
       },
     })
+
+    const products = data?.brand?.products?.edges
+    const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
+
+    let isFetchingMore = false
+
+    const onScroll = () => {
+      console.log("aggregateCount", aggregateCount)
+      if (
+        !loading &&
+        !isFetchingMore &&
+        !!aggregateCount &&
+        aggregateCount > products?.length &&
+        window.innerHeight >= imageContainer?.current?.getBoundingClientRect().bottom - 200
+      ) {
+        console.log("fetching more")
+        isFetchingMore = true
+        fetchMore({
+          variables: {
+            skip: products?.length,
+          },
+          updateQuery: (prev: any, { fetchMoreResult }) => {
+            if (!prev) {
+              return []
+            }
+
+            if (!fetchMoreResult) {
+              return prev
+            }
+
+            const newData = Object.assign({}, prev, {
+              brand: {
+                ...prev.brand,
+                products: {
+                  ...prev.brand.products,
+                  edges: [...prev.brand?.products?.edges, ...fetchMoreResult.brand?.products?.edges],
+                },
+              },
+            })
+
+            return newData
+          },
+        })
+        setTimeout(() => {
+          isFetchingMore = false
+        }, 500)
+      }
+    }
+
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        window.addEventListener("scroll", onScroll)
+      }
+      return () => window.removeEventListener("scroll", onScroll)
+    }, [data])
 
     console.log("data", data)
 
@@ -83,7 +141,6 @@ const Designer = withData(
 
     const title = `${brand?.name}`
     const description = brand?.description
-    const products = brand?.products?.edges
 
     const desktopImages: ProgressiveImageProps[] =
       !!data?.brand?.images?.length &&
@@ -199,7 +256,7 @@ const Designer = withData(
               </Col>
             </Row>
             <Spacer mb={8} />
-            <Row>
+            <Row ref={imageContainer}>
               {products?.map((product, i) => (
                 <Col col sm="3" xs="6" key={i}>
                   <Box pt={[2, 0]} pb={[2, 5]}>
