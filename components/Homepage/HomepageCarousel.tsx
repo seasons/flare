@@ -8,13 +8,15 @@ import { Picture } from "../Picture"
 import { imageResize } from "../../utils/imageResize"
 import { ProgressiveImageProps } from "../Image/ProgressiveImage"
 
-export const HomepageCarousel: React.FC<{ images: ProgressiveImageProps[]; maxWidth?: string }> = ({
-  images,
-  maxWidth,
-}) => {
+export const HomepageCarousel: React.FC<{
+  images: ProgressiveImageProps[]
+  maxWidth?: string
+  pagerHorizontal?: boolean
+}> = ({ images, maxWidth, pagerHorizontal }) => {
   const snapList = useRef(null)
   const [clientSide, setClientSide] = useState(false)
-  const [imagesToUse, setImagesToUse] = useState([images[0]])
+  const firstImage = (!!images?.[0] && [images?.[0]]) || []
+  const [imagesToUse, setImagesToUse] = useState(firstImage)
   const selected = useVisibleElements({ debounce: 10, ref: snapList }, ([element]) => element)
   const goToSnapItem = useScroll({ ref: snapList })
   useEffect(() => {
@@ -24,14 +26,18 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImageProps[]; maxWi
     }
   }, [])
 
+  if (!images) {
+    return null
+  }
+
   return (
     <Flex flexDirection="row" style={{ position: "relative", maxWidth: maxWidth ? maxWidth : "auto" }}>
       <Wrapper>
-        <SnapList direction="horizontal" width="calc(100% - 16px)" ref={snapList}>
-          {imagesToUse.map((image, index) => {
-            const imageSRC = imageResize(image.imageUrl, "large")
+        <SnapList direction="horizontal" width={pagerHorizontal ? "100%" : "calc(100% - 16px)"} ref={snapList}>
+          {imagesToUse?.map((image, index) => {
+            const imageSRC = (!!image?.imageUrl && imageResize(image?.imageUrl, "large")) || ""
             return (
-              <SnapItem width="100%" margin={{ right: space(1) + "px" }} snapAlign="center" key={image.imageUrl}>
+              <SnapItem width="100%" margin={{ right: space(1) + "px" }} snapAlign="center" key={image?.imageUrl}>
                 <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
                   <ImageWrapper>
                     <Picture src={imageSRC} alt={image.alt} />
@@ -42,11 +48,16 @@ export const HomepageCarousel: React.FC<{ images: ProgressiveImageProps[]; maxWi
           })}
         </SnapList>
         <PagerWrapper>
-          <PagerAbsolute>
-            <Flex flexDirection="column" justifyContent="flex-end" pl={1} width="100%">
+          <PagerAbsolute pagerHorizontal={pagerHorizontal}>
+            <Flex
+              flexDirection={pagerHorizontal ? "row" : "column"}
+              justifyContent="flex-end"
+              pl={pagerHorizontal ? 0 : 1}
+              width="100%"
+            >
               {images.map((_image, index) => {
                 return (
-                  <Box key={index} pt={0.5}>
+                  <Box key={index} pt={pagerHorizontal ? 1 : 0.5} pl={pagerHorizontal ? 0.5 : 0}>
                     <Pager active={selected === index} clientSide={clientSide} />
                   </Box>
                 )
@@ -66,8 +77,8 @@ const PagerWrapper = styled.div`
   z-index: 4;
 `
 
-const PagerAbsolute = styled.div`
-  position: absolute;
+const PagerAbsolute = styled.div<{ pagerHorizontal?: boolean }>`
+  position: ${(p) => (p.pagerHorizontal ? "relative" : "absolute")};
   right: 0;
   bottom: 0;
 `

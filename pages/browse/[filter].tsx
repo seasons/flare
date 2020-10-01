@@ -3,7 +3,7 @@ import { NextPage } from "next"
 import { gql } from "apollo-boost"
 import { useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
-import withData from "../../lib/apollo"
+import withApollo from "../../lib/apollo"
 import { Layout, Flex, Spacer } from "../../components"
 import { Sans, fontFamily } from "../../components/Typography/Typography"
 import { Box } from "../../components/Box"
@@ -80,6 +80,7 @@ const GET_BROWSE_PRODUCTS = gql`
           updatedAt
           brand {
             id
+            slug
             name
           }
           variants {
@@ -92,7 +93,6 @@ const GET_BROWSE_PRODUCTS = gql`
             reservable
             nonReservable
             reserved
-            isSaved
           }
         }
       }
@@ -104,7 +104,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   page: Schema.PageNames.BrowsePage,
   path: "/browse",
 }))(
-  withData(() => {
+  withApollo({ ssr: true })(() => {
     const tracking = useTracking()
     const router = useRouter()
     const { query } = router
@@ -219,7 +219,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       </Sans>
                     </Flex>
                   ) : (
-                    (products || []).map((product, i) => (
+                    products?.map((product, i) => (
                       <Col col sm="3" xs="6" key={i}>
                         <Box pt={[2, 0]} pb={[2, 5]}>
                           <ProductGridItem product={product?.node} loading={loading} />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Grid, Row, Col } from "../Grid"
+import { Link } from "../Link"
 import { Sans, Box, Spacer, Flex } from "../"
 import { Display } from "../Typography"
 import { groupBy, map, sortBy, toPairs } from "lodash"
@@ -99,9 +100,11 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
                   <Sans size="5">{group.letter}</Sans>
                   <Spacer mb={1} />
                   {group.data.map((brand) => (
-                    <Sans size="4" color="black50" key={brand.name}>
-                      {brand.name}
-                    </Sans>
+                    <Link href="/designer/[Designer]" as={`/designer/${brand.slug}`}>
+                      <Sans size="4" color="black50" key={brand.name}>
+                        {brand.name}
+                      </Sans>
+                    </Link>
                   ))}
                 </Box>
               </Flex>

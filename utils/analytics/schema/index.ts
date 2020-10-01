@@ -59,6 +59,7 @@ export interface PageViewEvent extends Event {
 }
 
 export enum PageNames {
+  BrandPage = "Brand",
   HomePage = "Home",
   BrowsePage = "Browse",
   ProductPage = "Product",
@@ -91,6 +92,7 @@ export enum ActionTypes {
  * Action event discriptors / names
  */
 export enum ActionNames {
+  ReadMoreTapped = "Read more tapped",
   // Nav
   NavigationButtonClicked = "Navigation button clicked",
   BurgerClicked = "Navigation burger clicked",

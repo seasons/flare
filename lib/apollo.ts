@@ -1,6 +1,8 @@
-import { withData } from "next-apollo"
+import { withApollo } from "next-apollo"
 import { createHttpLink } from "apollo-link-http"
+import fetch from "node-fetch"
 import { setContext } from "apollo-link-context"
+import { InMemoryCache, ApolloClient } from "@apollo/client"
 
 // Set up Apollo Client
 const authLink = setContext((_, { headers }) => {
@@ -20,10 +22,12 @@ const authLink = setContext((_, { headers }) => {
 
 const httpLink = createHttpLink({
   uri: process.env.MONSOON_ENDPOINT || "http://localhost:4000/",
+  fetch,
 })
 
-const config = {
-  link: authLink.concat(httpLink),
-}
+const apolloClient = new ApolloClient({
+  link: authLink.concat(httpLink) as any,
+  cache: new InMemoryCache(),
+})
 
-export default withData(config)
+export default withApollo(apolloClient)

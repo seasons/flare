@@ -8,11 +8,46 @@ import { VariantSizes } from "../VariantSizes"
 import ContentLoader from "react-content-loader"
 import { ProgressiveImage } from "../Image"
 
-export const ProductGridItem: React.FC<{ product: any; loading?: boolean }> = ({ product, loading }) => {
+export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showName?: boolean }> = ({
+  product,
+  loading,
+  showName,
+}) => {
   const image = get(product, "images[0]", { url: "" })
+  let showBrand = true
 
-  const brandName = get(product, "brand.name")
-  const text = brandName === "Vintage" ? product?.name : brandName
+  const brandName = product?.brand?.name
+  const brandSlug = product.brand?.slug
+
+  if (showName || brandName === "Vintage") {
+    showBrand = false
+  }
+
+  const Text = () => {
+    if (showBrand && brandName && brandSlug) {
+      return (
+        <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
+          <Sans size="2" mt="0.5">
+            {brandName}
+          </Sans>
+          <VariantSizes variants={product.variants} size="2" />
+        </Link>
+      )
+    } else {
+      return (
+        <>
+          {!!product?.name && (
+            <>
+              <Sans size="2" mt="0.5">
+                {product?.name}
+              </Sans>
+              <VariantSizes variants={product.variants} size="2" />
+            </>
+          )}
+        </>
+      )
+    }
+  }
 
   return (
     <ProductContainer key={product.id}>
@@ -32,12 +67,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean }> = ({
                 <rect x={0} y={19} width={37} height={12} />
               </ContentLoader>
             ) : (
-              <>
-                <Sans size="2" mt="0.5">
-                  {text}
-                </Sans>
-                <VariantSizes variants={product.variants} size="2" />
-              </>
+              <Text />
             )}
           </Box>
         </div>
