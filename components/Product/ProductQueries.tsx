@@ -23,6 +23,7 @@ export const GET_PRODUCT = gql`
       }
       brand {
         id
+        slug
         name
         logo
         since

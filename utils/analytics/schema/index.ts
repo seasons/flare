@@ -92,6 +92,7 @@ export enum ActionTypes {
  * Action event discriptors / names
  */
 export enum ActionNames {
+  ReadMoreTapped = "Read more tapped",
   // Nav
   NavigationButtonClicked = "Navigation button clicked",
   BurgerClicked = "Navigation burger clicked",

@@ -26,7 +26,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   const Text = () => {
     if (showBrand && brandName && brandSlug) {
       return (
-        <Link href="/designer/[Product]" as={`/designer/${brandSlug}`}>
+        <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
           <Sans size="2" mt="0.5">
             {brandName}
           </Sans>
