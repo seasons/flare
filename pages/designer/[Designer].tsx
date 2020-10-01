@@ -16,7 +16,6 @@ import { withRouter } from "next/router"
 const GET_BRAND = gql`
   query GetBrand($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
     brand(where: { slug: $slug }) {
-      __typename
       id
       name
       logo
@@ -80,7 +79,6 @@ const Designer = withApollo({ ssr: true })(
         skip: 0,
         orderBy: "createdAt_DESC",
       },
-      // fetchPolicy: "no-cache",
     })
 
     const products = data?.brand?.products?.edges
@@ -223,38 +221,42 @@ const Designer = withApollo({ ssr: true })(
         <Box pt={[1, 5]} px={[2, 2, 2, 5, 5]}>
           <Grid>
             <Row>
-              <Col md="6" sm="12">
-                <Sans size="3" style={{ display: "inline" }}>
-                  Designers
-                </Sans>
-                <Sans size="3" style={{ display: "inline" }}>
-                  {" "}
-                  /{" "}
-                </Sans>
-                <Sans size="3" style={{ display: "inline" }}>
-                  {brand?.name}
-                </Sans>
-                <Spacer mb={9} />
-                <Sans size="6" style={{ textDecoration: "underline" }}>
-                  {brand?.name}
-                </Sans>
-                {!!brand?.description && (
-                  <>
-                    <Spacer mb={3} />
-                    <Sans size="3">About</Sans>
-                    <ReadMore
-                      readMoreExpanded={readMoreExpanded}
-                      setReadMoreExpanded={setReadMoreExpanded}
-                      content={brand?.description}
-                      maxChars={250}
-                    />
-                  </>
-                )}
-                <Spacer mb={6} />
-                <MetaData />
-              </Col>
               <Col md="5" sm="12">
-                <HomepageCarousel images={desktopImages} />
+                <Box>
+                  <Sans size="3" style={{ display: "inline" }}>
+                    Designers
+                  </Sans>
+                  <Sans size="3" style={{ display: "inline" }}>
+                    {" "}
+                    /{" "}
+                  </Sans>
+                  <Sans size="3" style={{ display: "inline" }}>
+                    {brand?.name}
+                  </Sans>
+                  <Spacer mb={9} />
+                  <Sans size="6" style={{ textDecoration: "underline" }}>
+                    {brand?.name}
+                  </Sans>
+                  {!!brand?.description && (
+                    <>
+                      <Spacer mb={3} />
+                      <Sans size="3">About</Sans>
+                      <ReadMore
+                        readMoreExpanded={readMoreExpanded}
+                        setReadMoreExpanded={setReadMoreExpanded}
+                        content={brand?.description}
+                        maxChars={250}
+                      />
+                    </>
+                  )}
+                  <Spacer mb={6} />
+                  <MetaData />
+                </Box>
+              </Col>
+              <Col md="7" sm="12">
+                <Box pl={[0, 0, 0, 6, 6]} pt={[6, 6, 6, 0, 0]}>
+                  <HomepageCarousel images={desktopImages} pagerHorizontal />
+                </Box>
               </Col>
             </Row>
             <Spacer mb={8} />
@@ -269,7 +271,6 @@ const Designer = withApollo({ ssr: true })(
             </Row>
           </Grid>
         </Box>
-        <Spacer mb="125px" />
       </Layout>
     )
   })
