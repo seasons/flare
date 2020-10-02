@@ -125,17 +125,17 @@ const Home = screenTrack(() => ({
         <ColumnList
           items={[
             {
-              title: "You choose your items",
+              title: "Reserve your favorite styles",
               text:
                 "Browse from a curated list of brands and reserve up to 3 pieces at a time. Save your favorites for later & build a queue.",
             },
             {
-              title: "Wear them for up to 30-days",
+              title: "Wear for up to 30-days",
               text:
                 "Wear the styles you want to try, but aren’t sure if you want to buy. A new way to discover your style without the commitment or buyers remorse.",
             },
             {
-              title: "Returns & dry cleaning’s on us",
+              title: "Shipping & returns are on us",
               text:
                 "We handle the shipping back and forth, restoring and cleaning each piece for you. We cover rental insurance too.",
             },

@@ -13,17 +13,13 @@ import { Check } from "../SVGs"
 const imageURL = require("../../public/images/homepage/Hero-Image-10-29-20.png")
 const imageAlt = "Collage of editorial product images"
 
-const headerText = "Wear, swap & repeat."
+const headerText = "Wear, Swap, Repeat"
 
 const listText = [
-  "Free shipping, returns & dry cleaning",
-  "Purchase items you like at a discount",
-  "Pause or cancel anytime",
+  "Free shipping, returns & dry cleaning.",
+  "Purchase items you love directly from the app.",
+  "No commitment. Pause or cancel anytime.",
 ]
-
-const desktopHeight = "800px"
-const tableHeight = "600px"
-const mobileHeight = "550px"
 
 const DesktopAndTabletContent = ({ paddingBottom }) => {
   return (
@@ -35,7 +31,7 @@ const DesktopAndTabletContent = ({ paddingBottom }) => {
           </Display>
           <Spacer mb={1} />
           <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
-            Access hundreds of styles and discover new brands, all with zero commimtment. Exclusively in select cities.
+            Access hundreds of styles, discover new brands, all with zero commitment. Exclusively in select cities.
           </Sans>
           <Spacer mb={4} />
           <Flex flexDirection="row">
@@ -78,7 +74,7 @@ const DesktopHero = () => {
         </DesktopImageWrapper>
         <BottomTextWrapper px={[2, 2, 2, 5, 5]} pb={5}>
           <Sans size="4" color="black50">
-            — Over 500+ curated, in-season, and vintage styles.
+            — Over 500+ curated, in-season, and archive styles.
           </Sans>
         </BottomTextWrapper>
       </Flex>
@@ -101,7 +97,7 @@ const TabletHero = () => {
         <TabletImageWrapper style={{ backgroundImage: `url(${imageResize(imageURL, "large")})` }} />
         <BottomTextWrapper px={[2, 2, 2, 5, 5]}>
           <Sans size="4" color="black50">
-            — Over 500+ curated, in-season, and vintage styles.
+            — Over 500+ curated, in-season, and archive styles.
           </Sans>
         </BottomTextWrapper>
       </Flex>
@@ -122,7 +118,7 @@ const MobileHero = () => {
               </Display>
               <Spacer mb={1} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
-                Access hundreds of styles and discover new brands, all with zero commimtment.
+                Access hundreds of styles, discover new brands, all with zero commitment.
               </Sans>
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                 Exclusively in select cities.

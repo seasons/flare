@@ -8,10 +8,7 @@ export const SeasonsLogo: React.FC<BoxProps> = () => {
     <Link href="/">
       <StyledAnchor href="/">
         <LogoContainer>
-          <>
-            <Logo />
-            <LogoText>Seasons</LogoText>
-          </>
+          <LogoText>Seasons</LogoText>
         </LogoContainer>
       </StyledAnchor>
     </Link>
@@ -30,18 +27,10 @@ const LogoContainer = styled.div`
   color: black;
 `
 
-const Logo = styled.div`
-  background: url("/img/LogoMark.svg") no-repeat center;
-  background-size: contain;
-  width: 22px;
-  height: 22px;
-  margin-right: 10px;
-`
-
 const LogoText = styled.div`
   font-family: ${fontFamily.display.regular as CSSObject};
-  font-size: 20px;
+  font-size: 28px;
   letter-spacing: 2px;
-  line-height: 24px;
+  line-height: 36px;
   text-transform: uppercase;
 `
