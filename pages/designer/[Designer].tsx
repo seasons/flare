@@ -129,16 +129,15 @@ const Designer = withApollo({ ssr: true })(
     }, 100)
 
     useEffect(() => {
-      let listener
       if (typeof window !== "undefined") {
-        listener = window.addEventListener("scroll", onScroll)
+        window.addEventListener("scroll", onScroll)
       }
       return () => window.removeEventListener("scroll", onScroll)
     }, [onScroll])
 
     const brand = data && data.brand
 
-    const title = `${brand?.name}`
+    const title = brand?.name
     const description = brand?.description
 
     const desktopImages: ProgressiveImageProps[] =
@@ -153,14 +152,14 @@ const Designer = withApollo({ ssr: true })(
       const website = brand?.websiteUrl
       if (basedIn || since || website) {
         return (
-          <Box>
+          <Box width="100%">
             <Separator />
             {!!basedIn && (
               <>
                 <Spacer mb={2} />
                 <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-                  <Sans size="3">Headquarters</Sans>
-                  <Sans size="3" color="black50">
+                  <Sans size="4">Headquarters</Sans>
+                  <Sans size="4" color="black50">
                     {basedIn}
                   </Sans>
                 </Flex>
@@ -170,11 +169,13 @@ const Designer = withApollo({ ssr: true })(
             {!!website && (
               <>
                 <Spacer mb={2} />
-                <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-                  <Sans size="3">Website</Sans>
-                  <Sans size="3" color="black50">
-                    {website}
-                  </Sans>
+                <Flex flexDirection="row" justifyContent="space-between" width="100%">
+                  <Sans size="4">Website</Sans>
+                  <a href={website} style={{ textDecoration: "none", cursor: "ne-resize" }}>
+                    <Sans size="4" color="black50">
+                      {website}
+                    </Sans>
+                  </a>
                 </Flex>
                 <Spacer mb={2} />
                 <Separator />
@@ -184,8 +185,8 @@ const Designer = withApollo({ ssr: true })(
               <>
                 <Spacer mb={2} />
                 <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-                  <Sans size="3">Since</Sans>
-                  <Sans size="3" color="black50">
+                  <Sans size="4">Since</Sans>
+                  <Sans size="4" color="black50">
                     {DateTime.fromISO(since).year}
                   </Sans>
                 </Flex>
@@ -212,14 +213,14 @@ const Designer = withApollo({ ssr: true })(
         <Sans size="3" style={{ display: "inline" }}>
           {brand?.name}
         </Sans>
-        <Spacer mb={9} />
-        <Sans size="6" style={{ textDecoration: "underline" }}>
+        <Spacer mb={10} />
+        <Sans size="9" style={{ textDecoration: "underline" }}>
           {brand?.name}
         </Sans>
         {!!brand?.description && (
           <>
             <Spacer mb={3} />
-            <Sans size="3">About</Sans>
+            <Sans size="4">About</Sans>
             <ReadMore
               readMoreExpanded={readMoreExpanded}
               setReadMoreExpanded={setReadMoreExpanded}
@@ -236,7 +237,7 @@ const Designer = withApollo({ ssr: true })(
     return (
       <Layout fixedNav includeDefaultHead={false}>
         <Head>
-          <title>{`${title} - Seasons`}</title>
+          <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
           <meta content={description} name="description" />
           <meta property="og:title" content={title} />
           <meta property="og:description" content={description} />
@@ -256,10 +257,10 @@ const Designer = withApollo({ ssr: true })(
         <Box pt={[1, 5]} px={[2, 2, 2, 5, 5]}>
           <Grid>
             <Row>
-              <Col md="5" sm="12">
+              <Col md="6" sm="12">
                 {!data ? <DesignerTextSkeleton /> : <TextContent />}
               </Col>
-              <Col md="7" sm="12">
+              <Col md="6" sm="12">
                 <Box pl={[0, 0, 6, 6, 6]} pt={[6, 6, 0, 0, 0]}>
                   {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
                 </Box>

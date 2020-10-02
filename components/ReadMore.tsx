@@ -18,7 +18,7 @@ export const ReadMore = React.memo(({ content, maxChars, textColor, readMoreExpa
   const isAlreadyExpanded = readMoreExpanded || content?.length <= maxChars
 
   const root = (
-    <Sans size="3" color={textColor ? textColor : color("black50")}>
+    <Sans size="4" color={textColor ? textColor : color("black50")}>
       {content}
     </Sans>
   )
@@ -97,7 +97,7 @@ function truncate({
           truncatedChildren.push(
             <span>
               {"... "}
-              <Sans size="3" onClick={onExpand} style={{ display: "inline", cursor: "pointer" }} color="black100">
+              <Sans size="4" onClick={onExpand} style={{ display: "inline", cursor: "pointer" }} color="black100">
                 Read&nbsp;more
               </Sans>
             </span>

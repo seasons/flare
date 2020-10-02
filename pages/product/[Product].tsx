@@ -84,7 +84,7 @@ const Product = withApollo({ ssr: true })(
                   <Box px={2}>
                     <Link href="/signup">
                       <Button width="100%" block variant="primaryWhite" onClick={null}>
-                        Join the waitlist
+                        Create an account
                       </Button>
                     </Link>
                   </Box>

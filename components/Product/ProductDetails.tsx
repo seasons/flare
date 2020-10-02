@@ -40,7 +40,7 @@ export const ProductDetails: React.FC<{
               {name}
             </Sans>
             <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
-              <Sans size="4" color="gray" style={{ cursor: "pointer" }}>
+              <Sans size="4" color="gray" style={{ cursor: "pointer", textDecoration: "underline" }}>
                 {brandName}
               </Sans>
             </Link>
@@ -48,7 +48,7 @@ export const ProductDetails: React.FC<{
         </Box>
       </Flex>
       <Spacer mb={1} />
-      <Sans size="3" color="gray" lineHeight={1.6}>
+      <Sans size="4" color="gray" lineHeight={1.6}>
         {description}
       </Sans>
       <Spacer mb={3} />

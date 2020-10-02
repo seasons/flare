@@ -70,9 +70,17 @@ export const themeProps = {
         fontSize: 24,
         lineHeight: 32,
       },
+      "8": {
+        fontSize: 28,
+        lineHeight: 36,
+      },
       "9": {
         fontSize: 32,
         lineHeight: 40,
+      },
+      "10": {
+        fontSize: 40,
+        lineHeight: 48,
       },
     },
     /** Unica  */

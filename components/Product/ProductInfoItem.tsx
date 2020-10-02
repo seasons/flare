@@ -13,10 +13,10 @@ export const ProductInfoItem: React.FC<Props> = ({ detailType, detailValue, hide
     <>
       <Spacer mb={2} />
       <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
-        <Sans size="3" color="black">
+        <Sans size="4" color="black">
           {detailType}
         </Sans>
-        <Sans size="3" color="gray">
+        <Sans size="4" color="gray">
           {detailValue}
         </Sans>
       </Flex>

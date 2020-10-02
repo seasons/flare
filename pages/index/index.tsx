@@ -18,6 +18,7 @@ import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { screenTrack, Schema } from "../../utils/analytics"
 import { BRAND_LIST } from "../../components/Homepage/Brands"
+import { HOW_IT_WORKS_TEXT } from "../../components/Product/HowItWorks"
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts($brandSlugs: [String!]) {
@@ -39,7 +40,7 @@ export const HOME_QUERY = gql`
         id
       }
     }
-    blogPosts(count: 2) {
+    blogPosts(count: 3) {
       id
       url
       name
@@ -116,31 +117,15 @@ const Home = screenTrack(() => ({
       },
     })
 
+    const communityPosts = data?.blogPosts?.slice(1, 3)
+
     return (
       <Layout fixedNav>
         <Nav fixed />
-        <Hero />
+        <Hero post={data?.blogPosts?.[0]} />
         <Spacer mb={10} />
 
-        <ColumnList
-          items={[
-            {
-              title: "You choose your items",
-              text:
-                "Browse from a curated list of brands and reserve up to 3 pieces at a time. Save your favorites for later & build a queue.",
-            },
-            {
-              title: "Wear them for up to 30-days",
-              text:
-                "Wear the styles you want to try, but aren’t sure if you want to buy. A new way to discover your style without the commitment or buyers remorse.",
-            },
-            {
-              title: "Returns & dry cleaning’s on us",
-              text:
-                "We handle the shipping back and forth, restoring and cleaning each piece for you. We cover rental insurance too.",
-            },
-          ]}
-        />
+        <ColumnList items={HOW_IT_WORKS_TEXT} />
 
         <Spacer mb={10} />
         <Box px={[2, 2, 2, 5, 5]}>
@@ -156,7 +141,7 @@ const Home = screenTrack(() => ({
         </Box>
 
         <Spacer mb={10} />
-        <FromCommunity blogPosts={data?.blogPosts} />
+        <FromCommunity blogPosts={communityPosts} />
         <Spacer mb={10} />
 
         {!!data?.justAddedBottoms?.length && (
