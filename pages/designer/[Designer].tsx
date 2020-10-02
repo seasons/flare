@@ -121,7 +121,7 @@ const Designer = withApollo({ ssr: true })(
           },
         })
       }
-    }, 400)
+    }, 300)
 
     useEffect(() => {
       let listener
@@ -256,7 +256,7 @@ const Designer = withApollo({ ssr: true })(
               </Col>
               <Col md="7" sm="12">
                 <Box pl={[0, 0, 0, 6, 6]} pt={[6, 6, 6, 0, 0]}>
-                  <HomepageCarousel images={desktopImages} pagerHorizontal />
+                  {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
                 </Box>
               </Col>
             </Row>
