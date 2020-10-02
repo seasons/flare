@@ -14,6 +14,7 @@ import { ProductGridItem } from "../../components/Product/ProductGridItem"
 import { ReadMore } from "../../components/ReadMore"
 import { withRouter } from "next/router"
 import { DesignerTextSkeleton } from "../../components/Designer/DesignerTextSkeleton"
+import { Spinner } from "../../components/Spinner"
 
 const GET_BRAND = gql`
   query GetBrand($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
@@ -71,6 +72,7 @@ const Designer = withApollo({ ssr: true })(
     }
   })(({ router }) => {
     const [readMoreExpanded, setReadMoreExpanded] = useState(false)
+    const [fetchingMore, setFetchingMore] = useState(false)
     const slug = router.query.Designer
     const imageContainer = useRef(null)
 
@@ -89,11 +91,13 @@ const Designer = withApollo({ ssr: true })(
     const onScroll = debounce(() => {
       const shouldLoadMore =
         !loading &&
+        !fetchingMore &&
         !!aggregateCount &&
         aggregateCount > products?.length &&
         window.innerHeight >= imageContainer?.current?.getBoundingClientRect().bottom - 200
 
       if (shouldLoadMore) {
+        setFetchingMore(true)
         fetchMore({
           variables: {
             skip: products?.length,
@@ -117,11 +121,12 @@ const Designer = withApollo({ ssr: true })(
               },
             })
 
+            setFetchingMore(false)
             return newData
           },
         })
       }
-    }, 300)
+    }, 100)
 
     useEffect(() => {
       let listener
@@ -255,7 +260,7 @@ const Designer = withApollo({ ssr: true })(
                 {!data ? <DesignerTextSkeleton /> : <TextContent />}
               </Col>
               <Col md="7" sm="12">
-                <Box pl={[0, 0, 0, 6, 6]} pt={[6, 6, 6, 0, 0]}>
+                <Box pl={[0, 0, 6, 6, 6]} pt={[6, 6, 0, 0, 0]}>
                   {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
                 </Box>
               </Col>
@@ -269,6 +274,12 @@ const Designer = withApollo({ ssr: true })(
                   </Box>
                 </Col>
               ))}
+              {loading ||
+                (fetchingMore && (
+                  <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
+                    <Spinner />
+                  </Box>
+                ))}
             </Row>
           </Grid>
         </Box>
