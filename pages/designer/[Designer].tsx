@@ -172,9 +172,11 @@ const Designer = withApollo({ ssr: true })(
                 <Spacer mb={2} />
                 <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
                   <Sans size="3">Website</Sans>
-                  <Sans size="3" color="black50">
-                    {website}
-                  </Sans>
+                  <a href={website} style={{ textDecoration: "none", cursor: "ne-resize" }}>
+                    <Sans size="3" color="black50">
+                      {website}
+                    </Sans>
+                  </a>
                 </Flex>
                 <Spacer mb={2} />
                 <Separator />
