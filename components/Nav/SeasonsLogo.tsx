@@ -1,5 +1,5 @@
 import styled, { CSSObject } from "styled-components"
-import { fontFamily } from "../Typography"
+import { fontFamily, Display } from "../Typography"
 import { BoxProps } from "../Box"
 import Link from "next/link"
 
@@ -8,7 +8,7 @@ export const SeasonsLogo: React.FC<BoxProps> = () => {
     <Link href="/">
       <StyledAnchor href="/">
         <LogoContainer>
-          <LogoText>Seasons</LogoText>
+          <Display size="8">SEASONS</Display>
         </LogoContainer>
       </StyledAnchor>
     </Link>
@@ -25,12 +25,4 @@ const LogoContainer = styled.div`
   flex-direction: row;
   text-decoration: none;
   color: black;
-`
-
-const LogoText = styled.div`
-  font-family: ${fontFamily.display.regular as CSSObject};
-  font-size: 28px;
-  letter-spacing: 2px;
-  line-height: 36px;
-  text-transform: uppercase;
 `
