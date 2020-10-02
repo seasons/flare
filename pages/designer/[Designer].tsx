@@ -13,6 +13,7 @@ import { ProgressiveImageProps } from "../../components/Image/ProgressiveImage"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
 import { ReadMore } from "../../components/ReadMore"
 import { withRouter } from "next/router"
+import { DesignerTextSkeleton } from "../../components/Designer/DesignerTextSkeleton"
 
 const GET_BRAND = gql`
   query GetBrand($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
@@ -194,6 +195,39 @@ const Designer = withApollo({ ssr: true })(
       }
     }
 
+    const TextContent = () => (
+      <Box>
+        <Sans size="3" style={{ display: "inline" }}>
+          Designers
+        </Sans>
+        <Sans size="3" style={{ display: "inline" }}>
+          {" "}
+          /{" "}
+        </Sans>
+        <Sans size="3" style={{ display: "inline" }}>
+          {brand?.name}
+        </Sans>
+        <Spacer mb={9} />
+        <Sans size="6" style={{ textDecoration: "underline" }}>
+          {brand?.name}
+        </Sans>
+        {!!brand?.description && (
+          <>
+            <Spacer mb={3} />
+            <Sans size="3">About</Sans>
+            <ReadMore
+              readMoreExpanded={readMoreExpanded}
+              setReadMoreExpanded={setReadMoreExpanded}
+              content={brand?.description}
+              maxChars={250}
+            />
+          </>
+        )}
+        <Spacer mb={6} />
+        <MetaData />
+      </Box>
+    )
+
     return (
       <Layout fixedNav includeDefaultHead={false}>
         <Head>
@@ -218,36 +252,7 @@ const Designer = withApollo({ ssr: true })(
           <Grid>
             <Row>
               <Col md="5" sm="12">
-                <Box>
-                  <Sans size="3" style={{ display: "inline" }}>
-                    Designers
-                  </Sans>
-                  <Sans size="3" style={{ display: "inline" }}>
-                    {" "}
-                    /{" "}
-                  </Sans>
-                  <Sans size="3" style={{ display: "inline" }}>
-                    {brand?.name}
-                  </Sans>
-                  <Spacer mb={9} />
-                  <Sans size="6" style={{ textDecoration: "underline" }}>
-                    {brand?.name}
-                  </Sans>
-                  {!!brand?.description && (
-                    <>
-                      <Spacer mb={3} />
-                      <Sans size="3">About</Sans>
-                      <ReadMore
-                        readMoreExpanded={readMoreExpanded}
-                        setReadMoreExpanded={setReadMoreExpanded}
-                        content={brand?.description}
-                        maxChars={250}
-                      />
-                    </>
-                  )}
-                  <Spacer mb={6} />
-                  <MetaData />
-                </Box>
+                {!data ? <DesignerTextSkeleton /> : <TextContent />}
               </Col>
               <Col md="7" sm="12">
                 <Box pl={[0, 0, 0, 6, 6]} pt={[6, 6, 6, 0, 0]}>
