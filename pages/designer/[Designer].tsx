@@ -153,7 +153,7 @@ const Designer = withApollo({ ssr: true })(
       const website = brand?.websiteUrl
       if (basedIn || since || website) {
         return (
-          <Box>
+          <Box width="100%">
             <Separator />
             {!!basedIn && (
               <>
@@ -170,7 +170,7 @@ const Designer = withApollo({ ssr: true })(
             {!!website && (
               <>
                 <Spacer mb={2} />
-                <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
+                <Flex flexDirection="row" justifyContent="space-between" width="100%">
                   <Sans size="3">Website</Sans>
                   <a href={website} style={{ textDecoration: "none", cursor: "ne-resize" }}>
                     <Sans size="3" color="black50">
