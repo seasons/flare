@@ -1,21 +1,24 @@
-import { GET_PRODUCT } from "../../components/Product/ProductQueries"
-import React from "react"
-import { useQuery } from "@apollo/react-hooks"
-import withData from "../../lib/apollo"
-import { ProductDetails } from "../../components/Product/ProductDetails"
-import { Grid, Col, Row } from "../../components/Grid"
-import { Box, Layout, Spacer } from "../../components"
-import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
-import { ProgressiveImage } from "../../components/Image"
-import { HowItWorks } from "../../components/Product/HowItWorks"
-import { Button } from "../../components/Button"
-import { Media } from "../../components/Responsive"
-import { Carousel } from "../../components/Carousel"
-import { Schema, screenTrack } from "../../utils/analytics"
+import Head from "next/head"
 import { withRouter } from "next/router"
-import { Link } from "../../components/Link"
+import React from "react"
 
-const Product = withData(
+import { useQuery } from "@apollo/react-hooks"
+
+import { Box, Layout, Spacer } from "../../components"
+import { Button } from "../../components/Button"
+import { Carousel } from "../../components/Carousel"
+import { Col, Grid, Row } from "../../components/Grid"
+import { ProgressiveImage } from "../../components/Image"
+import { Link } from "../../components/Link"
+import { HowItWorks } from "../../components/Product/HowItWorks"
+import { ProductDetails } from "../../components/Product/ProductDetails"
+import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
+import { GET_PRODUCT } from "../../components/Product/ProductQueries"
+import { Media } from "../../components/Responsive"
+import withApollo from "../../lib/apollo"
+import { Schema, screenTrack } from "../../utils/analytics"
+
+const Product = withApollo({ ssr: true })(
   screenTrack(({ router }) => {
     return {
       page: Schema.PageNames.ProductPage,
@@ -33,8 +36,23 @@ const Product = withData(
 
     const product = data && data.product
 
+    const title = `${product?.name} by ${product?.brand?.name}`
+    const description = product && product.description
+
     return (
-      <Layout fixedNav>
+      <Layout fixedNav includeDefaultHead={false}>
+        <Head>
+          <title>{`${title} - Seasons`}</title>
+          <meta content={description} name="description" />
+          <meta property="og:title" content={title} />
+          <meta property="og:description" content={description} />
+          <meta property="twitter:description" content={description} />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="Seasons" />
+          <meta property="og:url" content={`https://www.seasons.nyc/product/${slug}`} />
+          <meta property="og:image" content={product?.images?.[0].url.replace("fm=webp", "fm=jpg")} />
+          <meta property="twitter:card" content="summary" />
+        </Head>
         <Box pt={[1, 5]}>
           <Grid>
             <Row>

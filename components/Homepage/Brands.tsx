@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { Grid, Row, Col } from "../Grid"
+import { Link } from "../Link"
 import { Sans, Box, Spacer, Flex } from "../"
+import { Display } from "../Typography"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 
-const includedBrands = [
+export const BRAND_LIST = [
   "acne-studios",
   "aime-leon-dore",
   "amiri",
@@ -51,18 +53,9 @@ const includedBrands = [
 export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
   const [groupedBrands, setGroupedBrands] = useState([])
 
-  const filterBrands = (brands) => {
-    const filteredBrands = brands.filter((brand) => {
-      return includedBrands.includes(brand.slug)
-    })
-    return filteredBrands
-  }
-
   const groupBrands = (brands) => {
-    const filtered = filterBrands(brands)
-
     const brandPairs = toPairs(
-      groupBy(filtered, ({ name }) => {
+      groupBy(brands, ({ name }) => {
         const char = name.charAt(0)
         if (char.match(/[a-z]/i)) {
           return char
@@ -95,7 +88,7 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
   return (
     <Grid px={[1, 1, 1, 4, 4]}>
       <Box px={1}>
-        <Sans size="11">Brand index</Sans>
+        <Display size="9">Brand index</Display>
       </Box>
       <Spacer mb={3} />
       <Row>
@@ -107,9 +100,11 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
                   <Sans size="5">{group.letter}</Sans>
                   <Spacer mb={1} />
                   {group.data.map((brand) => (
-                    <Sans size="4" color="black50" key={brand.name}>
-                      {brand.name}
-                    </Sans>
+                    <Link href="/designer/[Designer]" as={`/designer/${brand.slug}`}>
+                      <Sans size="4" color="black50" key={brand.name}>
+                        {brand.name}
+                      </Sans>
+                    </Link>
                   ))}
                 </Box>
               </Flex>

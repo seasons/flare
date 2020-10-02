@@ -1,15 +1,16 @@
 import React from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
-import { Flex, Sans, Spacer, Box, MaxWidth, Picture } from "../"
+import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "../"
+import { Display } from "../Typography"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"
 import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
 import { Button } from "../Button"
-import { ListCheck } from "../SVGs"
+import { Check } from "../SVGs"
 
-const imageURL = require("../../public/images/homepage/Collage.png")
+const imageURL = require("../../public/images/homepage/Hero-Image-10-29-20.png")
 const imageAlt = "Collage of editorial product images"
 
 const headerText = "Wear, swap & repeat."
@@ -24,14 +25,14 @@ const desktopHeight = "800px"
 const tableHeight = "600px"
 const mobileHeight = "550px"
 
-const DesktopAndTabletContent = ({ height }) => {
+const DesktopAndTabletContent = ({ paddingBottom }) => {
   return (
-    <Box height={height} maxWidth="500px" style={{ zIndex: 3, position: "relative" }}>
+    <Box pb={paddingBottom} style={{ zIndex: 3, position: "relative" }}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
         <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-          <Sans size="11" color="black100">
+          <Display size="9" color="black100">
             {headerText}
-          </Sans>
+          </Display>
           <Spacer mb={1} />
           <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
             Access hundreds of styles and discover new brands, all with zero commimtment. Exclusively in select cities.
@@ -46,8 +47,8 @@ const DesktopAndTabletContent = ({ height }) => {
           </Flex>
           <Spacer mb={4} />
           {listText.map((listItem) => (
-            <Flex mb={2} key={listItem}>
-              <ListCheck />
+            <Flex mb={2} key={listItem} flexDirection="row" alignItems="center">
+              <Check />
               <Spacer mr={2} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                 {listItem}
@@ -62,20 +63,20 @@ const DesktopAndTabletContent = ({ height }) => {
 
 const DesktopHero = () => {
   return (
-    <MaxWidth style={{ overflow: "hidden" }}>
+    <MaxWidth>
       <Flex
         flexDirection="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         width="100%"
         alignItems="center"
-        pl={[2, 2, 2, 5, 5]}
+        px={[2, 2, 2, 5, 5]}
         pt={5}
       >
-        <DesktopAndTabletContent height={desktopHeight} />
+        <DesktopAndTabletContent paddingBottom={5} />
         <DesktopImageWrapper>
           <Picture src={imageResize(imageURL, "hero")} alt={imageAlt} />
         </DesktopImageWrapper>
-        <BottomTextWrapper px={[2, 2, 2, 5, 5]}>
+        <BottomTextWrapper px={[2, 2, 2, 5, 5]} pb={5}>
           <Sans size="4" color="black50">
             — Over 500+ curated, in-season, and vintage styles.
           </Sans>
@@ -90,16 +91,14 @@ const TabletHero = () => {
     <MaxWidth style={{ overflow: "hidden" }}>
       <Flex
         flexDirection="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         width="100%"
         alignItems="center"
-        pl={[2, 2, 2, 5, 5]}
+        px={[2, 2, 2, 5, 5]}
         pt={5}
       >
-        <DesktopAndTabletContent height={tableHeight} />
-        <TabletImageWrapper>
-          <Picture src={imageResize(imageURL, "large")} alt={imageAlt} />
-        </TabletImageWrapper>
+        <DesktopAndTabletContent paddingBottom={8} />
+        <TabletImageWrapper style={{ backgroundImage: `url(${imageResize(imageURL, "large")})` }} />
         <BottomTextWrapper px={[2, 2, 2, 5, 5]}>
           <Sans size="4" color="black50">
             — Over 500+ curated, in-season, and vintage styles.
@@ -118,9 +117,9 @@ const MobileHero = () => {
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Spacer mb={10} />
-              <Sans size="9" color="black100">
+              <Display size="9" color="black100">
                 {headerText}
-              </Sans>
+              </Display>
               <Spacer mb={1} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                 Access hundreds of styles and discover new brands, all with zero commimtment.
@@ -136,8 +135,8 @@ const MobileHero = () => {
               <GetTheAppButton block />
               <Spacer mb={4} />
               {listText.map((listItem) => (
-                <Flex mb={2} key={listItem}>
-                  <ListCheck />
+                <Flex mb={2} key={listItem} flexDirection="row" alignItems="center">
+                  <Check />
                   <Spacer mr={2} />
                   <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                     {listItem}
@@ -161,6 +160,9 @@ export const Hero: React.FC = () => {
     <>
       <Media greaterThanOrEqual="lg">
         <DesktopHero />
+        <Box px={[2, 2, 2, 5, 5]}>
+          <Separator />
+        </Box>
       </Media>
       <Media between={["md", "lg"]}>
         <TabletHero />
@@ -180,38 +182,25 @@ const BottomTextWrapper = styled(Box)`
 `
 
 const TabletImageWrapper = styled(Box)`
-  position: absolute;
-  overflow: hidden;
-  height: ${tableHeight};
-  min-width: 1120px;
-  top: 40px;
-  left: 400px;
-
-  img {
-    height: 100%;
-    max-width: none !important;
-  }
+  width: 40%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 `
 
 const DesktopImageWrapper = styled(Box)`
-  position: absolute;
-  overflow: hidden;
-  height: ${desktopHeight};
-  min-width: 1120px;
-  left: 600px;
-
+  width: 50%;
   img {
-    height: 100%;
-    max-width: none !important;
+    width: 100%;
   }
 `
 
 const MobileImageWrapper = styled(Box)`
   position: relative;
   overflow: hidden;
-  height: ${mobileHeight};
+  width: 100%;
   img {
-    height: 100%;
-    max-width: none !important;
+    width: 100%;
   }
 `

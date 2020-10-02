@@ -1,21 +1,28 @@
 import { Theme } from "../lib/theme"
-import { Nav } from "./Nav"
+import { Box } from "./Box"
 import { Footer } from "./Footer"
 import { LayoutHead } from "./LayoutHead"
-import { Box } from "./Box"
 import { MaxWidth } from "./MaxWidth"
+import { Nav } from "./Nav"
 
 interface LayoutProps {
   fixedNav?: boolean
   hideFooter?: boolean
   children?: any
   footerBottomPadding?: string | string[]
+  includeDefaultHead?: boolean
 }
 
-export const Layout = ({ fixedNav = false, children, hideFooter, footerBottomPadding }: LayoutProps) => {
+export const Layout = ({
+  fixedNav = false,
+  children,
+  hideFooter,
+  footerBottomPadding,
+  includeDefaultHead = true,
+}: LayoutProps) => {
   return (
     <>
-      <LayoutHead />
+      {includeDefaultHead && <LayoutHead />}
       <Theme>
         <Nav fixed={fixedNav} />
         <MaxWidth>

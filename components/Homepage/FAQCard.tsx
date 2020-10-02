@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react"
 import { Col } from "../Grid"
+import { Display } from "../Typography"
 import { Sans, Box, Spacer, Flex } from ".."
 import styled from "styled-components"
 import { color } from "../../helpers"
@@ -37,19 +38,19 @@ export const FAQCard: React.FC<{
     updateHeight()
     if (window) {
       window.addEventListener("resize", updateHeight)
-      return window.removeEventListener("resize", updateHeight)
+      return () => window.removeEventListener("resize", updateHeight)
     }
   }, [])
 
   return (
     <Col md="4" xs="12" px={1}>
       <Flex mb={5} flexDirection="column">
-        <Sans size="11" color="black15">{`0${index + 1}`}</Sans>
+        <Sans size="9" color="black15">{`0${index + 1}`}</Sans>
         <Spacer mb={1} />
         <Box ref={container}>
-          <Sans size="4" style={{ maxWidth: "90%" }}>
+          <Display size="4" style={{ maxWidth: "90%" }}>
             {step.title}
-          </Sans>
+          </Display>
           <Spacer mb={1} />
           <InjectedSans
             size="4"

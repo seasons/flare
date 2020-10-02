@@ -13,14 +13,25 @@ import {
   FromCommunity,
 } from "../../components/Homepage"
 import { Spacer, Layout, Separator, Box } from "../../components"
-import withData from "../../lib/apollo"
+import withApollo from "../../lib/apollo"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { screenTrack, Schema } from "../../utils/analytics"
+import { BRAND_LIST } from "../../components/Homepage/Brands"
 
 export const HOME_QUERY = gql`
-  query GetBrowseProducts {
-    brands {
+  query GetBrowseProducts($brandSlugs: [String!]) {
+    paymentPlans(where: { status: "active" }) {
+      id
+      name
+      description
+      tagline
+      price
+      planID
+      tier
+      itemCount
+    }
+    brands(where: { products_some: { id_not: null }, name_not: null, slug_in: $brandSlugs }) {
       id
       slug
       name
@@ -28,7 +39,7 @@ export const HOME_QUERY = gql`
         id
       }
     }
-    blogPosts(count: 3) {
+    blogPosts(count: 2) {
       id
       url
       name
@@ -98,21 +109,20 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(
-  withData(() => {
-    const { data } = useQuery(HOME_QUERY, {})
+  withApollo({ ssr: true })(() => {
+    const { data } = useQuery(HOME_QUERY, {
+      variables: {
+        brandSlugs: BRAND_LIST,
+      },
+    })
 
     return (
       <Layout fixedNav>
         <Nav fixed />
         <Hero />
         <Spacer mb={10} />
-        <Box px={[2, 2, 2, 5, 5]}>
-          <Separator />
-        </Box>
-        <Spacer mb={10} />
 
         <ColumnList
-          title="How membership works"
           items={[
             {
               title: "You choose your items",
@@ -165,9 +175,7 @@ const Home = screenTrack(() => ({
           <Separator />
         </Box>
 
-        <Spacer mb={12} />
-        <ChooseMembership />
-        <Spacer mb={12} />
+        <ChooseMembership paymentPlans={data?.paymentPlans} />
 
         <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
