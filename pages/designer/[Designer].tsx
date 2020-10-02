@@ -7,6 +7,7 @@ import { DateTime } from "luxon"
 import withApollo from "../../lib/apollo"
 import { Schema, screenTrack } from "../../utils/analytics"
 import { gql } from "apollo-boost"
+import { debounce } from "lodash"
 import { HomepageCarousel } from "../../components/Homepage/HomepageCarousel"
 import { ProgressiveImageProps } from "../../components/Image/ProgressiveImage"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
@@ -84,17 +85,14 @@ const Designer = withApollo({ ssr: true })(
     const products = data?.brand?.products?.edges
     const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
 
-    let isFetchingMore = false
-
-    const onScroll = () => {
-      if (
+    const onScroll = debounce(() => {
+      const shouldLoadMore =
         !loading &&
-        !isFetchingMore &&
         !!aggregateCount &&
         aggregateCount > products?.length &&
         window.innerHeight >= imageContainer?.current?.getBoundingClientRect().bottom - 200
-      ) {
-        isFetchingMore = true
+
+      if (shouldLoadMore) {
         fetchMore({
           variables: {
             skip: products?.length,
@@ -121,18 +119,16 @@ const Designer = withApollo({ ssr: true })(
             return newData
           },
         })
-        setTimeout(() => {
-          isFetchingMore = false
-        }, 500)
       }
-    }
+    }, 400)
 
     useEffect(() => {
+      let listener
       if (typeof window !== "undefined") {
-        window.addEventListener("scroll", onScroll)
+        listener = window.addEventListener("scroll", onScroll)
       }
       return () => window.removeEventListener("scroll", onScroll)
-    }, [data])
+    }, [onScroll])
 
     const brand = data && data.brand
 
