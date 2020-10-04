@@ -9,35 +9,37 @@ const items = [
   {
     icon: () => <Return />,
     title: "Quick & easy returns",
-    text: "Pack up all 3 pieces, insert the prepaid return label, and drop off at the nearest UPS location.",
+    text:
+      "Pack up your pieces, insert the pre-paid return label and drop off at your nearest UPS location. Need an at home pickup? We’ve got those too.",
   },
   {
     icon: () => <Cleaning />,
-    title: "Free dry cleaning",
-    text: "Each piece is carefully inspected, cleaned and restored before being delivered to your door.",
+    title: "Safe, free, dry cleaning",
+    text:
+      "Each piece is carefully inspected, dry cleaned and restored before being delivered to you. All bag are also cleaned and sanitized after every use.",
   },
   {
     icon: () => <Shipping />,
-    title: "1 to 2 day shipping",
-    text: "All orders are processed, shipped and delivered within 1- 2 business days via UPS.",
+    title: "Super fast shipping",
+    text: "All orders are processed, shipped and delivered within 2-3 business days via UPS.",
   },
   {
     icon: () => <Rental />,
     title: "Rental insurance",
     text:
-      "Any stain, tear or damage gets fixed by us. Just pack it up and ship it back. Lost it? Things happen. We'll just charge a fee to replace it.",
+      "Any stain, tear or damage gets fixed by us. Just pack it up and ship it back. Lost it? Things happen. We'll just charge a small fee to replace it.",
   },
   {
     icon: () => <NewStyles />,
-    title: "New styles as they drop",
+    title: "Find the perfect fit",
     text:
-      "We buy the newest and latest collections. See something you like that we don't carry? Send us a message on Instagram.",
+      "Avoid the hassle of dealing with refunds and store returns. Try on clothes in the comfort of your home and find your perfect fit.",
   },
   {
     icon: () => <PauseCancel />,
     title: "Pause or cancel anytime",
     text:
-      "Want to take a break for a month? Pause or cancel your membership right in the app. Easily renew whenever you want.",
+      "Want to take a break for a month? Pause your membership right in the app. Easily renew whenever you’re ready to come back.",
   },
 ]
 

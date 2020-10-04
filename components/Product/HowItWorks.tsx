@@ -1,21 +1,21 @@
 import { Box, Sans, Separator, Spacer } from ".."
 import React from "react"
 
-const items = [
+export const HOW_IT_WORKS_TEXT = [
   {
-    title: "Choose your items",
+    title: "Reserve your favorite styles",
     text:
-      "Browse from over 40 different brands and reserve up to 3 pieces per order. Not sure what to get? We’ll recommend some.",
+      "Browse from a curated list of brands and reserve up to 3 pieces at a time. Save your favorites for later & build a queue.",
   },
   {
-    title: "Wear, swap & repeat",
+    title: "Wear for up to 30-days",
     text:
       "Wear the styles you want to try, but aren’t sure if you want to buy. A new way to discover your style without the commitment or buyers remorse.",
   },
   {
-    title: "Returns & dry cleaning's on us",
+    title: "Shipping & returns are on us",
     text:
-      "We handle the shipping back and forth, restoring and cleaning each piece for you. Oh, we cover rental insurance too.",
+      "We handle the shipping back and forth, restoring and cleaning each piece for you. We cover rental insurance too.",
   },
 ]
 
@@ -26,7 +26,7 @@ export const HowItWorks = () => {
         How it works
       </Sans>
       <Spacer mb={5} />
-      {items.map((item, index) => {
+      {HOW_IT_WORKS_TEXT.map((item, index) => {
         return (
           <Box key={index}>
             <Separator />
