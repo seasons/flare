@@ -9,7 +9,6 @@ import { Media } from "../Responsive"
 import { Button } from "../Button"
 import { Check } from "../SVGs"
 
-const imageURL = require("../../public/images/homepage/Hero-Image-10-29-20.png")
 const headerText = "Wear,Swap,Repeat"
 
 const listText = [
@@ -88,7 +87,7 @@ const MobileHero = ({ post }) => {
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Spacer mb={10} />
-              <Display size="10" color="black100" style={{ letterSpacing: "-2px" }}>
+              <Display size="9" color="black100" style={{ letterSpacing: "-2px" }}>
                 {headerText}
               </Display>
               <Spacer mb={1} />
