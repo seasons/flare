@@ -321,7 +321,7 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
 `
 
 const FixedBox = styled.div`
-  position: absolute;
+  position: relative;
   height: 100%;
   overflow: scroll;
   ::-webkit-scrollbar {

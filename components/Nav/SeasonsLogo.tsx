@@ -8,7 +8,9 @@ export const SeasonsLogo: React.FC<BoxProps> = () => {
     <Link href="/">
       <StyledAnchor href="/">
         <LogoContainer>
-          <Display size="8">SEASONS</Display>
+          <Display size="8" style={{ letterSpacing: "1px" }}>
+            SEASONS
+          </Display>
         </LogoContainer>
       </StyledAnchor>
     </Link>

@@ -21,7 +21,7 @@ export const HOW_IT_WORKS_TEXT = [
 
 export const HowItWorks = () => {
   return (
-    <Box pt={10} px={2} mb={3}>
+    <Box pt={10} mb={3}>
       <Sans size="5" color="black100">
         How it works
       </Sans>
