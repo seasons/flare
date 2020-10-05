@@ -16,7 +16,7 @@ export const ProductInfoItem: React.FC<Props> = ({ detailType, detailValue, hide
         <Sans size="4" color="black">
           {detailType}
         </Sans>
-        <Sans size="4" color="gray">
+        <Sans size="4" color="black50" style={{ textAlign: "right" }}>
           {detailValue}
         </Sans>
       </Flex>

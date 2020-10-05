@@ -5,13 +5,12 @@ import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "../"
 import { Display } from "../Typography"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"
-import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
 import { Button } from "../Button"
 import { Check } from "../SVGs"
 
 const imageURL = require("../../public/images/homepage/Hero-Image-10-29-20.png")
-const headerText = "Wear, Swap, Repeat"
+const headerText = "Wear,Swap,Repeat"
 
 const listText = [
   "Free shipping, returns & dry cleaning.",
@@ -23,8 +22,9 @@ const DesktopTextContent = () => {
   return (
     <Box pb={5} style={{ zIndex: 3, position: "relative" }} pr={2}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
-        <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-          <Display size="10" color="black100">
+        <Flex flexDirection="column" justifyContent="center">
+          <Spacer mb={10} />
+          <Display size="10" color="black100" style={{ letterSpacing: "-2px" }}>
             {headerText}
           </Display>
           <Spacer mb={1} />
@@ -58,8 +58,8 @@ const DesktopTextContent = () => {
 const DesktopHero = ({ post }) => {
   return (
     <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 5, 5]} py={5}>
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Box width="100%" px={[2, 2, 2, 5, 5]} pb={5}>
+        <Flex flexDirection="row" justifyContent="space-between">
           <DesktopTextContent />
           <StyledAnchor href={post?.url}>
             <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
@@ -88,7 +88,7 @@ const MobileHero = ({ post }) => {
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Spacer mb={10} />
-              <Display size="10" color="black100">
+              <Display size="10" color="black100" style={{ letterSpacing: "-2px" }}>
                 {headerText}
               </Display>
               <Spacer mb={1} />
@@ -176,6 +176,6 @@ const StyledAnchor = styled.a`
   color: inherit;
   cursor: pointer;
   width: 50%;
-  max-width: 700px;
+  max-width: 800px;
   min-height: 450px;
 `

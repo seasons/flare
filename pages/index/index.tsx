@@ -20,6 +20,32 @@ import { screenTrack, Schema } from "../../utils/analytics"
 import { BRAND_LIST } from "../../components/Homepage/Brands"
 import { HOW_IT_WORKS_TEXT } from "../../components/Product/HowItWorks"
 
+const HomePageProductFragment = gql`
+  fragment HomePageProduct on Product {
+    id
+    slug
+    name
+    images {
+      url
+      id
+    }
+    brand {
+      id
+      name
+    }
+    variants {
+      id
+      total
+      reservable
+      nonReservable
+      reserved
+      internalSize {
+        display
+      }
+    }
+  }
+`
+
 export const HOME_QUERY = gql`
   query GetBrowseProducts($brandSlugs: [String!]) {
     paymentPlans(where: { status: "active" }) {
@@ -53,27 +79,7 @@ export const HOME_QUERY = gql`
       orderBy: publishedAt_DESC
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
-      id
-      slug
-      name
-      images {
-        url
-        id
-      }
-      brand {
-        id
-        name
-      }
-      variants {
-        id
-        total
-        reservable
-        nonReservable
-        reserved
-        internalSize {
-          display
-        }
-      }
+      ...HomePageProduct
     }
     justAddedBottoms: products(
       first: 4
@@ -81,29 +87,17 @@ export const HOME_QUERY = gql`
       orderBy: publishedAt_DESC
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
-      id
-      slug
-      name
-      images {
-        url
-        id
-      }
-      brand {
-        id
-        name
-      }
-      variants {
-        id
-        total
-        reservable
-        nonReservable
-        reserved
-        internalSize {
-          display
-        }
-      }
+      ...HomePageProduct
+    }
+    newArchival: products(
+      first: 4
+      orderBy: publishedAt_DESC
+      where: { AND: [{ tags_some: { name: "Vintage" } }, { status: Available }] }
+    ) {
+      ...HomePageProduct
     }
   }
+  ${HomePageProductFragment}
 `
 
 const Home = screenTrack(() => ({
@@ -134,24 +128,21 @@ const Home = screenTrack(() => ({
 
         <Spacer mb={10} />
         <ProductRail title="Just added tops" products={data?.justAddedTops} />
-        <Spacer mb={8} />
-
-        <Box px={[2, 2, 2, 5, 5]}>
-          <Separator />
-        </Box>
 
         <Spacer mb={10} />
         <FromCommunity blogPosts={communityPosts} />
-        <Spacer mb={10} />
 
         {!!data?.justAddedBottoms?.length && (
           <>
-            <Box px={[2, 2, 2, 5, 5]}>
-              <Separator />
-            </Box>
-
             <Spacer mb={10} />
             <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
+            <Spacer mb={10} />
+          </>
+        )}
+
+        {!!data?.newArchival?.length && (
+          <>
+            <ProductRail title="New to the archive" products={data?.newArchival} />
             <Spacer mb={10} />
           </>
         )}

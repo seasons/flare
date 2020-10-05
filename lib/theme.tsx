@@ -181,11 +181,11 @@ export const themeProps = {
     container: {
       padding: 0,
       maxWidth: {
-        xl: 1800,
-        lg: 1800,
-        md: 1800,
-        sm: 1800,
-        xs: 1800,
+        xl: 1500,
+        lg: 1500,
+        md: 1500,
+        sm: 1500,
+        xs: 1500,
       },
     },
     row: {

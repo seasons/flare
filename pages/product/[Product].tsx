@@ -53,10 +53,10 @@ const Product = withApollo({ ssr: true })(
           <meta property="og:image" content={product?.images?.[0].url.replace("fm=webp", "fm=jpg")} />
           <meta property="twitter:card" content="summary" />
         </Head>
-        <Box pt={[1, 5]}>
+        <Box pt={[1, 5]} px={[0, 0, 2, 5, 5]}>
           <Grid>
             <Row>
-              <Col md="6" sm="12">
+              <Col md="7" sm="12">
                 <Media greaterThanOrEqual="md">
                   <Box>
                     {!product ? (
@@ -64,7 +64,7 @@ const Product = withApollo({ ssr: true })(
                     ) : (
                       product?.images.map((image) => {
                         return (
-                          <Box px={[2, 2, 2, 5, 5]} mb={0.5} key={image.url}>
+                          <Box pl={[2, 2, 0, 0, 0]} pr={[2, 2, 2, 5, 5]} mb={0.5} key={image.url}>
                             <ProgressiveImage imageUrl={image.url} size="large" alt="product image" />
                           </Box>
                         )
@@ -79,9 +79,9 @@ const Product = withApollo({ ssr: true })(
                 </Media>
               </Col>
               <Col md="5" sm="12">
-                <Box mr={[0, 4]}>
+                <Box style={{ maxWidth: "390px" }}>
                   {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
-                  <Box px={2}>
+                  <Box>
                     <Link href="/signup">
                       <Button width="100%" block variant="primaryWhite" onClick={null}>
                         Create an account
@@ -94,7 +94,7 @@ const Product = withApollo({ ssr: true })(
             </Row>
           </Grid>
         </Box>
-        <Spacer mb="125px" />
+        <Spacer mb={10} />
       </Layout>
     )
   })
