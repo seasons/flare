@@ -1,9 +1,7 @@
 import React, { useEffect } from "react"
 import { NextPage } from "next"
-import { gql } from "apollo-boost"
 import { useState } from "react"
-import { useQuery } from "@apollo/react-hooks"
-import withApollo from "../../lib/apollo"
+import { useQuery } from "@apollo/client"
 import { Layout, Flex, Spacer } from "../../components"
 import { Sans, fontFamily } from "../../components/Typography/Typography"
 import { Box } from "../../components/Box"
@@ -19,254 +17,242 @@ import { MobileFilters } from "../../components/Browse/MobileFilters"
 import { BrowseFilters } from "../../components/Browse"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 import { BRAND_LIST } from "../../components/Homepage/Brands"
+import { initializeApollo } from "../../lib/apollo"
+import { GET_BROWSE_PRODUCTS, GET_CATEGORIES } from "../../queries/brandQueries"
 
-const GET_BROWSE_PRODUCTS = gql`
-  query GetBrowse(
-    $categoryName: String!
-    $brandName: String!
-    $brandSlugs: [String!]
-    $first: Int!
-    $skip: Int!
-    $orderBy: ProductOrderByInput!
-    $brandOrderBy: BrandOrderByInput!
-  ) {
-    categories(where: { visible: true }, orderBy: name_ASC) {
-      id
-      slug
-      name
-      children {
-        slug
-      }
-    }
-    brands(orderBy: $brandOrderBy, where: { products_some: { id_not: null }, name_not: null, slug_in: $brandSlugs }) {
-      id
-      slug
-      name
-    }
-    connection: productsConnection(category: $categoryName, brand: $brandName, where: { status: Available }) {
-      aggregate {
-        count
-      }
-    }
-    products: productsConnection(
-      category: $categoryName
-      brand: $brandName
-      orderBy: $orderBy
-      first: $first
-      skip: $skip
-      where: { status: Available }
-    ) {
-      aggregate {
-        count
-      }
-      edges {
-        node {
-          id
-          slug
-          name
-          images {
-            id
-            url
-          }
-          description
-          modelSize {
-            display
-          }
-          modelHeight
-          externalURL
-          retailPrice
-          status
-          createdAt
-          updatedAt
-          brand {
-            id
-            slug
-            name
-          }
-          variants {
-            id
-            size
-            internalSize {
-              display
-            }
-            total
-            reservable
-            nonReservable
-            reserved
-          }
-        }
-      }
-    }
-  }
-`
+const pageSize = 20
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   page: Schema.PageNames.BrowsePage,
   path: "/browse",
-}))(
-  withApollo({ ssr: true })(() => {
-    const tracking = useTracking()
-    const router = useRouter()
-    const { query } = router
+}))(() => {
+  const tracking = useTracking()
+  const router = useRouter()
 
-    const [currentCategory, setCurrentCategory] = useState(query.category || "all")
-    const [currentBrand, setCurrentBrand] = useState(query.brand || "all")
-    const [currentPage, setCurrentPage] = useState(1)
-    const pageSize = 20
-    const skip = (currentPage - 1) * pageSize
+  const filter = router.query?.filter || "all+all"
 
-    const { data, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
-      variables: {
-        brandName: currentBrand,
-        categoryName: currentCategory,
-        first: pageSize,
-        orderBy: "publishedAt_DESC",
-        brandOrderBy: "name_ASC",
-        skip,
-        brandSlugs: BRAND_LIST,
-      },
-    })
+  const queries = filter?.toString().split("+")
 
-    if (error) {
-      console.log("error browse.tsx ", error)
-    }
+  const [category, brand] = queries
 
-    useEffect(() => {
-      if (query.brand) {
-        setCurrentBrand(query.brand)
-      }
-      if (query.category) {
-        setCurrentCategory(query.category)
-      }
-    }, [query])
+  const [currentCategory, setCurrentCategory] = useState(category)
+  const [currentBrand, setCurrentBrand] = useState(brand)
+  const [currentPage, setCurrentPage] = useState(1)
+  const skip = (currentPage - 1) * pageSize
 
-    useEffect(() => {
-      window && window.scrollTo(0, 0)
-    }, [data])
-
-    const aggregateCount = data?.connection?.aggregate?.count
-    const pageCount = Math.ceil(aggregateCount / pageSize)
-    const products = data?.products?.edges
-    const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
-    const brands = [{ slug: "all", name: "All" }, ...(data?.brands ?? [])]
-    const showPagination = !!products?.length && aggregateCount > 20
-
-    return (
-      <>
-        <Layout fixedNav footerBottomPadding={["59px", "0px"]}>
-          <Media lessThan="md">
-            <MobileFilters
-              BrandsListComponent={
-                <BrowseFilters
-                  setCurrentPage={setCurrentPage}
-                  currentCategory={currentCategory}
-                  listItems={brands}
-                  title="Designers"
-                  hideTitle
-                  currentBrand={currentBrand}
-                />
-              }
-              CategoriesListComponent={
-                <BrowseFilters
-                  title="Categories"
-                  setCurrentPage={setCurrentPage}
-                  currentCategory={currentCategory}
-                  listItems={categories}
-                  hideTitle
-                  currentBrand={currentBrand}
-                />
-              }
-            />
-          </Media>
-          <Spacer mb={[0, 5]} />
-          <Grid px={[2, 2, 2, 5, 5]}>
-            <Row style={{ minHeight: "calc(100vh - 160px)" }}>
-              <Col md="2" xs="12" mx={["2", "0"]}>
-                <Media greaterThanOrEqual="md">
-                  <FixedBox>
-                    <Box pr={1}>
-                      <BrowseFilters
-                        setCurrentPage={setCurrentPage}
-                        currentCategory={currentCategory}
-                        title="Categories"
-                        listItems={categories}
-                        currentBrand={currentBrand}
-                      />
-                      <Spacer mb={3} />
-                      <BrowseFilters
-                        setCurrentPage={setCurrentPage}
-                        title="Designers"
-                        currentCategory={currentCategory}
-                        listItems={brands}
-                        currentBrand={currentBrand}
-                      />
-                      <Spacer mb={2} />
-                    </Box>
-                  </FixedBox>
-                </Media>
-              </Col>
-              <Media lessThan="md">
-                <Box px={2} pt={2}>
-                  <Sans size="4">Browse</Sans>
-                </Box>
-              </Media>
-              <Col md="10" xs="12">
-                <Row>
-                  {data && !products?.length ? (
-                    <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
-                      <Sans size="3" style={{ textAlign: "center" }}>
-                        Your filters returned no results.
-                      </Sans>
-                    </Flex>
-                  ) : (
-                    products?.map((product, i) => (
-                      <Col col sm="3" xs="6" key={i}>
-                        <Box pt={[2, 0]} pb={[2, 5]}>
-                          <ProductGridItem product={product?.node} loading={loading} />
-                        </Box>
-                      </Col>
-                    ))
-                  )}
-                </Row>
-                <Row>
-                  <Flex align-items="center" mt={2} mb={[0, 4]} width="100%">
-                    {showPagination && (
-                      <Pagination currentPage={currentPage} pageCount={pageCount}>
-                        <Paginate
-                          previousLabel="previous"
-                          nextLabel="next"
-                          breakClassName="break-me"
-                          pageCount={pageCount}
-                          marginPagesDisplayed={25}
-                          pageRangeDisplayed={2}
-                          forcePage={currentPage - 1}
-                          onPageChange={(data) => {
-                            setCurrentPage(data.selected + 1)
-                            tracking.trackEvent({
-                              actionName: Schema.ActionNames.ProductPageNumberChanged,
-                              actionType: Schema.ActionTypes.Tap,
-                              page: data.selected + 1,
-                            })
-                          }}
-                          containerClassName="pagination"
-                          previousLinkClassName="previous-button"
-                          nextLinkClassName="next-button"
-                          subContainerClassName="pages pagination"
-                          activeClassName="active"
-                        />
-                      </Pagination>
-                    )}
-                  </Flex>
-                </Row>
-              </Col>
-            </Row>
-          </Grid>
-          <Spacer mb={[0, 5]} />
-        </Layout>
-      </>
-    )
+  const { data, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
+    variables: {
+      brandName: currentBrand,
+      categoryName: currentCategory,
+      first: pageSize,
+      orderBy: "publishedAt_DESC",
+      brandOrderBy: "name_ASC",
+      skip,
+      brandSlugs: BRAND_LIST,
+    },
   })
-)
+
+  if (error) {
+    console.log("error browse.tsx ", error)
+  }
+
+  console.log("data", data)
+
+  useEffect(() => {
+    if (filter) {
+      const queries = filter?.toString().split("+")
+      const [category, brand] = queries
+
+      setCurrentBrand(brand)
+      setCurrentCategory(category)
+    }
+  }, [filter, setCurrentBrand, setCurrentCategory])
+
+  useEffect(() => {
+    window && window.scrollTo(0, 0)
+  }, [data])
+
+  const aggregateCount = data?.connection?.aggregate?.count
+  const pageCount = Math.ceil(aggregateCount / pageSize)
+  const products = data?.products?.edges
+  const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
+  const brands = [{ slug: "all", name: "All" }, ...(data?.brands ?? [])]
+  const showPagination = !!products?.length && aggregateCount > 20
+
+  return (
+    <>
+      <Layout fixedNav footerBottomPadding={["59px", "0px"]}>
+        <Media lessThan="md">
+          <MobileFilters
+            BrandsListComponent={
+              <BrowseFilters
+                setCurrentPage={setCurrentPage}
+                currentCategory={currentCategory}
+                listItems={brands}
+                title="Designers"
+                hideTitle
+                currentBrand={currentBrand}
+              />
+            }
+            CategoriesListComponent={
+              <BrowseFilters
+                title="Categories"
+                setCurrentPage={setCurrentPage}
+                currentCategory={currentCategory}
+                listItems={categories}
+                hideTitle
+                currentBrand={currentBrand}
+              />
+            }
+          />
+        </Media>
+        <Spacer mb={[0, 5]} />
+        <Grid px={[2, 2, 2, 5, 5]}>
+          <Row style={{ minHeight: "calc(100vh - 160px)" }}>
+            <Col md="2" xs="12" mx={["2", "0"]}>
+              <Media greaterThanOrEqual="md">
+                <FixedBox>
+                  <Box pr={1}>
+                    <BrowseFilters
+                      setCurrentPage={setCurrentPage}
+                      currentCategory={currentCategory}
+                      title="Categories"
+                      listItems={categories}
+                      currentBrand={currentBrand}
+                    />
+                    <Spacer mb={3} />
+                    <BrowseFilters
+                      setCurrentPage={setCurrentPage}
+                      title="Designers"
+                      currentCategory={currentCategory}
+                      listItems={brands}
+                      currentBrand={currentBrand}
+                    />
+                    <Spacer mb={2} />
+                  </Box>
+                </FixedBox>
+              </Media>
+            </Col>
+            <Media lessThan="md">
+              <Box px={2} pt={2}>
+                <Sans size="4">Browse</Sans>
+              </Box>
+            </Media>
+            <Col md="10" xs="12">
+              <Row>
+                {data && !products?.length ? (
+                  <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
+                    <Sans size="3" style={{ textAlign: "center" }}>
+                      Your filters returned no results.
+                    </Sans>
+                  </Flex>
+                ) : (
+                  products?.map((product, i) => (
+                    <Col col sm="3" xs="6" key={i}>
+                      <Box pt={[2, 0]} pb={[2, 5]}>
+                        <ProductGridItem product={product?.node} loading={loading} />
+                      </Box>
+                    </Col>
+                  ))
+                )}
+              </Row>
+              <Row>
+                <Flex align-items="center" mt={2} mb={[0, 4]} width="100%">
+                  {showPagination && (
+                    <Pagination currentPage={currentPage} pageCount={pageCount}>
+                      <Paginate
+                        previousLabel="previous"
+                        nextLabel="next"
+                        breakClassName="break-me"
+                        pageCount={pageCount}
+                        marginPagesDisplayed={25}
+                        pageRangeDisplayed={2}
+                        forcePage={currentPage - 1}
+                        onPageChange={(data) => {
+                          setCurrentPage(data.selected + 1)
+                          tracking.trackEvent({
+                            actionName: Schema.ActionNames.ProductPageNumberChanged,
+                            actionType: Schema.ActionTypes.Tap,
+                            page: data.selected + 1,
+                          })
+                        }}
+                        containerClassName="pagination"
+                        previousLinkClassName="previous-button"
+                        nextLinkClassName="next-button"
+                        subContainerClassName="pages pagination"
+                        activeClassName="active"
+                      />
+                    </Pagination>
+                  )}
+                </Flex>
+              </Row>
+            </Col>
+          </Row>
+        </Grid>
+        <Spacer mb={[0, 5]} />
+      </Layout>
+    </>
+  )
+})
+
+export async function getStaticPaths() {
+  const apolloClient = initializeApollo()
+
+  const response = await apolloClient.query({
+    query: GET_CATEGORIES,
+  })
+
+  const paths = [{ params: { filter: `all+all` } }]
+
+  const categories = response?.data?.categories
+
+  categories?.forEach((cat) => {
+    paths.push({ params: { filter: `${cat.slug}+all` } })
+
+    BRAND_LIST.forEach((brandSlug) => {
+      paths.push({ params: { filter: `${cat.slug}+${brandSlug}` } })
+    })
+    return
+  })
+
+  BRAND_LIST.forEach((brandSlug) => {
+    paths.push({ params: { filter: `all+${brandSlug}` } })
+  })
+
+  return {
+    paths,
+    fallback: false,
+  }
+}
+
+export async function getStaticProps({ params }) {
+  const apolloClient = initializeApollo()
+
+  const filter = params?.filter || "all+all"
+
+  const queries = filter?.toString().split("+")
+  const [category, brand] = queries
+
+  await apolloClient.query({
+    query: GET_BROWSE_PRODUCTS,
+    variables: {
+      brandName: brand,
+      categoryName: category,
+      first: pageSize,
+      orderBy: "publishedAt_DESC",
+      brandOrderBy: "name_ASC",
+      skip: 0,
+      brandSlugs: BRAND_LIST,
+    },
+  })
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+    revalidate: 1,
+  }
+}
 
 const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
   ${media.md`

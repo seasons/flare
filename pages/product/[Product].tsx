@@ -1,9 +1,7 @@
 import Head from "next/head"
 import { withRouter } from "next/router"
 import React from "react"
-
-import { useQuery } from "@apollo/react-hooks"
-
+import { useQuery } from "@apollo/client"
 import { Box, Layout, Spacer } from "../../components"
 import { Button } from "../../components/Button"
 import { Carousel } from "../../components/Carousel"
@@ -15,89 +13,86 @@ import { ProductDetails } from "../../components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { GET_PRODUCT } from "../../components/Product/ProductQueries"
 import { Media } from "../../components/Responsive"
-import withApollo from "../../lib/apollo"
 import { Schema, screenTrack } from "../../utils/analytics"
 
-const Product = withApollo({ ssr: true })(
-  screenTrack(({ router }) => {
-    return {
-      page: Schema.PageNames.ProductPage,
-      entitySlug: router?.query?.Product,
-      path: router?.asPath,
-    }
-  })(({ router }) => {
-    const slug = router.query.Product
+const Product = screenTrack(({ router }) => {
+  return {
+    page: Schema.PageNames.ProductPage,
+    entitySlug: router?.query?.Product,
+    path: router?.asPath,
+  }
+})(({ router }) => {
+  const slug = router.query.Product
 
-    const { data } = useQuery(GET_PRODUCT, {
-      variables: {
-        slug,
-      },
-    })
-
-    const product = data && data.product
-
-    const title = `${product?.name} by ${product?.brand?.name}`
-    const description = product && product.description
-
-    return (
-      <Layout fixedNav includeDefaultHead={false}>
-        <Head>
-          <title>{`${title} - Seasons`}</title>
-          <meta content={description} name="description" />
-          <meta property="og:title" content={title} />
-          <meta property="og:description" content={description} />
-          <meta property="twitter:description" content={description} />
-          <meta property="og:type" content="website" />
-          <meta property="og:site_name" content="Seasons" />
-          <meta property="og:url" content={`https://www.seasons.nyc/product/${slug}`} />
-          <meta property="og:image" content={product?.images?.[0].url.replace("fm=webp", "fm=jpg")} />
-          <meta property="twitter:card" content="summary" />
-        </Head>
-        <Box pt={[1, 5]} px={[0, 0, 2, 5, 5]}>
-          <Grid>
-            <Row>
-              <Col md="7" sm="12">
-                <Media greaterThanOrEqual="md">
-                  <Box>
-                    {!product ? (
-                      <ImageLoader />
-                    ) : (
-                      product?.images.map((image) => {
-                        return (
-                          <Box pl={[2, 2, 0, 0, 0]} pr={[2, 2, 2, 5, 5]} mb={0.5} key={image.url}>
-                            <ProgressiveImage imageUrl={image.url} size="large" alt="product image" />
-                          </Box>
-                        )
-                      })
-                    )}
-                    <Spacer mb={0.5} />
-                  </Box>
-                </Media>
-                <Media lessThan="md">
-                  <Carousel images={product?.images} />
-                  <Spacer mb={5} />
-                </Media>
-              </Col>
-              <Col md="5" sm="12">
-                <Box style={{ maxWidth: "390px" }} px={[2, 2, 0, 0, 0]}>
-                  {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
-                  <Box>
-                    <Link href="/signup">
-                      <Button width="100%" block variant="primaryWhite" onClick={null}>
-                        Create an account
-                      </Button>
-                    </Link>
-                  </Box>
-                  <HowItWorks />
-                </Box>
-              </Col>
-            </Row>
-          </Grid>
-        </Box>
-        <Spacer mb={10} />
-      </Layout>
-    )
+  const { data } = useQuery(GET_PRODUCT, {
+    variables: {
+      slug,
+    },
   })
-)
+
+  const product = data && data.product
+
+  const title = `${product?.name} by ${product?.brand?.name}`
+  const description = product && product.description
+
+  return (
+    <Layout fixedNav includeDefaultHead={false}>
+      <Head>
+        <title>{`${title} - Seasons`}</title>
+        <meta content={description} name="description" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="twitter:description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Seasons" />
+        <meta property="og:url" content={`https://www.seasons.nyc/product/${slug}`} />
+        <meta property="og:image" content={product?.images?.[0].url.replace("fm=webp", "fm=jpg")} />
+        <meta property="twitter:card" content="summary" />
+      </Head>
+      <Box pt={[1, 5]} px={[0, 0, 2, 5, 5]}>
+        <Grid>
+          <Row>
+            <Col md="7" sm="12">
+              <Media greaterThanOrEqual="md">
+                <Box>
+                  {!product ? (
+                    <ImageLoader />
+                  ) : (
+                    product?.images.map((image) => {
+                      return (
+                        <Box pl={[2, 2, 0, 0, 0]} pr={[2, 2, 2, 5, 5]} mb={0.5} key={image.url}>
+                          <ProgressiveImage imageUrl={image.url} size="large" alt="product image" />
+                        </Box>
+                      )
+                    })
+                  )}
+                  <Spacer mb={0.5} />
+                </Box>
+              </Media>
+              <Media lessThan="md">
+                <Carousel images={product?.images} />
+                <Spacer mb={5} />
+              </Media>
+            </Col>
+            <Col md="5" sm="12">
+              <Box style={{ maxWidth: "390px" }} px={[2, 2, 0, 0, 0]}>
+                {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
+                <Box>
+                  <Link href="/signup">
+                    <Button width="100%" block variant="primaryWhite" onClick={null}>
+                      Create an account
+                    </Button>
+                  </Link>
+                </Box>
+                <HowItWorks />
+              </Box>
+            </Col>
+          </Row>
+        </Grid>
+      </Box>
+      <Spacer mb={10} />
+    </Layout>
+  )
+})
 
 export default withRouter(Product)

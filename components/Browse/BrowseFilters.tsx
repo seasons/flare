@@ -32,7 +32,7 @@ export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
           const query =
             title === "Designers"
               ? { category: currentCategory, brand: item.slug }
-              : { brand: currentBrand, category: item.slug }
+              : { category: item.slug, brand: currentBrand }
           const isActive = title === "Designers" ? currentBrand === item.slug : currentCategory === item.slug
           return (
             <div onClick={() => setCurrentPage(1)} key={item.slug}>
