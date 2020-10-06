@@ -1,16 +1,17 @@
 import NextLink from "next/link"
 import { useRouter } from "next/router"
+import { useState } from "react"
+import { animated, useSpring } from "react-spring"
 import styled from "styled-components"
+
+import { MaxWidth } from "../"
 import { color } from "../../helpers/color"
+import { Schema, useTracking } from "../../utils/analytics"
+import { Box, BoxProps } from "../Box"
 import { Sans } from "../Typography"
 import { Burger } from "./Burger"
-import { NavProps } from "./Types"
 import { SeasonsLogo } from "./SeasonsLogo"
-import { BoxProps, Box } from "../Box"
-import { MaxWidth } from "../"
-import { useState } from "react"
-import { useSpring, animated } from "react-spring"
-import { useTracking, Schema } from "../../utils/analytics"
+import { NavProps } from "./Types"
 
 const MENU_HEIGHT = "59px"
 
@@ -138,7 +139,7 @@ const MenuContainer = styled.div`
 `
 
 const Header = styled(Box)`
-  height: 59px;
+  height: ${MENU_HEIGHT};
   z-index: 101;
   width: 100%;
   position: relative;

@@ -1,24 +1,14 @@
 import React, { CSSProperties } from "react"
-import styled from "styled-components"
-
+import styled, {
+  StyledComponent, StyledComponentInnerAttrs, StyledComponentInnerComponent,
+  StyledComponentInnerOtherProps
+} from "styled-components"
 import {
-  color,
-  ColorProps,
-  display,
-  DisplayProps as StyledSystemDisplayProps,
-  fontSize,
-  FontSizeProps,
-  lineHeight,
-  LineHeightProps,
-  maxWidth,
-  MaxWidthProps,
-  space,
-  SpaceProps,
-  style,
-  TextAlignProps,
+  color, ColorProps, display, DisplayProps as StyledSystemDisplayProps, fontSize, FontSizeProps,
+  lineHeight, LineHeightProps, maxWidth, MaxWidthProps, space, SpaceProps, style, TextAlignProps
 } from "styled-system"
 
-import { themeProps, TypeSizes, SansSize, DisplaySize } from "../../lib/theme"
+import { DisplaySize, SansSize, themeProps, TypeSizes } from "../../lib/theme"
 import { determineFontSizes } from "./determineFontSizes"
 
 /**
@@ -203,7 +193,7 @@ export interface DisplayProps extends Partial<TextProps> {
 function createStyledText<P extends StyledTextProps>(
   fontType: keyof FontFamily,
   selectFontFamilyType: typeof _selectFontFamilyType = _selectFontFamilyType
-) {
+): StyledComponent<any, any, any, any> {
   // @ts-ignore
   return styled<P>(({ size, weight, italic, element, ...textProps }: StyledTextProps) => {
     const fontFamilyType = selectFontFamilyType(_fontWeight(weight), italic)

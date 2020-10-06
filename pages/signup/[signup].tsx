@@ -1,54 +1,19 @@
-import { Layout, MaxWidth, SnackBar, Sans, Flex } from "../../components"
-import { CreateAccountForm, createAccountValidationSchema } from "../../components/Forms/CreateAccountForm"
-import { Wizard } from "../../components/Forms/Wizard"
-import { Step } from "../../components/Forms/Step"
-import gql from "graphql-tag"
-import withData from "../../lib/apollo"
-import { useMutation } from "@apollo/react-hooks"
-import { useState } from "react"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+
+import { Flex, Layout, MaxWidth, Sans, SnackBar } from "../../components"
 import { FormConfirmation } from "../../components/Forms/FormConfirmation"
-import { screenTrack, Schema, useTracking } from "../../utils/analytics"
-import { DateTime } from "luxon"
-import {
-  CustomerMeasurementsForm,
-  customerMeasurementsValidationSchema,
-} from "../../components/Forms/CustomerMeasurementsForm"
+import { Step } from "../../components/Forms/Step"
+import { Wizard } from "../../components/Forms/Wizard"
+import { ChoosePlanStep } from "../../components/SignUp/ChoosePlanStep"
+import { CreateAccountStep } from "../../components/SignUp/CreateAccountStep"
+import { MeasurementsStep } from "../../components/SignUp/MeasurementsStep"
+import { TriageStep } from "../../components/SignUp/TriageStep"
+import { CheckWithBackground } from "../../components/SVGs"
+import withData from "../../lib/apollo"
+import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 
 type ConfirmTextOptions = "accountQueued" | "accountAccepted"
-
-const SIGN_UP_USER = gql`
-  mutation SignupUser(
-    $email: String!
-    $password: String!
-    $firstName: String!
-    $lastName: String!
-    $details: CustomerDetailCreateInput!
-  ) {
-    signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName, details: $details) {
-      token
-      user {
-        id
-      }
-    }
-  }
-`
-
-const ADD_MEASUREMENTS = gql`
-  mutation addMeasurements(
-    $height: Int
-    $weight: CustomerDetailCreateweightInput
-    $topSizes: CustomerDetailCreatetopSizesInput
-    $waistSizes: CustomerDetailCreatewaistSizesInput
-  ) {
-    addCustomerDetails(
-      details: { height: $height, weight: $weight, topSizes: $topSizes, waistSizes: $waistSizes }
-      status: Waitlisted
-      event: CompletedWaitlistForm
-    ) {
-      id
-    }
-  }
-`
 
 const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
@@ -56,10 +21,73 @@ const SignUpPage = screenTrack(() => ({
 }))(
   withData(() => {
     const tracking = useTracking()
-    const [signUpUser] = useMutation(SIGN_UP_USER)
-    const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
+    const router = useRouter()
+    const { session_id } = router.query
+    const [steps, setSteps] = useState([])
+
     const [showSnackBar, setShowSnackBar] = useState(false)
+    const [startTriage, setStartTriage] = useState(true)
+    const [selectedPlan, setSelectedPlan] = useState(null)
     const [confirmText, setConfirmText] = useState<ConfirmTextOptions>("accountAccepted")
+    const [isWaitlisted, setIsWaitlisted] = useState(false)
+
+    useEffect(() => {
+      const noAccountSteps = [
+        <CreateAccountStep onFailure={() => setShowSnackBar(true)} />,
+        <MeasurementsStep onFailure={() => setShowSnackBar(true)} />,
+      ]
+
+      const triageStep = [
+        <Step>
+          {({ wizard, form }) => (
+            <TriageStep
+              check={startTriage}
+              onTriageComplete={(isWaitlisted) => {
+                setIsWaitlisted(isWaitlisted)
+                localStorage.setItem("isWaitlisted", String(isWaitlisted))
+                wizard.next()
+              }}
+            />
+          )}
+        </Step>,
+      ]
+
+      const userHasAccount = !!localStorage.getItem("email")
+      const userIsConfirmed = localStorage.getItem("isWaitlisted") === "false"
+      const paymentProcessed = !!session_id
+
+      const steps = paymentProcessed
+        ? [
+            <Step>
+              {({ wizard }) => {
+                const data = confirmData[confirmText]
+                return <FormConfirmation {...data} />
+              }}
+            </Step>,
+          ]
+        : [
+            // ...(userHasAccount ? [] : noAccountSteps),
+            // ...(userIsConfirmed ? [] : triageStep),
+            <Step>
+              {({ wizard }) => {
+                const data = confirmData[confirmText]
+                return isWaitlisted ? (
+                  <FormConfirmation {...data} />
+                ) : (
+                  <ChoosePlanStep
+                    onPlanSelected={async (plan) => {
+                      setSelectedPlan(plan)
+
+                      wizard.next()
+                    }}
+                  />
+                )
+              }}
+            </Step>,
+          ]
+      setSteps(steps)
+    }, [])
+
     const initialValues = {
       email: "",
       firstName: "",
@@ -75,13 +103,14 @@ const SignUpPage = screenTrack(() => ({
       waistSizes: [""],
     }
 
-    const confirmTextOptions = {
-      accountQueued: {
-        headerText: "You’re almost done!",
-        bodyText:
-          "Shortly, you’ll receive an email asking you to verify your account. Until then, download our iOS app to finish creating your profile, see your place in line and get notified when you’re ready to choose your plan.",
+    const confirmData = {
+      waitlisted: {
+        icon: <CheckWithBackground backgroundColor={"#000"} />,
+        headerText: "You're Waitlisted",
+        bodyText: "We’ll let you know when your account is ready and you’re able to choose your plan.",
       },
       accountAccepted: {
+        icon: <CheckWithBackground />,
         headerText: "You’ve successfully created your account.",
         bodyText:
           "Download the Seasons iOS app on TestFlight to finish creating your profile, see your account status and get notified when you’re ready to choose your plan. In the meantime, follow us on Instagram for updates.",
@@ -91,6 +120,8 @@ const SignUpPage = screenTrack(() => ({
     const closeSnackBar = () => {
       setShowSnackBar(false)
     }
+
+    const hasSteps = steps.length > 0
 
     const SnackBarMessage = (
       <Sans size="3">
@@ -106,88 +137,7 @@ const SignUpPage = screenTrack(() => ({
         <MaxWidth>
           <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
           <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-            <Wizard initialValues={initialValues}>
-              <Step
-                validationSchema={createAccountValidationSchema}
-                onSubmit={async (values, actions) => {
-                  try {
-                    const date = new Date(values.dob)
-                    const dateToIso = DateTime.fromJSDate(date).toISO()
-                    const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
-                    const lastName = values.lastName.charAt(0).toUpperCase() + values.lastName.slice(1)
-                    const response = await signUpUser({
-                      variables: {
-                        email: values.email,
-                        password: values.password,
-                        firstName,
-                        lastName,
-                        details: {
-                          phoneNumber: values.tel,
-                          birthday: dateToIso,
-                          phoneOS: values.device,
-                          shippingAddress: {
-                            create: { zipCode: values.zipCode },
-                          },
-                        },
-                      },
-                    })
-                    if (response) {
-                      localStorage?.setItem("email", values.email)
-                      localStorage?.setItem("token", response.data.signup.token)
-                      actions.setSubmitting(false)
-                      return true
-                    }
-                  } catch (error) {
-                    if (JSON.stringify(error).includes("email already in db")) {
-                      actions.setFieldError("email", "User with that email already exists")
-                    } else {
-                      console.log("error", error)
-                      setShowSnackBar(true)
-                    }
-                    actions.setSubmitting(false)
-                  }
-                }}
-              >
-                {(context) => <CreateAccountForm context={context} />}
-              </Step>
-              <Step
-                validationSchema={customerMeasurementsValidationSchema}
-                onSubmit={async (values, actions) => {
-                  const { height, weight, topSizes, waistSizes } = values
-                  const filteredWaistSizes = waistSizes.filter((i) => i !== "")
-                  const filteredTopSizes = topSizes.filter((i) => i !== "")
-                  try {
-                    const response = await addMeasurements({
-                      variables: {
-                        height,
-                        weight: { set: weight },
-                        topSizes: { set: filteredTopSizes },
-                        waistSizes: { set: filteredWaistSizes },
-                      },
-                    })
-                    if (response) {
-                      actions.setSubmitting(false)
-                      return true
-                    }
-                  } catch (error) {
-                    console.log("error", error)
-                    setShowSnackBar(true)
-
-                    actions.setSubmitting(false)
-                  }
-                }}
-              >
-                {(context) => <CustomerMeasurementsForm context={context} />}
-              </Step>
-              <Step>
-                {() => (
-                  <FormConfirmation
-                    headerText={confirmTextOptions[confirmText].headerText}
-                    bodyText={confirmTextOptions[confirmText].bodyText}
-                  />
-                )}
-              </Step>
-            </Wizard>
+            {hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
           </Flex>
         </MaxWidth>
       </Layout>
