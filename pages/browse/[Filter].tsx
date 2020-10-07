@@ -105,9 +105,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           />
         </Media>
         <Spacer mb={[0, 5]} />
-        <Grid px={[2, 2, 2, 5, 5]}>
+        <Grid px={[0, 2, 2, 5, 5]}>
           <Row style={{ minHeight: "calc(100vh - 160px)" }}>
-            <Col md="2" xs="12" mx={["2", "0"]}>
+            <Col md="2" sm="12">
               <Media greaterThanOrEqual="md">
                 <FixedBox>
                   <Box pr={1}>
@@ -136,7 +136,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 <Sans size="4">Browse</Sans>
               </Box>
             </Media>
-            <Col md="10" xs="12">
+            <Col md="10" sm="12">
               <Row>
                 {data && !products?.length ? (
                   <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
@@ -146,8 +146,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                   </Flex>
                 ) : (
                   products?.map((product, i) => (
-                    <Col col sm="3" xs="6" key={i}>
-                      <Box pt={[2, 0]} pb={[2, 5]}>
+                    <Col sm="3" xs="6" key={i}>
+                      <Box pt={[2, 2, 2, 0, 0]} pb={[2, 2, 2, 5, 5]}>
                         <ProductGridItem product={product?.node} loading={loading} />
                       </Box>
                     </Col>

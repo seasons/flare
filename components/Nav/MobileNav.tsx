@@ -20,21 +20,21 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
 
   return (
     <HeaderContainer fixed={fixed}>
-      <MaxWidth>
-        <Header pl={2}>
+      <Header>
+        <Box px={2}>
           <SeasonsLogo />
-          <Burger
-            onClick={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames.BurgerClicked,
-                actionType: Schema.ActionTypes.Tap,
-              })
-              toggleOpen(!isOpen)
-            }}
-          />
-        </Header>
-        <Menu items={links} open={isOpen} />
-      </MaxWidth>
+        </Box>
+        <Burger
+          onClick={() => {
+            tracking.trackEvent({
+              actionName: Schema.ActionNames.BurgerClicked,
+              actionType: Schema.ActionTypes.Tap,
+            })
+            toggleOpen(!isOpen)
+          }}
+        />
+      </Header>
+      <Menu items={links} open={isOpen} />
     </HeaderContainer>
   )
 }
@@ -56,46 +56,48 @@ const Menu = ({ items, open }) => {
   }
 
   return (
-    <Wrapper px={2}>
+    <Wrapper>
       <AnimatedContainer style={openAnimation}>
-        {items.map((link) => {
-          if (link.external) {
-            return (
-              <StyledAnchor href={link.url} key={link.text} onClick={() => trackClick(link.url)}>
-                <MenuItem
-                  key={link.text}
-                  width="100%"
-                  style={{ cursor: "pointer" }}
-                  active={!!router.pathname.match(link.match)}
-                >
-                  <Box py={2}>
-                    <Sans size="3" py={2} color="black">
-                      {link.text}
-                    </Sans>
-                  </Box>
-                </MenuItem>
-              </StyledAnchor>
-            )
-          } else {
-            return (
-              <NextLink href={link.url} key={link.text}>
-                <MenuItem
-                  key={link.text}
-                  width="100%"
-                  style={{ cursor: "pointer" }}
-                  active={!!router.pathname.match(link.match)}
-                  onClick={() => trackClick(link.url)}
-                >
-                  <Box py={2}>
-                    <Sans size="3" py={2} color="black">
-                      {link.text}
-                    </Sans>
-                  </Box>
-                </MenuItem>
-              </NextLink>
-            )
-          }
-        })}
+        <Box px={2} style={{ backgroundColor: color("white100") }}>
+          {items.map((link) => {
+            if (link.external) {
+              return (
+                <StyledAnchor href={link.url} key={link.text} onClick={() => trackClick(link.url)}>
+                  <MenuItem
+                    key={link.text}
+                    width="100%"
+                    style={{ cursor: "pointer" }}
+                    active={!!router.pathname.match(link.match)}
+                  >
+                    <Box py={2}>
+                      <Sans size="3" py={2} color="black">
+                        {link.text}
+                      </Sans>
+                    </Box>
+                  </MenuItem>
+                </StyledAnchor>
+              )
+            } else {
+              return (
+                <NextLink href={link.url} key={link.text}>
+                  <MenuItem
+                    key={link.text}
+                    width="100%"
+                    style={{ cursor: "pointer" }}
+                    active={!!router.pathname.match(link.match)}
+                    onClick={() => trackClick(link.url)}
+                  >
+                    <Box py={2}>
+                      <Sans size="3" py={2} color="black">
+                        {link.text}
+                      </Sans>
+                    </Box>
+                  </MenuItem>
+                </NextLink>
+              )
+            }
+          })}
+        </Box>
       </AnimatedContainer>
     </Wrapper>
   )
@@ -133,7 +135,6 @@ const MenuContainer = styled.div`
   overflow: hidden;
   padding-top: ${MENU_HEIGHT};
   width: 100%;
-  /* box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2); */
   transform: translateY(-100%);
 `
 
@@ -143,7 +144,6 @@ const Header = styled(Box)`
   width: 100%;
   position: relative;
   background-color: ${color("white100")};
-  /* border-bottom: 1px solid ${color("black10")}; */
   display: flex;
   flex-direction: row;
   align-items: center;

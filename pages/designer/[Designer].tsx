@@ -16,6 +16,8 @@ import { Spinner } from "../../components/Spinner"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BRAND, GET_BRANDS } from "../../queries/designerQueries"
 import { BRAND_LIST } from "../../components/Homepage/Brands"
+import { Media } from "../../components/Responsive"
+import styled from "styled-components"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -154,19 +156,25 @@ const Designer = screenTrack(({ router }) => {
     }
   }
 
+  const BreadCrumb = () => {
+    return (
+      <>
+        <Sans size="3" style={{ display: "inline" }}>
+          Designers
+        </Sans>
+        <Sans size="3" style={{ display: "inline" }}>
+          {" "}
+          /{" "}
+        </Sans>
+        <Sans size="3" style={{ display: "inline" }}>
+          {brand?.name}
+        </Sans>
+      </>
+    )
+  }
+
   const TextContent = () => (
     <Box>
-      <Sans size="3" style={{ display: "inline" }}>
-        Designers
-      </Sans>
-      <Sans size="3" style={{ display: "inline" }}>
-        {" "}
-        /{" "}
-      </Sans>
-      <Sans size="3" style={{ display: "inline" }}>
-        {brand?.name}
-      </Sans>
-      <Spacer mb={10} />
       <Sans size="9" style={{ textDecoration: "underline" }}>
         {brand?.name}
       </Sans>
@@ -178,7 +186,7 @@ const Designer = screenTrack(({ router }) => {
             readMoreExpanded={readMoreExpanded}
             setReadMoreExpanded={setReadMoreExpanded}
             content={brand?.description}
-            maxChars={250}
+            maxChars={400}
           />
         </>
       )}
@@ -207,15 +215,40 @@ const Designer = screenTrack(({ router }) => {
         />
         <meta property="twitter:card" content="summary" />
       </Head>
-      <Box pt={[1, 5]} px={[2, 2, 2, 5, 5]}>
-        <Grid>
+      <Box pt={[1, 5]}>
+        <Grid px={[2, 2, 2, 5, 5]}>
           <Row>
             <Col md="6" sm="12">
-              {!data ? <DesignerTextSkeleton /> : <TextContent />}
+              <MediaWithHeight greaterThanOrEqual="md">
+                <Box>
+                  <BreadCrumb />
+                </Box>
+                <Flex flexDirection="column" justifyContent="center" height="100%" pb={8}>
+                  {!data ? (
+                    <DesignerTextSkeleton />
+                  ) : (
+                    <>
+                      <TextContent />
+                    </>
+                  )}
+                </Flex>
+              </MediaWithHeight>
+              <Media lessThan="md">
+                <Box>
+                  <BreadCrumb />
+                  <Spacer mb={2} />
+                  {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
+                </Box>
+              </Media>
             </Col>
             <Col md="6" sm="12">
-              <Box pl={[0, 0, 6, 6, 6]} pt={[6, 6, 0, 0, 0]}>
-                {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
+              <Box pl={[0, 0, "136px", "136px", "136px"]} pt={[6, 6, 0, 0, 0]}>
+                <Media greaterThanOrEqual="md">
+                  {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
+                </Media>
+                <Media lessThan="md">
+                  <Box>{!data ? <DesignerTextSkeleton /> : <TextContent />}</Box>
+                </Media>
               </Box>
             </Col>
           </Row>
@@ -289,3 +322,7 @@ export async function getStaticProps({ params }) {
 }
 
 export default withRouter(Designer)
+
+const MediaWithHeight = styled(Media)`
+  height: 100%;
+`
