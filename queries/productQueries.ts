@@ -54,8 +54,8 @@ export const GET_PRODUCT = gql`
 `
 
 export const GET_PRODUCTS = gql`
-  query GetProducts( where: { status: Available }) {
-    products {
+  query GetProducts {
+    products(where: { status: Available }) {
       id
       slug
     }
