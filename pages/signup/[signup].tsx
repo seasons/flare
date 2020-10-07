@@ -1,17 +1,22 @@
+import Chargebee from "chargebee"
+import gql from "graphql-tag"
+import { DateTime } from "luxon"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import useStateWithCallback from "use-state-with-callback"
 
+import { useMutation } from "@apollo/react-hooks"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe, Stripe } from "@stripe/stripe-js"
 
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "../../components"
+import {
+  CreateAccountForm, createAccountValidationSchema
+} from "../../components/Forms/CreateAccountForm"
 import { FormConfirmation } from "../../components/Forms/FormConfirmation"
 import { Step } from "../../components/Forms/Step"
 import { Wizard } from "../../components/Forms/Wizard"
 import { CheckoutStep } from "../../components/SignUp/CheckoutStep"
 import { ChoosePlanStep } from "../../components/SignUp/ChoosePlanStep"
-import { CreateAccountStep } from "../../components/SignUp/CreateAccountStep"
 import { MeasurementsStep } from "../../components/SignUp/MeasurementsStep"
 import { TriageStep } from "../../components/SignUp/TriageStep"
 import { CheckWithBackground } from "../../components/SVGs"
@@ -20,6 +25,23 @@ import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 
 type ConfirmTextOptions = "accountQueued" | "accountAccepted"
 
+const SIGN_UP_USER = gql`
+  mutation SignupUser(
+    $email: String!
+    $password: String!
+    $firstName: String!
+    $lastName: String!
+    $details: CustomerDetailCreateInput!
+  ) {
+    signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName, details: $details) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`
+
 const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
@@ -27,6 +49,7 @@ const SignUpPage = screenTrack(() => ({
   withData(() => {
     const tracking = useTracking()
     const router = useRouter()
+    const [signUpUser] = useMutation(SIGN_UP_USER)
     const { session_id } = router.query
 
     const [showSnackBar, setShowSnackBar] = useState(false)
@@ -94,7 +117,50 @@ const SignUpPage = screenTrack(() => ({
     }
 
     const noAccountSteps = [
-      <CreateAccountStep onFailure={() => setShowSnackBar(true)} />,
+      <Step
+        validationSchema={createAccountValidationSchema}
+        onSubmit={async (values, actions) => {
+          try {
+            const date = new Date(values.dob)
+            const dateToIso = DateTime.fromJSDate(date).toISO()
+            const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
+            const lastName = values.lastName.charAt(0).toUpperCase() + values.lastName.slice(1)
+            const response = await signUpUser({
+              variables: {
+                email: values.email,
+                password: values.password,
+                firstName,
+                lastName,
+                details: {
+                  phoneNumber: values.tel,
+                  birthday: dateToIso,
+                  phoneOS: values.device,
+                  shippingAddress: {
+                    create: { zipCode: values.zipCode },
+                  },
+                },
+              },
+            })
+            if (response) {
+              localStorage?.setItem("email", values.email)
+              localStorage?.setItem("token", response.data.signup.token)
+              actions.setSubmitting(false)
+
+              return true
+            }
+          } catch (error) {
+            if (JSON.stringify(error).includes("email already in db")) {
+              actions.setFieldError("email", "User with that email already exists")
+            } else {
+              console.log("error", error)
+              setShowSnackBar(true)
+            }
+            actions.setSubmitting(false)
+          }
+        }}
+      >
+        {(context) => <CreateAccountForm context={context} />}
+      </Step>,
       <MeasurementsStep onFailure={() => setShowSnackBar(true)} />,
     ]
 
@@ -138,9 +204,9 @@ const SignUpPage = screenTrack(() => ({
                 <ChoosePlanStep
                   onPlanSelected={(plan) => {
                     setSelectedPlan(plan)
-                    setTimeout(() => {
-                      wizard.next()
-                    }, 500)
+                    // setTimeout(() => {
+                    //   wizard.next()
+                    // }, 500)
                   }}
                 />
               )
