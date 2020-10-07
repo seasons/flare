@@ -78,7 +78,7 @@ const Product = screenTrack(({ router }) => {
               </Media>
             </Col>
             <Col md="5" sm="12">
-              <Box style={{ maxWidth: "390px" }} px={[2, 2, 0, 0, 0]}>
+              <Box style={{ maxWidth: "480px" }} px={[2, 2, 0, 0, 0]}>
                 {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
                 <Box>
                   <Link href="/signup">

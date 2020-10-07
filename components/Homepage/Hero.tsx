@@ -11,6 +11,9 @@ import { Check } from "../SVGs"
 
 const headerText = "Wear,Swap,Repeat"
 
+const caption =
+  "Access hundreds of styles, discover new brands, all with zero commitment. Exclusively in select cities."
+
 const listText = [
   "Free shipping, returns & dry cleaning.",
   "Purchase items you love directly from the app.",
@@ -28,7 +31,7 @@ const DesktopTextContent = () => {
           </Display>
           <Spacer mb={1} />
           <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
-            Access hundreds of styles, discover new brands, all with zero commitment. Exclusively in select cities.
+            {caption}
           </Sans>
           <Spacer mb={4} />
           <Flex flexDirection="row">
@@ -92,10 +95,7 @@ const MobileHero = ({ post }) => {
               </Display>
               <Spacer mb={1} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
-                Access hundreds of styles, discover new brands, all with zero commitment.
-              </Sans>
-              <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
-                Exclusively in select cities.
+                {caption}
               </Sans>
               <Spacer mb={4} />
               <Link href="/signup">
@@ -108,13 +108,13 @@ const MobileHero = ({ post }) => {
                 <Flex mb={2} key={listItem} flexDirection="row" alignItems="center">
                   <Check />
                   <Spacer mr={2} />
-                  <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
+                  <Sans size="3" color="black50" style={{ whiteSpace: "pre-line" }}>
                     {listItem}
                   </Sans>
                 </Flex>
               ))}
               <Spacer mb={2} />
-              <Sans size="4" color="black50">
+              <Sans size="3" color="black50">
                 — Over 500+ curated, in-season, and archive styles.
               </Sans>
               <Spacer mb={4} />

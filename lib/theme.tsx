@@ -5,7 +5,7 @@ import { ThemeProvider } from "styled-components"
 export const breakpoints = {
   xl: 1200,
   lg: 1025,
-  md: 832,
+  md: 768,
   sm: 576,
   xs: 575,
 }

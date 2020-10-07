@@ -16,6 +16,7 @@ import { Spinner } from "../../components/Spinner"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BRAND, GET_BRANDS } from "../../queries/designerQueries"
 import { BRAND_LIST } from "../../components/Homepage/Brands"
+import { Media } from "../../components/Responsive"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -154,19 +155,25 @@ const Designer = screenTrack(({ router }) => {
     }
   }
 
+  const BreadCrumb = () => {
+    return (
+      <>
+        <Sans size="3" style={{ display: "inline" }}>
+          Designers
+        </Sans>
+        <Sans size="3" style={{ display: "inline" }}>
+          {" "}
+          /{" "}
+        </Sans>
+        <Sans size="3" style={{ display: "inline" }}>
+          {brand?.name}
+        </Sans>
+      </>
+    )
+  }
+
   const TextContent = () => (
     <Box>
-      <Sans size="3" style={{ display: "inline" }}>
-        Designers
-      </Sans>
-      <Sans size="3" style={{ display: "inline" }}>
-        {" "}
-        /{" "}
-      </Sans>
-      <Sans size="3" style={{ display: "inline" }}>
-        {brand?.name}
-      </Sans>
-      <Spacer mb={10} />
       <Sans size="9" style={{ textDecoration: "underline" }}>
         {brand?.name}
       </Sans>
@@ -207,15 +214,39 @@ const Designer = screenTrack(({ router }) => {
         />
         <meta property="twitter:card" content="summary" />
       </Head>
-      <Box pt={[1, 5]} px={[2, 2, 2, 5, 5]}>
+      <Box pt={[1, 5]}>
         <Grid>
           <Row>
             <Col md="6" sm="12">
-              {!data ? <DesignerTextSkeleton /> : <TextContent />}
+              <Media greaterThanOrEqual="md">
+                <Box px={[2, 2, 2, 5, 5]}>
+                  {!data ? (
+                    <DesignerTextSkeleton />
+                  ) : (
+                    <>
+                      <BreadCrumb />
+                      <Spacer mb="120px" />
+                      <TextContent />
+                    </>
+                  )}
+                </Box>
+              </Media>
+              <Media lessThan="md">
+                <Box px={[2, 2, 2, 5, 5]}>
+                  <BreadCrumb />
+                  <Spacer mb={2} />
+                  {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
+                </Box>
+              </Media>
             </Col>
             <Col md="6" sm="12">
               <Box pl={[0, 0, 6, 6, 6]} pt={[6, 6, 0, 0, 0]}>
-                {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
+                <Media greaterThanOrEqual="md">
+                  {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
+                </Media>
+                <Media lessThan="md">
+                  <Box px={[2, 2, 2, 5, 5]}>{!data ? <DesignerTextSkeleton /> : <TextContent />}</Box>
+                </Media>
               </Box>
             </Col>
           </Row>
