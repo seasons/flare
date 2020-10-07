@@ -32,7 +32,6 @@ export const ReadMore = React.memo(({ content, maxChars, textColor, readMoreExpa
           root,
           maxChars,
           onExpand: () => {
-            console.log("expand")
             setReadMoreExpanded(true)
             tracking.trackEvent({
               actionName: Schema.ActionNames.ReadMoreTapped,
