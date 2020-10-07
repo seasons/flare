@@ -29,6 +29,7 @@ const Designer = screenTrack(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
   const [fetchingMore, setFetchingMore] = useState(false)
   const slug = router.query.Designer
+
   const imageContainer = useRef(null)
 
   const { data, fetchMore, loading } = useQuery(GET_BRAND, {
