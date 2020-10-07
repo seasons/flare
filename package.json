@@ -20,6 +20,7 @@
     "@material-ui/core": "^4.10.2",
     "@material-ui/styles": "^4.10.0",
     "@segment/snippet": "^4.12.0",
+    "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.9.0",
     "@zeit/next-source-maps": "^0.0.3",
     "apollo-boost": "^0.4.7",
@@ -50,6 +51,7 @@
     "styled-bootstrap-grid": "^3.0.5",
     "styled-components": "^5.0.1",
     "styled-system": "^5.1.5",
+    "use-state-with-callback": "^2.0.3",
     "yup": "^0.29.1"
   },
   "devDependencies": {

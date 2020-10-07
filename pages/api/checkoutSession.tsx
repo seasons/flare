@@ -20,8 +20,8 @@ export default async (req, res) => {
   // Sign customer up for subscription and add donation if provided
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
-    mode: "subscription",
-    line_items: lineItems,
+    mode: "setup",
+    // line_items: lineItems,
     success_url: `${domainURL}/signup?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${domainURL}/cancel`,
     allow_promotion_codes: true,

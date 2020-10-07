@@ -2,7 +2,7 @@ import { gql } from "apollo-boost"
 import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/react-hooks"
-import { loadStripe, Stripe } from "@stripe/stripe-js"
+import { useStripe } from "@stripe/react-stripe-js"
 
 import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
 import { ChooseMembership } from "../../components/Homepage"
@@ -28,16 +28,7 @@ interface ChoosePlanStepProps {
 
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected }) => {
   const { data } = useQuery(PAYMENT_PLANS)
-  const [stripe, setStripe] = useState<Stripe | null>(null)
-
-  useEffect(() => {
-    const load = async () => {
-      const stripe = await loadStripe("pk_test_RUHQ0ADqBJHmknHqApuPBGS900fJpiEabb")
-      setStripe(stripe)
-      return stripe
-    }
-    load()
-  }, [])
+  const stripe = useStripe()
 
   return (
     <Box mx="auto" my={4} p={4}>
@@ -57,25 +48,25 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected }
           console.log(plan)
           onPlanSelected(plan)
 
-          const res = await fetch("/api/checkoutSession")
-          console.log(res)
-          // Redirect to stripe checkout
+          // const res = await fetch("/api/checkoutSession")
+          // console.log(res)
+          // // Redirect to stripe checkout
 
-          const data = await res.json()
+          // const data = await res.json()
 
-          stripe
-            .redirectToCheckout({
-              sessionId: data.checkoutSessionId,
-            })
-            .then(function (result) {
-              console.log("error")
-              // If `redirectToCheckout` fails due to a browser or network
-              // error, display the localized error message to your customer
-              // using `result.error.message`.
-            })
-            .catch(function (err) {
-              console.log(err)
-            })
+          // stripe
+          //   .redirectToCheckout({
+          //     sessionId: data.checkoutSessionId,
+          //   })
+          //   .then(function (result) {
+          //     console.log("error")
+          //     // If `redirectToCheckout` fails due to a browser or network
+          //     // error, display the localized error message to your customer
+          //     // using `result.error.message`.
+          //   })
+          //   .catch(function (err) {
+          //     console.log(err)
+          //   })
         }}
       />
     </Box>

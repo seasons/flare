@@ -72,14 +72,11 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
                 flexDirection="column"
                 key={plan.id}
                 style={{ borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none" }}
+                onClick={() => {
+                  onSelectPlan?.(plan)
+                }}
               >
-                <Box
-                  px={2}
-                  pt={4}
-                  onClick={() => {
-                    onSelectPlan?.(plan)
-                  }}
-                >
+                <Box px={2} pt={4}>
                   <Sans color="black100" size="3">
                     <span style={{ fontSize: "32px", color: `${color("black100")}` }}>{plan.itemCount} </span>
                     {plan.itemCount > 1 ? " items" : " item"}
