@@ -1,5 +1,5 @@
 import React from "react"
-import { Nav } from "../../components/Nav/Nav"
+import { Nav } from "../components/Nav/Nav"
 import {
   ColumnList,
   Hero,
@@ -11,14 +11,14 @@ import {
   TheBag,
   TheApp,
   FromCommunity,
-} from "../../components/Homepage"
-import { Spacer, Layout, Separator, Box } from "../../components"
-import { gql, useQuery } from "@apollo/client"
-import { screenTrack, Schema } from "../../utils/analytics"
-import { BRAND_LIST } from "../../components/Homepage/Brands"
-import { HOW_IT_WORKS_TEXT } from "../../components/Product/HowItWorks"
-import { initializeApollo } from "../../lib/apollo"
-import { HOME_QUERY } from "../../queries/homeQueries"
+} from "../components/Homepage"
+import { Spacer, Layout, Separator, Box } from "../components"
+import { useQuery } from "@apollo/client"
+import { screenTrack, Schema } from "../utils/analytics"
+import { BRAND_LIST } from "../components/Homepage/Brands"
+import { HOW_IT_WORKS_TEXT } from "../components/Product/HowItWorks"
+import { initializeApollo } from "../lib/apollo"
+import { HOME_QUERY } from "../queries/homeQueries"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
