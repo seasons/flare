@@ -13,53 +13,9 @@ import { ReadMore } from "../../components/ReadMore"
 import { withRouter } from "next/router"
 import { DesignerTextSkeleton } from "../../components/Designer/DesignerTextSkeleton"
 import { Spinner } from "../../components/Spinner"
-
-const GET_BRAND = gql`
-  query GetBrand($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
-    brand(where: { slug: $slug }) {
-      id
-      name
-      logo
-      since
-      description
-      websiteUrl
-      basedIn
-      images {
-        id
-        url
-      }
-      productsAggregate: productsConnection(where: { status: Available }) {
-        aggregate {
-          count
-        }
-      }
-      products: productsConnection(first: $first, skip: $skip, orderBy: $orderBy, where: { status: Available }) {
-        edges {
-          node {
-            id
-            slug
-            name
-            images(size: Thumb) {
-              id
-              url
-            }
-            variants {
-              id
-              size
-              internalSize {
-                display
-              }
-              total
-              reservable
-              nonReservable
-              reserved
-            }
-          }
-        }
-      }
-    }
-  }
-`
+import { initializeApollo } from "../../lib/apollo"
+import { GET_BRAND, GET_BRANDS } from "../../queries/designerQueries"
+import { BRAND_LIST } from "../../components/Homepage/Brands"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -284,5 +240,52 @@ const Designer = screenTrack(({ router }) => {
     </Layout>
   )
 })
+
+export async function getStaticPaths() {
+  const apolloClient = initializeApollo()
+
+  const response = await apolloClient.query({
+    query: GET_BRANDS,
+    variables: {
+      brandSlugs: BRAND_LIST,
+    },
+  })
+
+  const paths = []
+
+  const brands = response?.data?.brands
+
+  brands?.forEach((brand) => {
+    paths.push({ params: { Designer: brand.slug } })
+  })
+
+  return {
+    paths,
+    fallback: false,
+  }
+}
+
+export async function getStaticProps({ params }) {
+  const apolloClient = initializeApollo()
+
+  const filter = params?.Designer
+
+  await apolloClient.query({
+    query: GET_BRAND,
+    variables: {
+      slug: filter,
+      first: 8,
+      skip: 0,
+      orderBy: "createdAt_DESC",
+    },
+  })
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+    revalidate: 1,
+  }
+}
 
 export default withRouter(Designer)

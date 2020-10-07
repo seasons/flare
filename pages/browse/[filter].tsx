@@ -29,7 +29,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const tracking = useTracking()
   const router = useRouter()
 
-  const filter = router.query?.filter || "all+all"
+  const filter = router.query?.Filter || "all+all"
 
   const queries = filter?.toString().split("+")
 
@@ -55,8 +55,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   if (error) {
     console.log("error browse.tsx ", error)
   }
-
-  console.log("data", data)
 
   useEffect(() => {
     if (filter) {
@@ -202,21 +200,20 @@ export async function getStaticPaths() {
     query: GET_CATEGORIES,
   })
 
-  const paths = [{ params: { filter: `all+all` } }]
+  const paths = [{ params: { Filter: `all+all` } }]
 
   const categories = response?.data?.categories
 
   categories?.forEach((cat) => {
-    paths.push({ params: { filter: `${cat.slug}+all` } })
+    paths.push({ params: { Filter: `${cat.slug}+all` } })
 
     BRAND_LIST.forEach((brandSlug) => {
-      paths.push({ params: { filter: `${cat.slug}+${brandSlug}` } })
+      paths.push({ params: { Filter: `${cat.slug}+${brandSlug}` } })
     })
-    return
   })
 
   BRAND_LIST.forEach((brandSlug) => {
-    paths.push({ params: { filter: `all+${brandSlug}` } })
+    paths.push({ params: { Filter: `all+${brandSlug}` } })
   })
 
   return {
@@ -228,7 +225,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo()
 
-  const filter = params?.filter || "all+all"
+  const filter = params?.Filter || "all+all"
 
   const queries = filter?.toString().split("+")
   const [category, brand] = queries

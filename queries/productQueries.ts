@@ -1,4 +1,4 @@
-import gql from "graphql-tag"
+import { gql } from "@apollo/client"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
@@ -49,6 +49,15 @@ export const GET_PRODUCT = gql`
         isSaved
         isWanted
       }
+    }
+  }
+`
+
+export const GET_PRODUCTS = gql`
+  query GetProducts( where: { status: Available }) {
+    products {
+      id
+      slug
     }
   }
 `

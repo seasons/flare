@@ -1,4 +1,4 @@
-import BrowsePage from "./[filter]"
-export { getStaticProps } from "./[filter]"
+import BrowsePage from "./[Filter]"
+export { getStaticProps } from "./[Filter]"
 
 export default BrowsePage
