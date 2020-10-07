@@ -17,6 +17,7 @@ import { initializeApollo } from "../../lib/apollo"
 import { GET_BRAND, GET_BRANDS } from "../../queries/designerQueries"
 import { BRAND_LIST } from "../../components/Homepage/Brands"
 import { Media } from "../../components/Responsive"
+import styled from "styled-components"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -185,7 +186,7 @@ const Designer = screenTrack(({ router }) => {
             readMoreExpanded={readMoreExpanded}
             setReadMoreExpanded={setReadMoreExpanded}
             content={brand?.description}
-            maxChars={250}
+            maxChars={400}
           />
         </>
       )}
@@ -215,24 +216,25 @@ const Designer = screenTrack(({ router }) => {
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]}>
-        <Grid>
+        <Grid px={[2, 2, 2, 5, 5]}>
           <Row>
             <Col md="6" sm="12">
-              <Media greaterThanOrEqual="md">
-                <Box px={[2, 2, 2, 5, 5]}>
+              <MediaWithHeight greaterThanOrEqual="md">
+                <Box>
+                  <BreadCrumb />
+                </Box>
+                <Flex flexDirection="column" justifyContent="center" height="100%" pb={8}>
                   {!data ? (
                     <DesignerTextSkeleton />
                   ) : (
                     <>
-                      <BreadCrumb />
-                      <Spacer mb="120px" />
                       <TextContent />
                     </>
                   )}
-                </Box>
-              </Media>
+                </Flex>
+              </MediaWithHeight>
               <Media lessThan="md">
-                <Box px={[2, 2, 2, 5, 5]}>
+                <Box>
                   <BreadCrumb />
                   <Spacer mb={2} />
                   {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
@@ -240,12 +242,12 @@ const Designer = screenTrack(({ router }) => {
               </Media>
             </Col>
             <Col md="6" sm="12">
-              <Box pl={[0, 0, 6, 6, 6]} pt={[6, 6, 0, 0, 0]}>
+              <Box pl={[0, 0, "136px", "136px", "136px"]} pt={[6, 6, 0, 0, 0]}>
                 <Media greaterThanOrEqual="md">
                   {desktopImages?.length && <HomepageCarousel images={desktopImages} pagerHorizontal />}
                 </Media>
                 <Media lessThan="md">
-                  <Box px={[2, 2, 2, 5, 5]}>{!data ? <DesignerTextSkeleton /> : <TextContent />}</Box>
+                  <Box>{!data ? <DesignerTextSkeleton /> : <TextContent />}</Box>
                 </Media>
               </Box>
             </Col>
@@ -320,3 +322,7 @@ export async function getStaticProps({ params }) {
 }
 
 export default withRouter(Designer)
+
+const MediaWithHeight = styled(Media)`
+  height: 100%;
+`
