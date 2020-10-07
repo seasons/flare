@@ -10,8 +10,6 @@ import { useApollo } from "../lib/apollo"
 export default function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)
 
-  console.log("pageProps.initialApolloState", pageProps.initialApolloState)
-
   return (
     <ApolloProvider client={apolloClient}>
       <FontStyles />

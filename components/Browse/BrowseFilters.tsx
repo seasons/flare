@@ -33,7 +33,7 @@ export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
           const isActive = title === "Designers" ? currentBrand === item.slug : currentCategory === item.slug
           return (
             <div onClick={() => setCurrentPage(1)} key={item.slug}>
-              <Link href="/browse/[filter]" as={`/browse/${query}`}>
+              <Link href="/browse/[Filter]" as={`/browse/${query}`}>
                 <Flex flexDirection="row" alignItems="center">
                   {isActive && <ActiveLine />}
                   <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer" }}>
