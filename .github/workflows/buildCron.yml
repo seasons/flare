@@ -11,10 +11,22 @@ jobs:
   build-static-files-production:
     name: Build static files production
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
 
     steps:
+      - uses: actions/checkout@v1
+      - name: Uses Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with: 
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g yarn
       - name: Run build static file
-        run: yarn build
+        run: |
+          yarn install
+          yarn build
         env:
           DEFAULT_BRANCH: production
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -22,11 +34,24 @@ jobs:
   build-static-files-staging:
     name: Build static files staging
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
 
     steps:
+      - uses: actions/checkout@v1
+      - name: Uses Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with: 
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g yarn
       - name: Run build static file
-        run: yarn build
+        run: |
+          yarn install
+          yarn build
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     
