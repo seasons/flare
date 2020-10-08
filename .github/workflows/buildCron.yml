@@ -15,21 +15,14 @@ jobs:
       DEFAULT_BRANCH: production
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
       - uses: actions/checkout@v1
-      - name: Uses Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: borales/actions-yarn@v2.0.0
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install -g yarn
-      - name: Run build static file
-        run: |
-          yarn install
-          yarn build
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build # will run `yarn build` command
 
   build-static-files-staging:
     name: Build static files staging
@@ -38,18 +31,11 @@ jobs:
       DEFAULT_BRANCH: master
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
       - uses: actions/checkout@v1
-      - name: Uses Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: borales/actions-yarn@v2.0.0
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install -g yarn
-      - name: Run build static file
-        run: |
-          yarn install
-          yarn build
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build # will run `yarn build` command
