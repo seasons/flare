@@ -4,7 +4,7 @@ on:
   schedule:
     # Runs everyday at 11am and 6pm
     # http://www.cronmaker.com/
-    - cron: "0 0 11,18/12 * *"
+    - cron: "0 0 12,18/12 * *"
 
 jobs:
   build-static-files-production:
