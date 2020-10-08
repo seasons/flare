@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Run build static file
+      - run: yarn build
         env:
           DEFAULT_BRANCH: production
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: yarn build
 
   build-static-files-staging:
     name: Build static files staging
@@ -25,7 +25,8 @@ jobs:
 
     steps:
       - name: Run build static file
+      - run: yarn build
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: yarn build
+    
