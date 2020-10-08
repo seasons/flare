@@ -38,19 +38,24 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [currentCategory, setCurrentCategory] = useState(category)
   const [currentBrand, setCurrentBrand] = useState(brand)
   const [currentPage, setCurrentPage] = useState(1)
-  const skip = (currentPage - 1) * pageSize
 
-  const { data, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
+  const { data, error, loading, refetch } = useQuery(GET_BROWSE_PRODUCTS, {
     variables: {
       brandName: currentBrand,
       categoryName: currentCategory,
       first: pageSize,
       orderBy: "publishedAt_DESC",
       brandOrderBy: "name_ASC",
-      skip,
+      skip: 0,
       brandSlugs: BRAND_LIST,
     },
   })
+
+  useEffect(() => {
+    const skip = (currentPage - 1) * pageSize
+    refetch({ skip })
+    window && window.scrollTo(0, 0)
+  }, [currentPage, refetch])
 
   if (error) {
     console.log("error browse.tsx ", error)
@@ -66,9 +71,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     }
   }, [filter, setCurrentBrand, setCurrentCategory])
 
-  useEffect(() => {
-    window && window.scrollTo(0, 0)
-  }, [data])
 
   const aggregateCount = data?.connection?.aggregate?.count
   const pageCount = Math.ceil(aggregateCount / pageSize)
