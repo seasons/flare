@@ -2,8 +2,8 @@ name: Build-Static-Files
 
 on:
   schedule:
-    # Runs everyday at 11am and 6pm
-    - cron: "0 11,18/12 * * *"
+    # Runs everyday at 12pm and 6pm
+    - cron: "0 12,18/12 * * *"
 
 jobs:
   build-static-files-production:
