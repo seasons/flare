@@ -5,7 +5,7 @@ on:
     # Runs everyday at
     # 4:15 and 10pm UTC
     # 12:15pm and 6pm EST
-    - cron: "15 * * * *"
+    - cron: "5 * * * *"
 
 jobs:
   build-static-files-production:
