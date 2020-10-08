@@ -14,6 +14,7 @@ jobs:
     env:
       DEFAULT_BRANCH: production
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MONSOON_ENDPOINT: https://monsoon.seasons.nyc
 
     steps:
       - uses: actions/checkout@v1
@@ -29,6 +30,7 @@ jobs:
     env:
       DEFAULT_BRANCH: master
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MONSOON_ENDPOINT: https://monsoon-staging.herokuapp.com/
 
     steps:
       - uses: actions/checkout@v1
