@@ -20,7 +20,7 @@ jobs:
         node-version: [12.x]
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: ./
       - name: Uses Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -30,7 +30,6 @@ jobs:
         run: |
           yarn install
           yarn build
-        working-directory: ./
 
   build-static-files-staging:
     name: Build static files staging
@@ -44,7 +43,7 @@ jobs:
         node-version: [12.x]
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: ./
       - name: Uses Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -54,4 +53,3 @@ jobs:
         run: |
           yarn install
           yarn build
-        working-directory: ./
