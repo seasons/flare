@@ -1,0 +1,41 @@
+name: Build-Static-Files
+
+on:
+  schedule:
+    # Runs everyday at
+    # 4:15 and 10pm UTC
+    # 12:15pm and 6pm EST
+    - cron: "5 * * * *"
+
+jobs:
+  build-static-files-production:
+    name: Build static files production
+    runs-on: ubuntu-latest
+    env:
+      DEFAULT_BRANCH: production
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build # will run `yarn build` command
+
+  build-static-files-staging:
+    name: Build static files staging
+    runs-on: ubuntu-latest
+    env:
+      DEFAULT_BRANCH: master
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build # will run `yarn build` command
