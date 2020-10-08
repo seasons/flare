@@ -1,4 +1,4 @@
-name: Build cron
+name: Static build cron
 
 on:
   schedule:
