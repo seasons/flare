@@ -105,6 +105,8 @@ export enum ActionNames {
   // Browse
   ProductPageNumberChanged = "Product Page Number Changed",
   // Forms
+
+  ServiceableModalZipCodeButtonClicked = "Serviceable Modal Zip Code Button Clicked"
 }
 
 /**
