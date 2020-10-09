@@ -7,6 +7,7 @@ import { Sans } from "../Typography"
 import { VariantSizes } from "../VariantSizes"
 import ContentLoader from "react-content-loader"
 import { ProgressiveImage } from "../Image"
+import { Spacer } from "../Spacer"
 
 export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showName?: boolean }> = ({
   product,
@@ -17,10 +18,25 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   let showBrand = true
 
   const brandName = product?.brand?.name
-  const brandSlug = product.brand?.slug
+  const brandSlug = product?.brand?.slug
 
   if (showName || brandName === "Vintage") {
     showBrand = false
+  }
+
+  if(!product || loading){
+    return (
+      <Box m="2px">
+        <ContentLoader viewBox="0 0 100 125">
+          <rect x={0} y={0} width="100%" height="100%" />
+        </ContentLoader>
+        <Spacer mb="5px"/>
+        <ContentLoader width="100%" height="42px">
+          <rect x={0} y={0} width="40%" height={12} />
+          <rect x={0} y={19} width={37} height={12} />
+        </ContentLoader>
+      </Box>
+    )
   }
 
   const Text = () => {
@@ -52,25 +68,9 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   return (
     <ProductContainer key={product.id}>
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
-        <div>
-          {loading ? (
-            <ContentLoader viewBox="0 0 100 125">
-              <rect x={0} y={0} width="100%" height="100%" />
-            </ContentLoader>
-          ) : (
-            <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
-          )}
-          <Box py="1" pb="2">
-            {loading ? (
-              <ContentLoader width="100%" height="56px">
-                <rect x={0} y={0} width="40%" height={12} />
-                <rect x={0} y={19} width={37} height={12} />
-              </ContentLoader>
-            ) : (
-              <Text />
-            )}
-          </Box>
-        </div>
+        <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
+        <Spacer mb={1}/>
+        <Text/>
       </Link>
     </ProductContainer>
   )
