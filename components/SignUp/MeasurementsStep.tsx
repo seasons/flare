@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 import React from "react"
 
-import { useMutation } from "@apollo/react-hooks"
+import { useMutation } from "@apollo/client"
 
 import {
   CustomerMeasurementsForm, customerMeasurementsValidationSchema

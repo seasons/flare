@@ -4,12 +4,12 @@ import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
 import { color } from "../../helpers"
 import { Button } from "../Button/Button"
 import { GetTheAppButton } from "../Button/GetTheApp"
-import { CheckWithBackground, InstagramSVG } from "../SVGs"
+import { InstagramSVG } from "../SVGs"
 import { FormFooter } from "./FormsTemplate"
 import HeaderText from "./HeaderText"
 
 interface FormConfirmationProps {
-  icon: JSX.Element
+  icon?: JSX.Element
   headerText: string
   bodyText: string
 }
