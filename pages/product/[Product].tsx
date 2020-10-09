@@ -36,8 +36,6 @@ const Product = screenTrack(({ router }) => {
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
 
-  console.log("data", data)
-
   return (
     <Layout fixedNav includeDefaultHead={false}>
       <Head>
@@ -115,7 +113,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   }
 }
 

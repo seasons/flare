@@ -57,7 +57,7 @@ export const HOME_QUERY = gql`
       first: 4
       category: "tops"
       orderBy: publishedAt_DESC
-      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, {tags_none: { name: "Vintage"}}] }
     ) {
       ...HomePageProduct
     }
