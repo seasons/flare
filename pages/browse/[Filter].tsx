@@ -97,7 +97,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
-                setCurrentPage={setCurrentPage}
                 currentCategory={currentCategory}
                 listItems={brands}
                 title="Designers"
@@ -108,7 +107,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             CategoriesListComponent={
               <BrowseFilters
                 title="Categories"
-                setCurrentPage={setCurrentPage}
                 currentCategory={currentCategory}
                 listItems={categories}
                 hideTitle

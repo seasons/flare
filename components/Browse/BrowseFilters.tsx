@@ -5,7 +5,6 @@ import { color } from "../../helpers"
 import styled from "styled-components"
 
 interface BrowseFiltersProps {
-  setCurrentPage: (boolean) => void
   listItems: any
   title: string
   hideTitle?: boolean
