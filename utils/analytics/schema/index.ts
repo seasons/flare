@@ -77,6 +77,7 @@ export enum ActionTypes {
   /**
    * User actions
    */
+  Click = "Click",
   Tap = "Tap",
   Swipe = "Swipe",
   Session = "Session",
@@ -105,6 +106,17 @@ export enum ActionNames {
   // Browse
   ProductPageNumberChanged = "Product Page Number Changed",
   // Forms
+
+  // Create Account
+  CreateAccountClicked = "Create Account Button Clicked",
+  AccountTriaged = "Account Triaged",
+  PlanSelectedButtonClicked = "Plan Selected Button Clicked",
+
+  // Serviceable Modal
+  ServiceableModalZipCodeButtonClicked = "Serviceable Modal zipcode Button Clicked",
+  ServiceableModalCloseButtonClicked = "Serviceable Modal close Button Clicked",
+  ServiceableModalEmailButtonClicked = "Serviceable Modal email Button Clicked",
+  ServiceableModalDoneButtonClicked = "Serviceable Modal done Button Clicked",
 }
 
 /**

@@ -1,24 +1,18 @@
-import React from "react"
-import { Nav } from "../components/Nav/Nav"
+import { Box, Layout, Separator, Spacer } from "components"
 import {
-  ColumnList,
-  Hero,
-  ProductRail,
-  ChooseMembership,
-  FAQ,
-  Brands,
-  MembershipBenefits,
-  TheBag,
-  TheApp,
-  FromCommunity,
-} from "../components/Homepage"
-import { Spacer, Layout, Separator, Box } from "../components"
+  Brands, ChooseMembership, ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, ProductRail,
+  TheApp, TheBag
+} from "components/Homepage"
+import { BRAND_LIST } from "components/Homepage/Brands"
+import { Nav } from "components/Nav/Nav"
+import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
+import { ServiceableModal } from "components/ServiceableModal"
+import { initializeApollo } from "lib/apollo"
+import { HOME_QUERY } from "queries/homeQueries"
+import React from "react"
+import { Schema, screenTrack } from "utils/analytics"
+
 import { useQuery } from "@apollo/client"
-import { screenTrack, Schema } from "../utils/analytics"
-import { BRAND_LIST } from "../components/Homepage/Brands"
-import { HOW_IT_WORKS_TEXT } from "../components/Product/HowItWorks"
-import { initializeApollo } from "../lib/apollo"
-import { HOME_QUERY } from "../queries/homeQueries"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
@@ -111,6 +105,8 @@ const Home = screenTrack(() => ({
       <Spacer mb={10} />
       <Brands brands={data?.brands} />
       <Spacer mb={15} />
+
+      <ServiceableModal />
     </Layout>
   )
 })
