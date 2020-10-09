@@ -38,7 +38,7 @@ export const FAQCard: React.FC<{
     updateHeight()
     if (window) {
       window.addEventListener("resize", updateHeight)
-      return window.removeEventListener("resize", updateHeight)
+      return () => window.removeEventListener("resize", updateHeight)
     }
   }, [])
 

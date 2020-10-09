@@ -25,6 +25,7 @@
     "**/*.ts",
     "**/*.tsx",
     "scripts/uploadAssetsToS3.js",
-    "utils/analytics/setupAnalytics.js"
+    "utils/analytics/setupAnalytics.js",
+    "lib/apollo.js"
   ]
 }

@@ -16,7 +16,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[] }> = ({ 
           <Display size="3">Info</Display>
           <Spacer mb={[1, 1, 1, 2, 2]} />
           <Sans size="3" color="black50">
-            A members-only rental platform for designer menswear & streetwear.
+            A members-only rental platform for designer menswear & vintage goods.
           </Sans>
           <Spacer mb={[3, 3, 3, 0, 0]} />
         </Col>
@@ -24,15 +24,15 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[] }> = ({ 
           <Display size="3">Misc.</Display>
           <Spacer mb={[1, 1, 1, 2, 2]} />
           <Link href="/privacy-policy">
-            <Display size="3" color="black50">
+            <Sans size="3" color="black50">
               Privacy Policy
-            </Display>
+            </Sans>
           </Link>
           <Spacer mb={[1, 1, 1, 2, 2]} />
           <Link href="/terms-of-service">
-            <Display size="3" color={color("black50")} pt="0.5" pr="3">
+            <Sans size="3" color={color("black50")} pt="0.5" pr="3">
               Terms of Service
-            </Display>
+            </Sans>
           </Link>
           <Spacer mb={[3, 3, 3, 0, 0]} />
         </Col>

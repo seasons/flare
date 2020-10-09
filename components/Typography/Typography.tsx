@@ -201,6 +201,7 @@ function createStyledText<P extends StyledTextProps>(
     if (fontFamilyType === null) {
       throw new Error("Did not expect `fontType` to be `null`.")
     }
+    const styles = fontType === "display" ? { letterSpacing: "-1px", ...textProps.style } : textProps.style
     return (
       <Text
         fontFamily={fontFamilyType && fontFamily[fontType][fontFamilyType]}
@@ -213,6 +214,7 @@ function createStyledText<P extends StyledTextProps>(
         //  renaming it to `as` when we pass it to through.
         {...(element ? { as: element } : {})}
         {...textProps}
+        style={styles}
       />
     )
   })``

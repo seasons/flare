@@ -3,6 +3,7 @@ import React from "react"
 import { ProductInfoItem } from "./ProductInfoItem"
 import { color } from "../../helpers"
 import { VariantSizes } from "../VariantSizes"
+import Link from "next/link"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{
@@ -15,7 +16,7 @@ export const ProductDetails: React.FC<{
   const {
     name,
     description,
-    brand: { name: brandName },
+    brand: { name: brandName, slug: brandSlug },
   } = product
 
   const modelHeightDisplay = (modelHeight) => {
@@ -30,7 +31,7 @@ export const ProductDetails: React.FC<{
   }
 
   return (
-    <Box px={2} mb={3}>
+    <Box mb={3}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Box>
           <VariantSizes variants={product.variants} size="3" />
@@ -38,14 +39,16 @@ export const ProductDetails: React.FC<{
             <Sans size="5" color="black">
               {name}
             </Sans>
-            <Sans size="4" color="gray">
-              {brandName}
-            </Sans>
+            <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
+              <Sans size="4" color="gray" style={{ cursor: "pointer", textDecoration: "underline" }}>
+                {brandName}
+              </Sans>
+            </Link>
           </Box>
         </Box>
       </Flex>
       <Spacer mb={1} />
-      <Sans size="3" color="gray" lineHeight={1.6}>
+      <Sans size="4" color="gray" lineHeight={1.6}>
         {description}
       </Sans>
       <Spacer mb={3} />

@@ -22,11 +22,11 @@ const textItems = [
   },
   {
     title: "Reserve",
-    text: "Choose your 3 pieces and place your reservation. We pack, ship and deliver within 1 to 2 business days.",
+    text: "Choose your favorite styles and place your reservation. We pack, ship and deliver within 2-3 business days.",
   },
   {
     title: "Manage",
-    text: "Update your personal preferences, membership, payment and shipping information right from the app.",
+    text: "Update personal preferences, membership, payment and shipping information all right from the app.",
   },
 ]
 

@@ -12,7 +12,7 @@ const links = [
   },
   {
     text: "Browse",
-    url: "/browse/all",
+    url: "/browse",
     match: /^\/browse/,
     external: false,
   },

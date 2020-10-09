@@ -16,24 +16,24 @@ const items = [
       "Seasons is for everyone. Gender lines have been blurred and it's no longer about Men's or Women's. It's about whether you like something or not and helping you find a size that fits.",
   },
   {
-    title: "How long can I keep my 3 pieces?",
+    title: "How long can I keep my pieces?",
     text:
-      "On an Essential plan you have 28 days to wear and return (don't worry, we'll remind you). With an All Access plan you're free to keep them as long as you want and swap out anytime.",
+      "We suggest returning your pieces after 28 days. If you love something in your order, feel free to hold on to it. We’ll only reset the slots of the items you decide to return.",
   },
   {
-    title: "Want more than 3 pieces?",
+    title: "What if something doesn’t fit?",
     text:
-      "Unfortunately we're not offering slot upgrades just yet. It's something we're still working on and will roll out soon. Have thoughts? Shoot us a message at <a href='mailto:membership@seasons.nyc?subject=Hello'>membership@seasons.nyc</a>.",
+      "Pack it up and send it back! We’ll make sure you get the right size or another item that fits. On an Essential plan? Any exchanges regarding size do not count towards your monthly swap.",
   },
   {
-    title: "Received a damaged item?",
+    title: "How often do you add new items?",
     text:
-      "This rarely happens, but if it does, contact our customer service team, pack it up and send it back using the prepaid shipping label. We'll make sure we take care of you.",
+      "We release new styles every Friday and restock on Mondays and Thursdays. As new collections come in, we’ll announce a schedule of upcoming releases as well.",
   },
   {
-    title: "Are there late fees?",
+    title: "Can I purchase items I like?",
     text:
-      "We'll charge a $35 fee for each day it's late (along with the monthly charge for your subscription). This only applies to the Essentials membership or if you cancel or pause your plan.",
+      "Yes. Contact us via the app and we’ll take care of you. Soon, you’ll be able to purchase items in the app directly using your payment and shipping information on file.",
   },
 ]
 

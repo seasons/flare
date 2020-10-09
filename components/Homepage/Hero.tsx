@@ -5,37 +5,30 @@ import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "../"
 import { Display } from "../Typography"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"
-import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
 import { Button } from "../Button"
 import { Check } from "../SVGs"
 
-const imageURL = require("../../public/images/homepage/Hero-Image-10-29-20.png")
-const imageAlt = "Collage of editorial product images"
-
-const headerText = "Wear, swap & repeat."
+const headerText = "Wear,Swap,Repeat"
 
 const listText = [
-  "Free shipping, returns & dry cleaning",
-  "Purchase items you like at a discount",
-  "Pause or cancel anytime",
+  "Free shipping, returns & dry cleaning.",
+  "Purchase items you love directly from the app.",
+  "No commitment. Pause or cancel anytime.",
 ]
 
-const desktopHeight = "800px"
-const tableHeight = "600px"
-const mobileHeight = "550px"
-
-const DesktopAndTabletContent = ({ paddingBottom }) => {
+const DesktopTextContent = () => {
   return (
-    <Box pb={paddingBottom} style={{ zIndex: 3, position: "relative" }}>
+    <Box pb={5} style={{ zIndex: 3, position: "relative" }} pr={2}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
-        <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-          <Display size="9" color="black100">
+        <Flex flexDirection="column" justifyContent="center">
+          <Spacer mb={10} />
+          <Display size="10" color="black100" style={{ letterSpacing: "-2px" }}>
             {headerText}
           </Display>
           <Spacer mb={1} />
           <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
-            Access hundreds of styles and discover new brands, all with zero commimtment. Exclusively in select cities.
+            Access hundreds of styles, discover new brands, all with zero commitment. Exclusively in select cities.
           </Sans>
           <Spacer mb={4} />
           <Flex flexDirection="row">
@@ -61,55 +54,32 @@ const DesktopAndTabletContent = ({ paddingBottom }) => {
   )
 }
 
-const DesktopHero = () => {
+const DesktopHero = ({ post }) => {
   return (
     <MaxWidth>
-      <Flex
-        flexDirection="row"
-        justifyContent="space-between"
-        width="100%"
-        alignItems="center"
-        px={[2, 2, 2, 5, 5]}
-        pt={5}
-      >
-        <DesktopAndTabletContent paddingBottom={5} />
-        <DesktopImageWrapper>
-          <Picture src={imageResize(imageURL, "hero")} alt={imageAlt} />
-        </DesktopImageWrapper>
-        <BottomTextWrapper px={[2, 2, 2, 5, 5]} pb={5}>
+      <Box width="100%" px={[2, 2, 2, 5, 5]} pb={5}>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <DesktopTextContent />
+          <StyledAnchor href={post?.url}>
+            <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
+          </StyledAnchor>
+        </Flex>
+        <Flex pt={1} flexDirection="row" justifyContent="space-between" width="100%" alignItems="center">
           <Sans size="4" color="black50">
-            — Over 500+ curated, in-season, and vintage styles.
+            — Over 500+ curated, in-season, and archive styles.
           </Sans>
-        </BottomTextWrapper>
-      </Flex>
+          <Flex flexDirection="row" justifyContent="flex-end">
+            <a href={post?.url} style={{ color: "inherit", textDecoration: "none" }}>
+              <Sans size="4">{post?.name}</Sans>
+            </a>
+          </Flex>
+        </Flex>
+      </Box>
     </MaxWidth>
   )
 }
 
-const TabletHero = () => {
-  return (
-    <MaxWidth style={{ overflow: "hidden" }}>
-      <Flex
-        flexDirection="row"
-        justifyContent="space-between"
-        width="100%"
-        alignItems="center"
-        px={[2, 2, 2, 5, 5]}
-        pt={5}
-      >
-        <DesktopAndTabletContent paddingBottom={8} />
-        <TabletImageWrapper style={{ backgroundImage: `url(${imageResize(imageURL, "large")})` }} />
-        <BottomTextWrapper px={[2, 2, 2, 5, 5]}>
-          <Sans size="4" color="black50">
-            — Over 500+ curated, in-season, and vintage styles.
-          </Sans>
-        </BottomTextWrapper>
-      </Flex>
-    </MaxWidth>
-  )
-}
-
-const MobileHero = () => {
+const MobileHero = ({ post }) => {
   return (
     <Grid>
       <Row>
@@ -117,12 +87,12 @@ const MobileHero = () => {
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Spacer mb={10} />
-              <Display size="9" color="black100">
+              <Display size="9" color="black100" style={{ letterSpacing: "-2px" }}>
                 {headerText}
               </Display>
               <Spacer mb={1} />
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
-                Access hundreds of styles and discover new brands, all with zero commimtment.
+                Access hundreds of styles, discover new brands, all with zero commitment.
               </Sans>
               <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
                 Exclusively in select cities.
@@ -143,10 +113,21 @@ const MobileHero = () => {
                   </Sans>
                 </Flex>
               ))}
+              <Spacer mb={2} />
+              <Sans size="4" color="black50">
+                — Over 500+ curated, in-season, and archive styles.
+              </Sans>
               <Spacer mb={4} />
               <MobileImageWrapper>
-                <Picture src={imageResize(imageURL, "large")} alt={imageAlt} />
+                <StyledAnchor href={post?.url}>
+                  <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
+                </StyledAnchor>
               </MobileImageWrapper>
+              <Flex flexDirection="row" justifyContent="flex-end">
+                <a href={post?.url} style={{ color: "inherit", textDecoration: "none" }}>
+                  <Sans size="4">{post?.name}</Sans>
+                </a>
+              </Flex>
             </Flex>
           </Flex>
         </Col>
@@ -155,45 +136,29 @@ const MobileHero = () => {
   )
 }
 
-export const Hero: React.FC = () => {
+export const Hero: React.FC<{ post: any }> = ({ post }) => {
   return (
     <>
-      <Media greaterThanOrEqual="lg">
-        <DesktopHero />
+      <Media greaterThanOrEqual="md">
+        <DesktopHero post={post} />
         <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
       </Media>
-      <Media between={["md", "lg"]}>
-        <TabletHero />
-      </Media>
       <Media lessThan="md">
-        <MobileHero />
+        <MobileHero post={post} />
       </Media>
     </>
   )
 }
 
-const BottomTextWrapper = styled(Box)`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: 3;
-`
-
-const TabletImageWrapper = styled(Box)`
-  width: 40%;
-  height: 100%;
+const BackgroundImage = styled(Box)`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-`
-
-const DesktopImageWrapper = styled(Box)`
-  width: 50%;
-  img {
-    width: 100%;
-  }
+  padding-bottom: 100%;
+  width: 100%;
+  height: 0;
 `
 
 const MobileImageWrapper = styled(Box)`
@@ -203,4 +168,13 @@ const MobileImageWrapper = styled(Box)`
   img {
     width: 100%;
   }
+`
+
+const StyledAnchor = styled.a`
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  width: 50%;
+  max-width: 800px;
+  min-height: 450px;
 `
