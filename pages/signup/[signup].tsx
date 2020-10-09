@@ -1,28 +1,21 @@
-import Chargebee from "chargebee"
+import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
+import {
+  CreateAccountForm, createAccountValidationSchema
+} from "components/Forms/CreateAccountForm"
+import { FormConfirmation } from "components/Forms/FormConfirmation"
+import { Step } from "components/Forms/Step"
+import { Wizard } from "components/Forms/Wizard"
+import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
+import { MeasurementsStep } from "components/SignUp/MeasurementsStep"
+import { TriageStep } from "components/SignUp/TriageStep"
+import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
 import { DateTime } from "luxon"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
+import { Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
-import { Elements } from "@stripe/react-stripe-js"
-import { loadStripe, Stripe } from "@stripe/stripe-js"
-
-import { Flex, Layout, MaxWidth, Sans, SnackBar } from "../../components"
-import {
-  CreateAccountForm, createAccountValidationSchema
-} from "../../components/Forms/CreateAccountForm"
-import { FormConfirmation } from "../../components/Forms/FormConfirmation"
-import { Step } from "../../components/Forms/Step"
-import { Wizard } from "../../components/Forms/Wizard"
-import { CheckoutStep } from "../../components/SignUp/CheckoutStep"
-import { ChoosePlanStep } from "../../components/SignUp/ChoosePlanStep"
-import { MeasurementsStep } from "../../components/SignUp/MeasurementsStep"
-import { TriageStep } from "../../components/SignUp/TriageStep"
-import { CheckWithBackground } from "../../components/SVGs"
-import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-
-type ConfirmTextOptions = "accountQueued" | "accountAccepted"
 
 const SIGN_UP_USER = gql`
   mutation SignupUser(
@@ -46,40 +39,22 @@ const SignUpPage = screenTrack(() => ({
   path: "/signup",
 }))(() => {
   const tracking = useTracking()
-  const router = useRouter()
   const [signUpUser] = useMutation(SIGN_UP_USER)
-  const { session_id } = router.query
 
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(true)
-  const [selectedPlan, setSelectedPlan] = useState(null)
-  const [confirmText, setConfirmText] = useState<ConfirmTextOptions>("accountAccepted")
   const [isWaitlisted, setIsWaitlisted] = useState(false)
+  const [paymentProcessed, setPaymentProcessed] = useState(false)
 
   const [userHasAccount, setUserHasAccount] = useState(false)
   const [userIsConfirmed, setUserIsConfirmed] = useState(false)
 
-  const paymentProcessed = !!session_id
-
   useEffect(() => {
     setUserHasAccount(!!localStorage.getItem("email"))
-    setUserIsConfirmed(localStorage.getItem("isWaitlisted") === "false")
+    setIsWaitlisted(localStorage.getItem("isWaitlisted") === "true")
+    setUserIsConfirmed(!!localStorage.getItem("isWaitlisted"))
+    setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
   }, [])
-
-  const stripe = loadStripe("pk_test_RUHQ0ADqBJHmknHqApuPBGS900fJpiEabb")
-
-  const processSession = async (sessionId: string) => {
-    const res = await fetch("/api/retrieveSession", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sessionId }),
-    })
-
-    // Get setup_intent
-    const data = await res.json()
-
-    console.log("Retrieved session", data)
-  }
 
   const initialValues = {
     email: "",
@@ -175,22 +150,21 @@ const SignUpPage = screenTrack(() => ({
           onTriageComplete={(isWaitlisted) => {
             setIsWaitlisted(isWaitlisted)
             localStorage.setItem("isWaitlisted", String(isWaitlisted))
-            wizard.next()
+
+            setTimeout(() => {
+              wizard.next()
+            }, 1000)
           }}
         />
       )}
     </Step>,
   ]
 
-  if (paymentProcessed) {
-    processSession(session_id as string)
-  }
-
   const steps = paymentProcessed
     ? [
         <Step>
-          {({ wizard }) => {
-            const data = confirmData[confirmText]
+          {() => {
+            const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
             return <FormConfirmation {...data} />
           }}
         </Step>,
@@ -200,15 +174,17 @@ const SignUpPage = screenTrack(() => ({
         ...(userIsConfirmed ? [] : triageStep),
         <Step>
           {({ wizard }) => {
-            const data = confirmData[confirmText]
+            const data = confirmData["waitlisted"]
+
             return isWaitlisted ? (
               <FormConfirmation {...data} />
             ) : (
               <ChoosePlanStep
                 onPlanSelected={(plan) => {
-                  setSelectedPlan(plan)
+                  console.log("Selected plan: ", plan)
                 }}
                 onSuccess={() => {
+                  localStorage.setItem("paymentProcessed", "true")
                   setTimeout(() => {
                     wizard.next()
                   }, 500)
@@ -219,8 +195,8 @@ const SignUpPage = screenTrack(() => ({
           }}
         </Step>,
         <Step>
-          {({ wizard }) => {
-            const data = confirmData[confirmText]
+          {() => {
+            const data = confirmData["accountAccepted"]
             return <FormConfirmation {...data} />
           }}
         </Step>,
@@ -238,16 +214,14 @@ const SignUpPage = screenTrack(() => ({
   )
 
   return (
-    <Elements stripe={stripe}>
-      <Layout fixedNav hideFooter>
-        <MaxWidth>
-          <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-          <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-            {hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
-          </Flex>
-        </MaxWidth>
-      </Layout>
-    </Elements>
+    <Layout fixedNav hideFooter>
+      <MaxWidth>
+        <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
+        <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
+          {hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
+        </Flex>
+      </MaxWidth>
+    </Layout>
   )
 })
 
