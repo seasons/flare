@@ -1,6 +1,7 @@
 import React from "react"
-import { fontFamily } from "../components/Typography/Typography"
 import { ThemeProvider } from "styled-components"
+
+import { fontFamily } from "../components/Typography/Typography"
 
 export const breakpoints = {
   xl: 1200,

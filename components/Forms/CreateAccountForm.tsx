@@ -1,9 +1,10 @@
 import React, { useEffect } from "react"
 import * as Yup from "yup"
-import { FormTemplate, FormProps } from "./FormsTemplate"
-import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
+
 import { ExternalLink } from "../"
 import { Schema } from "../../utils/analytics"
+import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
+import { FormProps, FormTemplate } from "./FormsTemplate"
 import SelectItem from "./SelectItem"
 
 export interface CreateAccountFormFields {
@@ -57,17 +58,9 @@ export const createAccountValidationSchema = Yup.object().shape({
 })
 
 export const CreateAccountForm = ({ context }: FormProps) => {
-  // If a token is set in local storage, the checkJWT middleware on the server
-  // will throw a hissy fit. So remove it here.
-  useEffect(() => {
-    localStorage?.removeItem("email")
-    localStorage?.removeItem("token")
-  }, [])
-
   return (
     <FormTemplate
       context={context}
-      stepText="Step 1 of 2"
       headerText="Create an account"
       HeaderDetail={<>You’ll use this to sign into the app, choose your plan, and manage your membership.</>}
       footerText={
