@@ -67,6 +67,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   }
 
   useEffect(() => {
+    setCurrentPage(1)
+  }, [currentBrand, currentCategory, setCurrentPage])
+
+  useEffect(() => {
     if (filter) {
       const queries = filter?.toString().split("+")
       const [category, brand] = queries

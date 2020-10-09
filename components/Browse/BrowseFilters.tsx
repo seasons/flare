@@ -14,7 +14,6 @@ interface BrowseFiltersProps {
 }
 
 export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
-  setCurrentPage,
   currentCategory,
   listItems,
   currentBrand,
@@ -32,7 +31,7 @@ export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
           const query = title === "Designers" ? `${currentCategory}+${item.slug}` : `${item.slug}+${currentBrand}`
           const isActive = title === "Designers" ? currentBrand === item.slug : currentCategory === item.slug
           return (
-            <div onClick={() => setCurrentPage(1)} key={item.slug}>
+            <div key={item.slug}>
               <Link href="/browse/[Filter]" as={`/browse/${query}`}>
                 <Flex flexDirection="row" alignItems="center">
                   {isActive && <ActiveLine />}
