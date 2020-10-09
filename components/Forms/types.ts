@@ -12,7 +12,7 @@ export type StepElement = React.ReactElement<StepProps>
 // for wizard.previous  for button OnClick prop
 export interface WizardStepChildProps {
   form: any
-  wizard: any
+  wizard: WizardRenderProps
 }
 
 export interface StepProps {
@@ -26,8 +26,8 @@ export interface StepProps {
 export interface WizardRenderProps {
   currentStep: StepElement
   isLastStep: boolean
-  previous: (e: React.FormEvent<any> | null, values: FormValues) => void
-  next: (e: React.FormEvent<any> | null, values: FormValues) => void
+  previous: (e?: React.FormEvent<any> | null, values?: FormValues) => void
+  next: (e?: React.FormEvent<any> | null, values?: FormValues) => void
   currentStepIndex: number
   steps: StepElement[]
   shouldAllowNext: boolean

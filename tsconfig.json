@@ -12,11 +12,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "jsx": "preserve",
-    "baseUrl": "src",
-    "paths": {
-      "Analytics/*": ["./analytics/*"],
-      "Components/*": ["./components/*"]
-    },
+    "baseUrl": ".",
     "isolatedModules": true
   },
   "exclude": ["node_modules"],
@@ -26,6 +22,6 @@
     "**/*.tsx",
     "scripts/uploadAssetsToS3.js",
     "utils/analytics/setupAnalytics.js",
-    "lib/apollo.js"
+    "lib/apollo.ts"
   ]
 }

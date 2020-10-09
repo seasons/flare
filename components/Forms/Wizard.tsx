@@ -2,7 +2,8 @@ import { Formik, FormikHelpers } from "formik"
 import { isEmpty } from "lodash"
 import PropTypes from "prop-types"
 import React, { Component } from "react"
-import { StepElement, StepProps, WizardRenderProps, FormValues, WizardContext } from "./types"
+
+import { FormValues, StepElement, StepProps, WizardContext, WizardRenderProps } from "./types"
 
 export interface WizardProps {
   onComplete?: (values?: FormValues, actions?: FormikHelpers<FormValues>) => void
@@ -141,7 +142,7 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
         //@ts-ignore
         validate={validate}
         validationSchema={validationSchema}
-        validateOnChange={true}
+        validateOnChange={false}
         onSubmit={this.handleSubmit}
       >
         {(formikRenderProps) => {

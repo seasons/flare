@@ -1,11 +1,14 @@
-import React from "react"
-import { Theme } from "../lib/theme"
-import { FontStyles } from "../lib/fonts"
-import { BaseCSS } from "styled-bootstrap-grid"
-import { createMediaStyle } from "../components/Responsive"
 import "../public/css/app.css"
+
+import React from "react"
+import { BaseCSS } from "styled-bootstrap-grid"
+
 import { ApolloProvider } from "@apollo/client"
+
+import { createMediaStyle } from "../components/Responsive"
 import { useApollo } from "../lib/apollo"
+import { FontStyles } from "../lib/fonts"
+import { Theme } from "../lib/theme"
 
 export default function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)
@@ -25,6 +28,7 @@ export default function App({ Component, pageProps }) {
       <link href="/images/webclip.png" rel="apple-touch-icon" />
 
       <meta content="width=device-width, initial-scale=1" name="viewport" />
+      <script src="https://js.chargebee.com/v2/chargebee.js" />
       <Theme>
         <Component {...pageProps} />
       </Theme>

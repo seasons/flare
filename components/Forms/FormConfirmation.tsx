@@ -1,13 +1,20 @@
-import { Sans, Box, Spacer, Flex, ExternalLink } from "../"
+import styled from "styled-components"
+
+import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
+import { color } from "../../helpers"
 import { Button } from "../Button/Button"
-import { InstagramSVG, CheckWithBackground } from "../SVGs"
+import { GetTheAppButton } from "../Button/GetTheApp"
+import { InstagramSVG } from "../SVGs"
 import { FormFooter } from "./FormsTemplate"
 import HeaderText from "./HeaderText"
-import styled from "styled-components"
-import { color } from "../../helpers"
-import { GetTheAppButton } from "../Button/GetTheApp"
 
-export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }> = ({ headerText, bodyText }) => {
+interface FormConfirmationProps {
+  icon?: JSX.Element
+  headerText: string
+  bodyText: string
+}
+
+export const FormConfirmation: React.FC<FormConfirmationProps> = ({ icon, headerText, bodyText }) => {
   const footerText = (
     <>
       {"Have a question about Seasons or your application? Contact us at "}
@@ -18,7 +25,7 @@ export const FormConfirmation: React.FC<{ headerText: string; bodyText: string }
   return (
     <>
       <Wrapper px={[2, 2, 2, 5, 5]}>
-        <CheckWithBackground />
+        {icon}
         <Spacer mb={3} />
         <HeaderText>{headerText}</HeaderText>
         <Spacer mb={1} />
