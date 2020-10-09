@@ -67,6 +67,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   }
 
   useEffect(() => {
+    setCurrentPage(1)
+  }, [currentBrand, currentCategory, setCurrentPage])
+
+  useEffect(() => {
     if (filter) {
       const queries = filter?.toString().split("+")
       const [category, brand] = queries
@@ -93,7 +97,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
-                setCurrentPage={setCurrentPage}
                 currentCategory={currentCategory}
                 listItems={brands}
                 title="Designers"
@@ -104,7 +107,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             CategoriesListComponent={
               <BrowseFilters
                 title="Categories"
-                setCurrentPage={setCurrentPage}
                 currentCategory={currentCategory}
                 listItems={categories}
                 hideTitle
