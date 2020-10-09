@@ -24,9 +24,6 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
     showBrand = false
   }
 
-  // console.log('product', product)
-  // console.log('loading', loading)
-
   if(!product || loading){
     return (
       <Box m="2px">
