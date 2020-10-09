@@ -123,7 +123,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 <FixedBox>
                   <Box pr={1}>
                     <BrowseFilters
-                      setCurrentPage={setCurrentPage}
                       currentCategory={currentCategory}
                       title="Categories"
                       listItems={categories}
@@ -131,7 +130,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     />
                     <Spacer mb={3} />
                     <BrowseFilters
-                      setCurrentPage={setCurrentPage}
                       title="Designers"
                       currentCategory={currentCategory}
                       listItems={brands}
