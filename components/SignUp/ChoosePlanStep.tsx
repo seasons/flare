@@ -1,11 +1,10 @@
-import gql from "graphql-tag" // import { apolloClientInstance } from "../components/apollo"
-import React, { useEffect, useState } from "react"
+import { Box, Sans, Spacer } from "components"
+import { ChooseMembership } from "components/Homepage"
+import gql from "graphql-tag"
+import { apolloClient } from "lib/apollo"
+import React, { useEffect } from "react"
 
-import { useLazyQuery, useQuery } from "@apollo/client"
-
-import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
-import { ChooseMembership } from "../../components/Homepage"
-import { createApolloClient } from "../../lib/apollo"
+import { useQuery } from "@apollo/client"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -28,8 +27,6 @@ interface ChoosePlanStepProps {
   onSuccess: () => void
 }
 
-const apollo = createApolloClient()
-
 const GET_CHARGEBEE_CHECKOUT = gql`
   query getChargebeeCheckout($planID: String!, $email: String) {
     chargebeeCheckout(planID: $planID, email: $email) {
@@ -44,10 +41,10 @@ const GET_CHARGEBEE_CHECKOUT = gql`
   }
 `
 
-export function GetChargebeeCheckout(planID: string, userIDHash: string): Promise<boolean | void> {
+export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
   // Set up the mutation
   return new Promise((resolve, reject) => {
-    apollo
+    apolloClient
       .query({
         query: GET_CHARGEBEE_CHECKOUT,
         variables: {
@@ -84,9 +81,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     const chargebee = Chargebee.getInstance()
     chargebee.openCheckout({
       hostedPage: async () => {
-        const res = await GetChargebeeCheckout(planID, "")
-        console.log(res)
-        return res
+        return await GetChargebeeCheckout(planID)
       },
       error: (error) => {
         console.error(error)

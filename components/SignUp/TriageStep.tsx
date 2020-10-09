@@ -77,13 +77,13 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
           done={() => {
             switch (status) {
               case "Authorized":
-                onTriageComplete(true)
+                onTriageComplete(false)
                 break
               case "Waitlisted":
-                onTriageComplete(false)
+                onTriageComplete(true)
                 break
               default:
-                onTriageComplete(false)
+                onTriageComplete(true)
                 break
             }
           }}

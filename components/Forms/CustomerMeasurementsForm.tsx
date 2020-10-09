@@ -1,8 +1,9 @@
+import { ExternalLink } from "components"
 import React from "react"
+import { Schema } from "utils/analytics"
 import * as Yup from "yup"
-import { FormTemplate, FormProps } from "./FormsTemplate"
-import { ExternalLink } from "../"
-import { Schema } from "../../utils/analytics"
+
+import { FormProps, FormTemplate } from "./FormsTemplate"
 import { customerMeasurements } from "./helpers/measurements"
 
 export interface CustomerMeasurementsFormFields {
@@ -24,7 +25,6 @@ export const CustomerMeasurementsForm = ({ context }: FormProps) => {
     <FormTemplate
       context={context}
       headerText="Let’s get your measurements"
-      stepText="Step 2 of 2"
       HeaderDetail={<>This helps us accurately recommend you sizes by material, style, and brand.</>}
       footerText={
         <>

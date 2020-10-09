@@ -45,7 +45,7 @@ export const TriageProgressScreen: React.FC<TriageProgressScreenProps> = ({ star
             return currentStep + 1
           }
         })
-      }, 4000)
+      }, 3000)
 
       return () => clearInterval(interval)
     }
