@@ -119,6 +119,12 @@ const SignUpPage = screenTrack(() => ({
               },
             },
           })
+
+          tracking.trackEvent({
+            actionName: Schema.ActionNames.CreateAccountClicked,
+            actionType: Schema.ActionTypes.Click,
+          })
+
           if (response) {
             localStorage?.setItem("email", values.email)
             localStorage?.setItem("token", response.data.signup.token)
@@ -151,6 +157,12 @@ const SignUpPage = screenTrack(() => ({
             setIsWaitlisted(isWaitlisted)
             localStorage.setItem("isWaitlisted", String(isWaitlisted))
 
+            tracking.trackEvent({
+              actionName: Schema.ActionNames.AccountTriaged,
+              actionType: Schema.ActionTypes.Success,
+              isWaitlisted,
+            })
+
             setTimeout(() => {
               wizard.next()
             }, 1000)
@@ -173,7 +185,7 @@ const SignUpPage = screenTrack(() => ({
         ...(userHasAccount ? [] : noAccountSteps),
         ...(userIsConfirmed ? [] : triageStep),
         <Step>
-          {({ wizard }) => {
+          {({ form, wizard }) => {
             const data = confirmData["waitlisted"]
 
             return isWaitlisted ? (
@@ -182,6 +194,12 @@ const SignUpPage = screenTrack(() => ({
               <ChoosePlanStep
                 onPlanSelected={(plan) => {
                   console.log("Selected plan: ", plan)
+                  tracking.trackEvent({
+                    actionName: Schema.ActionNames.PlanSelectedButtonClicked,
+                    actionType: Schema.ActionTypes.Click,
+                    plan,
+                    user: form.values,
+                  })
                 }}
                 onSuccess={() => {
                   localStorage.setItem("paymentProcessed", "true")

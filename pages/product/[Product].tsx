@@ -1,7 +1,9 @@
 import Head from "next/head"
 import { withRouter } from "next/router"
 import React from "react"
+
 import { useQuery } from "@apollo/client"
+
 import { Box, Layout, Spacer } from "../../components"
 import { Button } from "../../components/Button"
 import { Carousel } from "../../components/Carousel"
@@ -12,9 +14,9 @@ import { HowItWorks } from "../../components/Product/HowItWorks"
 import { ProductDetails } from "../../components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { Media } from "../../components/Responsive"
-import { Schema, screenTrack } from "../../utils/analytics"
 import { initializeApollo } from "../../lib/apollo"
-import { GET_PRODUCTS, GET_PRODUCT } from "../../queries/productQueries"
+import { GET_PRODUCT, GET_PRODUCTS } from "../../queries/productQueries"
+import { Schema, screenTrack } from "../../utils/analytics"
 
 const Product = screenTrack(({ router }) => {
   return {
