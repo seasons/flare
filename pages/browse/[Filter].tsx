@@ -248,10 +248,16 @@ export async function getStaticProps({ params }) {
       categoryName: category,
       first: pageSize,
       orderBy: "publishedAt_DESC",
-      brandOrderBy: "name_ASC",
       skip: 0,
-      brandSlugs: BRAND_LIST,
     },
+  })
+
+  await apolloClient.query({
+    query: GET_BROWSE_BRANDS_AND_CATEGORIES,
+    variables: {
+      brandOrderBy: "name_ASC",
+      brandSlugs: BRAND_LIST,
+    }
   })
 
   return {
