@@ -1,6 +1,5 @@
 import { setContext } from "apollo-link-context"
 import { useMemo } from "react"
-
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client"
 import { concatPagination } from "@apollo/client/utilities"
 
@@ -22,14 +21,14 @@ const authLink = setContext((_, { headers }) => {
 const httpLink = new HttpLink({
   uri: process.env.MONSOON_ENDPOINT || "http://localhost:4000/", // Server URL (must be absolute)
   credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
-})
-
+}) as any
+ 
 // Take from https://github.com/vercel/next.js/blob/canary/examples/with-apollo/lib/apolloClient.js
 
 export function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: authLink.concat(httpLink),
+    link: authLink.concat(httpLink) as any,
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

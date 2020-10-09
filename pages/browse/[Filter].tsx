@@ -155,7 +155,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                   </Flex>
                 ) : (
                   productsOrArray.map((product, i) => {
-                    console.log('i', i)
                     return (
                       <Col sm="3" xs="6" key={i}>
                         <Box pt={[2, 2, 2, 0, 0]} pb={[2, 2, 2, 5, 5]}>

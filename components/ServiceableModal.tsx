@@ -73,7 +73,6 @@ export const ServiceableModal = () => {
     if (!called || zipcodeLoading) {
       return
     }
-    console.log("Is serviceable", data)
     if (data?.zipcodeServiced) {
       setStep("email-success")
     } else {

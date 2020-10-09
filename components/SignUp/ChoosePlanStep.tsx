@@ -108,7 +108,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
       <ChooseMembership
         paymentPlans={data?.paymentPlans}
         onSelectPlan={async (plan) => {
-          console.log(plan)
           onPlanSelected(plan)
           executeChargebeeCheckout(plan.planID)
         }}

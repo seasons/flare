@@ -193,7 +193,6 @@ const SignUpPage = screenTrack(() => ({
             ) : (
               <ChoosePlanStep
                 onPlanSelected={(plan) => {
-                  console.log("Selected plan: ", plan)
                   tracking.trackEvent({
                     actionName: Schema.ActionNames.PlanSelectedButtonClicked,
                     actionType: Schema.ActionTypes.Tap,
