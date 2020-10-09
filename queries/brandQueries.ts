@@ -9,14 +9,9 @@ export const GET_CATEGORIES = gql`
   }
 `
 
-export const GET_BROWSE_PRODUCTS = gql`
-  query GetBrowse(
-    $categoryName: String!
-    $brandName: String!
+export const GET_BROWSE_BRANDS_AND_CATEGORIES = gql`
+query GetBrandsAndCategories(
     $brandSlugs: [String!]
-    $first: Int!
-    $skip: Int!
-    $orderBy: ProductOrderByInput!
     $brandOrderBy: BrandOrderByInput!
   ) {
     categories(where: { visible: true }, orderBy: name_ASC) {
@@ -32,6 +27,17 @@ export const GET_BROWSE_PRODUCTS = gql`
       slug
       name
     }
+  }
+`
+
+export const GET_BROWSE_PRODUCTS = gql`
+  query GetBrowseProducts(
+    $categoryName: String!
+    $brandName: String!
+    $first: Int!
+    $skip: Int!
+    $orderBy: ProductOrderByInput!
+  ) {
     connection: productsConnection(category: $categoryName, brand: $brandName, where: { status: Available }) {
       aggregate {
         count
