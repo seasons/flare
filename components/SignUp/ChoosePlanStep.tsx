@@ -1,14 +1,11 @@
-import Chargebee from "chargebee"
-import gql from "graphql-tag"
+import gql from "graphql-tag" // import { apolloClientInstance } from "../components/apollo"
 import React, { useEffect, useState } from "react"
 
-import { useQuery } from "@apollo/react-hooks"
-import { useStripe } from "@stripe/react-stripe-js"
+import { useLazyQuery, useQuery } from "@apollo/client"
 
 import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
 import { ChooseMembership } from "../../components/Homepage"
-
-// import { apolloClientInstance } from "../components/apollo"
+import { createApolloClient } from "../../lib/apollo"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -27,32 +24,35 @@ export const PAYMENT_PLANS = gql`
 
 interface ChoosePlanStepProps {
   onPlanSelected: (plan: any) => void
+  onError: (error: any) => void
+  onSuccess: () => void
 }
 
-export type PlanID = "Essential" | "AllAccess"
-export function GetChargebeeCheckout(planID: PlanID, userIDHash: string): Promise<boolean | void> {
-  // Set up a graphQL mutation to sign the user up
-  const getChargebeeCheckout = gql`
-    query getChargebeeCheckout($planID: PlanID!, $userIDHash: String!) {
-      chargebeeCheckout(planID: $planID, userIDHash: $userIDHash) {
-        id
-        type
-        url
-        state
-        embed
-        created_at
-        expires_at
-      }
+const apollo = createApolloClient()
+
+const GET_CHARGEBEE_CHECKOUT = gql`
+  query getChargebeeCheckout($planID: String!, $email: String) {
+    chargebeeCheckout(planID: $planID, email: $email) {
+      id
+      type
+      url
+      state
+      embed
+      created_at
+      expires_at
     }
-  `
+  }
+`
+
+export function GetChargebeeCheckout(planID: string, userIDHash: string): Promise<boolean | void> {
   // Set up the mutation
   return new Promise((resolve, reject) => {
-    apolloClientInstance
+    apollo
       .query({
-        query: getChargebeeCheckout,
+        query: GET_CHARGEBEE_CHECKOUT,
         variables: {
           planID,
-          userIDHash,
+          email: localStorage.getItem("email"),
         },
       })
       .then((resp) => {
@@ -69,21 +69,31 @@ export function GetChargebeeCheckout(planID: PlanID, userIDHash: string): Promis
   })
 }
 
-export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected }) => {
+export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
   const { data } = useQuery(PAYMENT_PLANS)
+
+  useEffect(() => {
+    // @ts-ignore
+    Chargebee.init({
+      site: process.env.GATSBY_CHARGEBEE_SITE || "seasons-test",
+    })
+  }, [])
 
   function executeChargebeeCheckout(planID) {
     // @ts-ignore
-    const chargebeeInstance = Chargebee.getInstance()
-
-    chargebeeInstance.openCheckout({
-      hostedPage: () => GetChargebeeCheckout(planID, ""),
-      error: (error) => {
-        // onError(error)
+    const chargebee = Chargebee.getInstance()
+    chargebee.openCheckout({
+      hostedPage: async () => {
+        const res = await GetChargebeeCheckout(planID, "")
+        console.log(res)
+        return res
       },
-      success: function StoreBillingInfoAndHandleSubmit(hostedPageId) {
-        AcknowledgeCheckout(hostedPageId)
-        handleSubmit()
+      error: (error) => {
+        console.error(error)
+        onError(error)
+      },
+      success: (hostedPageId) => {
+        onSuccess()
       },
     })
   }
@@ -105,26 +115,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected }
         onSelectPlan={async (plan) => {
           console.log(plan)
           onPlanSelected(plan)
-
-          // const res = await fetch("/api/checkoutSession")
-          // console.log(res)
-          // // Redirect to stripe checkout
-
-          // const data = await res.json()
-
-          // stripe
-          //   .redirectToCheckout({
-          //     sessionId: data.checkoutSessionId,
-          //   })
-          //   .then(function (result) {
-          //     console.log("error")
-          //     // If `redirectToCheckout` fails due to a browser or network
-          //     // error, display the localized error message to your customer
-          //     // using `result.error.message`.
-          //   })
-          //   .catch(function (err) {
-          //     console.log(err)
-          //   })
+          executeChargebeeCheckout(plan.planID)
         }}
       />
     </Box>

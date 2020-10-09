@@ -26,7 +26,7 @@ const httpLink = new HttpLink({
   credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
 })
 
-function createApolloClient() {
+export function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: authLink.concat(httpLink),
