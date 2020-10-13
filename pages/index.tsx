@@ -1,7 +1,15 @@
 import { Box, Layout, Separator, Spacer } from "components"
 import {
-  Brands, ChooseMembership, ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, ProductRail,
-  TheApp, TheBag
+  Brands,
+  ChooseMembership,
+  ColumnList,
+  FAQ,
+  FromCommunity,
+  Hero,
+  MembershipBenefits,
+  ProductRail,
+  TheApp,
+  TheBag,
 } from "components/Homepage"
 import { BRAND_LIST } from "components/Homepage/Brands"
 import { Nav } from "components/Nav/Nav"
