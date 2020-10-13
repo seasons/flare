@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 import React, { useEffect, useState } from "react"
 
-import { useMutation } from "@apollo/react-hooks"
+import { useMutation } from "@apollo/client"
 
 import { TriageProgressScreen } from "./TriageProgressScreen"
 
@@ -27,25 +27,13 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
   const [checkStatus, setCheckStatus] = useState(CheckStatus.Waiting)
   const [status, setStatus] = useState(null)
 
-  const errorPopUpData = {
-    title: "Oops! Try again!",
-    note: "There was an error communicating with our server. Please try again.",
-    buttonText: "Retry",
-    onClose: () => {
-      //   hidePopUp()
-      setCheckStatus(CheckStatus.AwaitingRetry)
-    },
-  }
-
   const [triage] = useMutation(TRIAGE, {
     onCompleted: () => {
       // Allow FlatList to transition before hiding spinner
       setCheckStatus(CheckStatus.Checked)
     },
     onError: (err) => {
-      //   Sentry.captureException(err)
       console.log("Error TriagePane.tsx:", err)
-      //   showPopUp(errorPopUpData)
     },
   })
 
@@ -58,6 +46,14 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
     }
   }, [check, checkStatus])
 
+  useEffect(() => {
+    if (status) {
+      setTimeout(() => {
+        callTriageComplete()
+      }, 3000)
+    }
+  }, [status])
+
   const triageCustomer = async () => {
     if (checkStatus === CheckStatus.Checking) {
       return
@@ -69,24 +65,25 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
     setStatus(result?.data?.triageCustomer)
   }
 
+  const callTriageComplete = () => {
+    switch (status) {
+      case "Authorized":
+        onTriageComplete(false)
+        break
+      case "Waitlisted":
+        onTriageComplete(true)
+        break
+      default:
+        onTriageComplete(true)
+        break
+    }
+  }
+
   return (
     <>
       {(checkStatus === CheckStatus.Checking || checkStatus === CheckStatus.Checked) && (
         <TriageProgressScreen
           start={check}
-          done={() => {
-            switch (status) {
-              case "Authorized":
-                onTriageComplete(false)
-                break
-              case "Waitlisted":
-                onTriageComplete(true)
-                break
-              default:
-                onTriageComplete(true)
-                break
-            }
-          }}
         />
       )}
     </>

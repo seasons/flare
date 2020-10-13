@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useMemo } from "react"
 import { NextPage } from "next"
 import { useState } from "react"
 import { useQuery } from "@apollo/client"
@@ -18,7 +18,7 @@ import { BrowseFilters } from "../../components/Browse"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 import { BRAND_LIST } from "../../components/Homepage/Brands"
 import { initializeApollo } from "../../lib/apollo"
-import { GET_BROWSE_PRODUCTS, GET_CATEGORIES } from "../../queries/brandQueries"
+import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
 
 const pageSize = 20
 
@@ -38,23 +38,37 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [currentCategory, setCurrentCategory] = useState(category)
   const [currentBrand, setCurrentBrand] = useState(brand)
   const [currentPage, setCurrentPage] = useState(1)
+  const { data: menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES, {
+    variables: {
+      brandOrderBy: "name_ASC",
+      brandSlugs: BRAND_LIST,
+    },
+  })
+
   const skip = (currentPage - 1) * pageSize
 
-  const { data, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
+  const { data, error, loading, refetch } = useQuery(GET_BROWSE_PRODUCTS, {
+    notifyOnNetworkStatusChange: true,
     variables: {
       brandName: currentBrand,
       categoryName: currentCategory,
       first: pageSize,
       orderBy: "publishedAt_DESC",
-      brandOrderBy: "name_ASC",
       skip,
-      brandSlugs: BRAND_LIST,
     },
   })
+
+  useEffect(() => {
+    window && window.scrollTo(0, 0)
+  }, [currentPage, refetch])
 
   if (error) {
     console.log("error browse.tsx ", error)
   }
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [currentBrand, currentCategory, setCurrentPage])
 
   useEffect(() => {
     if (filter) {
@@ -66,15 +80,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     }
   }, [filter, setCurrentBrand, setCurrentCategory])
 
-  useEffect(() => {
-    window && window.scrollTo(0, 0)
-  }, [data])
 
   const aggregateCount = data?.connection?.aggregate?.count
   const pageCount = Math.ceil(aggregateCount / pageSize)
   const products = data?.products?.edges
-  const categories = [{ slug: "all", name: "All" }, ...(data?.categories ?? [])]
-  const brands = [{ slug: "all", name: "All" }, ...(data?.brands ?? [])]
+  const productsOrArray = products || [...Array(pageSize)]
+
+  const categories = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.categories ?? [])], [menuData])
+  const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
 
   return (
@@ -84,7 +97,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
-                setCurrentPage={setCurrentPage}
                 currentCategory={currentCategory}
                 listItems={brands}
                 title="Designers"
@@ -95,7 +107,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             CategoriesListComponent={
               <BrowseFilters
                 title="Categories"
-                setCurrentPage={setCurrentPage}
                 currentCategory={currentCategory}
                 listItems={categories}
                 hideTitle
@@ -105,14 +116,13 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           />
         </Media>
         <Spacer mb={[0, 5]} />
-        <Grid px={[2, 2, 2, 5, 5]}>
+        <Grid px={[0, 2, 2, 5, 5]}>
           <Row style={{ minHeight: "calc(100vh - 160px)" }}>
-            <Col md="2" xs="12" mx={["2", "0"]}>
+            <Col md="2" sm="12">
               <Media greaterThanOrEqual="md">
                 <FixedBox>
                   <Box pr={1}>
                     <BrowseFilters
-                      setCurrentPage={setCurrentPage}
                       currentCategory={currentCategory}
                       title="Categories"
                       listItems={categories}
@@ -120,7 +130,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     />
                     <Spacer mb={3} />
                     <BrowseFilters
-                      setCurrentPage={setCurrentPage}
                       title="Designers"
                       currentCategory={currentCategory}
                       listItems={brands}
@@ -136,7 +145,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 <Sans size="4">Browse</Sans>
               </Box>
             </Media>
-            <Col md="10" xs="12">
+            <Col md="10" sm="12">
               <Row>
                 {data && !products?.length ? (
                   <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
@@ -145,13 +154,15 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     </Sans>
                   </Flex>
                 ) : (
-                  products?.map((product, i) => (
-                    <Col col sm="3" xs="6" key={i}>
-                      <Box pt={[2, 0]} pb={[2, 5]}>
-                        <ProductGridItem product={product?.node} loading={loading} />
-                      </Box>
-                    </Col>
-                  ))
+                  productsOrArray.map((product, i) => {
+                    return (
+                      <Col sm="3" xs="6" key={i}>
+                        <Box pt={[2, 2, 2, 0, 0]} pb={[2, 2, 2, 5, 5]}>
+                          <ProductGridItem product={product?.node} loading={loading} />
+                        </Box>
+                      </Col>
+                    )
+                  })
                 )}
               </Row>
               <Row>
@@ -218,7 +229,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   }
 }
 
@@ -237,10 +248,16 @@ export async function getStaticProps({ params }) {
       categoryName: category,
       first: pageSize,
       orderBy: "publishedAt_DESC",
-      brandOrderBy: "name_ASC",
       skip: 0,
-      brandSlugs: BRAND_LIST,
     },
+  })
+
+  await apolloClient.query({
+    query: GET_BROWSE_BRANDS_AND_CATEGORIES,
+    variables: {
+      brandOrderBy: "name_ASC",
+      brandSlugs: BRAND_LIST,
+    }
   })
 
   return {

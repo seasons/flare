@@ -72,7 +72,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
   useEffect(() => {
     // @ts-ignore
     Chargebee.init({
-      site: process.env.GATSBY_CHARGEBEE_SITE || "seasons-test",
+      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
     })
   }, [])
 
@@ -108,7 +108,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
       <ChooseMembership
         paymentPlans={data?.paymentPlans}
         onSelectPlan={async (plan) => {
-          console.log(plan)
           onPlanSelected(plan)
           executeChargebeeCheckout(plan.planID)
         }}

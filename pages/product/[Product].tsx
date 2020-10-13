@@ -38,8 +38,6 @@ const Product = screenTrack(({ router }) => {
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
 
-  console.log("data", data)
-
   return (
     <Layout fixedNav includeDefaultHead={false}>
       <Head>
@@ -80,7 +78,7 @@ const Product = screenTrack(({ router }) => {
               </Media>
             </Col>
             <Col md="5" sm="12">
-              <Box style={{ maxWidth: "390px" }} px={[2, 2, 0, 0, 0]}>
+              <Box style={{ maxWidth: "480px" }} px={[2, 2, 0, 0, 0]}>
                 {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
                 <Box>
                   <Link href="/signup">
@@ -117,7 +115,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   }
 }
 
