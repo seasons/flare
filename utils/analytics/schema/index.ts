@@ -77,6 +77,7 @@ export enum ActionTypes {
   /**
    * User actions
    */
+  Click = "Click",
   Tap = "Tap",
   Swipe = "Swipe",
   Session = "Session",

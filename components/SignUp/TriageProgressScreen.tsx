@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
-import { Box, Display, Flex, Sans } from "../"
+import { Box, Flex, Sans } from "../"
 import { color } from "../../helpers"
-import { Spinner } from "../Spinner"
 
 interface TriageProgressScreenProps {
   done?: () => void
