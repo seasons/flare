@@ -13,6 +13,15 @@ module.exports = withSourceMaps(
         SEGMENT_KEY: process.env.SEGMENT_KEY,
         NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE
       },
+      async redirects() {
+        return [
+          {
+            source: '/browse/all',
+            destination: '/browse',
+            permanent: true,
+          },
+        ]
+      },
     })
   )
 )
