@@ -1,3 +1,4 @@
+import { Box, Layout, Separator, Spacer } from "components"
 import {
   Brands, ChooseMembership, ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, ProductRail,
   TheApp, TheBag
@@ -12,8 +13,6 @@ import React from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-
-import { Box, Layout, Separator, Spacer } from "../components"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
