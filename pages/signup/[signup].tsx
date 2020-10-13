@@ -2,16 +2,17 @@ import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
 import {
   CreateAccountForm, createAccountValidationSchema
 } from "components/Forms/CreateAccountForm"
+import {
+  CustomerMeasurementsForm, customerMeasurementsValidationSchema
+} from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
 import { Wizard } from "components/Forms/Wizard"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
-import { MeasurementsStep } from "components/SignUp/MeasurementsStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
 import { DateTime } from "luxon"
-import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
@@ -34,15 +35,33 @@ const SIGN_UP_USER = gql`
   }
 `
 
+const ADD_MEASUREMENTS = gql`
+  mutation addMeasurements(
+    $height: Int
+    $weight: CustomerDetailCreateweightInput
+    $topSizes: CustomerDetailCreatetopSizesInput
+    $waistSizes: CustomerDetailCreatewaistSizesInput
+  ) {
+    addCustomerDetails(
+      details: { height: $height, weight: $weight, topSizes: $topSizes, waistSizes: $waistSizes }
+      status: Waitlisted
+      event: CompletedWaitlistForm
+    ) {
+      id
+    }
+  }
+`
+
 const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
   const tracking = useTracking()
   const [signUpUser] = useMutation(SIGN_UP_USER)
+  const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
 
   const [showSnackBar, setShowSnackBar] = useState(false)
-  const [startTriage, setStartTriage] = useState(true)
+  const [startTriage, setStartTriage] = useState(false)
   const [isWaitlisted, setIsWaitlisted] = useState(false)
   const [paymentProcessed, setPaymentProcessed] = useState(false)
 
@@ -145,7 +164,33 @@ const SignUpPage = screenTrack(() => ({
     >
       {(context) => <CreateAccountForm context={context} />}
     </Step>,
-    <MeasurementsStep onFailure={() => setShowSnackBar(true)} />,
+        <Step
+        validationSchema={customerMeasurementsValidationSchema}
+        onSubmit={async (values, actions) => {
+          const { height, weight, topSizes, waistSizes } = values
+          const filteredWaistSizes = waistSizes.filter((i) => i !== "")
+          const filteredTopSizes = topSizes.filter((i) => i !== "")
+          try {
+            const response = await addMeasurements({
+              variables: {
+                height,
+                weight: { set: weight },
+                topSizes: { set: filteredTopSizes },
+                waistSizes: { set: filteredWaistSizes },
+              },
+            })
+            if (response) {
+              actions.setSubmitting(false)
+              setStartTriage(true)
+              return true
+            }
+          } catch (error) {
+            actions.setSubmitting(false)
+          }
+        }}
+      >
+        {(context) => <CustomerMeasurementsForm context={context} />}
+      </Step>,
   ]
 
   const triageStep = [
@@ -186,7 +231,7 @@ const SignUpPage = screenTrack(() => ({
         ...(userIsConfirmed ? [] : triageStep),
         <Step>
           {({ form, wizard }) => {
-            const data = confirmData["waitlisted"]
+            const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
 
             return isWaitlisted ? (
               <FormConfirmation {...data} />
