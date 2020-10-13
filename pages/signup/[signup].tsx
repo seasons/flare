@@ -1,9 +1,8 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
+import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
 import {
-  CreateAccountForm, createAccountValidationSchema
-} from "components/Forms/CreateAccountForm"
-import {
-  CustomerMeasurementsForm, customerMeasurementsValidationSchema
+  CustomerMeasurementsForm,
+  customerMeasurementsValidationSchema,
 } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
@@ -164,33 +163,33 @@ const SignUpPage = screenTrack(() => ({
     >
       {(context) => <CreateAccountForm context={context} />}
     </Step>,
-        <Step
-        validationSchema={customerMeasurementsValidationSchema}
-        onSubmit={async (values, actions) => {
-          const { height, weight, topSizes, waistSizes } = values
-          const filteredWaistSizes = waistSizes.filter((i) => i !== "")
-          const filteredTopSizes = topSizes.filter((i) => i !== "")
-          try {
-            const response = await addMeasurements({
-              variables: {
-                height,
-                weight: { set: weight },
-                topSizes: { set: filteredTopSizes },
-                waistSizes: { set: filteredWaistSizes },
-              },
-            })
-            if (response) {
-              actions.setSubmitting(false)
-              setStartTriage(true)
-              return true
-            }
-          } catch (error) {
+    <Step
+      validationSchema={customerMeasurementsValidationSchema}
+      onSubmit={async (values, actions) => {
+        const { height, weight, topSizes, waistSizes } = values
+        const filteredWaistSizes = waistSizes.filter((i) => i !== "")
+        const filteredTopSizes = topSizes.filter((i) => i !== "")
+        try {
+          const response = await addMeasurements({
+            variables: {
+              height,
+              weight: { set: weight },
+              topSizes: { set: filteredTopSizes },
+              waistSizes: { set: filteredWaistSizes },
+            },
+          })
+          if (response) {
             actions.setSubmitting(false)
+            setStartTriage(true)
+            return true
           }
-        }}
-      >
-        {(context) => <CustomerMeasurementsForm context={context} />}
-      </Step>,
+        } catch (error) {
+          actions.setSubmitting(false)
+        }
+      }}
+    >
+      {(context) => <CustomerMeasurementsForm context={context} />}
+    </Step>,
   ]
 
   const triageStep = [
