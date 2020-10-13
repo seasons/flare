@@ -143,7 +143,7 @@ const SignUpPage = screenTrack(() => ({
 
           tracking.trackEvent({
             actionName: Schema.ActionNames.CreateAccountClicked,
-            actionType: Schema.ActionTypes.Click,
+            actionType: Schema.ActionTypes.Tap,
           })
 
           if (response) {
@@ -240,10 +240,9 @@ const SignUpPage = screenTrack(() => ({
             ) : (
               <ChoosePlanStep
                 onPlanSelected={(plan) => {
-                  console.log("Selected plan: ", plan)
                   tracking.trackEvent({
                     actionName: Schema.ActionNames.PlanSelectedButtonClicked,
-                    actionType: Schema.ActionTypes.Click,
+                    actionType: Schema.ActionTypes.Tap,
                     plan,
                     user: form.values,
                   })
