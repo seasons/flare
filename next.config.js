@@ -21,9 +21,7 @@ module.exports = withSourceMaps(
             destination: "/browse",
             permanent: true,
           },
-          { source: "/a/account", destination: appDownload, permanent: false },
-          { source: "/a/account/create", destination: appDownload, permanent: false },
-          { source: "/a/account/login", destination: appDownload, permanent: false },
+
         ]
       },
     })
