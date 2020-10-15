@@ -21,7 +21,11 @@ module.exports = withSourceMaps(
             destination: "/browse",
             permanent: true,
           },
-
+          {
+            source: "/a/account",
+            destination: "https://szns.co/app",
+            permanent: false,
+          },
         ]
       },
     })
