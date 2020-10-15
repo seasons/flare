@@ -1,5 +1,6 @@
 import { Theme } from "../lib/theme"
 import { Box } from "./Box"
+import { Drawer } from "./Drawer"
 import { Footer } from "./Footer"
 import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
@@ -31,6 +32,7 @@ export const Layout = ({
             {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
           </Box>
         </MaxWidth>
+        <Drawer />
       </Theme>
     </>
   )

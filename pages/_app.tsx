@@ -1,5 +1,6 @@
 import "../public/css/app.css"
 
+import { wrapper } from "lib/store"
 import React from "react"
 import { BaseCSS } from "styled-bootstrap-grid"
 
@@ -10,7 +11,7 @@ import { useApollo } from "../lib/apollo"
 import { FontStyles } from "../lib/fonts"
 import { Theme } from "../lib/theme"
 
-export default function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)
 
   return (
@@ -35,3 +36,5 @@ export default function App({ Component, pageProps }) {
     </ApolloProvider>
   )
 }
+
+export default wrapper.withRedux(App)

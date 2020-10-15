@@ -23,12 +23,6 @@ const links = [
     external: true,
   },
   {
-    text: "Grant",
-    url: "https://blog.seasons.nyc/creative-project",
-    match: /blog.seasons.nyc\/creative-project/,
-    external: true,
-  },
-  {
     text: "About",
     url: "/about",
     match: /^\/about/,

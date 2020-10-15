@@ -1,32 +1,37 @@
+import { Box } from "components"
 import React, { useEffect, useState } from "react"
-import styled from "styled-components"
 
-import {
-  Box, Button as MuiButton, CircularProgress, Divider, Drawer as MuiDrawer, IconButton,
-  InputAdornment, Link, makeStyles, SvgIcon, TextField, Tooltip, Typography
-} from "@material-ui/core"
+import { Drawer as MuiDrawer } from "@material-ui/core"
 
-export const Drawer = ({children}) => {
+interface DrawerProps {
+    open?: boolean
+    onClose?: () => void
+}
+
+export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
     const [isOpen, setOpen] = useState(false)
-    const [isLoading, setLoading] = useState(false)
   
-    const handleOpen = () => {
-      setOpen(true)
-    }
+    useEffect(() => {
+        if (open) {
+            setOpen(open)
+        }
+    }, [open])
   
     const handleClose = () => {
       setOpen(false)
+      onClose?.()
     }
 
     return (
     <MuiDrawer
-    anchor="right"
-    ModalProps={{ BackdropProps: { invisible: true } }}
-    onClose={handleClose}
-    open={isOpen}
-    variant="temporary"
-  >
-      {children}
-      </MuiDrawer>
-      )
+        anchor="right"
+        open={isOpen}
+        onClose={handleClose}
+        variant="temporary"
+    >
+        <Box mx={6}>
+        Hello World!
+        </Box>
+    </MuiDrawer>
+    )
 }
