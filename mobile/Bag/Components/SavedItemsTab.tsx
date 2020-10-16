@@ -1,7 +1,5 @@
-import { Box } from "App/Components"
+import { Box } from "components"
 import React from "react"
-
-import { useNavigation } from "@react-navigation/native"
 
 import { BagView } from "../Bag"
 import { BagEmptyState } from "./BagEmptyState"
@@ -15,7 +13,6 @@ export const SavedItemsTab: React.FC<{ items; deleteBagItem; hasActiveReservatio
   hasActiveReservation,
   bagIsFull,
 }) => {
-  const navigation = useNavigation()
   return (
     <Box>
       {items?.length ? (
@@ -28,7 +25,6 @@ export const SavedItemsTab: React.FC<{ items; deleteBagItem; hasActiveReservatio
                 removeItemFromBag={deleteBagItem}
                 sectionHeight={SECTION_HEIGHT}
                 bagItem={bagItem}
-                navigation={navigation}
               />
             </Box>
           )

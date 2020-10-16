@@ -1,20 +1,12 @@
-import { useNavigation } from "@react-navigation/native"
-import { Box, Flex, Separator } from "App/Components"
-import {
-  GetBagAndSavedItems_paymentPlans,
-  GetBagAndSavedItems_me_customer_membership_plan,
-} from "App/generated/GetBagAndSavedItems"
-import { Schema } from "App/Navigation"
-import { Sans } from "Components/Typography"
+import { Box, Flex, Sans, Separator } from "components"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 export const WantAnotherItemBagItem: React.FC<{
-  plan: GetBagAndSavedItems_me_customer_membership_plan
-  paymentPlans: (GetBagAndSavedItems_paymentPlans | null)[] | null
+  plan
+  paymentPlans: (any | null)[] | null
 }> = ({ plan, paymentPlans }) => {
-  const navigation = useNavigation()
   const itemCount = plan?.itemCount
   const nextItem = itemCount === 2 ? "3rd" : "2nd"
 
@@ -28,9 +20,7 @@ export const WantAnotherItemBagItem: React.FC<{
         <EmptyBagItemContainer>
           <Flex pt="84px" flexDirection="column" alignItems="center">
             <Flex flexWrap="nowrap" flexDirection="column" alignItems="center">
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Modal", { screen: Schema.PageNames.UpdatePaymentPlanModal })}
-              >
+              <TouchableOpacity>
                 <Sans size="2" color="black100" textAlign="center">
                   {`Want a ${nextItem} item?`}
                 </Sans>

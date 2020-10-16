@@ -1,4 +1,5 @@
 import { Box } from "components"
+import { Bag } from "mobile/Bag/Bag"
 import React, { useEffect, useState } from "react"
 
 import { Drawer as MuiDrawer } from "@material-ui/core"
@@ -29,9 +30,7 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         onClose={handleClose}
         variant="temporary"
     >
-        <Box mx={6}>
-        Hello World!
-        </Box>
+       <Bag />
     </MuiDrawer>
     )
 }

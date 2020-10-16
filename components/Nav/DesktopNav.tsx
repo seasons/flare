@@ -20,6 +20,8 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const [isDrawerOpen, toggleDrawer] = useState(false)
   const [isLoginOpen, toggleLogin] = useState(false)
 
+  const isLoggedIn = true
+
   const trackClick = (url) => {
     tracking.trackEvent({
       actionName: Schema.ActionNames.NavigationButtonClicked,
@@ -60,12 +62,20 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                 )
               }
             })}
+            {isLoggedIn ? (
+              <Link onClick={() => {
+                toggleDrawer(true)
+              }}>
+                <NavItem link={{text: "Account"}} />
+              </Link>
+            ) : (
+              <Link onClick={() => {
+                toggleLogin(true)
+              }}>
+                <NavItem link={{text: "Log In"}} />
+              </Link>
+            )}
 
-            <Link onClick={() => {
-              toggleLogin(true)
-            }}>
-              <NavItem link={{text: "Log In"}} />
-            </Link>
           </Flex>
         </Flex>
       </MaxWidth>

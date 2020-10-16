@@ -1,21 +1,16 @@
-import { Box, FixedButton, Spacer } from "App/Components"
-import { Loader } from "App/Components/Loader"
-import { PauseButtons, PauseStatus } from "App/Components/Pause/PauseButtons"
-import { DEFAULT_ITEM_COUNT } from "App/helpers/constants"
-import { Schema as NavigationSchema } from "App/Navigation"
-import { useAuthContext } from "App/Navigation/AuthContext"
-import { usePopUpContext } from "App/Navigation/PopUp/PopUpContext"
-import { Schema as TrackSchema, screenTrack, useTracking } from "App/utils/track"
-import { Container } from "Components/Container"
-import { TabBar } from "Components/TabBar"
+import { Box, Button, Spacer } from "components"
 import { assign, fill } from "lodash"
+import { Container } from "mobile/Container"
+import { useAuthContext } from "mobile/Navigation/AuthContext"
+import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
+import { TabBar } from "mobile/TabBar"
 import React, { useEffect, useState } from "react"
-import { useMutation, useQuery } from "react-apollo"
 import { FlatList, RefreshControl, StatusBar } from "react-native"
+import { screenTrack, useTracking } from "utils/analytics"
 
-import { useFocusEffect } from "@react-navigation/native"
+import { useMutation, useQuery } from "@apollo/client"
 
-import { BagTab, ReservationHistoryTab, SavedItemsTab } from "./Components"
+import { BagTab, ReservationHistoryTab } from "./Components"
 import {
   CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM
 } from "./Components/BagQueries"
@@ -26,6 +21,8 @@ export enum BagView {
   History = 2,
 }
 
+const DEFAULT_ITEM_COUNT = 3
+
 export const Bag = screenTrack()((props) => {
   const { authState } = useAuthContext()
   const { showPopUp, hidePopUp } = usePopUpContext()
@@ -35,18 +32,7 @@ export const Bag = screenTrack()((props) => {
   const [refreshing, setRefreshing] = useState(false)
   const tracking = useTracking()
 
-  const { navigation, route } = props
-  const routeTab = route?.params?.tab
   const [currentView, setCurrentView] = useState<BagView>(BagView.Bag)
-
-  useFocusEffect(
-    React.useCallback(() => {
-      StatusBar.setBarStyle("dark-content")
-      if (!!routeTab && currentView !== routeTab) {
-        setCurrentView(routeTab)
-      }
-    }, [])
-  )
 
   const { data, refetch } = useQuery(GET_BAG)
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
@@ -104,7 +90,7 @@ export const Bag = screenTrack()((props) => {
   const [checkItemsAvailability] = useMutation(CHECK_ITEMS)
 
   if (isLoading) {
-    return <Loader />
+    return <div>Loading...</div>
   }
 
   const onRefresh = () => {
@@ -160,9 +146,7 @@ export const Bag = screenTrack()((props) => {
             onClose: () => hidePopUp(),
             secondaryButtonText: "Go to settings",
             secondaryButtonOnPress: () => {
-              navigation.navigate(NavigationSchema.StackNames.AccountStack, {
-                screen: NavigationSchema.PageNames.PaymentAndShipping,
-              })
+
               hidePopUp()
             },
           })
@@ -182,9 +166,6 @@ export const Bag = screenTrack()((props) => {
             console.log(data, errors)
           },
         })
-        if (data.checkItemsAvailability) {
-          navigation.navigate(NavigationSchema.StackNames.BagStack, { screen: NavigationSchema.PageNames.Reservation })
-        }
       }
       setMutating(false)
     } catch (e) {
@@ -224,7 +205,7 @@ export const Bag = screenTrack()((props) => {
 
   const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
   const pausePending = pauseRequest?.pausePending
-  let pauseStatus: PauseStatus = "active"
+  let pauseStatus = "active"
 
   if (customerStatus === "Paused") {
     pauseStatus = "paused"
@@ -245,7 +226,7 @@ export const Bag = screenTrack()((props) => {
             px={2}
             pb={5}
           >
-            <PauseButtons customer={me?.customer} fullScreen />
+            <></>
           </Box>
         )
       } else {
@@ -260,14 +241,14 @@ export const Bag = screenTrack()((props) => {
         )
       }
     } else if (isSavedView) {
-      return (
-        <SavedItemsTab
-          items={item.data}
-          bagIsFull={bagIsFull}
-          hasActiveReservation={hasActiveReservation}
-          deleteBagItem={deleteBagItem}
-        />
-      )
+      // return (
+      //   <SavedItemsTab
+      //     items={item.data}
+      //     bagIsFull={bagIsFull}
+      //     hasActiveReservation={hasActiveReservation}
+      //     deleteBagItem={deleteBagItem}
+      //   />
+      // )
     } else {
       return <ReservationHistoryTab items={item.data} />
     }
@@ -290,18 +271,18 @@ export const Bag = screenTrack()((props) => {
         tabs={["Bag", "Saved", "History"]}
         activeTab={currentView}
         goToPage={(page: BagView) => {
-          tracking.trackEvent({
-            actionName: () => {
-              if (page === 0) {
-                return TrackSchema.ActionNames.BagTabTapped
-              } else if (page === 1) {
-                return TrackSchema.ActionNames.SavedTabTapped
-              } else {
-                return TrackSchema.ActionNames.ReservationHistoryTabTapped
-              }
-            },
-            actionType: TrackSchema.ActionTypes.Tap,
-          })
+          // tracking.trackEvent({
+          //   actionName: () => {
+          //     if (page === 0) {
+          //       return TrackSchema.ActionNames.BagTabTapped
+          //     } else if (page === 1) {
+          //       return TrackSchema.ActionNames.SavedTabTapped
+          //     } else {
+          //       return TrackSchema.ActionNames.ReservationHistoryTabTapped
+          //     }
+          //   },
+          //   actionType: TrackSchema.ActionTypes.Tap,
+          // })
           setCurrentView(page)
         }}
       />
@@ -316,21 +297,21 @@ export const Bag = screenTrack()((props) => {
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
       {isBagView && pauseStatus !== "paused" && !hasActiveReservation && (
-        <FixedButton
+        <Button
           block
           onPress={() => {
-            tracking.trackEvent({
-              actionName: TrackSchema.ActionNames.ReserveButtonTapped,
-              actionType: TrackSchema.ActionTypes.Tap,
-              bagIsFull,
-            })
+            // tracking.trackEvent({
+            //   actionName: TrackSchema.ActionNames.ReserveButtonTapped,
+            //   actionType: TrackSchema.ActionTypes.Tap,
+            //   bagIsFull,
+            // })
             handleReserve(navigation)
           }}
           disabled={!bagIsFull || isMutating}
           loading={isMutating}
         >
           Reserve
-        </FixedButton>
+        </Button>
       )}
     </Container>
   )

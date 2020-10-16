@@ -1,47 +1,37 @@
-import { Box, Button, Flex, Sans, Separator, Spacer } from "App/Components"
-import { FadeInImage } from "App/Components/FadeInImage"
-import { Spinner } from "App/Components/Spinner"
-import { PRODUCT_ASPECT_RATIO } from "App/helpers/constants"
-import { usePopUpContext } from "App/Navigation/PopUp/PopUpContext"
-import { GET_BROWSE_PRODUCTS } from "App/Scenes/Browse/Browse"
-import { Variant } from "App/Scenes/Product/Components/VariantList"
-import { GET_PRODUCT } from "App/Scenes/Product/Queries"
-import { Schema, useTracking } from "App/utils/track"
-import { CheckCircled } from "Assets/svgs"
+import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
+import { ProgressiveImage } from "components/Image"
+import { Spinner } from "components/Spinner"
 import { color } from "helpers"
 import { get, head } from "lodash"
+import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
 import React, { useState } from "react"
-import { useMutation } from "react-apollo"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
-import * as Sentry from "@sentry/react-native"
+import { useMutation } from "@apollo/client"
 
-import { ADD_TO_BAG, GET_BAG } from "../BagQueries"
+import { ADD_TO_BAG, GET_BAG } from "./BagQueries"
 
 interface BagItemProps {
   bagIsFull: boolean
   hasActiveReservation: boolean
   bagItem: any
-  navigation?: any
   removeItemFromBag?: Function
 }
 
 export const SavedItem: React.FC<BagItemProps> = ({
   bagIsFull,
   bagItem,
-  navigation,
   removeItemFromBag,
   hasActiveReservation,
 }) => {
   const [isMutating, setIsMutating] = useState(false)
   const [addingToBag, setAddingToBag] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
-  const tracking = useTracking()
   if (!bagItem) {
     return null
   }
-  const variantToUse: Variant = head(
+  const variantToUse = head(
     (get(bagItem, "productVariant.product.variants") || []).filter((a) => a.id === bagItem.productVariant.id)
   )
   const product = get(bagItem, "productVariant.product")
@@ -67,7 +57,6 @@ export const SavedItem: React.FC<BagItemProps> = ({
       setAddingToBag(false)
       if (bagIsFull) {
         showPopUp({
-          icon: <CheckCircled />,
           title: "Added to bag",
           note: "Your bag is full. Place your reservation from the bag tab.",
           buttonText: "Got It",
@@ -87,7 +76,6 @@ export const SavedItem: React.FC<BagItemProps> = ({
             onClose: () => hidePopUp(),
           })
         } else {
-          Sentry.captureException(err)
           console.log("err SavedItem.tsx", err)
           showPopUp({
             title: "Oops!",
@@ -103,9 +91,6 @@ export const SavedItem: React.FC<BagItemProps> = ({
   return (
     <Box py={1} key={product.id}>
       <TouchableWithoutFeedback
-        onPress={() => {
-          navigation ? navigation.navigate("Product", { id: product.id, slug: product.slug, name: product.name }) : null
-        }}
       >
         <BagItemContainer flexDirection="row" px={2}>
           <Flex style={{ flex: 2 }} flexWrap="nowrap" flexDirection="column" justifyContent="space-between">
@@ -132,13 +117,13 @@ export const SavedItem: React.FC<BagItemProps> = ({
                             if (!addingToBag) {
                               setAddingToBag(true)
                               addToBag()
-                              tracking.trackEvent({
-                                actionName: Schema.ActionNames.SavedItemAddedToBag,
-                                actionType: Schema.ActionTypes.Tap,
-                                productSlug: product.slug,
-                                productId: product.id,
-                                variantId: variantToUse.id,
-                              })
+                              // tracking.trackEvent({
+                              //   actionName: Schema.ActionNames.SavedItemAddedToBag,
+                              //   actionType: Schema.ActionTypes.Tap,
+                              //   productSlug: product.slug,
+                              //   productId: product.id,
+                              //   variantId: variantToUse.id,
+                              // })
                             }
                           }}
                         >
@@ -161,13 +146,13 @@ export const SavedItem: React.FC<BagItemProps> = ({
             <Button
               onPress={() => {
                 setIsMutating(true)
-                tracking.trackEvent({
-                  actionName: Schema.ActionNames.BagItemRemoved,
-                  actionType: Schema.ActionTypes.Tap,
-                  productSlug: product.slug,
-                  productId: product.id,
-                  variantId: variantToUse.id,
-                })
+                // tracking.trackEvent({
+                //   actionName: Schema.ActionNames.BagItemRemoved,
+                //   actionType: Schema.ActionTypes.Tap,
+                //   productSlug: product.slug,
+                //   productId: product.id,
+                //   variantId: variantToUse.id,
+                // })
                 removeItemFromBag({
                   variables: {
                     id: variantToUse.id,
@@ -176,24 +161,6 @@ export const SavedItem: React.FC<BagItemProps> = ({
                   refetchQueries: [
                     {
                       query: GET_BAG,
-                    },
-                    {
-                      query: GET_PRODUCT,
-                      variables: {
-                        where: {
-                          id: product.id,
-                        },
-                      },
-                    },
-                    {
-                      query: GET_BROWSE_PRODUCTS,
-                      variables: {
-                        name: "all",
-                        first: 10,
-                        skip: 0,
-                        orderBy: "publishedAt_DESC",
-                        sizes: [],
-                      },
                     },
                   ],
                 })
@@ -209,8 +176,7 @@ export const SavedItem: React.FC<BagItemProps> = ({
           <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
             {!!imageURL && (
               <ImageContainer
-                radius
-                style={{ height: 170 * PRODUCT_ASPECT_RATIO, width: 170 }}
+                style={{ height: 170 * 1.3, width: 170 }}
                 resizeMode="contain"
                 source={{ uri: imageURL }}
               />
@@ -246,11 +212,11 @@ const BagItemContainer = styled(Box)`
   height: 210px;
 `
 
-const ImageContainer = styled(FadeInImage)`
+const ImageContainer = styled(ProgressiveImage)`
   height: 214;
 `
 
-const ImageWrapper = styled(FadeInImage)`
+const ImageWrapper = styled(ProgressiveImage)`
   border-radius: 30px;
   overflow: hidden;
 `

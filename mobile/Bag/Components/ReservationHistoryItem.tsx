@@ -1,15 +1,12 @@
-import { Box, FadeInImage, Flex, Sans, Spacer } from "App/Components"
+import { Box, Flex, Sans, Spacer } from "components"
+import { ProgressiveImage } from "components/Image"
 import { color, space } from "helpers"
 import { DateTime } from "luxon"
 import React from "react"
-import { Dimensions } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
-import styled from "styled-components/native"
-
-import { useNavigation } from "@react-navigation/native"
+import { Dimensions, TouchableOpacity } from "react-native"
+import styled from "styled-components"
 
 export const ReservationHistoryItem = ({ item }) => {
-  const navigation = useNavigation()
   const date = item?.createdAt && DateTime.fromISO(item?.createdAt).toUTC().toFormat("MM/dd")
   const imageWidth = (Dimensions.get("window").width - space(5)) / 3
   const aspectRatio = 1.25
@@ -36,10 +33,6 @@ export const ReservationHistoryItem = ({ item }) => {
           const imageURL = image?.url || ""
           return (
             <TouchableOpacity
-              onPress={() =>
-                product?.id &&
-                navigation.navigate("Product", { id: product.id, slug: product.slug, name: product.name })
-              }
               key={physicalProduct.id}
             >
               <Box width={imageWidth}>
@@ -61,7 +54,7 @@ export const ReservationHistoryItem = ({ item }) => {
   )
 }
 
-const ImageContainer = styled(FadeInImage)<{ imageWidth: number }>`
+const ImageContainer = styled(ProgressiveImage)<{ imageWidth: number }>`
   background: ${color("black04")};
   height: ${(props) => props.height};
   width: ${(props) => props.imageWidth};

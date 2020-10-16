@@ -1,28 +1,25 @@
-import { Box, Flex, Sans, Separator, Spacer } from "App/Components"
-import { PauseStatus, REMOVE_SCHEDULED_PAUSE } from "App/Components/Pause/PauseButtons"
-import { GetBagAndSavedItems } from "App/generated/GetBagAndSavedItems"
-import { DEFAULT_ITEM_COUNT } from "App/helpers/constants"
-import { useAuthContext } from "App/Navigation/AuthContext"
-import { usePopUpContext } from "App/Navigation/PopUp/PopUpContext"
-import { Schema, useTracking } from "App/utils/track"
+import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { color } from "helpers"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
+import { useAuthContext } from "mobile/Navigation/AuthContext"
+import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
 import React, { useEffect, useState } from "react"
-import { useLazyQuery, useMutation } from "react-apollo"
+import { Schema, useTracking } from "utils/analytics"
 
-import { useNavigation } from "@react-navigation/native"
-import * as Sentry from "@sentry/react-native"
+import { useLazyQuery, useMutation } from "@apollo/client"
 
-import { GET_BAG, GET_LOCAL_BAG_ITEMS } from "../BagQueries"
 import { WantAnotherItemBagItem } from "./"
 import { BagItem } from "./BagItem"
+import { GET_BAG, GET_LOCAL_BAG_ITEMS } from "./BagQueries"
 import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
 
+const DEFAULT_ITEM_COUNT = 3
+
 export const BagTab: React.FC<{
-  pauseStatus: PauseStatus
-  data: GetBagAndSavedItems
+  pauseStatus: any
+  data: any
   items
   deleteBagItem
   removeFromBagAndSaveItem
@@ -30,7 +27,6 @@ export const BagTab: React.FC<{
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
   const { showPopUp, hidePopUp } = usePopUpContext()
-  const navigation = useNavigation()
   const tracking = useTracking()
 
   const me = data?.me
@@ -61,35 +57,35 @@ export const BagTab: React.FC<{
     }
   }, [items])
 
-  const [removeScheduledPause] = useMutation(REMOVE_SCHEDULED_PAUSE, {
-    refetchQueries: [
-      {
-        query: GET_BAG,
-      },
-    ],
-    onCompleted: () => {
-      setIsMutating(false)
-      const popUpData = {
-        title: "Got it!",
-        note: "Your membership is no longer scheduled to be paused.",
-        buttonText: "Close",
-        onClose: () => hidePopUp(),
-      }
-      showPopUp(popUpData)
-    },
-    onError: (err) => {
-      const popUpData = {
-        title: "Oops!",
-        note: "There was an error canceling the pause on your membership, please contact us.",
-        buttonText: "Close",
-        onClose: () => hidePopUp(),
-      }
-      Sentry.captureException(err)
-      console.log("err", err)
-      showPopUp(popUpData)
-      setIsMutating(false)
-    },
-  })
+  // const [removeScheduledPause] = useMutation(REMOVE_SCHEDULED_PAUSE, {
+  //   refetchQueries: [
+  //     {
+  //       query: GET_BAG,
+  //     },
+  //   ],
+  //   onCompleted: () => {
+  //     setIsMutating(false)
+  //     const popUpData = {
+  //       title: "Got it!",
+  //       note: "Your membership is no longer scheduled to be paused.",
+  //       buttonText: "Close",
+  //       onClose: () => hidePopUp(),
+  //     }
+  //     showPopUp(popUpData)
+  //   },
+  //   onError: (err) => {
+  //     const popUpData = {
+  //       title: "Oops!",
+  //       note: "There was an error canceling the pause on your membership, please contact us.",
+  //       buttonText: "Close",
+  //       onClose: () => hidePopUp(),
+  //     }
+
+  //     console.log("err", err)
+  //     showPopUp(popUpData)
+  //     setIsMutating(false)
+  //   },
+  // })
 
   let returnReminder
   if (hasActiveReservation && me?.customer?.plan === "Essential" && !!me?.activeReservation?.returnAt) {
@@ -108,11 +104,11 @@ export const BagTab: React.FC<{
             size="1"
             style={{ textDecorationLine: "underline" }}
             onPress={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames.FAQButtonTapped,
-                actionType: Schema.ActionTypes.Tap,
-              })
-              navigation.navigate("Faq")
+              // tracking.trackEvent({
+              //   actionName: Schema.ActionNames.FAQButtonTapped,
+              //   actionType: Schema.ActionTypes.Tap,
+              // })
+
             }}
           >
             View FAQ
@@ -142,11 +138,11 @@ export const BagTab: React.FC<{
                   }
                   setIsMutating(true)
                   const subscriptionId = me?.customer?.invoices?.[0]?.subscriptionId || ""
-                  await removeScheduledPause({
-                    variables: {
-                      subscriptionID: subscriptionId,
-                    },
-                  })
+                  // await removeScheduledPause({
+                  //   variables: {
+                  //     subscriptionID: subscriptionId,
+                  //   },
+                  // })
                 }}
               >
                 here
@@ -167,22 +163,21 @@ export const BagTab: React.FC<{
               removeFromBagAndSaveItem={removeFromBagAndSaveItem}
               index={index}
               bagItem={bagItem}
-              navigation={navigation}
             />
             {!hasActiveReservation && index !== items.length - 1 && <Separator color={color("black10")} />}
           </Box>
         ) : (
           <Box key={index} px={2}>
-            <EmptyBagItem index={index} navigation={navigation} />
+            <EmptyBagItem index={index} />
             {!hasActiveReservation && index !== items.length - 1 && <Separator color={color("black10")} />}
           </Box>
         )
       })}
-      {!hasActiveReservation && items && items.length < 3 && (
+      {/* {!hasActiveReservation && items && items.length < 3 && (
         <Box px={2}>
           <WantAnotherItemBagItem plan={me?.customer?.membership?.plan} paymentPlans={paymentPlans} />
         </Box>
-      )}
+      )} */}
     </Box>
   )
 }

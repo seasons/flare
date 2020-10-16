@@ -1,15 +1,13 @@
-import { Box, Flex, Sans, Spacer } from "App/Components"
+import { Box, Flex, Sans, Spacer } from "components"
 import { color } from "helpers"
 import React from "react"
 import { Dimensions } from "react-native"
-import { useSafeArea } from "react-native-safe-area-context"
 
 import { BagView } from "../Bag"
 
 export const BagEmptyState: React.FC<{ currentView: BagView }> = ({ currentView }) => {
-  const insets = useSafeArea()
   const { height } = Dimensions.get("window")
-  const rowHeight = height - 140 - insets.top
+  const rowHeight = height - 140
   const title = currentView === BagView.Saved ? "Nothing saved" : "No history"
   const text =
     currentView === BagView.Saved ? "You haven’t saved any items." : "You haven't placed any reservations yet."

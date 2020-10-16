@@ -1,15 +1,15 @@
-import { Box, Spacer } from "App/Components"
-import { Loader } from "App/Components/Loader"
-import { Container } from "Components/Container"
-import { Sans } from "Components/Typography"
+import { Box, Sans, Spacer } from "components"
+import gql from "graphql-tag"
 import { get } from "lodash"
 import { DateTime } from "luxon"
+import { Container } from "mobile/Container"
+import { Loader } from "mobile/Loader"
 import React, { useEffect } from "react"
-import { useQuery } from "react-apollo"
 import { FlatList } from "react-native"
-import * as Animatable from "react-native-animatable"
+
+import { useQuery } from "@apollo/client"
+
 import { Bag } from "./Bag"
-import gql from "graphql-tag"
 import { CurrentRotationItem } from "./Components/CurrentRotationItem"
 
 const ACTIVE_RESERVATION = gql`
@@ -78,7 +78,6 @@ export const CurrentRotation = (props) => {
 
   return (
     <Container>
-      <Animatable.View animation="fadeIn" duration={300}>
         <Box>
           <FlatList
             data={activeReservation ? activeReservation.products : []}
@@ -102,7 +101,6 @@ export const CurrentRotation = (props) => {
             ListFooterComponent={() => <Spacer mb={40} />}
           />
         </Box>
-      </Animatable.View>
     </Container>
   )
 }

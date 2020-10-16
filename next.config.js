@@ -25,6 +25,7 @@ module.exports = withSourceMaps(
           '.web.tsx',
           ...config.resolve.extensions,
         ]
+        console.log(config)
         return config
       }
     })

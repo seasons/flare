@@ -1,7 +1,7 @@
-import { Box, Flex, Sans } from "App/Components"
+import { Box, Flex, Sans } from "components"
+import { ProgressiveImage } from "components/Image"
 import React from "react"
 import styled from "styled-components/native"
-import { FadeInImage } from "App/Components/FadeInImage"
 
 export const CurrentRotationItem = ({ physicalProduct }) => {
   const productVariant = physicalProduct.productVariant
@@ -50,7 +50,7 @@ const ImageContainer = styled(Box)`
   border-top-width: 1px;
 `
 
-const Image = styled(FadeInImage)`
+const Image = styled(ProgressiveImage)`
   height: 260;
   width: 100%;
   background: #f6f6f6;

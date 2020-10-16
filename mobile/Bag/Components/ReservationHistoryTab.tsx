@@ -1,4 +1,4 @@
-import { Box, Flex, Separator } from "App/Components"
+import { Box, Flex, Separator } from "components"
 import { color } from "helpers"
 import React from "react"
 

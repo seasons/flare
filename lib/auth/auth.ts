@@ -17,7 +17,7 @@ export interface UserSession {
 }
 
 export const getUserSession: () => Promise<UserSession | null> = async () => {
-  const data = await localStorage.getItem("userSession")
+  const data = localStorage.getItem("userSession")
 
   try {
     const userSession = JSON.parse(data)

@@ -1,18 +1,13 @@
-import { Box, Flex, Sans, Spacer } from "App/Components"
-import { GetBagAndSavedItems_me_activeReservation } from "App/generated/GetBagAndSavedItems"
-import { Schema } from "App/Navigation"
+import { Box, Flex, Sans, Spacer } from "components"
 import { color } from "helpers"
 import { DateTime } from "luxon"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
-import { useNavigation } from "@react-navigation/native"
-
 export const DeliveryStatus: React.FC<{
-  activeReservation: GetBagAndSavedItems_me_activeReservation
+  activeReservation: any
 }> = ({ activeReservation }) => {
-  const navigation = useNavigation()
   const status = activeReservation?.status
   const updatedMoreThan24HoursAgo = DateTime.fromISO(activeReservation?.updatedAt).diffNow("days")?.values?.days <= -1
   const hideComponent = status === "Delivered" && updatedMoreThan24HoursAgo
@@ -88,7 +83,7 @@ export const DeliveryStatus: React.FC<{
           <Box>
             <TouchableWithoutFeedback
               onPress={() => {
-                navigation.navigate(Schema.PageNames.Webview, { uri: trackingURL })
+                // navigation.navigate(Schema.PageNames.Webview, { uri: trackingURL })
               }}
             >
               <Sans size="1" style={{ textDecorationLine: "underline" }}>
