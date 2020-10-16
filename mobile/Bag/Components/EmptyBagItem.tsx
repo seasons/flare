@@ -1,7 +1,7 @@
 import { Box, Flex, Sans } from "components"
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import styled from "styled-components/native"
+import styled from "styled-components"
 
 export const EmptyBagItem: React.FC<{ index: number }> = ({ index }) => {
   return (

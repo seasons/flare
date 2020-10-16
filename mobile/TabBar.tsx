@@ -2,7 +2,7 @@ import { Box, Sans } from "components"
 import { color } from "helpers"
 import React from "react"
 import { Animated, TouchableWithoutFeedback, View } from "react-native"
-import styled from "styled-components/native"
+import styled from "styled-components"
 
 /**
  * Nearly all props are given by the ScrollableTabView,
@@ -35,7 +35,7 @@ const Tabs = styled(View)`
   justify-content: space-around;
 `
 
-const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean; tabColor?: string }>`
+const TabButton = styled(View)<{ spaceEvenly?: boolean; active?: boolean; tabColor?: string }>`
   align-items: center;
   justify-content: center;
   padding-top: 5;

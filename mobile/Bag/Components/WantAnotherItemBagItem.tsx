@@ -1,7 +1,7 @@
 import { Box, Flex, Sans, Separator } from "components"
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import styled from "styled-components/native"
+import styled from "styled-components"
 
 export const WantAnotherItemBagItem: React.FC<{
   plan

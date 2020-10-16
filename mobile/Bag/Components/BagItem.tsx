@@ -7,41 +7,12 @@ import { get, head } from "lodash"
 import { useAuthContext } from "mobile/Navigation/AuthContext"
 import React, { useState } from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
 
 import { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_BAG } from "./BagQueries"
-
-export const BagItemFragment = gql`
-  fragment BagItemProductVariant on ProductVariant {
-    product {
-      id
-      name
-      modelSize {
-        id
-        display
-      }
-      brand {
-        id
-        name
-      }
-      images(size: Thumb) {
-        id
-        url
-      }
-      variants {
-        id
-        reservable
-        internalSize {
-          id
-          display
-        }
-      }
-    }
-  }
-`
 
 interface BagItemProps {
   bagItem: any

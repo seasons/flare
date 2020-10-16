@@ -6,7 +6,7 @@ import { get, head } from "lodash"
 import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
 import React, { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import styled from "styled-components/native"
+import styled from "styled-components"
 
 import { useMutation } from "@apollo/client"
 

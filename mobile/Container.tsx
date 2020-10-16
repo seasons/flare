@@ -16,6 +16,7 @@ export const Container: React.FC<{
       <Flex
         style={{
           flex: 1,
+          flexDirection: "column",
           backgroundColor: color(backgroundColor),
           ...style,
         }}

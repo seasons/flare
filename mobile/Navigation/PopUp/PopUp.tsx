@@ -4,7 +4,7 @@ import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
 import React, { useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { animated, useSpring } from "react-spring/native.cjs"
-import styled from "styled-components/native"
+import styled from "styled-components"
 
 const windowDimensions = Dimensions.get("window")
 const windowHeight = windowDimensions.height

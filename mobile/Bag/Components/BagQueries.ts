@@ -1,6 +1,33 @@
 import gql from "graphql-tag"
 
-import { BagItemFragment } from "./BagItem"
+export const BagItemFragment = gql`
+  fragment BagItemProductVariant on ProductVariant {
+    product {
+      id
+      name
+      modelSize {
+        id
+        display
+      }
+      brand {
+        id
+        name
+      }
+      images(size: Thumb) {
+        id
+        url
+      }
+      variants {
+        id
+        reservable
+        internalSize {
+          id
+          display
+        }
+      }
+    }
+  }
+`
 
 export const CHECK_ITEMS = gql`
   mutation CheckItemsAvailability($items: [ID!]!) {

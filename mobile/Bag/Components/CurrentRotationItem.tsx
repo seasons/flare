@@ -1,7 +1,7 @@
 import { Box, Flex, Sans } from "components"
 import { ProgressiveImage } from "components/Image"
 import React from "react"
-import styled from "styled-components/native"
+import styled from "styled-components"
 
 export const CurrentRotationItem = ({ physicalProduct }) => {
   const productVariant = physicalProduct.productVariant
