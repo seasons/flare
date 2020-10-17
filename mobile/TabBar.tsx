@@ -1,4 +1,4 @@
-import { Box, Sans } from "components"
+import { Box, Flex, Sans } from "components"
 import { color } from "helpers"
 import React from "react"
 import { Animated, TouchableWithoutFeedback, View } from "react-native"
@@ -29,13 +29,15 @@ const Button = styled(TouchableWithoutFeedback)`
   flex: 1;
 `
 
-const Tabs = styled(View)`
+const Tabs = styled(Box)`
   height: 55px;
+  width: 100%;
+  display: flex;
   flex-direction: row;
   justify-content: space-around;
 `
 
-const TabButton = styled(View)<{ spaceEvenly?: boolean; active?: boolean; tabColor?: string }>`
+const TabButton = styled(Box)<{ spaceEvenly?: boolean; active?: boolean; tabColor?: string }>`
   align-items: center;
   justify-content: center;
   padding-top: 5;
@@ -48,15 +50,18 @@ const TabButton = styled(View)<{ spaceEvenly?: boolean; active?: boolean; tabCol
     `
     border-color: ${p.tabColor ? p.tabColor : "#000000"};
   `};
+
+  p { 
+    text-align: center;
+    line-height: 55px;
+  }
 `
 
 interface TabProps {
   tabLabel: string
 }
 
-export const Tab: React.SFC<TabProps> = ({ children }) => (
-  <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
-)
+export const Tab: React.FC<TabProps> = ({ children }) => <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
 
 export class TabBar extends React.Component<TabBarProps, null> {
   renderTab(name, page, isTabActive, isTabDisabled, onPressHandler, tabColorProps) {
@@ -77,7 +82,7 @@ export class TabBar extends React.Component<TabBarProps, null> {
         onPress={() => (isTabDisabled ? null : onPressHandler(page))}
       >
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive} tabColor={tabColorProps}>
-          <Sans numberOfLines={1} weight="medium" size="2" color={tabTextColor}>
+          <Sans numberOfLines={1} weight="medium" size="4" color={tabTextColor}>
             {name}
           </Sans>
         </TabButton>
@@ -88,19 +93,20 @@ export class TabBar extends React.Component<TabBarProps, null> {
   render() {
     return (
       <Wrapper>
-        <Tabs>
-          {this.props.tabs.map((name, index) => {
-            const isTabActive = this.props.activeTab === index
-            const isTabDisabled = this.props.disabledTabs?.includes(name)
-            return this.renderTab(name, index, isTabActive, isTabDisabled, this.props.goToPage, this.props.tabColor)
-          })}
-        </Tabs>
+      <Tabs>
+        {this.props.tabs.map((name, index) => {
+          const isTabActive = this.props.activeTab === index
+          const isTabDisabled = this.props.disabledTabs?.includes(name)
+          return this.renderTab(name, index, isTabActive, isTabDisabled, this.props.goToPage, this.props.tabColor)
+        })}
+      </Tabs>
       </Wrapper>
     )
   }
 }
 
 const Wrapper = styled(Box)`
+  width: 100%;
   border-bottom-width: 1px;
   border-bottom-color: #e5e5e5;
 `

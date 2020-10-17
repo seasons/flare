@@ -99,9 +99,9 @@ export const BagTab: React.FC<{
     <Box>
       <Box px={2} pt={4}>
         <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
-          <Sans size="1">{hasActiveReservation ? "Current rotation" : "My bag"}</Sans>
+          <Sans size="5">{hasActiveReservation ? "Current rotation" : "My bag"}</Sans>
           <Sans
-            size="1"
+            size="3"
             style={{ textDecorationLine: "underline" }}
             onPress={() => {
               // tracking.trackEvent({
@@ -114,7 +114,7 @@ export const BagTab: React.FC<{
             View FAQ
           </Sans>
         </Flex>
-        <Sans size="1" color="black50">
+        <Sans size="3" color="black50">
           {hasActiveReservation && !!returnReminder ? returnReminder : "Reserve your order below"}
         </Sans>
         <Spacer mb={3} />
