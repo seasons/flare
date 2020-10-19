@@ -1,11 +1,14 @@
 import { setContext } from "apollo-link-context"
 import { useMemo } from "react"
+
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client"
 import { concatPagination } from "@apollo/client/utilities"
 
+import { getAccessTokenFromSession } from "./auth/auth"
+
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token = typeof window !== "undefined" && localStorage?.getItem("token")
+  const token = typeof window !== "undefined" && getAccessTokenFromSession()
 
   // return the headers to the context so httpLink can read them
   const allHeaders = headers || {}

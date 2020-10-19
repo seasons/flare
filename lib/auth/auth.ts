@@ -1,12 +1,3 @@
-import { Auth0Client } from "@auth0/auth0-spa-js"
-
-const auth0 = new Auth0Client({
-  domain: 'seasons.auth0.com',
-  client_id: 'zSCYlUB8NNZi9vlxjAQQr2u3Y58jDZKV',
-  redirect_uri: '<MY_CALLBACK_URL>',
-  cacheLocation: 'localstorage'
-});
-
 export interface UserSession {
   token: string
   refreshToken: string
@@ -16,7 +7,7 @@ export interface UserSession {
   }
 }
 
-export const getUserSession: () => Promise<UserSession | null> = async () => {
+export const getUserSession: () => UserSession | null = () => {
   const data = localStorage.getItem("userSession")
 
   try {
@@ -27,8 +18,8 @@ export const getUserSession: () => Promise<UserSession | null> = async () => {
   return {}
 }
 
-export const getAccessTokenFromSession = async () => {
-  const userSession = await getUserSession()
+export const getAccessTokenFromSession = () => {
+  const userSession = getUserSession()
   const accessToken = userSession ? userSession.token : ""
   return accessToken
 }
