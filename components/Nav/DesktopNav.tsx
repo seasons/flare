@@ -1,5 +1,6 @@
 import { Drawer } from "components/Drawer"
 import { LoginModal } from "components/Login/LoginModal"
+import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -19,8 +20,9 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const tracking = useTracking()
   const [isDrawerOpen, toggleDrawer] = useState(false)
   const [isLoginOpen, toggleLogin] = useState(false)
+  const { userSession, signOut } = useAuthContext()
 
-  const isLoggedIn = true
+  const isLoggedIn = !!userSession
 
   const trackClick = (url) => {
     tracking.trackEvent({
@@ -63,29 +65,51 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
               }
             })}
             {isLoggedIn ? (
-              <Link onClick={() => {
-                toggleDrawer(true)
-              }}>
-                <NavItem link={{text: "Account"}} />
-              </Link>
+              <>
+                <Link
+                  onClick={() => {
+                    toggleDrawer(true)
+                  }}
+                >
+                  <NavItem link={{ text: "Bag" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    signOut()
+                  }}
+                >
+                  <NavItem link={{ text: "Log out" }} />
+                </Link>
+              </>
             ) : (
-              <Link onClick={() => {
-                toggleLogin(true)
-              }}>
-                <NavItem link={{text: "Log In"}} />
-              </Link>
+              <>
+                <Link href="/signup" active={!!router.pathname.match("/signup")}>
+                  <NavItem link={{ text: "Sign Up" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    toggleLogin(true)
+                  }}
+                >
+                  <NavItem link={{ text: "Log In" }} />
+                </Link>
+              </>
             )}
-
           </Flex>
         </Flex>
       </MaxWidth>
-      <Drawer open={isDrawerOpen} onClose={() => {
-        toggleDrawer(false)
-      }} />
-      <LoginModal open={isLoginOpen} onClose={() => {
-        toggleLogin(false)
-      }}/>
-
+      <Drawer
+        open={isDrawerOpen}
+        onClose={() => {
+          toggleDrawer(false)
+        }}
+      />
+      <LoginModal
+        open={isLoginOpen}
+        onClose={() => {
+          toggleLogin(false)
+        }}
+      />
     </HeaderContainer>
   )
 }

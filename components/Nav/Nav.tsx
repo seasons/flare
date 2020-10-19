@@ -28,12 +28,6 @@ const links = [
     match: /^\/about/,
     external: false,
   },
-  {
-    text: "Sign up",
-    url: "/signup",
-    match: /^\/signup/,
-    external: false,
-  },
 ]
 
 export const Nav: React.FC<NavProps> = ({ fixed }) => {

@@ -1,14 +1,14 @@
-// import { login as loginAction } from "actions/sessionActions"
 import { Button, Sans, Spacer, Text } from "components"
 import { Field, Form, Formik } from "formik"
 import { TextField } from "formik-material-ui"
 import gql from "graphql-tag"
+import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useState } from "react"
 
 // import { useDispatch, useSelector } from "react-redux"
 // import { useHistory } from "react-router"
 import { useMutation } from "@apollo/client"
-import { Box, colors, Paper, styled } from "@material-ui/core"
+import { Box, colors, styled } from "@material-ui/core"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -27,20 +27,17 @@ const LOG_IN = gql`
 
 export interface LoginViewProps {
   props?: any
+  onSuccess?: () => void
 }
 export const LoginView: React.FunctionComponent<LoginViewProps> = props => {
   const [error, setError] = useState<string | null>(null)
+  const { signIn } = useAuthContext()
   const [login] = useMutation(LOG_IN, {
     onError: err => {
       console.error(err)
       setError(err.message)
     },
   })
-
-
-  // if (session?.token) {
-  //   history.push("/")
-  // }
 
   const handleSubmit = async ({ email, password }) => {
     const result = await login({
@@ -54,9 +51,8 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = props => {
         data: { login: userSession },
       } = result
 
-      localStorage.setItem("userSession", JSON.stringify(userSession))
-      // dispatch(loginAction(userSession))
-      // history.push("/")
+      signIn(userSession)
+      props.onSuccess?.()
     }
   }
 
