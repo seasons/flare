@@ -10,7 +10,9 @@ import { Slide, TextField } from "@material-ui/core"
 import { Button } from "./Button"
 
 const Container = styled(Box)`
-  border: 1px solid #000;
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
   background: white;
   width: 391px;
   position: fixed;
@@ -25,6 +27,7 @@ const CloseButton = styled(Box)`
   border-right-width: 0px;
   width: 40px;
   height: 40px;
+  cursor: pointer;
   position: absolute;
   top: 0;
   right: 0;
