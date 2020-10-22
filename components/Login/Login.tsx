@@ -5,8 +5,6 @@ import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useState } from "react"
 
-// import { useDispatch, useSelector } from "react-redux"
-// import { useHistory } from "react-router"
 import { useMutation } from "@apollo/client"
 import { Box, colors, styled } from "@material-ui/core"
 
