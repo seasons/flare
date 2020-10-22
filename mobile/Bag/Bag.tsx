@@ -1,11 +1,12 @@
 import { Box, Button, Spacer } from "components"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { Container } from "mobile/Container"
-import { useAuthContext } from "mobile/Navigation/AuthContext"
 import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
 import { TabBar } from "mobile/TabBar"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl, StatusBar } from "react-native"
+import styled from "styled-components"
 import { screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
@@ -119,7 +120,7 @@ export const Bag = screenTrack()((props) => {
   const hasActiveReservation = !!me?.activeReservation
 
   const shippingAddress = data?.me?.customer?.detail?.shippingAddress
-  const handleReserve = async (navigation) => {
+  const handleReserve = async () => {
     setMutating(true)
     try {
       if (!authState.isSignedIn) {
@@ -129,9 +130,9 @@ export const Bag = screenTrack()((props) => {
           buttonText: "Got it",
           onClose: () => {
             hidePopUp()
-            navigation.navigate("Modal", {
-              screen: "CreateAccountModal",
-            })
+            // navigation.navigate("Modal", {
+            //   screen: "CreateAccountModal",
+            // })
           },
         })
       } else {
@@ -146,7 +147,6 @@ export const Bag = screenTrack()((props) => {
             onClose: () => hidePopUp(),
             secondaryButtonText: "Go to settings",
             secondaryButtonOnPress: () => {
-
               hidePopUp()
             },
           })
@@ -297,22 +297,35 @@ export const Bag = screenTrack()((props) => {
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
       {isBagView && pauseStatus !== "paused" && !hasActiveReservation && (
-        <Button
-          block
-          onPress={() => {
-            // tracking.trackEvent({
-            //   actionName: TrackSchema.ActionNames.ReserveButtonTapped,
-            //   actionType: TrackSchema.ActionTypes.Tap,
-            //   bagIsFull,
-            // })
-            handleReserve(navigation)
-          }}
-          disabled={!bagIsFull || isMutating}
-          loading={isMutating}
-        >
-          Reserve
-        </Button>
+        <ButtonContainer>
+          <Button
+            block
+            onClick={() => {
+              // tracking.trackEvent({
+              //   actionName: TrackSchema.ActionNames.ReserveButtonTapped,
+              //   actionType: TrackSchema.ActionTypes.Tap,
+              //   bagIsFull,
+              // })
+              handleReserve()
+            }}
+            disabled={!bagIsFull || isMutating}
+            loading={isMutating}
+            style={{
+              width: "100%",
+              borderRadius: 0,
+            }}
+          >
+            Reserve
+          </Button>
+        </ButtonContainer>
       )}
     </Container>
   )
 })
+
+const ButtonContainer = styled(Box)`
+  position: fixed;
+  width: 380px;
+  bottom: 0;
+  right: 0;
+`

@@ -1,9 +1,8 @@
 import { Box, Flex, Sans, Spacer } from "components"
-import { ProgressiveImage } from "components/Image"
 import { color, space } from "helpers"
 import { DateTime } from "luxon"
 import React from "react"
-import { Dimensions, TouchableOpacity } from "react-native"
+import { Dimensions, Image, TouchableOpacity } from "react-native"
 import styled from "styled-components"
 
 export const ReservationHistoryItem = ({ item }) => {
@@ -14,8 +13,8 @@ export const ReservationHistoryItem = ({ item }) => {
     <Box px={2}>
       <Spacer mb={2} />
       <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
-        {item?.reservationNumber && <Sans size="1">{`Order #${item.reservationNumber}`}</Sans>}
-        {item?.status && <Sans size="1">{item.status}</Sans>}
+        {item?.reservationNumber && <Sans size="4">{`Order #${item.reservationNumber}`}</Sans>}
+        {item?.status && <Sans size="4">{item.status}</Sans>}
       </Flex>
       {!!date && (
         <Sans size="1" color="black50">
@@ -54,7 +53,7 @@ export const ReservationHistoryItem = ({ item }) => {
   )
 }
 
-const ImageContainer = styled(ProgressiveImage)<{ imageWidth: number }>`
+const ImageContainer = styled(Image)<{ imageWidth: number }>`
   background: ${color("black04")};
   height: ${(props) => props.height};
   width: ${(props) => props.imageWidth};

@@ -1,12 +1,12 @@
 import { Box, Button, Flex, Sans, Spacer } from "components"
-import { ProgressiveImage } from "components/Image"
 import { Spinner } from "components/Spinner"
 import gql from "graphql-tag"
 import { color } from "helpers"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { get, head } from "lodash"
-import { useAuthContext } from "mobile/Navigation/AuthContext"
+import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
-import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
@@ -22,12 +22,7 @@ interface BagItemProps {
   removeFromBagAndSaveItem?: Function
 }
 
-export const BagItem: React.FC<BagItemProps> = ({
-  bagItem,
-  index,
-  removeItemFromBag,
-  removeFromBagAndSaveItem,
-}) => {
+export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFromBag, removeFromBagAndSaveItem }) => {
   const { authState } = useAuthContext()
   const [isMutating, setIsMutating] = useState(false)
   const tracking = useTracking()
@@ -120,7 +115,7 @@ export const BagItem: React.FC<BagItemProps> = ({
                       refetchQueries: [
                         {
                           query: GET_BAG,
-                        }
+                        },
                       ],
                     })
                   }
@@ -140,7 +135,7 @@ export const BagItem: React.FC<BagItemProps> = ({
                 size="small"
                 variant="secondaryWhite"
                 disabled={isMutating}
-                onPress={() => {
+                onClick={() => {
                   // tracking.trackEvent({
                   //   actionName: Schema.ActionNames.BagItemRemoved,
                   //   actionType: Schema.ActionTypes.Tap,
@@ -159,6 +154,9 @@ export const BagItem: React.FC<BagItemProps> = ({
                       refetchQueries: [
                         {
                           query: GET_BAG,
+                        },
+                        {
+                          query: GET_PRODUCT,
                         },
                       ],
                     })
@@ -198,16 +196,18 @@ export const BagItem: React.FC<BagItemProps> = ({
         }}
       >
         <Box style={shadowStyles}>
-          <BagItemContainer isReserved={isReserved} flexDirection="row">
-            {isReserved ? <ReservedItemContent /> : <NonReservedItemContent />}
-            <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
-              {!!imageURL && (
-                <ImageContainer
-                  style={{ height: 170 * 1.3, width: 170 }}
-                  resizeMode="contain"
-                  source={{ uri: imageURL }}
-                />
-              )}
+          <BagItemContainer isReserved={isReserved}>
+            <Flex flexDirection="row">
+              {isReserved ? <ReservedItemContent /> : <NonReservedItemContent />}
+              <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
+                {!!imageURL && (
+                  <ImageContainer
+                    style={{ height: 170 * 1.25, width: 170 }}
+                    resizeMode="contain"
+                    source={{ uri: imageURL }}
+                  />
+                )}
+              </Flex>
             </Flex>
           </BagItemContainer>
           <Spacer mb={isReserved ? 1 : 2} />
@@ -233,7 +233,7 @@ const BagItemContainer = styled(Box)<{ isReserved: boolean }>`
   border-radius: ${(p) => (p.isReserved ? "8px" : "0px")};
 `
 
-const ImageContainer = styled(ProgressiveImage)`
+const ImageContainer = styled(Image)`
   height: 214;
 `
 

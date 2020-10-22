@@ -1,17 +1,16 @@
 import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { color } from "helpers"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
-import { useAuthContext } from "mobile/Navigation/AuthContext"
 import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
 import React, { useEffect, useState } from "react"
-import { Schema, useTracking } from "utils/analytics"
+import { useTracking } from "utils/analytics"
 
-import { useLazyQuery, useMutation } from "@apollo/client"
+import { useLazyQuery } from "@apollo/client"
 
-import { WantAnotherItemBagItem } from "./"
 import { BagItem } from "./BagItem"
-import { GET_BAG, GET_LOCAL_BAG_ITEMS } from "./BagQueries"
+import { GET_LOCAL_BAG_ITEMS } from "./BagQueries"
 import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
 
@@ -26,7 +25,6 @@ export const BagTab: React.FC<{
 }> = ({ pauseStatus, items, deleteBagItem, removeFromBagAndSaveItem, data }) => {
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
-  const { showPopUp, hidePopUp } = usePopUpContext()
   const tracking = useTracking()
 
   const me = data?.me
