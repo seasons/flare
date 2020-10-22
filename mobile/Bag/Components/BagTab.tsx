@@ -1,16 +1,16 @@
 import { Box, Flex, Sans, Separator, Spacer } from "components"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
-import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
+import { GET_LOCAL_BAG_ITEMS } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
-import { useTracking } from "utils/analytics"
+import { Schema, useTracking } from "utils/analytics"
 
 import { useLazyQuery } from "@apollo/client"
 
 import { BagItem } from "./BagItem"
-import { GET_LOCAL_BAG_ITEMS } from "./BagQueries"
 import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
 
@@ -102,11 +102,10 @@ export const BagTab: React.FC<{
             size="3"
             style={{ textDecorationLine: "underline" }}
             onPress={() => {
-              // tracking.trackEvent({
-              //   actionName: Schema.ActionNames.FAQButtonTapped,
-              //   actionType: Schema.ActionTypes.Tap,
-              // })
-
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.FAQButtonTapped,
+                actionType: Schema.ActionTypes.Tap,
+              })
             }}
           >
             View FAQ
@@ -123,12 +122,12 @@ export const BagTab: React.FC<{
             <Separator color={color("black10")} />
           </Box>
           <Box px={2} py={2}>
-            <Sans size="1" color="black50">
+            <Sans size="3" color="black50">
               {`Your membership is scheduled to be paused on ${DateTime.fromISO(pauseRequest.pauseDate).toFormat(
                 "EEEE LLLL dd"
               )}. To continue it tap `}
               <Sans
-                size="1"
+                size="3"
                 style={{ textDecorationLine: "underline" }}
                 onPress={async () => {
                   if (isMutating) {
@@ -171,11 +170,6 @@ export const BagTab: React.FC<{
           </Box>
         )
       })}
-      {/* {!hasActiveReservation && items && items.length < 3 && (
-        <Box px={2}>
-          <WantAnotherItemBagItem plan={me?.customer?.membership?.plan} paymentPlans={paymentPlans} />
-        </Box>
-      )} */}
     </Box>
   )
 }

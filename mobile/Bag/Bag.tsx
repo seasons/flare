@@ -1,20 +1,22 @@
 import { Box, Button, Spacer } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { Container } from "mobile/Container"
-import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
+import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
+import {
+  CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM
+} from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
-import { FlatList, RefreshControl, StatusBar } from "react-native"
+import { FlatList, RefreshControl } from "react-native"
 import styled from "styled-components"
-import { screenTrack, useTracking } from "utils/analytics"
+import { Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
 
-import { BagTab, ReservationHistoryTab } from "./Components"
-import {
-  CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM
-} from "./Components/BagQueries"
+import { BagTab, ReservationHistoryTab, SavedItemsTab } from "./Components"
 
 export enum BagView {
   Bag = 0,
@@ -27,6 +29,7 @@ const DEFAULT_ITEM_COUNT = 3
 export const Bag = screenTrack()((props) => {
   const { authState } = useAuthContext()
   const { showPopUp, hidePopUp } = usePopUpContext()
+  const { openDrawer } = useDrawerContext()
   const [isMutating, setMutating] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
@@ -91,7 +94,7 @@ export const Bag = screenTrack()((props) => {
   const [checkItemsAvailability] = useMutation(CHECK_ITEMS)
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <Loader />
   }
 
   const onRefresh = () => {
@@ -166,6 +169,8 @@ export const Bag = screenTrack()((props) => {
             console.log(data, errors)
           },
         })
+
+        openDrawer("reservation")
       }
       setMutating(false)
     } catch (e) {
@@ -241,14 +246,14 @@ export const Bag = screenTrack()((props) => {
         )
       }
     } else if (isSavedView) {
-      // return (
-      //   <SavedItemsTab
-      //     items={item.data}
-      //     bagIsFull={bagIsFull}
-      //     hasActiveReservation={hasActiveReservation}
-      //     deleteBagItem={deleteBagItem}
-      //   />
-      // )
+      return (
+        <SavedItemsTab
+          items={item.data}
+          bagIsFull={bagIsFull}
+          hasActiveReservation={hasActiveReservation}
+          deleteBagItem={deleteBagItem}
+        />
+      )
     } else {
       return <ReservationHistoryTab items={item.data} />
     }
@@ -271,18 +276,18 @@ export const Bag = screenTrack()((props) => {
         tabs={["Bag", "Saved", "History"]}
         activeTab={currentView}
         goToPage={(page: BagView) => {
-          // tracking.trackEvent({
-          //   actionName: () => {
-          //     if (page === 0) {
-          //       return TrackSchema.ActionNames.BagTabTapped
-          //     } else if (page === 1) {
-          //       return TrackSchema.ActionNames.SavedTabTapped
-          //     } else {
-          //       return TrackSchema.ActionNames.ReservationHistoryTabTapped
-          //     }
-          //   },
-          //   actionType: TrackSchema.ActionTypes.Tap,
-          // })
+          tracking.trackEvent({
+            actionName: () => {
+              if (page === 0) {
+                return Schema.ActionNames.BagTabTapped
+              } else if (page === 1) {
+                return Schema.ActionNames.SavedTabTapped
+              } else {
+                return Schema.ActionNames.ReservationHistoryTabTapped
+              }
+            },
+            actionType: Schema.ActionTypes.Tap,
+          })
           setCurrentView(page)
         }}
       />
@@ -301,11 +306,11 @@ export const Bag = screenTrack()((props) => {
           <Button
             block
             onClick={() => {
-              // tracking.trackEvent({
-              //   actionName: TrackSchema.ActionNames.ReserveButtonTapped,
-              //   actionType: TrackSchema.ActionTypes.Tap,
-              //   bagIsFull,
-              // })
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.ReserveButtonTapped,
+                actionType: Schema.ActionTypes.Tap,
+                bagIsFull,
+              })
               handleReserve()
             }}
             disabled={!bagIsFull || isMutating}

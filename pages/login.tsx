@@ -1,12 +1,16 @@
-import { isValidEmail } from "App/helpers/regex"
-import { useAuthContext } from "App/Navigation/AuthContext"
 import { Box, Flex, Sans, Spacer, TextInput } from "components"
 import { Button } from "components/Button"
 import gql from "graphql-tag"
 import { color } from "helpers"
+import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useState } from "react"
 
 import { useMutation } from "@apollo/client"
+
+const isValidEmail = email => {
+  const emailValidationRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return emailValidationRegex.test(email)
+}
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -47,10 +51,10 @@ export const LogIn: React.FC<LogInProps> = (props) => {
         title: "Oops! Try again!",
         note: "Your email or password may be incorrect. Not a member? Apply for the waitlist.",
         buttonText: "Close",
-        onClose: () => hidePopUp(),
+        // onClose: () => hidePopUp(),
       }
       console.log("err", err)
-      showPopUp(popUpData)
+      // showPopUp(popUpData)
       setIsMutating(false)
     },
   })

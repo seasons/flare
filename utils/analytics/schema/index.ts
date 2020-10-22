@@ -92,6 +92,7 @@ export enum ActionTypes {
 /**
  * Action event discriptors / names
  */
+
 export enum ActionNames {
   ReadMoreTapped = "Read more tapped",
   // Nav
@@ -106,7 +107,6 @@ export enum ActionNames {
   // Browse
   ProductPageNumberChanged = "Product Page Number Changed",
   // Forms
-
   // Create Account
   CreateAccountClicked = "Create Account Button Clicked",
   AccountTriaged = "Account Triaged",
@@ -119,6 +119,18 @@ export enum ActionNames {
   ServiceableModalDoneButtonClicked = "Serviceable Modal done Button Clicked",
 
   ProductAddedToBag = "Product Added to Bag",
+  PlaceOrderTapped = "Place Order Tapped",
+
+  ReservationConfirmationDoneButtonTapped = "Reservation Confirmation Done Button Clicked",
+  ProductTapped = "Product Tapped",
+  ReserveButtonTapped = "Reserve Button Tapped",
+  BagTabTapped = "Bag Tab Tapped",
+  SavedTabTapped = "Saved Tab Tapped",
+  ReservationHistoryTabTapped = "Reservation History Tab Tapped",
+  FAQButtonTapped = "FAQButtonTapped",
+  ProductVariantSelected = "ProductVariantSelected",
+  SavedItemAddedToBag = "SavedItemAddedToBag",
+  BagItemRemoved = "BagItemRemoved",
 }
 
 /**

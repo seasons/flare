@@ -2,7 +2,7 @@ import palette from "./palette"
 
 export default {
   fontFamily: [
-    '"Proxima Nova"',
+    "ProximaNova-Medium",
     "-apple-system",
     "BlinkMacSystemFont",
     '"Segoe UI"',
@@ -71,25 +71,25 @@ export default {
   },
   body1: {
     color: palette.text.primary,
-    fontWeight: 700,
+    fontWeight: 500,
     fontSize: "14px",
     lineHeight: "21px",
   },
   body2: {
     color: palette.text.secondary,
-    fontWeight: 700,
+    fontWeight: 500,
     fontSize: "12px",
     letterSpacing: "-0.04px",
     lineHeight: "18px",
   },
   button: {
     color: palette.text.primary,
-    fontWeight: 700,
+    fontWeight: 500,
     fontSize: "14px",
   },
   caption: {
     color: palette.text.secondary,
-    fontWeight: 700,
+    fontWeight: 500,
     fontSize: "11px",
     letterSpacing: "0.33px",
     lineHeight: "13px",
@@ -97,7 +97,7 @@ export default {
   overline: {
     color: palette.text.secondary,
     fontSize: "11px",
-    fontWeight: 700,
+    fontWeight: 500,
     letterSpacing: "0.33px",
     lineHeight: "13px",
     textTransform: "uppercase",

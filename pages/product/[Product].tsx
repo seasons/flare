@@ -18,7 +18,6 @@ import React, { useEffect, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-import { MenuItem, Select } from "@material-ui/core"
 
 const Product = screenTrack(({ router }) => {
   return {

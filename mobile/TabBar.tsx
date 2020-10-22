@@ -1,4 +1,4 @@
-import { Box, Flex, Sans } from "components"
+import { Box, Flex, Sans, Separator } from "components"
 import { color } from "helpers"
 import React from "react"
 import { Animated, TouchableWithoutFeedback, View } from "react-native"
@@ -51,7 +51,7 @@ const TabButton = styled(Box)<{ spaceEvenly?: boolean; active?: boolean; tabColo
     border-color: ${p.tabColor ? p.tabColor : "#000000"};
   `};
 
-  p { 
+  p {
     text-align: center;
     line-height: 55px;
   }
@@ -93,13 +93,14 @@ export class TabBar extends React.Component<TabBarProps, null> {
   render() {
     return (
       <Wrapper>
-      <Tabs>
-        {this.props.tabs.map((name, index) => {
-          const isTabActive = this.props.activeTab === index
-          const isTabDisabled = this.props.disabledTabs?.includes(name)
-          return this.renderTab(name, index, isTabActive, isTabDisabled, this.props.goToPage, this.props.tabColor)
-        })}
-      </Tabs>
+        <Tabs>
+          {this.props.tabs.map((name, index) => {
+            const isTabActive = this.props.activeTab === index
+            const isTabDisabled = this.props.disabledTabs?.includes(name)
+            return this.renderTab(name, index, isTabActive, isTabDisabled, this.props.goToPage, this.props.tabColor)
+          })}
+        </Tabs>
+        <Separator />
       </Wrapper>
     )
   }

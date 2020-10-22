@@ -7,6 +7,13 @@ import typography from "./typography"
 const baseTheme = {
   palette,
   typography,
+  overrides: {
+    MuiInputBase: {
+      root: {
+        fontWeight: "normal",
+      },
+    },
+  },
 } as ThemeOptions
 
 export const theme = createMuiTheme(baseTheme)

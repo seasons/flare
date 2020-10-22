@@ -63,7 +63,7 @@ export const DeliveryStatus: React.FC<{
   return (
     <Box>
       <Box px={2}>
-        <Sans size="1">Status</Sans>
+        <Sans size="4">Status</Sans>
       </Box>
       <Spacer mb={1} />
       <Flex flexDirection="row" flexWrap="nowrap" px={1.5} width="100%">
@@ -77,16 +77,16 @@ export const DeliveryStatus: React.FC<{
         <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
           <GreenDot statusColor={statusColor} />
           <Spacer mr={1} />
-          <Sans size="1">{statusText}</Sans>
+          <Sans size="3">{statusText}</Sans>
         </Flex>
         {!!trackingURL && (
           <Box>
             <TouchableWithoutFeedback
               onPress={() => {
-                // navigation.navigate(Schema.PageNames.Webview, { uri: trackingURL })
+                window.open(trackingURL)
               }}
             >
-              <Sans size="1" style={{ textDecorationLine: "underline" }}>
+              <Sans size="3" style={{ textDecorationLine: "underline" }}>
                 Track order
               </Sans>
             </TouchableWithoutFeedback>
@@ -99,9 +99,9 @@ export const DeliveryStatus: React.FC<{
 }
 
 const GreenDot = styled(Box)<{ statusColor: string }>`
-  height: 8;
-  width: 8;
-  border-radius: 4;
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
   background-color: ${(p) => p.statusColor};
 `
 

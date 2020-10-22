@@ -34,7 +34,6 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const { openDrawer } = useDrawerContext()
   const isUserSignedIn = authState?.isSignedIn
 
-  console.log("product slug", props.data.product?.slug)
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
     variables: {
@@ -53,7 +52,6 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       },
     ],
     onCompleted: (res) => {
-      console.log(res)
       setIsMutating(false)
       setAdded(true)
       const itemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
@@ -93,8 +91,6 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       addToBag()
     }
   }
-
-  console.log("selected variant", selectedVariant)
 
   const isInBag = isUserSignedIn
     ? props?.isInBag || added

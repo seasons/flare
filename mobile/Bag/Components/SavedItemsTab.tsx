@@ -5,8 +5,6 @@ import { BagView } from "../Bag"
 import { BagEmptyState } from "./BagEmptyState"
 import { SavedItem } from "./SavedItem"
 
-const SECTION_HEIGHT = 300
-
 export const SavedItemsTab: React.FC<{ items; deleteBagItem; hasActiveReservation; bagIsFull }> = ({
   items,
   deleteBagItem,
@@ -23,7 +21,6 @@ export const SavedItemsTab: React.FC<{ items; deleteBagItem; hasActiveReservatio
                 hasActiveReservation={hasActiveReservation}
                 bagIsFull={bagIsFull}
                 removeItemFromBag={deleteBagItem}
-                sectionHeight={SECTION_HEIGHT}
                 bagItem={bagItem}
               />
             </Box>

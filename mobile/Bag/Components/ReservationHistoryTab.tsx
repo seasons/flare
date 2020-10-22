@@ -12,7 +12,7 @@ export const ReservationHistoryTab: React.FC<{ items }> = ({ items }) => {
       {items?.length ? (
         items?.map((bagItem, index) => {
           return (
-            <Box key={index}>
+            <Box key={index} width="100%">
               <ReservationHistoryItem item={bagItem} />
               {index !== items.length - 1 && <Separator color={color("black10")} />}
             </Box>

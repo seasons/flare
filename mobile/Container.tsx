@@ -10,7 +10,6 @@ export const Container: React.FC<{
   insetsTop?: boolean
   backgroundColor?: "black100" | "white100"
 }> = ({ children, backgroundColor = "white100", insetsBottom = true, insetsTop = true, style }) => {
-
   return (
     <Theme>
       <Flex
@@ -18,6 +17,7 @@ export const Container: React.FC<{
           flex: 1,
           flexDirection: "column",
           backgroundColor: color(backgroundColor),
+          height: "100%",
           ...style,
         }}
       >

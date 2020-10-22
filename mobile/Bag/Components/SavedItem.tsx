@@ -1,16 +1,15 @@
 import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
-import { ProgressiveImage } from "components/Image"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { Spinner } from "components/Spinner"
 import { color } from "helpers"
 import { get, head } from "lodash"
-import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
+import { ADD_TO_BAG, GET_BAG } from "queries/bagQueries"
 import React, { useState } from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
+import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
-
-import { ADD_TO_BAG, GET_BAG } from "./BagQueries"
 
 interface BagItemProps {
   bagIsFull: boolean
@@ -19,14 +18,10 @@ interface BagItemProps {
   removeItemFromBag?: Function
 }
 
-export const SavedItem: React.FC<BagItemProps> = ({
-  bagIsFull,
-  bagItem,
-  removeItemFromBag,
-  hasActiveReservation,
-}) => {
+export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeItemFromBag, hasActiveReservation }) => {
   const [isMutating, setIsMutating] = useState(false)
   const [addingToBag, setAddingToBag] = useState(false)
+  const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
   if (!bagItem) {
     return null
@@ -90,97 +85,94 @@ export const SavedItem: React.FC<BagItemProps> = ({
 
   return (
     <Box py={1} key={product.id}>
-      <TouchableWithoutFeedback
-      >
-        <BagItemContainer flexDirection="row" px={2}>
-          <Flex style={{ flex: 2 }} flexWrap="nowrap" flexDirection="column" justifyContent="space-between">
-            <Box>
-              <Sans size="1">{product.brand.name}</Sans>
-              <Sans size="1" color={color("black50")}>
-                {product.name}
-              </Sans>
-              <Sans size="1" color={color("black50")}>
-                Size {variantSize}
-              </Sans>
-              <Spacer mb={3} />
+      <TouchableWithoutFeedback>
+        <BagItemContainer>
+          <Flex flexDirection="row" px={2}>
+            <Flex style={{ flex: 2 }} flexWrap="nowrap" flexDirection="column" justifyContent="space-between">
+              <Box>
+                <Sans size="3">{product.brand.name}</Sans>
+                <Sans size="3" color={color("black50")}>
+                  {product.name}
+                </Sans>
+                <Sans size="3" color={color("black50")}>
+                  Size {variantSize}
+                </Sans>
+                <Spacer mb={3} />
 
-              <Flex flexDirection="row" alignItems="center">
-                <ColoredDot reservable={reservable} />
-                {!!reservable ? (
-                  <>
-                    {!hasActiveReservation ? (
-                      <>
-                        <Sans
-                          size="1"
-                          style={{ textDecorationLine: "underline" }}
-                          onPress={() => {
-                            if (!addingToBag) {
-                              setAddingToBag(true)
-                              addToBag()
-                              // tracking.trackEvent({
-                              //   actionName: Schema.ActionNames.SavedItemAddedToBag,
-                              //   actionType: Schema.ActionTypes.Tap,
-                              //   productSlug: product.slug,
-                              //   productId: product.id,
-                              //   variantId: variantToUse.id,
-                              // })
-                            }
-                          }}
-                        >
-                          Add to bag
+                <Flex flexDirection="row" alignItems="center">
+                  <ColoredDot reservable={reservable} />
+                  {!!reservable ? (
+                    <>
+                      {!hasActiveReservation ? (
+                        <>
+                          <Sans
+                            size="3"
+                            style={{ textDecorationLine: "underline" }}
+                            onClick={() => {
+                              if (!addingToBag) {
+                                setAddingToBag(true)
+                                addToBag()
+                                tracking.trackEvent({
+                                  actionName: Schema.ActionNames.SavedItemAddedToBag,
+                                  actionType: Schema.ActionTypes.Tap,
+                                  productSlug: product.slug,
+                                  productId: product.id,
+                                  variantId: variantToUse.id,
+                                })
+                              }
+                            }}
+                          >
+                            Add to bag
+                          </Sans>
+                        </>
+                      ) : (
+                        <Sans size="3" color="black50">
+                          {"  "}Available
                         </Sans>
-                      </>
-                    ) : (
-                      <Sans size="1" color="black50">
-                        {"  "}Available
-                      </Sans>
-                    )}
-                  </>
-                ) : (
-                  <Sans size="1" color="black50">
-                    {"  "}Unavailable
-                  </Sans>
-                )}
-              </Flex>
-            </Box>
-            <Button
-              onPress={() => {
-                setIsMutating(true)
-                // tracking.trackEvent({
-                //   actionName: Schema.ActionNames.BagItemRemoved,
-                //   actionType: Schema.ActionTypes.Tap,
-                //   productSlug: product.slug,
-                //   productId: product.id,
-                //   variantId: variantToUse.id,
-                // })
-                removeItemFromBag({
-                  variables: {
-                    id: variantToUse.id,
-                    saved: true,
-                  },
-                  refetchQueries: [
-                    {
-                      query: GET_BAG,
+                      )}
+                    </>
+                  ) : (
+                    <Sans size="3" color="black50">
+                      {"  "}Unavailable
+                    </Sans>
+                  )}
+                </Flex>
+              </Box>
+              <Button
+                onCLick={() => {
+                  setIsMutating(true)
+                  tracking.trackEvent({
+                    actionName: Schema.ActionNames.BagItemRemoved,
+                    actionType: Schema.ActionTypes.Tap,
+                    productSlug: product.slug,
+                    productId: product.id,
+                    variantId: variantToUse.id,
+                  })
+                  removeItemFromBag({
+                    variables: {
+                      id: variantToUse.id,
+                      saved: true,
                     },
-                  ],
-                })
-              }}
-              variant="secondaryWhite"
-              size="small"
-              disabled={isMutating || addingToBag}
-              loading={isMutating}
-            >
-              Remove
-            </Button>
-          </Flex>
-          <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
-            {!!imageURL && (
-              <ImageContainer
-                style={{ height: 170 * 1.3, width: 170 }}
-                resizeMode="contain"
-                source={{ uri: imageURL }}
-              />
-            )}
+                    refetchQueries: [
+                      {
+                        query: GET_BAG,
+                      },
+                    ],
+                  })
+                }}
+                variant="secondaryWhite"
+                size="small"
+                disabled={isMutating || addingToBag}
+                loading={isMutating}
+              >
+                Remove
+              </Button>
+            </Flex>
+            <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
+              {!!imageURL && (
+                <Image style={{ height: 170 * 1.3, width: 170 }} resizeMode="contain" source={{ uri: imageURL }} />
+              )}
+            </Flex>
           </Flex>
         </BagItemContainer>
       </TouchableWithoutFeedback>
@@ -209,21 +201,11 @@ const Overlay = styled(Box)`
 
 const BagItemContainer = styled(Box)`
   overflow: hidden;
-  height: 210px;
-`
-
-const ImageContainer = styled(ProgressiveImage)`
-  height: 214;
-`
-
-const ImageWrapper = styled(ProgressiveImage)`
-  border-radius: 30px;
-  overflow: hidden;
 `
 
 const ColoredDot = styled(Box)`
-  height: 8;
-  width: 8;
+  height: 10px;
+  width: 10px;
   background-color: ${(p) => (!!p.reservable ? color("green100") : color("black50"))};
-  border-radius: 4;
+  border-radius: 5px;
 `

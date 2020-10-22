@@ -4,6 +4,7 @@ export const BagItemFragment = gql`
   fragment BagItemProductVariant on ProductVariant {
     product {
       id
+      slug
       name
       modelSize {
         id

@@ -4,6 +4,7 @@ import gql from "graphql-tag"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { get, head } from "lodash"
+import { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
 import { Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
@@ -11,8 +12,6 @@ import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
-
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_BAG } from "./BagQueries"
 
 interface BagItemProps {
   bagItem: any
@@ -157,6 +156,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
                         },
                         {
                           query: GET_PRODUCT,
+                          variables: { slug: product?.slug },
                         },
                       ],
                     })

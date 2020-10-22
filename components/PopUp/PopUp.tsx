@@ -10,10 +10,7 @@ const twoButtonWidth = 150 - (space(2) + space(0.5))
 
 export const PopUp: React.FC = () => {
   const { popUpState, hidePopUp } = usePopUpContext()
-
   const { data, show } = popUpState
-
-  console.log("pop up state", popUpState)
 
   const colorsForTheme = (theme) => {
     switch (theme) {

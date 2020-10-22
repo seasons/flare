@@ -39,8 +39,6 @@ export const getAccessTokenOrRefresh = async () => {
           resolve(accessToken)
         })
         .catch(async (e) => {
-          console.log(e)
-
           try {
             const newUserSession = await getNewToken()
             resolve(newUserSession)
