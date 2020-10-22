@@ -1,5 +1,4 @@
 import { Box, Flex, Sans, Separator, Spacer } from "components"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
@@ -55,36 +54,6 @@ export const BagTab: React.FC<{
     }
   }, [items])
 
-  // const [removeScheduledPause] = useMutation(REMOVE_SCHEDULED_PAUSE, {
-  //   refetchQueries: [
-  //     {
-  //       query: GET_BAG,
-  //     },
-  //   ],
-  //   onCompleted: () => {
-  //     setIsMutating(false)
-  //     const popUpData = {
-  //       title: "Got it!",
-  //       note: "Your membership is no longer scheduled to be paused.",
-  //       buttonText: "Close",
-  //       onClose: () => hidePopUp(),
-  //     }
-  //     showPopUp(popUpData)
-  //   },
-  //   onError: (err) => {
-  //     const popUpData = {
-  //       title: "Oops!",
-  //       note: "There was an error canceling the pause on your membership, please contact us.",
-  //       buttonText: "Close",
-  //       onClose: () => hidePopUp(),
-  //     }
-
-  //     console.log("err", err)
-  //     showPopUp(popUpData)
-  //     setIsMutating(false)
-  //   },
-  // })
-
   let returnReminder
   if (hasActiveReservation && me?.customer?.plan === "Essential" && !!me?.activeReservation?.returnAt) {
     const luxonDate = DateTime.fromISO(me?.activeReservation?.returnAt)
@@ -135,11 +104,6 @@ export const BagTab: React.FC<{
                   }
                   setIsMutating(true)
                   const subscriptionId = me?.customer?.invoices?.[0]?.subscriptionId || ""
-                  // await removeScheduledPause({
-                  //   variables: {
-                  //     subscriptionID: subscriptionId,
-                  //   },
-                  // })
                 }}
               >
                 here
