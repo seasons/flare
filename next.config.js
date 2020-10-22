@@ -2,6 +2,7 @@ const withFonts = require("next-fonts")
 const withImages = require("next-images")
 const withSourceMaps = require("@zeit/next-source-maps")
 
+const appDownload = "https://szns.co/app"
 module.exports = withSourceMaps(
   withImages(
     withFonts({
@@ -21,6 +22,20 @@ module.exports = withSourceMaps(
         }
         config.resolve.extensions = [".web.js", ".web.ts", ".web.tsx", ...config.resolve.extensions]
         return config
+      },
+      async redirects() {
+        return [
+          {
+            source: "/browse/all",
+            destination: "/browse",
+            permanent: true,
+          },
+          {
+            source: "/a/account",
+            destination: "https://szns.co/app",
+            permanent: false,
+          },
+        ]
       },
     })
   )

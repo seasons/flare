@@ -80,7 +80,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     }
   }, [filter, setCurrentBrand, setCurrentCategory])
 
-
   const aggregateCount = data?.connection?.aggregate?.count
   const pageCount = Math.ceil(aggregateCount / pageSize)
   const products = data?.products?.edges
@@ -257,7 +256,7 @@ export async function getStaticProps({ params }) {
     variables: {
       brandOrderBy: "name_ASC",
       brandSlugs: BRAND_LIST,
-    }
+    },
   })
 
   return {

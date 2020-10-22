@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "upload-assets": "node scripts/uploadAssetsToS3.js",
-    "heroku-cleanup": "yarn upload-assets"
+    "heroku-cleanup": "yarn upload-assets",
+    "prettier": "prettier --write 'pages/**/*.{js,ts,tsx,md,graphql}' '*.{js,ts,tsx,md,graphql}' --ignore-path ./.prettierignore"
   },
   "engines": {
     "node": "12"
@@ -80,7 +81,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.1.2",
-    "prettier": "2.0.4",
+    "prettier": "^2.1.2",
     "typescript": "^3.7.5"
   },
   "prettier": {
