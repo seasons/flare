@@ -1,6 +1,6 @@
 import { Box, Flex, Sans } from "components"
-import { ProgressiveImage } from "components/Image"
 import React from "react"
+import { Image } from "react-native"
 import styled from "styled-components"
 
 export const CurrentRotationItem = ({ physicalProduct }) => {
@@ -30,7 +30,7 @@ export const CurrentRotationItem = ({ physicalProduct }) => {
         </Flex>
       </Box>
       <ImageContainer>
-        <Image resizeMode="contain" source={{ uri: imageURL }} />
+        <StyledImage resizeMode="contain" source={{ uri: imageURL }} />
       </ImageContainer>
     </Container>
   )
@@ -50,7 +50,7 @@ const ImageContainer = styled(Box)`
   border-top-width: 1px;
 `
 
-const Image = styled(ProgressiveImage)`
+const StyledImage = styled(Image)`
   height: 260;
   width: 100%;
   background: #f6f6f6;

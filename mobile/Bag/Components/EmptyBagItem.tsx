@@ -13,8 +13,8 @@ export const EmptyBagItem: React.FC<{ index: number }> = ({ index }) => {
   return (
     <Box p={2}>
       <EmptyBagItemContainer>
-        <Flex flex={1} py="84px" flexDirection="column" alignItems="center">
-          <Flex flexWrap="nowrap" flexDirection="column" alignItems="center" alignSelf="center">
+        <Flex py="84px" flexDirection="column" alignItems="center">
+          <Flex flexWrap="nowrap" flexDirection="column" alignItems="center">
             <TouchableOpacity
               onPress={() => {
                 router.push("/browse")
