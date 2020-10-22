@@ -1,22 +1,24 @@
+import { Box, Flex, Layout, Spacer } from "components"
+import { AddToBagButton } from "components/AddToBagButton"
+import { Button } from "components/Button"
+import { Carousel } from "components/Carousel"
+import { Col, Grid, Row } from "components/Grid"
+import { ProgressiveImage } from "components/Image"
+import { HowItWorks } from "components/Product/HowItWorks"
+import { ProductDetails } from "components/Product/ProductDetails"
+import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
+import { VariantSelect } from "components/Product/VariantSelect"
+import { Media } from "components/Responsive"
+import { initializeApollo } from "lib/apollo"
+import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import React from "react"
+import { GET_PRODUCT, GET_PRODUCTS } from "queries/productQueries"
+import React, { useEffect, useState } from "react"
+import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-
-import { Box, Layout, Spacer } from "../../components"
-import { Button } from "../../components/Button"
-import { Carousel } from "../../components/Carousel"
-import { Col, Grid, Row } from "../../components/Grid"
-import { ProgressiveImage } from "../../components/Image"
-import { Link } from "../../components/Link"
-import { HowItWorks } from "../../components/Product/HowItWorks"
-import { ProductDetails } from "../../components/Product/ProductDetails"
-import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
-import { Media } from "../../components/Responsive"
-import { initializeApollo } from "../../lib/apollo"
-import { GET_PRODUCT, GET_PRODUCTS } from "../../queries/productQueries"
-import { Schema, screenTrack } from "../../utils/analytics"
+import { MenuItem, Select } from "@material-ui/core"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -26,14 +28,31 @@ const Product = screenTrack(({ router }) => {
   }
 })(({ router }) => {
   const slug = router.query.Product
-
-  const { data } = useQuery(GET_PRODUCT, {
+  const { authState } = useAuthContext()
+  const { data, refetch } = useQuery(GET_PRODUCT, {
     variables: {
       slug,
     },
   })
 
+  console.log(data)
+
   const product = data && data.product
+
+  const [selectedVariant, setSelectedVariant] = useState(
+    product?.variants?.[0] || {
+      id: "",
+      reservable: 0,
+      size: "",
+      stock: 0,
+      isInBag: false,
+      isWanted: false,
+    }
+  )
+
+  useEffect(() => {
+    refetch()
+  }, [authState.isSignedIn])
 
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
@@ -80,13 +99,24 @@ const Product = screenTrack(({ router }) => {
             <Col md="5" sm="12">
               <Box style={{ maxWidth: "480px" }} px={[2, 2, 0, 0, 0]}>
                 {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
-                <Box>
-                  <Link href="/signup">
-                    <Button width="100%" block variant="primaryWhite" onClick={null}>
-                      Create an account
-                    </Button>
-                  </Link>
-                </Box>
+                <Flex flex-direction="row">
+                  <Box mr={2}>
+                    <VariantSelect
+                      product={product}
+                      selectedVariant={selectedVariant}
+                      setSelectedVariant={setSelectedVariant}
+                      onSizeSelected={(size) => {
+                        console.log(size)
+                      }}
+                    />
+                  </Box>
+                  <AddToBagButton
+                    selectedVariant={selectedVariant}
+                    data={data}
+                    variantInStock={true}
+                    isInBag={selectedVariant.isInBag}
+                  />
+                </Flex>
                 <HowItWorks />
               </Box>
             </Col>
