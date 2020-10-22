@@ -1,14 +1,15 @@
 import { Drawer } from "components/Drawer/Drawer"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { LoginModal } from "components/Login/LoginModal"
+import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import styled from "styled-components"
+import { Schema, useTracking } from "utils/analytics"
 
 import { MaxWidth } from "../"
-import { color } from "../../helpers/color"
-import { Schema, useTracking } from "../../utils/analytics"
 import { Box } from "../Box"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
@@ -18,9 +19,9 @@ import { NavProps } from "./Types"
 export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const router = useRouter()
   const tracking = useTracking()
-  const [isDrawerOpen, toggleDrawer] = useState(false)
   const [isLoginOpen, toggleLogin] = useState(false)
   const { userSession, signOut } = useAuthContext()
+  const { openDrawer } = useDrawerContext()
 
   const isLoggedIn = !!userSession
 
@@ -68,7 +69,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
               <>
                 <Link
                   onClick={() => {
-                    toggleDrawer(true)
+                    openDrawer("bag")
                   }}
                 >
                   <NavItem link={{ text: "Bag" }} />
@@ -98,12 +99,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
           </Flex>
         </Flex>
       </MaxWidth>
-      <Drawer
-        open={isDrawerOpen}
-        onClose={() => {
-          toggleDrawer(false)
-        }}
-      />
+      <Drawer />
       <LoginModal
         open={isLoginOpen}
         onClose={() => {

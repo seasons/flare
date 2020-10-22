@@ -1,9 +1,10 @@
 import _ from "lodash"
 import React from "react"
+
 import { color } from "../helpers/color"
 import { Color } from "../lib/theme"
 import { Schema, useTracking } from "../utils/analytics/track"
-import { Sans, Flex } from "./"
+import { Flex, Sans } from "./"
 
 interface Props {
   content: string
@@ -27,7 +28,7 @@ export const ReadMore = React.memo(({ content, maxChars, textColor, readMoreExpa
     root
   ) : (
     <Flex>
-      <Sans size="1">
+      <Sans size="3">
         {truncate({
           root,
           maxChars,

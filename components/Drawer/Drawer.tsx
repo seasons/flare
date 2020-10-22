@@ -1,8 +1,11 @@
 import { Box } from "components"
 import { Bag } from "mobile/Bag/Bag"
-import React, { useEffect, useState } from "react"
+import { Reservation, ReservationConfirmation } from "mobile/Reservation"
+import React, { useEffect } from "react"
 
 import { Drawer as MuiDrawer } from "@material-ui/core"
+
+import { useDrawerContext } from "./DrawerContext"
 
 interface DrawerProps {
   open?: boolean
@@ -10,23 +13,34 @@ interface DrawerProps {
 }
 
 export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
-  const [isOpen, setOpen] = useState(false)
+  const { isOpen, closeDrawer, openDrawer, currentView, params } = useDrawerContext()
 
   useEffect(() => {
     if (open) {
-      setOpen(open)
+      openDrawer(currentView)
     }
   }, [open])
 
   const handleClose = () => {
-    setOpen(false)
+    closeDrawer()
     onClose?.()
+  }
+
+  const view = () => {
+    switch (currentView) {
+      case "bag":
+        return <Bag />
+      case "reservation":
+        return <Reservation />
+      case "reservationConfirmation":
+        return <ReservationConfirmation route={{ params }} />
+    }
   }
 
   return (
     <MuiDrawer anchor="right" open={isOpen} onClose={handleClose} variant="temporary">
-      <Box width="380px" style={{ position: "relative" }}>
-        <Bag />
+      <Box width="380px" height="100%" style={{ position: "relative" }}>
+        {view()}
       </Box>
     </MuiDrawer>
   )

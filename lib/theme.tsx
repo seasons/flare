@@ -1,5 +1,8 @@
 import React from "react"
 import { ThemeProvider } from "styled-components"
+import { theme } from "theme/theme"
+
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core"
 
 import { fontFamily } from "../components/Typography/Typography"
 
@@ -208,9 +211,11 @@ const GridThemeProvider = ({ children }) => {
 
 export const Theme = (props) => {
   return (
-    <ThemeProvider theme={themeProps}>
-      <GridThemeProvider>{props.children}</GridThemeProvider>
-    </ThemeProvider>
+    <MuiThemeProvider theme={theme}>
+      <ThemeProvider theme={themeProps}>
+        <GridThemeProvider>{props.children}</GridThemeProvider>
+      </ThemeProvider>
+    </MuiThemeProvider>
   )
 }
 

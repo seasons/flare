@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { Schema, useTracking } from "utils/analytics"
 
-import { Modal, Popover, Radio } from "@material-ui/core"
+import { Popover, Radio } from "@material-ui/core"
 
 export interface Variant {
   sizeDisplay?: string
@@ -78,9 +78,9 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
             onSizeSelected(size)
           }}
         >
-          <Flex flexDirection="row" alignItems="center" justifyContent="space-between" flexWrap="nowrap" mr={5}>
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-between" flexWrap="nowrap" mr={2}>
             <Flex flexDirection="row" alignItems="center">
-              <Radio checked={!!selectedVariant.id && selectedVariant.id === size.id} pointerEventsNone />
+              <Radio checked={!!selectedVariant.id && selectedVariant.id === size.id} />
               <Spacer mr={1} />
               {size?.sizeDisplay && (
                 <Sans color={size?.reservable > 0 ? color("black100") : color("black50")} size="4">
@@ -88,7 +88,8 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
                 </Sans>
               )}
             </Flex>
-            <Sans color="black50" size="1">
+            <Spacer mr={5} />
+            <Sans color="black50" size="3">
               {size?.reservable > 0 ? manufacturerSize : "Unavailable"}
             </Sans>
           </Flex>
@@ -115,11 +116,15 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
 
   const open = Boolean(anchorEl)
   const id = open ? "simple-popover" : undefined
+  const text =
+    product?.type === "Top"
+      ? sizeToName(selectedVariant?.internalSize?.display)
+      : selectedVariant?.internalSize?.bottom?.value
 
   return (
     <>
       <Button variant="secondaryGray" onClick={handleClick} aria-describedby={id}>
-        {sizeToName(selectedVariant?.internalSize?.display)}
+        {text}
       </Button>
       <Popover
         id={id}

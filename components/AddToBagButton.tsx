@@ -1,7 +1,7 @@
 import { Button } from "components/Button"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { head } from "lodash"
-import { usePopUpContext } from "mobile/Navigation/PopUp/PopUpContext"
 import {
   ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG
 } from "queries/bagQueries"
@@ -11,6 +11,7 @@ import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
 
+import { useDrawerContext } from "./Drawer/DrawerContext"
 import { CheckWithBackground } from "./SVGs"
 
 interface Props {
@@ -30,8 +31,10 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { authState } = useAuthContext()
+  const { openDrawer } = useDrawerContext()
   const isUserSignedIn = authState?.isSignedIn
 
+  console.log("product slug", props.data.product?.slug)
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
     variables: {
@@ -63,10 +66,12 @@ export const AddToBagButton: React.FC<Props> = (props) => {
           buttonText: "Got It",
           secondaryButtonText: "Go to bag",
           secondaryButtonOnPress: () => {
+            openDrawer("bag")
             hidePopUp()
           },
           onClose: () => hidePopUp(),
         })
+        // openDrawer("bag")
       }
     },
     onError: (err) => {
