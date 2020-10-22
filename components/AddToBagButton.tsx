@@ -15,10 +15,10 @@ import { useDrawerContext } from "./Drawer/DrawerContext"
 import { CheckWithBackground } from "./SVGs"
 
 interface Props {
-  disabled?: Boolean
-  variantInStock: Boolean
+  disabled?: boolean
+  variantInStock: boolean
   selectedVariant: any
-  isInBag: Boolean
+  isInBag: boolean
   data: any
 }
 

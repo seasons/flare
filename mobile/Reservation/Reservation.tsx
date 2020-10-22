@@ -72,7 +72,7 @@ const GET_CUSTOMER = gql`
 const SectionHeader = ({ title }) => {
   return (
     <>
-      <Flex flexDirection="row" flex={1} width="100%">
+      <Flex flexDirection="row" width="100%">
         <Sans size="3" color="black">
           {title}
         </Sans>
@@ -135,7 +135,7 @@ export const Reservation = screenTrack()((props) => {
   return (
     <>
       <Container>
-        <Flex flex={1} px={2}>
+        <Flex px={2}>
           <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
             <Spacer mb={40} />
             <Box pb={1}>

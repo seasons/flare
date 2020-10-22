@@ -132,7 +132,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
             <Box>
               <Button
                 size="small"
-                variant="secondaryWhite"
+                variant="secondaryOutline"
                 disabled={isMutating}
                 onClick={() => {
                   // tracking.trackEvent({

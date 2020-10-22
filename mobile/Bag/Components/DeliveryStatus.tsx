@@ -26,7 +26,7 @@ export const DeliveryStatus: React.FC<{
 
   if (activeReservation.phase === "CustomerToBusiness") {
     // Package is heading back to the warehouse
-    statusColor = color("blue100")
+    statusColor = color("blue")
     trackingURL = returnedPackageTrackingURL
     if (status === "Delivered") {
       statusText = "Returned"
