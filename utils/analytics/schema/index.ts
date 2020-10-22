@@ -117,6 +117,8 @@ export enum ActionNames {
   ServiceableModalCloseButtonClicked = "Serviceable Modal close Button Clicked",
   ServiceableModalEmailButtonClicked = "Serviceable Modal email Button Clicked",
   ServiceableModalDoneButtonClicked = "Serviceable Modal done Button Clicked",
+
+  ProductAddedToBag = "Product Added to Bag",
 }
 
 /**
