@@ -93,6 +93,7 @@ export enum ActionTypes {
 /**
  * Action event discriptors / names
  */
+
 export enum ActionNames {
   ReadMoreTapped = "Read more tapped",
   // Nav
@@ -107,15 +108,30 @@ export enum ActionNames {
   // Browse
   ProductPageNumberChanged = "Product Page Number Changed",
   // Forms
-
-  ServiceableModalZipCodeButtonClicked = "Serviceable Modal Zip Code Button Clicked",
-  ServiceableModalEmailButtonClicked = "Serviceable Modal Email Button Clicked",
-  ServiceableModalDoneButtonClicked = "Serviceable Modal Done Button Clicked",
-  ServiceableModalCloseButtonClicked = "Serviceable Modal Close Button Clicked",
-
-  CreateAccountClicked = "Create Account Clicked",
+  // Create Account
+  CreateAccountClicked = "Create Account Button Clicked",
   AccountTriaged = "Account Triaged",
-  PlanSelectedButtonClicked = "PlanSelected Button Clicked"
+  PlanSelectedButtonClicked = "Plan Selected Button Clicked",
+
+  // Serviceable Modal
+  ServiceableModalZipCodeButtonClicked = "Serviceable Modal zipcode Button Clicked",
+  ServiceableModalCloseButtonClicked = "Serviceable Modal close Button Clicked",
+  ServiceableModalEmailButtonClicked = "Serviceable Modal email Button Clicked",
+  ServiceableModalDoneButtonClicked = "Serviceable Modal done Button Clicked",
+
+  ProductAddedToBag = "Product Added to Bag",
+  PlaceOrderTapped = "Place Order Tapped",
+
+  ReservationConfirmationDoneButtonTapped = "Reservation Confirmation Done Button Clicked",
+  ProductTapped = "Product Tapped",
+  ReserveButtonTapped = "Reserve Button Tapped",
+  BagTabTapped = "Bag Tab Tapped",
+  SavedTabTapped = "Saved Tab Tapped",
+  ReservationHistoryTabTapped = "Reservation History Tab Tapped",
+  FAQButtonTapped = "FAQButtonTapped",
+  ProductVariantSelected = "ProductVariantSelected",
+  SavedItemAddedToBag = "SavedItemAddedToBag",
+  BagItemRemoved = "BagItemRemoved",
 }
 
 /**

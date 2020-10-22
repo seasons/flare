@@ -1,17 +1,29 @@
+import { Drawer } from "components/Drawer/Drawer"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { LoginModal } from "components/Login/LoginModal"
+import { color } from "helpers/color"
+import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import styled from "styled-components"
-import { color } from "../../helpers/color"
+import { Schema, useTracking } from "utils/analytics"
+
+import { MaxWidth } from "../"
+import { Box } from "../Box"
 import { Flex } from "../Flex"
-import { NavProps } from "./Types"
-import { SeasonsLogo } from "./SeasonsLogo"
 import { NavItem } from "./NavItem"
-import { useTracking, Schema } from "../../utils/analytics"
-import { MaxWidth } from ".."
+import { SeasonsLogo } from "./SeasonsLogo"
+import { NavProps } from "./Types"
 
 export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const router = useRouter()
   const tracking = useTracking()
+  const [isLoginOpen, toggleLogin] = useState(false)
+  const { userSession, signOut } = useAuthContext()
+  const { openDrawer } = useDrawerContext()
+
+  const isLoggedIn = !!userSession
 
   const trackClick = (url) => {
     tracking.trackEvent({
@@ -53,9 +65,47 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                 )
               }
             })}
+            {isLoggedIn ? (
+              <>
+                <Link
+                  onClick={() => {
+                    openDrawer("bag")
+                  }}
+                >
+                  <NavItem link={{ text: "Bag" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    signOut()
+                  }}
+                >
+                  <NavItem link={{ text: "Log out" }} />
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/signup" active={!!router.pathname.match("/signup")}>
+                  <NavItem link={{ text: "Sign Up" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    toggleLogin(true)
+                  }}
+                >
+                  <NavItem link={{ text: "Log In" }} />
+                </Link>
+              </>
+            )}
           </Flex>
         </Flex>
       </MaxWidth>
+      <Drawer />
+      <LoginModal
+        open={isLoginOpen}
+        onClose={() => {
+          toggleLogin(false)
+        }}
+      />
     </HeaderContainer>
   )
 }

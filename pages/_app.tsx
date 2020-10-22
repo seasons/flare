@@ -1,5 +1,6 @@
 import "../public/css/app.css"
 
+import { AuthProvider } from "lib/auth/AuthProvider"
 import React from "react"
 import { BaseCSS } from "styled-bootstrap-grid"
 
@@ -10,28 +11,32 @@ import { useApollo } from "../lib/apollo"
 import { FontStyles } from "../lib/fonts"
 import { Theme } from "../lib/theme"
 
-export default function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)
 
   return (
-    <ApolloProvider client={apolloClient}>
-      <FontStyles />
-      <BaseCSS />
-      <style type="text/css">{createMediaStyle()}</style>
+    <AuthProvider apolloClient={apolloClient}>
+      <ApolloProvider client={apolloClient}>
+        <FontStyles />
+        <BaseCSS />
+        <style type="text/css">{createMediaStyle()}</style>
 
-      <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
-      <link href="/css/components.css" rel="stylesheet" type="text/css" />
-      <link href="/css/fonts.css" rel="stylesheet" type="text/css" />
-      <link href="/css/seasons-4d21cb.css" rel="stylesheet" type="text/css" />
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/components.css" rel="stylesheet" type="text/css" />
+        <link href="/css/fonts.css" rel="stylesheet" type="text/css" />
+        <link href="/css/seasons-4d21cb.css" rel="stylesheet" type="text/css" />
 
-      <link href="/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
-      <link href="/images/webclip.png" rel="apple-touch-icon" />
+        <link href="/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
+        <link href="/images/webclip.png" rel="apple-touch-icon" />
 
-      <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <script src="https://js.chargebee.com/v2/chargebee.js" />
-      <Theme>
-        <Component {...pageProps} />
-      </Theme>
-    </ApolloProvider>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <script src="https://js.chargebee.com/v2/chargebee.js" />
+        <Theme>
+          <Component {...pageProps} />
+        </Theme>
+      </ApolloProvider>
+    </AuthProvider>
   )
 }
+
+export default App
