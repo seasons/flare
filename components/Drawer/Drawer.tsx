@@ -25,7 +25,7 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
 
   return (
     <MuiDrawer anchor="right" open={isOpen} onClose={handleClose} variant="temporary">
-      <Box width="380px">
+      <Box width="380px" style={{ position: "relative" }}>
         <Bag />
       </Box>
     </MuiDrawer>

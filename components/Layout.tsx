@@ -1,6 +1,6 @@
 import { Theme } from "../lib/theme"
 import { Box } from "./Box"
-import { Drawer } from "./Drawer"
+import { Drawer } from "./Drawer/Drawer"
 import { Footer } from "./Footer"
 import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
