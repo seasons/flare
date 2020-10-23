@@ -1,8 +1,9 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
 import {
-  CustomerMeasurementsForm,
-  customerMeasurementsValidationSchema,
+  CreateAccountForm, createAccountValidationSchema
+} from "components/Forms/CreateAccountForm"
+import {
+  CustomerMeasurementsForm, customerMeasurementsValidationSchema
 } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
@@ -279,7 +280,7 @@ const SignUpPage = screenTrack(() => ({
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-          {hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
+          {!(typeof window === "undefined") && hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
         </Flex>
       </MaxWidth>
     </Layout>
