@@ -1,12 +1,10 @@
 import { uniq } from "lodash"
 import React from "react"
 import styled from "styled-components"
-
 import { Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
 import { Box } from "../Box"
 import { Col, Grid, Row } from "../Grid"
-import { Link } from "../Link"
 import { Media } from "../Responsive"
 import { Check } from "../SVGs"
 import { Display } from "../Typography"

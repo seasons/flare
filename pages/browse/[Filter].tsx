@@ -1,24 +1,23 @@
-import React, { useEffect, useMemo } from "react"
-import { NextPage } from "next"
-import { useState } from "react"
 import { useQuery } from "@apollo/client"
-import { Layout, Flex, Spacer } from "../../components"
-import { Sans, fontFamily } from "../../components/Typography/Typography"
-import { Box } from "../../components/Box"
-import { Grid, Row, Col } from "../../components/Grid"
-import styled, { CSSObject } from "styled-components"
-import Paginate from "react-paginate"
-import { color } from "../../helpers"
+import { NextPage } from "next"
 import { useRouter } from "next/router"
+import React, { useEffect, useMemo, useState } from "react"
+import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
+import styled, { CSSObject } from "styled-components"
+import { Flex, Layout, Spacer } from "../../components"
+import { Box } from "../../components/Box"
+import { BrowseFilters } from "../../components/Browse"
+import { MobileFilters } from "../../components/Browse/MobileFilters"
+import { Col, Grid, Row } from "../../components/Grid"
+import { BRAND_LIST } from "../../components/Homepage/Brands"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
 import { Media } from "../../components/Responsive"
-import { MobileFilters } from "../../components/Browse/MobileFilters"
-import { BrowseFilters } from "../../components/Browse"
-import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { BRAND_LIST } from "../../components/Homepage/Brands"
+import { fontFamily, Sans } from "../../components/Typography/Typography"
+import { color } from "../../helpers"
 import { initializeApollo } from "../../lib/apollo"
-import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
+import { GET_BROWSE_BRANDS_AND_CATEGORIES, GET_BROWSE_PRODUCTS, GET_CATEGORIES } from "../../queries/brandQueries"
+import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 
 const pageSize = 20
 
@@ -28,6 +27,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 }))(() => {
   const tracking = useTracking()
   const router = useRouter()
+  console.log(router)
 
   const filter = router.query?.Filter || "all+all"
 

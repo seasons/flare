@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client"
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
 import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
 import {
@@ -12,10 +13,9 @@ import { TriageStep } from "components/SignUp/TriageStep"
 import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
 import { DateTime } from "luxon"
+import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-
-import { useMutation } from "@apollo/client"
 
 const SIGN_UP_USER = gql`
   mutation SignupUser(
@@ -55,9 +55,11 @@ const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
+  const router = useRouter()
   const tracking = useTracking()
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
+  console.log(router.query.id)
 
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
@@ -285,5 +287,9 @@ const SignUpPage = screenTrack(() => ({
     </Layout>
   )
 })
+
+SignUpPage.getInitialProps = async ({ query }) => {
+  return query
+}
 
 export default SignUpPage
