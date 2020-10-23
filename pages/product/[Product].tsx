@@ -34,9 +34,7 @@ const Product = screenTrack(({ router }) => {
     },
   })
 
-  console.log(data)
-
-  const product = data && data.product
+  const product = data && data?.product
 
   const [selectedVariant, setSelectedVariant] = useState(
     product?.variants?.[0] || {
