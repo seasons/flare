@@ -38,7 +38,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
     variables: {
       id: selectedVariant.id,
-      productID: props.data.product?.id,
+      productID: props.data?.product?.id,
       variantID: selectedVariant.id,
     },
     awaitRefetchQueries: true,
@@ -48,7 +48,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       },
       {
         query: GET_PRODUCT,
-        variables: { slug: props.data.product?.slug },
+        variables: { slug: props.data?.product?.slug },
       },
     ],
     onCompleted: (res) => {
@@ -69,7 +69,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
           },
           onClose: () => hidePopUp(),
         })
-        // openDrawer("bag")
+        openDrawer("bag")
       }
     },
     onError: (err) => {
