@@ -26,6 +26,7 @@ export const HowItWorks = () => {
         How it works
       </Sans>
       <Spacer mb={5} />
+      
       {HOW_IT_WORKS_TEXT.map((item, index) => {
         return (
           <Box key={index}>
