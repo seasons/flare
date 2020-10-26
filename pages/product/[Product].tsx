@@ -1,6 +1,5 @@
 import { Box, Flex, Layout, Spacer } from "components"
 import { AddToBagButton } from "components/AddToBagButton"
-import { Button } from "components/Button"
 import { Carousel } from "components/Carousel"
 import { Col, Grid, Row } from "components/Grid"
 import { ProgressiveImage } from "components/Image"

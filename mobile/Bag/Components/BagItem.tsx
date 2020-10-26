@@ -1,9 +1,9 @@
 import { Box, Button, Flex, Sans, Spacer } from "components"
 import { Spinner } from "components/Spinner"
-import gql from "graphql-tag"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { get, head } from "lodash"
+import { useRouter } from "next/router"
 import { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
@@ -22,6 +22,7 @@ interface BagItemProps {
 }
 
 export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFromBag, removeFromBagAndSaveItem }) => {
+  const router = useRouter()
   const { authState } = useAuthContext()
   const [isMutating, setIsMutating] = useState(false)
   const tracking = useTracking()
@@ -99,13 +100,13 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
                 onPress={() => {
                   if (!isMutating) {
                     setIsMutating(true)
-                    // tracking.trackEvent({
-                    //   actionName: Schema.ActionNames.BagItemSaved,
-                    //   actionType: Schema.ActionTypes.Tap,
-                    //   productSlug: product.slug,
-                    //   productId: product.id,
-                    //   variantId: variantId,
-                    // })
+                    tracking.trackEvent({
+                      actionName: Schema.ActionNames.BagItemSaved,
+                      actionType: Schema.ActionTypes.Tap,
+                      productSlug: product.slug,
+                      productId: product.id,
+                      variantId: variantId,
+                    })
                     removeFromBagAndSaveItem({
                       variables: {
                         id: variantId,
@@ -135,13 +136,13 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
                 variant="secondaryOutline"
                 disabled={isMutating}
                 onClick={() => {
-                  // tracking.trackEvent({
-                  //   actionName: Schema.ActionNames.BagItemRemoved,
-                  //   actionType: Schema.ActionTypes.Tap,
-                  //   productSlug: product.slug,
-                  //   productId: product.id,
-                  //   variantId: variantId,
-                  // })
+                  tracking.trackEvent({
+                    actionName: Schema.ActionNames.BagItemRemoved,
+                    actionType: Schema.ActionTypes.Tap,
+                    productSlug: product.slug,
+                    productId: product.id,
+                    variantId: variantId,
+                  })
                   if (!authState.isSignedIn) {
                     removeFromLocalBag()
                   } else {
@@ -186,13 +187,13 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
     <Box key={product.id}>
       <TouchableWithoutFeedback
         onPress={() => {
-          // tracking.trackEvent({
-          //   actionName: Schema.ActionNames.ProductTapped,
-          //   actionType: Schema.ActionTypes.Tap,
-          //   productSlug: product.slug,
-          //   productId: product.id,
-          // })
-          // navigation?.navigate("Product", { id: product.id, slug: product.slug })
+          tracking.trackEvent({
+            actionName: Schema.ActionNames.ProductTapped,
+            actionType: Schema.ActionTypes.Tap,
+            productSlug: product.slug,
+            productId: product.id,
+          })
+          router.push(`/product/${product.slug}`)
         }}
       >
         <Box style={shadowStyles}>

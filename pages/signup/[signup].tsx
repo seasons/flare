@@ -12,6 +12,7 @@ import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
@@ -57,6 +58,7 @@ const SignUpPage = screenTrack(() => ({
   path: "/signup",
 }))(() => {
   const tracking = useTracking()
+  const { userSession, signIn, signOut } = useAuthContext()
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
 
@@ -69,7 +71,7 @@ const SignUpPage = screenTrack(() => ({
   const [userIsConfirmed, setUserIsConfirmed] = useState(false)
 
   useEffect(() => {
-    setUserHasAccount(!!localStorage.getItem("email"))
+    setUserHasAccount(!!userSession)
     setIsWaitlisted(localStorage.getItem("isWaitlisted") === "true")
     setUserIsConfirmed(!!localStorage.getItem("isWaitlisted"))
     setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
@@ -113,10 +115,7 @@ const SignUpPage = screenTrack(() => ({
       validationSchema={createAccountValidationSchema}
       onSubmit={async (values, actions) => {
         try {
-          // Remove email token so that it doesn't get sent and triggers a JWT error
-          // when creating a new account
-          localStorage?.removeItem("email")
-          localStorage?.removeItem("token")
+          signOut()
 
           const date = new Date(values.dob)
           const dateToIso = DateTime.fromJSDate(date).toISO()
@@ -145,8 +144,7 @@ const SignUpPage = screenTrack(() => ({
           })
 
           if (response) {
-            localStorage?.setItem("email", values.email)
-            localStorage?.setItem("token", response.data.signup.token)
+            signIn(response.data.signup)
             actions.setSubmitting(false)
 
             return true

@@ -89,7 +89,6 @@ export enum ActionTypes {
   Fail = "Fail",
   Success = "Success",
 }
-
 /**
  * Action event discriptors / names
  */
@@ -128,10 +127,11 @@ export enum ActionNames {
   BagTabTapped = "Bag Tab Tapped",
   SavedTabTapped = "Saved Tab Tapped",
   ReservationHistoryTabTapped = "Reservation History Tab Tapped",
-  FAQButtonTapped = "FAQButtonTapped",
-  ProductVariantSelected = "ProductVariantSelected",
-  SavedItemAddedToBag = "SavedItemAddedToBag",
-  BagItemRemoved = "BagItemRemoved",
+  FAQButtonTapped = "FAQ Button Tapped",
+  ProductVariantSelected = "Product Variant Selected",
+  SavedItemAddedToBag = "Saved Item Added To Bag",
+  BagItemRemoved = "Bag Item Removed",
+  BagItemSaved = "Bag Item Saved"
 }
 
 /**
