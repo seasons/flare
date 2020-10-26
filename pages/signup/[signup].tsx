@@ -12,6 +12,7 @@ import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
@@ -24,11 +25,32 @@ const SIGN_UP_USER = gql`
     $firstName: String!
     $lastName: String!
     $details: CustomerDetailCreateInput!
+    $referrerId: String
   ) {
-    signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName, details: $details) {
+    signup(
+      email: $email
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      details: $details
+      referrerId: $referrerId
+    ) {
+      expiresIn
+      refreshToken
       token
       user {
         id
+        email
+        firstName
+        lastName
+        beamsToken
+        roles
+      }
+      coupon {
+        id
+        amount
+        percentage
+        type
       }
     }
   }
@@ -59,7 +81,8 @@ const SignUpPage = screenTrack(() => ({
   const tracking = useTracking()
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
-  console.log(router.query.id)
+  const { signIn } = useAuthContext()
+  console.log(router.query.referrer_id)
 
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
@@ -137,6 +160,7 @@ const SignUpPage = screenTrack(() => ({
                   create: { zipCode: values.zipCode },
                 },
               },
+              referrerId: router.query.referrer_id,
             },
           })
 
@@ -146,8 +170,10 @@ const SignUpPage = screenTrack(() => ({
           })
 
           if (response) {
+            signIn(response.data.signup)
             localStorage?.setItem("email", values.email)
             localStorage?.setItem("token", response.data.signup.token)
+            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.coupon))
             actions.setSubmitting(false)
 
             return true
