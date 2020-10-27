@@ -138,35 +138,37 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
                   )}
                 </Flex>
               </Box>
-              <Button
-                onClick={() => {
-                  setIsMutating(true)
-                  tracking.trackEvent({
-                    actionName: Schema.ActionNames.BagItemRemoved,
-                    actionType: Schema.ActionTypes.Tap,
-                    productSlug: product.slug,
-                    productId: product.id,
-                    variantId: variantToUse.id,
-                  })
-                  removeItemFromBag({
-                    variables: {
-                      id: variantToUse.id,
-                      saved: true,
-                    },
-                    refetchQueries: [
-                      {
-                        query: GET_BAG,
+              <Box>
+                <Button
+                  onClick={() => {
+                    setIsMutating(true)
+                    tracking.trackEvent({
+                      actionName: Schema.ActionNames.BagItemRemoved,
+                      actionType: Schema.ActionTypes.Tap,
+                      productSlug: product.slug,
+                      productId: product.id,
+                      variantId: variantToUse.id,
+                    })
+                    removeItemFromBag({
+                      variables: {
+                        id: variantToUse.id,
+                        saved: true,
                       },
-                    ],
-                  })
-                }}
-                variant="secondaryOutline"
-                size="small"
-                disabled={isMutating || addingToBag}
-                loading={isMutating}
-              >
-                Remove
-              </Button>
+                      refetchQueries: [
+                        {
+                          query: GET_BAG,
+                        },
+                      ],
+                    })
+                  }}
+                  variant="secondaryOutline"
+                  size="small"
+                  disabled={isMutating || addingToBag}
+                  loading={isMutating}
+                >
+                  Remove
+                </Button>
+              </Box>
             </Flex>
             <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
               {!!imageURL && (
@@ -203,7 +205,7 @@ const BagItemContainer = styled(Box)`
   overflow: hidden;
 `
 
-const ColoredDot = styled(Box)<{reservable?: boolean}>`
+const ColoredDot = styled(Box)<{ reservable?: boolean }>`
   height: 10px;
   width: 10px;
   background-color: ${(p) => (!!p.reservable ? color("green") : color("black50"))};

@@ -9,13 +9,20 @@ export const BagEmptyState: React.FC<{ currentView: BagView }> = ({ currentView 
   const text =
     currentView === BagView.Saved ? "You haven’t saved any items." : "You haven't placed any reservations yet."
   return (
-    <Flex 
-      style={{ height: "100%" }}       
+    <Flex
+      style={{ height: "100%", width: "100%" }}
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      height="100%">
-      <Flex style={{ flex: 1, height: "100%" }} justifyContent="center" alignItems="center" flexDirection="row" height="100%">
+      height="100%"
+    >
+      <Flex
+        style={{ flex: 1, height: "100%" }}
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="row"
+        height="100%"
+      >
         <Box>
           <Sans size="4" style={{ textAlign: "center" }}>
             {title}

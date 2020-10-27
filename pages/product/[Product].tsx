@@ -34,7 +34,6 @@ const Product = screenTrack(({ router }) => {
   })
 
   const product = data && data?.product
-
   const [selectedVariant, setSelectedVariant] = useState(
     product?.variants?.[0] || {
       id: "",
@@ -49,6 +48,9 @@ const Product = screenTrack(({ router }) => {
   useEffect(() => {
     refetch()
   }, [authState.isSignedIn])
+
+  const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
+  const isInBag = updatedVariant.isInBag
 
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
@@ -110,7 +112,7 @@ const Product = screenTrack(({ router }) => {
                     selectedVariant={selectedVariant}
                     data={data}
                     variantInStock={true}
-                    isInBag={selectedVariant.isInBag}
+                    isInBag={isInBag}
                   />
                 </Flex>
                 <HowItWorks />

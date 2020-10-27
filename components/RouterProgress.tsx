@@ -64,8 +64,8 @@ export class RouterProgress extends React.Component<RouterProgressProps> {
           display: "block";
           position: fixed;
           z-index: 1031;
-          top: 15px;
-          right: 15px;
+          bottom: 15px;
+          left: 15px;
         }
         #nprogress .spinner-icon {
           width: 18px;

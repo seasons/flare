@@ -6,7 +6,7 @@ import {
   ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG
 } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
@@ -20,6 +20,7 @@ interface Props {
   selectedVariant: any
   isInBag: boolean
   data: any
+  onAdded?: (added: boolean) => void
 }
 
 const DEFAULT_ITEM_COUNT = 3
@@ -27,12 +28,16 @@ const DEFAULT_ITEM_COUNT = 3
 export const AddToBagButton: React.FC<Props> = (props) => {
   const [isMutating, setIsMutating] = useState(false)
   const [added, setAdded] = useState(false)
-  const { variantInStock, selectedVariant, data } = props
+  const { variantInStock, selectedVariant, data, onAdded } = props
   const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { authState } = useAuthContext()
   const { openDrawer } = useDrawerContext()
   const isUserSignedIn = authState?.isSignedIn
+
+  useEffect(() => {
+    setAdded(props.isInBag)
+  }, [props.isInBag])
 
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
@@ -54,6 +59,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     onCompleted: (res) => {
       setIsMutating(false)
       setAdded(true)
+      onAdded?.(true)
       const itemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
       const bagItemCount = authState?.isSignedIn ? data?.me?.bag?.length : res.addOrRemoveFromLocalBag.length
       if (itemCount && bagItemCount && bagItemCount >= itemCount) {
@@ -74,6 +80,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     },
     onError: (err) => {
       setIsMutating(false)
+      console.log("AddToBagButton: Error", err)
       if (err && err.graphQLErrors) {
         showPopUp({
           title: "Your bag is full",
@@ -93,7 +100,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   }
 
   const isInBag = isUserSignedIn
-    ? props?.isInBag || added
+    ? added
     : !!localItems?.localBagItems?.find((item) => item.variantID === selectedVariant.id) || false
   const disabled = !!props.disabled || isInBag || !variantInStock || isMutating
 
