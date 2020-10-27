@@ -53,7 +53,7 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
     setSizeData(variantData)
 
     // Update size data
-    if (variantData?.length) {
+    if (variantData?.length && !selectedVariant) {
       const firstAvailableSize =
         find(variantData, (size) => size.isInBag) ||
         find(variantData, (size) => size.reservable > 0) ||
@@ -103,7 +103,6 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
 }
 
 export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelected, product }) => {
-  const [showModal, toggleModal] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null)
 
   const handleClick = (event) => {
@@ -143,7 +142,10 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
         <VariantList
           selectedVariant={selectedVariant}
           setSelectedVariant={setSelectedVariant}
-          onSizeSelected={onSizeSelected}
+          onSizeSelected={() => {
+            handleClose()
+            onSizeSelected()
+          }}
           product={product}
         />
       </Popover>

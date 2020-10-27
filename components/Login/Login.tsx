@@ -34,7 +34,10 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
   const [login] = useMutation(LOG_IN, {
     onError: (err) => {
       console.error(err)
-      setError(err.message)
+
+      if (err.message.includes("invalid_grant")) {
+        setError("Wrong email or password")
+      }
     },
   })
 

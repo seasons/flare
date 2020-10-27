@@ -294,7 +294,7 @@ export const Bag = screenTrack()((props) => {
       <FlatList
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         data={sections}
-        contentContainerStyle={pauseStatus === "paused" ? { height: "100%", width: "100%", position: "relative" } : {}}
+        contentContainerStyle={{ height: "100%", width: "100%", position: "relative" }}
         keyExtractor={(item, index) => String(index) + item.id + String(currentView)}
         renderItem={(item) => {
           return renderItem(item)

@@ -10,7 +10,6 @@ import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
 import { MaxWidth } from "../"
-import { Box } from "../Box"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
