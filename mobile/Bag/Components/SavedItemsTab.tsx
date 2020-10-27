@@ -12,7 +12,7 @@ export const SavedItemsTab: React.FC<{ items; deleteBagItem; hasActiveReservatio
   bagIsFull,
 }) => {
   return (
-    <Box>
+    <Box style={{ height: "100%" }}>
       {items?.length ? (
         items.map((bagItem, index) => {
           return (
