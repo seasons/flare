@@ -5,12 +5,13 @@ import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
 import { MaxWidth } from "../"
 import { Flex } from "../Flex"
+import { MenuNavItem } from "./MenuNavItem"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
@@ -64,23 +65,33 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                 )
               }
             })}
+
             {isLoggedIn ? (
-              <>
-                <Link
-                  onClick={() => {
-                    openDrawer("bag")
-                  }}
-                >
-                  <NavItem link={{ text: "Bag" }} />
-                </Link>
-                <Link
-                  onClick={() => {
-                    signOut()
-                  }}
-                >
-                  <NavItem link={{ text: "Log out" }} />
-                </Link>
-              </>
+              <Link onClick={() => {}}>
+                <MenuNavItem
+                  link={{ text: "Account" }}
+                  isMenu
+                  menu={[
+                    {
+                      text: "Bag",
+                      onClick: () => {
+                        openDrawer("bag")
+                      },
+                    },
+                    {
+                      text: "Settings",
+                      onClick: () => {},
+                    },
+                    {
+                      separator: true,
+                      text: "Log out",
+                      onClick: () => {
+                        signOut()
+                      },
+                    },
+                  ]}
+                />
+              </Link>
             ) : (
               <>
                 <Link href="/signup" active={!!router.pathname.match("/signup")}>
