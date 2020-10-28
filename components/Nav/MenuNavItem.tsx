@@ -71,12 +71,10 @@ export const MenuNavItem = ({ link, isMenu = false, menu = [] }) => {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    {menu.map((item) => (
-                      <>
-                        {item.separator && <Separator />}
-                        <MenuItem onClick={item.onClick}>{item.text}</MenuItem>
-                      </>
-                    ))}
+                    {menu.map((item) => [
+                      item.separator && <Separator />,
+                      <MenuItem onClick={item.onClick}>{item.text}</MenuItem>,
+                    ])}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
