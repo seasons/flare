@@ -67,7 +67,7 @@ export enum PageNames {
   AboutPage = "About",
   PrivacyPolicy = "PrivacyPolicy",
   TermsOfService = "TermsOfService",
-  App = "App"
+  App = "App",
 }
 
 export enum EntityTypes {
@@ -92,7 +92,6 @@ export enum ActionTypes {
 /**
  * Action event discriptors / names
  */
-
 export enum ActionNames {
   ReadMoreTapped = "Read more tapped",
   // Nav
@@ -131,7 +130,16 @@ export enum ActionNames {
   ProductVariantSelected = "Product Variant Selected",
   SavedItemAddedToBag = "Saved Item Added To Bag",
   BagItemRemoved = "Bag Item Removed",
-  BagItemSaved = "Bag Item Saved"
+  BagItemSaved = "Bag Item Saved",
+  MembershipInfoTapped = "MembershipInfoTapped",
+  PersonalPreferencesTapped = "PersonalPreferencesTapped",
+  PaymentAndShippingTapped = "PaymentAndShippingTapped",
+  FAQTapped = "FAQTapped",
+  SupportTapped = "SupportTapped",
+  PrivacyPolicyTapped = "PrivacyPolicyTapped",
+  TermsOfServiceTapped = "TermsOfServiceTapped",
+  LogOutTapped = "LogOutTapped",
+  ChoosePlanTapped = "ChoosePlanTapped",
 }
 
 /**
