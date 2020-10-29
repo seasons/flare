@@ -44,22 +44,22 @@ export const MenuNavItem = ({ link, isMenu = false, menu = [] }) => {
   return (
     <>
       <Wrapper ml={3} height="100%" style={{ cursor: "pointer", position: "relative" }}>
-        <Sans size="3" color="black" style={{ lineHeight: "inherit" }}>
-          <div
-            ref={anchorRef}
-            aria-controls={open ? "menu-list-grow" : undefined}
-            aria-haspopup="true"
-            onClick={handleToggle}
-            style={{ display: "flex", alignItems: "center" }}
-          >
+        <div
+          ref={anchorRef}
+          aria-controls={open ? "menu-list-grow" : undefined}
+          aria-haspopup="true"
+          onClick={handleToggle}
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          <Sans size="3" color="black" style={{ lineHeight: "inherit" }}>
             <span>{link.text}</span>
-            {isMenu && (
-              <span style={{ lineHeight: "50px", marginLeft: "15px" }}>
-                <ExpandMoreIcon />
-              </span>
-            )}
-          </div>
-        </Sans>
+          </Sans>
+          {isMenu && (
+            <span style={{ marginLeft: "5px", marginTop: "-28px", height: "20px" }}>
+              <ExpandMoreIcon />
+            </span>
+          )}
+        </div>
       </Wrapper>
       {menu && (
         <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
@@ -93,4 +93,9 @@ const Wrapper = styled(Box)`
       display: block;
     }
   }
+`
+
+const IconContainer = styled.div`
+  height: 20px;
+  margin-top: -28px;
 `

@@ -80,7 +80,9 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                     },
                     {
                       text: "Settings",
-                      onClick: () => {},
+                      onClick: () => {
+                        openDrawer("profile")
+                      },
                     },
                     {
                       separator: true,
