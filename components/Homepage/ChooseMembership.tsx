@@ -49,7 +49,7 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
           return price - discountAmount
         case "Percentage":
           return price - (price * discountPercentage) / 100.0
-        case undefined:
+        default:
           return price
       }
     } catch (e) {

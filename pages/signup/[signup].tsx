@@ -82,7 +82,6 @@ const SignUpPage = screenTrack(() => ({
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
   const { signIn } = useAuthContext()
-  console.log(router.query.referrer_id)
 
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
