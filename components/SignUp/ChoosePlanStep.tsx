@@ -1,10 +1,9 @@
+import { useQuery } from "@apollo/client"
 import { Box, Sans, Spacer } from "components"
 import { ChooseMembership } from "components/Homepage"
 import gql from "graphql-tag"
 import { apolloClient } from "lib/apollo"
 import React, { useEffect } from "react"
-
-import { useQuery } from "@apollo/client"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -28,8 +27,8 @@ interface ChoosePlanStepProps {
 }
 
 const GET_CHARGEBEE_CHECKOUT = gql`
-  query getChargebeeCheckout($planID: String!, $email: String) {
-    chargebeeCheckout(planID: $planID, email: $email) {
+  query getChargebeeCheckout($planID: String!, $email: String, $couponID: String) {
+    chargebeeCheckout(planID: $planID, email: $email, couponID: $couponID) {
       id
       type
       url
@@ -42,6 +41,13 @@ const GET_CHARGEBEE_CHECKOUT = gql`
 `
 
 export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
+  let coupon
+  try {
+    const couponData = localStorage?.getItem("coupon")
+    coupon = JSON.parse(couponData)
+  } catch (e) {
+    // Fail silently
+  }
   // Set up the mutation
   return new Promise((resolve, reject) => {
     apolloClient
@@ -50,6 +56,7 @@ export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
         variables: {
           planID,
           email: localStorage.getItem("email"),
+          couponID: coupon?.id,
         },
       })
       .then((resp) => {

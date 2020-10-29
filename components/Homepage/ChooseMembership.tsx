@@ -1,12 +1,10 @@
 import { uniq } from "lodash"
 import React from "react"
 import styled from "styled-components"
-
 import { Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
 import { Box } from "../Box"
 import { Col, Grid, Row } from "../Grid"
-import { Link } from "../Link"
 import { Media } from "../Responsive"
 import { Check } from "../SVGs"
 import { Display } from "../Typography"
@@ -41,6 +39,63 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
 }
 
 const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
+  const calcFinalPrice = (price: number) => {
+    const couponData = localStorage?.getItem("coupon")
+    try {
+      const coupon = JSON.parse(couponData)
+      const { amount: discountAmount, percentage: discountPercentage, type: couponType } = coupon
+      switch (couponType) {
+        case "FixedAmount":
+          return price - discountAmount
+        case "Percentage":
+          return price - (price * discountPercentage) / 100.0
+        default:
+          return price
+      }
+    } catch (e) {
+      return price
+    }
+  }
+  const PriceText = ({ originalPrice, finalPrice }) => {
+    originalPrice /= 100
+    finalPrice /= 100
+    const isDiscounted = originalPrice !== finalPrice && !!finalPrice
+    return isDiscounted ? (
+      <Sans color="black50" size="3">
+        <span
+          style={{
+            fontSize: "20px",
+            color: `${color("black50")}`,
+            textDecorationLine: "line-through",
+            textDecorationStyle: "solid",
+          }}
+        >
+          ${originalPrice}
+        </span>{" "}
+        <span
+          style={{
+            fontSize: "20px",
+            color: `${color("black100")}`,
+          }}
+        >
+          ${finalPrice}
+        </span>{" "}
+        / month
+      </Sans>
+    ) : (
+      <Sans color="black50" size="3">
+        <span
+          style={{
+            fontSize: "20px",
+            color: `${color("black100")}`,
+          }}
+        >
+          ${originalPrice}
+        </span>{" "}
+        / month
+      </Sans>
+    )
+  }
   return (
     <>
       <Display size="9">{tier === "AllAccess" ? "All Access" : tier}</Display>
@@ -85,9 +140,7 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
                 <Separator />
                 <Spacer mb="60px" />
                 <Box p={2}>
-                  <Sans color="black50" size="3">
-                    <span style={{ fontSize: "20px", color: `${color("black100")}` }}>${plan.price / 100}</span> / month
-                  </Sans>
+                  <PriceText finalPrice={calcFinalPrice(plan.price)} originalPrice={plan.price} />
                 </Box>
               </PlanWrapper>
             )
