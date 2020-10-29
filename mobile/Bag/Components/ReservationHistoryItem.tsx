@@ -13,7 +13,7 @@ export const ReservationHistoryItem = ({ item }) => {
   return (
     <Box px={2}>
       <Spacer mb={2} />
-      <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap" flex={1}>
+      <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
         {item?.reservationNumber && <Sans size="4">{`Order #${item.reservationNumber}`}</Sans>}
         {item?.status && <Sans size="4">{item.status}</Sans>}
       </Flex>
@@ -36,7 +36,7 @@ export const ReservationHistoryItem = ({ item }) => {
               <Box>
                 <Image
                   source={{ uri: imageURL }}
-                  style={{ background: color("black04"), height: imageWidth * aspectRatio, width: imageWidth }}
+                  style={{ backgroundColor: color("black04"), height: imageWidth * aspectRatio, width: imageWidth }}
                 />
                 <Spacer mb={0.5} />
                 {!!brandName && <Sans size="3">{brandName}</Sans>}

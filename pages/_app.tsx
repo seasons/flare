@@ -1,5 +1,6 @@
 import "../public/css/app.css"
 
+import { RouterProgress } from "components/RouterProgress"
 import { AuthProvider } from "lib/auth/AuthProvider"
 import React from "react"
 import { BaseCSS } from "styled-bootstrap-grid"
@@ -19,6 +20,7 @@ function App({ Component, pageProps }) {
       <ApolloProvider client={apolloClient}>
         <FontStyles />
         <BaseCSS />
+        <RouterProgress />
         <style type="text/css">{createMediaStyle()}</style>
 
         <link href="/css/normalize.css" rel="stylesheet" type="text/css" />

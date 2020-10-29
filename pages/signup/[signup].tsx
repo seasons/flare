@@ -1,9 +1,10 @@
 import { useMutation } from "@apollo/client"
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
 import {
-  CustomerMeasurementsForm,
-  customerMeasurementsValidationSchema,
+  CreateAccountForm, createAccountValidationSchema
+} from "components/Forms/CreateAccountForm"
+import {
+  CustomerMeasurementsForm, customerMeasurementsValidationSchema
 } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
@@ -79,6 +80,7 @@ const SignUpPage = screenTrack(() => ({
 }))(() => {
   const router = useRouter()
   const tracking = useTracking()
+  const { userSession, signIn, signOut } = useAuthContext()
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
   const { signIn } = useAuthContext()
@@ -92,7 +94,7 @@ const SignUpPage = screenTrack(() => ({
   const [userIsConfirmed, setUserIsConfirmed] = useState(false)
 
   useEffect(() => {
-    setUserHasAccount(!!localStorage.getItem("email"))
+    setUserHasAccount(!!userSession)
     setIsWaitlisted(localStorage.getItem("isWaitlisted") === "true")
     setUserIsConfirmed(!!localStorage.getItem("isWaitlisted"))
     setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
@@ -136,10 +138,7 @@ const SignUpPage = screenTrack(() => ({
       validationSchema={createAccountValidationSchema}
       onSubmit={async (values, actions) => {
         try {
-          // Remove email token so that it doesn't get sent and triggers a JWT error
-          // when creating a new account
-          localStorage?.removeItem("email")
-          localStorage?.removeItem("token")
+          signOut()
 
           const date = new Date(values.dob)
           const dateToIso = DateTime.fromJSDate(date).toISO()
@@ -170,8 +169,6 @@ const SignUpPage = screenTrack(() => ({
 
           if (response) {
             signIn(response.data.signup)
-            localStorage?.setItem("email", values.email)
-            localStorage?.setItem("token", response.data.signup.token)
             localStorage?.setItem("coupon", JSON.stringify(response.data.signup.coupon))
             actions.setSubmitting(false)
 
@@ -306,7 +303,7 @@ const SignUpPage = screenTrack(() => ({
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-          {hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
+          {!(typeof window === "undefined") && hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
         </Flex>
       </MaxWidth>
     </Layout>

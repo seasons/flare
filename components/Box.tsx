@@ -1,40 +1,10 @@
 import styled from "styled-components"
-
 import {
-  background,
-  BackgroundProps,
-  bottom,
-  BottomProps,
-  color as styledColor,
-  ColorProps,
-  display,
-  DisplayProps,
-  height,
-  HeightProps,
-  left,
-  LeftProps,
-  maxHeight,
-  MaxHeightProps,
-  maxWidth,
-  MaxWidthProps,
-  minHeight,
-  MinHeightProps,
-  minWidth,
-  MinWidthProps,
-  position,
-  PositionProps,
-  right,
-  RightProps,
-  space as styledSpace,
-  SpaceProps,
-  textAlign,
-  TextAlignProps,
-  top,
-  TopProps,
-  width,
-  WidthProps,
-  zIndex,
-  ZIndexProps,
+  background, BackgroundProps, bottom, BottomProps, color as styledColor, ColorProps, display,
+  DisplayProps, height, HeightProps, left, LeftProps, maxHeight, MaxHeightProps, maxWidth,
+  MaxWidthProps, minHeight, MinHeightProps, minWidth, MinWidthProps, position, PositionProps, right,
+  RightProps, space as styledSpace, SpaceProps, textAlign, TextAlignProps, top, TopProps, width,
+  WidthProps, zIndex, ZIndexProps
 } from "styled-system"
 
 export interface BoxProps
@@ -54,7 +24,9 @@ export interface BoxProps
     TextAlignProps,
     TopProps,
     WidthProps,
-    ZIndexProps {}
+    ZIndexProps {
+      style?: any
+    }
 
 /**
  * Box is just a `View` or `div` (depending on the platform) with common styled-systems

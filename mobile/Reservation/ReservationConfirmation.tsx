@@ -99,7 +99,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const SectionHeader = ({ title, content = null, bottomSpacing = 1, hideSeparator = false }) => {
     return (
       <>
-        <Flex flexDirection="row" flex={1} width="100%">
+        <Flex flexDirection="row" width="100%">
           <Sans size="3" color="black100">
             {title}
           </Sans>
@@ -117,7 +117,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
 
   return (
     <Container>
-      <Flex flex={1} px={2}>
+      <Flex px={2}>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <Spacer mb={52} />
           <CheckWithBackground />
