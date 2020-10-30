@@ -1,15 +1,14 @@
-import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer } from "App/Components"
-import { Loader } from "App/Components/Loader"
-import { PauseButtons } from "App/Components/Pause"
-import { Schema } from "App/Navigation"
-import { color } from "App/utils"
-import { screenTrack } from "App/utils/track"
+import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer } from "components"
 import gql from "graphql-tag"
+import { color } from "helpers/color"
+import { Loader } from "mobile/Loader"
 import React from "react"
-import { useQuery } from "react-apollo"
 import { ScrollView } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { Schema, screenTrack } from "utils/analytics"
 
+import { useQuery } from "@apollo/client"
+
+import { PauseButtons } from "../Components/Pause"
 import { MembershipCard } from "./Components"
 
 export const GET_MEMBERSHIP_INFO = gql`
@@ -49,7 +48,6 @@ export const GET_MEMBERSHIP_INFO = gql`
 `
 
 export const MembershipInfo = screenTrack()(({ navigation }) => {
-  const insets = useSafeAreaInsets()
   const { data } = useQuery(GET_MEMBERSHIP_INFO)
   const customer = data?.me?.customer
   const firstName = data?.me?.user?.firstName
@@ -71,16 +69,16 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
     <Container insetsBottom={false}>
       <FixedBackArrow navigation={navigation} variant="whiteBackground" />
       <ScrollView>
-        <Box px={2} pb={insets.bottom}>
+        <Box px={2}>
           <Spacer mb={80} />
-          <Sans size="4">Membership info</Sans>
+          <Sans size="6">Membership info</Sans>
           <Spacer mb={3} />
           <MembershipCard memberName={`${firstName} ${lastName}`} planTier={plan?.tier} />
           <Spacer mb={4} />
           {!!plan?.price && (
             <>
               <Sans size="4">What you pay</Sans>
-              <Spacer mb={12} />
+              <Spacer mb={2} />
               <Separator />
               <Spacer mb={1} />
               <Sans size="4" color={color("black50")}>
@@ -90,9 +88,9 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           )}
           {!!whatsIncluded && (
             <>
-              <Spacer mb={4} />
+              <Spacer mb={80} />
               <Sans size="4">Whats included</Sans>
-              <Spacer mb={12} />
+              <Spacer mb={2} />
               <Separator />
               {whatsIncluded.map((text) => (
                 <Box key={text}>
@@ -108,7 +106,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           <Sans size="4">Change your plan</Sans>
           <Spacer mb={2} />
           <Button
-            variant="secondaryWhite"
+            variant="secondaryOutline"
             onPress={() => navigation.navigate("Modal", { screen: Schema.PageNames.UpdatePaymentPlanModal })}
             block
           >

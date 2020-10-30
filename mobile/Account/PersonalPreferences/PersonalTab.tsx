@@ -1,7 +1,7 @@
-import React from "react"
-import { Box, Container, Flex, Spacer, FakeTextInput } from "App/Components"
-import { DateTime } from "luxon"
+import { Box, Container, FakeTextInput, Flex, Spacer } from "components"
 import { padStart } from "lodash"
+import { DateTime } from "luxon"
+import React from "react"
 
 const formattedPhoneNumber = (phoneNumber: string) => {
   const suffix = phoneNumber.slice(-10)

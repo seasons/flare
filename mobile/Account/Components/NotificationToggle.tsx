@@ -1,7 +1,7 @@
-import { color } from "App/helpers"
 import { Box, Flex, Sans, Spacer, Toggle } from "components"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
+import { color } from "helpers"
 import React, { useEffect, useState } from "react"
 import { AppState, Linking, Text } from "react-native"
 import { Schema, useTracking } from "utils/analytics"

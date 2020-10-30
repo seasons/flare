@@ -1,5 +1,6 @@
 import { Box } from "components"
 import { Account } from "mobile/Account/Account"
+import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { Bag } from "mobile/Bag/Bag"
 import { Reservation, ReservationConfirmation } from "mobile/Reservation"
 import React, { useEffect } from "react"
@@ -38,6 +39,8 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         return <ReservationConfirmation route={{ params }} />
       case "profile":
         return <Account />
+      case "membershipInfo":
+        return <MembershipInfo />
     }
   }
 

@@ -4,6 +4,7 @@ export { PersonalPreferencesIcon } from "./PersonalPreferencesIcon"
 export { ChevronIcon } from "./ChevronIcon"
 export { LogoutIcon } from "./LogOutIcon"
 
+export { BackArrowIcon } from "./BackArrowIcon"
 export { CheckCircledIcon } from "./CheckCircledIcon"
 export { QuestionMark } from "./QuestionMark"
 export { PrivacyPolicy } from "./PrivacyPolicy"

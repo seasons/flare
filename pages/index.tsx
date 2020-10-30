@@ -1,21 +1,13 @@
 import { Box, Layout, Separator, Spacer } from "components"
 import {
-  Brands,
-  ChooseMembership,
-  ColumnList,
-  FAQ,
-  FromCommunity,
-  Hero,
-  MembershipBenefits,
-  ProductRail,
-  TheApp,
-  TheBag,
+  Brands, ChooseMembership, ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, ProductRail,
+  TheApp, TheBag
 } from "components/Homepage"
 import { BRAND_LIST } from "components/Homepage/Brands"
 import { Nav } from "components/Nav/Nav"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
 import { ServiceableModal } from "components/ServiceableModal"
-import { initializeApollo } from "lib/apollo"
+import { initializeApollo } from "lib/apollo/apollo"
 import { HOME_QUERY } from "queries/homeQueries"
 import React from "react"
 import { Schema, screenTrack } from "utils/analytics"

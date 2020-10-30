@@ -66,48 +66,49 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
               }
             })}
 
-            {isLoggedIn ? (
-              <Link onClick={() => {}}>
-                <MenuNavItem
-                  link={{ text: "Account" }}
-                  isMenu
-                  menu={[
-                    {
-                      text: "Bag",
-                      onClick: () => {
-                        openDrawer("bag")
-                      },
+            <Link href="/signup" active={!!router.pathname.match("/signup")}>
+              <NavItem link={{ text: "Sign Up" }} />
+            </Link>
+
+            <Link onClick={() => {}}>
+              <MenuNavItem
+                link={{ text: "Account" }}
+                isMenu
+                menu={[
+                  {
+                    text: "Bag",
+                    onClick: () => {
+                      openDrawer("bag")
                     },
-                    {
-                      text: "Settings",
-                      onClick: () => {
-                        openDrawer("profile")
-                      },
+                  },
+                  {
+                    text: "Settings",
+                    onClick: () => {
+                      openDrawer("profile")
                     },
-                    {
-                      separator: true,
-                      text: "Log out",
-                      onClick: () => {
-                        signOut()
-                      },
-                    },
-                  ]}
-                />
-              </Link>
-            ) : (
-              <>
-                <Link href="/signup" active={!!router.pathname.match("/signup")}>
-                  <NavItem link={{ text: "Sign Up" }} />
-                </Link>
-                <Link
-                  onClick={() => {
-                    toggleLogin(true)
-                  }}
-                >
-                  <NavItem link={{ text: "Log In" }} />
-                </Link>
-              </>
-            )}
+                  },
+                  ...(isLoggedIn
+                    ? [
+                        {
+                          separator: true,
+                          text: "Log out",
+                          onClick: () => {
+                            signOut()
+                          },
+                        },
+                      ]
+                    : [
+                        {
+                          separator: true,
+                          text: "Log In",
+                          onClick: () => {
+                            toggleLogin(true)
+                          },
+                        },
+                      ]),
+                ]}
+              />
+            </Link>
           </Flex>
         </Flex>
       </MaxWidth>

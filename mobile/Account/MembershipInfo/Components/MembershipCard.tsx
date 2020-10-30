@@ -1,6 +1,6 @@
-import { Box, Flex, Sans, Spacer } from "App/Components"
-import { color } from "App/utils"
-import { SeasonsLogoSVG } from "Assets/svgs"
+import { Box, Flex, Sans, Spacer } from "components"
+import { SeasonsLogoIcon } from "components/Icons/SeasonsLogoIcon"
+import { color } from "helpers/color"
 import React from "react"
 import { Text } from "react-native"
 import styled from "styled-components"
@@ -35,9 +35,9 @@ export const MembershipCard: React.FC<MembershipCardProps> = ({ memberName, plan
     <Card backgroundColor={backgroundColor}>
       <Box px={3}>
         <Spacer mt={3} />
-        <Flex flexDirection="column" justifyContent="space-between">
-          <SeasonsLogoSVG width={28} height={28} />
-          <Spacer mt={104} />
+        <Flex flexDirection="column" justifyContent="space-between" pt={3}>
+          <SeasonsLogoIcon width={"28px"} height={"28px"} />
+          <Spacer mt={"104px"} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Text style={{ letterSpacing: 2 }}>
               <Sans color={planTierColor} size="4">
@@ -57,9 +57,9 @@ export const MembershipCard: React.FC<MembershipCardProps> = ({ memberName, plan
 
 const Card = styled(Box)`
   background-color: ${(props) => props.backgroundColor};
-  height: 200;
-  border-radius: 8;
-  shadow-offset: 0px 6px;
+  height: 200px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   shadow-color: ${color("black100")};
   shadow-opacity: 0.1;
   shadow-radius: 12;

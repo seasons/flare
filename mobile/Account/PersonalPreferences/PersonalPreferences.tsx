@@ -1,11 +1,12 @@
-import { Box, Container, FixedBackArrow, Flex, Sans } from "App/Components"
-import { Loader } from "App/Components/Loader"
-import { TabBar } from "App/Components/TabBar"
-import { screenTrack } from "App/utils/track"
+import { Box, Container, FixedBackArrow, Flex, Sans } from "components"
 import gql from "graphql-tag"
+import { Loader } from "mobile/Loader"
+import { TabBar } from "mobile/TabBar"
 import React, { useEffect, useState } from "react"
-import { useQuery } from "react-apollo"
 import { StatusBar } from "react-native"
+import { screenTrack } from "utils/analytics"
+
+import { useQuery } from "@apollo/client"
 
 import { PersonalTab } from "./PersonalTab"
 import { SizingTab } from "./SizingTab"

@@ -1,10 +1,12 @@
 import { Box, Button, Flex, Sans, Separator, Skeleton, Spacer } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import {
   ChevronIcon, LogoutIcon, MembershipInfoIcon, PaymentShippingIcon, PersonalPreferencesIcon,
   PrivacyPolicy, QuestionMark, TermsOfService
 } from "components/Icons"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import { Image, Linking, ScrollView, StatusBar } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
@@ -83,6 +85,8 @@ export const GET_USER = gql`
 
 export const Account = screenTrack()(({ navigation }) => {
   const tracking = useTracking()
+  const router = useRouter()
+  const { openDrawer, closeDrawer } = useDrawerContext()
 
   const { authState, signOut } = useAuthContext()
   const { data, refetch } = useQuery(GET_USER)
@@ -131,7 +135,7 @@ export const Account = screenTrack()(({ navigation }) => {
     {
       title: "Membership info",
       icon: <MembershipInfoIcon />,
-      onPress: () => navigation.navigate("MembershipInfo"),
+      onPress: () => openDrawer("membershipInfo"),
       tracking: Schema.ActionNames.MembershipInfoTapped,
     },
     {
@@ -166,7 +170,7 @@ export const Account = screenTrack()(({ navigation }) => {
       icon: <PrivacyPolicy />,
       tracking: Schema.ActionNames.PrivacyPolicyTapped,
       onPress: () => {
-        navigation.navigate("Webview", { uri: "https://www.seasons.nyc/privacy-policy" })
+        router.push("/privacy-policy")
       },
     },
     {
@@ -174,7 +178,7 @@ export const Account = screenTrack()(({ navigation }) => {
       icon: <TermsOfService />,
       tracking: Schema.ActionNames.TermsOfServiceTapped,
       onPress: () => {
-        navigation.navigate("Webview", { uri: "https://www.seasons.nyc/terms-of-service" })
+        router.push("/terms-of-service")
       },
     },
     {
@@ -183,16 +187,7 @@ export const Account = screenTrack()(({ navigation }) => {
       tracking: Schema.ActionNames.LogOutTapped,
       onPress: () => {
         signOut()
-      },
-    },
-    {
-      title: "Debug menu",
-      icon: null,
-      tracking: null,
-      onPress: () => {
-        navigation.navigate("Modal", {
-          screen: "DebugMenu",
-        })
+        closeDrawer()
       },
     },
   ]
