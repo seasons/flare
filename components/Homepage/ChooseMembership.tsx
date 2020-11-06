@@ -18,7 +18,6 @@ interface ChooseMembershipProps {
 
 export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan }) => {
   const plansGroupedByTier = []
-
   const tiers = uniq(paymentPlans?.map((plan) => plan.tier))
   tiers?.forEach((tier) => {
     const tierPlans = paymentPlans?.filter((plan) => {
