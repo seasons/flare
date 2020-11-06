@@ -1,10 +1,9 @@
 import { useMutation } from "@apollo/client"
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
+import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
 import {
-  CreateAccountForm, createAccountValidationSchema
-} from "components/Forms/CreateAccountForm"
-import {
-  CustomerMeasurementsForm, customerMeasurementsValidationSchema
+  CustomerMeasurementsForm,
+  customerMeasurementsValidationSchema,
 } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
@@ -83,7 +82,6 @@ const SignUpPage = screenTrack(() => ({
   const { userSession, signIn, signOut } = useAuthContext()
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
-  const { signIn } = useAuthContext()
 
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
