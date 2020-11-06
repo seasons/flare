@@ -15,7 +15,7 @@ import { ProductDetails } from "../../components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
 import { Media } from "../../components/Responsive"
 import { initializeApollo } from "../../lib/apollo"
-import { GET_PRODUCT, GET_PRODUCTS } from "../../queries/productQueries"
+import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
 import { Schema, screenTrack } from "../../utils/analytics"
 
 const Product = screenTrack(({ router }) => {
@@ -102,7 +102,7 @@ export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
   const response = await apolloClient.query({
-    query: GET_PRODUCTS,
+    query: GET_STATIC_PRODUCTS,
   })
 
   const paths = []
