@@ -92,7 +92,7 @@ export const GET_PRODUCT = gql`
 
 export const GET_STATIC_PRODUCTS = gql`
   query GetStaticProducts {
-    products(where: { status: Available }, limit: 300, orderBy: "publishedAt_DESC") {
+    products(where: { status: Available }, first: 300, orderBy: "publishedAt_DESC") {
       id
       slug
     }
