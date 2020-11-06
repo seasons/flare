@@ -92,10 +92,12 @@ const SignUpPage = screenTrack(() => ({
   const [userIsConfirmed, setUserIsConfirmed] = useState(false)
 
   useEffect(() => {
-    setUserHasAccount(!!userSession)
-    setIsWaitlisted(localStorage.getItem("isWaitlisted") === "true")
-    setUserIsConfirmed(!!localStorage.getItem("isWaitlisted"))
-    setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
+    if (typeof window !== "undefined") {
+      setUserHasAccount(!!userSession)
+      setIsWaitlisted(localStorage.getItem("isWaitlisted") === "true")
+      setUserIsConfirmed(!!localStorage.getItem("isWaitlisted"))
+      setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
+    }
   }, [])
 
   const initialValues = {

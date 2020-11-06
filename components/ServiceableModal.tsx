@@ -65,11 +65,13 @@ export const ServiceableModal = () => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    const wasShown = localStorage.getItem("zipcode-modal") === "true"
-    setDidShowModal(wasShown)
-    setTimeout(() => {
-      setShow(!wasShown)
-    }, 1000)
+    if (typeof window !== "undefined") {
+      const wasShown = localStorage.getItem("zipcode-modal") === "true"
+      setDidShowModal(wasShown)
+      setTimeout(() => {
+        setShow(!wasShown)
+      }, 1000)
+    }
   }, [])
 
   useEffect(() => {

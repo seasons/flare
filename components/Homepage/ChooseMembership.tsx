@@ -40,7 +40,12 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
 
 const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
   const calcFinalPrice = (price: number) => {
-    const couponData = localStorage?.getItem("coupon")
+    let couponData
+    if (typeof window !== "undefined") {
+      couponData = localStorage?.getItem("coupon")
+    } else {
+      return price
+    }
     try {
       const coupon = JSON.parse(couponData)
       const { amount: discountAmount, percentage: discountPercentage, type: couponType } = coupon

@@ -2,9 +2,7 @@ import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { head } from "lodash"
-import {
-  ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG
-} from "queries/bagQueries"
+import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
@@ -36,8 +34,10 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const isUserSignedIn = authState?.isSignedIn
 
   useEffect(() => {
-    setAdded(props.isInBag)
-  }, [props.isInBag])
+    if (props?.isInBag) {
+      setAdded(props.isInBag)
+    }
+  }, [props])
 
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
