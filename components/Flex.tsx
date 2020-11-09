@@ -1,46 +1,13 @@
-import React from "react"
+import React, { ClassAttributes, HTMLAttributes } from "react"
 import styled from "styled-components"
-
 import {
-  alignContent,
-  AlignContentProps,
-  alignItems,
-  AlignItemsProps,
-  background,
-  BackgroundProps,
-  bottom,
-  BottomProps,
-  display,
-  DisplayProps,
-  flexBasis,
-  FlexBasisProps,
-  flexDirection,
-  FlexDirectionProps,
-  flexWrap,
-  FlexWrapProps,
-  height,
-  HeightProps,
-  justifyContent,
-  JustifyContentProps,
-  maxHeight,
-  MaxHeightProps,
-  maxWidth,
-  MaxWidthProps,
-  order,
-  OrderProps,
-  position,
-  PositionProps,
-  space,
-  SpaceProps,
-  style,
-  width,
-  WidthProps,
-  zIndex,
-  ZIndexProps,
+  alignContent, AlignContentProps, alignItems, AlignItemsProps, background, BackgroundProps, bottom,
+  BottomProps, display, DisplayProps, flex, flexBasis, FlexBasisProps, flexDirection,
+  FlexDirectionProps, FlexProps as IFlexProps, flexWrap, FlexWrapProps, height, HeightProps,
+  justifyContent, JustifyContentProps, maxHeight, MaxHeightProps, maxWidth, MaxWidthProps, order,
+  OrderProps, position, PositionProps, space, SpaceProps, style, width, WidthProps, zIndex,
+  ZIndexProps
 } from "styled-system"
-
-// @ts-ignore
-import { ClassAttributes, HTMLAttributes } from "react"
 
 const flexGrow = style({
   prop: "flexGrow",
@@ -52,6 +19,7 @@ export interface FlexProps
     BackgroundProps,
     BottomProps,
     DisplayProps,
+    IFlexProps,
     FlexBasisProps,
     FlexDirectionProps,
     FlexWrapProps,
@@ -65,6 +33,7 @@ export interface FlexProps
     WidthProps,
     ZIndexProps {
   flexGrow?: number | string
+  style?: any
 }
 
 /**
@@ -77,6 +46,7 @@ export const Flex = styled.div<FlexProps>`
   ${background};
   ${bottom};
   ${display};
+  ${flex};
   ${flexBasis};
   ${flexDirection};
   ${flexGrow};

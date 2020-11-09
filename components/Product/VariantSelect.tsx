@@ -45,7 +45,9 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
   const tracking = useTracking()
 
   useEffect(() => {
-    updateSizeData()
+    if (sizeData.length === 0) {
+      updateSizeData()
+    }
   }, [])
 
   const updateSizeData = () => {

@@ -8,7 +8,7 @@ import { BaseCSS } from "styled-bootstrap-grid"
 import { ApolloProvider } from "@apollo/client"
 
 import { createMediaStyle } from "../components/Responsive"
-import { useApollo } from "../lib/apollo"
+import { useApollo } from "../lib/apollo/apollo"
 import { FontStyles } from "../lib/fonts"
 import { Theme } from "../lib/theme"
 

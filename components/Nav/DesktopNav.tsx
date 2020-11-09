@@ -5,11 +5,12 @@ import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 import { MaxWidth } from "../"
 import { Flex } from "../Flex"
+import { MenuNavItem } from "./MenuNavItem"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
@@ -74,10 +75,10 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    signOut()
+                    openDrawer("profile")
                   }}
                 >
-                  <NavItem link={{ text: "Log out" }} />
+                  <NavItem link={{ text: "Account" }} />
                 </Link>
               </>
             ) : (

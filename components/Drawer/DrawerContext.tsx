@@ -1,6 +1,14 @@
 import React, { useContext } from "react"
 
-export type DrawerView = "bag" | "reservation" | "reservationConfirmation"
+export type DrawerView =
+  | "bag"
+  | "faq"
+  | "reservation"
+  | "reservationConfirmation"
+  | "profile"
+  | "membershipInfo"
+  | "personalPreferences"
+  | "paymentAndShipping"
 
 export const DrawerContext = React.createContext({
   isOpen: false,

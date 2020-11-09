@@ -129,7 +129,6 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
           .map((plan, i) => {
             return (
               <PlanWrapper
-                flexDirection="column"
                 key={plan.id}
                 style={{ borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none" }}
                 onClick={() => {
@@ -206,7 +205,7 @@ const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
   )
 }
 
-const PlanWrapper = styled(Flex)`
+const PlanWrapper = styled(Box)`
   width: 100%;
   flex: 3;
   border-bottom: 1px solid ${color("black15")};

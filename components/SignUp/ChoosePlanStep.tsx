@@ -21,9 +21,9 @@ export const PAYMENT_PLANS = gql`
 `
 
 interface ChoosePlanStepProps {
-  onPlanSelected: (plan: any) => void
-  onError: (error: any) => void
-  onSuccess: () => void
+  onPlanSelected?: (plan: any) => void
+  onError?: (error: any) => void
+  onSuccess?: () => void
 }
 
 const GET_CHARGEBEE_CHECKOUT = gql`
@@ -92,10 +92,10 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
       },
       error: (error) => {
         console.error(error)
-        onError(error)
+        onError?.(error)
       },
       success: (hostedPageId) => {
-        onSuccess()
+        onSuccess?.()
       },
     })
   }

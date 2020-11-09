@@ -50,7 +50,7 @@ const Product = screenTrack(({ router }) => {
   }, [authState.isSignedIn])
 
   const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
-  const isInBag = updatedVariant.isInBag
+  const isInBag = updatedVariant?.isInBag || false
 
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description

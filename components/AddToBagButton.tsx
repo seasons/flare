@@ -1,5 +1,6 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { localBagVar } from "lib/apollo/cache"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { head } from "lodash"
 import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "queries/bagQueries"
@@ -95,7 +96,11 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const handleReserve = () => {
     if (!isMutating) {
       setIsMutating(true)
-      addToBag()
+      if (!isUserSignedIn) {
+        localBagVar([...localBagVar(), { productID: props.data?.product?.id, variantID: selectedVariant.id }])
+      } else {
+        addToBag()
+      }
     }
   }
 
