@@ -1,6 +1,9 @@
 import { Box } from "components"
+import { FAQ } from "components/Homepage"
+import { PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
 import { MembershipInfo } from "mobile/Account/MembershipInfo"
+import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
 import { Reservation, ReservationConfirmation } from "mobile/Reservation"
 import React, { useEffect } from "react"
@@ -41,6 +44,12 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         return <Account />
       case "membershipInfo":
         return <MembershipInfo />
+      case "personalPreferences":
+        return <PersonalPreferences />
+      case "paymentAndShipping":
+        return <PaymentAndShipping />
+      case "faq":
+        return <FAQ />
     }
   }
 

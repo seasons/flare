@@ -96,7 +96,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const handleReserve = () => {
     if (!isMutating) {
       setIsMutating(true)
-      if (isUserSignedIn) {
+      if (!isUserSignedIn) {
         localBagVar([...localBagVar(), { productID: props.data?.product?.id, variantID: selectedVariant.id }])
       } else {
         addToBag()

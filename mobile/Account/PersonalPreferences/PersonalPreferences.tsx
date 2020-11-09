@@ -1,4 +1,5 @@
 import { Box, Container, FixedBackArrow, Flex, Sans } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import gql from "graphql-tag"
 import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
@@ -61,6 +62,7 @@ enum Tab {
 
 export const PersonalPreferences = screenTrack()(({ navigation }) => {
   const [activeTab, setActiveTab] = useState(Tab.Personal)
+  const { openDrawer } = useDrawerContext()
   const { loading, error, data, refetch } = useQuery(GET_PREFERENCES)
 
   useEffect(() => {
@@ -125,7 +127,13 @@ export const PersonalPreferences = screenTrack()(({ navigation }) => {
 
   return (
     <Container insetsBottom={false}>
-      <FixedBackArrow navigation={navigation} variant="whiteBackground" />
+      <FixedBackArrow
+        navigation={navigation}
+        variant="whiteBackground"
+        onPress={() => {
+          openDrawer("profile")
+        }}
+      />
       <Box mt={80} mb={3} mx={2}>
         <Sans size="4">Sizing & Preferences</Sans>
       </Box>

@@ -1,4 +1,4 @@
-import { Button, Sans, Spacer, Text } from "components"
+import { Button, Display, Sans, Spacer, Text } from "components"
 import { Field, Form, Formik } from "formik"
 import { TextField } from "formik-material-ui"
 import gql from "graphql-tag"
@@ -71,14 +71,12 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
             onSubmit={handleSubmit}
             initialValues={initialValues}
             render={({ handleSubmit }) => (
-              <Box mx={5} my={6} pb={3}>
+              <Box mx={2} my={3}>
                 <Form onSubmit={handleSubmit}>
                   <Box my={2} mb={3}>
-                    <Sans size="6" textAlign="center">
-                      Log In
-                    </Sans>
-                    <Sans size="3" textAlign="center">
-                      Don't have an account?
+                    <Display size="7">Log In</Display>
+                    <Sans size="3" color="black50">
+                      Don't have an account? <span style={{ textDecoration: "underline" }}>Sign Up</span>
                     </Sans>
                   </Box>
                   <div>
@@ -95,6 +93,11 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
                       <Text color={colors.red[500]}>{error}</Text>
                     </Box>
                   )}
+                  <Box mt={3}>
+                    <Sans size="4" color="black50">
+                      Forgot your password?
+                    </Sans>
+                  </Box>
                 </Form>
               </Box>
             )}

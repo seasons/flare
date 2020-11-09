@@ -141,19 +141,19 @@ export const Account = screenTrack()(({ navigation }) => {
     {
       title: "Personal preferences",
       icon: <PersonalPreferencesIcon />,
-      onPress: () => navigation.navigate("PersonalPreferences"),
+      onPress: () => openDrawer("personalPreferences"),
       tracking: Schema.ActionNames.PersonalPreferencesTapped,
     },
     {
       title: "Payment & shipping",
       icon: <PaymentShippingIcon />,
-      onPress: () => navigation.navigate("PaymentAndShipping"),
+      onPress: () => openDrawer("paymentAndShipping"),
       tracking: Schema.ActionNames.PaymentAndShippingTapped,
     },
     {
       title: "FAQ",
       icon: <QuestionMark />,
-      onPress: () => navigation.navigate("Faq"),
+      onPress: () => openDrawer("faq"),
       tracking: Schema.ActionNames.FAQTapped,
     },
   ]
@@ -182,7 +182,7 @@ export const Account = screenTrack()(({ navigation }) => {
       },
     },
     {
-      title: "Sign out",
+      title: "Log out",
       icon: <LogoutIcon />,
       tracking: Schema.ActionNames.LogOutTapped,
       onPress: () => {

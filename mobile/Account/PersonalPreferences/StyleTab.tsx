@@ -1,10 +1,10 @@
+import { Box, Button, Container, Flex, Sans, Spacer } from "components"
+import { color } from "helpers/color"
 import React, { useState } from "react"
-import { Box, Container, Sans, Flex, Spacer, Button } from "App/Components"
-import { FlatList, Dimensions } from "react-native"
-import { FadeBottom2 } from "Assets/svgs/FadeBottom2"
-import { color } from "App/utils/color"
+import { Dimensions, FlatList } from "react-native"
+
 import { initialSelectedItemIndicesFrom } from "../EditStylePreferences/EditStylePreferences"
-import { Section, Item, Index, areIndicesEqual, sections } from "../EditStylePreferences/Sections"
+import { areIndicesEqual, Index, Item, Section, sections } from "../EditStylePreferences/Sections"
 
 const windowWidth = Dimensions.get("window").width
 
@@ -19,12 +19,12 @@ export const StyleTab: React.FC<{ navigation: any; rawStylePreferences: any }> =
     return (
       <Flex width="100%" key={sectionIndex.toString()}>
         <Spacer mb={4} />
-        <Sans size="0.5">{title}</Sans>
+        <Sans size="4">{title}</Sans>
         <Spacer mb={2} />
         <Spacer mb={0.5} />
-        <Flex flexWrap="wrap" flexDirection="row" width="100%" justifyContent="space-between">
+        {/* <Flex flexWrap="wrap" flexDirection="row" width="100%" justifyContent="space-between">
           {items?.map((item, itemIndex) => renderItem(item, { sectionIndex, itemIndex }))}
-        </Flex>
+        </Flex> */}
       </Flex>
     )
   }
@@ -69,7 +69,7 @@ export const StyleTab: React.FC<{ navigation: any; rawStylePreferences: any }> =
               <Spacer mr={1} />
             </>
           )}
-          <Sans size="0.5">{item.title}</Sans>
+          <Sans size="3">{item.title}</Sans>
         </Flex>
       </Flex>
     )
@@ -88,23 +88,21 @@ export const StyleTab: React.FC<{ navigation: any; rawStylePreferences: any }> =
         showsVerticalScrollIndicator={false}
         style={{ paddingHorizontal: 16, flex: 1 }}
       />
-      <FadeBottom2 width="100%" style={{ position: "absolute", bottom: 0 }}>
-        <Spacer mb={2} />
-        <Flex p={2} flexDirection="row" onLayout={(e) => setFooterBoxHeight(e.nativeEvent.layout.height)}>
-          <Button
-            block
-            onPress={() =>
-              navigation.navigate("Modal", {
-                screen: "EditStylePreferences",
-                params: { initialSelectedItemIndices: selectedItemIndices },
-              })
-            }
-            variant="primaryWhite"
-          >
-            Edit
-          </Button>
-        </Flex>
-      </FadeBottom2>
+      <Spacer mb={2} />
+      <Flex p={2} flexDirection="row">
+        <Button
+          block
+          onPress={() =>
+            navigation.navigate("Modal", {
+              screen: "EditStylePreferences",
+              params: { initialSelectedItemIndices: selectedItemIndices },
+            })
+          }
+          variant="primaryWhite"
+        >
+          Edit
+        </Button>
+      </Flex>
     </Container>
   )
 }

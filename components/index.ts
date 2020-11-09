@@ -14,5 +14,6 @@ export { MaxWidth } from "./MaxWidth"
 export { Skeleton } from "./Skeleton"
 export { Theme } from "lib/theme"
 export { Toggle } from "./Toggle"
+export { TextInput } from "./TextInput"
 
 export * from "./Typography"

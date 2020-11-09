@@ -148,7 +148,7 @@ const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
   )
 }
 
-const PlanWrapper = styled(Flex)`
+const PlanWrapper = styled(Box)`
   width: 100%;
   flex: 3;
   border-bottom: 1px solid ${color("black15")};

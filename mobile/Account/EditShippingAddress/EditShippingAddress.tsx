@@ -1,13 +1,12 @@
-import { FakeTextInput } from "App/Components"
-import { isWholeNumber } from "App/helpers/validation"
-import { usePopUpContext } from "App/Navigation/ErrorPopUp/PopUpContext"
-import { FadeBottom2 } from "Assets/svgs/FadeBottom2"
-import { Box, Button, CloseButton, Container, Flex, Sans, Spacer, TextInput } from "components"
+import { Box, Button, CloseButton, Container, Flex, Sans, Spacer } from "components"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { TextInput } from "components/TextInput"
 import gql from "graphql-tag"
+import { isWholeNumber } from "helpers/validation"
 import React, { useState } from "react"
-import { useMutation } from "react-apollo"
 import { FlatList, Keyboard, KeyboardAvoidingView } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+
+import { useMutation } from "@apollo/client"
 
 import { StatePickerPopUp } from "./StatePickerPopup"
 
@@ -59,7 +58,6 @@ export const EditShippingAddress: React.FC<{
   const [state, setState] = useState((shippingAddress?.state as string) || "")
 
   const [isStatePickerVisible, setIsStatePickerVisible] = useState(false)
-  const insets = useSafeAreaInsets()
 
   const [isMutating, setIsMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
@@ -153,7 +151,7 @@ export const EditShippingAddress: React.FC<{
               style={{ flex: 1 }}
             />
             <Spacer width={9} />
-            <FakeTextInput
+            <TextInput
               currentValue={state}
               headerText="State"
               onPress={() => {
@@ -187,7 +185,7 @@ export const EditShippingAddress: React.FC<{
         showsVerticalScrollIndicator={false}
         style={{ paddingHorizontal: 16, overflow: "visible", flex: 1 }}
       />
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={insets.bottom - 16}>
+      <KeyboardAvoidingView behavior="padding">
         <FadeBottom2 width="100%">
           <Spacer mb={2} />
           <Flex p={2} flexDirection="row">
@@ -217,7 +215,6 @@ export const EditShippingAddress: React.FC<{
               </Button>
             </Box>
           </Flex>
-          <Spacer height={insets.bottom + 8} />
         </FadeBottom2>
       </KeyboardAvoidingView>
 

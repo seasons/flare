@@ -1,23 +1,14 @@
-import {
-  Box, Button, Container, FixedBackArrow, Flex, Radio, Sans, Spacer, TextInput
-} from "App/Components"
-import { usePopUpContext } from "App/Navigation/ErrorPopUp/PopUpContext"
-import { EditPaymentPopUp } from "App/Scenes/CreateAccount/Admitted/ChoosePlanPane/EditPaymentPopUp"
-import { space } from "App/utils"
-import { Schema as TrackSchema, screenTrack, useTracking } from "App/utils/track"
+import { Box, Button, Container, FixedBackArrow, Flex, Sans, Spacer, TextInput } from "components"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
+import { space } from "helpers/space"
 import React, { useState } from "react"
-import { useMutation, useQuery } from "react-apollo"
 import { Dimensions, KeyboardAvoidingView } from "react-native"
-import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import {
-  GetUserPaymentData_me_customer_billingInfo, GetUserPaymentData_me_customer_detail_shippingAddress
-} from "src/generated/getUserPaymentData"
 import styled from "styled-components"
-import stripe from "tipsi-stripe"
+import { Schema as TrackSchema, screenTrack, useTracking } from "utils/analytics"
 
-import * as Sentry from "@sentry/react-native"
+import { useMutation, useQuery } from "@apollo/client"
+import { Radio } from "@material-ui/core"
 
 import { GET_PAYMENT_DATA } from "./PaymentAndShipping"
 
@@ -70,10 +61,10 @@ export const EditPaymentAndShipping: React.FC<{
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { data } = useQuery(GET_CURRENT_PLAN)
   const [openPaymentPopUp, setOpenPaymentPopUp] = useState(false)
-  const billingInfo: GetUserPaymentData_me_customer_billingInfo = route?.params?.billingInfo
-  const currentShippingAddress: GetUserPaymentData_me_customer_detail_shippingAddress = route?.params?.shippingAddress
+  const billingInfo = route?.params?.billingInfo
+  const currentShippingAddress = route?.params?.shippingAddress
   const currentPhoneNumber = route?.params?.phoneNumber
-  const insets = useSafeAreaInsets()
+
   const [isMutating, setIsMutating] = useState(false)
   const [shippingAddress, setShippingAddress] = useState({
     address1: currentShippingAddress?.address1 || "",
@@ -104,7 +95,7 @@ export const EditPaymentAndShipping: React.FC<{
     ],
     onError: (err) => {
       console.log("Error ChoosePlanPane.tsx", err)
-      Sentry.captureException(JSON.stringify(err))
+
       const popUpData = {
         title: "Oops! Try again!",
         note: "There was an issue updating your payment method. Please retry or contact us.",
@@ -124,7 +115,7 @@ export const EditPaymentAndShipping: React.FC<{
         title: "Something went wrong!",
         onClose: () => hidePopUp(),
       }
-      Sentry.captureException(error)
+
       showPopUp(popUpData)
       console.log("Error EditView.tsx: ", error)
     },
@@ -206,51 +197,49 @@ export const EditPaymentAndShipping: React.FC<{
       return
     }
     setIsMutating(true)
-    tracking.trackEvent({
-      actionName: TrackSchema.ActionNames.ApplePayTapped,
-      actionType: TrackSchema.ActionTypes.Tap,
-    })
-    const applePaySupportedOnDevice = await stripe.deviceSupportsApplePay()
-    if (applePaySupportedOnDevice) {
-      const canMakeApplePayment = await stripe.canMakeApplePayPayments()
-      if (canMakeApplePayment) {
-        // Customer has a payment card set up
-        try {
-          const token = await stripe.paymentRequestWithNativePay(
-            {
-              requiredBillingAddressFields: ["all"],
-            },
-            [
-              {
-                label: `${paymentPlan.name} plan`,
-                amount: `${paymentPlan.price / 100}.00`,
-              },
-            ]
-          )
-          applePayUpdatePayment({
-            variables: {
-              planID: paymentPlan.planID,
-              token,
-              tokenType: "apple_pay",
-            },
-            awaitRefetchQueries: true,
-          })
-          // You should complete the operation by calling
-          stripe.completeApplePayRequest()
-        } catch (error) {
-          console.log("error", error)
-          stripe.cancelApplePayRequest()
-          setIsMutating(false)
-        }
-      } else {
-        // Customer hasn't set up apple pay on this device so we request payment setup
-        stripe.openApplePaySetup()
-        setIsMutating(false)
-      }
-    }
+    // tracking.trackEvent({
+    //   actionName: TrackSchema.ActionNames.ApplePayTapped,
+    //   actionType: TrackSchema.ActionTypes.Tap,
+    // })
+    // const applePaySupportedOnDevice = await stripe.deviceSupportsApplePay()
+    // if (applePaySupportedOnDevice) {
+    //   const canMakeApplePayment = await stripe.canMakeApplePayPayments()
+    //   if (canMakeApplePayment) {
+    //     // Customer has a payment card set up
+    //     try {
+    //       const token = await stripe.paymentRequestWithNativePay(
+    //         {
+    //           requiredBillingAddressFields: ["all"],
+    //         },
+    //         [
+    //           {
+    //             label: `${paymentPlan.name} plan`,
+    //             amount: `${paymentPlan.price / 100}.00`,
+    //           },
+    //         ]
+    //       )
+    //       applePayUpdatePayment({
+    //         variables: {
+    //           planID: paymentPlan.planID,
+    //           token,
+    //           tokenType: "apple_pay",
+    //         },
+    //         awaitRefetchQueries: true,
+    //       })
+    //       // You should complete the operation by calling
+    //       stripe.completeApplePayRequest()
+    //     } catch (error) {
+    //       console.log("error", error)
+    //       stripe.cancelApplePayRequest()
+    //       setIsMutating(false)
+    //     }
+    //   } else {
+    //     // Customer hasn't set up apple pay on this device so we request payment setup
+    //     stripe.openApplePaySetup()
+    //     setIsMutating(false)
+    //   }
+    // }
   }
-
-  const handleCancelBtnPressed = () => navigation.goBack()
 
   const sections = [SHIPPING_ADDRESS, BILLING_ADDRESS, PHONE_NUMBER, EDIT_BILLING_INFO]
 
@@ -397,10 +386,10 @@ export const EditPaymentAndShipping: React.FC<{
       <Container insetsBottom={false}>
         <FixedBackArrow navigation={navigation} variant="whiteBackground" />
         <Box px={2}>
-          <KeyboardAwareFlatList
+          <FlatList
             data={sections}
             ListHeaderComponent={() => (
-              <Box mt={insets.top}>
+              <Box>
                 <Spacer mb={2} />
                 <Sans size="4">Payment & Shipping</Sans>
                 <Spacer mb={4} />
@@ -413,11 +402,7 @@ export const EditPaymentAndShipping: React.FC<{
             showsVerticalScrollIndicator={false}
           />
         </Box>
-        <FixedKeyboardAvoidingView
-          behavior="padding"
-          keyboardVerticalOffset={space(2)}
-          style={{ bottom: insets.bottom }}
-        >
+        <FixedKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={space(2)}>
           <Flex flexDirection="row" flexWrap="nowrap" justifyContent="center">
             <Button variant="primaryWhite" size="large" width={buttonWidth} onPress={handleCancelBtnPressed}>
               Cancel

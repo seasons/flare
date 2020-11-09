@@ -62,7 +62,7 @@ const Arrow = styled(BackArrowIcon)`
 
 const Wrapper = styled(Box)`
   position: absolute;
-  top: 50px;
+  top: 40px;
   left: 7px;
   z-index: 2000;
 `
@@ -70,7 +70,7 @@ const Wrapper = styled(Box)`
 const ArrowWrapper = styled(Flex)<{ backgroundColor: string }>`
   flex-direction: row;
   background-color: ${(p) => p.backgroundColor};
-  border-radius: 100;
+  border-radius: 100px;
   height: 40px;
   width: 40px;
   align-items: center;

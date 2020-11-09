@@ -1,4 +1,5 @@
 import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
 import { Loader } from "mobile/Loader"
@@ -48,6 +49,7 @@ export const GET_MEMBERSHIP_INFO = gql`
 `
 
 export const MembershipInfo = screenTrack()(({ navigation }) => {
+  const { openDrawer } = useDrawerContext()
   const { data } = useQuery(GET_MEMBERSHIP_INFO)
   const customer = data?.me?.customer
   const firstName = data?.me?.user?.firstName
@@ -67,10 +69,16 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
 
   return (
     <Container insetsBottom={false}>
-      <FixedBackArrow navigation={navigation} variant="whiteBackground" />
+      <FixedBackArrow
+        navigation={navigation}
+        variant="whiteBackground"
+        onPress={() => {
+          openDrawer("profile")
+        }}
+      />
       <ScrollView>
         <Box px={2}>
-          <Spacer mb={80} />
+          <Spacer mb={"80px"} />
           <Sans size="6">Membership info</Sans>
           <Spacer mb={3} />
           <MembershipCard memberName={`${firstName} ${lastName}`} planTier={plan?.tier} />

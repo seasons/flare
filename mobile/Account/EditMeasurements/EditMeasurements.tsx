@@ -1,5 +1,5 @@
-import { GetMeasurementsPane, Measurements } from "App/Scenes/CreateAccount/Undetermined"
 import { CloseButton, Container } from "components"
+import { GetMeasurementsPane, Measurements } from "mobile/GetMeasurementsPane"
 import React from "react"
 import { screenTrack } from "utils/analytics"
 

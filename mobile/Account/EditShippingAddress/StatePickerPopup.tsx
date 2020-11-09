@@ -1,6 +1,7 @@
-import { CustomPopUp } from "App/Components"
+import { CustomPopUp } from "components"
 import React, { useState } from "react"
-import { Picker } from "@react-native-community/picker"
+
+import { MenuItem } from "@material-ui/core"
 
 export interface StatePickerPopupProps {
   initialState?: string
@@ -66,17 +67,18 @@ export const StatePickerPopUp: React.FC<StatePickerPopupProps> = ({ initialState
   const [spinnerIndex, setSpinnerIndex] = useState(initialIndex)
 
   return (
-    <CustomPopUp
-      buttonText="Done"
-      onRequestClose={() => onRequestClose(states[spinnerIndex])}
-      title="State"
-      visible={visible}
-    >
-      <Picker selectedValue={spinnerIndex} onValueChange={(_, itemIndex) => setSpinnerIndex(itemIndex)}>
-        {states.map((state, index) => (
-          <Picker.Item key={state} label={state} value={index} />
-        ))}
-      </Picker>
-    </CustomPopUp>
+    // <CustomPopUp
+    //   buttonText="Done"
+    //   onRequestClose={() => onRequestClose(states[spinnerIndex])}
+    //   title="State"
+    //   visible={visible}
+    // >
+    //   <Picker selectedValue={spinnerIndex} onValueChange={(_, itemIndex) => setSpinnerIndex(itemIndex)}>
+    //     {states.map((state, index) => (
+    //       <Picker.Item key={state} label={state} value={index} />
+    //     ))}
+    //   </Picker>
+    // </CustomPopUp>
+    <></>
   )
 }

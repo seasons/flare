@@ -1,10 +1,7 @@
-import { Box, Button, Container, Flex, Sans, Spacer } from "App/Components"
-import { Measurements } from "App/Scenes/CreateAccount/Undetermined"
-import {
-  MultiSelectionTable
-} from "App/Scenes/CreateAccount/Undetermined/GetMeasurementsPane/MultiSelectionTable"
-import { color } from "App/utils/color"
-import { FadeBottom2 } from "Assets/svgs/FadeBottom2"
+import { Box, Button, Container, Flex, Sans, Spacer } from "components"
+import { color } from "helpers/color"
+import Measurements from "mobile/GetMeasurementsPane/Measurements"
+import { MultiSelectionTable } from "mobile/GetMeasurementsPane/MultiSelectionTable"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 
@@ -67,14 +64,14 @@ export const SizingTab: React.FC<{ navigation: any; rawMeasurements: InitialMeas
                 Height
               </Sans>
               <Spacer mb={1} />
-              <UninteractableBoxPicker text={measurements.height?.label} />
+              {/* <UninteractableBoxPicker text={measurements.height?.label} /> */}
             </Box>
             <Box style={{ flex: 0.5, marginLeft: 6 }}>
               <Sans color="black100" size="4">
                 Weight
               </Sans>
               <Spacer mb={1} />
-              <UninteractableBoxPicker text={measurements.weight?.label} />
+              {/* <UninteractableBoxPicker text={measurements.weight?.label} /> */}
             </Box>
           </Flex>
         )
@@ -123,9 +120,9 @@ export const SizingTab: React.FC<{ navigation: any; rawMeasurements: InitialMeas
         showsVerticalScrollIndicator={false}
         style={{ paddingHorizontal: 16, flex: 1 }}
       />
-      <FadeBottom2 width="100%" style={{ position: "absolute", bottom: 0 }}>
+      <Box width="100%" style={{ position: "absolute", bottom: 0 }}>
         <Spacer mb={2} />
-        <Flex p={2} flexDirection="row" onLayout={(e) => setFooterBoxHeight(e.nativeEvent.layout.height - 16)}>
+        <Flex p={2} flexDirection="row">
           <Button
             block
             onPress={() =>
@@ -139,7 +136,7 @@ export const SizingTab: React.FC<{ navigation: any; rawMeasurements: InitialMeas
             Edit
           </Button>
         </Flex>
-      </FadeBottom2>
+      </Box>
     </Container>
   )
 }

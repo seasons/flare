@@ -1,14 +1,13 @@
-import {
-  Box, Container, FixedBackArrow, FixedButton, Sans, Separator, Spacer
-} from "App/Components"
-import { Loader } from "App/Components/Loader"
-import { Schema as NavigationSchema } from "App/Navigation"
-import { color } from "App/utils"
-import { screenTrack } from "App/utils/track"
+import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import gql from "graphql-tag"
+import { color } from "helpers/color"
+import { Loader } from "mobile/Loader"
 import React, { useEffect } from "react"
-import { useQuery } from "react-apollo"
 import { FlatList } from "react-native"
+import { screenTrack } from "utils/analytics"
+
+import { useQuery } from "@apollo/client"
 
 export const GET_PAYMENT_DATA = gql`
   query GetUserPaymentData {
@@ -115,6 +114,8 @@ const AccountSection: React.FC<{ title: string; value: string | [string] }> = ({
 
 export const PaymentAndShipping = screenTrack()(({ navigation }) => {
   const { error, data, startPolling, stopPolling } = useQuery(GET_PAYMENT_DATA)
+  const { openDrawer } = useDrawerContext()
+
   useEffect(() => {
     // The Chargebee address update takes multiple seconds to update
     // therefore we must check and refetch data if the user leaves this view
@@ -135,7 +136,9 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
         <FixedBackArrow
           navigation={navigation}
           variant="whiteBackground"
-          onPress={() => navigation.navigate(NavigationSchema.PageNames.Account)}
+          onPress={() => {
+            openDrawer("profile")
+          }}
         />
         <Loader />
       </>
@@ -190,7 +193,9 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
       <FixedBackArrow
         navigation={navigation}
         variant="whiteBackground"
-        onPress={() => navigation.navigate(NavigationSchema.PageNames.Account)}
+        onPress={() => {
+          openDrawer("profile")
+        }}
       />
       <FlatList
         data={sections}
@@ -204,9 +209,9 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => renderItem(item)}
       />
-      <FixedButton block variant="primaryWhite" onPress={handleEditBtnPressed}>
+      <Button block variant="primaryWhite" onPress={handleEditBtnPressed}>
         Edit
-      </FixedButton>
+      </Button>
     </Container>
   )
 })

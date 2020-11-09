@@ -65,50 +65,37 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                 )
               }
             })}
-
-            <Link href="/signup" active={!!router.pathname.match("/signup")}>
-              <NavItem link={{ text: "Sign Up" }} />
-            </Link>
-
-            <Link onClick={() => {}}>
-              <MenuNavItem
-                link={{ text: "Account" }}
-                isMenu
-                menu={[
-                  {
-                    text: "Bag",
-                    onClick: () => {
-                      openDrawer("bag")
-                    },
-                  },
-                  {
-                    text: "Settings",
-                    onClick: () => {
-                      openDrawer("profile")
-                    },
-                  },
-                  ...(isLoggedIn
-                    ? [
-                        {
-                          separator: true,
-                          text: "Log out",
-                          onClick: () => {
-                            signOut()
-                          },
-                        },
-                      ]
-                    : [
-                        {
-                          separator: true,
-                          text: "Log In",
-                          onClick: () => {
-                            toggleLogin(true)
-                          },
-                        },
-                      ]),
-                ]}
-              />
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <Link
+                  onClick={() => {
+                    openDrawer("bag")
+                  }}
+                >
+                  <NavItem link={{ text: "Bag" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    openDrawer("profile")
+                  }}
+                >
+                  <NavItem link={{ text: "Account" }} />
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/signup" active={!!router.pathname.match("/signup")}>
+                  <NavItem link={{ text: "Sign Up" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    toggleLogin(true)
+                  }}
+                >
+                  <NavItem link={{ text: "Log In" }} />
+                </Link>
+              </>
+            )}
           </Flex>
         </Flex>
       </MaxWidth>

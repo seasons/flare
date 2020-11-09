@@ -1,12 +1,11 @@
-import { usePopUpContext } from "App/Navigation/ErrorPopUp/PopUpContext"
-import { color } from "App/utils"
-import { FadeBottom2 } from "Assets/svgs/FadeBottom2"
 import { Box, Button, CloseButton, Container, Flex, Sans, Spacer } from "components"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
+import { color } from "helpers/color"
 import React, { useState } from "react"
-import { useMutation } from "react-apollo"
 import { Dimensions, FlatList, TouchableOpacity } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+
+import { useMutation } from "@apollo/client"
 
 import { areIndicesEqual, Index, Item, Section, sections } from "./Sections"
 
@@ -60,7 +59,6 @@ export const EditStylePreferences: React.FC<{
   route: any
 }> = ({ navigation, route }) => {
   const [selectedItemIndices, setSelectedItemIndices] = useState(initialSelectedItemIndicesFrom(route?.params))
-  const insets = useSafeAreaInsets()
 
   const [isMutating, setIsMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
@@ -193,30 +191,28 @@ export const EditStylePreferences: React.FC<{
         showsVerticalScrollIndicator={false}
         style={{ paddingHorizontal: 16, flex: 1 }}
       />
-      <FadeBottom2 width="100%" style={{ position: "absolute", bottom: 0 }}>
-        <Spacer mb={2} />
-        <Flex p={2} flexDirection="row">
-          <Box flex={1}>
-            <Button block variant="primaryWhite" size="large" onPress={navigation.goBack}>
-              Cancel
-            </Button>
-          </Box>
-          <Spacer mr={1} />
-          <Box flex={1}>
-            <Button
-              block
-              disabled={[0, 1, 2, 3].some((section) => selectedItemsIn(section).length === 0)}
-              loading={isMutating}
-              onPress={handleUpdateStylePreferences}
-              size="large"
-              variant="primaryBlack"
-            >
-              Save
-            </Button>
-          </Box>
-        </Flex>
-        <Spacer height={insets.bottom} />
-      </FadeBottom2>
+
+      <Spacer mb={2} />
+      <Flex p={2} flexDirection="row">
+        <Box flex={1}>
+          <Button block variant="primaryWhite" size="large" onPress={navigation.goBack}>
+            Cancel
+          </Button>
+        </Box>
+        <Spacer mr={1} />
+        <Box flex={1}>
+          <Button
+            block
+            disabled={[0, 1, 2, 3].some((section) => selectedItemsIn(section).length === 0)}
+            loading={isMutating}
+            onPress={handleUpdateStylePreferences}
+            size="large"
+            variant="primaryBlack"
+          >
+            Save
+          </Button>
+        </Box>
+      </Flex>
     </Container>
   )
 }
