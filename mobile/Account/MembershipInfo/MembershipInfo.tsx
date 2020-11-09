@@ -113,11 +113,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           <Spacer mb={4} />
           <Sans size="4">Change your plan</Sans>
           <Spacer mb={2} />
-          <Button
-            variant="secondaryOutline"
-            onPress={() => navigation.navigate("Modal", { screen: Schema.PageNames.UpdatePaymentPlanModal })}
-            block
-          >
+          <Button variant="secondaryOutline" block>
             View membership options
           </Button>
           <Spacer mb={4} />

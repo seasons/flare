@@ -1,7 +1,7 @@
 import React from "react"
-import Svg, { G, Path, SvgProps, Rect } from "react-native-svg"
+import Svg, { G, Path, Rect } from "react-native-svg"
 
-export const PaymentShippingIcon = (props: SvgProps) => (
+export const PaymentShippingIcon = (props) => (
   <Svg width={20} height={36} viewBox="0 0 20 36" {...props}>
     <G fill="none" fillRule="evenodd" opacity={0.3}>
       <Path fill="#FFF" d="M0 0h20v36H0z" />

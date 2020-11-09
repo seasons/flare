@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`EditPaymentAndShipping renders properly 1`] = `ReactWrapper {}`;
-
-exports[`PaymentAndShipping renders properly 1`] = `ReactWrapper {}`;

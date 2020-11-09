@@ -1,4 +1,3 @@
-import { CustomPopUp } from "components"
 import React, { useState } from "react"
 
 import { MenuItem } from "@material-ui/core"

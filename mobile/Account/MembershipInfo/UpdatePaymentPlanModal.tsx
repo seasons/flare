@@ -1,47 +1,30 @@
-import { Loader } from "App/mobile/Loader"
-import { ChoosePlanPane } from "App/Scenes/CreateAccount/Admitted"
-import { GET_PLANS } from "App/Scenes/CreateAccount/CreateAccount"
-import { screenTrack } from "App/utils/track"
-import { CloseButton, Container } from "components"
+import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import React, { useEffect, useState } from "react"
-import { useQuery } from "react-apollo"
 
-export const UpdatePaymentPlanModal = screenTrack()(({ navigation, route }) => {
-  const [selectedPlan, setSelectedPlan] = useState(null)
-  const { data } = useQuery(GET_PLANS, {
-    variables: {
-      where: { status: "active" },
-    },
-  })
+import { Modal } from "@material-ui/core"
+
+interface UpdatePaymentPlanModalProps {
+  open?: boolean
+  onClose?: () => void
+}
+
+export const UpdatePaymentPlanModal: React.FC<UpdatePaymentPlanModalProps> = ({ open, onClose }) => {
+  const [isOpen, setOpen] = useState(false)
 
   useEffect(() => {
-    const customersPlan = data?.me?.customer?.membership?.plan
-    if (customersPlan) {
-      setSelectedPlan(customersPlan)
+    if (open) {
+      setOpen(open)
     }
-  }, [data, setSelectedPlan])
+  }, [open])
 
-  if (!data?.paymentPlans) {
-    return (
-      <>
-        <CloseButton />
-        <Loader />
-      </>
-    )
+  const handleClose = () => {
+    setOpen(false)
+    onClose?.()
   }
 
   return (
-    <Container insetsTop={false} insetsBottom={false}>
-      <CloseButton variant="light" />
-      <ChoosePlanPane
-        selectedPlan={selectedPlan}
-        setSelectedPlan={setSelectedPlan}
-        paneType={0}
-        data={data}
-        onComplete={() => navigation.goBack()}
-        headerText="Let's choose your plan"
-        source="UpdatePaymentPlanModal"
-      />
-    </Container>
+    <Modal open={isOpen} onClose={handleClose}>
+      <ChoosePlanStep />
+    </Modal>
   )
-})
+}

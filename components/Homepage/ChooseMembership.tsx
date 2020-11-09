@@ -69,7 +69,6 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
           .map((plan, i) => {
             return (
               <PlanWrapper
-                flexDirection="column"
                 key={plan.id}
                 style={{ borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none" }}
                 onClick={() => {

@@ -186,7 +186,7 @@ export const EditStylePreferences: React.FC<{
             <Sans size="4">Style preferences</Sans>
           </Box>
         )}
-        ListFooterComponent={() => <Spacer height={100 + insets.bottom - 8} />}
+        ListFooterComponent={() => <Spacer height={100} />}
         renderItem={({ item, index }) => renderSection(item, index)}
         showsVerticalScrollIndicator={false}
         style={{ paddingHorizontal: 16, flex: 1 }}

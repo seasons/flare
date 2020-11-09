@@ -28,11 +28,6 @@ export const NotificationToggle: React.FC<{ pushNotification: any }> = ({ pushNo
   const [updateStatus] = useMutation(UPDATE_USER_PUSH_NOTIFICATION_STATUS, {
     onCompleted: (data) => {
       const status = data?.updateUserPushNotificationStatus?.status
-      if (status) {
-        init()
-      } else {
-        unsubscribe()
-      }
       setIsMutating(false)
     },
     onError: (err) => {
@@ -62,21 +57,18 @@ export const NotificationToggle: React.FC<{ pushNotification: any }> = ({ pushNo
       actionType: Schema.ActionTypes.Tap,
       newValue,
     })
-    if (deviceStatus === "denied") {
-      requestPermissions(callback)
-    } else {
-      updateStatus({
-        variables: { newStatus: newValue },
-        optimisticResponse: {
-          __typename: "Mutation",
-          updateUserPushNotificationStatus: {
-            __typename: "UserPushNotification",
-            id: pushNotification.id,
-            status: newValue,
-          },
+
+    updateStatus({
+      variables: { newStatus: newValue },
+      optimisticResponse: {
+        __typename: "Mutation",
+        updateUserPushNotificationStatus: {
+          __typename: "UserPushNotification",
+          id: pushNotification.id,
+          status: newValue,
         },
-      })
-    }
+      },
+    })
 
     setIsMutating(false)
   }

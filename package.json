@@ -40,7 +40,6 @@
     "graphql": "^15.3.0",
     "luxon": "^1.24.1",
     "next": "9.5.3",
-    "next-apollo": "5.0.0",
     "next-fonts": "^1.0.3",
     "next-images": "^1.4.0",
     "next-redux-wrapper": "^6.0.2",
@@ -51,6 +50,7 @@
     "react": "16.12.0",
     "react-content-loader": "^5.0.4",
     "react-dom": "16.12.0",
+    "react-is": "16",
     "react-native-svg-web": "^1.0.9",
     "react-native-web": "^0.14.1",
     "react-paginate": "^6.3.2",
@@ -66,6 +66,7 @@
     "styled-bootstrap-grid": "^3.0.5",
     "styled-components": "^5.0.1",
     "styled-system": "^5.1.5",
+    "tiny-warning": "1",
     "use-state-with-callback": "^2.0.3",
     "yup": "^0.29.1"
   },
@@ -87,7 +88,9 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.1.2",
     "prettier": "^2.1.2",
-    "typescript": "^3.7.5"
+    "prop-types": "15",
+    "typescript": "^3.7.5",
+    "webpack": "4"
   },
   "prettier": {
     "printWidth": 120,

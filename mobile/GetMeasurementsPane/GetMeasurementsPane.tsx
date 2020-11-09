@@ -7,7 +7,6 @@ import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
 
-import { BoxPicker } from "./BoxPicker"
 import Item from "./Item"
 import Measurements from "./Measurements"
 import { MultiSelectionTable } from "./MultiSelectionTable"
@@ -125,24 +124,24 @@ export const GetMeasurementsPane: React.FC<GetMeasurementsPaneProps> = ({
                 Height
               </Sans>
               <Spacer mb={1} />
-              <BoxPicker
+              {/* <BoxPicker
                 onChange={(value) => setHeight(value)}
                 title="Height"
                 currentItem={height}
                 items={Measurements.heights}
-              />
+              /> */}
             </Box>
             <Box style={{ flex: 0.5, marginLeft: 6 }}>
               <Sans color="black100" size="1">
                 Weight
               </Sans>
               <Spacer mb={1} />
-              <BoxPicker
+              {/* <BoxPicker
                 onChange={(value) => setWeight(value)}
                 title="Weight"
                 currentItem={weight}
                 items={Measurements.weights}
-              />
+              /> */}
             </Box>
           </Flex>
 

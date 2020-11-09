@@ -1,10 +1,11 @@
 import React from "react"
 import { View } from "react-native"
-import Svg, { G, Path, SvgProps } from "react-native-svg"
+import Svg, { G, Path } from "react-native-svg"
 
-interface Props extends SvgProps {
+interface Props {
   rotateDeg?: string
   scale?: number
+  color?: string
 }
 
 export const ChevronIcon = (props: Props) => {

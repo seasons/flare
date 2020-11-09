@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Sans, Spacer } from "components"
+import { ButtonVariant } from "components/Button/Button.shared"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
@@ -256,7 +257,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
           disabled={isMutating}
           loading={isMutating}
           block
-          variant={pauseButtonVariant}
+          variant={pauseButtonVariant as ButtonVariant}
         >
           {pauseButtonText}
         </Button>

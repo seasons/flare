@@ -3,7 +3,7 @@ import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
 import { space } from "helpers/space"
 import React, { useState } from "react"
-import { Dimensions, KeyboardAvoidingView } from "react-native"
+import { Dimensions, FlatList, KeyboardAvoidingView } from "react-native"
 import styled from "styled-components"
 import { Schema as TrackSchema, screenTrack, useTracking } from "utils/analytics"
 
@@ -300,13 +300,7 @@ export const EditPaymentAndShipping: React.FC<{
           <>
             <Sans size="4">{BILLING_ADDRESS}</Sans>
             <Spacer mb={2} />
-            <Radio
-              borderRadius={4}
-              selected={sameAsDeliveryRadioSelected}
-              onSelect={handleSameAsDeliveryAddress}
-              label="Same as delivery address"
-              labelSize="1"
-            />
+            <Radio onSelect={handleSameAsDeliveryAddress} />
             <Spacer mb={2} />
             <TextInput
               currentValue={billingAddress1}
@@ -404,13 +398,13 @@ export const EditPaymentAndShipping: React.FC<{
         </Box>
         <FixedKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={space(2)}>
           <Flex flexDirection="row" flexWrap="nowrap" justifyContent="center">
-            <Button variant="primaryWhite" size="large" width={buttonWidth} onPress={handleCancelBtnPressed}>
+            <Button variant="primaryWhite" size="large" block>
               Cancel
             </Button>
             <Spacer ml={1} />
             <Button
               loading={isMutating}
-              variant="secondaryBlack"
+              variant="secondaryOutline"
               size="large"
               width={buttonWidth}
               onPress={handleSaveBtnPressed}
@@ -421,14 +415,14 @@ export const EditPaymentAndShipping: React.FC<{
         </FixedKeyboardAvoidingView>
       </Container>
 
-      <EditPaymentPopUp
+      {/* <EditPaymentPopUp
         planID={paymentPlan?.planID}
         billingAddress={billingAddress}
         setOpenPopUp={setOpenPaymentPopUp}
         openPopUp={openPaymentPopUp}
         onApplePay={onApplePay}
         onAddCreditCard={onAddCreditCard}
-      />
+      /> */}
     </>
   )
 })

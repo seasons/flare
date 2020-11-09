@@ -5,15 +5,13 @@ import { MultiSelectionTable } from "mobile/GetMeasurementsPane/MultiSelectionTa
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 
-import { InitialMeasurements } from "../EditMeasurements"
-
 enum Section {
   Height_Weight,
   TopSizes,
   WaistSizes,
 }
 
-const parseMeasurements = (rawMeasurements: InitialMeasurements) => {
+const parseMeasurements = (rawMeasurements) => {
   const height = rawMeasurements?.height
   const weightRange = rawMeasurements?.weight
   const topSizes = rawMeasurements?.topSizes
@@ -47,10 +45,7 @@ const parseMeasurements = (rawMeasurements: InitialMeasurements) => {
   return measurements
 }
 
-export const SizingTab: React.FC<{ navigation: any; rawMeasurements: InitialMeasurements }> = ({
-  navigation,
-  rawMeasurements,
-}) => {
+export const SizingTab: React.FC<{ navigation: any; rawMeasurements }> = ({ navigation, rawMeasurements }) => {
   const [footerBoxHeight, setFooterBoxHeight] = useState(0)
   const measurements = parseMeasurements(rawMeasurements)
 

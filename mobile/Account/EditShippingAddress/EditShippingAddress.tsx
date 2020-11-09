@@ -134,7 +134,6 @@ export const EditShippingAddress: React.FC<{
             <TextInput
               currentValue={zipCode}
               headerText="ZIP"
-              keyboardType="number-pad"
               onChangeText={(_, val) => setZipCode(val)}
               style={{ flex: 1 }}
             />
@@ -186,36 +185,34 @@ export const EditShippingAddress: React.FC<{
         style={{ paddingHorizontal: 16, overflow: "visible", flex: 1 }}
       />
       <KeyboardAvoidingView behavior="padding">
-        <FadeBottom2 width="100%">
-          <Spacer mb={2} />
-          <Flex p={2} flexDirection="row">
-            <Box style={{ flex: 1 }}>
-              <Button block variant="primaryWhite" size="large" onPress={navigation.goBack}>
-                Cancel
-              </Button>
-            </Box>
-            <Spacer mr={1} />
-            <Box style={{ flex: 1 }}>
-              <Button
-                block
-                disabled={
-                  !name.trim() ||
-                  !address1.trim() ||
-                  !isWholeNumber(zipCode) ||
-                  zipCode.length !== 5 ||
-                  !city.trim() ||
-                  !state
-                }
-                loading={isMutating}
-                onPress={handleUpdateAddress}
-                size="large"
-                variant="primaryBlack"
-              >
-                Save
-              </Button>
-            </Box>
-          </Flex>
-        </FadeBottom2>
+        <Spacer mb={2} />
+        <Flex p={2} flexDirection="row">
+          <Box style={{ flex: 1 }}>
+            <Button block variant="primaryWhite" size="large" onPress={navigation.goBack}>
+              Cancel
+            </Button>
+          </Box>
+          <Spacer mr={1} />
+          <Box style={{ flex: 1 }}>
+            <Button
+              block
+              disabled={
+                !name.trim() ||
+                !address1.trim() ||
+                !isWholeNumber(zipCode) ||
+                zipCode.length !== 5 ||
+                !city.trim() ||
+                !state
+              }
+              loading={isMutating}
+              onPress={handleUpdateAddress}
+              size="large"
+              variant="primaryBlack"
+            >
+              Save
+            </Button>
+          </Box>
+        </Flex>
       </KeyboardAvoidingView>
 
       <StatePickerPopUp

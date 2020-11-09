@@ -1,7 +1,7 @@
 import React from "react"
-import Svg, { G, Path, SvgProps } from "react-native-svg"
+import Svg, { G, Path } from "react-native-svg"
 
-export const BackArrowIcon = (props: SvgProps) => (
+export const BackArrowIcon = (props) => (
   <Svg width={26} height={26} {...props} viewBox="0 0 28 28">
     <G fill="none" fillRule="evenodd">
       <Path

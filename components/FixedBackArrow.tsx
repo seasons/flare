@@ -16,7 +16,7 @@ export const FixedBackArrow: React.FC<{
 }> = ({ navigation, variant, onPress }) => {
   const getColorsForVariant = (variant: FixedBackArrowVariant) => {
     const {
-      colors: { black100, white100, black10, productBackgroundColor },
+      colors: { black100, white100, black10 },
     } = themeProps
 
     switch (variant) {
@@ -28,11 +28,6 @@ export const FixedBackArrow: React.FC<{
       case "whiteBackground":
         return {
           backgroundColor: white100,
-          arrowColor: black100,
-        }
-      case "productBackground":
-        return {
-          backgroundColor: productBackgroundColor,
           arrowColor: black100,
         }
       default:

@@ -56,7 +56,7 @@ export const MembershipCard: React.FC<MembershipCardProps> = ({ memberName, plan
 }
 
 const Card = styled(Box)`
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props: any) => props.backgroundColor};
   height: 200px;
   border-radius: 8px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);

@@ -6,7 +6,6 @@ import { TouchableOpacity } from "react-native"
 import styled from "styled-components"
 
 import { State, UserState } from "../Account"
-import { InitialMeasurements } from "../EditMeasurements"
 
 export enum OnboardingStep {
   VerifiedPhone = "VerifiedPhone",
@@ -27,7 +26,7 @@ export enum CustomerStatus {
 }
 
 interface OnboardingChecklistProps {
-  rawMeasurements: InitialMeasurements
+  rawMeasurements: any
   navigation: any
   onboardingSteps: OnboardingStep[]
   shippingAddress: any
