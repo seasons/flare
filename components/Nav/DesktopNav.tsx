@@ -10,13 +10,14 @@ import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 import { MaxWidth } from "../"
 import { Flex } from "../Flex"
-import { MenuNavItem } from "./MenuNavItem"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
-export const DesktopNav = ({ fixed = false, links }: NavProps) => {
+export const DesktopNav = (props: NavProps) => {
+  const { fixed = false, links } = props
   const router = useRouter()
+
   const tracking = useTracking()
   const [isLoginOpen, toggleLogin] = useState(false)
   const { userSession, signOut } = useAuthContext()
@@ -50,7 +51,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                     <NavItem link={link} />
                   </Link>
                 )
-              } else {
+              } else if (link.url) {
                 return (
                   <NextLink href={link.url} key={link.text}>
                     <Link
@@ -62,6 +63,8 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                     </Link>
                   </NextLink>
                 )
+              } else {
+                return link.renderNavItem()
               }
             })}
             {isLoggedIn ? (

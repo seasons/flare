@@ -27,7 +27,7 @@ const HomePageProductFragment = gql`
 `
 
 export const HOME_QUERY = gql`
-  query GetBrowseProducts($brandSlugs: [String!]) {
+  query GetBrowseProducts($brandSlugs: [String!]!) {
     paymentPlans(where: { status: "active" }) {
       id
       name
@@ -57,7 +57,7 @@ export const HOME_QUERY = gql`
       first: 4
       category: "tops"
       orderBy: publishedAt_DESC
-      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, {tags_none: { name: "Vintage"}}] }
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
     ) {
       ...HomePageProduct
     }

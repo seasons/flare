@@ -95,7 +95,7 @@ export const Brands: React.FC<{ brands: string[] }> = ({ brands }) => {
                   <Sans size="5">{group.letter}</Sans>
                   <Spacer mb={1} />
                   {group.data.map((brand) => (
-                    <Link href="/designer/[Designer]" as={`/designer/${brand.slug}`}>
+                    <Link key={brand.slug} href="/designer/[Designer]" as={`/designer/${brand.slug}`}>
                       <Sans size="4" color="black50" key={brand.name}>
                         {brand.name}
                       </Sans>

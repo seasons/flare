@@ -11,12 +11,16 @@ import { Wizard } from "components/Forms/Wizard"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { CheckWithBackground } from "components/SVGs"
+import { FEATURED_BRAND_LIST } from "components/Nav"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
+import { useQuery } from "@apollo/client"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import { initializeApollo } from "lib/apollo/apollo"
 
 import { useMutation } from "@apollo/client"
 
@@ -81,6 +85,13 @@ const SignUpPage = screenTrack(() => ({
 }))(() => {
   const router = useRouter()
   const tracking = useTracking()
+  const { data } = useQuery(NAVIGATION_QUERY, {
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
+    },
+  })
+  const featuredBrandItems = data?.brands || []
+
   const { userSession, signIn, signOut } = useAuthContext()
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
@@ -300,7 +311,7 @@ const SignUpPage = screenTrack(() => ({
   )
 
   return (
-    <Layout fixedNav hideFooter>
+    <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
@@ -313,6 +324,24 @@ const SignUpPage = screenTrack(() => ({
 
 SignUpPage.getInitialProps = async ({ query }) => {
   return query
+}
+
+export async function getStaticProps() {
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query({
+    query: NAVIGATION_QUERY,
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
+    },
+  })
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+    revalidate: 1,
+  }
 }
 
 export default SignUpPage

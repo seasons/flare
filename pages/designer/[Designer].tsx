@@ -8,17 +8,18 @@ import { ProductGridItem } from "components/Product/ProductGridItem"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
+import { FEATURED_BRAND_LIST } from "components/Nav"
 import { initializeApollo } from "lib/apollo"
 import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
 import { withRouter } from "next/router"
 import { GET_BRAND, GET_BRANDS } from "queries/designerQueries"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
-
-import { gql, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -39,11 +40,19 @@ const Designer = screenTrack(({ router }) => {
       first: 8,
       skip: 0,
       orderBy: "createdAt_DESC",
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
+    },
+  })
+
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
 
   const products = data?.brand?.products?.edges
   const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
+  const featuredBrandItems = navigationData?.brands?.filter(({ slug }) => FEATURED_BRAND_LIST.includes(slug)) || []
 
   const onScroll = debounce(() => {
     const shouldLoadMore =
@@ -198,7 +207,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout fixedNav includeDefaultHead={false}>
+    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
@@ -312,6 +321,13 @@ export async function getStaticProps({ params }) {
       first: 8,
       skip: 0,
       orderBy: "createdAt_DESC",
+    },
+  })
+
+  await apolloClient.query({
+    query: NAVIGATION_QUERY,
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
 

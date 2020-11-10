@@ -7,7 +7,6 @@ import { useState } from "react"
 import { animated, useSpring } from "react-spring"
 import styled from "styled-components"
 
-import { MaxWidth } from "../"
 import { color } from "../../helpers/color"
 import { Schema, useTracking } from "../../utils/analytics"
 import { Box, BoxProps } from "../Box"
@@ -108,7 +107,7 @@ const Menu = ({ items, open, onSelect, openLogin }) => {
                   </MenuItem>
                 </StyledAnchor>
               )
-            } else {
+            } else if (link.url) {
               return (
                 <NextLink href={link.url} key={link.text}>
                   <MenuItem
@@ -129,6 +128,9 @@ const Menu = ({ items, open, onSelect, openLogin }) => {
                   </MenuItem>
                 </NextLink>
               )
+            } else {
+              /** FIXME: add mobile rendering for links **/
+              return null 
             }
           })}
           {isLoggedIn ? (

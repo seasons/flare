@@ -3,6 +3,7 @@ import { NextPage } from "next"
 import { useState } from "react"
 import { useQuery } from "@apollo/client"
 import { Layout, Flex, Spacer } from "../../components"
+import { FEATURED_BRAND_LIST } from "components/Nav"
 import { Sans, fontFamily } from "../../components/Typography/Typography"
 import { Box } from "../../components/Box"
 import { Grid, Row, Col } from "../../components/Grid"
@@ -19,6 +20,7 @@ import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 import { BRAND_LIST } from "../../components/Homepage/Brands"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
 
 const pageSize = 20
 
@@ -42,6 +44,12 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     variables: {
       brandOrderBy: "name_ASC",
       brandSlugs: BRAND_LIST,
+    },
+  })
+
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
 
@@ -88,10 +96,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const categories = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.categories ?? [])], [menuData])
   const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
+  const featuredBrandItems = navigationData?.brands?.filter(({ slug }) => FEATURED_BRAND_LIST.includes(slug)) || []
 
   return (
     <>
-      <Layout fixedNav footerBottomPadding={["59px", "0px"]}>
+      <Layout fixedNav footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems}>
         <Media lessThan="md">
           <MobileFilters
             BrandsListComponent={
@@ -256,6 +265,13 @@ export async function getStaticProps({ params }) {
     variables: {
       brandOrderBy: "name_ASC",
       brandSlugs: BRAND_LIST,
+    },
+  })
+
+  await apolloClient.query({
+    query: NAVIGATION_QUERY,
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
 
