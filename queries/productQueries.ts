@@ -90,9 +90,9 @@ export const GET_PRODUCT = gql`
   }
 `
 
-export const GET_PRODUCTS = gql`
-  query GetProducts {
-    products(where: { status: Available }) {
+export const GET_STATIC_PRODUCTS = gql`
+  query GetStaticProducts {
+    products(where: { status: Available }, first: 300, orderBy: publishedAt_DESC) {
       id
       slug
     }

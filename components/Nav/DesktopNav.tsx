@@ -8,7 +8,6 @@ import { useRouter } from "next/router"
 import React, { useState } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-
 import { MaxWidth } from "../"
 import { Flex } from "../Flex"
 import { MenuNavItem } from "./MenuNavItem"

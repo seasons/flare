@@ -12,7 +12,7 @@ import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { GET_PRODUCT, GET_PRODUCTS } from "queries/productQueries"
+import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
@@ -130,7 +130,7 @@ export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
   const response = await apolloClient.query({
-    query: GET_PRODUCTS,
+    query: GET_STATIC_PRODUCTS,
   })
 
   const paths = []

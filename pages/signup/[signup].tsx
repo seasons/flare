@@ -14,6 +14,7 @@ import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
+import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
@@ -26,12 +27,32 @@ const SIGN_UP_USER = gql`
     $firstName: String!
     $lastName: String!
     $details: CustomerDetailCreateInput!
+    $referrerId: String
   ) {
-    signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName, details: $details) {
+    signup(
+      email: $email
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      details: $details
+      referrerId: $referrerId
+    ) {
+      expiresIn
+      refreshToken
       token
       user {
         id
         email
+        firstName
+        lastName
+        beamsToken
+        roles
+      }
+      coupon {
+        id
+        amount
+        percentage
+        type
       }
     }
   }
@@ -58,6 +79,7 @@ const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
+  const router = useRouter()
   const tracking = useTracking()
   const { userSession, signIn, signOut } = useAuthContext()
   const [signUpUser] = useMutation(SIGN_UP_USER)
@@ -72,10 +94,12 @@ const SignUpPage = screenTrack(() => ({
   const [userIsConfirmed, setUserIsConfirmed] = useState(false)
 
   useEffect(() => {
-    setUserHasAccount(!!userSession)
-    setIsWaitlisted(localStorage.getItem("isWaitlisted") === "true")
-    setUserIsConfirmed(!!localStorage.getItem("isWaitlisted"))
-    setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
+    if (typeof window !== "undefined") {
+      setUserHasAccount(!!userSession)
+      setIsWaitlisted(localStorage.getItem("isWaitlisted") === "true")
+      setUserIsConfirmed(!!localStorage.getItem("isWaitlisted"))
+      setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
+    }
   }, [])
 
   const initialValues = {
@@ -136,6 +160,7 @@ const SignUpPage = screenTrack(() => ({
                   create: { zipCode: values.zipCode },
                 },
               },
+              referrerId: router.query.referrer_id,
             },
           })
 
@@ -146,6 +171,7 @@ const SignUpPage = screenTrack(() => ({
 
           if (response) {
             signIn(response.data.signup)
+            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.coupon))
             actions.setSubmitting(false)
 
             return true
@@ -285,5 +311,9 @@ const SignUpPage = screenTrack(() => ({
     </Layout>
   )
 })
+
+SignUpPage.getInitialProps = async ({ query }) => {
+  return query
+}
 
 export default SignUpPage
