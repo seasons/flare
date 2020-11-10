@@ -31,6 +31,7 @@ const SIGN_UP_USER = gql`
       token
       user {
         id
+        email
       }
     }
   }

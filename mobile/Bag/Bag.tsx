@@ -11,7 +11,7 @@ import {
   CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM
 } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { Dimensions, FlatList, RefreshControl } from "react-native"
 import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
@@ -304,7 +304,7 @@ export const Bag = screenTrack()((props) => {
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
       {isBagView && pauseStatus !== "paused" && !hasActiveReservation && (
-        <ButtonContainer>
+        <ButtonContainer p={2}>
           <Button
             block
             onClick={() => {
@@ -319,7 +319,7 @@ export const Bag = screenTrack()((props) => {
             loading={isMutating}
             style={{
               width: "100%",
-              borderRadius: 0,
+              // borderRadius: 0,
             }}
           >
             Reserve

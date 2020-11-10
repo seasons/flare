@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
+import { Box, Button, FixedBackArrow, Flex, Sans, Separator, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
@@ -135,10 +135,16 @@ export const Reservation = screenTrack()((props) => {
   return (
     <>
       <Container>
+        <FixedBackArrow
+          variant="whiteBackground"
+          onPress={() => {
+            openDrawer("bag")
+          }}
+        />
         <Flex px={2}>
           <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <Spacer mb={40} />
-            <Box pb={1}>
+            <Spacer mb={80} />
+            <Box pt={4} pb={1}>
               <Sans size="5" color="black100">
                 Review your order
               </Sans>
@@ -195,7 +201,7 @@ export const Reservation = screenTrack()((props) => {
             </Box>
           </ScrollView>
         </Flex>
-        <ButtonContainer>
+        <ButtonContainer p={2}>
           <Button
             loading={isMutating}
             disabled={isMutating}
@@ -224,7 +230,6 @@ export const Reservation = screenTrack()((props) => {
             }}
             style={{
               width: "100%",
-              borderRadius: 0,
             }}
           >
             Place order
