@@ -8,6 +8,22 @@ import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
 import { Check } from "../SVGs"
 import { Display } from "../Typography"
+import { useQuery } from "@apollo/client"
+import gql from "graphql-tag"
+
+const ADMISSIONS_ME = gql`
+  query admissionsMe {
+    me {
+      customer {
+        id
+        admissions {
+          id
+          allAccessEnabled
+        }
+      }
+    }
+  }
+`
 
 interface ChooseMembershipProps {
   paymentPlans: any
@@ -15,6 +31,12 @@ interface ChooseMembershipProps {
 }
 
 export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan }) => {
+  let { data, loading } = useQuery(ADMISSIONS_ME, {
+    onCompleted: (data) => {
+      localStorage.setItem("allAccessEnabled", data?.me?.customer?.admissions?.allAccessEnabled)
+    },
+  })
+
   const plansGroupedByTier = []
   const tiers = uniq(paymentPlans?.map((plan) => plan.tier))
   tiers?.forEach((tier) => {
@@ -26,6 +48,9 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
     plansGroupedByTier.push(tierPlans)
   })
 
+  if (loading) {
+    return null
+  }
   return (
     <>
       <Media greaterThanOrEqual="md">
@@ -101,6 +126,8 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
       </Sans>
     )
   }
+  const planStyle = { backgroundColor: "#F6F6F6" }
+
   return (
     <>
       <Display size="9">{tier === "AllAccess" ? "All Access" : tier}</Display>
@@ -130,7 +157,7 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
             return (
               <PlanWrapper
                 key={plan.id}
-                style={{ borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none" }}
+                style={{ borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none", ...planStyle }}
                 onClick={() => {
                   onSelectPlan?.(plan)
                 }}

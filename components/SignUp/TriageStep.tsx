@@ -82,9 +82,7 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
   return (
     <>
       {(checkStatus === CheckStatus.Checking || checkStatus === CheckStatus.Checked) && (
-        <TriageProgressScreen
-          start={check}
-        />
+        <TriageProgressScreen start={check} />
       )}
     </>
   )
