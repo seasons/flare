@@ -59,7 +59,7 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
   return (
     <MuiDrawer anchor="right" open={isOpen} onClose={handleClose} variant="temporary">
       <Box width="380px" height="100%" style={{ position: "relative" }}>
-        {currentView !== "bag" && <CloseButton variant="light" />}
+        {<CloseButton variant="light" />}
         {view()}
       </Box>
     </MuiDrawer>

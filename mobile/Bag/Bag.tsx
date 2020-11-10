@@ -273,26 +273,28 @@ export const Bag = screenTrack()((props) => {
 
   return (
     <Container insetsBottom={false}>
-      <TabBar
-        spaceEvenly
-        tabs={["Bag", "Saved", "History"]}
-        activeTab={currentView}
-        goToPage={(page: BagView) => {
-          tracking.trackEvent({
-            actionName: () => {
-              if (page === 0) {
-                return Schema.ActionNames.BagTabTapped
-              } else if (page === 1) {
-                return Schema.ActionNames.SavedTabTapped
-              } else {
-                return Schema.ActionNames.ReservationHistoryTabTapped
-              }
-            },
-            actionType: Schema.ActionTypes.Tap,
-          })
-          setCurrentView(page)
-        }}
-      />
+      <Box>
+        <TabBar
+          spaceEvenly
+          tabs={["Bag", "Saved", "History"]}
+          activeTab={currentView}
+          goToPage={(page: BagView) => {
+            tracking.trackEvent({
+              actionName: () => {
+                if (page === 0) {
+                  return Schema.ActionNames.BagTabTapped
+                } else if (page === 1) {
+                  return Schema.ActionNames.SavedTabTapped
+                } else {
+                  return Schema.ActionNames.ReservationHistoryTabTapped
+                }
+              },
+              actionType: Schema.ActionTypes.Tap,
+            })
+            setCurrentView(page)
+          }}
+        />
+      </Box>
       <FlatList
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         data={sections}

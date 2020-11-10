@@ -266,7 +266,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
         <Spacer mb={1} />
         {pauseStatus === "paused" ? (
           <Button
-            variant="secondaryOutline"
+            variant="primaryBlack"
             disabled={!pauseDateCanExtend}
             onClick={() =>
               updateResumeDate({
