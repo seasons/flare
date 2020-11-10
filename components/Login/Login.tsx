@@ -81,7 +81,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
                   </Box>
                   <div>
                     <Field component={TextField} label="Email address" name="email" autoFocus fullWidth />
-                    <Spacer mt={1} />
+                    <Spacer mt={2} />
                     <Field component={TextField} label="Password" name="password" type="password" fullWidth />
                   </div>
                   <Spacer mt={6} />

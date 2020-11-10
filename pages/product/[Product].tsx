@@ -98,7 +98,7 @@ const Product = screenTrack(({ router }) => {
               <Box style={{ maxWidth: "480px" }} px={[2, 2, 0, 0, 0]}>
                 {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
                 <Flex flex-direction="row">
-                  <Box mr={2}>
+                  <Flex flex={1}>
                     <VariantSelect
                       product={product}
                       selectedVariant={selectedVariant}
@@ -107,13 +107,16 @@ const Product = screenTrack(({ router }) => {
                         console.log(size)
                       }}
                     />
-                  </Box>
-                  <AddToBagButton
-                    selectedVariant={selectedVariant}
-                    data={data}
-                    variantInStock={true}
-                    isInBag={isInBag}
-                  />
+                  </Flex>
+                  <Spacer mr={2} />
+                  <Flex flex={1}>
+                    <AddToBagButton
+                      selectedVariant={selectedVariant}
+                      data={data}
+                      variantInStock={true}
+                      isInBag={isInBag}
+                    />
+                  </Flex>
                 </Flex>
                 <HowItWorks />
               </Box>

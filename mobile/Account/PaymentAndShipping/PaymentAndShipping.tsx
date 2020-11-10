@@ -92,18 +92,18 @@ export const createBillingAddress = (billingInfo) => {
 const AccountSection: React.FC<{ title: string; value: string | [string] }> = ({ title, value }) => {
   return (
     <Box key={title} px={2}>
-      <Sans size="2">{title}</Sans>
+      <Sans size="4">{title}</Sans>
       <Box mb={1} />
       <Separator color={color("black10")} />
       <Box mb={1} />
       {Array.isArray(value) ? (
         value.map((text) => (
-          <Sans key={text} size="2" color="black50">
+          <Sans key={text} size="3" color="black50">
             {text}
           </Sans>
         ))
       ) : (
-        <Sans size="2" color="black50">
+        <Sans size="3" color="black50">
           {value}
         </Sans>
       )}
@@ -200,18 +200,20 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
       <FlatList
         data={sections}
         ListHeaderComponent={() => (
-          <Box px={2}>
+          <Box px={2} pt={4}>
             <Spacer mb={80} />
-            <Sans size="4">Payment & Shipping</Sans>
+            <Sans size="6">Payment & Shipping</Sans>
             <Spacer mb={4} />
           </Box>
         )}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => renderItem(item)}
       />
-      <Button block variant="primaryWhite" onPress={handleEditBtnPressed}>
-        Edit
-      </Button>
+      <Box p={2}>
+        <Button block variant="primaryWhite" onPress={handleEditBtnPressed}>
+          Edit
+        </Button>
+      </Box>
     </Container>
   )
 })

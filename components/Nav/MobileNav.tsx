@@ -1,3 +1,5 @@
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -43,6 +45,10 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
 const Menu = ({ items, open }) => {
   const router = useRouter()
   const tracking = useTracking()
+  const { userSession } = useAuthContext()
+  const { openDrawer } = useDrawerContext()
+
+  const isLoggedIn = !!userSession
   const openAnimation = useSpring({
     transform: open ? `translateY(0)` : "translateY(-100%)",
     config: { tension: 500, friction: 33 },
@@ -98,6 +104,41 @@ const Menu = ({ items, open }) => {
               )
             }
           })}
+          {isLoggedIn ? (
+            <>
+              <MenuItem key="bag" width="100%" style={{ cursor: "pointer" }} onClick={() => openDrawer("bag")}>
+                <Box py={2}>
+                  <Sans size="3" py={2} color="black">
+                    Bag
+                  </Sans>
+                </Box>
+              </MenuItem>
+              <MenuItem key="account" width="100%" style={{ cursor: "pointer" }} onClick={() => openDrawer("profile")}>
+                <Box py={2}>
+                  <Sans size="3" py={2} color="black">
+                    Account
+                  </Sans>
+                </Box>
+              </MenuItem>
+            </>
+          ) : (
+            <>
+              <NextLink href="/signup">
+                <MenuItem
+                  width="100%"
+                  style={{ cursor: "pointer" }}
+                  active={!!router.pathname.match("/signup")}
+                  onClick={() => trackClick("/signup")}
+                >
+                  <Box py={2}>
+                    <Sans size="3" py={2} color="black">
+                      Sign Up
+                    </Sans>
+                  </Box>
+                </MenuItem>
+              </NextLink>
+            </>
+          )}
         </Box>
       </AnimatedContainer>
     </Wrapper>

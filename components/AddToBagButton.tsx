@@ -3,7 +3,9 @@ import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { localBagVar } from "lib/apollo/cache"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { head } from "lodash"
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "queries/bagQueries"
+import {
+  ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG
+} from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
@@ -119,6 +121,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       loading={isMutating}
       disabled={disabled}
       variant="primaryBlack"
+      block
       onClick={() => {
         tracking.trackEvent({
           actionName: Schema.ActionNames.ProductAddedToBag,

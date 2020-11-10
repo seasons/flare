@@ -2,6 +2,7 @@ import { Box } from "components"
 import { FAQ } from "components/Homepage"
 import { PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
+import { ResumeConfirmation } from "mobile/Account/Components/Pause"
 import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
@@ -50,13 +51,15 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         return <PaymentAndShipping />
       case "faq":
         return <FAQ />
+      case "resumeConfirmation":
+        return <ResumeConfirmation />
     }
   }
 
   return (
     <MuiDrawer anchor="right" open={isOpen} onClose={handleClose} variant="temporary">
       <Box width="380px" height="100%" style={{ position: "relative" }}>
-        <CloseButton variant="light" />
+        {<CloseButton variant="light" />}
         {view()}
       </Box>
     </MuiDrawer>

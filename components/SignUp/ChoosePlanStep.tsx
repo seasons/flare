@@ -1,9 +1,11 @@
-import { useQuery } from "@apollo/client"
 import { Box, Sans, Spacer } from "components"
 import { ChooseMembership } from "components/Homepage"
 import gql from "graphql-tag"
 import { apolloClient } from "lib/apollo"
+import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useEffect } from "react"
+
+import { useQuery } from "@apollo/client"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -40,7 +42,7 @@ const GET_CHARGEBEE_CHECKOUT = gql`
   }
 `
 
-export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
+export function GetChargebeeCheckout(planID: string, email: string): Promise<boolean | void> {
   let coupon
   try {
     const couponData = localStorage?.getItem("coupon")
@@ -55,7 +57,7 @@ export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
         query: GET_CHARGEBEE_CHECKOUT,
         variables: {
           planID,
-          email: localStorage.getItem("email"),
+          email,
           couponID: coupon?.id,
         },
       })
@@ -75,6 +77,7 @@ export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
 
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
   const { data } = useQuery(PAYMENT_PLANS)
+  const { userSession } = useAuthContext()
 
   useEffect(() => {
     // @ts-ignore
@@ -88,7 +91,8 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     const chargebee = Chargebee.getInstance()
     chargebee.openCheckout({
       hostedPage: async () => {
-        return await GetChargebeeCheckout(planID)
+        const { email } = userSession.user
+        return await GetChargebeeCheckout(planID, email)
       },
       error: (error) => {
         console.error(error)

@@ -10,7 +10,7 @@ import { Flex } from "./Flex"
 type FixedBackArrowVariant = "blackBackground" | "whiteBackground" | "productBackground"
 
 export const FixedBackArrow: React.FC<{
-  navigation: any
+  navigation?: any
   variant?: FixedBackArrowVariant
   onPress?: () => void
 }> = ({ navigation, variant, onPress }) => {

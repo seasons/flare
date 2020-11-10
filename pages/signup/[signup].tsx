@@ -1,9 +1,9 @@
-import { useMutation } from "@apollo/client"
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
 import {
-  CustomerMeasurementsForm,
-  customerMeasurementsValidationSchema,
+  CreateAccountForm, createAccountValidationSchema
+} from "components/Forms/CreateAccountForm"
+import {
+  CustomerMeasurementsForm, customerMeasurementsValidationSchema
 } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
@@ -17,6 +17,8 @@ import { DateTime } from "luxon"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
+
+import { useMutation } from "@apollo/client"
 
 const SIGN_UP_USER = gql`
   mutation SignupUser(
@@ -123,9 +125,8 @@ const SignUpPage = screenTrack(() => ({
     },
     accountAccepted: {
       icon: <CheckWithBackground />,
-      headerText: "You’ve successfully created your account.",
-      bodyText:
-        "Download the Seasons iOS app on TestFlight to finish creating your profile, see your account status and get notified when you’re ready to choose your plan. In the meantime, follow us on Instagram for updates.",
+      headerText: "Welcome to Seasons",
+      bodyText: "Your membership is active and you’re ready to start reserving. Tap below to start browsing",
     },
   }
 
