@@ -125,9 +125,8 @@ const SignUpPage = screenTrack(() => ({
     },
     accountAccepted: {
       icon: <CheckWithBackground />,
-      headerText: "You’ve successfully created your account.",
-      bodyText:
-        "Download the Seasons iOS app on TestFlight to finish creating your profile, see your account status and get notified when you’re ready to choose your plan. In the meantime, follow us on Instagram for updates.",
+      headerText: "Welcome to Seasons",
+      bodyText: "Your membership is active and you’re ready to start reserving. Tap below to start browsing",
     },
   }
 
