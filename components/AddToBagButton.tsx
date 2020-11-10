@@ -118,7 +118,8 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     <Button
       loading={isMutating}
       disabled={disabled}
-      variant="primaryBlack"
+      variant="primaryWhite"
+      block
       onClick={() => {
         tracking.trackEvent({
           actionName: Schema.ActionNames.ProductAddedToBag,

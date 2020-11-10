@@ -16,7 +16,7 @@ export const SavedItemsTab: React.FC<{ items; deleteBagItem; hasActiveReservatio
       {items?.length ? (
         items.map((bagItem, index) => {
           return (
-            <Box mt={index === 0 ? 1 : 0} key={bagItem.id} style={{ height: "100%" }}>
+            <Box mt={index === 0 ? 1 : 0} key={bagItem.id}>
               <SavedItem
                 hasActiveReservation={hasActiveReservation}
                 bagIsFull={bagIsFull}

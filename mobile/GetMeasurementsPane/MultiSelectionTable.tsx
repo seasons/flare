@@ -33,6 +33,8 @@ export const MultiSelectionTable: React.FC<MultiSelectionTableProps> = ({
     item,
   }))
 
+  console.log("Size data", data)
+
   const renderItem = ({ isSelected, item }: { isSelected: boolean; item: Item }, index: number) => {
     return (
       <TouchableOpacity disabled={disabled} onPress={() => onTap?.(item, index)} key={index}>
@@ -44,9 +46,9 @@ export const MultiSelectionTable: React.FC<MultiSelectionTableProps> = ({
             style={{
               backgroundColor: color(isSelected ? "black04" : "white100"),
               borderColor: color(isSelected ? "black100" : "black10"),
+              borderStyle: "solid",
               borderRadius: itemCornerRadius,
               borderWidth: 1,
-              borderStyle: "solid",
               ...(isSelected
                 ? {
                     boxShadow: "0 4px 12px 0 rgba(0, 0, 0, 0.2)",
@@ -81,7 +83,7 @@ export const MultiSelectionTable: React.FC<MultiSelectionTableProps> = ({
       {numArray.map((
         row // map each row index to a Flex box
       ) => (
-        <Flex key={row.toString()}>
+        <Flex key={row.toString()} style={{ flexWrap: "wrap" }}>
           {data.slice(row * itemsPerRow, (row + 1) * itemsPerRow).flatMap((datum, index, array) => {
             const dataIndex = index + itemsPerRow * row
             const view = renderItem(datum, dataIndex) // render each item

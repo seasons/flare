@@ -1,0 +1,798 @@
+
+{
+  "header": {
+    "reportVersion": 2,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20201109.233338.58766.0.001.json",
+    "dumpEventTime": "2020-11-09T23:33:38Z",
+    "dumpEventTimeStamp": "1604982818269",
+    "processId": 58766,
+    "threadId": null,
+    "cwd": "/Users/luc/Projects/flare",
+    "commandLine": [
+      "/usr/local/bin/node",
+      "/Users/luc/Projects/flare/node_modules/.bin/next",
+      "dev"
+    ],
+    "nodejsVersion": "v12.16.3",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "darwin",
+    "componentVersions": {
+      "node": "12.16.3",
+      "v8": "7.8.279.23-node.35",
+      "uv": "1.34.2",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.16.0",
+      "modules": "72",
+      "nghttp2": "1.40.0",
+      "napi": "5",
+      "llhttp": "2.0.4",
+      "http_parser": "2.9.3",
+      "openssl": "1.1.1g",
+      "cldr": "36.0",
+      "icu": "65.1",
+      "tz": "2019c",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.16.3/node-v12.16.3-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.16.3/node-v12.16.3.tar.gz"
+    },
+    "osName": "Darwin",
+    "osRelease": "19.5.0",
+    "osVersion": "Darwin Kernel Version 19.5.0: Tue May 26 20:41:44 PDT 2020; root:xnu-6153.121.2~2/RELEASE_X86_64",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 95612800,
+        "nice": 0,
+        "sys": 85961480,
+        "idle": 396893390,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 7365150,
+        "nice": 0,
+        "sys": 8321900,
+        "idle": 562486040,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 79763140,
+        "nice": 0,
+        "sys": 61904560,
+        "idle": 436512040,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 7342530,
+        "nice": 0,
+        "sys": 7295310,
+        "idle": 563534740,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 68026880,
+        "nice": 0,
+        "sys": 52475570,
+        "idle": 457676380,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 7455260,
+        "nice": 0,
+        "sys": 6530480,
+        "idle": 564186320,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 59051010,
+        "nice": 0,
+        "sys": 44271280,
+        "idle": 474855620,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 7481390,
+        "nice": 0,
+        "sys": 5950320,
+        "idle": 564739840,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 52821460,
+        "nice": 0,
+        "sys": 38940090,
+        "idle": 486415450,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 7429430,
+        "nice": 0,
+        "sys": 5544580,
+        "idle": 565197020,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 45026900,
+        "nice": 0,
+        "sys": 31256980,
+        "idle": 501892190,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 7363140,
+        "nice": 0,
+        "sys": 5236260,
+        "idle": 565571110,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 39483840,
+        "nice": 0,
+        "sys": 26043510,
+        "idle": 512647760,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 7280280,
+        "nice": 0,
+        "sys": 4988190,
+        "idle": 565901480,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 34319310,
+        "nice": 0,
+        "sys": 20733570,
+        "idle": 523121210,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 7188260,
+        "nice": 0,
+        "sys": 4801930,
+        "idle": 566179190,
+        "irq": 0
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::1",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 1
+      },
+      {
+        "name": "en5",
+        "internal": false,
+        "mac": "ac:de:48:00:11:22",
+        "address": "fe80::aede:48ff:fe00:1122",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 4
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "a4:83:e7:a8:e7:a6",
+        "address": "fe80::14d6:f438:6659:fde6",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 6
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "a4:83:e7:a8:e7:a6",
+        "address": "10.0.2.158",
+        "netmask": "255.255.252.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "awdl0",
+        "internal": false,
+        "mac": "de:7b:6b:d9:b7:7b",
+        "address": "fe80::dc7b:6bff:fed9:b77b",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 13
+      },
+      {
+        "name": "llw0",
+        "internal": false,
+        "mac": "de:7b:6b:d9:b7:7b",
+        "address": "fe80::dc7b:6bff:fed9:b77b",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 14
+      },
+      {
+        "name": "utun0",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::6c4:9d93:22dc:c4c7",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 15
+      },
+      {
+        "name": "utun1",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::d48c:e59d:4d0a:2fc4",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 16
+      },
+      {
+        "name": "utun2",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::fff4:7a87:402d:f410",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 18
+      },
+      {
+        "name": "utun3",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::7b7b:662:4993:8518",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 19
+      },
+      {
+        "name": "utun4",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::b1bb:c2a9:606d:3286",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 23
+      },
+      {
+        "name": "utun5",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::7d6d:8860:b5b1:5221",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 24
+      }
+    ],
+    "host": "seasons-mbp.home.dawidwrobel.com"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x0000000100164e03",
+      "symbol": "report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, v8::Local<v8::String>) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x000000010008645a",
+      "symbol": "node::OnFatalError(char const*, char const*) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000100187c07",
+      "symbol": "v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000100187ba7",
+      "symbol": "v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000100315955",
+      "symbol": "v8::internal::Heap::FatalProcessOutOfMemory(char const*) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x00000001003171ca",
+      "symbol": "v8::internal::Heap::RecomputeLimits(v8::internal::GarbageCollector) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000100313bfc",
+      "symbol": "v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x00000001003119fe",
+      "symbol": "v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x000000010031d8ca",
+      "symbol": "v8::internal::Heap::AllocateRawWithLightRetry(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x000000010031d951",
+      "symbol": "v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x00000001002eb58a",
+      "symbol": "v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationType, v8::internal::AllocationOrigin) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x000000010063e698",
+      "symbol": "v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x000000010097cc39",
+      "symbol": "Builtins_CEntry_Return1_DontSaveFPRegs_ArgvOnStack_NoBuiltinExit [/usr/local/bin/node]"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2150731776,
+    "totalCommittedMemory": 2149506968,
+    "usedMemory": 2139643616,
+    "availableMemory": 49102040,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 33088,
+        "capacity": 32808,
+        "used": 32808,
+        "available": 0
+      },
+      "new_space": {
+        "memorySize": 2097152,
+        "committedMemory": 1170632,
+        "capacity": 1047456,
+        "used": 121088,
+        "available": 926368
+      },
+      "old_space": {
+        "memorySize": 373170176,
+        "committedMemory": 373163040,
+        "capacity": 369767176,
+        "used": 369722480,
+        "available": 44696
+      },
+      "code_space": {
+        "memorySize": 3575808,
+        "committedMemory": 3514560,
+        "capacity": 3068672,
+        "used": 3068672,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 8654848,
+        "committedMemory": 8654000,
+        "capacity": 4208960,
+        "used": 4208960,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 1762349056,
+        "committedMemory": 1762349056,
+        "capacity": 1761945064,
+        "used": 1761945064,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 622592,
+        "committedMemory": 622592,
+        "capacity": 544544,
+        "used": 544544,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 1047456,
+        "used": 0,
+        "available": 1047456
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 235.24,
+    "kernelCpuSeconds": 25.1472,
+    "cpuConsumptionPercent": 0.919999,
+    "maxRss": 1314851389440,
+    "pageFaults": {
+      "IORequired": 20,
+      "IONotRequired": 3471650
+    },
+    "fsActivity": {
+      "reads": 0,
+      "writes": 0
+    }
+  },
+  "libuv": [
+  ],
+  "workers": [
+  ],
+  "environmentVariables": {
+    "npm_package_devDependencies_prettier": "^2.1.2",
+    "npm_package_dependencies_redux": "^4.0.5",
+    "npm_package_dependencies_next_redux_wrapper": "^6.0.2",
+    "npm_package_dependencies__segment_snippet": "^4.12.0",
+    "npm_package_dependencies__auth0_auth0_react": "^1.1.0",
+    "npm_package_dependencies_styled_bootstrap_grid": "^3.0.5",
+    "TERM_PROGRAM": "vscode",
+    "rvm_bin_path": "/Users/luc/.rvm/bin",
+    "SERVERLESS_ACCESS_KEY": "AKCVDBpAR8MOSThLaDua2txHsBfDy4eLLXO8NHfSjyeym",
+    "npm_package_scripts_prettier": "prettier --write 'pages/**/*.{js,ts,tsx,md,graphql}' '*.{js,ts,tsx,md,graphql}' --ignore-path ./.prettierignore",
+    "npm_package_scripts_upload_assets": "node scripts/uploadAssetsToS3.js",
+    "NODE": "/usr/local/bin/node",
+    "INIT_CWD": "/Users/luc/Projects/flare",
+    "GEM_HOME": "/Users/luc/.rvm/gems/ruby-2.6.3",
+    "npm_package_devDependencies_typescript": "^3.7.5",
+    "npm_config_version_git_tag": "true",
+    "TERM": "xterm-256color",
+    "SHELL": "/bin/zsh",
+    "IRBRC": "/Users/luc/.rvm/rubies/ruby-2.6.3/.irbrc",
+    "TMPDIR": "/var/folders/5j/zz5_rk4n3xj4vlky4962mhg40000gn/T/",
+    "npm_package_dependencies_next_fonts": "^1.0.3",
+    "npm_config_init_license": "MIT",
+    "TERM_PROGRAM_VERSION": "1.50.1",
+    "npm_package_dependencies_react_spring": "^8.0.27",
+    "npm_package_dependencies_apollo_cache_inmemory": "^1.6.6",
+    "NODE_OPTIONS": "--require \"/Users/luc/Library/Application Support/Code/User/workspaceStorage/613a4c6c3714d17684f13dc5200e817f/ms-vscode.js-debug/bootloader.js\" ",
+    "npm_package_dependencies_recursive_readdir": "^2.2.2",
+    "npm_package_scripts_dev": "next dev",
+    "ORIGINAL_XDG_CURRENT_DESKTOP": "undefined",
+    "npm_package_dependencies_react_places_autocomplete": "^7.2.1",
+    "MY_RUBY_HOME": "/Users/luc/.rvm/rubies/ruby-2.6.3",
+    "npm_package_devDependencies_prop_types": "15",
+    "npm_package_dependencies__zeit_next_source_maps": "^0.0.3",
+    "npm_package_private": "true",
+    "npm_config_registry": "https://registry.yarnpkg.com",
+    "ZSH": "/Users/luc/.oh-my-zsh",
+    "npm_package_dependencies_react_dom": "16.12.0",
+    "npm_package_dependencies__artsy_fresnel": "^1.1.0",
+    "npm_package_readmeFilename": "README.md",
+    "USER": "luc",
+    "npm_package_devDependencies_webpack": "4",
+    "npm_package_dependencies__material_ui_styles": "^4.10.0",
+    "npm_package_description": "seasons.nyc main website",
+    "npm_package_devDependencies__types_react": "^16.9.20",
+    "npm_package_dependencies_react_paginate": "^6.3.2",
+    "npm_package_devDependencies__types_styled_components": "^5.1.2",
+    "npm_package_dependencies_apollo_link_context": "^1.0.20",
+    "npm_package_dependencies_nprogress": "^0.2.0",
+    "rvm_path": "/Users/luc/.rvm",
+    "npm_package_devDependencies__babel_core": "^7.8.4",
+    "npm_package_dependencies_aws_sdk": "^2.691.0",
+    "SSH_AUTH_SOCK": "/private/tmp/com.apple.launchd.mDYVIn1xxb/Listeners",
+    "__CF_USER_TEXT_ENCODING": "0x1F5:0x0:0x0",
+    "npm_package_devDependencies_eslint": "^6.8.0",
+    "npm_package_devDependencies_babel_plugin_styled_components": "^1.10.7",
+    "npm_package_dependencies_styled_components": "^5.0.1",
+    "DENO_INSTALL": "/Users/luc/.deno",
+    "npm_execpath": "/Users/luc/.yarn/bin/yarn.js",
+    "npm_package_prettier_trailingComma": "es5",
+    "npm_package_devDependencies__typescript_eslint_eslint_plugin": "^2.26.0",
+    "npm_package_dependencies_styled_system": "^5.1.5",
+    "npm_package_dependencies_node_fetch": "^2.6.0",
+    "npm_package_dependencies_graphql": "^15.3.0",
+    "PAGER": "less",
+    "npm_package_dependencies_react_redux": "^7.2.1",
+    "LSCOLORS": "Gxfxcxdxbxegedabagacad",
+    "npm_package_dependencies_next_images": "^1.4.0",
+    "npm_package_scripts_heroku_cleanup": "yarn upload-assets",
+    "rvm_prefix": "/Users/luc",
+    "npm_package_devDependencies__typescript_eslint_parser": "^2.26.0",
+    "NPM_TOKEN": "934774c5-cc50-4de5-9b2f-c5dcc9bcf006",
+    "PATH": "/var/folders/5j/zz5_rk4n3xj4vlky4962mhg40000gn/T/yarn--1604954514011-0.09664038265561414:/Users/luc/Projects/flare/node_modules/.bin:/Users/luc/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/Users/luc/.rvm/gems/ruby-2.6.3/bin:/Users/luc/.rvm/gems/ruby-2.6.3@global/bin:/Users/luc/.rvm/rubies/ruby-2.6.3/bin:/Users/luc/.yarn/bin:/Users/luc/.config/yarn/global/node_modules/.bin:/Users/luc/.deno/bin:/Users/luc/.rvm/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Applications/Postgres.app/Contents/Versions/latest/bin:/Users/luc/.rvm/gems/ruby-2.6.3/bin:/Users/luc/.rvm/gems/ruby-2.6.3@global/bin:/Users/luc/.rvm/rubies/ruby-2.6.3/bin:/Users/luc/.yarn/bin:/Users/luc/.config/yarn/global/node_modules/.bin:/Users/luc/.deno/bin:/Users/luc/.rvm/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin",
+    "npm_config_argv": "{\"remain\":[],\"cooked\":[\"run\",\"dev\"],\"original\":[\"dev\"]}",
+    "npm_package_dependencies__stripe_react_stripe_js": "^1.1.2",
+    "npm_package_dependencies_sitemap": "^6.1.0",
+    "npm_package_dependencies_react_tracking": "^7.3.0",
+    "npm_package_dependencies_react_content_loader": "^5.0.4",
+    "npm_package_dependencies__material_ui_core": "^4.10.2",
+    "_": "/Users/luc/Projects/flare/node_modules/.bin/next",
+    "VSCODE_INSPECTOR_OPTIONS": ":::{\"inspectorIpc\":\"/var/folders/5j/zz5_rk4n3xj4vlky4962mhg40000gn/T/node-cdp.10823-2.sock.deferred\",\"deferredMode\":true,\"waitForDebugger\":\"\",\"execPath\":\"/usr/local/bin/node\",\"onlyEntrypoint\":false,\"autoAttachMode\":\"onlyWithFlag\"}",
+    "npm_package_dependencies_luxon": "^1.24.1",
+    "PWD": "/Users/luc/Projects/flare",
+    "npm_package_prettier_singleQuote": "false",
+    "npm_package_devDependencies_eslint_plugin_react_hooks": "^4.1.2",
+    "npm_package_dependencies_nextjs_progressbar": "^0.0.6",
+    "AWS_SECRET_ACCESS_KEY": "0BJ5TpwT6sZoVBJEN8uXrWoOxIjlc0VLGo8plwqR",
+    "npm_lifecycle_event": "dev",
+    "npm_package_devDependencies_babel_plugin_root_import": "^6.4.1",
+    "npm_package_dependencies_use_state_with_callback": "^2.0.3",
+    "npm_package_dependencies_chargebee": "^2.6.0",
+    "npm_package_dependencies_babel_plugin_module_resolver": "^4.0.0",
+    "LANG": "en_US.UTF-8",
+    "npm_package_dependencies__auth0_auth0_spa_js": "^1.12.1",
+    "npm_package_dependencies__apollo_react_ssr": "^4.0.0",
+    "npm_package_name": "flare",
+    "npm_package_devDependencies__babel_preset_react": "^7.0.0",
+    "npm_package_devDependencies__babel_preset_env": "^7.6.0",
+    "npm_config_unsafe_disable_integrity_migration": "",
+    "npm_package_dependencies_react_snaplist_carousel": "^3.2.2",
+    "npm_package_scripts_start": "next start -p $PORT",
+    "npm_package_scripts_build": "next build",
+    "npm_config_version_commit_hooks": "true",
+    "XPC_FLAGS": "0x0",
+    "npm_package_cacheDirectories_0": ".next/cache",
+    "npm_package_dependencies_react_native_svg_web": "^1.0.9",
+    "npm_config_bin_links": "true",
+    "npm_package_engines_node": "12",
+    "npm_package_dependencies_next": "9.5.3",
+    "XPC_SERVICE_NAME": "0",
+    "npm_package_version": "0.1.0",
+    "rvm_version": "1.29.9 (latest)",
+    "AWS_ACCESS_KEY_ID": "AKIAWLJM4FLOJQSMDEEL",
+    "npm_package_prettier_printWidth": "120",
+    "SHLVL": "2",
+    "HOME": "/Users/luc",
+    "VSCODE_GIT_ASKPASS_MAIN": "/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js",
+    "npm_package_dependencies_formik": "^2.1.4",
+    "npm_config_save_prefix": "^",
+    "npm_config_strict_ssl": "true",
+    "npm_config_version_git_message": "v%s",
+    "npm_package_prettier_semi": "false",
+    "npm_package_devDependencies__types_googlemaps": "^3.39.8",
+    "npm_package_dependencies__stripe_stripe_js": "^1.9.0",
+    "npm_package_dependencies_tiny_warning": "1",
+    "npm_package_dependencies_stripe": "^8.106.0",
+    "npm_package_dependencies_formik_material_ui": "^2.0.0",
+    "LESS": "-R",
+    "LOGNAME": "luc",
+    "YARN_WRAP_OUTPUT": "false",
+    "npm_lifecycle_script": "next dev",
+    "npm_package_devDependencies__types_styled_system": "^5.1.6",
+    "VSCODE_GIT_IPC_HANDLE": "/var/folders/5j/zz5_rk4n3xj4vlky4962mhg40000gn/T/vscode-git-36fb8d5925.sock",
+    "GEM_PATH": "/Users/luc/.rvm/gems/ruby-2.6.3:/Users/luc/.rvm/gems/ruby-2.6.3@global",
+    "npm_package_dependencies_yup": "^0.29.1",
+    "npm_package_dependencies_react": "16.12.0",
+    "npm_package_devDependencies_babel_plugin_react_native_web": "^0.14.1",
+    "npm_package_dependencies_react_native_web": "^0.14.1",
+    "npm_package_prettier_bracketSpacing": "true",
+    "npm_config_version_git_sign": "",
+    "npm_config_ignore_scripts": "",
+    "npm_config_user_agent": "yarn/1.22.5 npm/? node/v12.16.3 darwin x64",
+    "VSCODE_GIT_ASKPASS_NODE": "/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Renderer).app/Contents/MacOS/Code Helper (Renderer)",
+    "GIT_ASKPASS": "/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh",
+    "npm_package_devDependencies__types_node": "^13.7.2",
+    "npm_package_dependencies_react_is": "16",
+    "npm_config_init_version": "1.0.0",
+    "npm_config_ignore_optional": "",
+    "RUBY_VERSION": "ruby-2.6.3",
+    "npm_package_dependencies_nextjs_sitemap_generator": "^0.5.0",
+    "npm_package_dependencies__apollo_client": "^3.2.1",
+    "COLORTERM": "truecolor",
+    "npm_node_execpath": "/usr/local/bin/node",
+    "npm_package_devDependencies_eslint_plugin_react": "^7.19.0",
+    "npm_package_dependencies__material_ui_icons": "^4.9.1",
+    "npm_config_version_tag_prefix": "v",
+    "NODE_ENV": "development",
+    "__NEXT_PROCESSED_ENV": "true",
+    "MONSOON_ENDPOINT": "https://monsoon-staging.seasons.nyc",
+    "SEGMENT_KEY": "icOkEhhG1HIZB1rVEJvrbjEpwAb7mDJe",
+    "STRIPE_API_KEY": "sk_test_q3thv8dB2JZ1FAUbzdQqmO3G0022ZvQ5w4",
+    "NEXTAUTH_URL": "http://localhost:3000",
+    "AUTH0_CLIENT_ID": "fcHPQx7KYqpkqI2yn31fcLgt7nuU2S5D",
+    "AUTH0_CLIENT_SECRET": "RNHS-C2sDHLG5oktVCwZLIx6TjNwVDODEvoYFNRGoMlWQvjqK-mOoDx6W-AJLw_K",
+    "AUTH0_DOMAIN": "seasons-staging.auth0.com"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 49152,
+      "hard": "unlimited"
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": 67104768
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 5568,
+      "hard": 8352
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "/usr/local/bin/node",
+    "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+    "/usr/lib/libSystem.B.dylib",
+    "/usr/lib/libc++.1.dylib",
+    "/usr/lib/libobjc.A.dylib",
+    "/usr/lib/libfakelink.dylib",
+    "/usr/lib/libDiagnosticMessagesClient.dylib",
+    "/usr/lib/libicucore.A.dylib",
+    "/usr/lib/libz.1.dylib",
+    "/usr/lib/libc++abi.dylib",
+    "/usr/lib/system/libcache.dylib",
+    "/usr/lib/system/libcommonCrypto.dylib",
+    "/usr/lib/system/libcompiler_rt.dylib",
+    "/usr/lib/system/libcopyfile.dylib",
+    "/usr/lib/system/libcorecrypto.dylib",
+    "/usr/lib/system/libdispatch.dylib",
+    "/usr/lib/system/libdyld.dylib",
+    "/usr/lib/system/libkeymgr.dylib",
+    "/usr/lib/system/liblaunch.dylib",
+    "/usr/lib/system/libmacho.dylib",
+    "/usr/lib/system/libquarantine.dylib",
+    "/usr/lib/system/libremovefile.dylib",
+    "/usr/lib/system/libsystem_asl.dylib",
+    "/usr/lib/system/libsystem_blocks.dylib",
+    "/usr/lib/system/libsystem_c.dylib",
+    "/usr/lib/system/libsystem_configuration.dylib",
+    "/usr/lib/system/libsystem_coreservices.dylib",
+    "/usr/lib/system/libsystem_darwin.dylib",
+    "/usr/lib/system/libsystem_dnssd.dylib",
+    "/usr/lib/system/libsystem_featureflags.dylib",
+    "/usr/lib/system/libsystem_info.dylib",
+    "/usr/lib/system/libsystem_m.dylib",
+    "/usr/lib/system/libsystem_malloc.dylib",
+    "/usr/lib/system/libsystem_networkextension.dylib",
+    "/usr/lib/system/libsystem_notify.dylib",
+    "/usr/lib/system/libsystem_sandbox.dylib",
+    "/usr/lib/system/libsystem_secinit.dylib",
+    "/usr/lib/system/libsystem_kernel.dylib",
+    "/usr/lib/system/libsystem_platform.dylib",
+    "/usr/lib/system/libsystem_pthread.dylib",
+    "/usr/lib/system/libsystem_symptoms.dylib",
+    "/usr/lib/system/libsystem_trace.dylib",
+    "/usr/lib/system/libunwind.dylib",
+    "/usr/lib/system/libxpc.dylib",
+    "/Users/luc/Projects/flare/node_modules/next/node_modules/fsevents/fsevents.node",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+    "/System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/FSEvents",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/CarbonCore",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Metadata",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/OSServices.framework/Versions/A/OSServices",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SearchKit.framework/Versions/A/SearchKit",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/LaunchServices",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/DictionaryServices.framework/Versions/A/DictionaryServices",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SharedFileList.framework/Versions/A/SharedFileList",
+    "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+    "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+    "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+    "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+    "/usr/lib/libsqlite3.dylib",
+    "/usr/lib/libxml2.2.dylib",
+    "/usr/lib/libnetwork.dylib",
+    "/usr/lib/libapple_nghttp2.dylib",
+    "/usr/lib/libauto.dylib",
+    "/usr/lib/libcompression.dylib",
+    "/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration",
+    "/usr/lib/libarchive.2.dylib",
+    "/usr/lib/liblangid.dylib",
+    "/usr/lib/libCRFSuite.dylib",
+    "/usr/lib/liblzma.5.dylib",
+    "/usr/lib/libenergytrace.dylib",
+    "/usr/lib/libbsm.0.dylib",
+    "/usr/lib/system/libkxld.dylib",
+    "/System/Library/PrivateFrameworks/AppleFSCompression.framework/Versions/A/AppleFSCompression",
+    "/usr/lib/libcoretls.dylib",
+    "/usr/lib/libcoretls_cfhelpers.dylib",
+    "/usr/lib/libpam.2.dylib",
+    "/usr/lib/libxar.1.dylib",
+    "/usr/lib/libbz2.1.0.dylib",
+    "/usr/lib/libiconv.2.dylib",
+    "/usr/lib/libcharset.1.dylib",
+    "/usr/lib/libpcap.A.dylib",
+    "/System/Library/Frameworks/NetFS.framework/Versions/A/NetFS",
+    "/System/Library/PrivateFrameworks/NetAuth.framework/Versions/A/NetAuth",
+    "/System/Library/PrivateFrameworks/login.framework/Versions/A/Frameworks/loginsupport.framework/Versions/A/loginsupport",
+    "/System/Library/PrivateFrameworks/TCC.framework/Versions/A/TCC",
+    "/System/Library/PrivateFrameworks/CoreNLP.framework/Versions/A/CoreNLP",
+    "/System/Library/PrivateFrameworks/MetadataUtilities.framework/Versions/A/MetadataUtilities",
+    "/usr/lib/libmecabra.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate",
+    "/usr/lib/libmecab.dylib",
+    "/usr/lib/libgermantok.dylib",
+    "/usr/lib/libThaiTokenizer.dylib",
+    "/usr/lib/libChineseTokenizer.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vImage.framework/Versions/A/vImage",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/vecLib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvMisc.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvDSP.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLinearAlgebra.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparseBLAS.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libQuadrature.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBNNS.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparse.dylib",
+    "/System/Library/PrivateFrameworks/LanguageModeling.framework/Versions/A/LanguageModeling",
+    "/System/Library/PrivateFrameworks/CoreEmoji.framework/Versions/A/CoreEmoji",
+    "/System/Library/PrivateFrameworks/LinguisticData.framework/Versions/A/LinguisticData",
+    "/System/Library/PrivateFrameworks/Lexicon.framework/Versions/A/Lexicon",
+    "/usr/lib/libcmph.dylib",
+    "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/Frameworks/CFOpenDirectory.framework/Versions/A/CFOpenDirectory",
+    "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory",
+    "/System/Library/PrivateFrameworks/APFS.framework/Versions/A/APFS",
+    "/System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation",
+    "/usr/lib/libutil.dylib",
+    "/System/Library/PrivateFrameworks/CoreServicesStore.framework/Versions/A/CoreServicesStore",
+    "/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
+    "/System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Versions/A/BackgroundTaskManagement",
+    "/usr/lib/libxslt.1.dylib",
+    "/usr/lib/libusrtcp.dylib"
+  ]
+}

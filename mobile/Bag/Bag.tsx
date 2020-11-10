@@ -3,6 +3,7 @@ import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
+import { PauseButtons } from "mobile/Account/Components/Pause"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
@@ -232,6 +233,7 @@ export const Bag = screenTrack()((props) => {
             pb={5}
           >
             <></>
+            <PauseButtons customer={me?.customer} fullScreen />
           </Box>
         )
       } else {

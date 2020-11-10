@@ -8,7 +8,7 @@ import { ReservationHistoryItem } from "./ReservationHistoryItem"
 
 export const ReservationHistoryTab: React.FC<{ items }> = ({ items }) => {
   return (
-    <Flex style={{ flex: 1 }}>
+    <Box style={{ height: "100%" }}>
       {items?.length ? (
         items?.map((bagItem, index) => {
           return (
@@ -21,6 +21,6 @@ export const ReservationHistoryTab: React.FC<{ items }> = ({ items }) => {
       ) : (
         <BagEmptyState currentView={BagView.History} />
       )}
-    </Flex>
+    </Box>
   )
 }

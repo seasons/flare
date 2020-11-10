@@ -134,8 +134,8 @@ export const PersonalPreferences = screenTrack()(({ navigation }) => {
           openDrawer("profile")
         }}
       />
-      <Box mt={80} mb={3} mx={2}>
-        <Sans size="4">Sizing & Preferences</Sans>
+      <Box mt={80} pt={4} mb={3} mx={2}>
+        <Sans size="6">Sizing & Preferences</Sans>
       </Box>
       <TabBar
         spaceEvenly
