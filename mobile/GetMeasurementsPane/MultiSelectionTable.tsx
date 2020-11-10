@@ -33,8 +33,6 @@ export const MultiSelectionTable: React.FC<MultiSelectionTableProps> = ({
     item,
   }))
 
-  console.log("Size data", data)
-
   const renderItem = ({ isSelected, item }: { isSelected: boolean; item: Item }, index: number) => {
     return (
       <TouchableOpacity disabled={disabled} onPress={() => onTap?.(item, index)} key={index}>
