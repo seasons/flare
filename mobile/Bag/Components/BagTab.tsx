@@ -85,7 +85,7 @@ export const BagTab: React.FC<{
               )}. To continue it tap `}
               <Sans
                 size="3"
-                style={{ textDecorationLine: "underline" }}
+                style={{ textDecorationLine: "underline", cursor: "pointer" }}
                 onPress={async () => {
                   if (isMutating) {
                     return

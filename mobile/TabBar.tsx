@@ -108,6 +108,7 @@ export class TabBar extends React.Component<TabBarProps, null> {
 
 const Wrapper = styled(Box)`
   width: 100%;
+  cursor: pointer;
   border-bottom-width: 1px;
   border-bottom-color: #e5e5e5;
 `

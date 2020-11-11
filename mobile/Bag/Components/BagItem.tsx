@@ -121,7 +121,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
                   }
                 }}
               >
-                <Sans size="4" style={{ textDecorationLine: "underline" }}>
+                <Sans size="4" style={{ textDecorationLine: "underline", cursor: "pointer" }}>
                   Save for later
                 </Sans>
               </TouchableOpacity>

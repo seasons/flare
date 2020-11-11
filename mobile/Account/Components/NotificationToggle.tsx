@@ -80,7 +80,7 @@ export const NotificationToggle: React.FC<{ pushNotification: any }> = ({ pushNo
           Enable push notifications in your{" "}
           <Text
             onPress={() => Linking.openSettings()}
-            style={{ color: color("black100"), textDecorationLine: "underline" }}
+            style={{ color: color("black100"), textDecorationLine: "underline", cursor: "pointer" }}
           >
             device settings
           </Text>

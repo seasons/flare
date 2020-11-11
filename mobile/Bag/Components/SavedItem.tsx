@@ -107,7 +107,7 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
                         <>
                           <Sans
                             size="3"
-                            style={{ textDecorationLine: "underline" }}
+                            style={{ textDecorationLine: "underline", cursor: "pointer" }}
                             onClick={() => {
                               if (!addingToBag) {
                                 setAddingToBag(true)
