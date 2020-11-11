@@ -7,6 +7,7 @@ import React, { useState } from "react"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
+import { ADMISSIONS_ME } from "components/Homepage/ChooseMembership"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -39,6 +40,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
         setError("Wrong email or password")
       }
     },
+    refetchQueries: [{ query: ADMISSIONS_ME }],
   })
 
   const handleSubmit = async ({ email, password }) => {

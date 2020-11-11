@@ -1,5 +1,5 @@
 import { uniq } from "lodash"
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
@@ -11,7 +11,7 @@ import { Display } from "../Typography"
 import { useQuery } from "@apollo/client"
 import gql from "graphql-tag"
 
-const ADMISSIONS_ME = gql`
+export const ADMISSIONS_ME = gql`
   query admissionsMe {
     me {
       customer {
@@ -64,6 +64,8 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
 }
 
 const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
+  const [allAccessEnabled, setAllAccessEnabled] = useState(localStorage.getItem("allAccessEnabled") == "true")
+  const renderingDisabledAllAccess = tier === "AllAccess" && !allAccessEnabled
   const calcFinalPrice = (price: number) => {
     let couponData
     if (typeof window !== "undefined") {
@@ -126,7 +128,11 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
       </Sans>
     )
   }
-  const planStyle = { backgroundColor: "#F6F6F6" }
+
+  let planWrapperStyle = {}
+  if (renderingDisabledAllAccess) {
+    planWrapperStyle = { backgroundColor: "#F6F6F6" }
+  }
 
   return (
     <>
@@ -154,11 +160,20 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
         {group
           ?.sort((a, b) => a.itemCount - b.itemCount)
           .map((plan, i) => {
+            const thisPlanWrapperStyle = {
+              ...planWrapperStyle,
+              borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none",
+            }
             return (
               <PlanWrapper
                 key={plan.id}
-                style={{ borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none", ...planStyle }}
+                withHover={!renderingDisabledAllAccess}
+                style={thisPlanWrapperStyle}
                 onClick={() => {
+                  if (renderingDisabledAllAccess) {
+                    // do nothing
+                    return
+                  }
                   onSelectPlan?.(plan)
                 }}
               >
@@ -177,6 +192,12 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
             )
           })}
       </Flex>
+      <Spacer mb={1} />
+      {renderingDisabledAllAccess && (
+        <Sans color="black50" size="3">
+          * All Access is disabled in your area due to shipping time.
+        </Sans>
+      )}
     </>
   )
 }
@@ -232,15 +253,15 @@ const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
   )
 }
 
-const PlanWrapper = styled(Box)`
+const PlanWrapper = styled(Box)<{ withHover: boolean }>`
   width: 100%;
   flex: 3;
   border-bottom: 1px solid ${color("black15")};
   border-top: 1px solid ${color("black15")};
   border-right: 1px solid ${color("black15")};
-  cursor: pointer;
+  cursor: ${(props) => (props.withHover ? "pointer" : "auto")};
 
   &:hover {
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: ${(props) => (props.withHover ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
   }
 `

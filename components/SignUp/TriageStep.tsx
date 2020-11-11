@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useMutation } from "@apollo/client"
 
 import { TriageProgressScreen } from "./TriageProgressScreen"
+import { ADMISSIONS_ME } from "components/Homepage/ChooseMembership"
 
 const TRIAGE = gql`
   mutation triage {
@@ -35,6 +36,8 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
     onError: (err) => {
       console.log("Error TriagePane.tsx:", err)
     },
+    refetchQueries: [{ query: ADMISSIONS_ME }],
+    awaitRefetchQueries: true,
   })
 
   useEffect(() => {
