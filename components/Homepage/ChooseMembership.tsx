@@ -48,7 +48,7 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
     plansGroupedByTier.push(tierPlans)
   })
 
-  if (loading) {
+  if (!data) {
     return null
   }
   return (
