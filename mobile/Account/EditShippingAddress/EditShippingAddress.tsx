@@ -76,7 +76,6 @@ export const EditShippingAddress: React.FC<Params> = ({ onNext, shippingAddress,
   const [updateAddress] = useMutation(UPDATE_ADDRESS, {
     onCompleted: () => {
       setIsMutating(false)
-      console.log("complete")
       onNext()
     },
     onError: (err) => {

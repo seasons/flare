@@ -38,9 +38,14 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
       case "bag":
         return <Bag />
       case "reservationShippingAddress":
-        return <ReservationShippingAddress shippingAddress={params?.shippingAddress} />
+        return (
+          <ReservationShippingAddress
+            shippingAddress={params?.shippingAddress}
+            previousScreen={params?.previousScreen}
+          />
+        )
       case "reservation":
-        return <Reservation />
+        return <Reservation previousScreen={params?.previousScreen} />
       case "reservationConfirmation":
         return <ReservationConfirmation route={{ params }} />
       case "profile":

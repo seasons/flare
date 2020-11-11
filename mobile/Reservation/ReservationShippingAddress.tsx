@@ -7,14 +7,14 @@ import { FixedBackArrow } from "components/FixedBackArrow"
 
 interface Params {
   shippingAddress: ShippingAddress
+  previousScreen?: "reservation"
 }
 
 export const ReservationShippingAddress: React.FC<Params> = screenTrack()((props) => {
   const { openDrawer } = useDrawerContext()
 
   const onNext = () => {
-    console.log("on next")
-    openDrawer("reservation")
+    openDrawer("reservation", { previousScreen: "reservationShippingAddress" })
   }
 
   return (
@@ -23,7 +23,11 @@ export const ReservationShippingAddress: React.FC<Params> = screenTrack()((props
         navigation={null}
         variant="whiteBackground"
         onPress={() => {
-          openDrawer("bag")
+          if (props?.previousScreen === "reservation") {
+            onNext()
+          } else {
+            openDrawer("bag")
+          }
         }}
       />
       <EditShippingAddress

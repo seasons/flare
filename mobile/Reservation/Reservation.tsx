@@ -52,6 +52,7 @@ const GET_CUSTOMER = gql`
           phoneNumber
           shippingAddress {
             id
+            name
             address1
             address2
             city
@@ -69,13 +70,18 @@ const GET_CUSTOMER = gql`
   ${BagItemFragment}
 `
 
-const SectionHeader = ({ title }) => {
+const SectionHeader: React.FC<{ title: string; onEdit?: () => void }> = ({ title, onEdit }) => {
   return (
     <>
-      <Flex flexDirection="row" width="100%">
+      <Flex flexDirection="row" width="100%" justifyContent={!!onEdit ? "space-between" : "flex-start"}>
         <Sans size="3" color="black">
           {title}
         </Sans>
+        {!!onEdit && (
+          <Sans size="3" color="black" style={{ textDecorationLine: "underline", cursor: "pointer" }} onClick={onEdit}>
+            Edit
+          </Sans>
+        )}
       </Flex>
       <Spacer mb={1} />
       <Separator />
@@ -138,7 +144,11 @@ export const Reservation = screenTrack()((props) => {
         <FixedBackArrow
           variant="whiteBackground"
           onPress={() => {
-            openDrawer("bag")
+            if (props?.previousScreen && props?.previousScreen === "reservationShippingAddress") {
+              openDrawer("reservationShippingAddress", { shippingAddress: address })
+            } else {
+              openDrawer("bag")
+            }
           }}
         />
         <Flex px={2}>
@@ -166,7 +176,15 @@ export const Reservation = screenTrack()((props) => {
             </Box>
             {address && (
               <Box mb={4}>
-                <SectionHeader title="Shipping address" />
+                <SectionHeader
+                  title="Shipping address"
+                  onEdit={() =>
+                    openDrawer("reservationShippingAddress", {
+                      shippingAddress: address,
+                      previousScreen: "reservation",
+                    })
+                  }
+                />
                 <Sans size="3" color="black50" mt={1}>
                   {`${address.address1}${address.address2 ? " " + address.address2 : ""},`}
                 </Sans>
