@@ -3,7 +3,7 @@ import { LoginModal } from "components/Login/LoginModal"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { animated, useSpring } from "react-spring"
 import styled from "styled-components"
 
@@ -15,12 +15,17 @@ import { Burger } from "./Burger"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
-const MENU_HEIGHT = "59px"
+export const MENU_HEIGHT = "59px"
 
 export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
   const [isOpen, toggleOpen] = useState(false)
+  const router = useRouter()
   const tracking = useTracking()
   const [isLoginOpen, toggleLogin] = useState(false)
+
+  useEffect(() => {
+    toggleOpen(false)
+  }, [router.asPath])
 
   return (
     <HeaderContainer fixed={fixed}>
@@ -129,8 +134,7 @@ const Menu = ({ items, open, onSelect, openLogin }) => {
                 </NextLink>
               )
             } else {
-              /** FIXME: add mobile rendering for links **/
-              return null 
+              return link.renderNavItem()
             }
           })}
           {isLoggedIn ? (

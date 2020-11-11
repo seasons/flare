@@ -17,3 +17,4 @@ export { Toggle } from "./Toggle"
 export { TextInput } from "./TextInput"
 
 export * from "./Typography"
+export * from "./Responsive"

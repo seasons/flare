@@ -17,12 +17,50 @@ import { Media } from "../../components/Responsive"
 import { MobileFilters } from "../../components/Browse/MobileFilters"
 import { BrowseFilters } from "../../components/Browse"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { BRAND_LIST } from "../../components/Homepage/Brands"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 
 const pageSize = 20
+const brandSlugs = [
+  "acne-studios",
+  "aime-leon-dore",
+  "amiri",
+  "auralee",
+  "brain-dead",
+  "bode",
+  "burberry",
+  "casablanca",
+  "cav-empt",
+  "comme-des-garcons",
+  "cactus-plant-flea-market",
+  "craig-green",
+  "deveaux",
+  "dries-van-noten",
+  "fear-of-god",
+  "gucci",
+  "heron-preston",
+  "jacquemus",
+  "john-elliott",
+  "judy-turner",
+  "keenkee",
+  "landlord",
+  "mammut",
+  "margaret-howell",
+  "martine-rose",
+  "noah",
+  "north-face",
+  "off-white",
+  "our-legacy",
+  "phipps",
+  "prada",
+  "rhude",
+  "sacai",
+  "stone-island",
+  "stussy",
+  "whales-bonner",
+  "yeezy",
+]
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   page: Schema.PageNames.BrowsePage,
@@ -43,7 +81,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const { data: menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES, {
     variables: {
       brandOrderBy: "name_ASC",
-      brandSlugs: BRAND_LIST,
+      brandSlugs,
     },
   })
 
@@ -96,7 +134,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const categories = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.categories ?? [])], [menuData])
   const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
-  const featuredBrandItems = navigationData?.brands?.filter(({ slug }) => FEATURED_BRAND_LIST.includes(slug)) || []
+  const featuredBrandItems = navigationData?.brands || []
 
   return (
     <>
@@ -226,12 +264,12 @@ export async function getStaticPaths() {
   categories?.forEach((cat) => {
     paths.push({ params: { Filter: `${cat.slug}+all` } })
 
-    BRAND_LIST.forEach((brandSlug) => {
+    brandSlugs.forEach((brandSlug) => {
       paths.push({ params: { Filter: `${cat.slug}+${brandSlug}` } })
     })
   })
 
-  BRAND_LIST.forEach((brandSlug) => {
+  brandSlugs.forEach((brandSlug) => {
     paths.push({ params: { Filter: `all+${brandSlug}` } })
   })
 
@@ -264,7 +302,7 @@ export async function getStaticProps({ params }) {
     query: GET_BROWSE_BRANDS_AND_CATEGORIES,
     variables: {
       brandOrderBy: "name_ASC",
-      brandSlugs: BRAND_LIST,
+      brandSlugs: brandSlugs,
     },
   })
 
