@@ -38,6 +38,22 @@ const UPDATE_ADDRESS = gql`
   }
 `
 
+export interface ShippingAddress {
+  name: string
+  address1: string
+  address2: string
+  zipCode: string
+  city: string
+  state: string
+}
+
+interface Params {
+  title: string
+  subtitle: string
+  onNext: () => void
+  shippingAddress: ShippingAddress
+}
+
 enum Row {
   Name,
   Address1,
@@ -45,11 +61,7 @@ enum Row {
   City_State,
 }
 
-export const EditShippingAddress: React.FC<{
-  navigation: any
-  route: any
-}> = ({ navigation, route }) => {
-  const shippingAddress = route?.params?.shippingAddress
+export const EditShippingAddress: React.FC<Params> = ({ onNext, shippingAddress, title, subtitle }) => {
   const [name, setName] = useState((shippingAddress?.name as string) || "")
   const [address1, setAddress1] = useState((shippingAddress?.address1 as string) || "")
   const [address2, setAddress2] = useState((shippingAddress?.address2 as string) || "")
@@ -64,7 +76,7 @@ export const EditShippingAddress: React.FC<{
   const [updateAddress] = useMutation(UPDATE_ADDRESS, {
     onCompleted: () => {
       setIsMutating(false)
-      navigation.goBack()
+      onNext()
     },
     onError: (err) => {
       console.log("Error EditShippingAddress.tsx", err)
@@ -80,8 +92,6 @@ export const EditShippingAddress: React.FC<{
   })
 
   const handleUpdateAddress = async () => {
-    Keyboard.dismiss()
-
     if (isMutating) {
       return
     }
@@ -154,7 +164,6 @@ export const EditShippingAddress: React.FC<{
               currentValue={state}
               headerText="State"
               onPress={() => {
-                Keyboard.dismiss()
                 setIsStatePickerVisible(true)
               }}
               style={{ flex: 1 }}
@@ -175,8 +184,11 @@ export const EditShippingAddress: React.FC<{
         keyExtractor={(item, index) => item + String(index)}
         ListHeaderComponent={() => (
           <Box mt={5}>
-            <Spacer mb={5} />
-            <Sans size="4">Shipping address</Sans>
+            <Spacer mb={10} />
+            <Sans size="5">{title}</Sans>
+            <Sans size="3" color="black50">
+              {subtitle}
+            </Sans>
             <Spacer mb={4} />
           </Box>
         )}
@@ -184,36 +196,24 @@ export const EditShippingAddress: React.FC<{
         showsVerticalScrollIndicator={false}
         style={{ paddingHorizontal: 16, overflow: "visible", flex: 1 }}
       />
-      <KeyboardAvoidingView behavior="padding">
-        <Spacer mb={2} />
-        <Flex p={2} flexDirection="row">
-          <Box style={{ flex: 1 }}>
-            <Button block variant="primaryWhite" size="large" onPress={navigation.goBack}>
-              Cancel
-            </Button>
-          </Box>
-          <Spacer mr={1} />
-          <Box style={{ flex: 1 }}>
-            <Button
-              block
-              disabled={
-                !name.trim() ||
-                !address1.trim() ||
-                !isWholeNumber(zipCode) ||
-                zipCode.length !== 5 ||
-                !city.trim() ||
-                !state
-              }
-              loading={isMutating}
-              onPress={handleUpdateAddress}
-              size="large"
-              variant="primaryBlack"
-            >
-              Save
-            </Button>
-          </Box>
-        </Flex>
-      </KeyboardAvoidingView>
+      <Flex p={2} flexDirection="row">
+        <Button
+          block
+          disabled={
+            !name.trim() ||
+            !address1.trim() ||
+            !isWholeNumber(zipCode) ||
+            zipCode.length !== 5 ||
+            !city.trim() ||
+            !state
+          }
+          loading={isMutating}
+          onClick={handleUpdateAddress}
+          variant="primaryBlack"
+        >
+          Continue
+        </Button>
+      </Flex>
 
       <StatePickerPopUp
         initialState={state}

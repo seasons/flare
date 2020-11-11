@@ -77,9 +77,11 @@ export const GET_BAG = gql`
           id
           shippingAddress {
             id
+            name
             city
             state
             address1
+            address2
             zipCode
           }
         }
