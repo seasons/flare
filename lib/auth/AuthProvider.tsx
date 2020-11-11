@@ -88,7 +88,10 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
       apolloClient.resetStore()
     },
     signOut: async () => {
-      localStorage.removeItem("userSession")
+      const keysToClear = ["userSession", "isWaitlisted", "allAccessEnabled"]
+      for (const key of keysToClear) {
+        localStorage.removeItem(key)
+      }
       analytics?.reset()
       dispatch({ type: "SIGN_OUT" })
       apolloClient.resetStore()

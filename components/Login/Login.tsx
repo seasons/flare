@@ -7,6 +7,7 @@ import React, { useState } from "react"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
+import { Link } from "components/Link"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -76,7 +77,10 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
                   <Box my={2} mb={3}>
                     <Display size="7">Log In</Display>
                     <Sans size="3" color="black50">
-                      Don't have an account? <span style={{ textDecoration: "underline" }}>Sign Up</span>
+                      Don't have an account?{" "}
+                      <Link href="/signup">
+                        <span style={{ textDecoration: "underline", cursor: "pointer" }}>Sign up</span>
+                      </Link>
                     </Sans>
                   </Box>
                   <div>

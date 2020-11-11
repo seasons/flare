@@ -7,12 +7,9 @@ import { PauseButtons } from "mobile/Account/Components/Pause"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
-import {
-  CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM
-} from "queries/bagQueries"
+import { CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
-import { Dimensions, FlatList, RefreshControl } from "react-native"
-import styled from "styled-components"
+import { FlatList, RefreshControl } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
@@ -142,21 +139,6 @@ export const Bag = screenTrack()((props) => {
       } else {
         const hasShippingAddress =
           !!shippingAddress.address1 && !!shippingAddress.city && !!shippingAddress.state && !!shippingAddress.zipCode
-        if (!hasShippingAddress) {
-          showPopUp({
-            title: "Your shipping address is incomplete",
-            note:
-              "Please update your shipping address under Payment & Shipping in your account settings to complete your reservation.",
-            buttonText: "Got it",
-            onClose: () => hidePopUp(),
-            secondaryButtonText: "Go to settings",
-            secondaryButtonOnPress: () => {
-              hidePopUp()
-            },
-          })
-          setMutating(false)
-          return
-        }
         const { data } = await checkItemsAvailability({
           variables: {
             items: items.map((item) => item.variantID),
@@ -170,8 +152,11 @@ export const Bag = screenTrack()((props) => {
             console.log(data, errors)
           },
         })
-
-        openDrawer("reservation")
+        if (hasShippingAddress) {
+          openDrawer("reservation")
+        } else {
+          openDrawer("reservationShippingAddress", { shippingAddress })
+        }
       }
       setMutating(false)
     } catch (e) {
@@ -306,7 +291,7 @@ export const Bag = screenTrack()((props) => {
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
       {isBagView && pauseStatus !== "paused" && !hasActiveReservation && (
-        <ButtonContainer p={2}>
+        <Box p={2}>
           <Button
             block
             onClick={() => {
@@ -321,20 +306,12 @@ export const Bag = screenTrack()((props) => {
             loading={isMutating}
             style={{
               width: "100%",
-              // borderRadius: 0,
             }}
           >
             Reserve
           </Button>
-        </ButtonContainer>
+        </Box>
       )}
     </Container>
   )
 })
-
-const ButtonContainer = styled(Box)`
-  position: fixed;
-  width: 380px;
-  bottom: 0;
-  right: 0;
-`

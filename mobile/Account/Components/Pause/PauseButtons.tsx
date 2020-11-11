@@ -204,7 +204,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
         Have a question?{" "}
         <Sans
           size="4"
-          style={{ textDecorationLine: "underline", display: "inline-block" }}
+          style={{ textDecorationLine: "underline", display: "inline-block", cursor: "pointer" }}
           onPress={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership"`)}
         >
           Contact us
