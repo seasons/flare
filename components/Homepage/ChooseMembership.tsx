@@ -1,5 +1,5 @@
 import { uniq } from "lodash"
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
@@ -8,6 +8,22 @@ import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
 import { Check } from "../SVGs"
 import { Display } from "../Typography"
+import { useQuery } from "@apollo/client"
+import gql from "graphql-tag"
+
+export const ADMISSIONS_ME = gql`
+  query admissionsMe {
+    me {
+      customer {
+        id
+        admissions {
+          id
+          allAccessEnabled
+        }
+      }
+    }
+  }
+`
 
 interface ChooseMembershipProps {
   paymentPlans: any
@@ -15,6 +31,12 @@ interface ChooseMembershipProps {
 }
 
 export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan }) => {
+  const { data, loading } = useQuery(ADMISSIONS_ME, {
+    onCompleted: (data) => {
+      localStorage.setItem("allAccessEnabled", data?.me?.customer?.admissions?.allAccessEnabled)
+    },
+  })
+
   const plansGroupedByTier = []
   const tiers = uniq(paymentPlans?.map((plan) => plan.tier))
   tiers?.forEach((tier) => {
@@ -26,6 +48,9 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
     plansGroupedByTier.push(tierPlans)
   })
 
+  if (!data) {
+    return null
+  }
   return (
     <>
       <Media greaterThanOrEqual="md">
@@ -39,6 +64,8 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
 }
 
 const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
+  const [allAccessEnabled, setAllAccessEnabled] = useState(localStorage.getItem("allAccessEnabled") == "true")
+  const renderingDisabledAllAccess = tier === "AllAccess" && !allAccessEnabled
   const calcFinalPrice = (price: number) => {
     let couponData
     if (typeof window !== "undefined") {
@@ -101,6 +128,12 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
       </Sans>
     )
   }
+
+  let planWrapperStyle = {}
+  if (renderingDisabledAllAccess) {
+    planWrapperStyle = { backgroundColor: color("black04") }
+  }
+
   return (
     <>
       <Display size="9">{tier === "AllAccess" ? "All Access" : tier}</Display>
@@ -127,11 +160,20 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
         {group
           ?.sort((a, b) => a.itemCount - b.itemCount)
           .map((plan, i) => {
+            const thisPlanWrapperStyle = {
+              ...planWrapperStyle,
+              borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none",
+            }
             return (
               <PlanWrapper
                 key={plan.id}
-                style={{ borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none" }}
+                withHover={!renderingDisabledAllAccess}
+                style={thisPlanWrapperStyle}
                 onClick={() => {
+                  if (renderingDisabledAllAccess) {
+                    // do nothing
+                    return
+                  }
                   onSelectPlan?.(plan)
                 }}
               >
@@ -150,6 +192,12 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
             )
           })}
       </Flex>
+      <Spacer mb={1} />
+      {renderingDisabledAllAccess && (
+        <Sans color="black50" size="3">
+          * All Access is disabled in your area due to shipping time.
+        </Sans>
+      )}
     </>
   )
 }
@@ -205,15 +253,15 @@ const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
   )
 }
 
-const PlanWrapper = styled(Box)`
+const PlanWrapper = styled(Box)<{ withHover: boolean }>`
   width: 100%;
   flex: 3;
   border-bottom: 1px solid ${color("black15")};
   border-top: 1px solid ${color("black15")};
   border-right: 1px solid ${color("black15")};
-  cursor: pointer;
+  cursor: ${(props) => (props.withHover ? "pointer" : "auto")};
 
   &:hover {
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: ${(props) => (props.withHover ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
   }
 `
