@@ -1,7 +1,6 @@
 import { Box, Flex, Layout, Sans, Separator, Spacer } from "components"
 import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
 import { Col, Grid, Row } from "components/Grid"
-import { BRAND_LIST } from "components/Homepage/Brands"
 import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
 import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
 import { ProductGridItem } from "components/Product/ProductGridItem"
@@ -20,6 +19,7 @@ import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
+import brandSlugs from "lib/brands"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -39,7 +39,7 @@ const Designer = screenTrack(({ router }) => {
       slug,
       first: 8,
       skip: 0,
-      orderBy: "createdAt_DESC",
+      orderBy: "publishedAt_DESC",
       featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
@@ -52,7 +52,7 @@ const Designer = screenTrack(({ router }) => {
 
   const products = data?.brand?.products?.edges
   const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
-  const featuredBrandItems = navigationData?.brands?.filter(({ slug }) => FEATURED_BRAND_LIST.includes(slug)) || []
+  const featuredBrandItems = navigationData?.brands || []
 
   const onScroll = debounce(() => {
     const shouldLoadMore =
@@ -291,7 +291,7 @@ export async function getStaticPaths() {
   const response = await apolloClient.query({
     query: GET_BRANDS,
     variables: {
-      brandSlugs: BRAND_LIST,
+      brandSlugs,
     },
   })
 
@@ -320,7 +320,7 @@ export async function getStaticProps({ params }) {
       slug: filter,
       first: 8,
       skip: 0,
-      orderBy: "createdAt_DESC",
+      orderBy: "publishedAt_DESC",
     },
   })
 

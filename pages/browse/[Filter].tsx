@@ -20,47 +20,9 @@ import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import brandSlugs from "lib/brands"
 
 const pageSize = 20
-const brandSlugs = [
-  "acne-studios",
-  "aime-leon-dore",
-  "amiri",
-  "auralee",
-  "brain-dead",
-  "bode",
-  "burberry",
-  "casablanca",
-  "cav-empt",
-  "comme-des-garcons",
-  "cactus-plant-flea-market",
-  "craig-green",
-  "deveaux",
-  "dries-van-noten",
-  "fear-of-god",
-  "gucci",
-  "heron-preston",
-  "jacquemus",
-  "john-elliott",
-  "judy-turner",
-  "keenkee",
-  "landlord",
-  "mammut",
-  "margaret-howell",
-  "martine-rose",
-  "noah",
-  "north-face",
-  "off-white",
-  "our-legacy",
-  "phipps",
-  "prada",
-  "rhude",
-  "sacai",
-  "stone-island",
-  "stussy",
-  "whales-bonner",
-  "yeezy",
-]
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   page: Schema.PageNames.BrowsePage,

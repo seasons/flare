@@ -63,7 +63,7 @@ const DesktopNavItem = ({ brands }) => {
                 <DesktopBrandsContainer p={3} pb={2}>
                   {brands.map(({ name, slug }) => (
                     <Box key={slug} onClick={() => setIsOpen(false)} mb={1}>
-                      <NextLink href={`/browse/all+${slug}`}>
+                      <NextLink href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`}>
                         <Sans size={7} style={{ textDecoration: "underline", cursor: "pointer" }}>
                           {name}
                         </Sans>
@@ -118,7 +118,7 @@ const MobileNavItem = ({ brands }) => {
           <MobileBrandsContainer p={3}>
             {brands.map(({ name, slug }) => (
               <Box key={slug} onClick={() => setIsOpen(false)} mb={2}>
-                <NextLink href={`/browse/all+${slug}`}>
+                <NextLink href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`}>
                   <Sans size={7} style={{ textDecoration: "underline", cursor: "pointer" }}>
                     {name}
                   </Sans>

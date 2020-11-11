@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
 export const GET_BRAND = gql`
-  query GetBrand($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput! brandSlugs: [String!]!) {
+  query GetBrand($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
     brand(where: { slug: $slug }) {
       id
       name
