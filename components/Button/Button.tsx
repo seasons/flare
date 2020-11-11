@@ -1,10 +1,11 @@
 import React, { Component } from "react"
 import styled, { css } from "styled-components"
+import { borderRadius, borders, height, space, textAlign, width } from "styled-system"
+
+import { themeProps } from "../../lib/theme"
 import { Spinner } from "../Spinner"
 import { Sans, SansProps } from "../Typography"
-import { borderRadius, borders, height, space, textAlign, width } from "styled-system"
 import { ButtonBaseProps, ButtonProps, defaultSize, defaultVariant } from "./Button.shared"
-import { themeProps } from "../../lib/theme"
 
 export interface WebButtonProps extends ButtonProps {
   /** The underlying type of button */
@@ -165,15 +166,15 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
   }
 
   render() {
-    const { children, loading, disabled, color, size, weight, onClick, ...rest } = this.props
+    const { block, children, loading, disabled, color, size, weight, onClick, ...rest } = this.props
 
     const loadingClass = loading ? "loading" : ""
     const disabledClass = disabled ? "disabled" : ""
-
+    const blockClass = block ? "block" : ""
     return (
       <Container
         {...rest}
-        className={[loadingClass, disabledClass].join(" ")}
+        className={[blockClass, loadingClass, disabledClass].join(" ")}
         onClick={this.onClick}
         disabled={disabled}
       >
@@ -223,13 +224,17 @@ const Container = styled.button<ButtonBaseProps>`
     cursor: auto;
   }
 
+  &.block {
+    width: 100%;
+  }
+
   &.disabled {
     ${(props) => {
       const { colors } = props.theme
 
       return `
-        background-color: ${colors.black10};
-        border-color: ${colors.black10};
+        background-color: ${colors.black50};
+        border-color: ${colors.black50};
         color: ${colors.white100};
         pointer-events: none;
       `

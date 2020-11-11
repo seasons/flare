@@ -77,8 +77,8 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
         }}
       />
       <ScrollView>
-        <Box px={2}>
-          <Spacer mb={"80px"} />
+        <Box px={2} pt={4}>
+          <Spacer mb={80} />
           <Sans size="6">Membership info</Sans>
           <Spacer mb={3} />
           <MembershipCard memberName={`${firstName} ${lastName}`} planTier={plan?.tier} />

@@ -67,18 +67,6 @@ export const BagTab: React.FC<{
       <Box px={2} pt={4}>
         <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
           <Sans size="5">{hasActiveReservation ? "Current rotation" : "My bag"}</Sans>
-          <Sans
-            size="3"
-            style={{ textDecorationLine: "underline" }}
-            onPress={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames.FAQButtonTapped,
-                actionType: Schema.ActionTypes.Tap,
-              })
-            }}
-          >
-            View FAQ
-          </Sans>
         </Flex>
         <Sans size="3" color="black50">
           {hasActiveReservation && !!returnReminder ? returnReminder : "Reserve your order below"}

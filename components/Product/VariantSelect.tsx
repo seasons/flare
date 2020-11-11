@@ -6,6 +6,7 @@ import { TouchableOpacity } from "react-native"
 import { Schema, useTracking } from "utils/analytics"
 
 import { Popover, Radio } from "@material-ui/core"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 
 export interface Variant {
   sizeDisplay?: string
@@ -124,8 +125,13 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
 
   return (
     <>
-      <Button variant="secondaryGray" onClick={handleClick} aria-describedby={id}>
-        {text}
+      <Button variant="primaryWhite" onClick={handleClick} aria-describedby={id} block>
+        <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
+          <Sans size="4">{text}</Sans>
+          <Box top="2px" style={{ position: "relative" }}>
+            <ExpandMoreIcon />
+          </Box>
+        </Flex>
       </Button>
       <Popover
         id={id}

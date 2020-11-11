@@ -1,8 +1,9 @@
 import React, { useState } from "react"
+
+import { Box, Sans } from "../"
 import { Grid, Row } from "../Grid"
-import { Sans, Box } from ".."
-import { FAQCard } from "./FAQCard"
 import { Display } from "../Typography"
+import { FAQCard } from "./FAQCard"
 
 const items = [
   {

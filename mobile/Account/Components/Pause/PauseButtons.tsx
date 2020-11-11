@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Sans, Spacer } from "components"
 import { ButtonVariant } from "components/Button/Button.shared"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
@@ -55,6 +56,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
   const pauseDateCanExtend =
     resumeDate?.diffNow("months")?.values?.months && resumeDate.diffNow("months")?.values?.months < 1
 
+  const { openDrawer } = useDrawerContext()
   const [updateResumeDate] = useMutation(UPDATE_RESUME_DATE, {
     refetchQueries: [
       {
@@ -143,7 +145,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       },
     ],
     onCompleted: () => {
-      // navigation.navigate("Modal", { screen: Schema.PageNames.ResumeConfirmation })
+      openDrawer("resumeConfirmation")
       setIsMutating(false)
     },
     onError: (err) => {
@@ -198,18 +200,18 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
 
   const SubText = () => {
     return pauseStatus === "paused" ? (
-      <Sans size="1" color={color("black50")} style={{ textAlign: "center" }}>
+      <Sans size="4" color={color("black50")} style={{ textAlign: "center" }}>
         Have a question?{" "}
         <Sans
-          size="1"
-          style={{ textDecorationLine: "underline" }}
+          size="4"
+          style={{ textDecorationLine: "underline", display: "inline-block" }}
           onPress={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership"`)}
         >
           Contact us
         </Sans>
       </Sans>
     ) : (
-      <Sans size="1" color={color("black50")}>
+      <Sans size="3" color={color("black50")}>
         If you’d like to cancel your membership, contact us using the button above. We’re happy to help with this.
       </Sans>
     )
@@ -229,16 +231,16 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
         )}
         {pauseStatus === "paused" && (
           <>
-            <Sans size={fullScreen ? "3" : "1"}>
+            <Sans size="5">
               Your membership is paused until{" "}
-              <Sans size={fullScreen ? "3" : "1"} style={{ textDecorationLine: "underline" }}>
+              <Sans size="5" style={{ textDecorationLine: "underline", display: "inline-block" }}>
                 {DateTime.fromISO(resumeDate).toFormat("EEEE LLLL d")}
               </Sans>
               .
             </Sans>
-            <Spacer mb={1} />
+            <Spacer mb={3} />
             {fullScreen && (
-              <Sans color="black50" size="1">
+              <Sans color="black50" size="3">
                 It will automatically resume at this date.
               </Sans>
             )}
@@ -247,13 +249,13 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
                 .minus({ months: 1 })
                 .toFormat("EEEE LLLL d")}.`}</Sans>
             )}
-            <Spacer mb={2} />
+            <Spacer mb={4} />
           </>
         )}
       </Box>
       <Box>
         <Button
-          onPress={toggleSubscriptionStatus}
+          onClick={toggleSubscriptionStatus}
           disabled={isMutating}
           loading={isMutating}
           block
@@ -264,9 +266,9 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
         <Spacer mb={1} />
         {pauseStatus === "paused" ? (
           <Button
-            variant="secondaryOutline"
+            variant="primaryBlack"
             disabled={!pauseDateCanExtend}
-            onPress={() =>
+            onClick={() =>
               updateResumeDate({
                 variables: { date: resumeDatePlusOneMonth?.toISO() },
                 awaitRefetchQueries: true,
@@ -279,7 +281,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
         ) : (
           <Button
             variant="secondaryOutline"
-            onPress={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership"`)}
+            onClick={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership"`)}
             block
           >
             Contact us

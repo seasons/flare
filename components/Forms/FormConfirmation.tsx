@@ -1,3 +1,4 @@
+import Link from "next/link"
 import styled from "styled-components"
 
 import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
@@ -34,22 +35,15 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ icon, header
         </Sans>
         <Spacer mb={3} />
         <Flex flexDirection="row">
-          <GetTheAppButton />
-          <Spacer mr={1} />
-          <IGWrapper>
-            <Button
-              variant="primaryWhite"
-              onClick={() => window.open("https://www.instagram.com/seasons.ny/", "_blank")}
-            >
+          <Link href="/browse">
+            <Button variant="primaryBlack">
               <Flex flexDirection="row" alignContent="center">
-                <Box pt="3px">
-                  <InstagramSVG />
-                </Box>
-                <Spacer mr={1} />
-                <Sans size="4">Follow us</Sans>
+                <Sans size="4">Start Browsing</Sans>
               </Flex>
             </Button>
-          </IGWrapper>
+          </Link>
+          <Spacer mr={1} />
+          <GetTheAppButton />
         </Flex>
       </Wrapper>
       <FormFooter footerText={footerText} disabled={false} />
@@ -61,17 +55,4 @@ const Wrapper = styled(Box)`
   transform: translateY(-50%);
   top: 50%;
   position: absolute;
-`
-
-const IGWrapper = styled("div")`
-  &:hover {
-    svg {
-      .ig-stroke {
-        stroke: ${color("white100")} !important;
-      }
-      .ig-fill {
-        fill: ${color("white100")} !important;
-      }
-    }
-  }
 `

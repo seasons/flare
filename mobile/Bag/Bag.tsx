@@ -3,6 +3,7 @@ import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
+import { PauseButtons } from "mobile/Account/Components/Pause"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
@@ -10,7 +11,7 @@ import {
   CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM
 } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { Dimensions, FlatList, RefreshControl } from "react-native"
 import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
@@ -232,6 +233,7 @@ export const Bag = screenTrack()((props) => {
             pb={5}
           >
             <></>
+            <PauseButtons customer={me?.customer} fullScreen />
           </Box>
         )
       } else {
@@ -271,26 +273,28 @@ export const Bag = screenTrack()((props) => {
 
   return (
     <Container insetsBottom={false}>
-      <TabBar
-        spaceEvenly
-        tabs={["Bag", "Saved", "History"]}
-        activeTab={currentView}
-        goToPage={(page: BagView) => {
-          tracking.trackEvent({
-            actionName: () => {
-              if (page === 0) {
-                return Schema.ActionNames.BagTabTapped
-              } else if (page === 1) {
-                return Schema.ActionNames.SavedTabTapped
-              } else {
-                return Schema.ActionNames.ReservationHistoryTabTapped
-              }
-            },
-            actionType: Schema.ActionTypes.Tap,
-          })
-          setCurrentView(page)
-        }}
-      />
+      <Box>
+        <TabBar
+          spaceEvenly
+          tabs={["Bag", "Saved", "History"]}
+          activeTab={currentView}
+          goToPage={(page: BagView) => {
+            tracking.trackEvent({
+              actionName: () => {
+                if (page === 0) {
+                  return Schema.ActionNames.BagTabTapped
+                } else if (page === 1) {
+                  return Schema.ActionNames.SavedTabTapped
+                } else {
+                  return Schema.ActionNames.ReservationHistoryTabTapped
+                }
+              },
+              actionType: Schema.ActionTypes.Tap,
+            })
+            setCurrentView(page)
+          }}
+        />
+      </Box>
       <FlatList
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         data={sections}
@@ -302,7 +306,7 @@ export const Bag = screenTrack()((props) => {
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
       {isBagView && pauseStatus !== "paused" && !hasActiveReservation && (
-        <ButtonContainer>
+        <ButtonContainer p={2}>
           <Button
             block
             onClick={() => {
@@ -317,7 +321,7 @@ export const Bag = screenTrack()((props) => {
             loading={isMutating}
             style={{
               width: "100%",
-              borderRadius: 0,
+              // borderRadius: 0,
             }}
           >
             Reserve

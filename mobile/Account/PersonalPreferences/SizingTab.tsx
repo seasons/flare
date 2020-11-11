@@ -5,6 +5,8 @@ import { MultiSelectionTable } from "mobile/GetMeasurementsPane/MultiSelectionTa
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 
+import { MenuItem, Select } from "@material-ui/core"
+
 enum Section {
   Height_Weight,
   TopSizes,
@@ -59,14 +61,30 @@ export const SizingTab: React.FC<{ navigation: any; rawMeasurements }> = ({ navi
                 Height
               </Sans>
               <Spacer mb={1} />
-              {/* <UninteractableBoxPicker text={measurements.height?.label} /> */}
+              <Select
+                value={measurements.height?.label}
+                disabled
+                label="Height"
+                variant="outlined"
+                style={{ width: "100%" }}
+              >
+                <MenuItem value={measurements.height?.label}>{measurements.height?.label}</MenuItem>
+              </Select>
             </Box>
             <Box style={{ flex: 0.5, marginLeft: 6 }}>
               <Sans color="black100" size="4">
                 Weight
               </Sans>
               <Spacer mb={1} />
-              {/* <UninteractableBoxPicker text={measurements.weight?.label} /> */}
+              <Select
+                value={measurements.weight?.label}
+                disabled
+                label="Weight"
+                variant="outlined"
+                style={{ width: "100%" }}
+              >
+                <MenuItem value={measurements.weight?.label}>{measurements.weight?.label}</MenuItem>
+              </Select>
             </Box>
           </Flex>
         )

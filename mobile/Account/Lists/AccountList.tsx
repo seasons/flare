@@ -1,5 +1,6 @@
 import { Box, Flex, Sans } from "components"
 import { ChevronIcon } from "components/Icons"
+import { color } from "helpers/color"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { Schema, useTracking } from "utils/analytics"
@@ -43,7 +44,9 @@ export const AccountList: React.FC<Props> = ({ list, roles }) => {
               <Flex flexDirection="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between">
                 <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
                   <Box style={{ marginRight: 20 }}>{item.icon}</Box>
-                  <Sans size="4">{item.title}</Sans>
+                  <Sans size="4" color={item.title === "Log out" ? "red" : color("black100")}>
+                    {item.title}
+                  </Sans>
                 </Flex>
                 <ChevronIcon />
               </Flex>

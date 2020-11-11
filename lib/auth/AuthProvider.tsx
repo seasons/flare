@@ -27,7 +27,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
         case "RESTORE_TOKEN":
           return {
             ...prevState,
-            userSession: action.token,
+            userSession: action.userSession,
             isSignedIn: !!action.token,
             authInitializing: false,
           }
@@ -35,7 +35,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
           return {
             ...prevState,
             isSignedIn: true,
-            userSession: action.token,
+            userSession: action.userSession,
           }
         case "SIGN_OUT":
           return {
@@ -62,7 +62,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
             // FIX: analytics is undefined by the time this gets called
             analytics?.identify(user.id, user)
           }
-          dispatch({ type: "RESTORE_TOKEN", token: userSession.token })
+          dispatch({ type: "RESTORE_TOKEN", token: userSession.token, userSession })
         }
       } catch (e) {
         console.log("Restoring token failed: ", e)
@@ -79,7 +79,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
 
   const authContext = {
     signIn: async (session) => {
-      dispatch({ type: "SIGN_IN", token: session.token })
+      dispatch({ type: "SIGN_IN", token: session.token, userSession: session })
       localStorage.setItem("userSession", JSON.stringify(session))
       const user = session?.user
       if (user) {
