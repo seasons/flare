@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { color } from "../../helpers/color"
-import { Box } from "../Box"
+import { themeProps } from "lib/theme"
+import { Box, Button, Spacer } from "components"
 import { useState } from "react"
 
 const MENU_HEIGHT = 59
@@ -16,23 +17,29 @@ export const MobileFilters: React.FC<{
     <HeaderContainer>
       <ButtonWrapper>
         <Button
-          active={categoriesOpen}
+          ml={2}
+          width={"100%"}
+          block
+          variant={categoriesOpen ? "primaryBlack" : "primaryWhite"}
           onClick={() => {
             toggleCategoriesOpen(!categoriesOpen)
             toggleBrandsOpen(false)
           }}
         >
-          Categories +
+          Categories
         </Button>
+        <Spacer mr={1} />
         <Button
-          style={{ borderLeft: `1px solid ${color("black10")}` }}
-          active={brandsOpen}
+          mr={2}
+          width={"100%"}
+          block
+          variant={brandsOpen ? "primaryBlack" : "primaryWhite"}
           onClick={() => {
             toggleBrandsOpen(!brandsOpen)
             toggleCategoriesOpen(false)
           }}
         >
-          Designers +
+          Designers
         </Button>
       </ButtonWrapper>
       {brandsOpen && (
@@ -70,24 +77,19 @@ const ListWrapper = styled(Box)`
 `
 
 const ButtonWrapper = styled.div`
+  padding-bottom: ${themeProps.space[2]}px;
   display: flex;
-  height: 59px;
   position: fixed;
   background-color: ${color("white100")};
   width: 100%;
   z-index: 3;
   bottom: 0;
   left: 0;
-  border-top: 1px solid ${color("black10")};
-`
-
-const Button = styled.div<{ active: boolean }>`
-  display: flex;
-  flex: 2;
-  align-items: center;
-  justify-content: center;
-  color: ${(p) => (p.active ? color("white100") : color("black100"))};
-  background-color: ${(p) => (p.active ? color("black85") : color("white100"))};
+  align-items: stretch;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  )
 `
 
 const HeaderContainer = styled.div`

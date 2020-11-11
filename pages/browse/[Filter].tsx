@@ -203,7 +203,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                   productsOrArray.map((product, i) => {
                     return (
                       <Col sm="3" xs="6" key={i}>
-                        <Box pt={[2, 2, 2, 0, 0]} pb={[2, 2, 2, 5, 5]}>
+                        <Box pt={[0.5, 0.5, 0.5, 0, 0]} pb={[0.5, 0.5, 0.5, 5, 5]}>
                           <ProductGridItem product={product?.node} loading={loading} />
                         </Box>
                       </Col>
