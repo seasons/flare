@@ -24,7 +24,12 @@ export const WantAnotherItemBagItem: React.FC<{
                 <Sans size="2" color="black100" textAlign="center">
                   {`Want a ${nextItem} item?`}
                 </Sans>
-                <Sans size="2" color="black50" textAlign="center" style={{ textDecorationLine: "underline" }}>
+                <Sans
+                  size="2"
+                  color="black50"
+                  textAlign="center"
+                  style={{ textDecorationLine: "underline", cursor: "pointer" }}
+                >
                   {`Add a slot for $${priceIncrease}`}
                 </Sans>
               </TouchableOpacity>
