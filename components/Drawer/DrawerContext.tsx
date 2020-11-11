@@ -5,6 +5,7 @@ export type DrawerView =
   | "faq"
   | "reservation"
   | "reservationConfirmation"
+  | "reservationShippingAddress"
   | "profile"
   | "membershipInfo"
   | "personalPreferences"

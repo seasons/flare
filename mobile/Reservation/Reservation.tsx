@@ -222,7 +222,6 @@ export const Reservation = screenTrack()((props) => {
                 },
               })
               if (data?.reserveItems) {
-                console.log(data)
                 openDrawer("reservationConfirmation", {
                   reservationID: data.reserveItems.id,
                 })

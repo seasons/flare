@@ -6,7 +6,7 @@ import { ResumeConfirmation } from "mobile/Account/Components/Pause"
 import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
-import { Reservation, ReservationConfirmation } from "mobile/Reservation"
+import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
 import React, { useEffect } from "react"
 
 import { Drawer as MuiDrawer } from "@material-ui/core"
@@ -37,6 +37,8 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
     switch (currentView) {
       case "bag":
         return <Bag />
+      case "reservationShippingAddress":
+        return <ReservationShippingAddress shippingAddress={params?.shippingAddress} />
       case "reservation":
         return <Reservation />
       case "reservationConfirmation":
