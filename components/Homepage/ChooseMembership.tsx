@@ -31,7 +31,7 @@ interface ChooseMembershipProps {
 }
 
 export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan }) => {
-  let { data, loading } = useQuery(ADMISSIONS_ME, {
+  const { data, loading } = useQuery(ADMISSIONS_ME, {
     onCompleted: (data) => {
       localStorage.setItem("allAccessEnabled", data?.me?.customer?.admissions?.allAccessEnabled)
     },
@@ -131,7 +131,7 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
 
   let planWrapperStyle = {}
   if (renderingDisabledAllAccess) {
-    planWrapperStyle = { backgroundColor: "#F6F6F6" }
+    planWrapperStyle = { backgroundColor: color("black04") }
   }
 
   return (
