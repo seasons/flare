@@ -1,6 +1,5 @@
 import { Box, Layout, Separator, Spacer } from "components"
 import {
-  Brands,
   ChooseMembership,
   ColumnList,
   FAQ,
@@ -11,7 +10,6 @@ import {
   TheApp,
   TheBag,
 } from "components/Homepage"
-import { BRAND_LIST } from "components/Homepage/Brands"
 import { Nav, FEATURED_BRAND_LIST } from "components/Nav"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
 import { ServiceableModal } from "components/ServiceableModal"
@@ -27,11 +25,7 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { data } = useQuery(HOME_QUERY, {
-    variables: {
-      brandSlugs: BRAND_LIST,
-    },
-  })
+  const { data } = useQuery(HOME_QUERY)
 
   const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
     variables: {
@@ -113,14 +107,6 @@ const Home = screenTrack(() => ({
 
       <Spacer mb={10} />
       <FAQ />
-      <Spacer mb={10} />
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
-
-      <Spacer mb={10} />
-      <Brands brands={data?.brands} />
       <Spacer mb={15} />
 
       <ServiceableModal />
@@ -134,9 +120,6 @@ export async function getStaticProps() {
   await Promise.all([
     apolloClient.query({
       query: HOME_QUERY,
-      variables: {
-        brandSlugs: BRAND_LIST,
-      },
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,

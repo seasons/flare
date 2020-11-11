@@ -27,7 +27,7 @@ const HomePageProductFragment = gql`
 `
 
 export const HOME_QUERY = gql`
-  query GetBrowseProducts($brandSlugs: [String!]!) {
+  query GetBrowseProducts {
     paymentPlans(where: { status: "active" }) {
       id
       name
@@ -37,14 +37,6 @@ export const HOME_QUERY = gql`
       planID
       tier
       itemCount
-    }
-    brands(where: { products_some: { id_not: null }, name_not: null, slug_in: $brandSlugs }) {
-      id
-      slug
-      name
-      products {
-        id
-      }
     }
     blogPosts(count: 3) {
       id
