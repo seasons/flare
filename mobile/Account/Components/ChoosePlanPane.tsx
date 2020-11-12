@@ -13,7 +13,7 @@ import gql from "graphql-tag"
 import { uniq } from "lodash"
 import React, { useEffect, useState } from "react"
 import { useMutation, useQuery } from "@apollo/client"
-import { Dimensions, Linking, ScrollView } from "react-native-web"
+import { Dimensions, Linking, ScrollView } from "react-native"
 import styled from "styled-components"
 import { PlanButton, PaymentMethod } from "./PlanButton"
 import { GET_BAG } from "queries/bagQueries"
@@ -334,9 +334,9 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
             </Box> */}
             <Box px={2}>
               <Button
+                variant="secondaryOutline"
+                onClick={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership Question"`)}
                 block
-                variant="primaryWhite"
-                onPress={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership question"`)}
               >
                 Contact us
               </Button>
