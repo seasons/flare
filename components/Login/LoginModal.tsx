@@ -26,12 +26,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <LoginView
-        open={isOpen}
-        onSuccess={() => {
-          setOpen(false)
-        }}
-      />
+      <LoginView open={isOpen} />
     </Modal>
   )
 }

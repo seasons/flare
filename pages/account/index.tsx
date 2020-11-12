@@ -7,9 +7,9 @@ import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import { useQuery } from "@apollo/client"
 import { initializeApollo } from "lib/apollo/apollo"
 
-const Home = screenTrack(() => ({
+const Account = screenTrack(() => ({
   page: "AccountPage",
-  path: "/a/account",
+  path: "/account",
 }))(() => {
   const { data } = useQuery(NAVIGATION_QUERY, {
     variables: {
@@ -58,4 +58,4 @@ export async function getStaticProps() {
   }
 }
 
-export default Home
+export default Account

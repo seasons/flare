@@ -10,6 +10,7 @@ import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
 import { ADMISSIONS_ME } from "components/Homepage/ChooseMembership"
 import { Link } from "components/Link"
 import { ResetPassword } from "mobile/LogIn/ResetPassword"
+import { GET_USER } from "mobile/Account/Account"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -28,13 +29,12 @@ const LOG_IN = gql`
 
 export interface LoginViewProps {
   open?: boolean
-  onSuccess?: () => void
 }
 export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
   const { open } = props
+  const { toggleLoginModal, signIn } = useAuthContext()
   const [showResetPassword, setShowResetPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const { signIn } = useAuthContext()
   const [login] = useMutation(LOG_IN, {
     onError: (err) => {
       console.error(err)
@@ -43,13 +43,14 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
         setError("Wrong email or password")
       }
     },
+    awaitRefetchQueries: true,
     refetchQueries: [{ query: ADMISSIONS_ME }],
   })
 
   const handleSubmit = async ({ email, password }) => {
     const result = await login({
       variables: {
-        email,
+        email: email?.trim(),
         password,
       },
     })
@@ -58,8 +59,8 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
         data: { login: userSession },
       } = result
 
-      signIn(userSession)
-      props.onSuccess?.()
+      await signIn(userSession)
+      toggleLoginModal(false)
     }
   }
 
