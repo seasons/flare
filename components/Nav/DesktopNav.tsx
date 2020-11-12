@@ -5,12 +5,11 @@ import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 import { MaxWidth } from "../"
 import { Flex } from "../Flex"
-import { MenuNavItem } from "./MenuNavItem"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
@@ -18,8 +17,7 @@ import { NavProps } from "./Types"
 export const DesktopNav = ({ fixed = false, links }: NavProps) => {
   const router = useRouter()
   const tracking = useTracking()
-  const [isLoginOpen, toggleLogin] = useState(false)
-  const { userSession, signOut } = useAuthContext()
+  const { userSession, toggleLoginModal, loginModalOpen } = useAuthContext()
   const { openDrawer } = useDrawerContext()
 
   const isLoggedIn = !!userSession
@@ -88,7 +86,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    toggleLogin(true)
+                    toggleLoginModal(true)
                   }}
                 >
                   <NavItem link={{ text: "Log In" }} />
@@ -100,9 +98,9 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
       </MaxWidth>
       <Drawer />
       <LoginModal
-        open={isLoginOpen}
+        open={loginModalOpen}
         onClose={() => {
-          toggleLogin(false)
+          toggleLoginModal(false)
         }}
       />
     </HeaderContainer>

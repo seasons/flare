@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react"
 import { useMutation } from "@apollo/client"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useTracking, Schema } from "utils/analytics"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { GET_PRODUCT } from "queries/productQueries"
 import { GET_BAG } from "queries/bagQueries"
 import styled from "styled-components"
@@ -26,22 +25,19 @@ export interface SaveProductButtonProps {
   product: any
   selectedVariant: any
   onPressSaveButton?: () => void
-  grayStroke?: boolean
   height?: number
   width?: number
-  noModal?: boolean
+  showSizeSelector?: boolean
 }
 
 export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
   product,
   selectedVariant,
   onPressSaveButton,
-  grayStroke,
   height,
   width,
-  noModal,
+  showSizeSelector,
 }) => {
-  const { showPopUp, hidePopUp } = usePopUpContext()
   const isSaved = selectedVariant?.isSaved
     ? selectedVariant?.isSaved
     : product?.variants?.filter((variant) => variant.isSaved).length > 0
@@ -60,8 +56,9 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
       },
     ],
   })
-  const { authState } = useAuthContext()
-  const userHasSession = !!authState?.userSession
+  const { userSession, toggleLoginModal, loginModalOpen } = useAuthContext()
+
+  const isLoggedIn = !!userSession
 
   useEffect(() => {
     setEnabled(isSaved)
@@ -73,56 +70,45 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
 
   const handleSaveButton = () => {
     onPressSaveButton?.()
-    if (!userHasSession) {
-      //   navigation.navigate("Modal", { screen: NavigationSchema.PageNames.SignInModal })
+    if (!isLoggedIn && !loginModalOpen) {
+      toggleLoginModal(true)
       return
     }
 
-    const updatedState = !isSaved
-    // Open SaveProductModal if:
-    // 1) User wants to save a specific variant inside ProductDetails screen OR
-    // 2) User wants to save the product, i.e. clicked button outside of ProductDetails screen
-    // if ((updatedState || !selectedVariant) && !noModal) {
-    //   navigation.navigate("Modal", {
-    //     screen: NavigationSchema.PageNames.SaveProductModal,
-    //     params: {
-    //       hidePopUp,
-    //       product,
-    //       showPopUp,
-    //     },
-    //   })
-    // } else {
-    tracking.trackEvent({
-      actionName: Schema.ActionNames.ProductSaved,
-      actionType: Schema.ActionTypes.Tap,
-      saved: !isSaved,
-    })
-    setEnabled(!isSaved)
-    saveItem({
-      variables: {
-        item: selectedVariant.id,
-        save: !isSaved,
-      },
-      awaitRefetchQueries: true,
-      optimisticResponse: {
-        __typename: "Mutation",
-        saveProduct: {
-          __typename: "Product",
-          id: product.id,
-          productVariant: {
-            __typename: "ProductVariant",
-            isSaved: !isSaved,
-            id: selectedVariant.id,
+    if (showSizeSelector) {
+      // Open size selector window, e.g. user is on browse page
+    } else {
+      tracking.trackEvent({
+        actionName: Schema.ActionNames.ProductSaved,
+        actionType: Schema.ActionTypes.Tap,
+        saved: !isSaved,
+      })
+      setEnabled(!isSaved)
+      saveItem({
+        variables: {
+          item: selectedVariant.id,
+          save: !isSaved,
+        },
+        awaitRefetchQueries: true,
+        optimisticResponse: {
+          __typename: "Mutation",
+          saveProduct: {
+            __typename: "Product",
+            id: product.id,
+            productVariant: {
+              __typename: "ProductVariant",
+              isSaved: !isSaved,
+              id: selectedVariant.id,
+            },
           },
         },
-      },
-    })
-    // }
+      })
+    }
   }
 
   return (
     <Wrapper pl={2} pb={2} pt={0.5} onClick={handleSaveButton}>
-      <SaveIcon width={width ? width : 16} height={height ? height : 22} enabled={enabled} grayStroke={grayStroke} />
+      <SaveIcon width={width ? width : 16} height={height ? height : 22} enabled={enabled} />
     </Wrapper>
   )
 }
