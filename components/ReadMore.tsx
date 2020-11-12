@@ -19,7 +19,7 @@ export const ReadMore = React.memo(({ content, maxChars, textColor, readMoreExpa
   const isAlreadyExpanded = readMoreExpanded || content?.length <= maxChars
 
   const root = (
-    <Sans size="4" color={textColor ? textColor : color("black50")}>
+    <Sans size="4" color={textColor ? textColor : color("black50")} style={{ whiteSpace: "pre-wrap" }}>
       {content}
     </Sans>
   )
