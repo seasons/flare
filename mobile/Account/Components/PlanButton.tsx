@@ -1,8 +1,8 @@
-import { Flex, Sans } from "components"
+import { Box, Flex, Sans } from "components"
 import { color } from "helpers/color"
 import React from "react"
 import { Text, TouchableOpacity } from "react-native"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import { calcFinalPrice, Coupon } from "utils/calcFinalPrice"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
 
@@ -30,26 +30,26 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
     const isDiscounted = originalPrice !== finalPrice && !!finalPrice
     return isDiscounted ? (
       <Text>
-        <Sans color="black50" size="0.5">
+        <Sans color="black50" size="3">
           This month
         </Sans>
-        <Sans color="black100" size="1">
+        <Sans color="black100" size="3">
           {" "}
         </Sans>
-        <Sans color="black50" size="1" style={{ textDecorationLine: "line-through", textDecorationStyle: "solid" }}>
+        <Sans color="black50" size="3" style={{ textDecorationLine: "line-through", textDecorationStyle: "solid" }}>
           ${originalPrice}
         </Sans>
-        <Sans color="black100" size="1">
+        <Sans color="black100" size="3">
           {" "}
           ${finalPrice}
         </Sans>
       </Text>
     ) : (
       <Text>
-        <Sans color="black50" size="0.5">
+        <Sans color="black50" size="3">
           Per month
         </Sans>
-        <Sans color="black100" size="1">
+        <Sans color="black100" size="3">
           {" "}
           ${originalPrice}
         </Sans>
@@ -59,12 +59,13 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
 
   const onPress = (plan) => {
     shouldSelect(plan)
-    tracking.trackEvent({
-      actionName: TrackSchema.ActionNames.PlanTapped,
-      actionType: TrackSchema.ActionTypes.Tap,
-      planID: plan?.id,
-      planName: plan?.name,
-    })
+    // TODO: Fix tracking
+    // tracking.trackEvent({
+    //   actionName: TrackSchema.ActionNames.PlanTapped,
+    //   actionType: TrackSchema.ActionTypes.Tap,
+    //   planID: plan?.id,
+    //   planName: plan?.name,
+    // })
   }
 
   return (
@@ -78,7 +79,7 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
           px={2}
           justifyContent="space-between"
         >
-          <Sans color="black100" size="1">
+          <Sans color="black100" size="3">
             {itemCount} items
           </Sans>
           <PriceText originalPrice={price} finalPrice={finalPrice} />
@@ -88,17 +89,19 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
   )
 }
 
-const StyledFlex = styled(Flex)`
+const StyledFlex = styled(Box)`
   border-radius: 28;
   background-color: ${color("black04")};
   z-index: 10;
   elevation: 6;
+  display: flex;
 `
 
-const PlanSelectionBorder = styled(Flex)<{ selected: boolean; selectedColor: string }>`
+const PlanSelectionBorder = styled(Box)<{ selected: boolean; selectedColor: string }>`
   border-radius: 28;
   border-color: ${(p) => (p.selected ? p.selectedColor : color("white100"))};
   border-width: 1px;
   background: ${color("white100")};
   z-index: 0;
+  display: flex;
 `

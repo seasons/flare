@@ -62,7 +62,7 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
       case "resumeConfirmation":
         return <ResumeConfirmation />
       case "choosePlan":
-        return <ChoosePlanPane headerText={"yo"} />
+        return <ChoosePlanPane headerText={"Let's choose your plan"} />
     }
   }
 

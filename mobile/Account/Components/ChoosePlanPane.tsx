@@ -96,24 +96,20 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
   onMountScrollToFaqSection,
 }) => {
   const { data } = useQuery(GET_PLANS)
-  if (!data) {
-    return null
-  }
-  const [selectedPlan, setSelectedPlan] = useState(null)
-
-  const { openDrawer, closeDrawer } = useDrawerContext()
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const plans = data?.paymentPlans
   const faqSections = data?.faq?.sections
-  const [showLoadingOverlay, setShowLoadingOverlay] = useState(false)
+
   const tracking = useTracking()
-  //   const navigation = useNavigation()
   const [currentView, setCurrentView] = useState(0)
   const [tiers, setTiers] = useState([])
   const [isMutating, setIsMutating] = useState(false)
+  const { showPopUp, hidePopUp } = usePopUpContext()
+
   const scrollViewRef = React.useRef(null)
 
-  const { showPopUp, hidePopUp } = usePopUpContext()
+  const [showLoadingOverlay, setShowLoadingOverlay] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState(null)
 
   const [updatePaymentPlan] = useMutation(PLAN_UPDATE, {
     onCompleted: () => {
@@ -190,6 +186,8 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
     })
   }
 
+  //   const navigation = useNavigation()
+
   const onChoosePlan = () => {
     tracking.trackEvent({
       actionName: TrackSchema.ActionNames.ChoosePlanTapped,
@@ -221,6 +219,10 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
     }
   }
 
+  if (!data) {
+    return null
+  }
+
   return (
     <>
       <CloseButton variant="light" />
@@ -230,11 +232,11 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
             <Spacer mb={5} />
             <Spacer mb={4} />
             <Box p={2}>
-              <Sans color="black100" size="3">
+              <Sans color="black100" size="6">
                 {headerText}
               </Sans>
               <Spacer mb={1} />
-              <Sans color="black50" size="1">
+              <Sans color="black50" size="3">
                 Here's what's included in your selected plan:
               </Sans>
               <Spacer mb={1} />
@@ -243,10 +245,10 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
               {descriptionLines.map((line) => {
                 return (
                   <Flex flexDirection="row" pb={1} px={1} alignItems="center" key={line} width="100%">
-                    <Box mx={1} mr={1.5}>
+                    <Box mx={1} mr={2}>
                       <ListCheck />
                     </Box>
-                    <Sans color="black50" size="1" style={{ width: viewWidth - 75 }}>
+                    <Sans color="black50" size="3" style={{ width: viewWidth - 75 }}>
                       {line}
                     </Sans>
                   </Flex>
@@ -305,18 +307,18 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
               faqSections.map((section, index) => (
                 <Box mt={4} key={index} px={2} onLayout={onFaqSectionHeaderLayout}>
                   <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <Sans size="1">{section.title}</Sans>
+                    <Sans size="3">{section.title}</Sans>
                     <ChevronIcon rotateDeg="90deg" color={color("black100")} />
                   </Flex>
                   <Spacer mb={4} />
                   {section.subsections.map((subSection) => {
                     return (
                       <Box key={subSection.title}>
-                        <Sans size="1">{subSection.title}</Sans>
+                        <Sans size="3">{subSection.title}</Sans>
                         <Spacer mb={1} />
                         <Separator />
                         <Spacer mb={1} />
-                        <Sans size="1" color="black50">
+                        <Sans size="3" color="black50">
                           {subSection.text}
                         </Sans>
                         <Spacer mb={4} />
@@ -326,6 +328,18 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
                 </Box>
               ))}
             <Spacer mb={1} />
+            <Box p={2} style={{ alignItems: "center" }}>
+              <ColoredButton
+                block
+                disabled={!selectedPlan}
+                onPress={onChoosePlan}
+                variant="primaryBlack"
+                backgroundColor={currentColor}
+              >
+                Choose plan
+              </ColoredButton>
+              <Box style={{ height: "10px" }} />
+            </Box>
             <Box px={2}>
               <Button
                 block
@@ -338,21 +352,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
             <Spacer pb={160} />
           </ScrollView>
         </Box>
-
-        <FadeBottom2 width="100%" style={{ position: "absolute", bottom: 0 }}>
-          <Box p={2} style={{ alignItems: "center" }}>
-            <ColoredButton
-              block
-              disabled={!selectedPlan}
-              onPress={onChoosePlan}
-              variant="primaryBlack"
-              backgroundColor={currentColor}
-            >
-              Choose plan
-            </ColoredButton>
-            <Box style={{ height: "10px" }} />
-          </Box>
-        </FadeBottom2>
+        <FadeBottom2 width="100%" style={{ position: "absolute", bottom: 0 }}></FadeBottom2>
       </Container>
       {showLoadingOverlay && (
         <Overlay>
