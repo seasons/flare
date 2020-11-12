@@ -4,7 +4,7 @@ import { TextInput } from "components/TextInput"
 import gql from "graphql-tag"
 import { isWholeNumber } from "helpers/validation"
 import React, { useState } from "react"
-import { FlatList, Keyboard, KeyboardAvoidingView } from "react-native"
+import { FlatList } from "react-native"
 
 import { useMutation } from "@apollo/client"
 

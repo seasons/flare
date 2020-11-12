@@ -14,7 +14,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [isOpen, setOpen] = useState(false)
 
   useEffect(() => {
-    if (open) {
+    if (typeof open === "boolean") {
       setOpen(open)
     }
   }, [open])
