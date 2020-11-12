@@ -1,9 +1,8 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
+import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
 import {
-  CreateAccountForm, createAccountValidationSchema
-} from "components/Forms/CreateAccountForm"
-import {
-  CustomerMeasurementsForm, customerMeasurementsValidationSchema
+  CustomerMeasurementsForm,
+  customerMeasurementsValidationSchema,
 } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
@@ -321,10 +320,6 @@ const SignUpPage = screenTrack(() => ({
     </Layout>
   )
 })
-
-SignUpPage.getInitialProps = async ({ query }) => {
-  return query
-}
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
