@@ -14,9 +14,11 @@ export interface AuthProviderRef {
   authContext: () => {
     signIn: (session: any) => Promise<void>
     signOut: () => Promise<void>
+    toggleLoginModal: (toggle: boolean) => void
     resetStore: () => void
     authState: any
     userSession: any
+    loginModalOpen: boolean
   }
 }
 
@@ -43,11 +45,17 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
             isSignedIn: false,
             userSession: null,
           }
+        case "TOGGLE_LOGIN_MODAL":
+          return {
+            ...prevState,
+            loginModalOpen: action.toggle,
+          }
       }
     },
     {
       authInitializing: true,
       isSignedIn: false,
+      loginModalOpen: false,
       userSession: null,
     }
   )
@@ -96,11 +104,15 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
       dispatch({ type: "SIGN_OUT" })
       apolloClient.resetStore()
     },
+    toggleLoginModal: (toggle: boolean) => {
+      dispatch({ type: "TOGGLE_LOGIN_MODAL", toggle })
+    },
     resetStore: () => {
       apolloClient.resetStore()
     },
     authState,
     userSession: authState.userSession,
+    loginModalOpen: authState.loginModalOpen,
   }
 
   return <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>

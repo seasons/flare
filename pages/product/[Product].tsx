@@ -104,7 +104,11 @@ const Product = screenTrack(({ router }) => {
             </Col>
             <Col md="5" sm="12">
               <Box style={{ maxWidth: "480px" }} px={[2, 2, 0, 0, 0]}>
-                {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
+                {product ? (
+                  <ProductDetails selectedVariant={selectedVariant} product={product} />
+                ) : (
+                  <ProductTextLoader />
+                )}
                 <Flex flex-direction="row">
                   <Flex flex={1}>
                     <VariantSelect
@@ -137,6 +141,14 @@ const Product = screenTrack(({ router }) => {
   )
 })
 
+/*
+If a page has dynamic routes (documentation) and uses getStaticProps 
+it needs to define a list of paths that have to be rendered to HTML at build time.
+
+If you export an async function called getStaticPaths from 
+a page that uses dynamic routes, Next.js will statically 
+pre-render all the paths specified by getStaticPaths.
+*/
 export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
@@ -158,6 +170,11 @@ export async function getStaticPaths() {
   }
 }
 
+/*
+ If you export an async function called getStaticProps from a page, 
+ Next.js will pre-render this page at build time using the 
+ props returned by getStaticProps.
+*/
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo()
 
