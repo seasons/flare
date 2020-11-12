@@ -77,8 +77,10 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
               size: size?.internalSize?.display,
               variantID: size?.id,
             })
-            setSelectedVariant(size)
-            onSizeSelected(size)
+            if (size.reservable > 0) {
+              setSelectedVariant(size)
+              onSizeSelected(size)
+            }
           }}
         >
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between" flexWrap="nowrap" mr={2}>
@@ -97,7 +99,7 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
             </Sans>
           </Flex>
         </TouchableOpacity>
-        <Separator color={color("black15")} />
+        {i + 1 !== sizeData.length && <Separator color={color("black10")} />}
       </Box>
     )
   })
@@ -145,6 +147,13 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
         transformOrigin={{
           vertical: "top",
           horizontal: "left",
+        }}
+        PaperProps={{
+          elevation: 0,
+          style: {
+            border: "1px solid #000",
+            marginTop: "5px",
+          },
         }}
       >
         <VariantList

@@ -150,12 +150,6 @@ export const Account = screenTrack()(({ navigation }) => {
       onPress: () => openDrawer("paymentAndShipping"),
       tracking: Schema.ActionNames.PaymentAndShippingTapped,
     },
-    {
-      title: "FAQ",
-      icon: <QuestionMark />,
-      onPress: () => openDrawer("faq"),
-      tracking: Schema.ActionNames.FAQTapped,
-    },
   ]
 
   const bottomList = [
@@ -188,6 +182,7 @@ export const Account = screenTrack()(({ navigation }) => {
       onPress: () => {
         signOut()
         closeDrawer()
+        router.push("/")
       },
     },
   ]
