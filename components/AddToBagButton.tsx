@@ -127,7 +127,16 @@ export const AddToBagButton: React.FC<Props> = (props) => {
           actionName: Schema.ActionNames.ProductAddedToBag,
           actionType: Schema.ActionTypes.Tap,
         })
-        handleReserve()
+        if (authState.isSignedIn) {
+          handleReserve()
+        } else {
+          showPopUp({
+            title: "Can't add to your bag yet!",
+            note: "Please login or sign up to continue adding this item.",
+            buttonText: "Got It",
+            onClose: () => hidePopUp(),
+          })
+        }
       }}
     >
       {text}
