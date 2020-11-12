@@ -101,6 +101,7 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
 
                 <Flex flexDirection="row" alignItems="center">
                   <ColoredDot reservable={reservable} />
+                  <Spacer mr={1} />
                   {!!reservable ? (
                     <>
                       {!hasActiveReservation ? (
@@ -127,13 +128,13 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
                         </>
                       ) : (
                         <Sans size="3" color="black50">
-                          {"  "}Available
+                          Available
                         </Sans>
                       )}
                     </>
                   ) : (
                     <Sans size="3" color="black50">
-                      {"  "}Unavailable
+                      Unavailable
                     </Sans>
                   )}
                 </Flex>
