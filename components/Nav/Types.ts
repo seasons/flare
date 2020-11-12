@@ -1,4 +1,12 @@
+export type Link = {
+  text: string
+  url?: string
+  match?: RegExp
+  external: boolean
+  renderNavItem?: () => JSX.Element
+}
+
 export interface NavProps {
   fixed?: boolean
-  links?: { text: string; url: string; match?: RegExp; external: boolean }[]
+  links?: Link[]
 }
