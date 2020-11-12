@@ -11,6 +11,7 @@ export type DrawerView =
   | "personalPreferences"
   | "paymentAndShipping"
   | "resumeConfirmation"
+  | "choosePlan"
 
 export const DrawerContext = React.createContext({
   isOpen: false,

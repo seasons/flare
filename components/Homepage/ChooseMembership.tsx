@@ -1,5 +1,5 @@
 import { uniq } from "lodash"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
@@ -64,8 +64,15 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
 }
 
 const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
-  const [allAccessEnabled, setAllAccessEnabled] = useState(localStorage.getItem("allAccessEnabled") == "true")
+  const [allAccessEnabled, setAllAccessEnabled] = useState(false)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setAllAccessEnabled(localStorage.getItem("allAccessEnabled") == "true")
+    }
+  }, [])
+
   const renderingDisabledAllAccess = tier === "AllAccess" && !allAccessEnabled
+
   const calcFinalPrice = (price: number) => {
     let couponData
     if (typeof window !== "undefined") {

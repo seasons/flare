@@ -13,6 +13,7 @@ import { Drawer as MuiDrawer } from "@material-ui/core"
 
 import { CloseButton } from "../CloseButton"
 import { useDrawerContext } from "./DrawerContext"
+import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
 
 interface DrawerProps {
   open?: boolean
@@ -60,6 +61,8 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         return <FAQ />
       case "resumeConfirmation":
         return <ResumeConfirmation />
+      case "choosePlan":
+        return <ChoosePlanPane headerText={"yo"} />
     }
   }
 
