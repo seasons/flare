@@ -9,10 +9,10 @@ import { Media } from "../Responsive"
 import { Button } from "../Button"
 import { Check } from "../SVGs"
 
-const headerText = "Wear,Swap,Repeat"
+const headerText = "Wear.Swap.Repeat."
 
 const caption =
-  "Access hundreds of styles, discover new brands, all with zero commitment. Exclusively in select cities."
+  "A members-only rental service for designer menswear. Access hundreds of styles and discover new brands with zero commitment."
 
 const listText = [
   "Free shipping, returns & dry cleaning.",

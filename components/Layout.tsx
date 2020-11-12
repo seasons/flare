@@ -17,6 +17,7 @@ interface LayoutProps {
   children?: any
   footerBottomPadding?: string | string[]
   includeDefaultHead?: boolean
+  brandItems: { name: string; slug: string }[]
 }
 
 export const Layout = ({
@@ -25,6 +26,7 @@ export const Layout = ({
   hideFooter,
   footerBottomPadding,
   includeDefaultHead = true,
+  brandItems,
 }: LayoutProps) => {
   return (
     <>
@@ -32,7 +34,7 @@ export const Layout = ({
       <PopUpProvider>
         <DrawerProvider>
           <Theme>
-            <Nav fixed={fixedNav} />
+            <Nav fixed={fixedNav} brandItems={brandItems} />
             <MaxWidth>
               <Box pt={60} pb={60} style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                 {children}

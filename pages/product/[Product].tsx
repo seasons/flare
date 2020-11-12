@@ -8,11 +8,13 @@ import { ProductDetails } from "components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
 import { VariantSelect } from "components/Product/VariantSelect"
 import { Media } from "components/Responsive"
+import { FEATURED_BRAND_LIST } from "components/Nav"
 import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
 import { withRouter } from "next/router"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
@@ -30,6 +32,11 @@ const Product = screenTrack(({ router }) => {
   const { data, refetch } = useQuery(GET_PRODUCT, {
     variables: {
       slug,
+    },
+  })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
 
@@ -54,9 +61,10 @@ const Product = screenTrack(({ router }) => {
 
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
+  const featuredBrandItems = navigationData?.brands || []
 
   return (
-    <Layout fixedNav includeDefaultHead={false}>
+    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{`${title} - Seasons`}</title>
         <meta content={description} name="description" />
@@ -155,12 +163,20 @@ export async function getStaticProps({ params }) {
 
   const filter = params?.Product
 
-  await apolloClient.query({
-    query: GET_PRODUCT,
-    variables: {
-      slug: filter,
-    },
-  })
+  await Promise.all([
+    apolloClient.query({
+      query: GET_PRODUCT,
+      variables: {
+        slug: filter,
+      },
+    }),
+    apolloClient.query({
+      query: NAVIGATION_QUERY,
+      variables: {
+        featuredBrandSlugs: FEATURED_BRAND_LIST,
+      },
+    }),
+  ])
 
   return {
     props: {
