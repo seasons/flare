@@ -15,6 +15,7 @@ export { Skeleton } from "./Skeleton"
 export { Theme } from "lib/theme"
 export { Toggle } from "./Toggle"
 export { TextInput } from "./TextInput"
+export { PinnedButtonContainer } from "./PinnedButtonContainer"
 
 export * from "./Typography"
 export * from "./Responsive"

@@ -1,4 +1,4 @@
-import { Box, Button } from "components"
+import { Box, Button, PinnedButtonContainer } from "components"
 import { FAQ } from "components/Homepage"
 import { PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
@@ -6,9 +6,7 @@ import { ResumeConfirmation } from "mobile/Account/Components/Pause"
 import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
-import {
-  Reservation, ReservationConfirmation, ReservationShippingAddress
-} from "mobile/Reservation"
+import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 
@@ -76,19 +74,12 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         {view()}
       </Box>
       {showCloseButton && (
-        <ButtonContainer p={2}>
+        <PinnedButtonContainer p={2}>
           <Button onClick={handleClose} variant="secondaryOutline" block>
             Close
           </Button>
-        </ButtonContainer>
+        </PinnedButtonContainer>
       )}
     </MuiDrawer>
   )
 }
-
-const ButtonContainer = styled(Box)`
-  position: fixed;
-  width: 380px;
-  bottom: 0;
-  right: 0;
-`

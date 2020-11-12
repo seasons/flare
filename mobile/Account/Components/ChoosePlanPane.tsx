@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Sans, Spacer, Separator, CloseButton } from "components"
+import { Box, Button, Container, Flex, Sans, Spacer, Separator, CloseButton, PinnedButtonContainer } from "components"
 // TODO: Get sentry cooking in here
 // import { useNavigation } from "@react-navigation"
 // import * as Sentry from "@sentry/react-native"
@@ -328,18 +328,10 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
                 </Box>
               ))}
             <Spacer mb={1} />
-            <Box p={2} style={{ alignItems: "center" }}>
-              <ColoredButton
-                block
-                disabled={!selectedPlan}
-                onPress={onChoosePlan}
-                variant="primaryBlack"
-                backgroundColor={currentColor}
-              >
-                Choose plan
-              </ColoredButton>
+            {/* <Box p={2} style={{ alignItems: "center" }}>
+
               <Box style={{ height: "10px" }} />
-            </Box>
+            </Box> */}
             <Box px={2}>
               <Button
                 block
@@ -352,7 +344,17 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
             <Spacer pb={160} />
           </ScrollView>
         </Box>
-        <FadeBottom2 width="100%" style={{ position: "absolute", bottom: 0 }}></FadeBottom2>
+        <PinnedButtonContainer p={2}>
+          <ColoredButton
+            block
+            disabled={!selectedPlan}
+            onPress={onChoosePlan}
+            variant="primaryBlack"
+            backgroundColor={currentColor}
+          >
+            Choose plan
+          </ColoredButton>
+        </PinnedButtonContainer>
       </Container>
       {showLoadingOverlay && (
         <Overlay>
