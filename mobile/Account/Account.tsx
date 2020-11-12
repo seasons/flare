@@ -94,16 +94,8 @@ export const Account = screenTrack()(({ navigation }) => {
   const router = useRouter()
   const { openDrawer, closeDrawer } = useDrawerContext()
 
-  const { signOut, userSession } = useAuthContext()
-  const { data, refetch } = useQuery(GET_USER)
-
-  console.log("data", data)
-
-  // useEffect(() => {
-  //   if (userSession?.token) {
-  //     refetch()
-  //   }
-  // }, [userSession])
+  const { signOut } = useAuthContext()
+  const { data } = useQuery(GET_USER)
 
   const customer = data?.me?.customer
   const onboardingSteps = customer?.onboardingSteps
