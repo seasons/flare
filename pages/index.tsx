@@ -34,8 +34,8 @@ const Home = screenTrack(() => ({
   })
 
   const communityPosts = data?.blogPosts?.slice(1, 3)
-
   const featuredBrandItems = navigationData?.brands || []
+  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
 
   return (
     <Layout fixedNav brandItems={featuredBrandItems}>
@@ -75,7 +75,7 @@ const Home = screenTrack(() => ({
         <Separator />
       </Box>
 
-      <ChooseMembership paymentPlans={data?.paymentPlans} />
+      <ChooseMembership allAccessEnabled={allAccessEnabled} paymentPlans={data?.paymentPlans} />
 
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />

@@ -8,37 +8,15 @@ import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
 import { Check } from "../SVGs"
 import { Display } from "../Typography"
-import { useQuery } from "@apollo/client"
-import gql from "graphql-tag"
-
-export const ADMISSIONS_ME = gql`
-  query admissionsMe {
-    me {
-      customer {
-        id
-        admissions {
-          id
-          allAccessEnabled
-        }
-      }
-    }
-  }
-`
 
 interface ChooseMembershipProps {
   paymentPlans: any
   onSelectPlan?: (plan: any) => void
+  allAccessEnabled: boolean
 }
 
-export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan }) => {
-  const { data, loading } = useQuery(ADMISSIONS_ME, {
-    onCompleted: (data) => {
-      localStorage.setItem("allAccessEnabled", data?.me?.customer?.admissions?.allAccessEnabled)
-    },
-  })
-
+export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan, allAccessEnabled }) => {
   const plansGroupedByTier = []
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const tiers = uniq(paymentPlans?.map((plan) => plan.tier))
   tiers?.forEach((tier) => {
     const tierPlans = paymentPlans?.filter((plan) => {
@@ -49,9 +27,6 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
     plansGroupedByTier.push(tierPlans)
   })
 
-  if (!data) {
-    return null
-  }
   return (
     <>
       <Media greaterThanOrEqual="md">
@@ -73,7 +48,7 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
 }
 
 const Content = ({ tier, descriptionLines, group, onSelectPlan, allAccessEnabled }) => {
-  const renderingDisabledAllAccess = tier === "AllAccess" && !allAccessEnabled
+  const renderingDisabledAllAccess = tier === "AllAccess" && typeof allAccessEnabled === "boolean" && !allAccessEnabled
 
   const calcFinalPrice = (price: number) => {
     let couponData
@@ -202,12 +177,16 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan, allAccessEnabled
             )
           })}
       </Flex>
-      <Spacer mb={1} />
-      {renderingDisabledAllAccess && (
-        <Sans color="black50" size="3">
-          * All Access is disabled in your area due to shipping time.
-        </Sans>
-      )}
+      <Box style={{ position: "relative" }}>
+        {renderingDisabledAllAccess && (
+          <NoteWrapper>
+            <Spacer mb={1} />
+            <Sans color="black50" size="3">
+              * All Access is disabled in your area due to shipping time.
+            </Sans>
+          </NoteWrapper>
+        )}
+      </Box>
     </>
   )
 }
@@ -286,4 +265,10 @@ const PlanWrapper = styled(Box)<{ withHover: boolean }>`
   &:hover {
     box-shadow: ${(props) => (props.withHover ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
   }
+`
+
+const NoteWrapper = styled(Box)`
+  position: absolute;
+  bottom: -16px;
+  left: 0;
 `
