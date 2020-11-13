@@ -1,11 +1,11 @@
 import { Box, Button } from "components"
-import React, { ReactElement, ReactNode } from "react"
+import React from "react"
 import styled from "styled-components"
 
 import { DrawerBox, useDrawerScrollbarWidth } from "components/Drawer/Drawer"
 import { WebButtonProps } from "components/Button/Button"
 
-export interface DrawerBottomButtonProps extends ReactNode {
+export interface DrawerBottomButtonProps {
   buttonProps: Omit<WebButtonProps, "children">
 }
 export const DrawerBottomButton: React.FC<DrawerBottomButtonProps> = ({ buttonProps, ...props }) => {
@@ -28,7 +28,7 @@ export const DrawerBottomButton: React.FC<DrawerBottomButtonProps> = ({ buttonPr
       }}
     >
       <TopPaddingBox />
-      <Button block {...buttonProps} variant={"primaryBlack"}>
+      <Button block variant={"primaryBlack"} {...buttonProps}>
         {props.children}
       </Button>
     </DrawerBox>

@@ -300,7 +300,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
                 if (page === 1 && !allAccessEnabled) {
                   showPopUp({
                     title: "Not available in your city yet",
-                    note: "We're currently in beta and All Access is disabled in your area due to shipping time.",
+                    note: "All Access is disabled in your area due to shipping time.",
                     buttonText: "Got it",
                     onClose: hidePopUp,
                   })
