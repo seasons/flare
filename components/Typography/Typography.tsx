@@ -1,11 +1,25 @@
 import React, { CSSProperties } from "react"
 import styled, {
-  StyledComponent, StyledComponentInnerAttrs, StyledComponentInnerComponent,
-  StyledComponentInnerOtherProps
+  StyledComponent,
+  StyledComponentInnerAttrs,
+  StyledComponentInnerComponent,
+  StyledComponentInnerOtherProps,
 } from "styled-components"
 import {
-  color, ColorProps, display, DisplayProps as StyledSystemDisplayProps, fontSize, FontSizeProps,
-  lineHeight, LineHeightProps, maxWidth, MaxWidthProps, space, SpaceProps, style, TextAlignProps
+  color,
+  ColorProps,
+  display,
+  DisplayProps as StyledSystemDisplayProps,
+  fontSize,
+  FontSizeProps,
+  lineHeight,
+  LineHeightProps,
+  maxWidth,
+  MaxWidthProps,
+  space,
+  SpaceProps,
+  style,
+  TextAlignProps,
 } from "styled-system"
 
 import { DisplaySize, SansSize, themeProps, TypeSizes } from "../../lib/theme"

@@ -1,4 +1,15 @@
-import { Box, Button, Container, Flex, Sans, Spacer, Separator, CloseButton, PinnedButtonContainer } from "components"
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Sans,
+  Spacer,
+  FixedBackArrow,
+  Separator,
+  CloseButton,
+  PinnedButtonContainer,
+} from "components"
 // TODO: Get sentry cooking in here
 // import { useNavigation } from "@react-navigation"
 // import * as Sentry from "@sentry/react-native"
@@ -111,10 +122,19 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
   const [showLoadingOverlay, setShowLoadingOverlay] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState(null)
 
+  const { openDrawer } = useDrawerContext()
+
   const [updatePaymentPlan] = useMutation(PLAN_UPDATE, {
     onCompleted: () => {
       setIsMutating(false)
       onComplete?.(PaymentMethod.ApplePay)
+      const popUpData = {
+        title: "Membership updated!",
+        buttonText: "Close",
+        onClose: hidePopUp,
+      }
+      showPopUp(popUpData)
+      openDrawer("membershipInfo")
     },
     onError: (err) => {
       console.log("Error ChoosePlanPane.tsx", err)
@@ -173,7 +193,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
     setSelectedPlan(initialPlan)
   }, [plans])
 
-  const onChoosePlanUpdate = () => {
+  const onChoosePlanUpdate = async () => {
     if (isMutating) {
       return
     }
@@ -186,8 +206,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
       awaitRefetchQueries: true,
     })
   }
-
-  //   const navigation = useNavigation()
 
   const onChoosePlan = () => {
     tracking.trackEvent({
@@ -226,8 +244,13 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
 
   return (
     <>
-      <CloseButton variant="light" />
       <Container insetsBottom={false} insetsTop={false}>
+        <FixedBackArrow
+          variant="whiteBackground"
+          onPress={() => {
+            openDrawer("membershipInfo")
+          }}
+        />
         <Box style={{ flex: 1 }}>
           <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
             <Spacer mb={5} />
@@ -341,17 +364,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
             <Spacer pb={100} />
           </ScrollView>
         </Box>
-        <PinnedButtonContainer p={2}>
-          <ColoredButton
-            block
-            disabled={!selectedPlan}
-            onClick={onChoosePlan}
-            variant="primaryBlack"
-            backgroundColor={currentColor}
-          >
-            Choose plan
-          </ColoredButton>
-        </PinnedButtonContainer>
+        <FadeBottomButton disabled={!selectedPlan} onClick={onChoosePlan} backgroundColor={currentColor} />
       </Container>
       {showLoadingOverlay && (
         <Overlay>
@@ -364,6 +377,42 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
   )
 }
 
+const FadeBottomButton = ({ disabled, onClick, backgroundColor }) => {
+  return (
+    <Box
+      style={{
+        position: "fixed",
+        bottom: "0px",
+        paddingBottom: "10px",
+        backgroundColor: "white",
+        right: "0px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        width: "395px",
+        paddingRight: "15px",
+      }}
+    >
+      <Box style={{ width: "100%", backgroundColor: "white", height: "10px" }} />
+      <Box
+        style={{
+          width: "350px",
+        }}
+      >
+        <ColoredButton
+          block
+          disabled={disabled}
+          onClick={onClick}
+          variant="primaryBlack"
+          backgroundColor={backgroundColor}
+        >
+          Choose plan
+        </ColoredButton>
+      </Box>
+    </Box>
+  )
+}
 const ColoredButton = styled(Button)`
   background-color: ${(p: any) => p.backgroundColor};
 `

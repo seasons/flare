@@ -29,31 +29,29 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
     finalPrice /= 100
     const isDiscounted = originalPrice !== finalPrice && !!finalPrice
     return isDiscounted ? (
-      <Text>
+      <PriceFlexBox>
         <Sans color="black50" size="3">
           This month
         </Sans>
-        <Sans color="black100" size="3">
-          {" "}
-        </Sans>
+        <Box width="5px"></Box>
         <Sans color="black50" size="3" style={{ textDecorationLine: "line-through", textDecorationStyle: "solid" }}>
           ${originalPrice}
         </Sans>
+        <Box width="5px"></Box>
         <Sans color="black100" size="3">
-          {" "}
           ${finalPrice}
         </Sans>
-      </Text>
+      </PriceFlexBox>
     ) : (
-      <Text>
-        <Sans color="black50" size="3">
+      <PriceFlexBox>
+        <Sans color="black50" size="3" mr="3">
           Per month
         </Sans>
+        <Box width="5px"></Box>
         <Sans color="black100" size="3">
-          {" "}
-          ${originalPrice}
+          {"   "}${originalPrice}
         </Sans>
-      </Text>
+      </PriceFlexBox>
     )
   }
 
@@ -68,50 +66,41 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
     // })
   }
 
+  console.log({ selected, plan, selectedColor })
   return (
     <TouchableOpacity onPress={() => onPress(plan)}>
       <PlanSelectionBorder width="100%" p={0.5} selected={selected} selectedColor={selectedColor}>
-        <StyledFlex
-          alignItems="center"
-          flexDirection="row"
-          width="100%"
-          height={48}
-          px={2}
-          justifyContent="space-between"
-        >
+        <StyledFlex width="100%" height={48} px={2}>
           <Sans color="black100" size="4">
-            {itemCount} items
+            {itemCount} item{itemCount === 1 ? "" : "s"}
           </Sans>
-          {/* <PriceText originalPrice={price} finalPrice={finalPrice} /> */}
+          <PriceText originalPrice={price} finalPrice={finalPrice} />
         </StyledFlex>
       </PlanSelectionBorder>
     </TouchableOpacity>
   )
 }
 
+const PriceFlexBox = styled(Box)`
+  display: flex;
+`
 const StyledFlex = styled(Box)`
-  border-radius: 40%;
+  border-radius: 4px;
   background-color: ${color("black04")};
   z-index: 10;
   elevation: 6;
   display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
 `
 
 const PlanSelectionBorder = styled(Box)<{ selected: boolean; selectedColor: string }>`
-  border-radius: 40%;
+  border-radius: 4px;
   border-color: ${(p) => (p.selected ? p.selectedColor : color("white100"))};
   border-width: 1px;
+  border-style: solid;
   background: ${color("white100")};
   z-index: 0;
   display: flex;
 `
-
-// const PlanSelectionBorder = styled(Box)<{ selected: boolean; selectedColor: string }>`
-//   border-radius: 28;
-//   border-color: #000000;
-//   border-width: 1px;
-//   border-style: solid;
-//   background: ${color("white100")};
-//   z-index: 0;
-//   display: flex;
-// `
