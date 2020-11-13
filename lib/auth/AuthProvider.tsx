@@ -93,6 +93,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
       if (user) {
         analytics?.identify(user.id, user)
       }
+      apolloClient.stop()
       apolloClient.resetStore()
     },
     signOut: async () => {
@@ -102,12 +103,14 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
       }
       analytics?.reset()
       dispatch({ type: "SIGN_OUT" })
+      apolloClient.stop()
       apolloClient.resetStore()
     },
     toggleLoginModal: (toggle: boolean) => {
       dispatch({ type: "TOGGLE_LOGIN_MODAL", toggle })
     },
     resetStore: () => {
+      apolloClient.stop()
       apolloClient.resetStore()
     },
     authState,

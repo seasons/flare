@@ -178,6 +178,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
       return
     }
     setIsMutating(true)
+    console.log(selectedPlan)
     updatePaymentPlan({
       variables: {
         planID: selectedPlan.planID,
@@ -197,15 +198,15 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
     onChoosePlanUpdate()
   }
 
-  const onFaqSectionHeaderLayout = (event) => {
-    if (onMountScrollToFaqSection && scrollViewRef.current) {
-      const { x, y } = event.nativeEvent.layout
-      // layout event y does not include section header top margin,
-      // manually subtract so that we don't overshoot the component.
-      const scrollDestY = y - themeProps.space["4"]
-      scrollViewRef.current.scrollTo({ x, y: scrollDestY, animated: false })
-    }
-  }
+  // const onFaqSectionHeaderLayout = (event) => {
+  //   if (onMountScrollToFaqSection && scrollViewRef.current) {
+  //     const { x, y } = event.nativeEvent.layout
+  //     // layout event y does not include section header top margin,
+  //     // manually subtract so that we don't overshoot the component.
+  //     const scrollDestY = y - themeProps.space["4"]
+  //     scrollViewRef.current.scrollTo({ x, y: scrollDestY, animated: false })
+  //   }
+  // }
 
   const descriptionLines = selectedPlan?.description?.split("\n") || []
   const planColors = ["#000", "#e6b759"]
@@ -305,7 +306,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
             <Separator />
             {!!faqSections?.length &&
               faqSections.map((section, index) => (
-                <Box mt={4} key={index} px={2} onLayout={onFaqSectionHeaderLayout}>
+                <Box mt={4} key={index} px={2}>
                   <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                     <Sans size="3">{section.title}</Sans>
                     <ChevronIcon rotateDeg="90deg" color={color("black100")} />
@@ -328,10 +329,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
                 </Box>
               ))}
             <Spacer mb={1} />
-            {/* <Box p={2} style={{ alignItems: "center" }}>
-
-              <Box style={{ height: "10px" }} />
-            </Box> */}
             <Box px={2}>
               <Button
                 variant="secondaryOutline"
@@ -341,14 +338,14 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
                 Contact us
               </Button>
             </Box>
-            <Spacer pb={160} />
+            <Spacer pb={100} />
           </ScrollView>
         </Box>
         <PinnedButtonContainer p={2}>
           <ColoredButton
             block
             disabled={!selectedPlan}
-            onPress={onChoosePlan}
+            onClick={onChoosePlan}
             variant="primaryBlack"
             backgroundColor={currentColor}
           >

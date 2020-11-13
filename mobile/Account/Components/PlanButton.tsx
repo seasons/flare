@@ -69,8 +69,8 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
   }
 
   return (
-    <PlanSelectionBorder width="100%" p={0.5} selected={selected} selectedColor={selectedColor}>
-      <TouchableOpacity onPress={() => onPress(plan)}>
+    <TouchableOpacity onPress={() => onPress(plan)}>
+      <PlanSelectionBorder width="100%" p={0.5} selected={selected} selectedColor={selectedColor}>
         <StyledFlex
           alignItems="center"
           flexDirection="row"
@@ -79,18 +79,18 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
           px={2}
           justifyContent="space-between"
         >
-          <Sans color="black100" size="3">
+          <Sans color="black100" size="4">
             {itemCount} items
           </Sans>
-          <PriceText originalPrice={price} finalPrice={finalPrice} />
+          {/* <PriceText originalPrice={price} finalPrice={finalPrice} /> */}
         </StyledFlex>
-      </TouchableOpacity>
-    </PlanSelectionBorder>
+      </PlanSelectionBorder>
+    </TouchableOpacity>
   )
 }
 
 const StyledFlex = styled(Box)`
-  border-radius: 28;
+  border-radius: 40%;
   background-color: ${color("black04")};
   z-index: 10;
   elevation: 6;
@@ -98,10 +98,20 @@ const StyledFlex = styled(Box)`
 `
 
 const PlanSelectionBorder = styled(Box)<{ selected: boolean; selectedColor: string }>`
-  border-radius: 28;
+  border-radius: 40%;
   border-color: ${(p) => (p.selected ? p.selectedColor : color("white100"))};
   border-width: 1px;
   background: ${color("white100")};
   z-index: 0;
   display: flex;
 `
+
+// const PlanSelectionBorder = styled(Box)<{ selected: boolean; selectedColor: string }>`
+//   border-radius: 28;
+//   border-color: #000000;
+//   border-width: 1px;
+//   border-style: solid;
+//   background: ${color("white100")};
+//   z-index: 0;
+//   display: flex;
+// `

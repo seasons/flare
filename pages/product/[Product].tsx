@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
+import { BreadCrumbs } from "components/Product/BreadCrumbs"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -78,6 +79,8 @@ const Product = screenTrack(({ router }) => {
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]} px={[0, 0, 2, 5, 5]}>
+        <BreadCrumbs product={product} />
+        <Spacer mb={2} />
         <Grid>
           <Row>
             <Col md="7" sm="12">
