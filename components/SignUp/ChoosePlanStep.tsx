@@ -19,6 +19,15 @@ export const PAYMENT_PLANS = gql`
       tier
       itemCount
     }
+    me {
+      customer {
+        id
+        admissions {
+          id
+          allAccessEnabled
+        }
+      }
+    }
   }
 `
 
@@ -86,6 +95,8 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     })
   }, [])
 
+  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
+
   function executeChargebeeCheckout(planID) {
     // @ts-ignore
     const chargebee = Chargebee.getInstance()
@@ -117,6 +128,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
       </Box>
       <Spacer mb={3} />
       <ChooseMembership
+        allAccessEnabled={allAccessEnabled}
         paymentPlans={data?.paymentPlans}
         onSelectPlan={async (plan) => {
           onPlanSelected(plan)

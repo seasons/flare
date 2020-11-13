@@ -1,10 +1,9 @@
 import gql from "graphql-tag"
 import React, { useEffect, useState } from "react"
-
 import { useMutation } from "@apollo/client"
-
 import { TriageProgressScreen } from "./TriageProgressScreen"
-import { ADMISSIONS_ME } from "components/Homepage/ChooseMembership"
+import { HOME_QUERY } from "queries/homeQueries"
+import { PAYMENT_PLANS } from "./ChoosePlanStep"
 
 const TRIAGE = gql`
   mutation triage {
@@ -36,7 +35,7 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
     onError: (err) => {
       console.log("Error TriagePane.tsx:", err)
     },
-    refetchQueries: [{ query: ADMISSIONS_ME }],
+    refetchQueries: [{ query: HOME_QUERY }, { query: PAYMENT_PLANS }],
     awaitRefetchQueries: true,
   })
 

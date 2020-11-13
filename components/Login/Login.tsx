@@ -7,10 +7,10 @@ import React, { useState } from "react"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
-import { ADMISSIONS_ME } from "components/Homepage/ChooseMembership"
 import { Link } from "components/Link"
 import { ResetPassword } from "mobile/LogIn/ResetPassword"
-import { GET_USER } from "mobile/Account/Account"
+import { HOME_QUERY } from "queries/homeQueries"
+import { PAYMENT_PLANS } from "components/SignUp/ChoosePlanStep"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -44,7 +44,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       }
     },
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: ADMISSIONS_ME }],
+    refetchQueries: [{ query: HOME_QUERY }, { query: PAYMENT_PLANS }],
   })
 
   const handleSubmit = async ({ email, password }) => {
