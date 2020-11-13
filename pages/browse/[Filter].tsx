@@ -32,6 +32,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const router = useRouter()
 
   const filter = router.query?.Filter || "all+all"
+  const page = router.query?.page || 1
 
   const queries = filter?.toString().split("+")
 
@@ -39,13 +40,21 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   const [currentCategory, setCurrentCategory] = useState(category)
   const [currentBrand, setCurrentBrand] = useState(brand)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(Number(page))
   const { data: menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES, {
     variables: {
       brandOrderBy: "name_ASC",
       brandSlugs,
     },
   })
+
+  useEffect(() => {
+    if (!page && currentPage !== 1 && typeof window !== "undefined") {
+      setCurrentPage(1)
+    } else if (currentPage === 1 && page) {
+      setCurrentPage(Number(page))
+    }
+  }, [page, currentPage, setCurrentPage, currentBrand, currentCategory])
 
   const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
     variables: {
@@ -73,10 +82,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   if (error) {
     console.log("error browse.tsx ", error)
   }
-
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [currentBrand, currentCategory, setCurrentPage])
 
   useEffect(() => {
     if (filter) {
@@ -186,11 +191,13 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                         pageRangeDisplayed={2}
                         forcePage={currentPage - 1}
                         onPageChange={(data) => {
-                          setCurrentPage(data.selected + 1)
+                          const nextPage = data.selected + 1
+                          setCurrentPage(nextPage)
+                          router.push(`/browse/${filter}?page=${nextPage}`, undefined, { shallow: true })
                           tracking.trackEvent({
                             actionName: Schema.ActionNames.ProductPageNumberChanged,
                             actionType: Schema.ActionTypes.Tap,
-                            page: data.selected + 1,
+                            page: nextPage,
                           })
                         }}
                         containerClassName="pagination"
