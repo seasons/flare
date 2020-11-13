@@ -1,23 +1,8 @@
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Sans,
-  Spacer,
-  FixedBackArrow,
-  Separator,
-  CloseButton,
-  PinnedButtonContainer,
-} from "components"
-// TODO: Get sentry cooking in here
-// import { useNavigation } from "@react-navigation"
-// import * as Sentry from "@sentry/react-native"
+import { Box, Button, Container, Flex, Sans, Spacer, FixedBackArrow, Separator } from "components"
 import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
 import { color } from "helpers/color"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
-import { FadeBottom2 } from "components/SVGs/FadeBottom2"
 import { ListCheck } from "components/SVGs/ListCheck"
 import { TabBar } from "mobile/TabBar"
 import gql from "graphql-tag"
@@ -29,11 +14,9 @@ import styled from "styled-components"
 import { PlanButton, PaymentMethod } from "./PlanButton"
 import { GET_BAG } from "queries/bagQueries"
 import { ChevronIcon } from "components/Icons/ChevronIcon"
-import { themeProps } from "lib/theme"
 import { Coupon } from "utils/calcFinalPrice"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { Spinner } from "components/Spinner"
-import { DrawerBox, useDrawerScrollbarWidth } from "components/Drawer/Drawer"
 import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
 
 export const GET_PLANS = gql`
@@ -141,7 +124,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
     onError: (err) => {
       console.log("Error ChoosePlanPane.tsx", err)
       const errorAsString = err.toString()
-      //   Sentry.captureException(err)
       let popUpData
       if (errorAsString.includes("return your current reservation before")) {
         popUpData = {
@@ -289,14 +271,13 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
               strikethroughTabs={allAccessEnabled ? [] : ["All Access"]}
               activeTab={currentView}
               goToPage={(page) => {
-                // TODO: Fix this event
-                // tracking.trackEvent({
-                //   actionName:
-                //     page === 0
-                //       ? TrackSchema.ActionNames.Tier0PlanTabTapped
-                //       : TrackSchema.ActionNames.Tier1PlanTabTapped,
-                //   actionType: TrackSchema.ActionTypes.Tap,
-                // })
+                tracking.trackEvent({
+                  actionName:
+                    page === 0
+                      ? TrackSchema.ActionNames.Tier0PlanTabTapped
+                      : TrackSchema.ActionNames.Tier1PlanTabTapped,
+                  actionType: TrackSchema.ActionTypes.Tap,
+                })
                 if (page === 1 && !allAccessEnabled) {
                   showPopUp({
                     title: "Not available in your city yet",

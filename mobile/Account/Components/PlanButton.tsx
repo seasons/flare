@@ -57,13 +57,12 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
 
   const onPress = (plan) => {
     shouldSelect(plan)
-    // TODO: Fix tracking
-    // tracking.trackEvent({
-    //   actionName: TrackSchema.ActionNames.PlanTapped,
-    //   actionType: TrackSchema.ActionTypes.Tap,
-    //   planID: plan?.id,
-    //   planName: plan?.name,
-    // })
+    tracking.trackEvent({
+      actionName: TrackSchema.ActionNames.PlanTapped,
+      actionType: TrackSchema.ActionTypes.Tap,
+      planID: plan?.id,
+      planName: plan?.name,
+    })
   }
 
   console.log({ selected, plan, selectedColor })
