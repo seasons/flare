@@ -5,7 +5,6 @@ import { Nav, FEATURED_BRAND_LIST } from "../../components/Nav"
 import { screenTrack } from "../../utils/analytics"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import { useQuery } from "@apollo/client"
-import { initializeApollo } from "lib/apollo/apollo"
 
 const Account = screenTrack(() => ({
   page: "AccountPage",
@@ -39,23 +38,5 @@ const Account = screenTrack(() => ({
     </Layout>
   )
 })
-
-export async function getStaticProps() {
-  const apolloClient = initializeApollo()
-
-  await apolloClient.query({
-    query: NAVIGATION_QUERY,
-    variables: {
-      brandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
-
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-    },
-    revalidate: 1,
-  }
-}
 
 export default Account
