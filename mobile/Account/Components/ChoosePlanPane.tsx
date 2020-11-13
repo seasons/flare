@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react"
 import { useMutation, useQuery } from "@apollo/client"
 import { Dimensions, Linking, ScrollView } from "react-native"
 import styled from "styled-components"
-import { PlanButton, PaymentMethod } from "./PlanButton"
+import { PlanButton } from "./PlanButton"
 import { GET_BAG } from "queries/bagQueries"
 import { ChevronIcon } from "components/Icons/ChevronIcon"
 import { Coupon } from "utils/calcFinalPrice"
@@ -73,24 +73,13 @@ export enum PaneType {
 }
 
 interface ChoosePlanPaneProps {
-  onComplete?: (method: PaymentMethod) => void
-  // selectedPlan: GetPlans_paymentPlans
-  // setSelectedPlan: (plan: GetPlans_paymentPlans) => void
   headerText: String
   coupon?: Coupon
-  onMountScrollToFaqSection?: boolean
 }
 
 const viewWidth = Dimensions.get("window").width
 
-export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
-  onComplete,
-  headerText,
-  // setSelectedPlan,
-  // selectedPlan,
-  coupon,
-  onMountScrollToFaqSection,
-}) => {
+export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coupon }) => {
   const { data } = useQuery(GET_PLANS)
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const plans = data?.paymentPlans
@@ -112,7 +101,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
   const [updatePaymentPlan] = useMutation(PLAN_UPDATE, {
     onCompleted: () => {
       setIsMutating(false)
-      onComplete?.(PaymentMethod.ApplePay)
       const popUpData = {
         title: "Membership updated!",
         buttonText: "Close",
@@ -199,16 +187,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
 
     onChoosePlanUpdate()
   }
-
-  // const onFaqSectionHeaderLayout = (event) => {
-  //   if (onMountScrollToFaqSection && scrollViewRef.current) {
-  //     const { x, y } = event.nativeEvent.layout
-  //     // layout event y does not include section header top margin,
-  //     // manually subtract so that we don't overshoot the component.
-  //     const scrollDestY = y - themeProps.space["4"]
-  //     scrollViewRef.current.scrollTo({ x, y: scrollDestY, animated: false })
-  //   }
-  // }
 
   const descriptionLines = selectedPlan?.description?.split("\n") || []
   const planColors = ["#000", "#e6b759"]
@@ -347,8 +325,8 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
             <Spacer pb={100} />
           </ScrollView>
         </Box>
-        <DrawerBottomButton buttonProps={{ disabled: !selectedPlan, onClick: onChoosePlan, block: true }}>
-          Choose plan{" "}
+        <DrawerBottomButton buttonProps={{ disabled: !selectedPlan || isMutating, onClick: onChoosePlan, block: true }}>
+          Choose plan
         </DrawerBottomButton>
       </Container>
       {showLoadingOverlay && (

@@ -6,12 +6,6 @@ import styled from "styled-components"
 import { calcFinalPrice, Coupon } from "utils/calcFinalPrice"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
 
-// TODO: This will change on web?
-export enum PaymentMethod {
-  ApplePay = "ApplePay",
-  CreditCard = "CreditCard",
-}
-
 interface PlanButtonProps {
   shouldSelect: (plan: any) => void
   selected: boolean
