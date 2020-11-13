@@ -8,13 +8,12 @@ import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
 import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
 import React, { useEffect } from "react"
-import styled from "styled-components"
 
 import { Drawer as MuiDrawer } from "@material-ui/core"
 
-import { CloseButton } from "../CloseButton"
 import { useDrawerContext } from "./DrawerContext"
 import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
+import styled from "styled-components"
 
 interface DrawerProps {
   open?: boolean
@@ -69,8 +68,14 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
   const showCloseButton = ["bag", "profile"].includes(currentView)
 
   return (
-    <MuiDrawer anchor="right" open={isOpen} onClose={handleClose} variant="temporary">
-      <Box width="380px" height="100%" style={{ position: "relative" }} pb={showCloseButton ? "60px" : 0}>
+    <MuiDrawer
+      anchor="right"
+      open={isOpen}
+      onClose={handleClose}
+      variant="temporary"
+      PaperProps={{ component: ResponsiveBox }}
+    >
+      <Box width="100%" height="100%" style={{ position: "relative" }} pb={showCloseButton ? "60px" : 0}>
         {view()}
       </Box>
       {showCloseButton && (
@@ -83,3 +88,10 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
     </MuiDrawer>
   )
 }
+
+const ResponsiveBox = styled(Box)`
+  width: 380px;
+  @media (max-width: 380px) {
+    width: 100%;
+  }
+`
