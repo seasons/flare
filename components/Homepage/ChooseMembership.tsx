@@ -1,5 +1,5 @@
 import { uniq } from "lodash"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
@@ -38,6 +38,7 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
   })
 
   const plansGroupedByTier = []
+  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const tiers = uniq(paymentPlans?.map((plan) => plan.tier))
   tiers?.forEach((tier) => {
     const tierPlans = paymentPlans?.filter((plan) => {
@@ -54,18 +55,26 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <Desktop plansGroupedByTier={plansGroupedByTier} onSelectPlan={onSelectPlan} />
+        <Desktop
+          plansGroupedByTier={plansGroupedByTier}
+          onSelectPlan={onSelectPlan}
+          allAccessEnabled={allAccessEnabled}
+        />
       </Media>
       <Media lessThan="md">
-        <Mobile plansGroupedByTier={plansGroupedByTier} onSelectPlan={onSelectPlan} />
+        <Mobile
+          plansGroupedByTier={plansGroupedByTier}
+          onSelectPlan={onSelectPlan}
+          allAccessEnabled={allAccessEnabled}
+        />
       </Media>
     </>
   )
 }
 
-const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
-  const [allAccessEnabled, setAllAccessEnabled] = useState(localStorage.getItem("allAccessEnabled") == "true")
+const Content = ({ tier, descriptionLines, group, onSelectPlan, allAccessEnabled }) => {
   const renderingDisabledAllAccess = tier === "AllAccess" && !allAccessEnabled
+
   const calcFinalPrice = (price: number) => {
     let couponData
     if (typeof window !== "undefined") {
@@ -88,6 +97,7 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
       return price
     }
   }
+
   const PriceText = ({ originalPrice, finalPrice }) => {
     originalPrice /= 100
     finalPrice /= 100
@@ -202,7 +212,7 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
   )
 }
 
-const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
+const Desktop = ({ plansGroupedByTier, onSelectPlan, allAccessEnabled }) => {
   return (
     <Grid>
       <Row px={[1, 1, 1, 3, 3]}>
@@ -219,7 +229,13 @@ const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
             >
               <Box px={[1, 1, 1, 2, 2]}>
                 <Box pl={5} pt="76px" pb={10} pr="63px">
-                  <Content tier={tier} descriptionLines={descriptionLines} group={group} onSelectPlan={onSelectPlan} />
+                  <Content
+                    tier={tier}
+                    descriptionLines={descriptionLines}
+                    group={group}
+                    onSelectPlan={onSelectPlan}
+                    allAccessEnabled={allAccessEnabled}
+                  />
                 </Box>
               </Box>
             </Col>
@@ -230,7 +246,7 @@ const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
   )
 }
 
-const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
+const Mobile = ({ plansGroupedByTier, onSelectPlan, allAccessEnabled }) => {
   return (
     <Grid pt="76px">
       <Row px={[1, 1, 1, 3, 3]}>
@@ -242,7 +258,13 @@ const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
             <Col md="6" xs="12" style={{ height: "100%" }} key={index}>
               <Box px={[1, 1, 1, 2, 2]}>
                 <Box pb={10}>
-                  <Content tier={tier} descriptionLines={descriptionLines} group={group} onSelectPlan={onSelectPlan} />
+                  <Content
+                    tier={tier}
+                    descriptionLines={descriptionLines}
+                    group={group}
+                    onSelectPlan={onSelectPlan}
+                    allAccessEnabled={allAccessEnabled}
+                  />
                 </Box>
               </Box>
             </Col>
