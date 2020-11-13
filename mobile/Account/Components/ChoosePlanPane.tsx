@@ -33,6 +33,8 @@ import { themeProps } from "lib/theme"
 import { Coupon } from "utils/calcFinalPrice"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { Spinner } from "components/Spinner"
+import { DrawerBox, useDrawerScrollbarWidth } from "components/Drawer/Drawer"
+import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
 
 export const GET_PLANS = gql`
   query GetPlans($where: PaymentPlanWhereInput) {
@@ -364,7 +366,9 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
             <Spacer pb={100} />
           </ScrollView>
         </Box>
-        <FadeBottomButton disabled={!selectedPlan} onClick={onChoosePlan} backgroundColor={currentColor} />
+        <DrawerBottomButton buttonProps={{ disabled: !selectedPlan, onClick: onChoosePlan, block: true }}>
+          Choose plan{" "}
+        </DrawerBottomButton>
       </Container>
       {showLoadingOverlay && (
         <Overlay>
@@ -376,46 +380,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({
     </>
   )
 }
-
-const FadeBottomButton = ({ disabled, onClick, backgroundColor }) => {
-  return (
-    <Box
-      style={{
-        position: "fixed",
-        bottom: "0px",
-        paddingBottom: "10px",
-        backgroundColor: "white",
-        right: "0px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        width: "395px",
-        paddingRight: "15px",
-      }}
-    >
-      <Box style={{ width: "100%", backgroundColor: "white", height: "10px" }} />
-      <Box
-        style={{
-          width: "350px",
-        }}
-      >
-        <ColoredButton
-          block
-          disabled={disabled}
-          onClick={onClick}
-          variant="primaryBlack"
-          backgroundColor={backgroundColor}
-        >
-          Choose plan
-        </ColoredButton>
-      </Box>
-    </Box>
-  )
-}
-const ColoredButton = styled(Button)`
-  background-color: ${(p: any) => p.backgroundColor};
-`
 
 const Overlay = styled(Box)`
   position: absolute;

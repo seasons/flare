@@ -1,4 +1,4 @@
-import { Box, Button, PinnedButtonContainer } from "components"
+import { Box } from "components"
 import { FAQ } from "components/Homepage"
 import { PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
@@ -7,9 +7,10 @@ import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
 import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 import { Drawer as MuiDrawer } from "@material-ui/core"
+import { DrawerBottomButton } from "./DrawerBottomButton"
 
 import { useDrawerContext } from "./DrawerContext"
 import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
@@ -73,23 +74,37 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
       open={isOpen}
       onClose={handleClose}
       variant="temporary"
-      PaperProps={{ component: ResponsiveBox }}
+      PaperProps={{ component: DrawerBox, id: "appDrawer" }}
     >
       <Box width="100%" height="100%" style={{ position: "relative" }} pb={showCloseButton ? "60px" : 0}>
         {view()}
       </Box>
       {showCloseButton && (
-        <PinnedButtonContainer p={2}>
-          <Button onClick={handleClose} variant="secondaryOutline" block>
-            Close
-          </Button>
-        </PinnedButtonContainer>
+        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutline" }}>
+          Close
+        </DrawerBottomButton>
       )}
     </MuiDrawer>
   )
 }
 
-const ResponsiveBox = styled(Box)`
+// Returns the width of the scrollbar on the drawer
+export const useDrawerScrollbarWidth = () => {
+  const [scrollbarWidth, setScrollbarWidth] = useState(0)
+
+  useEffect(() => {
+    let newWidth = 0
+    if (typeof document !== "undefined") {
+      const pane = document.getElementById("appDrawer")
+      newWidth = pane.offsetWidth - pane.clientWidth
+    }
+    setScrollbarWidth(newWidth)
+  }, [document])
+
+  return scrollbarWidth
+}
+
+export const DrawerBox = styled(Box)`
   width: 380px;
   @media (max-width: 380px) {
     width: 100%;
