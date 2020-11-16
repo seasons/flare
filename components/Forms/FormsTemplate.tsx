@@ -63,6 +63,30 @@ const BackButton = ({ onClick }) => {
   )
 }
 
+const SubmitButton = ({ buttonActionName, tracking, handleSubmit, isSubmitting, disabled, buttonText }) => {
+  return (
+    <Button
+      ml={2}
+      variant="primaryBlack"
+      onClick={() => {
+        if (!!buttonActionName) {
+          tracking.trackEvent({
+            actionName: buttonActionName,
+            actionType: Schema.ActionTypes.Tap,
+          })
+        }
+        handleSubmit()
+      }}
+      loading={isSubmitting}
+      size="medium"
+      type="submit"
+      disabled={disabled}
+    >
+      {buttonText}
+    </Button>
+  )
+}
+
 export const FormFooter: React.FC<FooterProps> = ({
   buttonText,
   handleSubmit,
@@ -73,29 +97,6 @@ export const FormFooter: React.FC<FooterProps> = ({
   buttonActionName,
 }) => {
   const tracking = useTracking()
-  const ButtonComponent = () => {
-    return (
-      <Button
-        ml={2}
-        variant="primaryBlack"
-        onClick={() => {
-          if (!!buttonActionName) {
-            tracking.trackEvent({
-              actionName: buttonActionName,
-              actionType: Schema.ActionTypes.Tap,
-            })
-          }
-          handleSubmit()
-        }}
-        loading={isSubmitting}
-        size="medium"
-        type="submit"
-        disabled={disabled}
-      >
-        {buttonText}
-      </Button>
-    )
-  }
 
   return (
     <FormFooterWrapper>
@@ -117,10 +118,26 @@ export const FormFooter: React.FC<FooterProps> = ({
             ) : null}
             {!!buttonText && !!buttonLink ? (
               <a href={buttonLink}>
-                <ButtonComponent />
+                <SubmitButton
+                  buttonActionName={buttonActionName}
+                  tracking={tracking}
+                  handleSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
+                  disabled={disabled}
+                  buttonText={buttonText}
+                />
               </a>
             ) : (
-              !!buttonText && <ButtonComponent />
+              !!buttonText && (
+                <SubmitButton
+                  buttonActionName={buttonActionName}
+                  tracking={tracking}
+                  handleSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
+                  disabled={disabled}
+                  buttonText={buttonText}
+                />
+              )
             )}
           </Flex>
         </MaxWidth>
