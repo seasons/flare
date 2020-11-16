@@ -28,6 +28,15 @@ const HomePageProductFragment = gql`
 
 export const HOME_QUERY = gql`
   query GetBrowseProducts {
+    me {
+      customer {
+        id
+        admissions {
+          id
+          allAccessEnabled
+        }
+      }
+    }
     paymentPlans(where: { status: "active" }) {
       id
       name

@@ -33,12 +33,6 @@ export const Nav: React.FC<Props> = ({ fixed, brandItems }) => {
       match: /blog.seasons.nyc/,
       external: true,
     },
-    {
-      text: "About",
-      url: "/about",
-      match: /^\/about/,
-      external: false,
-    },
   ]
 
   return (

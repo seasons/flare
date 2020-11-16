@@ -30,8 +30,6 @@ const httpLink = new HttpLink({
 // Take from https://github.com/vercel/next.js/blob/canary/examples/with-apollo/lib/apolloClient.js
 
 export function createApolloClient() {
-  const token = typeof window !== "undefined" && getAccessTokenFromSession()
-
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: authLink.concat(httpLink) as any,

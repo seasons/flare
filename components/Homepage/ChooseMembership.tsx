@@ -1,5 +1,5 @@
 import { uniq } from "lodash"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
@@ -8,35 +8,14 @@ import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
 import { Check } from "../SVGs"
 import { Display } from "../Typography"
-import { useQuery } from "@apollo/client"
-import gql from "graphql-tag"
-
-export const ADMISSIONS_ME = gql`
-  query admissionsMe {
-    me {
-      customer {
-        id
-        admissions {
-          id
-          allAccessEnabled
-        }
-      }
-    }
-  }
-`
 
 interface ChooseMembershipProps {
   paymentPlans: any
   onSelectPlan?: (plan: any) => void
+  allAccessEnabled: boolean
 }
 
-export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan }) => {
-  const { data, loading } = useQuery(ADMISSIONS_ME, {
-    onCompleted: (data) => {
-      localStorage.setItem("allAccessEnabled", data?.me?.customer?.admissions?.allAccessEnabled)
-    },
-  })
-
+export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan, allAccessEnabled }) => {
   const plansGroupedByTier = []
   const tiers = uniq(paymentPlans?.map((plan) => plan.tier))
   tiers?.forEach((tier) => {
@@ -48,24 +27,29 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
     plansGroupedByTier.push(tierPlans)
   })
 
-  if (!data) {
-    return null
-  }
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <Desktop plansGroupedByTier={plansGroupedByTier} onSelectPlan={onSelectPlan} />
+        <Desktop
+          plansGroupedByTier={plansGroupedByTier}
+          onSelectPlan={onSelectPlan}
+          allAccessEnabled={allAccessEnabled}
+        />
       </Media>
       <Media lessThan="md">
-        <Mobile plansGroupedByTier={plansGroupedByTier} onSelectPlan={onSelectPlan} />
+        <Mobile
+          plansGroupedByTier={plansGroupedByTier}
+          onSelectPlan={onSelectPlan}
+          allAccessEnabled={allAccessEnabled}
+        />
       </Media>
     </>
   )
 }
 
-const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
-  const [allAccessEnabled, setAllAccessEnabled] = useState(localStorage.getItem("allAccessEnabled") == "true")
-  const renderingDisabledAllAccess = tier === "AllAccess" && !allAccessEnabled
+const Content = ({ tier, descriptionLines, group, onSelectPlan, allAccessEnabled }) => {
+  const renderingDisabledAllAccess = tier === "AllAccess" && typeof allAccessEnabled === "boolean" && !allAccessEnabled
+
   const calcFinalPrice = (price: number) => {
     let couponData
     if (typeof window !== "undefined") {
@@ -88,6 +72,7 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
       return price
     }
   }
+
   const PriceText = ({ originalPrice, finalPrice }) => {
     originalPrice /= 100
     finalPrice /= 100
@@ -192,17 +177,21 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
             )
           })}
       </Flex>
-      <Spacer mb={1} />
-      {renderingDisabledAllAccess && (
-        <Sans color="black50" size="3">
-          * All Access is disabled in your area due to shipping time.
-        </Sans>
-      )}
+      <Box style={{ position: "relative" }}>
+        {renderingDisabledAllAccess && (
+          <NoteWrapper>
+            <Spacer mb={1} />
+            <Sans color="black50" size="3">
+              * All Access is disabled in your area due to shipping time.
+            </Sans>
+          </NoteWrapper>
+        )}
+      </Box>
     </>
   )
 }
 
-const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
+const Desktop = ({ plansGroupedByTier, onSelectPlan, allAccessEnabled }) => {
   return (
     <Grid>
       <Row px={[1, 1, 1, 3, 3]}>
@@ -219,7 +208,13 @@ const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
             >
               <Box px={[1, 1, 1, 2, 2]}>
                 <Box pl={5} pt="76px" pb={10} pr="63px">
-                  <Content tier={tier} descriptionLines={descriptionLines} group={group} onSelectPlan={onSelectPlan} />
+                  <Content
+                    tier={tier}
+                    descriptionLines={descriptionLines}
+                    group={group}
+                    onSelectPlan={onSelectPlan}
+                    allAccessEnabled={allAccessEnabled}
+                  />
                 </Box>
               </Box>
             </Col>
@@ -230,7 +225,7 @@ const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
   )
 }
 
-const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
+const Mobile = ({ plansGroupedByTier, onSelectPlan, allAccessEnabled }) => {
   return (
     <Grid pt="76px">
       <Row px={[1, 1, 1, 3, 3]}>
@@ -242,7 +237,13 @@ const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
             <Col md="6" xs="12" style={{ height: "100%" }} key={index}>
               <Box px={[1, 1, 1, 2, 2]}>
                 <Box pb={10}>
-                  <Content tier={tier} descriptionLines={descriptionLines} group={group} onSelectPlan={onSelectPlan} />
+                  <Content
+                    tier={tier}
+                    descriptionLines={descriptionLines}
+                    group={group}
+                    onSelectPlan={onSelectPlan}
+                    allAccessEnabled={allAccessEnabled}
+                  />
                 </Box>
               </Box>
             </Col>
@@ -264,4 +265,10 @@ const PlanWrapper = styled(Box)<{ withHover: boolean }>`
   &:hover {
     box-shadow: ${(props) => (props.withHover ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
   }
+`
+
+const NoteWrapper = styled(Box)`
+  position: absolute;
+  bottom: -16px;
+  left: 0;
 `

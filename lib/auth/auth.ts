@@ -8,11 +8,18 @@ export interface UserSession {
 }
 
 export const getUserSession: () => UserSession | null = () => {
-  const data = localStorage.getItem("userSession")
+  let data
+  if (typeof window !== "undefined") {
+    data = localStorage?.getItem("userSession")
+  }
 
   try {
-    const userSession = JSON.parse(data)
-    return userSession
+    if (data) {
+      const userSession = JSON.parse(data)
+      return userSession
+    } else {
+      return null
+    }
   } catch (e) {}
 
   return {}
