@@ -162,7 +162,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
   })
 
   let pauseStatus: PauseStatus = "active"
-  let pauseButtonVariant = "primaryGray"
+  let pauseButtonVariant = "secondaryGray"
   let pauseButtonText = "Pause membership"
 
   if (customerStatus === "Paused") {
