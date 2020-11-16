@@ -7,21 +7,20 @@ import {
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
 import { Wizard } from "components/Forms/Wizard"
+import { FEATURED_BRAND_LIST } from "components/Nav"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { CheckWithBackground } from "components/SVGs"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import gql from "graphql-tag"
+import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
 import { useRouter } from "next/router"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-import { useQuery } from "@apollo/client"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import { initializeApollo } from "lib/apollo/apollo"
 
-import { useMutation } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 
 const SIGN_UP_USER = gql`
   mutation SignupUser(
