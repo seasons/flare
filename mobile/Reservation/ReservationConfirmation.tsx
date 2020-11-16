@@ -192,7 +192,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
           </Box>
         </ScrollView>
       </Flex>
-      <ButtonContainer>
+      <ButtonContainer p={2}>
         <Button
           onClick={() => {
             tracking.trackEvent({
@@ -201,10 +201,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
             })
             openDrawer("bag")
           }}
-          style={{
-            width: "100%",
-            borderRadius: 0,
-          }}
+          block
         >
           Done
         </Button>
