@@ -23,6 +23,18 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[] }> = ({ 
         <Col lg="2" xs="12" lgOffset={4}>
           <Display size="3">Misc.</Display>
           <Spacer mb={[1, 1, 1, 2, 2]} />
+          <Link href="/about">
+            <Sans size="3" color="black50">
+              About
+            </Sans>
+          </Link>
+          <Spacer mb={[1, 1, 1, 2, 2]} />
+          <a href="https://blog.seasons.nyc/creative-project" style={{ textDecoration: "none" }}>
+            <Sans size="3" color="black50">
+              Grant
+            </Sans>
+          </a>
+          <Spacer mb={[1, 1, 1, 2, 2]} />
           <Link href="/privacy-policy">
             <Sans size="3" color="black50">
               Privacy Policy
