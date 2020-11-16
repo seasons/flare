@@ -6,7 +6,7 @@ import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import { useQuery } from "@apollo/client"
 import { initializeApollo } from "lib/apollo/apollo"
 
-const about = screenTrack(() => ({
+const About = screenTrack(() => ({
   page: Schema.PageNames.AboutPage,
   path: "/about",
 }))(() => {
@@ -50,4 +50,4 @@ export async function getStaticProps() {
   }
 }
 
-export default about
+export default About

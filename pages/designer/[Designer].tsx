@@ -129,6 +129,7 @@ const Designer = screenTrack(({ router }) => {
                   {basedIn}
                 </Sans>
               </Flex>
+              <Spacer mb={2} />
               <Separator />
             </>
           )}

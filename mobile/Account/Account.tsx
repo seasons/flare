@@ -1,8 +1,14 @@
 import { Box, Button, Flex, Sans, Separator, Skeleton, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import {
-  ChevronIcon, LogoutIcon, MembershipInfoIcon, PaymentShippingIcon, PersonalPreferencesIcon,
-  PrivacyPolicy, QuestionMark, TermsOfService
+  ChevronIcon,
+  LogoutIcon,
+  MembershipInfoIcon,
+  PaymentShippingIcon,
+  PersonalPreferencesIcon,
+  PrivacyPolicy,
+  QuestionMark,
+  TermsOfService,
 } from "components/Icons"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -88,8 +94,8 @@ export const Account = screenTrack()(({ navigation }) => {
   const router = useRouter()
   const { openDrawer, closeDrawer } = useDrawerContext()
 
-  const { authState, signOut } = useAuthContext()
-  const { data, refetch } = useQuery(GET_USER)
+  const { signOut } = useAuthContext()
+  const { data } = useQuery(GET_USER)
 
   const customer = data?.me?.customer
   const onboardingSteps = customer?.onboardingSteps

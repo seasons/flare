@@ -1,4 +1,4 @@
-import { Box, Button } from "components"
+import { Box } from "components"
 import { FAQ } from "components/Homepage"
 import { PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
@@ -6,16 +6,15 @@ import { ResumeConfirmation } from "mobile/Account/Components/Pause"
 import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
-import {
-  Reservation, ReservationConfirmation, ReservationShippingAddress
-} from "mobile/Reservation"
-import React, { useEffect } from "react"
-import styled from "styled-components"
+import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
+import React, { useEffect, useState } from "react"
 
 import { Drawer as MuiDrawer } from "@material-ui/core"
+import { DrawerBottomButton } from "./DrawerBottomButton"
 
-import { CloseButton } from "../CloseButton"
 import { useDrawerContext } from "./DrawerContext"
+import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
+import styled from "styled-components"
 
 interface DrawerProps {
   open?: boolean
@@ -63,29 +62,51 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         return <FAQ />
       case "resumeConfirmation":
         return <ResumeConfirmation />
+      case "choosePlan":
+        return <ChoosePlanPane headerText={"Let's choose your plan"} />
     }
   }
   const showCloseButton = ["bag", "profile"].includes(currentView)
 
   return (
-    <MuiDrawer anchor="right" open={isOpen} onClose={handleClose} variant="temporary">
-      <Box width="380px" height="100%" style={{ position: "relative" }} pb={showCloseButton ? "60px" : 0}>
+    <MuiDrawer
+      anchor="right"
+      open={isOpen}
+      onClose={handleClose}
+      variant="temporary"
+      PaperProps={{ component: DrawerBox, id: "appDrawer" }}
+    >
+      <Box width="100%" height="100%" style={{ position: "relative" }} pb={showCloseButton ? "60px" : 0}>
         {view()}
       </Box>
       {showCloseButton && (
-        <ButtonContainer p={2}>
-          <Button onClick={handleClose} variant="secondaryOutline" block>
-            Close
-          </Button>
-        </ButtonContainer>
+        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutline" }}>
+          Close
+        </DrawerBottomButton>
       )}
     </MuiDrawer>
   )
 }
 
-const ButtonContainer = styled(Box)`
-  position: fixed;
+// Returns the width of the scrollbar on the drawer
+export const useDrawerScrollbarWidth = () => {
+  const [scrollbarWidth, setScrollbarWidth] = useState(0)
+
+  useEffect(() => {
+    let newWidth = 0
+    if (typeof document !== "undefined") {
+      const pane = document.getElementById("appDrawer")
+      newWidth = pane.offsetWidth - pane.clientWidth
+    }
+    setScrollbarWidth(newWidth)
+  }, [document])
+
+  return scrollbarWidth
+}
+
+export const DrawerBox = styled(Box)`
   width: 380px;
-  bottom: 0;
-  right: 0;
+  @media (max-width: 380px) {
+    width: 100%;
+  }
 `

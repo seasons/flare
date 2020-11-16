@@ -23,6 +23,8 @@ interface TabBarProps {
   scrollValue?: Animated.AnimatedInterpolation
   /** Should space tabs evenly */
   spaceEvenly?: boolean
+  /** Tabs to render with strikethrough */
+  strikethroughTabs?: string[]
 }
 
 const Button = styled(TouchableWithoutFeedback)`
@@ -64,7 +66,7 @@ interface TabProps {
 export const Tab: React.FC<TabProps> = ({ children }) => <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
 
 export class TabBar extends React.Component<TabBarProps, null> {
-  renderTab(name, page, isTabActive, isTabDisabled, onPressHandler, tabColorProps) {
+  renderTab(name, page, isTabActive, isTabDisabled, onPressHandler, tabColorProps, withStrikeThrough) {
     let tabTextColor
     if (isTabDisabled) {
       tabTextColor = color("black25")
@@ -82,7 +84,13 @@ export class TabBar extends React.Component<TabBarProps, null> {
         onPress={() => (isTabDisabled ? null : onPressHandler(page))}
       >
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive} tabColor={tabColorProps}>
-          <Sans numberOfLines={1} weight="medium" size="4" color={tabTextColor}>
+          <Sans
+            numberOfLines={1}
+            weight="medium"
+            size="4"
+            color={tabTextColor}
+            style={withStrikeThrough ? { textDecorationLine: "line-through", textDecorationStyle: "solid" } : {}}
+          >
             {name}
           </Sans>
         </TabButton>
@@ -97,7 +105,16 @@ export class TabBar extends React.Component<TabBarProps, null> {
           {this.props.tabs.map((name, index) => {
             const isTabActive = this.props.activeTab === index
             const isTabDisabled = this.props.disabledTabs?.includes(name)
-            return this.renderTab(name, index, isTabActive, isTabDisabled, this.props.goToPage, this.props.tabColor)
+            const withStrikeThrough = this.props.strikethroughTabs?.includes(name)
+            return this.renderTab(
+              name,
+              index,
+              isTabActive,
+              isTabDisabled,
+              this.props.goToPage,
+              this.props.tabColor,
+              withStrikeThrough
+            )
           })}
         </Tabs>
         <Separator />

@@ -96,7 +96,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           )}
           {!!whatsIncluded && (
             <>
-              <Spacer mb={80} />
+              <Spacer mb={4} />
               <Sans size="4">Whats included</Sans>
               <Spacer mb={2} />
               <Separator />
@@ -113,7 +113,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           <Spacer mb={4} />
           <Sans size="4">Change your plan</Sans>
           <Spacer mb={2} />
-          <Button variant="secondaryOutline" block>
+          <Button variant="secondaryOutline" block onClick={() => openDrawer("choosePlan")}>
             View membership options
           </Button>
           <Spacer mb={4} />
