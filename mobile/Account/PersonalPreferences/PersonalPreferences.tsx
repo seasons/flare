@@ -11,7 +11,6 @@ import { useQuery } from "@apollo/client"
 
 import { PersonalTab } from "./PersonalTab"
 import { SizingTab } from "./SizingTab"
-import { StyleTab } from "./StyleTab"
 
 const GET_PREFERENCES = gql`
   query GetUserPreferences {
@@ -57,7 +56,6 @@ const GET_PREFERENCES = gql`
 enum Tab {
   Personal,
   Sizing,
-  Style,
 }
 
 export const PersonalPreferences = screenTrack()(({ navigation }) => {
@@ -120,8 +118,6 @@ export const PersonalPreferences = screenTrack()(({ navigation }) => {
         )
       case Tab.Sizing:
         return <SizingTab navigation={navigation} rawMeasurements={measurements} />
-      case Tab.Style:
-        return <StyleTab navigation={navigation} rawStylePreferences={stylePreferences} />
     }
   }
 
@@ -139,7 +135,7 @@ export const PersonalPreferences = screenTrack()(({ navigation }) => {
       </Box>
       <TabBar
         spaceEvenly
-        tabs={["Personal", "Sizing", "Style"]}
+        tabs={["Personal", "Sizing"]}
         disabledTabs={[]}
         activeTab={activeTab}
         goToPage={(tab: Tab) => {
