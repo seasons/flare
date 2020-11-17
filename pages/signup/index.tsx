@@ -137,7 +137,7 @@ const SignUpPage = screenTrack(() => ({
     accountAccepted: {
       icon: <CheckWithBackground />,
       headerText: "Welcome to Seasons",
-      bodyText: "Your membership is active and you’re ready to start reserving. Tap below to start browsing",
+      bodyText: "Your membership is active and you’re ready to start reserving. Tap below to start browsing.",
     },
   }
 

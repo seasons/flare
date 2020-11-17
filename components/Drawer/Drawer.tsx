@@ -63,7 +63,7 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
       case "resumeConfirmation":
         return <ResumeConfirmation />
       case "choosePlan":
-        return <ChoosePlanPane headerText={"Let's choose your plan"} />
+        return <ChoosePlanPane headerText={"Let's choose your plan"} source={params?.source} />
     }
   }
   const showCloseButton = ["bag", "profile"].includes(currentView)
@@ -75,6 +75,7 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
       onClose={handleClose}
       variant="temporary"
       PaperProps={{ component: DrawerBox, id: "appDrawer" }}
+      ModalProps={{ disableEnforceFocus: true }}
     >
       <Box width="100%" height="100%" style={{ position: "relative" }} pb={showCloseButton ? "60px" : 0}>
         {view()}

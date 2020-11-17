@@ -48,7 +48,7 @@ interface ChoosePlanStepProps {
 }
 
 const GET_CHARGEBEE_CHECKOUT = gql`
-  query getChargebeeCheckout($planID: String!, $email: String, $couponID: String) {
+  query GetChargebeeCheckout($planID: String!, $email: String, $couponID: String) {
     chargebeeCheckout(planID: $planID, email: $email, couponID: $couponID) {
       id
       type
@@ -61,7 +61,7 @@ const GET_CHARGEBEE_CHECKOUT = gql`
   }
 `
 
-export function GetChargebeeCheckout(planID: string, email: string): Promise<boolean | void> {
+export function getChargebeeCheckout(planID: string, email: string): Promise<boolean | void> {
   let coupon
   try {
     const couponData = localStorage?.getItem("coupon")
@@ -100,15 +100,10 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
   const { userSession } = useAuthContext()
 
   useEffect(() => {
-    // @ts-ignore
-    Chargebee.init({
-      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
-    })
-  }, [])
-
-  useEffect(() => {
     if (data?.paymentPlans && !selectedPlan) {
-      setSelectedPlan(data?.paymentPlans?.[0])
+      const essential1 = data?.paymentPlans.find((p) => p.name === "Essential 1")
+      console.log("data?.paymentPlans", data?.paymentPlans)
+      setSelectedPlan(essential1)
     }
   }, [data, selectedPlan, setSelectedPlan])
 
@@ -121,7 +116,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     chargebee.openCheckout({
       hostedPage: async () => {
         const { email } = userSession.user
-        return await GetChargebeeCheckout(planID, email)
+        return await getChargebeeCheckout(planID, email)
       },
       error: (error) => {
         console.error(error)
