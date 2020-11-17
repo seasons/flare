@@ -20,7 +20,6 @@ import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 
 import { Container } from "../Container"
-import { NotificationToggle } from "./Components/NotificationToggle"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
 
 export enum UserState {
@@ -92,10 +91,16 @@ export const GET_USER = gql`
 export const Account = screenTrack()(({ navigation }) => {
   const tracking = useTracking()
   const router = useRouter()
-  const { openDrawer, closeDrawer } = useDrawerContext()
+  const { openDrawer, closeDrawer, isOpen, currentView } = useDrawerContext()
 
   const { signOut } = useAuthContext()
-  const { data } = useQuery(GET_USER)
+  const { data, refetch } = useQuery(GET_USER)
+
+  useEffect(() => {
+    if (currentView === "profile" && isOpen) {
+      refetch()
+    }
+  }, [isOpen, currentView])
 
   const customer = data?.me?.customer
   const onboardingSteps = customer?.onboardingSteps
@@ -277,8 +282,6 @@ export const Account = screenTrack()(({ navigation }) => {
         <Box px={2} py={4}>
           {!!data ? renderBody() : <ListSkeleton />}
         </Box>
-        <InsetSeparator />
-        <NotificationToggle pushNotification={pushNotification} />
         <InsetSeparator />
         <Spacer mb={4} />
         <Box px={2}>

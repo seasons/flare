@@ -33,6 +33,8 @@ const Home = screenTrack(() => ({
     },
   })
 
+  console.log("data on homepage", data)
+
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
