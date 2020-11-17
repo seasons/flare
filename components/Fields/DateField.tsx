@@ -2,10 +2,9 @@ import React, { useState } from "react"
 import { Field } from "formik"
 import { FormProps } from "../Forms/FormsTemplate"
 import { TextField } from "./TextField"
-import { String } from "aws-sdk/clients/networkmanager"
 
 interface Props extends FormProps {
-  inputName: String
+  inputName: string
 }
 
 export const DateField: React.FC<Props> = ({ context, inputName }) => {
