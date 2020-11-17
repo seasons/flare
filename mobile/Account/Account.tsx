@@ -20,7 +20,6 @@ import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 
 import { Container } from "../Container"
-import { NotificationToggle } from "./Components/NotificationToggle"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
 
 export enum UserState {
@@ -277,8 +276,6 @@ export const Account = screenTrack()(({ navigation }) => {
         <Box px={2} py={4}>
           {!!data ? renderBody() : <ListSkeleton />}
         </Box>
-        <InsetSeparator />
-        <NotificationToggle pushNotification={pushNotification} />
         <InsetSeparator />
         <Spacer mb={4} />
         <Box px={2}>
