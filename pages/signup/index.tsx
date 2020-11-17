@@ -264,7 +264,7 @@ const SignUpPage = screenTrack(() => ({
     : [
         ...(userHasAccount ? [] : noAccountSteps),
         ...(userIsConfirmed ? [] : triageStep),
-        <Step onSubmit={async (values, actions) => {}}>
+        <Step>
           {({ form, wizard }) => {
             const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
 
