@@ -1,8 +1,8 @@
 import { Media } from "../Responsive"
+import { BrandsNavItem } from "./BrandsNavItem"
 import { DesktopNav } from "./DesktopNav"
 import { MobileNav } from "./MobileNav"
 import { NavProps } from "./Types"
-import { BrandsNavItem } from "./BrandsNavItem"
 
 type Props = NavProps & {
   brandItems: { name: string; slug: string }[]
@@ -17,6 +17,12 @@ export const Nav: React.FC<Props> = ({ fixed, brandItems }) => {
       external: false,
     },
     {
+      text: "Blog",
+      url: "https://blog.seasons.nyc",
+      match: /blog.seasons.nyc/,
+      external: true,
+    },
+    {
       text: "Browse",
       url: "/browse",
       match: /^\/browse/,
@@ -26,12 +32,6 @@ export const Nav: React.FC<Props> = ({ fixed, brandItems }) => {
       text: "Designers",
       external: false,
       renderNavItem: () => <BrandsNavItem key="designers" brandItems={brandItems} />,
-    },
-    {
-      text: "Blog",
-      url: "https://blog.seasons.nyc",
-      match: /blog.seasons.nyc/,
-      external: true,
     },
   ]
 
