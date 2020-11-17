@@ -14,7 +14,7 @@ import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
-import { Image, Linking, ScrollView, StatusBar } from "react-native"
+import { Linking, ScrollView } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
@@ -231,15 +231,12 @@ export const Account = screenTrack()(({ navigation }) => {
             <Button
               block
               variant="primaryWhite"
-              onPress={() => {
+              onClick={() => {
                 tracking.trackEvent({
                   actionName: Schema.ActionNames.ChoosePlanTapped,
                   actionType: Schema.ActionTypes.Tap,
                 })
-                navigation.navigate("Modal", {
-                  screen: "CreateAccountModal",
-                  params: { initialState: State.ChoosePlan, initialUserState: UserState.Admitted },
-                })
+                openDrawer("choosePlan", { source: "Create" })
               }}
             >
               Choose plan

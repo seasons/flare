@@ -15,7 +15,6 @@ export const ChevronIcon = (props: Props) => {
     <View {...props}>
       <Svg width={11 * scale} height={18 * scale} viewBox="0 0 11 18" style={rotationStyle}>
         <G fill="none" fillRule="evenodd">
-          <Path fill="#FFF" d="M0 0h11v18H0z" />
           <Path
             stroke={props.color || "#C6C6C6"}
             strokeWidth={2}

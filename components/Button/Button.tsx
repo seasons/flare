@@ -111,13 +111,13 @@ export class Button extends Component<WebButtonProps> {
           ${(props) => {
             const { colors } = props.theme
             return `
-                background-color: ${colors.white100};
+                background-color:  transparent;
                 border-color: ${colors.black10};
                 color: ${colors.black100};
 
                 @media ${themeProps.mediaQueries.hover} {
                   &:hover {
-                    background-color: ${colors.white100};
+                    background-color:  transparent;
                     border-color: ${colors.black100};
                     color: ${colors.black100};
                   }

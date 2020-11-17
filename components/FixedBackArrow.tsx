@@ -42,7 +42,7 @@ export const FixedBackArrow: React.FC<{
 
   return (
     <Wrapper>
-      <TouchableOpacity onPress={!!onPress ? onPress : () => navigation.goBack()}>
+      <TouchableOpacity onPress={null}>
         <ArrowWrapper backgroundColor={variantColors.backgroundColor}>
           <Arrow color={variantColors.arrowColor} />
         </ArrowWrapper>

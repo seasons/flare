@@ -2,7 +2,7 @@ import "../public/css/app.css"
 
 import { RouterProgress } from "components/RouterProgress"
 import { AuthProvider } from "lib/auth/AuthProvider"
-import React from "react"
+import React, { useEffect } from "react"
 import { BaseCSS } from "styled-bootstrap-grid"
 
 import { ApolloProvider } from "@apollo/client"
@@ -14,6 +14,13 @@ import { Theme } from "../lib/theme"
 
 function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)
+
+  useEffect(() => {
+    // @ts-ignore
+    Chargebee.init({
+      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
+    })
+  }, [])
 
   return (
     <AuthProvider apolloClient={apolloClient}>

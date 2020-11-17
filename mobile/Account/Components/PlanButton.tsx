@@ -59,7 +59,6 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ shouldSelect, selected, 
     })
   }
 
-  console.log({ selected, plan, selectedColor })
   return (
     <TouchableOpacity onPress={() => onPress(plan)}>
       <PlanSelectionBorder width="100%" p={0.5} selected={selected} selectedColor={selectedColor}>
