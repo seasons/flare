@@ -73,14 +73,8 @@ const FAQ = ({ faqSections }) => {
   )
 }
 
-export const MembershipPlans: React.FC<MembershipPlansProps> = ({
-  paymentPlans,
-  setSelectedPlan,
-  allAccessEnabled,
-  faqSections,
-  selectedPlan,
-}) => {
-  const plansGroupedByTier = []
+export const groupByPlanTier = (paymentPlans) => {
+  let plansGroupedByTier = []
   const tiers = uniq(paymentPlans?.map((plan) => plan.tier))
   tiers?.forEach((tier) => {
     const tierPlans = paymentPlans?.filter((plan) => {
@@ -90,6 +84,17 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
     })
     plansGroupedByTier.push(tierPlans)
   })
+  return plansGroupedByTier
+}
+
+export const MembershipPlans: React.FC<MembershipPlansProps> = ({
+  paymentPlans,
+  setSelectedPlan,
+  allAccessEnabled,
+  faqSections,
+  selectedPlan,
+}) => {
+  const plansGroupedByTier = groupByPlanTier(paymentPlans)
 
   const Desktop = () => (
     <Grid>

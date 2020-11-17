@@ -8,6 +8,7 @@ import {
   ProductRail,
   TheApp,
   TheBag,
+  Plans,
 } from "components/Homepage"
 import { Nav, FEATURED_BRAND_LIST } from "components/Nav"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
@@ -76,6 +77,8 @@ const Home = screenTrack(() => ({
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
       </Box>
+
+      <Plans plans={data?.paymentPlans} allAccessEnabled={allAccessEnabled} />
 
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
