@@ -37,6 +37,15 @@ export const HOME_QUERY = gql`
         }
       }
     }
+    faq(sectionType: PaymentPlanPage) {
+      sections {
+        title
+        subsections {
+          title
+          text
+        }
+      }
+    }
     paymentPlans(where: { status: "active" }) {
       id
       name

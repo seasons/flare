@@ -1,6 +1,5 @@
 import { Box, Layout, Separator, Spacer } from "components"
 import {
-  ChooseMembership,
   ColumnList,
   FAQ,
   FromCommunity,
@@ -38,6 +37,7 @@ const Home = screenTrack(() => ({
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
+  const faqSections = data?.faq?.sections
 
   return (
     <Layout fixedNav brandItems={featuredBrandItems}>
@@ -76,8 +76,6 @@ const Home = screenTrack(() => ({
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
       </Box>
-
-      <ChooseMembership allAccessEnabled={allAccessEnabled} paymentPlans={data?.paymentPlans} />
 
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />

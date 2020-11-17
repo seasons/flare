@@ -1,11 +1,12 @@
-import { Box, Sans, Spacer } from "components"
-import { ChooseMembership } from "components/Homepage"
+import { Button, Flex, MaxWidth, Spacer } from "components"
 import gql from "graphql-tag"
 import { apolloClient } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
+import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
+import { MembershipPlans } from "./MembershipPlans"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -18,6 +19,15 @@ export const PAYMENT_PLANS = gql`
       planID
       tier
       itemCount
+    }
+    faq(sectionType: PaymentPlanPage) {
+      sections {
+        title
+        subsections {
+          title
+          text
+        }
+      }
     }
     me {
       customer {
@@ -85,6 +95,7 @@ export function GetChargebeeCheckout(planID: string, email: string): Promise<boo
 }
 
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
+  const [selectedPlan, setSelectedPlan] = useState(null)
   const { data } = useQuery(PAYMENT_PLANS)
   const { userSession } = useAuthContext()
 
@@ -95,7 +106,14 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     })
   }, [])
 
+  useEffect(() => {
+    if (data?.paymentPlans && !selectedPlan) {
+      setSelectedPlan(data?.paymentPlans?.[0])
+    }
+  }, [data, selectedPlan, setSelectedPlan])
+
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
+  const faqSections = data?.faq?.sections
 
   function executeChargebeeCheckout(planID) {
     // @ts-ignore
@@ -116,25 +134,42 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
   }
 
   return (
-    <Box mx="auto" my={4} p={4}>
-      <Box ml="80px">
-        <Sans size="8" color="black100">
-          You're In. Let's choose your plan
-        </Sans>
-        <Spacer mb={1} />
-        <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
-          Here’s whats included in this membership:
-        </Sans>
-      </Box>
-      <Spacer mb={3} />
-      <ChooseMembership
+    <>
+      <MembershipPlans
+        selectedPlan={selectedPlan}
+        setSelectedPlan={setSelectedPlan}
+        faqSections={faqSections}
         allAccessEnabled={allAccessEnabled}
         paymentPlans={data?.paymentPlans}
-        onSelectPlan={async (plan) => {
-          onPlanSelected(plan)
-          executeChargebeeCheckout(plan.planID)
-        }}
       />
-    </Box>
+      <FormFooterWrapper>
+        <FormFooterInnerWrapper>
+          <MaxWidth>
+            <Flex
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="flex-end"
+              py={1}
+              height={["auto", "63px"]}
+              style={{ width: "100%" }}
+              px={[2, 2, 2, 5, 5]}
+            >
+              <Button
+                ml={2}
+                variant="primaryBlack"
+                size="medium"
+                type="submit"
+                onClick={() => {
+                  onPlanSelected(selectedPlan)
+                  executeChargebeeCheckout(selectedPlan.planID)
+                }}
+              >
+                Select Plan
+              </Button>
+            </Flex>
+          </MaxWidth>
+        </FormFooterInnerWrapper>
+      </FormFooterWrapper>
+    </>
   )
 }
