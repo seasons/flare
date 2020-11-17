@@ -30,6 +30,7 @@ const SIGN_UP_USER = gql`
     $lastName: String!
     $details: CustomerDetailCreateInput!
     $referrerId: String
+    $utm: UTMInput
   ) {
     signup(
       email: $email
@@ -38,6 +39,7 @@ const SIGN_UP_USER = gql`
       lastName: $lastName
       details: $details
       referrerId: $referrerId
+      utm: $utm
     ) {
       expiresIn
       refreshToken
@@ -148,8 +150,7 @@ const SignUpPage = screenTrack(() => ({
       validationSchema={createAccountValidationSchema}
       onSubmit={async (values, actions) => {
         try {
-          signOut()
-
+          const utm = JSON.parse(localStorage?.getItem("utm"))
           const date = new Date(values.dob)
           const dateToIso = DateTime.fromJSDate(date).toISO()
           const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
@@ -169,6 +170,7 @@ const SignUpPage = screenTrack(() => ({
                 },
               },
               referrerId: router.query.referrer_id,
+              utm,
             },
           })
 
