@@ -1,7 +1,6 @@
 {
   "git.ignoreLimitWarning": true,
   "eslint.enable": true,
-  "editor.formatOnSave": true,
   "search.exclude": {
     "**/node_modules": true,
     ".vscode/.react/*": true
@@ -14,5 +13,7 @@
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "importSorter.importStringConfiguration.quoteMark": "double",
   "importSorter.importStringConfiguration.tabSize": 2,
-  "importSorter.importStringConfiguration.hasSemicolon": false
+  "importSorter.importStringConfiguration.hasSemicolon": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true
 }

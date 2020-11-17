@@ -1,4 +1,5 @@
 import { Box, Display, Sans } from "components"
+import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { setTimeout } from "timers"
@@ -56,6 +57,7 @@ type Step = "zipcode" | "email-success" | "email-failure" | "done"
 
 export const ServiceableModal = () => {
   const tracking = useTracking()
+  const { authState } = useAuthContext()
   const [step, setStep] = useState<Step>("zipcode")
   const [zipCode, setZipCode] = useState("")
   const [email, setEmail] = useState("")
@@ -65,12 +67,15 @@ export const ServiceableModal = () => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    const wasShown = localStorage.getItem("zipcode-modal") === "true"
-    setDidShowModal(wasShown)
-    setTimeout(() => {
-      setShow(!wasShown)
-    }, 1000)
-  }, [])
+    if (typeof window !== "undefined" && !authState.authInitializing) {
+      const wasShown = localStorage.getItem("zipcode-modal") === "true"
+      const shouldShow = !wasShown && !authState.isSignedIn
+      setDidShowModal(wasShown)
+      setTimeout(() => {
+        setShow(shouldShow)
+      }, 1000)
+    }
+  }, [authState])
 
   useEffect(() => {
     if (!called || zipcodeLoading) {

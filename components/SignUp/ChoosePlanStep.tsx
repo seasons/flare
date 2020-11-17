@@ -2,6 +2,7 @@ import { Box, Sans, Spacer } from "components"
 import { ChooseMembership } from "components/Homepage"
 import gql from "graphql-tag"
 import { apolloClient } from "lib/apollo"
+import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useEffect } from "react"
 
 import { useQuery } from "@apollo/client"
@@ -18,18 +19,27 @@ export const PAYMENT_PLANS = gql`
       tier
       itemCount
     }
+    me {
+      customer {
+        id
+        admissions {
+          id
+          allAccessEnabled
+        }
+      }
+    }
   }
 `
 
 interface ChoosePlanStepProps {
-  onPlanSelected: (plan: any) => void
-  onError: (error: any) => void
-  onSuccess: () => void
+  onPlanSelected?: (plan: any) => void
+  onError?: (error: any) => void
+  onSuccess?: () => void
 }
 
 const GET_CHARGEBEE_CHECKOUT = gql`
-  query getChargebeeCheckout($planID: String!, $email: String) {
-    chargebeeCheckout(planID: $planID, email: $email) {
+  query getChargebeeCheckout($planID: String!, $email: String, $couponID: String) {
+    chargebeeCheckout(planID: $planID, email: $email, couponID: $couponID) {
       id
       type
       url
@@ -41,7 +51,14 @@ const GET_CHARGEBEE_CHECKOUT = gql`
   }
 `
 
-export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
+export function GetChargebeeCheckout(planID: string, email: string): Promise<boolean | void> {
+  let coupon
+  try {
+    const couponData = localStorage?.getItem("coupon")
+    coupon = JSON.parse(couponData)
+  } catch (e) {
+    // Fail silently
+  }
   // Set up the mutation
   return new Promise((resolve, reject) => {
     apolloClient
@@ -49,7 +66,8 @@ export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
         query: GET_CHARGEBEE_CHECKOUT,
         variables: {
           planID,
-          email: localStorage.getItem("email"),
+          email,
+          couponID: coupon?.id,
         },
       })
       .then((resp) => {
@@ -68,6 +86,7 @@ export function GetChargebeeCheckout(planID: string): Promise<boolean | void> {
 
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
   const { data } = useQuery(PAYMENT_PLANS)
+  const { userSession } = useAuthContext()
 
   useEffect(() => {
     // @ts-ignore
@@ -76,19 +95,22 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     })
   }, [])
 
+  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
+
   function executeChargebeeCheckout(planID) {
     // @ts-ignore
     const chargebee = Chargebee.getInstance()
     chargebee.openCheckout({
       hostedPage: async () => {
-        return await GetChargebeeCheckout(planID)
+        const { email } = userSession.user
+        return await GetChargebeeCheckout(planID, email)
       },
       error: (error) => {
         console.error(error)
-        onError(error)
+        onError?.(error)
       },
       success: (hostedPageId) => {
-        onSuccess()
+        onSuccess?.()
       },
     })
   }
@@ -106,6 +128,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
       </Box>
       <Spacer mb={3} />
       <ChooseMembership
+        allAccessEnabled={allAccessEnabled}
         paymentPlans={data?.paymentPlans}
         onSelectPlan={async (plan) => {
           onPlanSelected(plan)

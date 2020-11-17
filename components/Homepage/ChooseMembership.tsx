@@ -1,12 +1,10 @@
 import { uniq } from "lodash"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-
 import { Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
 import { Box } from "../Box"
 import { Col, Grid, Row } from "../Grid"
-import { Link } from "../Link"
 import { Media } from "../Responsive"
 import { Check } from "../SVGs"
 import { Display } from "../Typography"
@@ -14,9 +12,10 @@ import { Display } from "../Typography"
 interface ChooseMembershipProps {
   paymentPlans: any
   onSelectPlan?: (plan: any) => void
+  allAccessEnabled: boolean
 }
 
-export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan }) => {
+export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans, onSelectPlan, allAccessEnabled }) => {
   const plansGroupedByTier = []
   const tiers = uniq(paymentPlans?.map((plan) => plan.tier))
   tiers?.forEach((tier) => {
@@ -31,16 +30,95 @@ export const ChooseMembership: React.FC<ChooseMembershipProps> = ({ paymentPlans
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <Desktop plansGroupedByTier={plansGroupedByTier} onSelectPlan={onSelectPlan} />
+        <Desktop
+          plansGroupedByTier={plansGroupedByTier}
+          onSelectPlan={onSelectPlan}
+          allAccessEnabled={allAccessEnabled}
+        />
       </Media>
       <Media lessThan="md">
-        <Mobile plansGroupedByTier={plansGroupedByTier} onSelectPlan={onSelectPlan} />
+        <Mobile
+          plansGroupedByTier={plansGroupedByTier}
+          onSelectPlan={onSelectPlan}
+          allAccessEnabled={allAccessEnabled}
+        />
       </Media>
     </>
   )
 }
 
-const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
+const Content = ({ tier, descriptionLines, group, onSelectPlan, allAccessEnabled }) => {
+  const renderingDisabledAllAccess = tier === "AllAccess" && typeof allAccessEnabled === "boolean" && !allAccessEnabled
+
+  const calcFinalPrice = (price: number) => {
+    let couponData
+    if (typeof window !== "undefined") {
+      couponData = localStorage?.getItem("coupon")
+    } else {
+      return price
+    }
+    try {
+      const coupon = JSON.parse(couponData)
+      const { amount: discountAmount, percentage: discountPercentage, type: couponType } = coupon
+      switch (couponType) {
+        case "FixedAmount":
+          return price - discountAmount
+        case "Percentage":
+          return price - (price * discountPercentage) / 100.0
+        default:
+          return price
+      }
+    } catch (e) {
+      return price
+    }
+  }
+
+  const PriceText = ({ originalPrice, finalPrice }) => {
+    originalPrice /= 100
+    finalPrice /= 100
+    const isDiscounted = originalPrice !== finalPrice && !!finalPrice
+    return isDiscounted ? (
+      <Sans color="black50" size="3">
+        <span
+          style={{
+            fontSize: "20px",
+            color: `${color("black50")}`,
+            textDecorationLine: "line-through",
+            textDecorationStyle: "solid",
+          }}
+        >
+          ${originalPrice}
+        </span>{" "}
+        <span
+          style={{
+            fontSize: "20px",
+            color: `${color("black100")}`,
+          }}
+        >
+          ${finalPrice}
+        </span>{" "}
+        / month
+      </Sans>
+    ) : (
+      <Sans color="black50" size="3">
+        <span
+          style={{
+            fontSize: "20px",
+            color: `${color("black100")}`,
+          }}
+        >
+          ${originalPrice}
+        </span>{" "}
+        / month
+      </Sans>
+    )
+  }
+
+  let planWrapperStyle = {}
+  if (renderingDisabledAllAccess) {
+    planWrapperStyle = { backgroundColor: color("black04") }
+  }
+
   return (
     <>
       <Display size="9">{tier === "AllAccess" ? "All Access" : tier}</Display>
@@ -67,12 +145,20 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
         {group
           ?.sort((a, b) => a.itemCount - b.itemCount)
           .map((plan, i) => {
+            const thisPlanWrapperStyle = {
+              ...planWrapperStyle,
+              borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none",
+            }
             return (
               <PlanWrapper
-                flexDirection="column"
                 key={plan.id}
-                style={{ borderLeft: i === 0 ? `1px solid ${color("black15")}` : "none" }}
+                withHover={!renderingDisabledAllAccess}
+                style={thisPlanWrapperStyle}
                 onClick={() => {
+                  if (renderingDisabledAllAccess) {
+                    // do nothing
+                    return
+                  }
                   onSelectPlan?.(plan)
                 }}
               >
@@ -85,19 +171,27 @@ const Content = ({ tier, descriptionLines, group, onSelectPlan }) => {
                 <Separator />
                 <Spacer mb="60px" />
                 <Box p={2}>
-                  <Sans color="black50" size="3">
-                    <span style={{ fontSize: "20px", color: `${color("black100")}` }}>${plan.price / 100}</span> / month
-                  </Sans>
+                  <PriceText finalPrice={calcFinalPrice(plan.price)} originalPrice={plan.price} />
                 </Box>
               </PlanWrapper>
             )
           })}
       </Flex>
+      <Box style={{ position: "relative" }}>
+        {renderingDisabledAllAccess && (
+          <NoteWrapper>
+            <Spacer mb={1} />
+            <Sans color="black50" size="3">
+              * All Access is disabled in your area due to shipping time.
+            </Sans>
+          </NoteWrapper>
+        )}
+      </Box>
     </>
   )
 }
 
-const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
+const Desktop = ({ plansGroupedByTier, onSelectPlan, allAccessEnabled }) => {
   return (
     <Grid>
       <Row px={[1, 1, 1, 3, 3]}>
@@ -114,7 +208,13 @@ const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
             >
               <Box px={[1, 1, 1, 2, 2]}>
                 <Box pl={5} pt="76px" pb={10} pr="63px">
-                  <Content tier={tier} descriptionLines={descriptionLines} group={group} onSelectPlan={onSelectPlan} />
+                  <Content
+                    tier={tier}
+                    descriptionLines={descriptionLines}
+                    group={group}
+                    onSelectPlan={onSelectPlan}
+                    allAccessEnabled={allAccessEnabled}
+                  />
                 </Box>
               </Box>
             </Col>
@@ -125,7 +225,7 @@ const Desktop = ({ plansGroupedByTier, onSelectPlan }) => {
   )
 }
 
-const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
+const Mobile = ({ plansGroupedByTier, onSelectPlan, allAccessEnabled }) => {
   return (
     <Grid pt="76px">
       <Row px={[1, 1, 1, 3, 3]}>
@@ -137,7 +237,13 @@ const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
             <Col md="6" xs="12" style={{ height: "100%" }} key={index}>
               <Box px={[1, 1, 1, 2, 2]}>
                 <Box pb={10}>
-                  <Content tier={tier} descriptionLines={descriptionLines} group={group} onSelectPlan={onSelectPlan} />
+                  <Content
+                    tier={tier}
+                    descriptionLines={descriptionLines}
+                    group={group}
+                    onSelectPlan={onSelectPlan}
+                    allAccessEnabled={allAccessEnabled}
+                  />
                 </Box>
               </Box>
             </Col>
@@ -148,15 +254,21 @@ const Mobile = ({ plansGroupedByTier, onSelectPlan }) => {
   )
 }
 
-const PlanWrapper = styled(Flex)`
+const PlanWrapper = styled(Box)<{ withHover: boolean }>`
   width: 100%;
   flex: 3;
   border-bottom: 1px solid ${color("black15")};
   border-top: 1px solid ${color("black15")};
   border-right: 1px solid ${color("black15")};
-  cursor: pointer;
+  cursor: ${(props) => (props.withHover ? "pointer" : "auto")};
 
   &:hover {
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: ${(props) => (props.withHover ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
   }
+`
+
+const NoteWrapper = styled(Box)`
+  position: absolute;
+  bottom: -16px;
+  left: 0;
 `

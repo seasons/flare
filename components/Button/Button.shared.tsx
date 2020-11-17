@@ -1,7 +1,8 @@
 import { ReactNode } from "react"
 import { css } from "styled-components"
-import { BoxProps } from "../Box"
+
 import { themeProps } from "../../lib/theme"
+import { BoxProps } from "../Box"
 
 /**
  * Spec: zpl.io/2j8Knq6
@@ -26,6 +27,8 @@ export interface ButtonProps extends ButtonBaseProps {
   variant?: ButtonVariant
   /** React Native only, Callback on press, use instead of onClick */
   onPress?: (e) => void
+
+  style?: any
 }
 
 export interface ButtonBaseProps extends BoxProps {

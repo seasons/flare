@@ -1,17 +1,28 @@
+import { Drawer } from "components/Drawer/Drawer"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { LoginModal } from "components/Login/LoginModal"
+import { color } from "helpers/color"
+import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
+import React from "react"
 import styled from "styled-components"
-import { color } from "../../helpers/color"
+import { Schema, useTracking } from "utils/analytics"
+import { MaxWidth } from "../"
 import { Flex } from "../Flex"
-import { NavProps } from "./Types"
-import { SeasonsLogo } from "./SeasonsLogo"
 import { NavItem } from "./NavItem"
-import { useTracking, Schema } from "../../utils/analytics"
-import { MaxWidth } from ".."
+import { SeasonsLogo } from "./SeasonsLogo"
+import { NavProps } from "./Types"
 
-export const DesktopNav = ({ fixed = false, links }: NavProps) => {
+export const DesktopNav = (props: NavProps) => {
+  const { fixed = false, links } = props
   const router = useRouter()
+
   const tracking = useTracking()
+  const { userSession, toggleLoginModal, loginModalOpen } = useAuthContext()
+  const { openDrawer } = useDrawerContext()
+
+  const isLoggedIn = !!userSession
 
   const trackClick = (url) => {
     tracking.trackEvent({
@@ -39,7 +50,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                     <NavItem link={link} />
                   </Link>
                 )
-              } else {
+              } else if (link.url) {
                 return (
                   <NextLink href={link.url} key={link.text}>
                     <Link
@@ -51,11 +62,51 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                     </Link>
                   </NextLink>
                 )
+              } else {
+                return link.renderNavItem()
               }
             })}
+            {isLoggedIn ? (
+              <>
+                <Link
+                  onClick={() => {
+                    openDrawer("bag")
+                  }}
+                >
+                  <NavItem link={{ text: "Bag" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    openDrawer("profile")
+                  }}
+                >
+                  <NavItem link={{ text: "Account" }} />
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/signup" active={!!router.pathname.match("/signup")}>
+                  <NavItem link={{ text: "Sign Up" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    toggleLoginModal(true)
+                  }}
+                >
+                  <NavItem link={{ text: "Log In" }} />
+                </Link>
+              </>
+            )}
           </Flex>
         </Flex>
       </MaxWidth>
+      <Drawer />
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => {
+          toggleLoginModal(false)
+        }}
+      />
     </HeaderContainer>
   )
 }

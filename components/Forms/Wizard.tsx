@@ -142,7 +142,7 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
         //@ts-ignore
         validate={validate}
         validationSchema={validationSchema}
-        validateOnChange={false}
+        validateOnChange={true}
         onSubmit={this.handleSubmit}
       >
         {(formikRenderProps) => {
