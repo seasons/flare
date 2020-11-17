@@ -33,7 +33,7 @@ const topSizes: SelectItem[] = [
 const waistSizes: SelectItem[] = (() => {
   const items: SelectItem[] = []
   for (let waistSize = 28; waistSize <= 40; waistSize++) {
-    items.push({ label: `${String(waistSize)}"`, value: waistSize })
+    items.push({ label: String(waistSize), value: waistSize })
   }
   return items
 })()
