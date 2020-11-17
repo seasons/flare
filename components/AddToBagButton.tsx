@@ -1,11 +1,8 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { localBagVar } from "lib/apollo/cache"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { head } from "lodash"
-import {
-  ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG
-} from "queries/bagQueries"
+import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
@@ -32,7 +29,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const { variantInStock, selectedVariant, data, onAdded } = props
   const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
-  const { authState } = useAuthContext()
+  const { authState, toggleLoginModal } = useAuthContext()
   const { openDrawer } = useDrawerContext()
   const isUserSignedIn = authState?.isSignedIn
 
@@ -98,11 +95,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const handleReserve = () => {
     if (!isMutating) {
       setIsMutating(true)
-      if (!isUserSignedIn) {
-        localBagVar([...localBagVar(), { productID: props.data?.product?.id, variantID: selectedVariant.id }])
-      } else {
-        addToBag()
-      }
+      addToBag()
     }
   }
 
@@ -130,12 +123,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
         if (authState.isSignedIn) {
           handleReserve()
         } else {
-          showPopUp({
-            title: "Can't add to your bag yet!",
-            note: "Please login or sign up to continue adding this item.",
-            buttonText: "Got It",
-            onClose: () => hidePopUp(),
-          })
+          toggleLoginModal(true)
         }
       }}
     >
