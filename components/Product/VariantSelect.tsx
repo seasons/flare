@@ -107,11 +107,34 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
   return <Box>{rows}</Box>
 }
 
+const getElementWidth = (el: HTMLElement) => (el ? el.clientWidth : "auto")
+
 export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelected, product }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
+  const [popoverWidth, setPopoverWidth] = React.useState(getElementWidth(anchorEl))
+
+  React.useEffect(() => {
+    let listener: EventListenerOrEventListenerObject
+    if (typeof window !== undefined) {
+      listener = () => {
+        requestAnimationFrame(() => {
+          setPopoverWidth(getElementWidth(anchorEl))
+        })
+      }
+      window.addEventListener("resize", listener)
+    }
+    return () => {
+      if (listener) {
+        window.removeEventListener("resize", listener)
+      }
+      listener = null
+    }
+  }, [])
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
+    const anchorEl = event.currentTarget
+    setPopoverWidth(getElementWidth(anchorEl))
+    setAnchorEl(anchorEl)
   }
 
   const handleClose = () => {
@@ -153,6 +176,8 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
           style: {
             border: "1px solid #000",
             marginTop: "5px",
+            width: popoverWidth,
+            boxSizing: "content-box",
           },
         }}
       >
