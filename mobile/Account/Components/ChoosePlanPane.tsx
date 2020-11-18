@@ -241,19 +241,18 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
 
   if (showSuccess) {
     return (
-      <>
-        <Box px={2} mt={10}>
-          <Spacer mb={5} />
+      <Flex width="100%" height="100%" flexDirection="column" justifyContent="center">
+        <Box px={2}>
           <CheckWithBackground />
           <Spacer mb={3} />
           <Sans size="5">Welcome to Seasons</Sans>
           <Sans size="4" color="black50">
-            Your membership is active and you’re ready to start reserving. Tap below to start browsing.
+            Your membership is active and you’re ready to start reserving.
           </Sans>
           <Spacer mb={4} />
         </Box>
         <DrawerBottomButton buttonProps={{ onClick: () => closeDrawer(), block: true }}>Got it</DrawerBottomButton>
-      </>
+      </Flex>
     )
   }
 
