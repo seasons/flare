@@ -1,14 +1,17 @@
-import { Box, Sans, Separator, Spacer, Flex } from ".."
+import { SaveProductButton } from "mobile/SaveProductButton"
+import Link from "next/link"
 import React from "react"
-import { ProductInfoItem } from "./ProductInfoItem"
+
+import { Box, Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
 import { VariantSizes } from "../VariantSizes"
-import Link from "next/link"
+import { ProductInfoItem } from "./ProductInfoItem"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{
   product: any
-}> = ({ product }) => {
+  selectedVariant: any
+}> = ({ product, selectedVariant }) => {
   if (!product || !product.variants) {
     return <></>
   }
@@ -33,8 +36,13 @@ export const ProductDetails: React.FC<{
   return (
     <Box mb={3}>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Box>
-          <VariantSizes variants={product.variants} size="3" />
+        <Box width="100%">
+          <Flex flexDirection="row" justifyContent="space-between" width="100%">
+            <VariantSizes variants={product.variants} size="3" />
+            <Box>
+              <SaveProductButton product={product} selectedVariant={selectedVariant} />
+            </Box>
+          </Flex>
           <Box my={2}>
             <Sans size="5" color="black">
               {name}

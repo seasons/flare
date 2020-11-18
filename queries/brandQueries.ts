@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { BrandNavItemFragment } from "components/Nav"
 
 export const GET_CATEGORIES = gql`
   query GetCategories {
@@ -10,10 +11,7 @@ export const GET_CATEGORIES = gql`
 `
 
 export const GET_BROWSE_BRANDS_AND_CATEGORIES = gql`
-query GetBrandsAndCategories(
-    $brandSlugs: [String!]
-    $brandOrderBy: BrandOrderByInput!
-  ) {
+  query GetBrandsAndCategories($brandSlugs: [String!]!, $brandOrderBy: BrandOrderByInput!) {
     categories(where: { visible: true }, orderBy: name_ASC) {
       id
       slug

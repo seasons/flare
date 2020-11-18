@@ -2,13 +2,31 @@ import { gql } from "@apollo/client"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
+    me {
+      customer {
+        id
+        status
+        membership {
+          id
+          plan {
+            id
+            itemCount
+          }
+        }
+      }
+      bag {
+        id
+      }
+    }
     product(where: { slug: $slug }) {
       id
+      slug
       name
       createdAt
       updatedAt
       description
       retailPrice
+      type
       modelSize {
         display
       }
@@ -37,17 +55,36 @@ export const GET_PRODUCT = gql`
       isSaved
       variants {
         id
-        internalSize {
-          id
-          productType
-          display
-        }
         total
         reservable
         nonReservable
         reserved
+        isInBag
         isSaved
         isWanted
+        manufacturerSizes {
+          id
+          display
+        }
+        internalSize {
+          id
+          productType
+          display
+          top {
+            id
+            letter
+            sleeve
+            shoulder
+            chest
+            neck
+            length
+          }
+          bottom {
+            id
+            type
+            value
+          }
+        }
       }
     }
   }

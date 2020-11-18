@@ -1,22 +1,25 @@
+import { Box, Flex, Layout, Spacer } from "components"
+import { AddToBagButton } from "components/AddToBagButton"
+import { Carousel } from "components/Carousel"
+import { Col, Grid, Row } from "components/Grid"
+import { ProgressiveImage } from "components/Image"
+import { FEATURED_BRAND_LIST } from "components/Nav"
+import { BreadCrumbs } from "components/Product/BreadCrumbs"
+import { HowItWorks } from "components/Product/HowItWorks"
+import { ProductDetails } from "components/Product/ProductDetails"
+import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
+import { VariantSelect } from "components/Product/VariantSelect"
+import { Media } from "components/Responsive"
+import { initializeApollo } from "lib/apollo"
+import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import React from "react"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
+import React, { useEffect, useState } from "react"
+import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-
-import { Box, Layout, Spacer } from "../../components"
-import { Button } from "../../components/Button"
-import { Carousel } from "../../components/Carousel"
-import { Col, Grid, Row } from "../../components/Grid"
-import { ProgressiveImage } from "../../components/Image"
-import { Link } from "../../components/Link"
-import { HowItWorks } from "../../components/Product/HowItWorks"
-import { ProductDetails } from "../../components/Product/ProductDetails"
-import { ImageLoader, ProductTextLoader } from "../../components/Product/ProductLoader"
-import { Media } from "../../components/Responsive"
-import { initializeApollo } from "../../lib/apollo"
-import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
-import { Schema, screenTrack } from "../../utils/analytics"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -26,20 +29,43 @@ const Product = screenTrack(({ router }) => {
   }
 })(({ router }) => {
   const slug = router.query.Product
-
-  const { data } = useQuery(GET_PRODUCT, {
+  const { authState } = useAuthContext()
+  const { data, refetch } = useQuery(GET_PRODUCT, {
     variables: {
       slug,
     },
   })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
+    },
+  })
 
-  const product = data && data.product
+  const product = data && data?.product
+  const [selectedVariant, setSelectedVariant] = useState(
+    product?.variants?.[0] || {
+      id: "",
+      reservable: 0,
+      size: "",
+      stock: 0,
+      isInBag: false,
+      isWanted: false,
+    }
+  )
+
+  useEffect(() => {
+    refetch()
+  }, [authState.isSignedIn])
+
+  const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
+  const isInBag = updatedVariant?.isInBag || false
 
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
+  const featuredBrandItems = navigationData?.brands || []
 
   return (
-    <Layout fixedNav includeDefaultHead={false}>
+    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{`${title} - Seasons`}</title>
         <meta content={description} name="description" />
@@ -53,6 +79,8 @@ const Product = screenTrack(({ router }) => {
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]} px={[0, 0, 2, 5, 5]}>
+        <BreadCrumbs product={product} />
+        <Spacer mb={2} />
         <Grid>
           <Row>
             <Col md="7" sm="12">
@@ -79,14 +107,32 @@ const Product = screenTrack(({ router }) => {
             </Col>
             <Col md="5" sm="12">
               <Box style={{ maxWidth: "480px" }} px={[2, 2, 0, 0, 0]}>
-                {product ? <ProductDetails product={product} /> : <ProductTextLoader />}
-                <Box>
-                  <Link href="/signup">
-                    <Button width="100%" block variant="primaryWhite" onClick={null}>
-                      Create an account
-                    </Button>
-                  </Link>
-                </Box>
+                {product ? (
+                  <ProductDetails selectedVariant={selectedVariant} product={product} />
+                ) : (
+                  <ProductTextLoader />
+                )}
+                <Flex flex-direction="row">
+                  <Flex flex={1}>
+                    <VariantSelect
+                      product={product}
+                      selectedVariant={selectedVariant}
+                      setSelectedVariant={setSelectedVariant}
+                      onSizeSelected={(size) => {
+                        console.log(size)
+                      }}
+                    />
+                  </Flex>
+                  <Spacer mr={2} />
+                  <Flex flex={1}>
+                    <AddToBagButton
+                      selectedVariant={selectedVariant}
+                      data={data}
+                      variantInStock={true}
+                      isInBag={isInBag}
+                    />
+                  </Flex>
+                </Flex>
                 <HowItWorks />
               </Box>
             </Col>
@@ -98,6 +144,14 @@ const Product = screenTrack(({ router }) => {
   )
 })
 
+/*
+If a page has dynamic routes (documentation) and uses getStaticProps 
+it needs to define a list of paths that have to be rendered to HTML at build time.
+
+If you export an async function called getStaticPaths from 
+a page that uses dynamic routes, Next.js will statically 
+pre-render all the paths specified by getStaticPaths.
+*/
 export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
@@ -119,17 +173,30 @@ export async function getStaticPaths() {
   }
 }
 
+/*
+ If you export an async function called getStaticProps from a page, 
+ Next.js will pre-render this page at build time using the 
+ props returned by getStaticProps.
+*/
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo()
 
   const filter = params?.Product
 
-  await apolloClient.query({
-    query: GET_PRODUCT,
-    variables: {
-      slug: filter,
-    },
-  })
+  await Promise.all([
+    apolloClient.query({
+      query: GET_PRODUCT,
+      variables: {
+        slug: filter,
+      },
+    }),
+    apolloClient.query({
+      query: NAVIGATION_QUERY,
+      variables: {
+        featuredBrandSlugs: FEATURED_BRAND_LIST,
+      },
+    }),
+  ])
 
   return {
     props: {

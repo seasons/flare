@@ -1,0 +1,41 @@
+import { Box, Flex, Sans, Spacer } from "components"
+import { color } from "helpers"
+import React from "react"
+import { Dimensions } from "react-native"
+
+import { BagView } from "../Bag"
+
+export const BagEmptyState: React.FC<{ currentView: BagView }> = ({ currentView }) => {
+  const title = currentView === BagView.Saved ? "Nothing saved" : "No history"
+  const text =
+    currentView === BagView.Saved ? "You haven’t saved any items." : "You haven't placed any reservations yet."
+  const { height } = Dimensions.get("window")
+  const rowHeight = height - 140
+  return (
+    <Flex
+      style={{ height: rowHeight + "px", width: "100%" }}
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100%"
+    >
+      <Flex
+        style={{ flex: 1, height: "100%" }}
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="row"
+        height="100%"
+      >
+        <Box>
+          <Sans size="4" style={{ textAlign: "center" }}>
+            {title}
+          </Sans>
+          <Spacer mb={1} />
+          <Sans size="4" color={color("black50")} style={{ textAlign: "center" }}>
+            {text}
+          </Sans>
+        </Box>
+      </Flex>
+    </Flex>
+  )
+}

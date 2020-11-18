@@ -67,7 +67,7 @@ export enum PageNames {
   AboutPage = "About",
   PrivacyPolicy = "PrivacyPolicy",
   TermsOfService = "TermsOfService",
-  App = "App"
+  App = "App",
 }
 
 export enum EntityTypes {
@@ -89,7 +89,6 @@ export enum ActionTypes {
   Fail = "Fail",
   Success = "Success",
 }
-
 /**
  * Action event discriptors / names
  */
@@ -107,15 +106,47 @@ export enum ActionNames {
   // Browse
   ProductPageNumberChanged = "Product Page Number Changed",
   // Forms
-
-  ServiceableModalZipCodeButtonClicked = "Serviceable Modal Zip Code Button Clicked",
-  ServiceableModalEmailButtonClicked = "Serviceable Modal Email Button Clicked",
-  ServiceableModalDoneButtonClicked = "Serviceable Modal Done Button Clicked",
-  ServiceableModalCloseButtonClicked = "Serviceable Modal Close Button Clicked",
-
-  CreateAccountClicked = "Create Account Clicked",
+  // Create Account
+  CreateAccountClicked = "Create Account Button Clicked",
   AccountTriaged = "Account Triaged",
-  PlanSelectedButtonClicked = "PlanSelected Button Clicked"
+  PlanSelectedButtonClicked = "Plan Selected Button Clicked",
+
+  // Serviceable Modal
+  ServiceableModalZipCodeButtonClicked = "Serviceable Modal zipcode Button Clicked",
+  ServiceableModalCloseButtonClicked = "Serviceable Modal close Button Clicked",
+  ServiceableModalEmailButtonClicked = "Serviceable Modal email Button Clicked",
+  ServiceableModalDoneButtonClicked = "Serviceable Modal done Button Clicked",
+
+  ProductAddedToBag = "Product Added to Bag",
+  PlaceOrderTapped = "Place Order Tapped",
+  ProductSaved = "Product Saved",
+
+  ReservationConfirmationDoneButtonTapped = "Reservation Confirmation Done Button Clicked",
+  ProductTapped = "Product Tapped",
+  ReserveButtonTapped = "Reserve Button Tapped",
+  BagTabTapped = "Bag Tab Tapped",
+  SavedTabTapped = "Saved Tab Tapped",
+  ReservationHistoryTabTapped = "Reservation History Tab Tapped",
+  FAQButtonTapped = "FAQ Button Tapped",
+  ProductVariantSelected = "Product Variant Selected",
+  SavedItemAddedToBag = "Saved Item Added To Bag",
+  BagItemRemoved = "Bag Item Removed",
+  BagItemSaved = "Bag Item Saved",
+  MembershipInfoTapped = "Membership Info Tapped",
+  PersonalPreferencesTapped = "Personal Preferences Tapped",
+  PaymentAndShippingTapped = "Payment And Shipping Tapped",
+  FAQTapped = "FAQ Tapped",
+  SupportTapped = "Support Tapped",
+  PrivacyPolicyTapped = "Privacy Policy Tapped",
+  TermsOfServiceTapped = "Terms Of Service Tapped",
+  LogOutTapped = "Log Out Tapped",
+  ChoosePlanTapped = "Choose Plan Tapped",
+  PlanTapped = "Plan Tapped",
+  Tier0PlanTabTapped = "Tier 0 Plan Tab Tapped",
+  Tier1PlanTabTapped = "Tier 1 Plan Tab Tapped",
+  NotificationToggleTapped = "Notification Toggle Tapped",
+  AddCreditCardTapped = "AddCreditCardTapped",
+  GetMeasurementsFinishTapped = "Get Measurements Finish Tapped",
 }
 
 /**

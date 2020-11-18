@@ -63,6 +63,30 @@ const BackButton = ({ onClick }) => {
   )
 }
 
+const SubmitButton = ({ buttonActionName, tracking, handleSubmit, isSubmitting, disabled, buttonText }) => {
+  return (
+    <Button
+      ml={2}
+      variant="primaryBlack"
+      onClick={() => {
+        if (!!buttonActionName) {
+          tracking.trackEvent({
+            actionName: buttonActionName,
+            actionType: Schema.ActionTypes.Tap,
+          })
+        }
+        handleSubmit()
+      }}
+      loading={isSubmitting}
+      size="medium"
+      type="submit"
+      disabled={disabled}
+    >
+      {buttonText}
+    </Button>
+  )
+}
+
 export const FormFooter: React.FC<FooterProps> = ({
   buttonText,
   handleSubmit,
@@ -73,33 +97,10 @@ export const FormFooter: React.FC<FooterProps> = ({
   buttonActionName,
 }) => {
   const tracking = useTracking()
-  const ButtonComponent = () => {
-    return (
-      <Button
-        ml={2}
-        variant="primaryBlack"
-        onClick={() => {
-          if (!!buttonActionName) {
-            tracking.trackEvent({
-              actionName: buttonActionName,
-              actionType: Schema.ActionTypes.Tap,
-            })
-          }
-          handleSubmit()
-        }}
-        loading={isSubmitting}
-        size="medium"
-        type="submit"
-        disabled={disabled}
-      >
-        {buttonText}
-      </Button>
-    )
-  }
 
   return (
     <FormFooterWrapper>
-      <FormFooterInnerWrapper flexDirection="row" justifyContent="center" alignContent="centers">
+      <FormFooterInnerWrapper>
         <MaxWidth>
           <Flex
             flexDirection="row"
@@ -117,10 +118,26 @@ export const FormFooter: React.FC<FooterProps> = ({
             ) : null}
             {!!buttonText && !!buttonLink ? (
               <a href={buttonLink}>
-                <ButtonComponent />
+                <SubmitButton
+                  buttonActionName={buttonActionName}
+                  tracking={tracking}
+                  handleSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
+                  disabled={disabled}
+                  buttonText={buttonText}
+                />
               </a>
             ) : (
-              !!buttonText && <ButtonComponent />
+              !!buttonText && (
+                <SubmitButton
+                  buttonActionName={buttonActionName}
+                  tracking={tracking}
+                  handleSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
+                  disabled={disabled}
+                  buttonText={buttonText}
+                />
+              )
             )}
           </Flex>
         </MaxWidth>
@@ -302,15 +319,16 @@ const useStyles = makeStyles({
   },
 })
 
-const Wrapper = styled(Flex)<{ clientSide }>`
+const Wrapper = styled("div")<{ clientSide }>`
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
+  display: flex;
   flex: 1;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
 `
 
-const FormFooterWrapper = styled.div`
+export const FormFooterWrapper = styled.div`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -318,15 +336,20 @@ const FormFooterWrapper = styled.div`
   background-color: ${color("white100")};
 `
 
-const FormFooterInnerWrapper = styled(Flex)`
+export const FormFooterInnerWrapper = styled("div")`
   border-top: 1px solid ${color("black10")};
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
 `
 
-const FieldsContainer = styled(Flex)`
+const FieldsContainer = styled(Box)`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  display: flex;
 
   .MuiFormControl-root {
     width: 100%;

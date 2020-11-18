@@ -27,7 +27,16 @@ const HomePageProductFragment = gql`
 `
 
 export const HOME_QUERY = gql`
-  query GetBrowseProducts($brandSlugs: [String!]) {
+  query GetBrowseProducts {
+    me {
+      customer {
+        id
+        admissions {
+          id
+          allAccessEnabled
+        }
+      }
+    }
     paymentPlans(where: { status: "active" }) {
       id
       name
@@ -37,14 +46,6 @@ export const HOME_QUERY = gql`
       planID
       tier
       itemCount
-    }
-    brands(where: { products_some: { id_not: null }, name_not: null, slug_in: $brandSlugs }) {
-      id
-      slug
-      name
-      products {
-        id
-      }
     }
     blogPosts(count: 3) {
       id
@@ -57,7 +58,7 @@ export const HOME_QUERY = gql`
       first: 4
       category: "tops"
       orderBy: publishedAt_DESC
-      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, {tags_none: { name: "Vintage"}}] }
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
     ) {
       ...HomePageProduct
     }

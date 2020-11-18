@@ -1,17 +1,30 @@
+import { Drawer } from "components/Drawer/Drawer"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { LoginModal } from "components/Login/LoginModal"
+import { color } from "helpers/color"
+import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
+import queryString from "query-string"
+import React, { useEffect } from "react"
 import styled from "styled-components"
-import { color } from "../../helpers/color"
-import { Flex } from "../Flex"
-import { NavProps } from "./Types"
-import { SeasonsLogo } from "./SeasonsLogo"
-import { NavItem } from "./NavItem"
-import { useTracking, Schema } from "../../utils/analytics"
-import { MaxWidth } from ".."
+import { Schema, useTracking } from "utils/analytics"
 
-export const DesktopNav = ({ fixed = false, links }: NavProps) => {
+import { MaxWidth } from "../"
+import { Flex } from "../Flex"
+import { NavItem } from "./NavItem"
+import { SeasonsLogo } from "./SeasonsLogo"
+import { NavProps } from "./Types"
+
+export const DesktopNav = (props: NavProps) => {
+  const { fixed = false, links } = props
   const router = useRouter()
+
   const tracking = useTracking()
+  const { authState, toggleLoginModal, loginModalOpen } = useAuthContext()
+  const { openDrawer } = useDrawerContext()
+
+  const isLoggedIn = !!authState.isSignedIn
 
   const trackClick = (url) => {
     tracking.trackEvent({
@@ -20,6 +33,17 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
       url,
     })
   }
+
+  useEffect(() => {
+    if (!authState.authInitializing) {
+      const query = queryString.parse(router.asPath.split(/\?/)[1])
+      if (query.login === "true" && !isLoggedIn) {
+        toggleLoginModal(true)
+      } else if (!!query.drawer) {
+        openDrawer(query.drawer as string)
+      }
+    }
+  }, [authState.authInitializing, authState.isSignedIn])
 
   return (
     <HeaderContainer fixed={fixed}>
@@ -39,7 +63,7 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                     <NavItem link={link} />
                   </Link>
                 )
-              } else {
+              } else if (link.url) {
                 return (
                   <NextLink href={link.url} key={link.text}>
                     <Link
@@ -51,11 +75,51 @@ export const DesktopNav = ({ fixed = false, links }: NavProps) => {
                     </Link>
                   </NextLink>
                 )
+              } else {
+                return link.renderNavItem()
               }
             })}
+            {isLoggedIn ? (
+              <>
+                <Link
+                  onClick={() => {
+                    openDrawer("bag")
+                  }}
+                >
+                  <NavItem link={{ text: "Bag" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    openDrawer("profile")
+                  }}
+                >
+                  <NavItem link={{ text: "Account" }} />
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/signup" active={!!router.pathname.match("/signup")}>
+                  <NavItem link={{ text: "Sign Up" }} />
+                </Link>
+                <Link
+                  onClick={() => {
+                    toggleLoginModal(true)
+                  }}
+                >
+                  <NavItem link={{ text: "Log In" }} />
+                </Link>
+              </>
+            )}
           </Flex>
         </Flex>
       </MaxWidth>
+      <Drawer />
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => {
+          toggleLoginModal(false)
+        }}
+      />
     </HeaderContainer>
   )
 }

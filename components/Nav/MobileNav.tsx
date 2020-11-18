@@ -1,10 +1,12 @@
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { LoginModal } from "components/Login/LoginModal"
+import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { animated, useSpring } from "react-spring"
 import styled from "styled-components"
 
-import { MaxWidth } from "../"
 import { color } from "../../helpers/color"
 import { Schema, useTracking } from "../../utils/analytics"
 import { Box, BoxProps } from "../Box"
@@ -13,11 +15,17 @@ import { Burger } from "./Burger"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
-const MENU_HEIGHT = "59px"
+export const MENU_HEIGHT = "59px"
 
 export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
   const [isOpen, toggleOpen] = useState(false)
+  const router = useRouter()
   const tracking = useTracking()
+  const [isLoginOpen, toggleLogin] = useState(false)
+
+  useEffect(() => {
+    toggleOpen(false)
+  }, [router.asPath])
 
   return (
     <HeaderContainer fixed={fixed}>
@@ -35,14 +43,33 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
           }}
         />
       </Header>
-      <Menu items={links} open={isOpen} />
+      <Menu
+        items={links}
+        open={isOpen}
+        onSelect={() => {
+          toggleOpen(false)
+        }}
+        openLogin={() => {
+          toggleLogin(true)
+        }}
+      />
+      <LoginModal
+        open={isLoginOpen}
+        onClose={() => {
+          toggleLogin(false)
+        }}
+      />
     </HeaderContainer>
   )
 }
 
-const Menu = ({ items, open }) => {
+const Menu = ({ items, open, onSelect, openLogin }) => {
   const router = useRouter()
   const tracking = useTracking()
+  const { userSession } = useAuthContext()
+  const { openDrawer } = useDrawerContext()
+
+  const isLoggedIn = !!userSession
   const openAnimation = useSpring({
     transform: open ? `translateY(0)` : "translateY(-100%)",
     config: { tension: 500, friction: 33 },
@@ -63,7 +90,14 @@ const Menu = ({ items, open }) => {
           {items.map((link) => {
             if (link.external) {
               return (
-                <StyledAnchor href={link.url} key={link.text} onClick={() => trackClick(link.url)}>
+                <StyledAnchor
+                  href={link.url}
+                  key={link.text}
+                  onClick={() => {
+                    trackClick(link.url)
+                    onSelect()
+                  }}
+                >
                   <MenuItem
                     key={link.text}
                     width="100%"
@@ -78,7 +112,7 @@ const Menu = ({ items, open }) => {
                   </MenuItem>
                 </StyledAnchor>
               )
-            } else {
+            } else if (link.url) {
               return (
                 <NextLink href={link.url} key={link.text}>
                   <MenuItem
@@ -86,7 +120,10 @@ const Menu = ({ items, open }) => {
                     width="100%"
                     style={{ cursor: "pointer" }}
                     active={!!router.pathname.match(link.match)}
-                    onClick={() => trackClick(link.url)}
+                    onClick={() => {
+                      trackClick(link.url)
+                      onSelect()
+                    }}
                   >
                     <Box py={2}>
                       <Sans size="3" py={2} color="black">
@@ -96,8 +133,79 @@ const Menu = ({ items, open }) => {
                   </MenuItem>
                 </NextLink>
               )
+            } else {
+              return link.renderNavItem()
             }
           })}
+          {isLoggedIn ? (
+            <>
+              <MenuItem
+                key="bag"
+                width="100%"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  openDrawer("bag")
+                  onSelect()
+                }}
+              >
+                <Box py={2}>
+                  <Sans size="3" py={2} color="black">
+                    Bag
+                  </Sans>
+                </Box>
+              </MenuItem>
+              <MenuItem
+                key="account"
+                width="100%"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  openDrawer("profile")
+                  onSelect()
+                }}
+              >
+                <Box py={2}>
+                  <Sans size="3" py={2} color="black">
+                    Account
+                  </Sans>
+                </Box>
+              </MenuItem>
+            </>
+          ) : (
+            <>
+              <NextLink href="/signup">
+                <MenuItem
+                  width="100%"
+                  style={{ cursor: "pointer" }}
+                  active={!!router.pathname.match("/signup")}
+                  onClick={() => {
+                    trackClick("/signup")
+                    onSelect()
+                  }}
+                >
+                  <Box py={2}>
+                    <Sans size="3" py={2} color="black">
+                      Sign Up
+                    </Sans>
+                  </Box>
+                </MenuItem>
+              </NextLink>
+              <MenuItem
+                key="login"
+                width="100%"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  openLogin()
+                  onSelect()
+                }}
+              >
+                <Box py={2}>
+                  <Sans size="3" py={2} color="black">
+                    Log In
+                  </Sans>
+                </Box>
+              </MenuItem>
+            </>
+          )}
         </Box>
       </AnimatedContainer>
     </Wrapper>

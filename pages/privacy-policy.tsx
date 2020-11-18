@@ -1,14 +1,25 @@
 import React from "react"
 import { Layout } from "../components"
+import { FEATURED_BRAND_LIST } from "components/Nav"
 import { screenTrack, Schema } from "../utils/analytics"
 import { Grid } from "../components/Grid"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import { useQuery } from "@apollo/client"
+import { initializeApollo } from "lib/apollo/apollo"
 
 const PrivacyPolicy = screenTrack(() => ({
   page: Schema.PageNames.PrivacyPolicy,
   path: "/privacy-policy",
 }))(() => {
+  const { data } = useQuery(NAVIGATION_QUERY, {
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
+    },
+  })
+  const featuredBrandItems = data?.brands || []
+
   return (
-    <Layout fixedNav>
+    <Layout fixedNav brandItems={featuredBrandItems}>
       <Grid px={[2, 2, 2, 5, 5]}>
         <div className="privacytopsection">
           <div className="privacytopcontainer">
@@ -403,5 +414,23 @@ const PrivacyPolicy = screenTrack(() => ({
     </Layout>
   )
 })
+
+export async function getStaticProps() {
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query({
+    query: NAVIGATION_QUERY,
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
+    },
+  })
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+    revalidate: 1,
+  }
+}
 
 export default PrivacyPolicy

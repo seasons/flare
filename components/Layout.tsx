@@ -1,9 +1,16 @@
+import { PopUpProvider } from "components/PopUp/PopUpProvider"
+import React from "react"
+
 import { Theme } from "../lib/theme"
 import { Box } from "./Box"
+import { Drawer } from "./Drawer/Drawer"
+import { DrawerProvider } from "./Drawer/DrawerProvider"
 import { Footer } from "./Footer"
 import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
 import { Nav } from "./Nav"
+import { useRouter } from "next/router"
+import { PopUp } from "./PopUp"
 
 interface LayoutProps {
   fixedNav?: boolean
@@ -11,6 +18,7 @@ interface LayoutProps {
   children?: any
   footerBottomPadding?: string | string[]
   includeDefaultHead?: boolean
+  brandItems: { name: string; slug: string }[]
 }
 
 export const Layout = ({
@@ -19,19 +27,41 @@ export const Layout = ({
   hideFooter,
   footerBottomPadding,
   includeDefaultHead = true,
+  brandItems,
 }: LayoutProps) => {
+  // If there are any UTM params, store them in a cookie
+  const router = useRouter()
+  const utm = {
+    source: router.query?.utm_source,
+    medium: router.query?.utm_medium,
+    campaign: router.query?.utm_campaign,
+    term: router.query?.utm_term,
+    content: router.query?.utm_content,
+  }
+  if (typeof window !== "undefined") {
+    if (!!utm.source || !!utm.medium || !!utm.campaign || !!utm.term || !!utm.content) {
+      localStorage?.setItem("utm", JSON.stringify(utm))
+    }
+  }
+
   return (
     <>
       {includeDefaultHead && <LayoutHead />}
-      <Theme>
-        <Nav fixed={fixedNav} />
-        <MaxWidth>
-          <Box pt={60} pb={60} style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-            {children}
-            {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
-          </Box>
-        </MaxWidth>
-      </Theme>
+      <PopUpProvider>
+        <DrawerProvider>
+          <Theme>
+            <Nav fixed={fixedNav} brandItems={brandItems} />
+            <MaxWidth>
+              <Box pt={60} pb={60} style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+                {children}
+                {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
+              </Box>
+            </MaxWidth>
+            <Drawer />
+            <PopUp />
+          </Theme>
+        </DrawerProvider>
+      </PopUpProvider>
     </>
   )
 }

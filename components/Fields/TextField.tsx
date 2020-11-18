@@ -1,5 +1,6 @@
-import React from "react"
 import { TextField as MuiTextField, TextFieldProps } from "formik-material-ui"
+import React from "react"
+
 import { styled as muiStyled } from "@material-ui/core"
 
 export const StyledTextField = muiStyled(MuiTextField)({
@@ -10,7 +11,7 @@ export const StyledTextField = muiStyled(MuiTextField)({
 
 export const TextField = (props: TextFieldProps) => {
   const { field, form } = props
-  const fieldName = field.name || ""
+  const fieldName = field?.name || ""
   const values = form.values || {}
   let value = values?.[fieldName] || ""
 

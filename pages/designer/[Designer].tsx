@@ -1,23 +1,26 @@
-import Head from "next/head"
-import React, { useEffect, useRef, useState } from "react"
-import { gql, useQuery } from "@apollo/client"
-import { Box, Layout, Sans, Spacer, Separator, Flex } from "../../components"
-import { Col, Grid, Row } from "../../components/Grid"
-import { DateTime } from "luxon"
-import { Schema, screenTrack } from "../../utils/analytics"
+import { Box, Flex, Layout, Sans, Separator, Spacer } from "components"
+import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
+import { Col, Grid, Row } from "components/Grid"
+import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
+import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
+import { FEATURED_BRAND_LIST } from "components/Nav"
+import { ProductGridItem } from "components/Product/ProductGridItem"
+import { ReadMore } from "components/ReadMore"
+import { Media } from "components/Responsive"
+import { Spinner } from "components/Spinner"
+import { initializeApollo } from "lib/apollo"
+import brandSlugs from "lib/brands"
 import { debounce } from "lodash"
-import { HomepageCarousel } from "../../components/Homepage/HomepageCarousel"
-import { ProgressiveImageProps } from "../../components/Image/ProgressiveImage"
-import { ProductGridItem } from "../../components/Product/ProductGridItem"
-import { ReadMore } from "../../components/ReadMore"
+import { DateTime } from "luxon"
+import Head from "next/head"
 import { withRouter } from "next/router"
-import { DesignerTextSkeleton } from "../../components/Designer/DesignerTextSkeleton"
-import { Spinner } from "../../components/Spinner"
-import { initializeApollo } from "../../lib/apollo"
-import { GET_BRAND, GET_BRANDS } from "../../queries/designerQueries"
-import { BRAND_LIST } from "../../components/Homepage/Brands"
-import { Media } from "../../components/Responsive"
+import { GET_BRAND, GET_BRANDS } from "queries/designerQueries"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
+import { Schema, screenTrack } from "utils/analytics"
+
+import { useQuery } from "@apollo/client"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -37,12 +40,20 @@ const Designer = screenTrack(({ router }) => {
       slug,
       first: 8,
       skip: 0,
-      orderBy: "createdAt_DESC",
+      orderBy: "publishedAt_DESC",
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
+    },
+  })
+
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
 
   const products = data?.brand?.products?.edges
   const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
+  const featuredBrandItems = navigationData?.brands || []
 
   const onScroll = debounce(() => {
     const shouldLoadMore =
@@ -119,6 +130,7 @@ const Designer = screenTrack(({ router }) => {
                   {basedIn}
                 </Sans>
               </Flex>
+              <Spacer mb={2} />
               <Separator />
             </>
           )}
@@ -127,7 +139,7 @@ const Designer = screenTrack(({ router }) => {
               <Spacer mb={2} />
               <Flex flexDirection="row" justifyContent="space-between" width="100%">
                 <Sans size="4">Website</Sans>
-                <a href={website} style={{ textDecoration: "none", cursor: "ne-resize" }}>
+                <a href={website} style={{ textDecoration: "none", cursor: "ne-resize" }} target="_blank">
                   <Sans size="4" color="black50">
                     {website}
                   </Sans>
@@ -197,7 +209,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout fixedNav includeDefaultHead={false}>
+    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
@@ -281,7 +293,7 @@ export async function getStaticPaths() {
   const response = await apolloClient.query({
     query: GET_BRANDS,
     variables: {
-      brandSlugs: BRAND_LIST,
+      brandSlugs,
     },
   })
 
@@ -310,7 +322,14 @@ export async function getStaticProps({ params }) {
       slug: filter,
       first: 8,
       skip: 0,
-      orderBy: "createdAt_DESC",
+      orderBy: "publishedAt_DESC",
+    },
+  })
+
+  await apolloClient.query({
+    query: NAVIGATION_QUERY,
+    variables: {
+      featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
 

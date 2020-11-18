@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from "react"
+import React, { useEffect, useRef } from "react"
+import styled from "styled-components"
+
+import { Box, Flex, Sans, Spacer } from "../"
+import { color } from "../../helpers"
 import { Col } from "../Grid"
 import { Display } from "../Typography"
-import { Sans, Box, Spacer, Flex } from ".."
-import styled from "styled-components"
-import { color } from "../../helpers"
 
 export const FAQCard: React.FC<{
   step: any
@@ -52,21 +53,16 @@ export const FAQCard: React.FC<{
             {step.title}
           </Display>
           <Spacer mb={1} />
-          <InjectedSans
-            size="4"
-            color="black50"
-            style={{ maxWidth: "90%" }}
-            dangerouslySetInnerHTML={{ __html: step.text }}
-          />
+          <Sans size="4" color="black50" style={{ maxWidth: "90%" }} dangerouslySetInnerHTML={{ __html: step.text }} />
         </Box>
       </Flex>
     </Col>
   )
 }
 
-const InjectedSans = styled(Sans)`
-  a {
-    text-decoration: underline;
-    color: ${color("black100")};
-  }
-`
+// const InjectedSans = styled(Sans)`
+//   a {
+//     text-decoration: underline;
+//     color: ${color("black100")};
+//   }
+// `
