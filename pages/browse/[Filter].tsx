@@ -21,6 +21,7 @@ import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import brandSlugs from "lib/brands"
+import { sans as sansSize } from "helpers/typeSizes"
 
 const pageSize = 20
 
@@ -115,6 +116,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 title="Designers"
                 hideTitle
                 currentBrand={currentBrand}
+                listItemStyle={{
+                  textDecoration: "underline",
+                  fontSize: `${sansSize("7").fontSize}px`,
+                  lineHeight: `${sansSize("7").lineHeight}px`,
+                  color: color("black100"),
+                  opacity: 1,
+                }}
+                listItemSpacing="12px"
               />
             }
             CategoriesListComponent={
