@@ -5,9 +5,11 @@ import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import React from "react"
+import queryString from "query-string"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
+
 import { MaxWidth } from "../"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
@@ -19,10 +21,10 @@ export const DesktopNav = (props: NavProps) => {
   const router = useRouter()
 
   const tracking = useTracking()
-  const { userSession, toggleLoginModal, loginModalOpen } = useAuthContext()
+  const { authState, toggleLoginModal, loginModalOpen } = useAuthContext()
   const { openDrawer } = useDrawerContext()
 
-  const isLoggedIn = !!userSession
+  const isLoggedIn = !!authState.isSignedIn
 
   const trackClick = (url) => {
     tracking.trackEvent({
@@ -31,6 +33,17 @@ export const DesktopNav = (props: NavProps) => {
       url,
     })
   }
+
+  useEffect(() => {
+    if (!authState.authInitializing) {
+      const query = queryString.parse(router.asPath.split(/\?/)[1])
+      if (query.login === "true" && !isLoggedIn) {
+        toggleLoginModal(true)
+      } else if (!!query.drawer) {
+        openDrawer(query.drawer as string)
+      }
+    }
+  }, [authState.authInitializing, authState.isSignedIn])
 
   return (
     <HeaderContainer fixed={fixed}>
