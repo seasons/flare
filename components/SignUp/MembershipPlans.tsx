@@ -65,9 +65,11 @@ const FAQ = ({ faqSections }) => {
           Have a question not covered in the FAQ?
         </Sans>
         <Spacer mb={2} />
-        <Button variant="secondaryOutline" block>
-          Contact us
-        </Button>
+        <a href="mailto:membership@seasons.nyc?subject=Support" style={{ textDecoration: "none" }}>
+          <Button variant="secondaryOutline" block type="button">
+            Contact us
+          </Button>
+        </a>
       </Box>
     </FAQWrapper>
   )

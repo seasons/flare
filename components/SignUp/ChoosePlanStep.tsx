@@ -153,7 +153,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
                 ml={2}
                 variant="primaryBlack"
                 size="medium"
-                type="submit"
+                type="button"
                 onClick={() => {
                   onPlanSelected(selectedPlan)
                   executeChargebeeCheckout(selectedPlan.planID)

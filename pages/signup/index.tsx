@@ -267,7 +267,6 @@ const SignUpPage = screenTrack(() => ({
         <Step>
           {({ form, wizard }) => {
             const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
-
             return isWaitlisted ? (
               <FormConfirmation {...data} />
             ) : (
@@ -300,6 +299,8 @@ const SignUpPage = screenTrack(() => ({
       ]
 
   const hasSteps = steps.length > 0
+
+  console.log("steps", steps)
 
   const SnackBarMessage = (
     <Sans size="3">
