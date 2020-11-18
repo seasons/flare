@@ -199,7 +199,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
               <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
                 {!!imageURL && (
                   <ImageContainer
-                    style={{ height: 170 * 1.25, width: 170 }}
+                    style={{ height: 170 * 1.26, width: 170 }}
                     resizeMode="contain"
                     source={{ uri: imageURL }}
                   />
@@ -232,7 +232,7 @@ const BagItemContainer = styled(Box)<{ isReserved: boolean }>`
 `
 
 const ImageContainer = styled(Image)`
-  height: 214;
+  height: 216px;
 `
 
 const Overlay = styled(Box)`
