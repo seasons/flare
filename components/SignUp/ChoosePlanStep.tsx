@@ -1,11 +1,12 @@
 import { Button, Flex, MaxWidth, Spacer } from "components"
+import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
 import gql from "graphql-tag"
 import { apolloClient } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
-import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
+
 import { MembershipPlans } from "./MembershipPlans"
 
 export const PAYMENT_PLANS = gql`
@@ -98,6 +99,13 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
   const [selectedPlan, setSelectedPlan] = useState(null)
   const { data } = useQuery(PAYMENT_PLANS)
   const { userSession } = useAuthContext()
+
+  useEffect(() => {
+    // @ts-ignore
+    Chargebee.init({
+      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
+    })
+  }, [])
 
   useEffect(() => {
     if (data?.paymentPlans && !selectedPlan) {
