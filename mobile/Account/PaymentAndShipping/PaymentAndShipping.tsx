@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client"
 import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import gql from "graphql-tag"
@@ -6,8 +7,6 @@ import { Loader } from "mobile/Loader"
 import React, { useEffect } from "react"
 import { FlatList } from "react-native"
 import { screenTrack } from "utils/analytics"
-
-import { useQuery } from "@apollo/client"
 
 export const GET_PAYMENT_DATA = gql`
   query GetUserPaymentData {
@@ -177,11 +176,17 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
   }
 
   const handleEditBtnPressed = () => {
-    navigation.navigate("EditPaymentAndShipping", {
-      billingInfo,
-      phoneNumber,
-      shippingAddress,
+    console.log("huh")
+    openDrawer("editPaymentAndShipping", {
+      billingInfo: customer?.billingInfo,
+      shippingAddress: customer?.detail?.shippingAddress,
+      phoneNumber: customer?.detail?.phoneNumber,
     })
+    // navigation.navigate("EditPaymentAndShipping", {
+    //   billingInfo,
+    //   phoneNumber,
+    //   shippingAddress,
+    // })
   }
 
   const renderItem = (item) => {
@@ -210,7 +215,7 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
         renderItem={({ item }) => renderItem(item)}
       />
       <Box p={2}>
-        <Button block variant="primaryWhite" onPress={handleEditBtnPressed}>
+        <Button block variant="primaryWhite" onClick={handleEditBtnPressed}>
           Edit
         </Button>
       </Box>
