@@ -102,7 +102,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
   useEffect(() => {
     if (data?.paymentPlans && !selectedPlan) {
       const essential1 = data?.paymentPlans.find((p) => p.name === "Essential 1")
-      console.log("data?.paymentPlans", data?.paymentPlans)
       setSelectedPlan(essential1)
     }
   }, [data, selectedPlan, setSelectedPlan])
