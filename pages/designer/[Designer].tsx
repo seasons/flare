@@ -115,6 +115,7 @@ const Designer = screenTrack(({ router }) => {
 
   const MetaData = () => {
     const basedIn = brand?.basedIn
+    const designer = brand?.designer
     const since = brand?.since
     const website = brand?.websiteUrl
     if (basedIn || since || website) {
@@ -128,6 +129,19 @@ const Designer = screenTrack(({ router }) => {
                 <Sans size="4">Headquarters</Sans>
                 <Sans size="4" color="black50">
                   {basedIn}
+                </Sans>
+              </Flex>
+              <Spacer mb={2} />
+              <Separator />
+            </>
+          )}
+          {!!designer && (
+            <>
+              <Spacer mb={2} />
+              <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
+                <Sans size="4">Designer</Sans>
+                <Sans size="4" color="black50">
+                  {designer}
                 </Sans>
               </Flex>
               <Spacer mb={2} />
