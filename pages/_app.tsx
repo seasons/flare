@@ -1,3 +1,4 @@
+import "../public/css/fonts.css"
 import "../public/css/app.css"
 
 import { RouterProgress } from "components/RouterProgress"
@@ -15,13 +16,6 @@ import { Theme } from "../lib/theme"
 function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)
 
-  useEffect(() => {
-    // @ts-ignore
-    Chargebee.init({
-      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
-    })
-  }, [])
-
   return (
     <AuthProvider apolloClient={apolloClient}>
       <ApolloProvider client={apolloClient}>
@@ -30,16 +24,11 @@ function App({ Component, pageProps }) {
         <RouterProgress />
         <style type="text/css">{createMediaStyle()}</style>
 
-        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
-        <link href="/css/components.css" rel="stylesheet" type="text/css" />
-        <link href="/css/fonts.css" rel="stylesheet" type="text/css" />
-        <link href="/css/seasons-4d21cb.css" rel="stylesheet" type="text/css" />
-
         <link href="/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
         <link href="/images/webclip.png" rel="apple-touch-icon" />
 
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <script src="https://js.chargebee.com/v2/chargebee.js" />
+        <script src="https://js.chargebee.com/v2/chargebee.js" async defer />
         <Theme>
           <Component {...pageProps} />
         </Theme>

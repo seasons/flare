@@ -1,24 +1,27 @@
-import { Box, Button, Container, Flex, Sans, Spacer, FixedBackArrow, Separator } from "components"
-import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
-import { color } from "helpers/color"
-import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { Schema as TrackSchema, useTracking } from "utils/analytics"
-import { ListCheck } from "components/SVGs/ListCheck"
-import { TabBar } from "mobile/TabBar"
-import gql from "graphql-tag"
-import { uniq } from "lodash"
-import React, { useEffect, useState } from "react"
-import { useMutation, useQuery } from "@apollo/client"
-import { Dimensions, Linking } from "react-native"
-import { PlanButton } from "./PlanButton"
-import { GET_BAG } from "queries/bagQueries"
-import { ChevronIcon } from "components/Icons/ChevronIcon"
-import { Coupon } from "utils/calcFinalPrice"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { Box, Button, Container, FixedBackArrow, Flex, Sans, Separator, Spacer } from "components"
 import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { ChevronIcon } from "components/Icons/ChevronIcon"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { getChargebeeCheckout } from "components/SignUp/ChoosePlanStep"
-import { useAuthContext } from "lib/auth/AuthContext"
 import { CheckWithBackground } from "components/SVGs"
+import { ListCheck } from "components/SVGs/ListCheck"
+import gql from "graphql-tag"
+import { color } from "helpers/color"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { uniq } from "lodash"
+import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
+import { TabBar } from "mobile/TabBar"
+import { GET_BAG } from "queries/bagQueries"
+import React, { useEffect, useState } from "react"
+import { Dimensions, Linking } from "react-native"
+import styled from "styled-components"
+import { Schema as TrackSchema, useTracking } from "utils/analytics"
+import { Coupon } from "utils/calcFinalPrice"
+
+import { useMutation, useQuery } from "@apollo/client"
+
+import { PlanButton } from "./PlanButton"
 
 export const GET_PLANS = gql`
   query GetPlans($where: PaymentPlanWhereInput) {
@@ -141,6 +144,13 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
       },
     ],
   })
+
+  useEffect(() => {
+    // @ts-ignore
+    Chargebee.init({
+      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
+    })
+  }, [])
 
   useEffect(() => {
     // Update the selected plan if you switch tabs
