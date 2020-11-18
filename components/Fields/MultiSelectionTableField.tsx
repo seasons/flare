@@ -6,7 +6,7 @@ import {
   Item,
 } from "../../mobile/GetMeasurementsPane/MultiSelectionTable"
 
-type Props = Pick<MultiSelectionTableProps, "items" | "itemSize" > & {
+type Props = Pick<MultiSelectionTableProps, "items" | "itemSize"> & {
   inputName: string
 }
 
@@ -15,14 +15,13 @@ export const MultiSelectionTableField: React.FC<Props> = ({ inputName, items, it
 
   const handleTap = (item: Item, _index: number) => {
     const idx = value.findIndex((i) => i === item.value)
-    const newValue = [...value]
+    const newValue = [...value].filter(Boolean)
     if (idx === -1) {
       newValue.push(item.value)
     } else {
       newValue.splice(idx, 1)
     }
     setValue(newValue)
-    setTouched(true)
   }
 
   const selectedItemIndices = value.map((item) => items.findIndex((innerItem) => innerItem.value === item))
