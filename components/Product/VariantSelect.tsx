@@ -128,11 +128,11 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
   return (
     <>
       <Button variant="primaryWhite" onClick={handleClick} aria-describedby={id} block>
-        <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
+        <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center">
           <Sans size="4">{text}</Sans>
-          <Box top="2px" style={{ position: "relative" }}>
+          <Flex flexDirection="row" alignItems="center">
             <ExpandMoreIcon />
-          </Box>
+          </Flex>
         </Flex>
       </Button>
       <Popover

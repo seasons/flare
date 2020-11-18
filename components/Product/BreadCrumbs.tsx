@@ -15,7 +15,7 @@ export const BreadCrumbs: React.FC<{ product: any }> = ({ product }) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper px={[2, 2, 0, 0, 0]}>
       {crumbs.map((crumb, index) => {
         return (
           <Link href={crumb.link} as={crumb.as} key={crumb.link}>
