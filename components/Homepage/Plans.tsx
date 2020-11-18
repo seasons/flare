@@ -2,14 +2,25 @@ import { groupByPlanTier } from "components/SignUp/MembershipPlans"
 import { PlanTier } from "components/SignUp/PlanTier"
 import { color } from "helpers"
 import React from "react"
-
 import { Box, Flex, Media, Spacer } from "../"
 import { Col, Grid, Row } from "../Grid"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { useRouter } from "next/router"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 
 export const Plans: React.FC<{ plans: any; allAccessEnabled: boolean }> = ({ plans, allAccessEnabled }) => {
   const plansGroupedByTier = groupByPlanTier(plans)
+  const { authState } = useAuthContext()
+  const { openDrawer } = useDrawerContext()
+  const router = useRouter()
 
-  const onSelectPlan = () => {}
+  const onSelectPlan = (_plan) => {
+    if (authState.isSignedIn) {
+      openDrawer("choosePlan", { source: "Update" })
+    } else {
+      router.push("/signup")
+    }
+  }
 
   return (
     <Grid px={[2, 2, 2, 5, 5]} pt={[10, 0, 0, 0, 0]}>
