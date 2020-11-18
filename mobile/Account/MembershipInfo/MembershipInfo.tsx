@@ -59,7 +59,13 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
   if (!plan) {
     return (
       <>
-        <FixedBackArrow navigation={navigation} variant="whiteBackground" />
+        <FixedBackArrow
+          navigation={navigation}
+          variant="whiteBackground"
+          onPress={() => {
+            openDrawer("profile")
+          }}
+        />
         <Loader />
       </>
     )
