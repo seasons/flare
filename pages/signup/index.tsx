@@ -137,7 +137,7 @@ const SignUpPage = screenTrack(() => ({
     accountAccepted: {
       icon: <CheckWithBackground />,
       headerText: "Welcome to Seasons",
-      bodyText: "Your membership is active and you’re ready to start reserving. Tap below to start browsing",
+      bodyText: "Your membership is active and you’re ready to start reserving. Tap below to start browsing.",
     },
   }
 
@@ -267,7 +267,6 @@ const SignUpPage = screenTrack(() => ({
         <Step>
           {({ form, wizard }) => {
             const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
-
             return isWaitlisted ? (
               <FormConfirmation {...data} />
             ) : (
@@ -300,6 +299,8 @@ const SignUpPage = screenTrack(() => ({
       ]
 
   const hasSteps = steps.length > 0
+
+  console.log("steps", steps)
 
   const SnackBarMessage = (
     <Sans size="3">

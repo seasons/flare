@@ -1,32 +1,28 @@
-import { Box, Flex, Sans, Spacer } from "components"
+import { Flex, Sans } from "components"
 import { color } from "helpers/color"
-import React, { useState } from "react"
-import { Dimensions, TouchableOpacity, ViewStyle } from "react-native"
+import React from "react"
+import { TouchableOpacity, ViewStyle } from "react-native"
 import styled from "styled-components"
 
-type Item = { label: string; value: string }
+export type Item = { label: string; value: string }
 
-interface MultiSelectionTableProps {
+export interface Props {
   disabled?: boolean
   items: Item[]
   onTap?: (item: Item, index: number) => void
   selectedItemIndices: number[]
   style?: ViewStyle
+  itemSize?: number
 }
 
-const windowWidth = Dimensions.get("window").width - 32
-
-export const MultiSelectionTable: React.FC<MultiSelectionTableProps> = ({
+export const MultiSelectionTable: React.FC<Props> = ({
   disabled = false,
   items,
   onTap,
   selectedItemIndices,
+  itemSize = 60,
 }) => {
-  const [width, setWidth] = useState(windowWidth)
-
-  const itemHeight = 60
   const itemCornerRadius = 4
-  const minimumInterItemSpacing = 8
 
   const data = items.map((item, index) => ({
     isSelected: selectedItemIndices.includes(index),
@@ -36,13 +32,13 @@ export const MultiSelectionTable: React.FC<MultiSelectionTableProps> = ({
   const renderItem = ({ isSelected, item }: { isSelected: boolean; item: Item }, index: number) => {
     return (
       <TouchableOpacity disabled={disabled} onPress={() => onTap?.(item, index)} key={index}>
-        <Flex height={itemHeight + interItemSpacing} width={itemHeight} mr={1} justifyContent="center">
+        <Flex height={itemSize} width={itemSize} mr={1} justifyContent="center">
           <Flex
             justifyContent="center"
-            height={itemHeight + "px"}
-            width={itemHeight + "px"}
+            height={itemSize + "px"}
+            width={itemSize + "px"}
             style={{
-              backgroundColor: color(isSelected ? "black04" : "white100"),
+              backgroundColor: color(isSelected ? "black100" : "white100"),
               borderColor: color(isSelected ? "black100" : "black10"),
               borderStyle: "solid",
               borderRadius: itemCornerRadius,
@@ -56,10 +52,10 @@ export const MultiSelectionTable: React.FC<MultiSelectionTableProps> = ({
           >
             <Sans
               size="3"
-              color="black100"
+              color={isSelected ? "white100" : "black100"}
               style={{
                 textAlign: "center",
-                lineHeight: itemHeight + "px",
+                lineHeight: itemSize + "px",
               }}
             >
               {item.label}
@@ -70,27 +66,11 @@ export const MultiSelectionTable: React.FC<MultiSelectionTableProps> = ({
     )
   }
 
-  const itemsPerRow = Math.floor((width - itemHeight) / (itemHeight + minimumInterItemSpacing)) + 1
-  const interItemSpacing = (width - itemsPerRow * itemHeight) / (itemsPerRow - 1)
-  const numRows = Math.ceil(items.length / itemsPerRow)
-  // @ts-ignore
-  const numArray = [...Array(numRows).keys()]
-
-  return (
-    <Box>
-      {numArray.map((
-        row // map each row index to a Flex box
-      ) => (
-        <Flex key={row.toString()} style={{ flexWrap: "wrap" }}>
-          {data.slice(row * itemsPerRow, (row + 1) * itemsPerRow).flatMap((datum, index, array) => {
-            const dataIndex = index + itemsPerRow * row
-            const view = renderItem(datum, dataIndex) // render each item
-            return view
-          })}
-        </Flex>
-      ))}
-    </Box>
-  )
+  return <Container itemSize={itemSize}>{data.map((datum, index) => renderItem(datum, index))}</Container>
 }
 
-const Container = styled(Box)``
+const Container = styled.div<Pick<Props, "itemSize">>`
+  display: grid;
+  gap: 7px 7px;
+  grid-template-columns: repeat(auto-fit, ${({ itemSize }) => `${itemSize}px`});
+`

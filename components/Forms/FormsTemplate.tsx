@@ -100,7 +100,7 @@ export const FormFooter: React.FC<FooterProps> = ({
 
   return (
     <FormFooterWrapper>
-      <FormFooterInnerWrapper flexDirection="row" justifyContent="center" alignContent="centers">
+      <FormFooterInnerWrapper>
         <MaxWidth>
           <Flex
             flexDirection="row"
@@ -319,15 +319,16 @@ const useStyles = makeStyles({
   },
 })
 
-const Wrapper = styled(Flex)<{ clientSide }>`
+const Wrapper = styled("div")<{ clientSide }>`
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
+  display: flex;
   flex: 1;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
 `
 
-const FormFooterWrapper = styled.div`
+export const FormFooterWrapper = styled.div`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -335,15 +336,20 @@ const FormFooterWrapper = styled.div`
   background-color: ${color("white100")};
 `
 
-const FormFooterInnerWrapper = styled(Flex)`
+export const FormFooterInnerWrapper = styled("div")`
   border-top: 1px solid ${color("black10")};
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
 `
 
-const FieldsContainer = styled(Flex)`
+const FieldsContainer = styled(Box)`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  display: flex;
 
   .MuiFormControl-root {
     width: 100%;

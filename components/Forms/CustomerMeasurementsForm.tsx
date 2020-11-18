@@ -1,9 +1,10 @@
-import { ExternalLink } from "components"
+import { ExternalLink, Box } from "components"
 import React from "react"
 import { Schema } from "utils/analytics"
 import * as Yup from "yup"
 
 import { FormProps, FormTemplate } from "./FormsTemplate"
+import { MultiSelectionTableField } from "../Fields/MultiSelectionTableField"
 import { customerMeasurements } from "./helpers/measurements"
 
 export interface CustomerMeasurementsFormFields {
@@ -53,17 +54,27 @@ export const CustomerMeasurementsForm = ({ context }: FormProps) => {
         },
         {
           name: "topSizes",
-          selectOptions: customerMeasurements.topSizes,
+          customElement: (
+            <Box mt={1}>
+              <MultiSelectionTableField inputName={"topSizes"} items={customerMeasurements.topSizes} itemSize={64} />
+            </Box>
+          ),
           placeholder: "Select",
-          multiple: true,
           label: "What are your preferred top sizes?",
           mobileOrder: 3,
         },
         {
           name: "waistSizes",
-          selectOptions: customerMeasurements.waistSizes,
+          customElement: (
+            <Box mt={1}>
+              <MultiSelectionTableField
+                inputName={"waistSizes"}
+                items={customerMeasurements.waistSizes}
+                itemSize={64}
+              />
+            </Box>
+          ),
           placeholder: "Select",
-          multiple: true,
           label: "Preferred waist sizes?",
           mobileOrder: 4,
         },

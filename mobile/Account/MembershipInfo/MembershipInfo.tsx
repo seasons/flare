@@ -59,7 +59,13 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
   if (!plan) {
     return (
       <>
-        <FixedBackArrow navigation={navigation} variant="whiteBackground" />
+        <FixedBackArrow
+          navigation={navigation}
+          variant="whiteBackground"
+          onPress={() => {
+            openDrawer("profile")
+          }}
+        />
         <Loader />
       </>
     )
@@ -113,7 +119,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           <Spacer mb={4} />
           <Sans size="4">Change your plan</Sans>
           <Spacer mb={2} />
-          <Button variant="secondaryOutline" block onClick={() => openDrawer("choosePlan")}>
+          <Button variant="secondaryOutline" block onClick={() => openDrawer("choosePlan", { source: "Update" })}>
             View membership options
           </Button>
           <Spacer mb={4} />
