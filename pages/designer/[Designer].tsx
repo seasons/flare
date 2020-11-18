@@ -280,6 +280,8 @@ const Designer = screenTrack(({ router }) => {
             </Col>
           </Row>
           <Spacer mb={8} />
+        </Grid>
+        <Grid>
           <Row ref={imageContainer}>
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>
