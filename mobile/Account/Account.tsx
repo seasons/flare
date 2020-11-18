@@ -284,7 +284,7 @@ export const Account = screenTrack()(({ navigation }) => {
         <Box px={2}>
           <AccountList list={bottomList} roles={roles} />
         </Box>
-        <Spacer mb={2} />
+        <Spacer mb={10} />
       </ScrollView>
     </Container>
   )

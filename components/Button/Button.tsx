@@ -125,6 +125,25 @@ export class Button extends Component<WebButtonProps> {
               `
           }};
         `
+      case "secondaryOutlineWhite":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+            return `
+                background-color:  ${colors.white100};
+                border-color: ${colors.black10};
+                color: ${colors.black100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color:  ${colors.white100};
+                    border-color: ${colors.black100};
+                    color: ${colors.black100};
+                  }
+                }
+              `
+          }};
+        `
       case "noOutline":
         return css`
           ${(props) => {
