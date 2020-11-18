@@ -125,10 +125,14 @@ export const DesktopNav = (props: NavProps) => {
 
 const HeaderContainer = styled.div<{ fixed: boolean }>`
   background-color: ${color("white100")};
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  ${({ fixed }) =>
+    fixed &&
+    `
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  `}
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
@@ -136,6 +140,7 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   width: 100%;
   height: 58.5px;
   align-items: center;
+  padding-right: 15px;
 `
 
 const Link = styled.a<{ active?: boolean }>`
