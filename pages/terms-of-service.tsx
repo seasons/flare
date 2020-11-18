@@ -24,7 +24,7 @@ export const TermsOfService = screenTrack(() => ({
         <div className="termsofservicetopsection">
           <div className="privacytopcontainer">
             <div className="privacyheadertitle">Terms of Service</div>
-            <div className="privacyheadersubtitle">Effective date November 13, 2019</div>
+            <div className="privacyheadersubtitle">Effective date November 18, 2020</div>
           </div>
         </div>
         <div className="privacypolicytext">

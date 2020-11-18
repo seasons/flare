@@ -20,6 +20,7 @@ export const MobileFilters: React.FC<{
           ml={2}
           width={"100%"}
           block
+          size="medium-x"
           variant={categoriesOpen ? "primaryBlack" : "primaryWhite"}
           onClick={() => {
             toggleCategoriesOpen(!categoriesOpen)
@@ -33,6 +34,7 @@ export const MobileFilters: React.FC<{
           mr={2}
           width={"100%"}
           block
+          size="medium-x"
           variant={brandsOpen ? "primaryBlack" : "primaryWhite"}
           onClick={() => {
             toggleBrandsOpen(!brandsOpen)
@@ -77,7 +79,7 @@ const ListWrapper = styled(Box)`
 `
 
 const ButtonWrapper = styled.div`
-  padding-bottom: ${themeProps.space[2]}px;
+  padding-bottom: ${themeProps.space[3]}px;
   display: flex;
   position: fixed;
   background-color: ${color("white100")};
@@ -86,10 +88,7 @@ const ButtonWrapper = styled.div`
   bottom: 0;
   left: 0;
   align-items: stretch;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  )
+  background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
 `
 
 const HeaderContainer = styled.div`
