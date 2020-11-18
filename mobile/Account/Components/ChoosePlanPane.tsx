@@ -10,7 +10,6 @@ import { uniq } from "lodash"
 import React, { useEffect, useState } from "react"
 import { useMutation, useQuery } from "@apollo/client"
 import { Dimensions, Linking } from "react-native"
-import styled from "styled-components"
 import { PlanButton } from "./PlanButton"
 import { GET_BAG } from "queries/bagQueries"
 import { ChevronIcon } from "components/Icons/ChevronIcon"
@@ -234,26 +233,35 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
 
   if (showSuccess) {
     return (
-      <Container>
-        <Box px={2}>
-          <Spacer mb={10} />
-          <CheckWithBackground />
-          <Spacer mb={3} />
-          <Sans size="5">Welcome to Seasons</Sans>
-          <Sans size="4" color="black50">
-            Your membership is active and you’re ready to start reserving. Tap below to start browsing.
-          </Sans>
-          <Spacer mb={4} />
-        </Box>
-        <DrawerBottomButton buttonProps={{ onClick: () => closeDrawer(), block: true }}>Got it</DrawerBottomButton>
-      </Container>
+      <>
+        <Container>
+          <Box px={2} mt={10}>
+            <Spacer mb={5} />
+            <CheckWithBackground />
+            <Spacer mb={3} />
+            <Sans size="5">Welcome to Seasons</Sans>
+            <Sans size="4" color="black50">
+              Your membership is active and you’re ready to start reserving. Tap below to start browsing.
+            </Sans>
+            <Spacer mb={4} />
+          </Box>
+          <DrawerBottomButton buttonProps={{ onClick: () => closeDrawer(), block: true }}>Got it</DrawerBottomButton>
+        </Container>
+      </>
     )
   }
 
   return (
     <>
       <Container insetsBottom={false} insetsTop={false}>
-        <Box mt={10}>
+        <FixedBackArrow
+          variant="whiteBackground"
+          onPress={() => {
+            openDrawer("profile")
+          }}
+        />
+        <Box mt={10} style={{ position: "relative" }}>
+          <Spacer mb={5} />
           <Box px={2}>
             <Sans color="black100" size="6">
               {headerText}
@@ -358,10 +366,12 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
             </Button>
           </Box>
           <Spacer pb={100} />
+          <DrawerBottomButton
+            buttonProps={{ disabled: !selectedPlan || isMutating, onClick: onChoosePlan, block: true }}
+          >
+            Choose plan
+          </DrawerBottomButton>
         </Box>
-        <DrawerBottomButton buttonProps={{ disabled: !selectedPlan || isMutating, onClick: onChoosePlan, block: true }}>
-          Choose plan
-        </DrawerBottomButton>
       </Container>
     </>
   )

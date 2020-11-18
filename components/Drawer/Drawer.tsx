@@ -21,8 +21,17 @@ interface DrawerProps {
   onClose?: () => void
 }
 
-export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
+export const Drawer = (props: DrawerProps) => {
+  const { open, onClose } = props
   const { isOpen, closeDrawer, openDrawer, currentView, params } = useDrawerContext()
+
+  let drawerWidth = 380
+  if (typeof window !== "undefined") {
+    const windowWidth = window.innerWidth
+    if (windowWidth < 800) {
+      drawerWidth = windowWidth
+    }
+  }
 
   useEffect(() => {
     if (open) {
@@ -66,26 +75,28 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         return <ChoosePlanPane headerText={"Let's choose your plan"} source={params?.source} />
     }
   }
+
   const showCloseButton = ["bag", "profile"].includes(currentView)
 
   return (
-    <MuiDrawer
+    <StyledDrawer
+      width={drawerWidth}
       anchor="right"
       open={isOpen}
       onClose={handleClose}
       variant="temporary"
-      PaperProps={{ component: DrawerBox, id: "appDrawer" }}
+      PaperProps={{ id: "appDrawer" }}
       ModalProps={{ disableEnforceFocus: true }}
     >
-      <Box width="100%" height="100%" style={{ position: "relative" }} pb={showCloseButton ? "60px" : 0}>
+      <Box width="100%" height="100%" style={{ position: "relative" }}>
         {view()}
+        {showCloseButton && (
+          <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutline" }}>
+            Close
+          </DrawerBottomButton>
+        )}
       </Box>
-      {showCloseButton && (
-        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutline" }}>
-          Close
-        </DrawerBottomButton>
-      )}
-    </MuiDrawer>
+    </StyledDrawer>
   )
 }
 
@@ -105,9 +116,9 @@ export const useDrawerScrollbarWidth = () => {
   return scrollbarWidth
 }
 
-export const DrawerBox = styled(Box)`
-  width: 380px;
-  @media (max-width: 380px) {
-    width: 100%;
+const StyledDrawer = styled(MuiDrawer)<{ width: number }>`
+  #appDrawer,
+  .drawer-bottom-button {
+    width: ${(p) => p.width}px;
   }
 `
