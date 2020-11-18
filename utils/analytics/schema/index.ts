@@ -147,6 +147,9 @@ export enum ActionNames {
   NotificationToggleTapped = "Notification Toggle Tapped",
   AddCreditCardTapped = "AddCreditCardTapped",
   GetMeasurementsFinishTapped = "Get Measurements Finish Tapped",
+  SizeButtonTapped = "Size Button Tapped",
+  SaveProductModalCancelTapped = "Save Product Modal Cancel Tapped",
+  SaveProductModalSaveTapped = "Save Product Modal Save Tapped"
 }
 
 /**
