@@ -24,7 +24,7 @@ const PrivacyPolicy = screenTrack(() => ({
         <div className="privacytopsection">
           <div className="privacytopcontainer">
             <div className="privacyheadertitle">Privacy Policy</div>
-            <div className="privacyheadersubtitle">Effective date November 13, 2019</div>
+            <div className="privacyheadersubtitle">Effective date November 18, 2020</div>
           </div>
           <div className="heroimage-left"></div>
           <div className="heroimage-right"></div>
