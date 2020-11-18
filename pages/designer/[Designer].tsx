@@ -3,7 +3,6 @@ import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
 import { Col, Grid, Row } from "components/Grid"
 import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
 import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import { ProductGridItem } from "components/Product/ProductGridItem"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
@@ -41,15 +40,10 @@ const Designer = screenTrack(({ router }) => {
       first: 8,
       skip: 0,
       orderBy: "publishedAt_DESC",
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
     },
   })
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const products = data?.brand?.products?.edges
   const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
@@ -344,9 +338,6 @@ export async function getStaticProps({ params }) {
 
   await apolloClient.query({
     query: NAVIGATION_QUERY,
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
   })
 
   return {

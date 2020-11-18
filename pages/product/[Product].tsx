@@ -8,7 +8,6 @@ import { ProductDetails } from "components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
 import { VariantSelect } from "components/Product/VariantSelect"
 import { Media } from "components/Responsive"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
@@ -35,11 +34,7 @@ const Product = screenTrack(({ router }) => {
       slug,
     },
   })
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState(
@@ -192,9 +187,6 @@ export async function getStaticProps({ params }) {
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,
-      variables: {
-        featuredBrandSlugs: FEATURED_BRAND_LIST,
-      },
     }),
   ])
 

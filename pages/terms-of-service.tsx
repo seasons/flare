@@ -1,7 +1,6 @@
 import React from "react"
 import { Grid } from "../components/Grid"
 import { Layout } from "../components"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import { screenTrack, Schema } from "../utils/analytics"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import { useQuery } from "@apollo/client"
@@ -11,11 +10,7 @@ export const TermsOfService = screenTrack(() => ({
   page: Schema.PageNames.TermsOfService,
   path: "/terms-of-service",
 }))(() => {
-  const { data } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   return (
@@ -791,9 +786,6 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: NAVIGATION_QUERY,
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
   })
 
   return {
