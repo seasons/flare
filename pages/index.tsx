@@ -50,10 +50,18 @@ const Home = screenTrack(() => ({
         <Separator />
       </Box>
 
-      <Spacer mb={10} />
-      <ProductRail title="Just added tops" products={data?.justAddedTops} />
+      {!!data?.justAddedOuterwear?.length && (
+        <>
+          <Spacer mb={10} />
+          <ProductRail title="Just added outerwear" products={data?.justAddedOuterwear} />
+          <Spacer mb={10} />
+        </>
+      )}
 
       <Spacer mb={10} />
+      <ProductRail title="Just added tops" products={data?.justAddedTops} />
+      <Spacer mb={10} />
+
       <FromCommunity blogPosts={communityPosts} />
 
       {!!data?.justAddedBottoms?.length && (

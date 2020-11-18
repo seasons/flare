@@ -70,6 +70,14 @@ export const HOME_QUERY = gql`
     ) {
       ...HomePageProduct
     }
+    justAddedOuterwear: products(
+      first: 4
+      category: "outerwear"
+      orderBy: publishedAt_DESC
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
+    ) {
+      ...HomePageProduct
+    }
     newArchival: products(
       first: 4
       orderBy: publishedAt_DESC
