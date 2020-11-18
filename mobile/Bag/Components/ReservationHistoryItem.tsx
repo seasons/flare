@@ -7,7 +7,7 @@ import styled from "styled-components"
 
 export const ReservationHistoryItem = ({ item }) => {
   const date = item?.createdAt && DateTime.fromISO(item?.createdAt).toUTC().toFormat("MM/dd")
-  const imageWidth = (480 - space(5)) / 3
+  const imageWidth = (380 - space(5)) / 3
   const aspectRatio = 1.25
 
   return (
@@ -32,7 +32,7 @@ export const ReservationHistoryItem = ({ item }) => {
           const image = product?.images?.[0]
           const imageURL = image?.url || ""
           return (
-            <TouchableOpacity key={physicalProduct.id}>
+            <Box key={physicalProduct.id}>
               <Box>
                 <Image
                   source={{ uri: imageURL }}
@@ -46,7 +46,7 @@ export const ReservationHistoryItem = ({ item }) => {
                   </Sans>
                 )}
               </Box>
-            </TouchableOpacity>
+            </Box>
           )
         })}
       </Flex>
