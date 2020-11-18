@@ -78,8 +78,6 @@ export const Drawer = (props: DrawerProps) => {
 
   const showCloseButton = ["bag", "profile"].includes(currentView)
 
-  console.log("showCloseButton", showCloseButton)
-
   return (
     <StyledDrawer
       width={drawerWidth}
