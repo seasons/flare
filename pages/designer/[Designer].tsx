@@ -3,12 +3,13 @@ import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
 import { Col, Grid, Row } from "components/Grid"
 import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
 import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
+import { FEATURED_BRAND_LIST } from "components/Nav"
 import { ProductGridItem } from "components/Product/ProductGridItem"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import { initializeApollo } from "lib/apollo"
+import brandSlugs from "lib/brands"
 import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
@@ -18,8 +19,8 @@ import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
+
 import { useQuery } from "@apollo/client"
-import brandSlugs from "lib/brands"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -138,7 +139,7 @@ const Designer = screenTrack(({ router }) => {
               <Spacer mb={2} />
               <Flex flexDirection="row" justifyContent="space-between" width="100%">
                 <Sans size="4">Website</Sans>
-                <a href={website} style={{ textDecoration: "none", cursor: "ne-resize" }}>
+                <a href={website} style={{ textDecoration: "none", cursor: "ne-resize" }} target="_blank">
                   <Sans size="4" color="black50">
                     {website}
                   </Sans>
