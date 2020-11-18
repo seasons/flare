@@ -92,7 +92,7 @@ const SignUpPage = screenTrack(() => ({
   })
   const featuredBrandItems = data?.brands || []
 
-  const { userSession, signIn, signOut } = useAuthContext()
+  const { userSession, signIn, authState } = useAuthContext()
   const [signUpUser] = useMutation(SIGN_UP_USER)
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
 
@@ -103,6 +103,12 @@ const SignUpPage = screenTrack(() => ({
 
   const [userHasAccount, setUserHasAccount] = useState(false)
   const [userIsConfirmed, setUserIsConfirmed] = useState(false)
+
+  useEffect(() => {
+    if (!authState.authInitializing && authState.isSignedIn) {
+      router.replace("/")
+    }
+  }, [authState.authInitializing, authState.isSignedIn])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
