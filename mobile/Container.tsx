@@ -1,4 +1,5 @@
 import { Flex } from "components"
+import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
 import { color } from "helpers"
 import { Theme } from "lib/theme"
 import React from "react"

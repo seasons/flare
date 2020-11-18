@@ -82,8 +82,6 @@ interface ChoosePlanPaneProps {
   source: "Create" | "Update"
 }
 
-const viewWidth = Dimensions.get("window").width
-
 export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coupon, source }) => {
   const { data } = useQuery(GET_PLANS)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -244,34 +242,32 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
   if (showSuccess) {
     return (
       <>
-        <Container>
-          <Box px={2} mt={10}>
-            <Spacer mb={5} />
-            <CheckWithBackground />
-            <Spacer mb={3} />
-            <Sans size="5">Welcome to Seasons</Sans>
-            <Sans size="4" color="black50">
-              Your membership is active and you’re ready to start reserving. Tap below to start browsing.
-            </Sans>
-            <Spacer mb={4} />
-          </Box>
-          <DrawerBottomButton buttonProps={{ onClick: () => closeDrawer(), block: true }}>Got it</DrawerBottomButton>
-        </Container>
+        <Box px={2} mt={10}>
+          <Spacer mb={5} />
+          <CheckWithBackground />
+          <Spacer mb={3} />
+          <Sans size="5">Welcome to Seasons</Sans>
+          <Sans size="4" color="black50">
+            Your membership is active and you’re ready to start reserving. Tap below to start browsing.
+          </Sans>
+          <Spacer mb={4} />
+        </Box>
+        <DrawerBottomButton buttonProps={{ onClick: () => closeDrawer(), block: true }}>Got it</DrawerBottomButton>
       </>
     )
   }
 
   return (
-    <>
-      <Container insetsBottom={false} insetsTop={false}>
-        <FixedBackArrow
-          variant="whiteBackground"
-          onPress={() => {
-            openDrawer("profile")
-          }}
-        />
-        <Box mt={10} style={{ position: "relative" }}>
-          <Spacer mb={5} />
+    <Flex width="100%" height="100%" flexDirection="column">
+      <FixedBackArrow
+        variant="whiteBackground"
+        onPress={() => {
+          openDrawer("profile")
+        }}
+      />
+      <Flex style={{ flex: 1, overflow: "auto" }}>
+        <Box>
+          <Spacer mb={15} />
           <Box px={2}>
             <Sans color="black100" size="6">
               {headerText}
@@ -282,14 +278,14 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
             </Sans>
             <Spacer mb={1} />
           </Box>
-          <Flex flexDirection="column">
+          <Flex flexDirection="column" width="100%">
             {descriptionLines.map((line) => {
               return (
                 <Flex flexDirection="row" pb={1} px={1} alignItems="center" key={line} width="100%">
                   <Box mx={1} mr={2}>
                     <ListCheck />
                   </Box>
-                  <Sans color="black50" size="3" style={{ width: viewWidth - 75 }}>
+                  <Sans color="black50" size="3">
                     {line}
                   </Sans>
                 </Flex>
@@ -341,30 +337,32 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
             })}
           <Spacer mb={2} />
           <Separator />
-          {!!faqSections?.length &&
-            faqSections.map((section, index) => (
-              <Box mt={4} key={index} px={2}>
-                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  <Sans size="3">{section.title}</Sans>
-                  <ChevronIcon rotateDeg="90deg" color={color("black100")} />
-                </Flex>
-                <Spacer mb={4} />
-                {section.subsections.map((subSection) => {
-                  return (
-                    <Box key={subSection.title}>
-                      <Sans size="3">{subSection.title}</Sans>
-                      <Spacer mb={1} />
-                      <Separator />
-                      <Spacer mb={1} />
-                      <Sans size="3" color="black50">
-                        {subSection.text}
-                      </Sans>
-                      <Spacer mb={4} />
-                    </Box>
-                  )
-                })}
-              </Box>
-            ))}
+          <Box width="100%">
+            {!!faqSections?.length &&
+              faqSections.map((section, index) => (
+                <Box mt={4} key={index} px={2}>
+                  <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                    <Sans size="3">{section.title}</Sans>
+                    <ChevronIcon rotateDeg="90deg" color={color("black100")} />
+                  </Flex>
+                  <Spacer mb={4} />
+                  {section.subsections.map((subSection) => {
+                    return (
+                      <Box key={subSection.title}>
+                        <Sans size="3">{subSection.title}</Sans>
+                        <Spacer mb={1} />
+                        <Separator />
+                        <Spacer mb={1} />
+                        <Sans size="3" color="black50">
+                          {subSection.text}
+                        </Sans>
+                        <Spacer mb={4} />
+                      </Box>
+                    )
+                  })}
+                </Box>
+              ))}
+          </Box>
           <Spacer mb={1} />
           <Box px={2}>
             <Button
@@ -375,14 +373,12 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
               Contact us
             </Button>
           </Box>
-          <Spacer pb={100} />
-          <DrawerBottomButton
-            buttonProps={{ disabled: !selectedPlan || isMutating, onClick: onChoosePlan, block: true }}
-          >
-            Choose plan
-          </DrawerBottomButton>
+          <Spacer pb={5} />
         </Box>
-      </Container>
-    </>
+      </Flex>
+      <DrawerBottomButton buttonProps={{ disabled: !selectedPlan || isMutating, onClick: onChoosePlan, block: true }}>
+        Choose plan
+      </DrawerBottomButton>
+    </Flex>
   )
 }

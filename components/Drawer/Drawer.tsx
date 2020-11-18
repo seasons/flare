@@ -1,4 +1,4 @@
-import { Box } from "components"
+import { Box, Flex } from "components"
 import { FAQ } from "components/Homepage"
 import { PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
@@ -88,37 +88,20 @@ export const Drawer = (props: DrawerProps) => {
       PaperProps={{ id: "appDrawer" }}
       ModalProps={{ disableEnforceFocus: true }}
     >
-      <Box width="100%" height="100%" style={{ position: "relative" }}>
+      <Flex width="100%" style={{ flex: 1, overflowY: "auto" }}>
         {view()}
-        {showCloseButton && (
-          <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutline" }}>
-            Close
-          </DrawerBottomButton>
-        )}
-      </Box>
+      </Flex>
+      {showCloseButton && (
+        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutlineWhite" }}>
+          Close
+        </DrawerBottomButton>
+      )}
     </StyledDrawer>
   )
 }
 
-// Returns the width of the scrollbar on the drawer
-export const useDrawerScrollbarWidth = () => {
-  const [scrollbarWidth, setScrollbarWidth] = useState(0)
-
-  useEffect(() => {
-    let newWidth = 0
-    if (typeof document !== "undefined") {
-      const pane = document.getElementById("appDrawer")
-      newWidth = pane.offsetWidth - pane.clientWidth
-    }
-    setScrollbarWidth(newWidth)
-  }, [document])
-
-  return scrollbarWidth
-}
-
 const StyledDrawer = styled(MuiDrawer)<{ width: number }>`
-  #appDrawer,
-  .drawer-bottom-button {
+  #appDrawer {
     width: ${(p) => p.width}px;
   }
 `
