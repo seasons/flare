@@ -175,11 +175,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
 
   const shadowStyles = isReserved
     ? {
-        shadowColor: "black",
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.1,
-        elevation: 1,
+        boxShadow: "0 4px 12px 0 rgba(100, 100, 100, 0.2)",
       }
     : {}
 
@@ -196,8 +192,8 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
           router.push(`/product/${product.slug}`)
         }}
       >
-        <Box style={shadowStyles}>
-          <BagItemContainer isReserved={isReserved}>
+        <Box>
+          <BagItemContainer isReserved={isReserved} style={shadowStyles}>
             <Flex flexDirection="row">
               {isReserved ? <ReservedItemContent /> : <NonReservedItemContent />}
               <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
@@ -232,6 +228,7 @@ const BagItemContainer = styled(Box)<{ isReserved: boolean }>`
   border-color: ${color("black10")};
   border-width: ${(p) => (p.isReserved ? "1px" : "0px")};
   border-radius: ${(p) => (p.isReserved ? "8px" : "0px")};
+  border-style: solid;
 `
 
 const ImageContainer = styled(Image)`
