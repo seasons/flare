@@ -1,25 +1,27 @@
-import { Box, Button, Container, Flex, Sans, Spacer, FixedBackArrow, Separator } from "components"
-import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
-import { color } from "helpers/color"
+import { Box, Button, Container, FixedBackArrow, Flex, Sans, Separator, Spacer } from "components"
+import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { Schema as TrackSchema, useTracking } from "utils/analytics"
+import { ChevronIcon } from "components/Icons/ChevronIcon"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { getChargebeeCheckout } from "components/SignUp/ChoosePlanStep"
+import { CheckWithBackground } from "components/SVGs"
 import { ListCheck } from "components/SVGs/ListCheck"
-import { TabBar } from "mobile/TabBar"
 import gql from "graphql-tag"
+import { color } from "helpers/color"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { uniq } from "lodash"
+import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
+import { TabBar } from "mobile/TabBar"
+import { GET_BAG } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
-import { useMutation, useQuery } from "@apollo/client"
 import { Dimensions, Linking } from "react-native"
 import styled from "styled-components"
-import { PlanButton } from "./PlanButton"
-import { GET_BAG } from "queries/bagQueries"
-import { ChevronIcon } from "components/Icons/ChevronIcon"
+import { Schema as TrackSchema, useTracking } from "utils/analytics"
 import { Coupon } from "utils/calcFinalPrice"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
-import { getChargebeeCheckout } from "components/SignUp/ChoosePlanStep"
-import { useAuthContext } from "lib/auth/AuthContext"
-import { CheckWithBackground } from "components/SVGs"
+
+import { useMutation, useQuery } from "@apollo/client"
+
+import { PlanButton } from "./PlanButton"
 
 export const GET_PLANS = gql`
   query GetPlans($where: PaymentPlanWhereInput) {
@@ -79,8 +81,6 @@ interface ChoosePlanPaneProps {
   coupon?: Coupon
   source: "Create" | "Update"
 }
-
-const viewWidth = Dimensions.get("window").width
 
 export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coupon, source }) => {
   const { data } = useQuery(GET_PLANS)
@@ -142,6 +142,13 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
       },
     ],
   })
+
+  useEffect(() => {
+    // @ts-ignore
+    Chargebee.init({
+      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
+    })
+  }, [])
 
   useEffect(() => {
     // Update the selected plan if you switch tabs
@@ -234,9 +241,9 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
 
   if (showSuccess) {
     return (
-      <Container>
-        <Box px={2}>
-          <Spacer mb={10} />
+      <>
+        <Box px={2} mt={10}>
+          <Spacer mb={5} />
           <CheckWithBackground />
           <Spacer mb={3} />
           <Sans size="5">Welcome to Seasons</Sans>
@@ -246,14 +253,21 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
           <Spacer mb={4} />
         </Box>
         <DrawerBottomButton buttonProps={{ onClick: () => closeDrawer(), block: true }}>Got it</DrawerBottomButton>
-      </Container>
+      </>
     )
   }
 
   return (
-    <>
-      <Container insetsBottom={false} insetsTop={false}>
-        <Box mt={10}>
+    <Flex width="100%" height="100%" flexDirection="column">
+      <FixedBackArrow
+        variant="whiteBackground"
+        onPress={() => {
+          openDrawer("profile")
+        }}
+      />
+      <Flex style={{ flex: 1, overflow: "auto" }}>
+        <Box>
+          <Spacer mb={15} />
           <Box px={2}>
             <Sans color="black100" size="6">
               {headerText}
@@ -264,14 +278,14 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
             </Sans>
             <Spacer mb={1} />
           </Box>
-          <Flex flexDirection="column">
+          <Flex flexDirection="column" width="100%">
             {descriptionLines.map((line) => {
               return (
                 <Flex flexDirection="row" pb={1} px={1} alignItems="center" key={line} width="100%">
                   <Box mx={1} mr={2}>
                     <ListCheck />
                   </Box>
-                  <Sans color="black50" size="3" style={{ width: viewWidth - 75 }}>
+                  <Sans color="black50" size="3">
                     {line}
                   </Sans>
                 </Flex>
@@ -323,30 +337,32 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
             })}
           <Spacer mb={2} />
           <Separator />
-          {!!faqSections?.length &&
-            faqSections.map((section, index) => (
-              <Box mt={4} key={index} px={2}>
-                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  <Sans size="3">{section.title}</Sans>
-                  <ChevronIcon rotateDeg="90deg" color={color("black100")} />
-                </Flex>
-                <Spacer mb={4} />
-                {section.subsections.map((subSection) => {
-                  return (
-                    <Box key={subSection.title}>
-                      <Sans size="3">{subSection.title}</Sans>
-                      <Spacer mb={1} />
-                      <Separator />
-                      <Spacer mb={1} />
-                      <Sans size="3" color="black50">
-                        {subSection.text}
-                      </Sans>
-                      <Spacer mb={4} />
-                    </Box>
-                  )
-                })}
-              </Box>
-            ))}
+          <Box width="100%">
+            {!!faqSections?.length &&
+              faqSections.map((section, index) => (
+                <Box mt={4} key={index} px={2}>
+                  <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                    <Sans size="3">{section.title}</Sans>
+                    <ChevronIcon rotateDeg="90deg" color={color("black100")} />
+                  </Flex>
+                  <Spacer mb={4} />
+                  {section.subsections.map((subSection) => {
+                    return (
+                      <Box key={subSection.title}>
+                        <Sans size="3">{subSection.title}</Sans>
+                        <Spacer mb={1} />
+                        <Separator />
+                        <Spacer mb={1} />
+                        <Sans size="3" color="black50">
+                          {subSection.text}
+                        </Sans>
+                        <Spacer mb={4} />
+                      </Box>
+                    )
+                  })}
+                </Box>
+              ))}
+          </Box>
           <Spacer mb={1} />
           <Box px={2}>
             <Button
@@ -357,12 +373,12 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
               Contact us
             </Button>
           </Box>
-          <Spacer pb={100} />
+          <Spacer pb={5} />
         </Box>
-        <DrawerBottomButton buttonProps={{ disabled: !selectedPlan || isMutating, onClick: onChoosePlan, block: true }}>
-          Choose plan
-        </DrawerBottomButton>
-      </Container>
-    </>
+      </Flex>
+      <DrawerBottomButton buttonProps={{ disabled: !selectedPlan || isMutating, onClick: onChoosePlan, block: true }}>
+        Choose plan
+      </DrawerBottomButton>
+    </Flex>
   )
 }

@@ -9,7 +9,13 @@ import { BoxProps } from "../Box"
  */
 
 /** Different theme variations */
-export type ButtonVariant = "primaryBlack" | "primaryWhite" | "secondaryGray" | "secondaryOutline" | "noOutline"
+export type ButtonVariant =
+  | "primaryBlack"
+  | "primaryWhite"
+  | "secondaryGray"
+  | "secondaryOutline"
+  | "secondaryOutlineWhite"
+  | "noOutline"
 /** Default button color variant */
 export const defaultVariant: ButtonVariant = "primaryBlack"
 

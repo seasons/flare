@@ -1,4 +1,4 @@
-import { Box } from "components"
+import { Box, Flex } from "components"
 import { FAQ } from "components/Homepage"
 import { PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
@@ -21,8 +21,17 @@ interface DrawerProps {
   onClose?: () => void
 }
 
-export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
+export const Drawer = (props: DrawerProps) => {
+  const { open, onClose } = props
   const { isOpen, closeDrawer, openDrawer, currentView, params } = useDrawerContext()
+
+  let drawerWidth = 380
+  if (typeof window !== "undefined") {
+    const windowWidth = window.innerWidth
+    if (windowWidth < 800) {
+      drawerWidth = windowWidth
+    }
+  }
 
   useEffect(() => {
     if (open) {
@@ -66,48 +75,33 @@ export const Drawer: React.FC<DrawerProps> = ({ children, open, onClose }) => {
         return <ChoosePlanPane headerText={"Let's choose your plan"} source={params?.source} />
     }
   }
+
   const showCloseButton = ["bag", "profile"].includes(currentView)
 
   return (
-    <MuiDrawer
+    <StyledDrawer
+      width={drawerWidth}
       anchor="right"
       open={isOpen}
       onClose={handleClose}
       variant="temporary"
-      PaperProps={{ component: DrawerBox, id: "appDrawer" }}
+      PaperProps={{ id: "appDrawer" }}
       ModalProps={{ disableEnforceFocus: true }}
     >
-      <Box width="100%" height="100%" style={{ position: "relative" }} pb={showCloseButton ? "60px" : 0}>
+      <Flex width="100%" style={{ flex: 1, overflowY: "auto" }}>
         {view()}
-      </Box>
+      </Flex>
       {showCloseButton && (
-        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutline" }}>
+        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutlineWhite" }}>
           Close
         </DrawerBottomButton>
       )}
-    </MuiDrawer>
+    </StyledDrawer>
   )
 }
 
-// Returns the width of the scrollbar on the drawer
-export const useDrawerScrollbarWidth = () => {
-  const [scrollbarWidth, setScrollbarWidth] = useState(0)
-
-  useEffect(() => {
-    let newWidth = 0
-    if (typeof document !== "undefined") {
-      const pane = document.getElementById("appDrawer")
-      newWidth = pane.offsetWidth - pane.clientWidth
-    }
-    setScrollbarWidth(newWidth)
-  }, [document])
-
-  return scrollbarWidth
-}
-
-export const DrawerBox = styled(Box)`
-  width: 380px;
-  @media (max-width: 380px) {
-    width: 100%;
+const StyledDrawer = styled(MuiDrawer)<{ width: number }>`
+  #appDrawer {
+    width: ${(p) => p.width}px;
   }
 `

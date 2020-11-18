@@ -113,7 +113,6 @@ export const DesktopNav = (props: NavProps) => {
           </Flex>
         </Flex>
       </MaxWidth>
-      <Drawer />
       <LoginModal
         open={loginModalOpen}
         onClose={() => {

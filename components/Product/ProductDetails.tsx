@@ -1,4 +1,4 @@
-import { SaveProductButton } from "mobile/SaveProductButton"
+import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
 import React from "react"
 
@@ -40,7 +40,7 @@ export const ProductDetails: React.FC<{
           <Flex flexDirection="row" justifyContent="space-between" width="100%">
             <VariantSizes variants={product.variants} size="3" />
             <Box>
-              <SaveProductButton product={product} selectedVariant={selectedVariant} />
+              <SaveProductButton product={product} selectedVariant={selectedVariant} showSizeSelector={true} />
             </Box>
           </Flex>
           <Box my={2}>
