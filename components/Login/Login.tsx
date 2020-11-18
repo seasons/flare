@@ -1,16 +1,16 @@
 import { Button, Display, Sans, Spacer, Text } from "components"
+import { Link } from "components/Link"
+import { PAYMENT_PLANS } from "components/SignUp/ChoosePlanStep"
 import { Field, Form, Formik } from "formik"
 import { TextField } from "formik-material-ui"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { ResetPassword } from "mobile/LogIn/ResetPassword"
+import { HOME_QUERY } from "queries/homeQueries"
 import React, { useState } from "react"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
-import { Link } from "components/Link"
-import { ResetPassword } from "mobile/LogIn/ResetPassword"
-import { HOME_QUERY } from "queries/homeQueries"
-import { PAYMENT_PLANS } from "components/SignUp/ChoosePlanStep"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
