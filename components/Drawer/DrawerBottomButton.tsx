@@ -1,37 +1,38 @@
-import { Box, Button } from "components"
+import { Box, Button, Flex } from "components"
 import React from "react"
 import styled from "styled-components"
 
-import { DrawerBox, useDrawerScrollbarWidth } from "components/Drawer/Drawer"
+import { useDrawerScrollbarWidth } from "components/Drawer/Drawer"
 import { WebButtonProps } from "components/Button/Button"
+import { color } from "helpers"
 
 export interface DrawerBottomButtonProps {
   buttonProps: Omit<WebButtonProps, "children">
 }
 export const DrawerBottomButton: React.FC<DrawerBottomButtonProps> = ({ buttonProps, ...props }) => {
   const scrollbarWidth = useDrawerScrollbarWidth()
-
+  console.log("scrollbarWidth", scrollbarWidth)
   return (
-    <DrawerBox
+    <Flex
       style={{
         position: "fixed",
         bottom: "0px",
-        paddingBottom: "10px",
-        backgroundColor: "white",
         right: "0px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        paddingRight: `${16 + scrollbarWidth}px`,
-        paddingLeft: "16px",
+        backgroundColor: color("white100"),
       }}
+      className="drawer-bottom-button"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      width="100%"
+      px={2}
+      pb={2}
     >
       <TopPaddingBox />
       <Button block variant={"primaryBlack"} {...buttonProps}>
         {props.children}
       </Button>
-    </DrawerBox>
+    </Flex>
   )
 }
 

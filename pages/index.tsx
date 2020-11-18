@@ -1,4 +1,4 @@
-import { Box, Layout, Separator, Spacer } from "components"
+import { Box, Layout, Media, Separator, Spacer } from "components"
 import {
   ColumnList,
   FAQ,
@@ -109,7 +109,9 @@ const Home = screenTrack(() => ({
       <FAQ />
       <Spacer mb={15} />
 
-      <ServiceableModal />
+      <Media greaterThan="md">
+        <ServiceableModal />
+      </Media>
     </Layout>
   )
 })
