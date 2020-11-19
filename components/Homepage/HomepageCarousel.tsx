@@ -26,6 +26,12 @@ export const HomepageCarousel: React.FC<{
     }
   }, [])
 
+  useEffect(() => {
+    if (clientSide) {
+      setImagesToUse(images)
+    }
+  }, [clientSide, images])
+
   if (!images) {
     return null
   }

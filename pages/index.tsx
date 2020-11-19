@@ -5,10 +5,10 @@ import {
   FromCommunity,
   Hero,
   MembershipBenefits,
+  Plans,
   ProductRail,
   TheApp,
   TheBag,
-  Plans,
 } from "components/Homepage"
 import { Nav } from "components/Nav"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
@@ -35,7 +35,6 @@ const Home = screenTrack(() => ({
 
   return (
     <Layout fixedNav brandItems={featuredBrandItems}>
-      <Nav fixed brandItems={featuredBrandItems} />
       <Hero post={data?.blogPosts?.[0]} />
       <Spacer mb={10} />
 
