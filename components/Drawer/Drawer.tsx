@@ -94,9 +94,7 @@ export const Drawer = (props: DrawerProps) => {
         {view()}
       </Flex>
       {showCloseButton && (
-        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutlineWhite" }}>
-          Close
-        </DrawerBottomButton>
+        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "primaryWhite" }}>Close</DrawerBottomButton>
       )}
     </StyledDrawer>
   )
