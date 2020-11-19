@@ -1,5 +1,3 @@
-import { useMutation, useQuery } from "@apollo/client"
-import { Radio } from "@material-ui/core"
 import { Box, Button, Container, FixedBackArrow, Flex, Sans, Spacer, TextInput } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
@@ -8,7 +6,11 @@ import { space } from "helpers/space"
 import React, { useState } from "react"
 import { FlatList, KeyboardAvoidingView } from "react-native"
 import styled from "styled-components"
-import { screenTrack, useTracking } from "utils/analytics"
+import { Schema, screenTrack, useTracking } from "utils/analytics"
+
+import { useMutation, useQuery } from "@apollo/client"
+import { Radio } from "@material-ui/core"
+
 import { GET_PAYMENT_DATA } from "./PaymentAndShipping"
 
 export const GET_CURRENT_PLAN = gql`
@@ -371,8 +373,8 @@ export const EditPaymentAndShipping: React.FC<{
 
   const onAddCreditCard = () => {
     tracking.trackEvent({
-      actionName: TrackSchema.ActionNames.AddCreditCardTapped,
-      actionType: TrackSchema.ActionTypes.Tap,
+      actionName: Schema.ActionNames.AddCreditCardTapped,
+      actionType: Schema.ActionTypes.Tap,
     })
   }
 
