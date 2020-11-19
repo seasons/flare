@@ -1,20 +1,20 @@
 import { Box, Flex } from "components"
 import { FAQ } from "components/Homepage"
-import { PaymentAndShipping } from "mobile/Account"
+import { EditPaymentAndShipping, PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
+import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
 import { ResumeConfirmation } from "mobile/Account/Components/Pause"
 import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
 import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
 import React, { useEffect, useState } from "react"
+import styled from "styled-components"
 
 import { Drawer as MuiDrawer } from "@material-ui/core"
-import { DrawerBottomButton } from "./DrawerBottomButton"
 
+import { DrawerBottomButton } from "./DrawerBottomButton"
 import { useDrawerContext } from "./DrawerContext"
-import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
-import styled from "styled-components"
 
 interface DrawerProps {
   open?: boolean
@@ -73,6 +73,8 @@ export const Drawer = (props: DrawerProps) => {
         return <ResumeConfirmation />
       case "choosePlan":
         return <ChoosePlanPane headerText={"Let's choose your plan"} source={params?.source} />
+      case "editPaymentAndShipping":
+        return <EditPaymentAndShipping navigation={{}} route={{ params }} />
     }
   }
 

@@ -177,10 +177,10 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
   }
 
   const handleEditBtnPressed = () => {
-    navigation.navigate("EditPaymentAndShipping", {
-      billingInfo,
-      phoneNumber,
-      shippingAddress,
+    openDrawer("editPaymentAndShipping", {
+      billingInfo: customer?.billingInfo,
+      shippingAddress: customer?.detail?.shippingAddress,
+      phoneNumber: customer?.detail?.phoneNumber,
     })
   }
 
@@ -210,7 +210,7 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
         renderItem={({ item }) => renderItem(item)}
       />
       <Box p={2}>
-        <Button block variant="primaryWhite" onPress={handleEditBtnPressed}>
+        <Button block variant="primaryWhite" onClick={handleEditBtnPressed}>
           Edit
         </Button>
       </Box>
