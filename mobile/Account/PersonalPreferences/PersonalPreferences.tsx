@@ -53,13 +53,13 @@ const GET_PREFERENCES = gql`
   }
 `
 
-enum Tab {
+export enum Tab {
   Personal,
   Sizing,
 }
 
-export const PersonalPreferences = screenTrack()(({ navigation }) => {
-  const [activeTab, setActiveTab] = useState(Tab.Personal)
+export const PersonalPreferences = screenTrack()(({ navigation, initialTab }) => {
+  const [activeTab, setActiveTab] = useState(initialTab ? initialTab : Tab.Personal)
   const { openDrawer } = useDrawerContext()
   const { loading, error, data, refetch } = useQuery(GET_PREFERENCES)
 
