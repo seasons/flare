@@ -62,15 +62,27 @@ export const BagTab: React.FC<{
   const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
   const showPendingMessage = pauseStatus === "pending" && !!pauseRequest?.pauseDate
 
+  let subTitle
+  if (hasActiveReservation && !!returnReminder) {
+    subTitle = returnReminder
+  } else if (!hasActiveReservation) {
+    subTitle = "Reserve your order below"
+  }
+
   return (
     <Box>
       <Box px={2} pt={4}>
         <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
           <Sans size="5">{hasActiveReservation ? "Current rotation" : "My bag"}</Sans>
+          <Sans size="5" style={{ textDecoration: "underline" }}>
+            View FAQ
+          </Sans>
         </Flex>
-        <Sans size="3" color="black50">
-          {hasActiveReservation && !!returnReminder ? returnReminder : "Reserve your order below"}
-        </Sans>
+        {!!subTitle && (
+          <Sans size="3" color="black50">
+            {subTitle}
+          </Sans>
+        )}
         <Spacer mb={3} />
       </Box>
       {showPendingMessage && (
