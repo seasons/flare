@@ -1,3 +1,7 @@
+import { apolloClient } from "lib/apollo"
+
+import { gql } from "@apollo/client"
+
 export interface UserSession {
   token: string
   refreshToken: string
@@ -23,6 +27,37 @@ export const getUserSession: () => UserSession | null = () => {
   } catch (e) {}
 
   return {}
+}
+
+export const getNewToken = async () => {
+  const GET_REFRESH_TOKEN = gql`
+    mutation GetRefreshToken($refreshToken: String!) {
+      refreshToken(refreshToken: $refreshToken)
+    }
+  `
+
+  return new Promise(async (resolve, reject) => {
+    const userSession = getUserSession()
+
+    if (userSession) {
+      const response = await apolloClient.mutate({
+        mutation: GET_REFRESH_TOKEN,
+        variables: {
+          refreshToken: userSession.refreshToken,
+        },
+      })
+
+      const newSession = {
+        ...userSession,
+        token: response.data.refreshToken,
+      }
+
+      if (typeof window !== "undefined") {
+        localStorage?.setItem("userSession", JSON.stringify(newSession))
+      }
+      resolve(response.data.refreshToken)
+    }
+  })
 }
 
 export const getAccessTokenFromSession = () => {

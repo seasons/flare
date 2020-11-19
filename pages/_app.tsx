@@ -7,11 +7,22 @@ import React, { useEffect } from "react"
 import { BaseCSS } from "styled-bootstrap-grid"
 
 import { ApolloProvider } from "@apollo/client"
+import * as Sentry from "@sentry/react"
+import { Integrations } from "@sentry/tracing"
 
 import { createMediaStyle } from "../components/Responsive"
 import { useApollo } from "../lib/apollo/apollo"
 import { FontStyles } from "../lib/fonts"
 import { Theme } from "../lib/theme"
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [new Integrations.BrowserTracing()],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
 
 function App({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState)

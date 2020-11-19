@@ -1,24 +1,90 @@
 import { setContext } from "apollo-link-context"
+import { onError } from "apollo-link-error"
 import { useMemo } from "react"
 
-import { ApolloClient, HttpLink } from "@apollo/client"
+import { ApolloClient, ApolloLink, HttpLink, Observable } from "@apollo/client"
+import * as Sentry from "@sentry/react"
 
-import { getAccessTokenFromSession } from "../auth/auth"
+import { getAccessTokenFromSession, getNewToken, UserSession } from "../auth/auth"
 import { cache } from "./cache"
 import { resolvers, typeDefs } from "./resolvers"
 
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext(({ operationName }, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = typeof window !== "undefined" && getAccessTokenFromSession()
 
   // return the headers to the context so httpLink can read them
   const allHeaders = headers || {}
   allHeaders.application = "flare"
-  if (token) {
+  if (token && operationName !== "GetRefreshToken") {
     allHeaders.authorization = `Bearer ${token}`
   }
   return {
     headers: allHeaders,
+  }
+})
+
+// @ts-ignore
+const errorLink = onError(({ graphQLErrors, networkError, operation, forward, response }) => {
+  if (graphQLErrors) {
+    console.log("graphQLErrors", graphQLErrors)
+
+    for (const err of graphQLErrors) {
+      // Add scoped report details and send to Sentry
+      Sentry.withScope((scope) => {
+        // Annotate whether failing operation was query/mutation/subscription
+        scope.setTag("kind", operation.operationName)
+        // Log query and variables as extras
+        // (make sure to strip out sensitive data!)
+        scope.setExtra("query", operation.query)
+        scope.setExtra("variables", operation.variables)
+        if (err.path) {
+          // We can also add the path as breadcrumb
+          scope.addBreadcrumb({
+            category: "query-path",
+            message: err.path.join(" > "),
+            level: Sentry.Severity.Debug,
+          })
+        }
+        Sentry.captureException(err)
+      })
+    }
+  }
+
+  if (networkError) {
+    console.log("networkError", JSON.stringify(networkError))
+    // User access token has expired
+    if ((networkError as any).statusCode === 401) {
+      // We assume we have both tokens needed to run the async request
+      // Let's refresh token through async request
+      return new Observable((observer) => {
+        getNewToken()
+          .then((userSession: UserSession) => {
+            operation.setContext(({ headers = {} }) => ({
+              headers: {
+                // Re-add old headers
+                ...headers,
+                // Switch out old access token for new one
+                authorization: `Bearer ${userSession.token}` || null,
+              },
+            }))
+          })
+          .then(() => {
+            const subscriber = {
+              next: observer.next.bind(observer),
+              error: observer.error.bind(observer),
+              complete: observer.complete.bind(observer),
+            }
+
+            // Retry last failed request
+            forward(operation).subscribe(subscriber)
+          })
+          .catch((error) => {
+            // No refresh or client token available, we force user to login
+            observer.error(error)
+          })
+      })
+    }
   }
 })
 
@@ -32,7 +98,7 @@ const httpLink = new HttpLink({
 export function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: authLink.concat(httpLink) as any,
+    link: ApolloLink.from([authLink, errorLink, httpLink]) as any,
     typeDefs,
     resolvers,
     cache,
