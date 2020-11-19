@@ -1,17 +1,19 @@
-import { Box, Flex, Sans, Separator, Spacer } from "components"
+import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { CheckCircledIcon, ChevronIcon } from "components/Icons"
 import { color } from "helpers/color"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components"
+import { Tab as PreferencesTab } from "mobile/Account/PersonalPreferences/PersonalPreferences"
 
 import { State, UserState } from "../Account"
+import { useRouter } from "next/router"
 
 export enum OnboardingStep {
-  VerifiedPhone = "VerifiedPhone",
+  CreateAccount = "CreateAccount",
   SetMeasurements = "SetMeasurements",
-  SetStylePreferences = "SetStylePreferences",
-  SetShippingAddress = "SetShippingAddress",
+  ChoosePlan = "ChoosePlan",
 }
 
 export enum CustomerStatus {
@@ -26,148 +28,42 @@ export enum CustomerStatus {
 }
 
 interface OnboardingChecklistProps {
-  rawMeasurements: any
-  navigation: any
-  onboardingSteps: OnboardingStep[]
-  shippingAddress: any
-  stylePreferences: any
   userState: UserState.Undetermined | UserState.Waitlisted
 }
 
-export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
-  rawMeasurements,
-  navigation,
-  onboardingSteps,
-  shippingAddress,
-  stylePreferences,
-  userState,
-}) => {
+export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({ userState }) => {
   const header = userState == UserState.Undetermined ? "Finish creating your account" : "You're on the waitlist"
   const detail =
     userState == UserState.Undetermined
-      ? "To set your sizing & measurements, you must first verify your phone number. Complete those two steps to finish creating your account."
-      : "We’ll send you a notification when your account is ready and you’re able to choose your plan. In the meantime, complete your profile below."
+      ? "You still have some steps to finish before you can place an order."
+      : "We’ll send you an email when your account is ready and you’re able to choose your plan. In the meantime, complete your profile below."
 
-  const items = [
-    {
-      // Cannot edit phone number once you are waitlisted
-      isTappable: userState == UserState.Undetermined,
-      key: OnboardingStep.VerifiedPhone,
-      title: "Verify phone number",
-    },
-    {
-      // Cannot set measurements before verifying your phone number because you are triaged immediately after
-      isTappable: onboardingSteps.includes(OnboardingStep.VerifiedPhone),
-      key: OnboardingStep.SetMeasurements,
-      title: "Sizing & measurements",
-    },
-    {
-      isTappable: true,
-      key: OnboardingStep.SetStylePreferences,
-      title: "Style preferences",
-    },
-    {
-      isTappable: true,
-      key: OnboardingStep.SetShippingAddress,
-      title: "Shipping address",
-    },
-  ]
-
-  const onPressItem = (key: OnboardingStep) => {
-    switch (key) {
-      case OnboardingStep.VerifiedPhone:
-        switch (userState) {
-          case UserState.Undetermined:
-            // navigation.navigate("Modal", {
-            //   screen: "CreateAccountModal",
-            //   params: { initialState: State.SendCode },
-            // })
-            break
-          case UserState.Waitlisted:
-            // don't allow changing the phone number at this stage
-            break
-        }
-        break
-      case OnboardingStep.SetMeasurements:
-        switch (userState) {
-          case UserState.Undetermined:
-            // navigation.navigate("Modal", {
-            //   screen: "CreateAccountModal",
-            //   params: { initialState: State.GetMeasurements },
-            // })
-            break
-          case UserState.Waitlisted:
-            // navigation.navigate("Modal", {
-            //   screen: "EditMeasurements",
-            //   params: { rawMeasurements },
-            // })
-            break
-        }
-        break
-      case OnboardingStep.SetStylePreferences:
-        // navigation.navigate("Modal", {
-        //   screen: "EditStylePreferences",
-        //   params: { stylePreferences },
-        // })
-        break
-      case OnboardingStep.SetShippingAddress:
-        // navigation.navigate("Modal", {
-        //   screen: "EditShippingAddress",
-        //   params: { shippingAddress },
-        // })
-        break
-    }
-  }
-
-  const renderItem = (index: number) => {
-    const { isTappable, key, title } = items[index]
-    const isComplete = onboardingSteps.includes(key)
-    const isLastItem = index == items.length - 1
-    return (
-      <Box key={key}>
-        <Separator />
-        <TouchableOpacity disabled={!isTappable} onPress={() => onPressItem(key)}>
-          <Flex flexDirection="row" alignItems="center" justifyContent="space-between" pt={2} pb={isLastItem ? 0 : 2}>
-            <Flex flexDirection="row" alignItems="center">
-              {isComplete ? <CheckCircledIcon width={24} height={24} /> : <EmptyCircle />}
-              <Spacer mr={2} />
-              <Sans size="4">{title}</Sans>
-            </Flex>
-            {isTappable && <ChevronIcon color={color("black10")} />}
-          </Flex>
-        </TouchableOpacity>
-      </Box>
-    )
-  }
-
-  const stepsCompleted = items.filter((item) => onboardingSteps.includes(item.key)).length
+  const router = useRouter()
+  const { closeDrawer } = useDrawerContext()
 
   return (
     <Box pb={2}>
-      <Sans size="2">{header}</Sans>
+      <Sans size="4">{header}</Sans>
       <Spacer mb={0.5} />
       <Sans size="4" color="black50">
         {detail}
       </Sans>
-      <Spacer mb={5} />
-      <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-        <Sans size="4">Complete your profile</Sans>
-        <Sans size="4" color="black50">
-          {stepsCompleted} of {items.length} completed
-        </Sans>
-      </Flex>
-      <Spacer mb={2} />
-
-      {items.map((_, index) => renderItem(index))}
+      {userState == UserState.Undetermined && (
+        <>
+          <Spacer mb={5} />
+          <Button
+            block
+            type="button"
+            variant="primaryBlack"
+            onClick={() => {
+              router.push("/signup")
+              closeDrawer()
+            }}
+          >
+            Sign up
+          </Button>
+        </>
+      )}
     </Box>
   )
 }
-
-const EmptyCircle = styled(Box)`
-  background-color: white
-  border-color: ${() => color("black10")}
-  border-width: 1
-  border-radius: 12;
-  height: 24;
-  width: 24;
-`

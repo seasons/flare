@@ -50,7 +50,6 @@ export const GET_USER = gql`
       customer {
         id
         status
-        onboardingSteps
         user {
           id
           firstName
@@ -60,29 +59,6 @@ export const GET_USER = gql`
           pushNotification {
             id
             status
-          }
-        }
-        detail {
-          id
-          height
-          weight
-          topSizes
-          waistSizes
-          shippingAddress {
-            id
-            name
-            address1
-            address2
-            zipCode
-            city
-            state
-          }
-          stylePreferences {
-            id
-            styles
-            patterns
-            colors
-            brands
           }
         }
         authorizedAt
@@ -110,25 +86,13 @@ export const Account = screenTrack()(({ navigation }) => {
   }, [isOpen, currentView])
 
   const customer = data?.me?.customer
-  const onboardingSteps = customer?.onboardingSteps
   const status = customer?.status
 
   const user = customer?.user
   const email = user?.email
   const firstName = user?.firstName
   const lastName = user?.lastName
-  const pushNotification = user?.pushNotification
   const roles = user?.roles
-
-  const detail = customer?.detail
-  const shippingAddress = detail?.shippingAddress
-  const stylePreferences = detail?.stylePreferences
-  const rawMeasurements = {
-    height: detail?.height,
-    weight: detail?.weight,
-    topSizes: detail?.topSizes,
-    waistSizes: detail?.waistSizes,
-  }
 
   const ListSkeleton = () => {
     return (
@@ -210,16 +174,7 @@ export const Account = screenTrack()(({ navigation }) => {
       case CustomerStatus.Created:
       case CustomerStatus.Waitlisted:
         const userState = status == CustomerStatus.Created ? UserState.Undetermined : UserState.Waitlisted
-        return (
-          <OnboardingChecklist
-            rawMeasurements={rawMeasurements}
-            navigation={navigation}
-            onboardingSteps={onboardingSteps}
-            shippingAddress={shippingAddress}
-            stylePreferences={stylePreferences}
-            userState={userState}
-          />
-        )
+        return <OnboardingChecklist userState={userState} />
       case CustomerStatus.Authorized:
         return (
           <AuthorizedCTA
@@ -230,14 +185,16 @@ export const Account = screenTrack()(({ navigation }) => {
                 actionName: Schema.ActionNames.ChoosePlanTapped,
                 actionType: Schema.ActionTypes.Tap,
               })
-              openDrawer("choosePlan", { source: "Create" })
+              router.push("/signup")
+              closeDrawer()
             }}
             onPressChoosePlan={() => {
               tracking.trackEvent({
                 actionName: Schema.ActionNames.ChoosePlanTapped,
                 actionType: Schema.ActionTypes.Tap,
               })
-              openDrawer("choosePlan", { source: "Create" })
+              router.push("/signup")
+              closeDrawer()
             }}
           />
         )
