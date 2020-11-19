@@ -5,12 +5,12 @@ import {
   FromCommunity,
   Hero,
   MembershipBenefits,
+  Plans,
   ProductRail,
   TheApp,
   TheBag,
-  Plans,
 } from "components/Homepage"
-import { FEATURED_BRAND_LIST } from "components/Nav"
+import { Nav } from "components/Nav"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
 import { ServiceableModal } from "components/ServiceableModal"
 import { initializeApollo } from "lib/apollo/apollo"
@@ -27,11 +27,7 @@ const Home = screenTrack(() => ({
 }))(() => {
   const { data } = useQuery(HOME_QUERY)
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
@@ -132,9 +128,6 @@ export async function getStaticProps() {
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,
-      variables: {
-        featuredBrandSlugs: FEATURED_BRAND_LIST,
-      },
     }),
   ])
 

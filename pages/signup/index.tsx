@@ -7,7 +7,6 @@ import {
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
 import { Wizard } from "components/Forms/Wizard"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { CheckWithBackground } from "components/SVGs"
@@ -85,11 +84,7 @@ const SignUpPage = screenTrack(() => ({
 }))(() => {
   const router = useRouter()
   const tracking = useTracking()
-  const { data } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   const { userSession, signIn, signOut } = useAuthContext()
@@ -328,9 +323,6 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: NAVIGATION_QUERY,
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
   })
 
   return {

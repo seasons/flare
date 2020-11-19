@@ -3,7 +3,6 @@ import { NextPage } from "next"
 import { useState } from "react"
 import { useQuery } from "@apollo/client"
 import { Layout, Flex, Spacer } from "../../components"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import { Sans, fontFamily } from "../../components/Typography/Typography"
 import { Box } from "../../components/Box"
 import { Grid, Row, Col } from "../../components/Grid"
@@ -57,11 +56,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     }
   }, [page, currentPage, setCurrentPage, currentBrand, currentCategory])
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const skip = (currentPage - 1) * pageSize
 
@@ -286,9 +281,6 @@ export async function getStaticProps({ params }) {
 
   await apolloClient.query({
     query: NAVIGATION_QUERY,
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
   })
 
   return {
