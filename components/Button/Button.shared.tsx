@@ -20,7 +20,7 @@ export type ButtonVariant =
 export const defaultVariant: ButtonVariant = "primaryBlack"
 
 /** The size of the button */
-export type ButtonSize = "small" | "medium" | "large"
+export type ButtonSize = "small" | "medium" | "large" | "medium-x"
 
 /** Default button size */
 export const defaultSize: ButtonSize = "medium"

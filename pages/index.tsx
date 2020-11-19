@@ -5,12 +5,12 @@ import {
   FromCommunity,
   Hero,
   MembershipBenefits,
+  Plans,
   ProductRail,
   TheApp,
   TheBag,
-  Plans,
 } from "components/Homepage"
-import { Nav, FEATURED_BRAND_LIST } from "components/Nav"
+import { Nav } from "components/Nav"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
 import { ServiceableModal } from "components/ServiceableModal"
 import { initializeApollo } from "lib/apollo/apollo"
@@ -27,11 +27,7 @@ const Home = screenTrack(() => ({
 }))(() => {
   const { data } = useQuery(HOME_QUERY)
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
@@ -39,7 +35,6 @@ const Home = screenTrack(() => ({
 
   return (
     <Layout fixedNav brandItems={featuredBrandItems}>
-      <Nav fixed brandItems={featuredBrandItems} />
       <Hero post={data?.blogPosts?.[0]} />
       <Spacer mb={10} />
 
@@ -50,10 +45,18 @@ const Home = screenTrack(() => ({
         <Separator />
       </Box>
 
-      <Spacer mb={10} />
-      <ProductRail title="Just added tops" products={data?.justAddedTops} />
+      {!!data?.justAddedOuterwear?.length && (
+        <>
+          <Spacer mb={10} />
+          <ProductRail title="Just added outerwear" products={data?.justAddedOuterwear} />
+          <Spacer mb={10} />
+        </>
+      )}
 
       <Spacer mb={10} />
+      <ProductRail title="Just added tops" products={data?.justAddedTops} />
+      <Spacer mb={10} />
+
       <FromCommunity blogPosts={communityPosts} />
 
       {!!data?.justAddedBottoms?.length && (
@@ -125,9 +128,6 @@ export async function getStaticProps() {
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,
-      variables: {
-        featuredBrandSlugs: FEATURED_BRAND_LIST,
-      },
     }),
   ])
 

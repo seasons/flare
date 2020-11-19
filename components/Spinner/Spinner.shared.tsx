@@ -1,3 +1,4 @@
+import { ButtonSize } from "components/Button/Button.shared"
 import { Color } from "../../lib/theme"
 
 export interface SpinnerProps {
@@ -8,7 +9,7 @@ export interface SpinnerProps {
   /** Height of the spinner */
   height?: number
   /** Size of the spinner */
-  size?: "small" | "medium" | "large"
+  size?: ButtonSize
   /** Color of the spinner */
   color?: Color
 }
@@ -38,8 +39,8 @@ export const getSize = (props: SpinnerProps) => {
       }
     default:
       return {
-        width: props.width,
-        height: props.height,
+        width: base.width * 0.8,
+        height: base.height * 0.8,
       }
   }
 }

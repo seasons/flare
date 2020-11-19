@@ -3,7 +3,6 @@ import { NextPage } from "next"
 import { useState } from "react"
 import { useQuery } from "@apollo/client"
 import { Layout, Flex, Spacer } from "../../components"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import { Sans, fontFamily } from "../../components/Typography/Typography"
 import { Box } from "../../components/Box"
 import { Grid, Row, Col } from "../../components/Grid"
@@ -21,6 +20,7 @@ import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import brandSlugs from "lib/brands"
+import { sans as sansSize } from "helpers/typeSizes"
 
 const pageSize = 20
 
@@ -56,11 +56,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     }
   }, [page, currentPage, setCurrentPage, currentBrand, currentCategory])
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const skip = (currentPage - 1) * pageSize
 
@@ -115,6 +111,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 title="Designers"
                 hideTitle
                 currentBrand={currentBrand}
+                listItemStyle={{
+                  textDecoration: "underline",
+                  fontSize: `${sansSize("7").fontSize}px`,
+                  lineHeight: `${sansSize("7").lineHeight}px`,
+                  color: color("black100"),
+                  opacity: 1,
+                }}
+                listItemSpacing="12px"
               />
             }
             CategoriesListComponent={
@@ -277,9 +281,6 @@ export async function getStaticProps({ params }) {
 
   await apolloClient.query({
     query: NAVIGATION_QUERY,
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
   })
 
   return {

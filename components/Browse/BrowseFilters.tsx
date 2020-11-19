@@ -1,4 +1,5 @@
 import { Sans, Spacer, Flex } from "../../components"
+import { SpacerProps } from "components/Spacer"
 import { CategoryLoader } from "../../components/Browse/BrowseLoader"
 import Link from "next/link"
 import { color } from "../../helpers"
@@ -10,6 +11,8 @@ interface BrowseFiltersProps {
   hideTitle?: boolean
   currentCategory: string | string[]
   currentBrand: string | string[]
+  listItemStyle?: React.CSSProperties
+  listItemSpacing?: SpacerProps["mb"]
 }
 
 export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
@@ -18,6 +21,8 @@ export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
   currentBrand,
   title,
   hideTitle,
+  listItemStyle,
+  listItemSpacing = 1,
 }) => {
   return (
     <>
@@ -34,12 +39,12 @@ export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
               <Link href="/browse/[Filter]" as={`/browse/${query}`}>
                 <Flex flexDirection="row" alignItems="center">
                   {isActive && <ActiveLine />}
-                  <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer" }}>
+                  <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer", ...listItemStyle }}>
                     {item.name}
                   </Sans>
                 </Flex>
               </Link>
-              <Spacer mb={1} />
+              <Spacer mb={listItemSpacing} />
             </div>
           )
         })

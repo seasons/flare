@@ -7,6 +7,7 @@ import { FEATURED_BRAND_LIST } from "components/Nav"
 import { BreadCrumbs } from "components/Product/BreadCrumbs"
 import { HowItWorks } from "components/Product/HowItWorks"
 import { ProductDetails } from "components/Product/ProductDetails"
+import { ProductMeasurements } from "components/Product/ProductMeasurements"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
 import { VariantSelect } from "components/Product/VariantSelect"
 import { Media } from "components/Responsive"
@@ -35,11 +36,7 @@ const Product = screenTrack(({ router }) => {
       slug,
     },
   })
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState(
@@ -133,6 +130,7 @@ const Product = screenTrack(({ router }) => {
                     />
                   </Flex>
                 </Flex>
+                {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
                 <HowItWorks />
               </Box>
             </Col>
@@ -192,9 +190,6 @@ export async function getStaticProps({ params }) {
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,
-      variables: {
-        featuredBrandSlugs: FEATURED_BRAND_LIST,
-      },
     }),
   ])
 

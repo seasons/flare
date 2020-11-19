@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import { Box } from "../Box"
 import { color } from "../../helpers"
 import { Spacer } from "../Spacer"
 
@@ -21,16 +20,7 @@ const Wrapper = styled.div`
 `
 
 const Line = styled.div`
-  width: 21px;
-  height: 3px;
-  border-radius: 10px;
+  width: 24px;
+  height: 2px;
   background-color: ${color("black100")};
-`
-
-const Icon = styled.svg`
-  width: 30px;
-  height: 30px;
-  margin-top: 5px;
-  margin-right: 16px;
-  margin-left: 10px;
 `

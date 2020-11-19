@@ -1,11 +1,12 @@
 import { Box, Button, Container, FixedBackArrow, Flex, Sans, Spacer, TextInput } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
 import { space } from "helpers/space"
 import React, { useState } from "react"
-import { Dimensions, FlatList, KeyboardAvoidingView } from "react-native"
+import { FlatList, KeyboardAvoidingView } from "react-native"
 import styled from "styled-components"
-import { Schema as TrackSchema, screenTrack, useTracking } from "utils/analytics"
+import { Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
 import { Radio } from "@material-ui/core"
@@ -82,6 +83,7 @@ export const EditPaymentAndShipping: React.FC<{
   })
   const [sameAsDeliveryRadioSelected, setSameAsDeliveryRadioSelected] = useState(false)
   const [phoneNumber, setPhoneNumber] = useState(currentPhoneNumber)
+  const { openDrawer } = useDrawerContext()
 
   const [applePayUpdatePayment] = useMutation(PAYMENT_UPDATE, {
     onCompleted: () => {
@@ -188,7 +190,7 @@ export const EditPaymentAndShipping: React.FC<{
     })
     setIsMutating(false)
     if (result) {
-      navigation.goBack()
+      goBack()
     }
   }
 
@@ -241,10 +243,8 @@ export const EditPaymentAndShipping: React.FC<{
     // }
   }
 
-  const sections = [SHIPPING_ADDRESS, BILLING_ADDRESS, PHONE_NUMBER, EDIT_BILLING_INFO]
+  const sections = [SHIPPING_ADDRESS, BILLING_ADDRESS, PHONE_NUMBER]
 
-  const screenWidth = Dimensions.get("window").width
-  const buttonWidth = (screenWidth - 40) / 2
   const renderItem = ({ item: section }) => {
     switch (section) {
       case SHIPPING_ADDRESS:
@@ -298,9 +298,12 @@ export const EditPaymentAndShipping: React.FC<{
       case BILLING_ADDRESS:
         return (
           <>
-            <Sans size="4">{BILLING_ADDRESS}</Sans>
+            <Flex alignItems="center">
+              <Sans size="4">Same as my shipping adress</Sans>
+              <Radio checked={sameAsDeliveryRadioSelected} onClick={handleSameAsDeliveryAddress} />
+            </Flex>
             <Spacer mb={2} />
-            <Radio onSelect={handleSameAsDeliveryAddress} />
+            <Sans size="4">{BILLING_ADDRESS}</Sans>
             <Spacer mb={2} />
             <TextInput
               currentValue={billingAddress1}
@@ -370,35 +373,39 @@ export const EditPaymentAndShipping: React.FC<{
 
   const onAddCreditCard = () => {
     tracking.trackEvent({
-      actionName: TrackSchema.ActionNames.AddCreditCardTapped,
-      actionType: TrackSchema.ActionTypes.Tap,
+      actionName: Schema.ActionNames.AddCreditCardTapped,
+      actionType: Schema.ActionTypes.Tap,
     })
+  }
+
+  const goBack = () => {
+    openDrawer("paymentAndShipping")
   }
 
   return (
     <>
       <Container insetsBottom={false}>
-        <FixedBackArrow navigation={navigation} variant="whiteBackground" />
+        <FixedBackArrow navigation={navigation} variant="whiteBackground" onPress={goBack} />
         <Box px={2}>
           <FlatList
             data={sections}
             ListHeaderComponent={() => (
-              <Box>
-                <Spacer mb={2} />
-                <Sans size="4">Payment & Shipping</Sans>
+              <Box pt={4}>
+                <Spacer mb={80} />
+                <Sans size="6">Edit Payment & Shipping</Sans>
                 <Spacer mb={4} />
               </Box>
             )}
             ItemSeparatorComponent={() => <Spacer mb={6} />}
             keyExtractor={(item, index) => item + String(index)}
             renderItem={renderItem}
-            ListFooterComponent={() => <Spacer mb={space(1) * 8 + 50} />}
+            ListFooterComponent={() => <Spacer mb={2} />}
             showsVerticalScrollIndicator={false}
           />
         </Box>
         <FixedKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={space(2)}>
-          <Flex flexDirection="row" flexWrap="nowrap" justifyContent="center">
-            <Button variant="primaryWhite" size="large" block>
+          <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" p={2}>
+            <Button variant="primaryWhite" size="large" block style={{ flex: 1 }} onClick={goBack}>
               Cancel
             </Button>
             <Spacer ml={1} />
@@ -406,8 +413,8 @@ export const EditPaymentAndShipping: React.FC<{
               loading={isMutating}
               variant="secondaryOutline"
               size="large"
-              width={buttonWidth}
-              onPress={handleSaveBtnPressed}
+              onClick={handleSaveBtnPressed}
+              style={{ flex: 1 }}
             >
               Save
             </Button>
