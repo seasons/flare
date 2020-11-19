@@ -10,7 +10,7 @@ import {
   TheBag,
   Plans,
 } from "components/Homepage"
-import { Nav, FEATURED_BRAND_LIST } from "components/Nav"
+import { FEATURED_BRAND_LIST } from "components/Nav"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
 import { ServiceableModal } from "components/ServiceableModal"
 import { initializeApollo } from "lib/apollo/apollo"
@@ -39,7 +39,6 @@ const Home = screenTrack(() => ({
 
   return (
     <Layout fixedNav brandItems={featuredBrandItems}>
-      <Nav fixed brandItems={featuredBrandItems} />
       <Hero post={data?.blogPosts?.[0]} />
       <Spacer mb={10} />
 

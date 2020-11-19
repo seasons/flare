@@ -6,6 +6,7 @@ import { Box, Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
 import { VariantSizes } from "../VariantSizes"
 import { ProductInfoItem } from "./ProductInfoItem"
+import { ProductMeasurements } from "./ProductMeasurements"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{
