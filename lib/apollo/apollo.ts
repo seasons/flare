@@ -5,7 +5,7 @@ import { useMemo } from "react"
 import { ApolloClient, ApolloLink, HttpLink, Observable } from "@apollo/client"
 import * as Sentry from "@sentry/react"
 
-import { getAccessTokenFromSession, getNewToken } from "../auth/auth"
+import { getAccessTokenFromSession, getNewToken, UserSession } from "../auth/auth"
 import { cache } from "./cache"
 import { resolvers, typeDefs } from "./resolvers"
 
@@ -54,12 +54,12 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward, re
   if (networkError) {
     console.log("networkError", JSON.stringify(networkError))
     // User access token has expired
-    if (networkError.statusCode === 401) {
+    if ((networkError as any).statusCode === 401) {
       // We assume we have both tokens needed to run the async request
       // Let's refresh token through async request
       return new Observable((observer) => {
         getNewToken()
-          .then((userSession) => {
+          .then((userSession: UserSession) => {
             operation.setContext(({ headers = {} }) => ({
               headers: {
                 // Re-add old headers
