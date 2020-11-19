@@ -30,7 +30,7 @@ function App({ Component, pageProps }) {
         <link href="/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
         <link href="/images/webclip.png" rel="apple-touch-icon" />
 
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
         <script src="https://js.chargebee.com/v2/chargebee.js" async defer />
         <Theme>
           <Component {...pageProps} />
