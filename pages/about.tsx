@@ -1,4 +1,4 @@
-import { Nav, FEATURED_BRAND_LIST } from "../components/Nav"
+import { Nav } from "../components/Nav"
 import { Layout, Spacer, Separator, Box } from "../components"
 import { AboutFooter, AboutHero, AboutValues, AboutWhoWeAre } from "../components/About"
 import { screenTrack, Schema } from "../utils/analytics"
@@ -10,16 +10,11 @@ const About = screenTrack(() => ({
   page: Schema.PageNames.AboutPage,
   path: "/about",
 }))(() => {
-  const { data } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   return (
     <Layout fixedNav brandItems={featuredBrandItems}>
-      <Nav fixed brandItems={featuredBrandItems} />
       <AboutHero />
       <Spacer mb={15} />
       <AboutValues />
@@ -37,9 +32,6 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: NAVIGATION_QUERY,
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
   })
 
   return {

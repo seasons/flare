@@ -8,6 +8,8 @@ import { useTracking, Schema } from "utils/analytics"
 import { GET_PRODUCT } from "queries/productQueries"
 import { GET_BAG } from "queries/bagQueries"
 import styled from "styled-components"
+import { SaveProduct } from "./SaveProduct"
+import { Modal } from "@material-ui/core"
 
 export const SAVE_ITEM = gql`
   mutation SaveItem($item: ID!, $save: Boolean!) {
@@ -41,6 +43,7 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
   const isSaved = selectedVariant?.isSaved
     ? selectedVariant?.isSaved
     : product?.variants?.filter((variant) => variant.isSaved).length > 0
+  const [isPopUpVisible, setIsPopUpVisible] = useState(false)
   const [enabled, setEnabled] = useState(isSaved)
   const tracking = useTracking()
   const [saveItem] = useMutation(SAVE_ITEM, {
@@ -75,8 +78,9 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
       return
     }
 
-    if (showSizeSelector) {
+    if (showSizeSelector && !isSaved) {
       // Open size selector window, e.g. user is on browse page
+      setIsPopUpVisible(true)
     } else {
       tracking.trackEvent({
         actionName: Schema.ActionNames.ProductSaved,
@@ -106,12 +110,32 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
     }
   }
 
+  const handlePopUpDismiss = () => {
+    setIsPopUpVisible(false)
+  }
+
   return (
-    <Wrapper pl={2} pb={2} pt={0.5} onClick={handleSaveButton}>
-      <SaveIcon width={width ? width : 16} height={height ? height : 22} enabled={enabled} />
-    </Wrapper>
+    <>
+      <Wrapper pl={2} pb={2} pt={0.5} onClick={handleSaveButton}>
+        <SaveIcon width={width ? width : 16} height={height ? height : 22} enabled={enabled} />
+      </Wrapper>
+      <Modal open={isPopUpVisible} onClose={handlePopUpDismiss}>
+        <ModalRoot>
+          <SaveProduct product={product} onDismiss={handlePopUpDismiss}  />
+        </ModalRoot>
+      </Modal>
+    </>
   )
 }
+
+const ModalRoot = styled(Box)`
+  max-width: 800px;
+  margin: auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
 const Wrapper = styled(Box)`
   cursor: pointer;

@@ -20,7 +20,7 @@ export class Button extends Component<WebButtonProps> {
     theme: themeProps,
   }
 
-  getSize(): { height: string; size: "2" | "4"; px: number | string } {
+  getSize(): { height: string; size: "2" | "3" | "4"; px: number | string } {
     const { inline } = this.props
     switch (this.props.size) {
       case "small":
@@ -28,6 +28,12 @@ export class Button extends Component<WebButtonProps> {
           height: inline ? "17px" : "26px",
           size: "2",
           px: inline ? 0 : 2,
+        }
+      case "medium-x":
+        return {
+          height: inline ? "21px" : "40px",
+          size: "3",
+          px: inline ? 0 : 3,
         }
       case "medium":
         return {
@@ -118,6 +124,25 @@ export class Button extends Component<WebButtonProps> {
                 @media ${themeProps.mediaQueries.hover} {
                   &:hover {
                     background-color:  transparent;
+                    border-color: ${colors.black100};
+                    color: ${colors.black100};
+                  }
+                }
+              `
+          }};
+        `
+      case "secondaryOutlineWhite":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+            return `
+                background-color:  ${colors.white100};
+                border-color: ${colors.black10};
+                color: ${colors.black100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color:  ${colors.white100};
                     border-color: ${colors.black100};
                     color: ${colors.black100};
                   }

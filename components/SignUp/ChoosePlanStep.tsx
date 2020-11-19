@@ -1,12 +1,14 @@
 import { Button, Flex, MaxWidth, Spacer } from "components"
+import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
 import gql from "graphql-tag"
 import { apolloClient } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
-import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
+
 import { MembershipPlans } from "./MembershipPlans"
+import DetailText from "components/Forms/DetailText"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -100,6 +102,13 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
   const { userSession } = useAuthContext()
 
   useEffect(() => {
+    // @ts-ignore
+    Chargebee.init({
+      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
+    })
+  }, [])
+
+  useEffect(() => {
     if (data?.paymentPlans && !selectedPlan) {
       const essential1 = data?.paymentPlans.find((p) => p.name === "Essential 1")
       setSelectedPlan(essential1)
@@ -142,12 +151,15 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
             <Flex
               flexDirection="row"
               alignItems="center"
-              justifyContent="flex-end"
+              justifyContent="space-between"
               py={1}
               height={["auto", "63px"]}
               style={{ width: "100%" }}
               px={[2, 2, 2, 5, 5]}
             >
+              <DetailText my={2} size={["2", "4"]}>
+                You can upgrade or change your plan at any time from your account settings.
+              </DetailText>
               <Button
                 ml={2}
                 variant="primaryBlack"

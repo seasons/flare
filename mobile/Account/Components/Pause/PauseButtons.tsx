@@ -289,6 +289,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
         )}
         <Spacer mb={2} />
         <SubText />
+        <Spacer mb={8} />
       </Box>
     </Flex>
   )

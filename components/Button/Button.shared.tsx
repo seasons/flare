@@ -9,12 +9,18 @@ import { BoxProps } from "../Box"
  */
 
 /** Different theme variations */
-export type ButtonVariant = "primaryBlack" | "primaryWhite" | "secondaryGray" | "secondaryOutline" | "noOutline"
+export type ButtonVariant =
+  | "primaryBlack"
+  | "primaryWhite"
+  | "secondaryGray"
+  | "secondaryOutline"
+  | "secondaryOutlineWhite"
+  | "noOutline"
 /** Default button color variant */
 export const defaultVariant: ButtonVariant = "primaryBlack"
 
 /** The size of the button */
-export type ButtonSize = "small" | "medium" | "large"
+export type ButtonSize = "small" | "medium" | "large" | "medium-x"
 
 /** Default button size */
 export const defaultSize: ButtonSize = "medium"

@@ -12,34 +12,6 @@ type Props = {
   brandItems: Array<{ slug: string; name: string }>
 }
 
-export const BRAND_LIST = [
-  "acne-studios",
-  "amiri",
-  "auralee",
-  "bode",
-  "casablanca",
-  "comme-des-garcons",
-  "craig-green",
-  "deveaux",
-  "dries-van-noten",
-  "gucci",
-  "john-elliot",
-  "judy-turner",
-  "jacquemus",
-  "landlord",
-  "martine-rose",
-  "noah",
-  "nanushka",
-  "our-legacy",
-  "off-white",
-  "prada",
-  "rhude",
-  "sacai",
-  "stone-island",
-  "stussy",
-  "yeezy",
-]
-
 export const BrandNavItemFragment = gql`
   fragment BrandNavItem on Brand {
     name

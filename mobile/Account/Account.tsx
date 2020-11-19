@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Sans, Separator, Skeleton, Spacer } from "components"
+import { Box, Flex, Sans, Separator, Skeleton, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import {
   ChevronIcon,
@@ -16,11 +16,13 @@ import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import { Linking, ScrollView } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
+import { DateTime } from "luxon"
 
 import { useQuery } from "@apollo/client"
 
 import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
+import { AuthorizedCTA } from "./Components/AuthorizedCTA"
 
 export enum UserState {
   Undetermined,
@@ -82,6 +84,11 @@ export const GET_USER = gql`
             colors
             brands
           }
+        }
+        authorizedAt
+        admissions {
+          id
+          authorizationWindowClosesAt
         }
       }
     }
@@ -215,33 +222,24 @@ export const Account = screenTrack()(({ navigation }) => {
         )
       case CustomerStatus.Authorized:
         return (
-          <Box pb={1}>
-            <Flex alignItems="center" pb={3}>
-              {/* <Image style={{ width: 136, height: 80 }} source={require("Assets/images/Sunset.png")} /> */}
-            </Flex>
-            <Sans size="5" color="black100" textAlign="center">
-              You're in. Let's choose your plan
-            </Sans>
-            <Spacer mb={1} />
-            <Sans size="4" color="black50" textAlign="center">
-              You have 48 hours to choose your plan. If we don’t hear from you, your invite will go to the next person
-              in line.
-            </Sans>
-            <Spacer mb={3} />
-            <Button
-              block
-              variant="primaryWhite"
-              onClick={() => {
-                tracking.trackEvent({
-                  actionName: Schema.ActionNames.ChoosePlanTapped,
-                  actionType: Schema.ActionTypes.Tap,
-                })
-                openDrawer("choosePlan", { source: "Create" })
-              }}
-            >
-              Choose plan
-            </Button>
-          </Box>
+          <AuthorizedCTA
+            authorizedAt={DateTime.fromISO(customer?.authorizedAt)}
+            authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
+            onPressLearnMore={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.ChoosePlanTapped,
+                actionType: Schema.ActionTypes.Tap,
+              })
+              openDrawer("choosePlan", { source: "Create" })
+            }}
+            onPressChoosePlan={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.ChoosePlanTapped,
+                actionType: Schema.ActionTypes.Tap,
+              })
+              openDrawer("choosePlan", { source: "Create" })
+            }}
+          />
         )
       case CustomerStatus.Invited:
       case CustomerStatus.Active:
@@ -284,7 +282,7 @@ export const Account = screenTrack()(({ navigation }) => {
         <Box px={2}>
           <AccountList list={bottomList} roles={roles} />
         </Box>
-        <Spacer mb={2} />
+        <Spacer mb={10} />
       </ScrollView>
     </Container>
   )

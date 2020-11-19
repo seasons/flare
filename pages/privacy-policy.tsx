@@ -1,6 +1,5 @@
 import React from "react"
 import { Layout } from "../components"
-import { FEATURED_BRAND_LIST } from "components/Nav"
 import { screenTrack, Schema } from "../utils/analytics"
 import { Grid } from "../components/Grid"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
@@ -11,11 +10,7 @@ const PrivacyPolicy = screenTrack(() => ({
   page: Schema.PageNames.PrivacyPolicy,
   path: "/privacy-policy",
 }))(() => {
-  const { data } = useQuery(NAVIGATION_QUERY, {
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
-  })
+  const { data } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   return (
@@ -24,7 +19,7 @@ const PrivacyPolicy = screenTrack(() => ({
         <div className="privacytopsection">
           <div className="privacytopcontainer">
             <div className="privacyheadertitle">Privacy Policy</div>
-            <div className="privacyheadersubtitle">Effective date November 13, 2019</div>
+            <div className="privacyheadersubtitle">Effective date November 18, 2020</div>
           </div>
           <div className="heroimage-left"></div>
           <div className="heroimage-right"></div>
@@ -420,9 +415,6 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: NAVIGATION_QUERY,
-    variables: {
-      featuredBrandSlugs: FEATURED_BRAND_LIST,
-    },
   })
 
   return {

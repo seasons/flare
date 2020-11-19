@@ -10,6 +10,7 @@ export const GET_BRAND = gql`
       description
       websiteUrl
       basedIn
+      designer
       images {
         id
         url
