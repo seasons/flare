@@ -6,7 +6,7 @@ import React from "react"
 import { styled, TextField } from "@material-ui/core"
 
 const formattedPhoneNumber = (phoneNumber: string) => {
-  const strippedPhoneNumber = phoneNumber.replace("-", "").replace("-", "")
+  const strippedPhoneNumber = phoneNumber.replace(/-/g, "")
   const suffix = strippedPhoneNumber.slice(-10)
   return `(${suffix.substring(0, 3)}) ${suffix.substring(3, 6)}-${suffix.substring(6)}`
 }
