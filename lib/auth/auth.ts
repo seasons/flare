@@ -37,18 +37,24 @@ export const getNewToken = async () => {
   `
 
   return new Promise(async (resolve, reject) => {
-    const userSession = await getUserSession()
+    const userSession = getUserSession()
 
     if (userSession) {
-      const refreshToken = userSession.refreshToken
-
       const response = await apolloClient.mutate({
         mutation: GET_REFRESH_TOKEN,
         variables: {
-          refreshToken,
+          refreshToken: userSession.refreshToken,
         },
       })
 
+      const newSession = {
+        ...userSession,
+        token: response.data.refreshToken,
+      }
+
+      if (typeof window !== "undefined") {
+        localStorage?.setItem("userSession", JSON.stringify(newSession))
+      }
       resolve(response.data.refreshToken)
     }
   })

@@ -1,8 +1,9 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
 import {
-  CustomerMeasurementsForm,
-  customerMeasurementsValidationSchema,
+  CreateAccountForm, createAccountValidationSchema
+} from "components/Forms/CreateAccountForm"
+import {
+  CustomerMeasurementsForm, customerMeasurementsValidationSchema
 } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Step } from "components/Forms/Step"
@@ -305,8 +306,6 @@ const SignUpPage = screenTrack(() => ({
       ]
 
   const hasSteps = steps.length > 0
-
-  console.log("steps", steps)
 
   const SnackBarMessage = (
     <Sans size="3">
