@@ -158,7 +158,6 @@ const SignUpPage = screenTrack(() => ({
       setIsWaitlisted(true)
     }
   }, [_isWaitlisted, _isAuthorized])
-  console.log("data", data)
 
   const initialValues = {
     email: "",
@@ -331,10 +330,6 @@ const SignUpPage = screenTrack(() => ({
   const finishedFlow = paymentProcessed || isWaitlisted || isActive
   const finishedTriage = isAuthorized || isWaitlisted
 
-  console.log("finishedTriage", finishedTriage)
-  console.log("isAuthorized", isAuthorized)
-  console.log("isWaitlisted", isWaitlisted)
-
   if (finishedFlow) {
     // User has already finished the flow
     steps = [
@@ -384,8 +379,6 @@ const SignUpPage = screenTrack(() => ({
       </Step>,
     ]
   }
-
-  console.log("steps", steps)
 
   const hasSteps = steps.length > 0
 

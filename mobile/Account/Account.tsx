@@ -79,8 +79,6 @@ export const Account = screenTrack()(({ navigation }) => {
   const { signOut } = useAuthContext()
   const { data, refetch } = useQuery(GET_USER)
 
-  console.log("data", data)
-
   useEffect(() => {
     if (currentView === "profile" && isOpen) {
       refetch()

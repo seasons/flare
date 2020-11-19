@@ -27,7 +27,6 @@ export const PersonalTab: React.FC<{
   email: string
   phoneNumber: string
 }> = ({ createdAt, firstName, lastName, email, phoneNumber }) => {
-  console.log("phoneNumber", phoneNumber)
   return (
     <Container insetsTop={false} insetsBottom={false}>
       <Box p={2} pt={4}>
