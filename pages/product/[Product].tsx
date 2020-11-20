@@ -1,4 +1,4 @@
-import { Box, Flex, Layout, Spacer } from "components"
+import { Box, Flex, Layout, MaxWidth, Spacer } from "components"
 import { AddToBagButton } from "components/AddToBagButton"
 import { Carousel } from "components/Carousel"
 import { Col, Grid, Row } from "components/Grid"
@@ -14,12 +14,12 @@ import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
 import { withRouter } from "next/router"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import { BreadCrumbs } from "components/Product/BreadCrumbs"
+import { Loader } from "mobile/Loader"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -28,14 +28,13 @@ const Product = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
-  const slug = router.query.Product
+  const slug = router.query.Product || ""
   const { authState } = useAuthContext()
   const { data, refetch } = useQuery(GET_PRODUCT, {
     variables: {
       slug,
     },
   })
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState(
@@ -53,12 +52,25 @@ const Product = screenTrack(({ router }) => {
     refetch()
   }, [authState.isSignedIn])
 
+  const featuredBrandItems = data?.navigationBrands || []
+
+  if (router.isFallback) {
+    return (
+      <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
+        <MaxWidth>
+          <Flex>
+            <Loader />
+          </Flex>
+        </MaxWidth>
+      </Layout>
+    )
+  }
+
   const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
   const isInBag = updatedVariant?.isInBag || false
 
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
-  const featuredBrandItems = navigationData?.brands || []
 
   return (
     <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
@@ -170,27 +182,22 @@ export async function getStaticPaths() {
   }
 }
 
-/*
- If you export an async function called getStaticProps from a page, 
- Next.js will pre-render this page at build time using the 
- props returned by getStaticProps.
-*/
+// /*
+//  If you export an async function called getStaticProps from a page,
+//  Next.js will pre-render this page at build time using the
+//  props returned by getStaticProps.
+// */
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo()
 
   const filter = params?.Product
 
-  await Promise.all([
-    apolloClient.query({
-      query: GET_PRODUCT,
-      variables: {
-        slug: filter,
-      },
-    }),
-    apolloClient.query({
-      query: NAVIGATION_QUERY,
-    }),
-  ])
+  await apolloClient.query({
+    query: GET_PRODUCT,
+    variables: {
+      slug: filter,
+    },
+  })
 
   return {
     props: {

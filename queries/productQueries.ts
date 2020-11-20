@@ -1,7 +1,14 @@
 import { gql } from "@apollo/client"
+import { BrandNavItemFragment } from "components/Nav/BrandsNavItem"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
+    navigationBrands: brands(
+      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
+      orderBy: name_ASC
+    ) {
+      ...BrandNavItem
+    }
     me {
       customer {
         id
@@ -88,11 +95,12 @@ export const GET_PRODUCT = gql`
       }
     }
   }
+  ${BrandNavItemFragment}
 `
 
 export const GET_STATIC_PRODUCTS = gql`
   query GetStaticProducts {
-    products(where: { status: Available }, first: 300, orderBy: publishedAt_DESC) {
+    products(where: { status: Available }, first: 4, orderBy: publishedAt_DESC) {
       id
       slug
     }

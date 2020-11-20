@@ -11,7 +11,13 @@ export const GET_CATEGORIES = gql`
 `
 
 export const GET_BROWSE_BRANDS_AND_CATEGORIES = gql`
-  query GetBrandsAndCategories($brandSlugs: [String!]!, $brandOrderBy: BrandOrderByInput!) {
+  query GetBrandsAndCategories {
+    navigationBrands: brands(
+      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
+      orderBy: name_ASC
+    ) {
+      ...BrandNavItem
+    }
     categories(where: { visible: true }, orderBy: name_ASC) {
       id
       slug
@@ -20,12 +26,13 @@ export const GET_BROWSE_BRANDS_AND_CATEGORIES = gql`
         slug
       }
     }
-    brands(orderBy: $brandOrderBy, where: { products_some: { id_not: null }, name_not: null, slug_in: $brandSlugs }) {
+    brands(orderBy: name_ASC, where: { products_some: { id_not: null }, name_not: null, published: true }) {
       id
       slug
       name
     }
   }
+  ${BrandNavItemFragment}
 `
 
 export const GET_BROWSE_PRODUCTS = gql`

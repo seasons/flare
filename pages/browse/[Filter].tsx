@@ -19,7 +19,6 @@ import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import brandSlugs from "lib/brands"
 import { sans as sansSize } from "helpers/typeSizes"
 
 const pageSize = 20
@@ -41,12 +40,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [currentCategory, setCurrentCategory] = useState(category)
   const [currentBrand, setCurrentBrand] = useState(brand)
   const [currentPage, setCurrentPage] = useState(Number(page))
-  const { data: menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES, {
-    variables: {
-      brandOrderBy: "name_ASC",
-      brandSlugs,
-    },
-  })
+  const { data: menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES)
 
   useEffect(() => {
     if (!page && currentPage !== 1 && typeof window !== "undefined") {
@@ -56,7 +50,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     }
   }, [page, currentPage, setCurrentPage, currentBrand, currentCategory])
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
+  const navigationData = menuData?.navigationBrands.brands
 
   const skip = (currentPage - 1) * pageSize
 
@@ -227,23 +221,24 @@ export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
   const response = await apolloClient.query({
-    query: GET_CATEGORIES,
+    query: GET_BROWSE_BRANDS_AND_CATEGORIES,
   })
 
   const paths = [{ params: { Filter: `all+all` } }]
 
   const categories = response?.data?.categories
+  const brands = response?.data?.brands
 
   categories?.forEach((cat) => {
     paths.push({ params: { Filter: `${cat.slug}+all` } })
 
-    brandSlugs.forEach((brandSlug) => {
-      paths.push({ params: { Filter: `${cat.slug}+${brandSlug}` } })
+    brands.forEach((brand) => {
+      paths.push({ params: { Filter: `${cat.slug}+${brand.slug}` } })
     })
   })
 
-  brandSlugs.forEach((brandSlug) => {
-    paths.push({ params: { Filter: `all+${brandSlug}` } })
+  brands.forEach((brand) => {
+    paths.push({ params: { Filter: `all+${brand.slug}` } })
   })
 
   return {
@@ -273,14 +268,6 @@ export async function getStaticProps({ params }) {
 
   await apolloClient.query({
     query: GET_BROWSE_BRANDS_AND_CATEGORIES,
-    variables: {
-      brandOrderBy: "name_ASC",
-      brandSlugs: brandSlugs,
-    },
-  })
-
-  await apolloClient.query({
-    query: NAVIGATION_QUERY,
   })
 
   return {

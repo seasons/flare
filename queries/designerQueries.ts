@@ -49,8 +49,8 @@ export const GET_BRAND = gql`
 `
 
 export const GET_BRANDS = gql`
-  query GetBrands($brandSlugs: [String!]) {
-    brands(where: { products_some: { id_not: null }, name_not: null, slug_in: $brandSlugs }) {
+  query GetBrands {
+    brands(where: { products_some: { id_not: null }, name_not: null, published: true }) {
       id
       slug
     }

@@ -8,7 +8,6 @@ import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
 import { initializeApollo } from "lib/apollo"
-import brandSlugs from "lib/brands"
 import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
@@ -30,7 +29,7 @@ const Designer = screenTrack(({ router }) => {
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
   const [fetchingMore, setFetchingMore] = useState(false)
-  const slug = router.query.Designer
+  const slug = router.query.Designer || ""
 
   const imageContainer = useRef(null)
 
@@ -302,9 +301,6 @@ export async function getStaticPaths() {
 
   const response = await apolloClient.query({
     query: GET_BRANDS,
-    variables: {
-      brandSlugs,
-    },
   })
 
   const paths = []
