@@ -315,10 +315,6 @@ const SignUpPage = screenTrack(() => ({
               actionType: Schema.ActionTypes.Success,
               isWaitlisted,
             })
-
-            setTimeout(() => {
-              wizard.next()
-            }, 1000)
           }}
         />
       )}
