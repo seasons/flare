@@ -44,8 +44,7 @@ const TabButton = styled(Box)<{ spaceEvenly?: boolean; active?: boolean; tabColo
   justify-content: center;
   padding-top: 5;
   flex-grow: 1;
-  border-color: transparent;
-  border-bottom-width: 3px;
+  border-bottom: ${(p) => (p.active ? `2px solid ${color("black100")}` : "2px solid transparent")};
   ${(p) => p.spaceEvenly && `flex: 1;`};
   ${(p) =>
     p.active &&
@@ -75,6 +74,7 @@ export class TabBar extends React.Component<TabBarProps, null> {
     } else {
       tabTextColor = color("black50")
     }
+
     return (
       <Button
         key={name}

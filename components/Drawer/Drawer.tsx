@@ -64,7 +64,7 @@ export const Drawer = (props: DrawerProps) => {
       case "membershipInfo":
         return <MembershipInfo />
       case "personalPreferences":
-        return <PersonalPreferences />
+        return <PersonalPreferences initialTab={params?.initialTab} />
       case "paymentAndShipping":
         return <PaymentAndShipping />
       case "faq":
