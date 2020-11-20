@@ -30,7 +30,7 @@ const Designer = screenTrack(({ router }) => {
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
   const [fetchingMore, setFetchingMore] = useState(false)
-  const slug = router.query.Designer
+  const slug = router.query.Designer || ""
 
   const imageContainer = useRef(null)
 
