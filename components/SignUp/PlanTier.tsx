@@ -56,6 +56,7 @@ export const PlanTier: React.FC<{
         >
           ${originalPrice}
         </span>{" "}
+        <br />
         <span
           style={{
             fontSize: "20px",
@@ -64,7 +65,13 @@ export const PlanTier: React.FC<{
         >
           ${finalPrice}
         </span>{" "}
-        / {month}
+        <span
+          style={{
+            color: `${color("black100")}`,
+          }}
+        >
+          this month
+        </span>
       </Sans>
     ) : (
       <Sans color="black50" size="3">

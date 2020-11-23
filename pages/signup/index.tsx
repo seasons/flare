@@ -54,11 +54,14 @@ const SIGN_UP_USER = gql`
         beamsToken
         roles
       }
-      coupon {
+      customer {
         id
-        amount
-        percentage
-        type
+        coupon {
+          id
+          amount
+          percentage
+          type
+        }
       }
     }
   }
@@ -249,7 +252,7 @@ const SignUpPage = screenTrack(() => ({
 
           if (response) {
             signIn(response.data.signup)
-            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.coupon))
+            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.customer?.coupon))
             actions.setSubmitting(false)
 
             return true
