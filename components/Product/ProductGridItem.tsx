@@ -24,13 +24,13 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
     showBrand = false
   }
 
-  if(!product || loading){
+  if (!product || loading) {
     return (
       <Box m="2px">
         <ContentLoader viewBox="0 0 100 125">
           <rect x={0} y={0} width="100%" height="100%" />
         </ContentLoader>
-        <Spacer mb="5px"/>
+        <Spacer mb="5px" />
         <ContentLoader width="100%" height="42px">
           <rect x={0} y={0} width="40%" height={12} />
           <rect x={0} y={19} width={37} height={12} />
@@ -68,9 +68,11 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   return (
     <ProductContainer key={product.id}>
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
-        <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
-        <Spacer mb={1}/>
-        <Text/>
+        <a href={`/product/${product.slug}`}>
+          <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
+          <Spacer mb={1} />
+          <Text />
+        </a>
       </Link>
     </ProductContainer>
   )

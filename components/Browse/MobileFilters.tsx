@@ -53,6 +53,7 @@ export const MobileFilters: React.FC<{
           }}
         >
           {BrandsListComponent}
+          <Spacer pb={200} />
         </ListWrapper>
       )}
       {categoriesOpen && (
@@ -72,6 +73,8 @@ export const MobileFilters: React.FC<{
 
 const ListWrapper = styled(Box)`
   position: absolute;
+  max-height: 100vh;
+  overflow: auto;
   z-index: 1;
   width: 100%;
   background-color: ${color("white100")};
@@ -92,7 +95,7 @@ const ButtonWrapper = styled.div`
 `
 
 const HeaderContainer = styled.div`
-  position: absolute;
+  position: fixed;
   box-sizing: border-box;
   z-index: 2;
   width: 100%;
