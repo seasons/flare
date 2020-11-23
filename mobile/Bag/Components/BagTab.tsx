@@ -12,6 +12,7 @@ import { useLazyQuery } from "@apollo/client"
 import { BagItem } from "./BagItem"
 import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 
 const DEFAULT_ITEM_COUNT = 3
 
@@ -25,7 +26,7 @@ export const BagTab: React.FC<{
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
   const tracking = useTracking()
-
+  const { openDrawer } = useDrawerContext()
   const me = data?.me
   const paymentPlans = data?.paymentPlans
   const activeReservation = me?.activeReservation
@@ -62,15 +63,27 @@ export const BagTab: React.FC<{
   const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
   const showPendingMessage = pauseStatus === "pending" && !!pauseRequest?.pauseDate
 
+  let subTitle
+  if (hasActiveReservation && !!returnReminder) {
+    subTitle = returnReminder
+  } else if (!hasActiveReservation) {
+    subTitle = "Reserve your order below"
+  }
+
   return (
     <Box>
       <Box px={2} pt={4}>
         <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
           <Sans size="5">{hasActiveReservation ? "Current rotation" : "My bag"}</Sans>
+          <Sans size="5" style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => openDrawer("faq")}>
+            View FAQ
+          </Sans>
         </Flex>
-        <Sans size="3" color="black50">
-          {hasActiveReservation && !!returnReminder ? returnReminder : "Reserve your order below"}
-        </Sans>
+        {!!subTitle && (
+          <Sans size="3" color="black50">
+            {subTitle}
+          </Sans>
+        )}
         <Spacer mb={3} />
       </Box>
       {showPendingMessage && (
@@ -122,6 +135,20 @@ export const BagTab: React.FC<{
           </Box>
         )
       })}
+      {hasActiveReservation && (
+        <Box px={2}>
+          <Spacer mb={3} />
+          <Sans size="4" color="black50" style={{ textAlign: "center" }}>
+            Questions about your order?{" "}
+            <a
+              href="mailto:membership@seasons.nyc?subject=Support"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <span style={{ textDecoration: "underline", cursor: "pointer" }}>Contact us</span>
+            </a>
+          </Sans>
+        </Box>
+      )}
     </Box>
   )
 }

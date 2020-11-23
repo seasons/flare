@@ -41,7 +41,7 @@ export const FAQCard: React.FC<{
       window.addEventListener("resize", updateHeight)
       return () => window.removeEventListener("resize", updateHeight)
     }
-  }, [])
+  }, [updateHeight])
 
   return (
     <Col md="4" xs="12" px={1}>
@@ -59,10 +59,3 @@ export const FAQCard: React.FC<{
     </Col>
   )
 }
-
-// const InjectedSans = styled(Sans)`
-//   a {
-//     text-decoration: underline;
-//     color: ${color("black100")};
-//   }
-// `

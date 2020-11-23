@@ -121,7 +121,7 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
       </Wrapper>
       <Modal open={isPopUpVisible} onClose={handlePopUpDismiss}>
         <ModalRoot>
-          <SaveProduct product={product} onDismiss={handlePopUpDismiss}  />
+          <SaveProduct product={product} onDismiss={handlePopUpDismiss} />
         </ModalRoot>
       </Modal>
     </>

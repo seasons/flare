@@ -25,8 +25,8 @@ export class Button extends Component<WebButtonProps> {
     switch (this.props.size) {
       case "small":
         return {
-          height: inline ? "17px" : "26px",
-          size: "2",
+          height: inline ? "17px" : "32px",
+          size: "3",
           px: inline ? 0 : 2,
         }
       case "medium-x":
