@@ -48,14 +48,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     },
   })
 
-  useEffect(() => {
-    if (!page && currentPage !== 1 && typeof window !== "undefined") {
-      setCurrentPage(1)
-    } else if (currentPage === 1 && page) {
-      setCurrentPage(Number(page))
-    }
-  }, [page, currentPage, setCurrentPage, currentBrand, currentCategory])
-
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const skip = (currentPage - 1) * pageSize
@@ -80,14 +72,24 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   }
 
   useEffect(() => {
+    if (currentPage === 1 && page !== 1) {
+      setCurrentPage(Number(page))
+    }
+
     if (filter) {
       const queries = filter?.toString().split("+")
       const [category, brand] = queries
 
+      if (category !== currentCategory || currentBrand !== brand) {
+        setCurrentPage(1)
+      }
+
       setCurrentBrand(brand)
       setCurrentCategory(category)
     }
-  }, [filter, setCurrentBrand, setCurrentCategory])
+  }, [filter, setCurrentBrand, setCurrentCategory, page, currentPage, setCurrentPage, currentBrand, currentCategory])
+
+  useEffect(() => {}, [page, currentPage, setCurrentPage, currentBrand, currentCategory])
 
   const aggregateCount = data?.connection?.aggregate?.count
   const pageCount = Math.ceil(aggregateCount / pageSize)
