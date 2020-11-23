@@ -28,7 +28,7 @@ export const ReadMore = React.memo(({ content, maxChars, textColor, readMoreExpa
     root
   ) : (
     <Flex>
-      <Sans size="3">
+      <div>
         {truncate({
           root,
           maxChars,
@@ -40,7 +40,7 @@ export const ReadMore = React.memo(({ content, maxChars, textColor, readMoreExpa
             })
           },
         })}
-      </Sans>
+      </div>
     </Flex>
   )
 })
@@ -97,9 +97,9 @@ function truncate({
           truncatedChildren.push(
             <span>
               {"... "}
-              <Sans size="4" onClick={onExpand} style={{ display: "inline", cursor: "pointer" }} color="black100">
+              <span onClick={onExpand} style={{ display: "inline", cursor: "pointer", color: color("black100") }}>
                 Read&nbsp;more
-              </Sans>
+              </span>
             </span>
           )
         }

@@ -87,11 +87,11 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
       <Flex style={{ flex: 2, width: "100%" }} flexWrap="nowrap" flexDirection="column" justifyContent="space-between">
         <Box>
           <Box style={{ width: "100%" }}>
-            <Sans size="4">{`${index + 1}. ${product?.brand?.name}`}</Sans>
-            <Sans size="4" color="black50">
+            <Sans size="3">{`${index + 1}. ${product?.brand?.name}`}</Sans>
+            <Sans size="3" color="black50">
               {product.name}
             </Sans>
-            <Sans size="4" color="black50">
+            <Sans size="3" color="black50">
               Size {variantSize}
             </Sans>
             <Spacer mb={3} />
@@ -121,7 +121,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
                   }
                 }}
               >
-                <Sans size="4" style={{ textDecorationLine: "underline", cursor: "pointer" }}>
+                <Sans size="3" style={{ textDecorationLine: "underline", cursor: "pointer" }}>
                   Save for later
                 </Sans>
               </TouchableOpacity>

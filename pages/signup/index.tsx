@@ -54,11 +54,14 @@ const SIGN_UP_USER = gql`
         beamsToken
         roles
       }
-      coupon {
+      customer {
         id
-        amount
-        percentage
-        type
+        coupon {
+          id
+          amount
+          percentage
+          type
+        }
       }
     }
   }
@@ -214,6 +217,7 @@ const SignUpPage = screenTrack(() => ({
 
   const createAccountStep = (
     <Step
+      key="createAccountStep"
       validationSchema={createAccountValidationSchema}
       onSubmit={async (values, actions) => {
         try {
@@ -248,7 +252,7 @@ const SignUpPage = screenTrack(() => ({
 
           if (response) {
             signIn(response.data.signup)
-            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.coupon))
+            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.customer?.coupon))
             actions.setSubmitting(false)
 
             return true
@@ -270,6 +274,7 @@ const SignUpPage = screenTrack(() => ({
 
   const measurementsStep = (
     <Step
+      key="measurementsStep"
       validationSchema={customerMeasurementsValidationSchema}
       onSubmit={async (values, actions) => {
         const { height, weight, topSizes, waistSizes } = values
@@ -299,7 +304,7 @@ const SignUpPage = screenTrack(() => ({
   )
 
   const triageStep = (
-    <Step>
+    <Step key="triage">
       {({ wizard, form }) => (
         <TriageStep
           check={startTriage}
@@ -329,7 +334,7 @@ const SignUpPage = screenTrack(() => ({
   if (finishedFlow) {
     // User has already finished the flow
     steps = [
-      <Step>
+      <Step key="finishedFlow">
         {() => {
           const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
           return <FormConfirmation {...data} />
@@ -341,7 +346,7 @@ const SignUpPage = screenTrack(() => ({
       ...(hasAccount ? [] : [createAccountStep]),
       ...(hasMeasurements ? [] : [measurementsStep]),
       ...(finishedTriage ? [] : [triageStep]),
-      <Step>
+      <Step key="formConfirmationOrChoosePlanStep">
         {({ form, wizard }) => {
           const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
           return isWaitlisted ? (

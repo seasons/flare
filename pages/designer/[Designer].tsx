@@ -30,7 +30,7 @@ const Designer = screenTrack(({ router }) => {
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
   const [fetchingMore, setFetchingMore] = useState(false)
-  const slug = router.query.Designer
+  const slug = router.query.Designer || ""
 
   const imageContainer = useRef(null)
 
@@ -88,13 +88,6 @@ const Designer = screenTrack(({ router }) => {
       })
     }
   }, 100)
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", onScroll)
-    }
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [onScroll])
 
   const brand = data && data.brand
 
@@ -217,7 +210,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems} onScroll={onScroll}>
       <Head>
         <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />

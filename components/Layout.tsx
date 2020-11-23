@@ -1,5 +1,5 @@
 import { PopUpProvider } from "components/PopUp/PopUpProvider"
-import React from "react"
+import React, { useEffect } from "react"
 
 import { Theme } from "../lib/theme"
 import { Box } from "./Box"
@@ -20,6 +20,7 @@ interface LayoutProps {
   footerBottomPadding?: string | string[]
   includeDefaultHead?: boolean
   brandItems: { name: string; slug: string }[]
+  onScroll?: () => void
 }
 
 export const Layout = ({
@@ -29,6 +30,7 @@ export const Layout = ({
   footerBottomPadding,
   includeDefaultHead = true,
   brandItems,
+  onScroll,
 }: LayoutProps) => {
   // If there are any UTM params, store them in a cookie
   const router = useRouter()
@@ -52,7 +54,7 @@ export const Layout = ({
         <DrawerProvider>
           <Theme>
             {fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}
-            <ScrollContainer mt={fixedNav ? 60 : 0} pb={60}>
+            <ScrollContainer mt={fixedNav ? 60 : 0} pb={60} onScroll={onScroll}>
               <MaxWidth>
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {!fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}

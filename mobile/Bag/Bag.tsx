@@ -217,7 +217,6 @@ export const Bag = screenTrack()((props) => {
             px={2}
             pb={5}
           >
-            <></>
             <PauseButtons customer={me?.customer} fullScreen />
           </Box>
         )
@@ -291,7 +290,7 @@ export const Bag = screenTrack()((props) => {
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
       {isBagView && pauseStatus !== "paused" && !hasActiveReservation && (
-        <Box p={2}>
+        <Box px={2}>
           <Button
             block
             onClick={() => {

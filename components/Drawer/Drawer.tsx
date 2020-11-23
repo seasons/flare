@@ -1,5 +1,4 @@
 import { Box, Flex } from "components"
-import { FAQ } from "components/Homepage"
 import { EditPaymentAndShipping, PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
 import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
@@ -15,6 +14,7 @@ import { Drawer as MuiDrawer } from "@material-ui/core"
 
 import { DrawerBottomButton } from "./DrawerBottomButton"
 import { useDrawerContext } from "./DrawerContext"
+import { DrawerFAQ } from "mobile/DrawerFAQ/DrawerFAQ"
 
 interface DrawerProps {
   open?: boolean
@@ -68,7 +68,7 @@ export const Drawer = (props: DrawerProps) => {
       case "paymentAndShipping":
         return <PaymentAndShipping />
       case "faq":
-        return <FAQ />
+        return <DrawerFAQ />
       case "resumeConfirmation":
         return <ResumeConfirmation />
       case "choosePlan":
@@ -94,9 +94,7 @@ export const Drawer = (props: DrawerProps) => {
         {view()}
       </Flex>
       {showCloseButton && (
-        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutlineWhite" }}>
-          Close
-        </DrawerBottomButton>
+        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "primaryWhite" }}>Close</DrawerBottomButton>
       )}
     </StyledDrawer>
   )
