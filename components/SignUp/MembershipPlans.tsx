@@ -1,5 +1,6 @@
 import { Button, Flex, Sans, Separator, Spacer } from "components"
 import { Box } from "components/Box"
+import { CollapsableFAQ } from "components/CollapsableFAQ"
 import { Collapse } from "components/Collapse"
 import { ChevronIcon } from "components/Icons"
 import { PlanTier } from "components/SignUp/PlanTier"
@@ -17,62 +18,6 @@ interface MembershipPlansProps {
   faqSections: any
   selectedPlan: any
   setSelectedPlan: (plan: any) => void
-}
-
-const CollapseableSection = ({ section }) => {
-  const [open, setOpen] = useState(false)
-  return (
-    <>
-      <Spacer mb={3} />
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        onClick={() => setOpen(!open)}
-        style={{ cursor: "pointer" }}
-      >
-        <Sans size="4">{section?.title}</Sans>
-        <ChevronIcon rotateDeg={open ? "-90deg" : "90deg"} color={color("black100")} scale={0.7} />
-      </Flex>
-      <Separator />
-      <Collapse open={open}>
-        <Spacer mb={1} />
-        <Sans size="4" color="black50">
-          {section?.text}
-        </Sans>
-      </Collapse>
-    </>
-  )
-}
-
-const FAQ = ({ faqSections }) => {
-  return (
-    <FAQWrapper>
-      <Box pt={10}>
-        <Sans size="8" color="black100">
-          FAQ
-        </Sans>
-        <Spacer mb={1} />
-        <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
-          What to know about membership
-        </Sans>
-        <Spacer mb={5} />
-        {faqSections?.[0]?.subsections?.map((section, index) => {
-          return <CollapseableSection section={section} key={index} />
-        })}
-        <Spacer mb={3} />
-        <Sans color="black50" size="3">
-          Have a question not covered in the FAQ?
-        </Sans>
-        <Spacer mb={2} />
-        <a href="mailto:membership@seasons.nyc?subject=Support" style={{ textDecoration: "none" }}>
-          <Button variant="secondaryOutline" block type="button">
-            Contact us
-          </Button>
-        </a>
-      </Box>
-    </FAQWrapper>
-  )
 }
 
 export const groupByPlanTier = (paymentPlans) => {
@@ -142,7 +87,18 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
         </Col>
         <Col md="4" xs="12">
           <Box style={{ borderRight: `1px solid ${color("black15")}`, height: "100%" }} px={[2, 2, 2, 5, 5]}>
-            <FAQ faqSections={faqSections} />
+            <FAQWrapper>
+              <Spacer mb={10} />
+              <Sans size="8" color="black100">
+                FAQ
+              </Sans>
+              <Spacer mb={1} />
+              <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
+                What to know about membership
+              </Sans>
+              <Spacer mb={5} />
+              <CollapsableFAQ faqSections={faqSections} />
+            </FAQWrapper>
           </Box>
         </Col>
       </Row>
@@ -204,7 +160,18 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
             px={[2, 2, 2, 5, 5]}
           >
             <Box width={["auto", "auto", "500px", "500px", "500px"]}>
-              <FAQ faqSections={faqSections} />
+              <FAQWrapper>
+                <Spacer mb={10} />
+                <Sans size="8" color="black100">
+                  FAQ
+                </Sans>
+                <Spacer mb={1} />
+                <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
+                  What to know about membership
+                </Sans>
+                <Spacer mb={5} />
+                <CollapsableFAQ faqSections={faqSections} />
+              </FAQWrapper>
             </Box>
             <Spacer pb="140px" />
           </Flex>

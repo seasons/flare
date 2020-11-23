@@ -12,6 +12,7 @@ import { useLazyQuery } from "@apollo/client"
 import { BagItem } from "./BagItem"
 import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 
 const DEFAULT_ITEM_COUNT = 3
 
@@ -25,7 +26,7 @@ export const BagTab: React.FC<{
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
   const tracking = useTracking()
-
+  const { openDrawer } = useDrawerContext()
   const me = data?.me
   const paymentPlans = data?.paymentPlans
   const activeReservation = me?.activeReservation
@@ -74,7 +75,7 @@ export const BagTab: React.FC<{
       <Box px={2} pt={4}>
         <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
           <Sans size="5">{hasActiveReservation ? "Current rotation" : "My bag"}</Sans>
-          <Sans size="5" style={{ textDecoration: "underline" }}>
+          <Sans size="5" style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => openDrawer("faq")}>
             View FAQ
           </Sans>
         </Flex>
