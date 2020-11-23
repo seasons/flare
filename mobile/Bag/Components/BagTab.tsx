@@ -134,6 +134,20 @@ export const BagTab: React.FC<{
           </Box>
         )
       })}
+      {hasActiveReservation && (
+        <Box px={2}>
+          <Spacer mb={3} />
+          <Sans size="4" color="black50" style={{ textAlign: "center" }}>
+            Questions about your order?{" "}
+            <a
+              href="mailto:membership@seasons.nyc?subject=Support"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <span style={{ textDecoration: "underline", cursor: "pointer" }}>Contact us</span>
+            </a>
+          </Sans>
+        </Box>
+      )}
     </Box>
   )
 }

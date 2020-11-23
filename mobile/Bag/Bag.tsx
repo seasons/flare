@@ -217,7 +217,6 @@ export const Bag = screenTrack()((props) => {
             px={2}
             pb={5}
           >
-            <></>
             <PauseButtons customer={me?.customer} fullScreen />
           </Box>
         )
