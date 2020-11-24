@@ -68,7 +68,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   return (
     <ProductContainer key={product.id}>
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
-        <a href={`/product/${product.slug}`}>
+        <a href={`/product/${product.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
           <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
           <Spacer mb={1} />
           <Text />
