@@ -41,7 +41,7 @@ export const FAQCard: React.FC<{
       window.addEventListener("resize", updateHeight)
       return () => window.removeEventListener("resize", updateHeight)
     }
-  }, [updateHeight])
+  }, [])
 
   return (
     <Col md="4" xs="12" px={1}>
