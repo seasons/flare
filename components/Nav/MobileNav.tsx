@@ -41,6 +41,13 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
             })
             toggleOpen(!isOpen)
           }}
+          onPress={() => {
+            tracking.trackEvent({
+              actionName: Schema.ActionNames.BurgerClicked,
+              actionType: Schema.ActionTypes.Tap,
+            })
+            toggleOpen(!isOpen)
+          }}
         />
       </Header>
       <Menu
