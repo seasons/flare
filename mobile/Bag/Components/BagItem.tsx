@@ -57,8 +57,6 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
     ],
   })
 
-  console.log("product?.images?.[0]?.url", product?.images?.[0]?.url)
-
   const ReservedItemContent = () => {
     return (
       <Flex
