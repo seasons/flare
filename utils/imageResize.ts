@@ -55,7 +55,7 @@ export const sizes: ImageSizeMap = {
   },
 }
 
-type ImageResizerSize = keyof typeof sizes
+export type ImageResizerSize = keyof typeof sizes
 
 export const imageResize = (
   url: string,
