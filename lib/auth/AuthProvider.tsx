@@ -3,6 +3,7 @@ import React, { useEffect, useImperativeHandle } from "react"
 import { identify, reset } from "../../utils/analytics"
 
 import AuthContext from "./AuthContext"
+import { userSessionToIdentifyPayload } from "./auth"
 
 export interface AuthProviderProps {
   apolloClient: any
@@ -66,7 +67,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
         if (userSession && userSession.token) {
           const user = userSession?.user
           if (user) {
-            identify(user.id, user)
+            identify(user.id, userSessionToIdentifyPayload(userSession))
           }
           dispatch({ type: "RESTORE_TOKEN", token: userSession.token, userSession })
         } else {
@@ -88,10 +89,13 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
   const authContext = {
     signIn: async (session) => {
       dispatch({ type: "SIGN_IN", token: session.token, userSession: session })
-      localStorage.setItem("userSession", JSON.stringify(session))
-      const user = session?.user
+      localStorage.setItem(
+        "userSession",
+        JSON.stringify({ ...session, user: session?.customer?.user || session?.user })
+      )
+      const user = session?.customer?.user
       if (user) {
-        identify(user.id, user)
+        identify(user.id, userSessionToIdentifyPayload(session))
       }
       apolloClient.stop()
       apolloClient.resetStore()
