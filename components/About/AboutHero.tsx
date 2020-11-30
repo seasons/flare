@@ -4,8 +4,7 @@ import { Grid, Row, Col } from "../Grid"
 import { Flex, Sans, Spacer, Box, Separator } from ".."
 import { imageResize } from "../../utils/imageResize"
 import { Media } from "../Responsive"
-import { space, color } from "../../helpers"
-import { Picture } from "../Picture"
+import { Image } from "@seasons/eclipse"
 
 const imageImport1 = require("../../public/images/about/About-HeroImage-1.png")
 const imageImport2 = require("../../public/images/about/About-HeroImage-2.png")
@@ -36,10 +35,10 @@ const Desktop = () => {
         </Flex>
         <Spacer pb="120px" />
         <ImageWrapper1 aspectRatio={744 / 468}>
-          <Picture src={image1} alt="Planning on whiteboard" />
+          <Image src={image1} alt="Planning on whiteboard" />
         </ImageWrapper1>
         <ImageWrapper2 aspectRatio={744 / 468}>
-          <Picture src={image2} alt="Office interior" />
+          <Image src={image2} alt="Office interior" />
         </ImageWrapper2>
       </Box>
     </Grid>
@@ -72,9 +71,9 @@ const Mobile = () => {
             <Spacer pb="40px" />
           </Col>
           <Col xs="12" md="12">
-            <Picture src={image1} alt="Planning on whiteboard" />
+            <Image src={image1} alt="Planning on whiteboard" />
             <Spacer mb={0.5} />
-            <Picture src={image2} alt="Office interior" />
+            <Image src={image2} alt="Office interior" />
           </Col>
         </Row>
       </Grid>

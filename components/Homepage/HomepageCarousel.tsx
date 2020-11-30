@@ -4,7 +4,7 @@ import { Box } from "../Box"
 import { space, color } from "../../helpers"
 import styled from "styled-components"
 import { Flex } from "../Flex"
-import { Picture } from "../Picture"
+import { Image } from "@seasons/eclipse"
 import { imageResize } from "../../utils/imageResize"
 import { ProgressiveImageProps } from "../Image/ProgressiveImage"
 
@@ -46,7 +46,7 @@ export const HomepageCarousel: React.FC<{
               <SnapItem width="100%" margin={{ right: space(1) + "px" }} snapAlign="center" key={image?.imageUrl}>
                 <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
                   <ImageWrapper>
-                    <Picture src={imageSRC} alt={image.alt} />
+                    <Image src={imageSRC} alt={image.alt} />
                   </ImageWrapper>
                 </Box>
               </SnapItem>

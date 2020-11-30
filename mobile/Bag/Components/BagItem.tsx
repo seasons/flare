@@ -9,7 +9,7 @@ import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
-import { Image } from "mobile/Image"
+import { Image } from "@seasons/eclipse"
 import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"

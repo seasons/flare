@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
-import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "../"
+import { Flex, Sans, Spacer, Box, MaxWidth, Separator } from "../"
 import { Display } from "../Typography"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"

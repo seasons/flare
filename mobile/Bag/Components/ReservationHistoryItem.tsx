@@ -2,7 +2,7 @@ import { Box, Flex, Sans, Spacer } from "components"
 import { color, space } from "helpers"
 import { DateTime } from "luxon"
 import React from "react"
-import { Image } from "mobile/Image"
+import { Image } from "@seasons/eclipse"
 
 export const ReservationHistoryItem = ({ item }) => {
   const date = item?.createdAt && DateTime.fromISO(item?.createdAt).toUTC().toFormat("MM/dd")

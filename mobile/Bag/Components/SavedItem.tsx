@@ -6,7 +6,7 @@ import { get, head } from "lodash"
 import { ADD_TO_BAG, GET_BAG } from "queries/bagQueries"
 import React, { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { Image } from "mobile/Image"
+import { Image } from "@seasons/eclipse"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 

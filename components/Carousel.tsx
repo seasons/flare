@@ -1,9 +1,10 @@
 import React, { useRef } from "react"
 import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplist-carousel"
 import { space, color } from "../helpers"
-import { Box, Picture, Flex } from "./"
+import { Box, Flex } from "./"
 import styled from "styled-components"
 import { imageResize } from "../utils/imageResize"
+import { Image } from "@seasons/eclipse"
 
 export const Carousel: React.FC<{
   images: any[]
@@ -27,7 +28,7 @@ export const Carousel: React.FC<{
               >
                 <Box onClick={() => goToSnapItem(index === images.length - 1 ? 0 : index + 1)}>
                   <ImageWrapper>
-                    <Picture src={imageSRC} alt={image.alt} key={imageSRC} />
+                    <Image src={imageSRC} alt={image.alt} key={imageSRC} />
                   </ImageWrapper>
                 </Box>
               </SnapItem>

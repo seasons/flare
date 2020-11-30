@@ -3,7 +3,7 @@ import { Box } from "../Box"
 import { imageResize, IMAGE_ASPECT_RATIO, ImageSize } from "../../utils/imageResize"
 import React, { useState, useRef, useEffect } from "react"
 import { color } from "../../helpers"
-import { Picture } from "../Picture"
+import { Image } from "@seasons/eclipse"
 
 export interface ProgressiveImageProps {
   size: ImageSize
@@ -33,7 +33,7 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   return (
     <ImageWrapper aspectRatio={aspectRatio}>
       <FullImageWrapper loaded={loaded}>
-        <Picture
+        <Image
           src={fullImage}
           key={fullImage}
           alt={alt}
@@ -44,7 +44,7 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
         />
       </FullImageWrapper>
       <InitialImageWrapper>
-        <Picture src={initialImage} alt={alt} />
+        <Image src={initialImage} alt={alt} />
       </InitialImageWrapper>
     </ImageWrapper>
   )
