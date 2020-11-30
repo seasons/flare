@@ -46,16 +46,31 @@ const SIGN_UP_USER = gql`
       expiresIn
       refreshToken
       token
-      user {
-        id
-        email
-        firstName
-        lastName
-        beamsToken
-        roles
-      }
       customer {
         id
+        status
+        detail {
+          id
+          shippingAddress {
+            id
+            state
+          }
+        }
+        bagItems {
+          id
+        }
+        admissions {
+          id
+          admissable
+          authorizationsCount
+        }
+        user {
+          id
+          email
+          firstName
+          lastName
+          createdAt
+        }
         coupon {
           id
           amount
@@ -251,6 +266,7 @@ const SignUpPage = screenTrack(() => ({
           })
 
           if (response) {
+            // TODO: Make sure this data has what we need for the signup identify
             signIn(response.data.signup)
             localStorage?.setItem("coupon", JSON.stringify(response.data.signup.customer?.coupon))
             actions.setSubmitting(false)

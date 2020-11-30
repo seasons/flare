@@ -29,7 +29,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
         case "RESTORE_TOKEN":
           return {
             ...prevState,
-            userSession: action.userSession,
+            userSession: processSession(action.userSession),
             isSignedIn: !!action.token,
             authInitializing: false,
           }
@@ -37,7 +37,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
           return {
             ...prevState,
             isSignedIn: true,
-            userSession: action.userSession,
+            userSession: processSession(action.userSession),
           }
         case "SIGN_OUT":
           return {
@@ -89,10 +89,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
   const authContext = {
     signIn: async (session) => {
       dispatch({ type: "SIGN_IN", token: session.token, userSession: session })
-      localStorage.setItem(
-        "userSession",
-        JSON.stringify({ ...session, user: session?.customer?.user || session?.user })
-      )
+      localStorage.setItem("userSession", JSON.stringify(processSession(session)))
       const user = session?.customer?.user
       if (user) {
         identify(user.id, userSessionToIdentifyPayload(session))
@@ -124,3 +121,5 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
 
   return <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>
 })
+
+const processSession = (session) => ({ ...session, user: session?.customer?.user || session?.user })
