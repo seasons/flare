@@ -1,13 +1,18 @@
 import React from "react"
+import { ImageProps } from "react-native"
 
 const isProd = process.env.ENVIRONMENT === "production"
 
-export const Picture: React.FC<{
+export type ImagePropsWithoutSource = Omit<ImageProps, "source">
+
+interface PictureProps extends ImagePropsWithoutSource {
   src: string
-  alt: string
-  onLoad?: () => void
   imgRef?: any
-}> = ({ src, alt, imgRef, onLoad }) => {
+  onLoad?: (event: any) => void
+  alt?: string
+}
+
+export const Picture: React.FC<PictureProps> = ({ src, alt, imgRef, onLoad }) => {
   let prefix
   if (src.includes("seasons-s3.imgix.net") || src.includes("seasons-s3-staging.imgix.net")) {
     prefix = ""
