@@ -23,6 +23,7 @@ import { useQuery } from "@apollo/client"
 import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
 import { AuthorizedCTA } from "./Components/AuthorizedCTA"
+import { AppleSVG, InstagramSVG } from "components/SVGs"
 
 export enum UserState {
   Undetermined,
@@ -132,13 +133,34 @@ export const Account = screenTrack()(({ navigation }) => {
       onPress: () => openDrawer("paymentAndShipping"),
       tracking: Schema.ActionNames.PaymentAndShippingTapped,
     },
+    {
+      title: "Frequently asked questions",
+      icon: <PaymentShippingIcon />,
+      onPress: () => openDrawer("faq", { previousScreen: "profile" }),
+      tracking: Schema.ActionNames.FAQTapped,
+    },
+  ]
+
+  const middleList = [
+    {
+      title: "Follow us on Instagram",
+      icon: <InstagramSVG />,
+      onPress: () => window.open("https://www.instagram.com/seasons.ny", "_blank"),
+      tracking: Schema.ActionNames.InstagramFollowTapped,
+    },
+    {
+      title: "Download the iOS app",
+      icon: <AppleSVG width="20px" height="23px" opacity={0.3} />,
+      tracking: Schema.ActionNames.GetTheIOSAppTapped,
+      onPress: () => window.open("https://szns.co/app", "_blank"),
+    },
   ]
 
   const bottomList = [
     {
       title: "Help and support",
       icon: <QuestionMark />,
-      onPress: () => Linking.openURL(`mailto:membership@seasons.nyc?subject=Support`),
+      onPress: () => window.open(`mailto:membership@seasons.nyc?subject=Support`),
       tracking: Schema.ActionNames.SupportTapped,
     },
     {
@@ -234,6 +256,12 @@ export const Account = screenTrack()(({ navigation }) => {
         <Box px={2} py={4}>
           {!!data ? renderBody() : <ListSkeleton />}
         </Box>
+        <InsetSeparator />
+        <Spacer mb={4} />
+        <Box px={2}>
+          <AccountList list={middleList} roles={roles} />
+        </Box>
+        <Spacer mb={4} />
         <InsetSeparator />
         <Spacer mb={4} />
         <Box px={2}>
