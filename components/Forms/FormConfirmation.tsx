@@ -1,6 +1,6 @@
 import Link from "next/link"
 import styled from "styled-components"
-
+import { CheckWithBackground } from "components/SVGs"
 import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
 import { color } from "../../helpers"
 import { Button } from "../Button/Button"
@@ -9,12 +9,24 @@ import { FormFooter } from "./FormsTemplate"
 import HeaderText from "./HeaderText"
 
 interface FormConfirmationProps {
-  icon?: JSX.Element
-  headerText: string
-  bodyText: string
+  status: "waitlisted" | "accountAccepted"
 }
 
-export const FormConfirmation: React.FC<FormConfirmationProps> = ({ icon, headerText, bodyText }) => {
+export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status }) => {
+  let icon
+  let headerText
+  let bodyText
+
+  if (status === "waitlisted") {
+    icon = <CheckWithBackground backgroundColor={"#000"} />
+    headerText = "You're Waitlisted"
+    bodyText = "We’ll let you know when your account is ready and you’re able to choose your plan."
+  } else {
+    icon = <CheckWithBackground />
+    headerText = "Welcome to Seasons"
+    bodyText = "Your membership is active and you’re ready to start reserving. Tap below to start browsing."
+  }
+
   const footerText = (
     <>
       {"Have a question about Seasons or your application? Contact us at "}
