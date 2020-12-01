@@ -16,7 +16,7 @@ import { withRouter } from "next/router"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useState } from "react"
-import { Schema, screenTrack } from "utils/analytics"
+import { identify, Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import { BreadCrumbs } from "components/Product/BreadCrumbs"
@@ -36,6 +36,17 @@ const Product = screenTrack(({ router }) => {
     },
   })
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
+
+  useEffect(() => {
+    if (data?.me) {
+      const bagItems = data?.me?.bag?.length + data?.me?.savedItems?.length
+      if (bagItems) {
+        identify(data?.me?.customer?.user?.id, {
+          bagItems: data?.me?.bag?.length + data?.me?.savedItems?.length,
+        })
+      }
+    }
+  }, [data])
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState(

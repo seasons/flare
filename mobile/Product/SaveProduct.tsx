@@ -34,17 +34,6 @@ export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product,
         query: GET_BAG,
       },
     ],
-    onCompleted: () => {
-      const user = userSession?.user
-      if (user?.id) {
-        let analytics
-
-        if (typeof window !== "undefined") {
-          analytics = (window as any)?.analytics
-        }
-        identify(user.id, { bagItems: (analytics?.user()?.traits()?.bagItems || 0) + 1 })
-      }
-    },
   })
 
   if (!product) {
