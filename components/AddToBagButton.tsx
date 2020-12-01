@@ -34,7 +34,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
   const isUserSignedIn = authState?.isSignedIn
 
   useEffect(() => {
-    if (props?.isInBag) {
+    if (typeof props?.isInBag === "boolean") {
       setAdded(props.isInBag)
     }
   }, [props])

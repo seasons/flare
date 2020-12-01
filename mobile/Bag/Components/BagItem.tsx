@@ -85,7 +85,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
 
   const NonReservedItemContent = () => {
     return (
-      <Flex style={{ flex: 2, width: "100%" }} flexWrap="nowrap" flexDirection="column" justifyContent="space-between">
+      <Flex style={{ flex: 2 }} flexWrap="nowrap" flexDirection="column" justifyContent="space-between">
         <Box>
           <Box style={{ width: "100%" }}>
             <Sans size="3">{`${index + 1}. ${product?.brand?.name}`}</Sans>
@@ -130,13 +130,14 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
           </Box>
         </Box>
         {!isReserved && (
-          <Flex flexDirection="row" pt={1}>
+          <Flex flexDirection="row" pt={1} pb="2px">
             <Box>
               <Button
                 size="small"
                 variant="secondaryOutline"
                 disabled={isMutating}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   tracking.trackEvent({
                     actionName: Schema.ActionNames.BagItemRemoved,
                     actionType: Schema.ActionTypes.Tap,

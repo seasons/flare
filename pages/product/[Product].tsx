@@ -59,6 +59,7 @@ const Product = screenTrack(({ router }) => {
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
   const featuredBrandItems = navigationData?.brands || []
+  const variantInStock = selectedVariant?.reservable > 0
 
   return (
     <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
@@ -112,6 +113,7 @@ const Product = screenTrack(({ router }) => {
                   <Flex flex={1}>
                     <VariantSelect
                       product={product}
+                      variantInStock={variantInStock}
                       selectedVariant={selectedVariant}
                       setSelectedVariant={setSelectedVariant}
                       onSizeSelected={(size) => {
@@ -124,7 +126,7 @@ const Product = screenTrack(({ router }) => {
                     <AddToBagButton
                       selectedVariant={selectedVariant}
                       data={data}
-                      variantInStock={true}
+                      variantInStock={variantInStock}
                       isInBag={isInBag}
                     />
                   </Flex>

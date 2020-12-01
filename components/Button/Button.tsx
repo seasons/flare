@@ -1,3 +1,4 @@
+import { color } from "helpers"
 import React, { Component } from "react"
 import styled, { css } from "styled-components"
 import { borderRadius, borders, height, space, textAlign, width } from "styled-system"
@@ -230,6 +231,22 @@ const Container = styled.button<ButtonBaseProps>`
   ${height};
 
   border-style: solid;
+
+  &:hover {
+    .hover-white-background {
+      background-color: ${color("white100")} !important;
+
+      path {
+        stroke: ${color("white100")} !important;
+      }
+    }
+
+    .hover-white-path__svg {
+      path {
+        stroke: ${color("white100")} !important;
+      }
+    }
+  }
 
   ${(props) => {
     if (!props.loading) {
