@@ -42,7 +42,7 @@ const Product = screenTrack(({ router }) => {
       const bagItems = data?.me?.bag?.length + data?.me?.savedItems?.length
       if (bagItems) {
         identify(data?.me?.customer?.user?.id, {
-          bagItems: data?.me?.bag?.length + data?.me?.savedItems?.length,
+          bagItems,
         })
       }
     }
