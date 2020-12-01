@@ -13,7 +13,6 @@ import { FlatList, RefreshControl } from "react-native"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
-
 import { BagTab, ReservationHistoryTab, SavedItemsTab } from "./Components"
 
 export enum BagView {

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect, useMemo, useRef } from "react"
 import { NextPage } from "next"
 import { useState } from "react"
 import { useQuery } from "@apollo/client"
@@ -30,7 +30,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 }))(() => {
   const tracking = useTracking()
   const router = useRouter()
-
+  const scrollRef = useRef(null)
   const filter = router.query?.Filter || "all+all"
   const page = router.query?.page || 1
 
@@ -64,7 +64,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   })
 
   useEffect(() => {
-    window && window.scrollTo(0, 0)
+    scrollRef?.current?.scrollTo(0, 0)
   }, [currentPage, refetch])
 
   if (error) {
@@ -103,7 +103,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   return (
     <>
-      <Layout fixedNav footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems}>
+      <Layout fixedNav footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems} scrollRef={scrollRef}>
         <Media lessThan="md">
           <MobileFilters
             BrandsListComponent={

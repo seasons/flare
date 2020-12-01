@@ -126,7 +126,11 @@ export const BagTab: React.FC<{
               index={index}
               bagItem={bagItem}
             />
-            {!hasActiveReservation && index !== items.length - 1 && <Separator color={color("black10")} />}
+            {!hasActiveReservation && index !== items.length - 1 && (
+              <Box pt={1}>
+                <Separator color={color("black10")} />
+              </Box>
+            )}
           </Box>
         ) : (
           <Box key={index} px={2}>
