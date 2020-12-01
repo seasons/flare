@@ -135,6 +135,7 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
   render() {
     const { initialValues, children } = this.props
     const { validate, validationSchema } = this.currentStep.props
+
     return (
       <Formik
         initialValues={initialValues}
