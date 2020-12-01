@@ -8,6 +8,7 @@ import Link from "next/link"
 import { Media } from "../Responsive"
 import { Button } from "../Button"
 import { Check } from "../SVGs"
+import { useAuthContext } from "lib/auth/AuthContext"
 
 const headerText = "Wear.Swap.Repeat."
 
@@ -20,7 +21,7 @@ const listText = [
   "No commitment. Pause or cancel anytime.",
 ]
 
-const DesktopTextContent = () => {
+const DesktopTextContent = ({ ctaData }) => {
   return (
     <Box pb={5} style={{ zIndex: 3, position: "relative" }} pr={2}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
@@ -35,8 +36,8 @@ const DesktopTextContent = () => {
           </Sans>
           <Spacer mb={4} />
           <Flex flexDirection="row">
-            <Link href="/signup">
-              <Button>Apply for membership</Button>
+            <Link href={ctaData.link}>
+              <Button>{ctaData.text}</Button>
             </Link>
             <Spacer mr={1} />
             <GetTheAppButton />
@@ -57,12 +58,12 @@ const DesktopTextContent = () => {
   )
 }
 
-const DesktopHero = ({ post }) => {
+const DesktopHero = ({ post, ctaData }) => {
   return (
     <MaxWidth>
       <Box width="100%" px={[2, 2, 2, 5, 5]} pb={5}>
         <Flex flexDirection="row" justifyContent="space-between">
-          <DesktopTextContent />
+          <DesktopTextContent ctaData={ctaData} />
           <StyledAnchor href={post?.url}>
             <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
           </StyledAnchor>
@@ -82,7 +83,7 @@ const DesktopHero = ({ post }) => {
   )
 }
 
-const MobileHero = ({ post }) => {
+const MobileHero = ({ post, ctaData }) => {
   return (
     <Grid>
       <Row>
@@ -98,8 +99,8 @@ const MobileHero = ({ post }) => {
                 {caption}
               </Sans>
               <Spacer mb={4} />
-              <Link href="/signup">
-                <Button>Apply for membership</Button>
+              <Link href={ctaData.link}>
+                <Button>{ctaData.text}</Button>
               </Link>
               <Spacer mb={1} />
               <GetTheAppButton block />
@@ -137,16 +138,23 @@ const MobileHero = ({ post }) => {
 }
 
 export const Hero: React.FC<{ post: any }> = ({ post }) => {
+  const { authState } = useAuthContext()
+  const isUserSignedIn = authState?.isSignedIn
+
+  const ctaData = isUserSignedIn
+    ? { text: "Browse the collection", link: "/browse" }
+    : { text: "Apply for membership", link: "/signup" }
+
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopHero post={post} />
+        <DesktopHero post={post} ctaData={ctaData} />
         <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
       </Media>
       <Media lessThan="md">
-        <MobileHero post={post} />
+        <MobileHero post={post} ctaData={ctaData} />
       </Media>
     </>
   )

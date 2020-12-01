@@ -68,7 +68,7 @@ export const Drawer = (props: DrawerProps) => {
       case "paymentAndShipping":
         return <PaymentAndShipping />
       case "faq":
-        return <DrawerFAQ />
+        return <DrawerFAQ previousScreen={params?.previousScreen} />
       case "resumeConfirmation":
         return <ResumeConfirmation />
       case "choosePlan":

@@ -21,6 +21,7 @@ interface LayoutProps {
   includeDefaultHead?: boolean
   brandItems: { name: string; slug: string }[]
   onScroll?: () => void
+  scrollRef?: any
 }
 
 export const Layout = ({
@@ -31,6 +32,7 @@ export const Layout = ({
   includeDefaultHead = true,
   brandItems,
   onScroll,
+  scrollRef,
 }: LayoutProps) => {
   // If there are any UTM params, store them in a cookie
   const router = useRouter()
@@ -54,7 +56,7 @@ export const Layout = ({
         <DrawerProvider>
           <Theme>
             {fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}
-            <ScrollContainer mt={fixedNav ? 60 : 0} pb={60} onScroll={onScroll}>
+            <ScrollContainer mt={fixedNav ? 60 : 0} pb={60} onScroll={onScroll} ref={scrollRef}>
               <MaxWidth>
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {!fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}

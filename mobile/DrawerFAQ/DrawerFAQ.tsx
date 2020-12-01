@@ -20,7 +20,7 @@ const GET_DRAWER_FAQ = gql`
   }
 `
 
-export const DrawerFAQ = () => {
+export const DrawerFAQ = ({ previousScreen }) => {
   const { data } = useQuery(GET_DRAWER_FAQ)
   const { openDrawer } = useDrawerContext()
 
@@ -32,7 +32,7 @@ export const DrawerFAQ = () => {
         <FixedBackArrow
           variant="whiteBackground"
           onPress={() => {
-            openDrawer("bag")
+            openDrawer(previousScreen ? previousScreen : "bag")
           }}
         />
         <Loader />
@@ -45,7 +45,7 @@ export const DrawerFAQ = () => {
       <FixedBackArrow
         variant="whiteBackground"
         onPress={() => {
-          openDrawer("bag")
+          openDrawer(previousScreen ? previousScreen : "bag")
         }}
       />
       <Spacer mb={80} />

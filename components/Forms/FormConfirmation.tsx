@@ -5,7 +5,6 @@ import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
 import { color } from "../../helpers"
 import { Button } from "../Button/Button"
 import { GetTheAppButton } from "../Button/GetTheApp"
-import { InstagramSVG } from "../SVGs"
 import { FormFooter } from "./FormsTemplate"
 import HeaderText from "./HeaderText"
 
