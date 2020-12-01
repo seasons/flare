@@ -9,9 +9,8 @@ import { sizeToName } from "components/Product/VariantSelect"
 import { Loader } from "mobile/Loader"
 import { GET_BAG } from "queries/bagQueries"
 import { color, space } from "helpers"
-import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
+import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { SAVE_ITEM } from "./SaveProductButton"
-import { useAuthContext } from "lib/auth/AuthContext"
 
 interface SaveProductProps {
   onDismiss: () => void
@@ -21,7 +20,6 @@ interface SaveProductProps {
 export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product, onDismiss }) => {
   const tracking = useTracking()
   const [selectedVariantID, setSelectedVariantID] = useState(null)
-  const { userSession } = useAuthContext()
   const [saveItem] = useMutation(SAVE_ITEM, {
     refetchQueries: [
       {
