@@ -266,7 +266,6 @@ const SignUpPage = screenTrack(() => ({
           })
 
           if (response) {
-            // TODO: Make sure this data has what we need for the signup identify
             signIn(response.data.signup)
             localStorage?.setItem("coupon", JSON.stringify(response.data.signup.customer?.coupon))
             actions.setSubmitting(false)
