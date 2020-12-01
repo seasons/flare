@@ -5,7 +5,7 @@ import { head } from "lodash"
 import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
-import { Schema, useTracking } from "utils/analytics"
+import { identify, Schema, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
 
@@ -62,6 +62,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       onAdded?.(true)
       const itemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
       const bagItemCount = authState?.isSignedIn ? data?.me?.bag?.length : res.addOrRemoveFromLocalBag.length
+      identify(data?.me?.customer?.user?.id, { bagItems: data?.me?.bag?.length + data?.me?.savedItems?.length })
       if (itemCount && bagItemCount && bagItemCount >= itemCount) {
         showPopUp({
           icon: <CheckWithBackground />,
