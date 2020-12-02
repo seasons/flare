@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/client"
 import { TriageProgressScreen } from "./TriageProgressScreen"
 import { HOME_QUERY } from "queries/homeQueries"
 import { PAYMENT_PLANS } from "./ChoosePlanStep"
-import { identify } from "../../utils/analytics/track"
+import { identify } from "utils/analytics/track"
 import { useAuthContext } from "lib/auth/AuthContext"
 
 const TRIAGE = gql`
