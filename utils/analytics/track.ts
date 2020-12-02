@@ -116,7 +116,7 @@ export function screenTrack<P>(trackingInfo?: TrackingInfo<Schema.PageViewEvent,
 }
 
 export const useTracking: () => TrackingProp<TrackingInfo<Schema.Event, null, null>> = () => {
-  let analytics = useAnalytics()
+  const analytics = useAnalytics()
   const tracking = _useTracking()
 
   return {
