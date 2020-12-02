@@ -23,6 +23,9 @@ export const GET_MEMBERSHIP_INFO = gql`
           subscriptionId
           dueDate
         }
+        user {
+          id
+        }
         membership {
           id
           pauseRequests(orderBy: createdAt_DESC) {

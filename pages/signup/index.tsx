@@ -15,7 +15,7 @@ import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import { Schema, screenTrack, useTracking } from "utils/analytics"
+import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
 import { CustomerStatus } from "mobile/Account/Lists"
@@ -111,6 +111,9 @@ const GET_SIGNUP_USER = gql`
         detail {
           id
           height
+        }
+        user {
+          id
         }
         membership {
           id
@@ -339,6 +342,7 @@ const SignUpPage = screenTrack(() => ({
             }}
             onSuccess={() => {
               localStorage.setItem("paymentProcessed", "true")
+              identify(data?.me?.customer?.user?.id, { status: "Active" })
               setTimeout(() => {
                 wizard.next()
               }, 500)

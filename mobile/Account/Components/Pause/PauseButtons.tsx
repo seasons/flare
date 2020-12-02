@@ -10,6 +10,7 @@ import React, { useState } from "react"
 import { Linking } from "react-native"
 
 import { useMutation } from "@apollo/client"
+import { identify } from "utils/analytics"
 
 export type PauseStatus = "active" | "pending" | "paused"
 
@@ -91,6 +92,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
     ],
     onCompleted: () => {
       setIsMutating(false)
+      identify(customer?.user?.id, { status: "Active" })
       const popUpData = {
         title: "Got it!",
         note: "Your membership is no longer scheduled to be paused.",
@@ -123,6 +125,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       //   screen: Schema.PageNames.PauseConfirmation,
       //   params: { dueDate },
       // })
+      identify(customer?.user?.id, { status: "Paused" })
       setIsMutating(false)
     },
     onError: (err) => {
@@ -145,6 +148,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       },
     ],
     onCompleted: () => {
+      identify(customer?.user?.id, { status: "Active" })
       openDrawer("resumeConfirmation")
       setIsMutating(false)
     },
