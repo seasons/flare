@@ -7,6 +7,7 @@ import { ClickAwayListener, Grow, Paper, Popper, Modal } from "@material-ui/core
 import { color } from "helpers/color"
 import NextLink from "next/link"
 import { gql } from "@apollo/client"
+import { Schema, useTracking } from "utils/analytics"
 
 type Props = {
   brandItems: Array<{ slug: string; name: string }>
@@ -20,6 +21,7 @@ export const BrandNavItemFragment = gql`
 `
 
 const DesktopNavItem = ({ brands }) => {
+  const tracking = useTracking()
   const anchorRef = React.useRef(null)
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
   return (
@@ -34,7 +36,19 @@ const DesktopNavItem = ({ brands }) => {
               <ClickAwayListener onClickAway={() => (isOpen ? setIsOpen(false) : null)}>
                 <DesktopBrandsContainer p={3} pb={2}>
                   {brands.map(({ name, slug }) => (
-                    <Box key={slug} onClick={() => setIsOpen(false)} mb={1}>
+                    <Box
+                      key={slug}
+                      onClick={() => {
+                        tracking.trackEvent({
+                          actionName: Schema.ActionNames.BrandTapped,
+                          actionType: Schema.ActionTypes.Tap,
+                          brandName: name,
+                          brandSlug: slug,
+                        })
+                        setIsOpen(false)
+                      }}
+                      mb={1}
+                    >
                       <NextLink href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`}>
                         <Sans size={7} style={{ textDecoration: "underline", cursor: "pointer" }}>
                           {name}

@@ -6,13 +6,14 @@ import { Box, Flex, Sans, Separator, Spacer } from "../"
 import { color } from "../../helpers"
 import { VariantSizes } from "../VariantSizes"
 import { ProductInfoItem } from "./ProductInfoItem"
-import { ProductMeasurements } from "./ProductMeasurements"
+import { Schema, useTracking } from "utils/analytics"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{
   product: any
   selectedVariant: any
 }> = ({ product, selectedVariant }) => {
+  const tracking = useTracking()
   if (!product || !product.variants) {
     return <></>
   }
@@ -48,11 +49,22 @@ export const ProductDetails: React.FC<{
             <Sans size="5" color="black">
               {name}
             </Sans>
-            <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
-              <Sans size="4" color="gray" style={{ cursor: "pointer", textDecoration: "underline" }}>
-                {brandName}
-              </Sans>
-            </Link>
+            <Box
+              onClick={() =>
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.BrandTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                  brandName,
+                  brandSlug,
+                })
+              }
+            >
+              <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
+                <Sans size="4" color="gray" style={{ cursor: "pointer", textDecoration: "underline" }}>
+                  {brandName}
+                </Sans>
+              </Link>
+            </Box>
           </Box>
         </Box>
       </Flex>
