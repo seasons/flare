@@ -65,3 +65,18 @@ export const getAccessTokenFromSession = () => {
   const accessToken = userSession ? userSession.token : ""
   return accessToken
 }
+
+export const userSessionToIdentifyPayload = (session) => {
+  const cust = session?.customer
+  const traits = {
+    ...session?.user,
+    ...session?.customer?.user,
+    status: cust?.status,
+    admissable: cust?.admissions?.admissable,
+    authorizations: cust?.admissions?.authorizationsCount,
+    state: cust?.detail?.shippingAddress?.state,
+    bagItems: cust?.bagItems?.length,
+    customerID: cust?.id,
+  }
+  return traits
+}

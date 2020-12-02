@@ -1,7 +1,6 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { head } from "lodash"
 import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"

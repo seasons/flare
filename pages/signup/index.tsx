@@ -43,16 +43,31 @@ const SIGN_UP_USER = gql`
       expiresIn
       refreshToken
       token
-      user {
-        id
-        email
-        firstName
-        lastName
-        beamsToken
-        roles
-      }
       customer {
         id
+        status
+        detail {
+          id
+          shippingAddress {
+            id
+            state
+          }
+        }
+        bagItems {
+          id
+        }
+        admissions {
+          id
+          admissable
+          authorizationsCount
+        }
+        user {
+          id
+          email
+          firstName
+          lastName
+          createdAt
+        }
         coupon {
           id
           amount
