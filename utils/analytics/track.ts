@@ -4,13 +4,18 @@ import * as Schema from "./schema"
 
 export { Schema }
 
+const getAnalytics = () => {
+  if (typeof window !== "undefined") {
+    return (window as any)?.analytics
+  }
+  return null
+}
+
 const useAnalytics = () => {
   const [analytics, setAnalytics] = useState(null)
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setAnalytics((window as any)?.analytics)
-    }
+    setAnalytics(getAnalytics())
   }, [typeof window])
 
   return analytics
@@ -96,11 +101,7 @@ export const track: Track = _track
  */
 
 export function screenTrack<P>(trackingInfo?: TrackingInfo<Schema.PageViewEvent, P, null>) {
-  let analytics
-
-  if (typeof window !== "undefined") {
-    analytics = (window as any)?.analytics
-  }
+  const analytics = getAnalytics()
 
   return _track(trackingInfo as any, {
     dispatch: (data) => {
@@ -129,21 +130,13 @@ export const useTracking: () => TrackingProp<TrackingInfo<Schema.Event, null, nu
 }
 
 export const identify = (userId: string, traits: any) => {
-  let analytics
-
-  if (typeof window !== "undefined") {
-    analytics = (window as any)?.analytics
-  }
+  const analytics = getAnalytics()
 
   analytics?.identify(userId, traits)
 }
 
 export const reset = () => {
-  let analytics
-
-  if (typeof window !== "undefined") {
-    analytics = (window as any)?.analytics
-  }
+  const analytics = getAnalytics()
 
   analytics?.reset()
 }
