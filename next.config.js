@@ -24,6 +24,27 @@ module.exports = withSourceMaps(
         config.resolve.extensions = [".web.js", ".web.ts", ".web.tsx", ...config.resolve.extensions]
         return config
       },
+      async headers() {
+        return [
+          {
+            source: "/fonts/(.*)",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public,max-age=31536000,immutable"
+              },
+              {
+                key: "Access-Control-Allow-Origin",
+                value: "*",
+              },
+              {
+                key: "Access-Control-Allow-Methods",
+                value: "GET",
+              }
+            ]
+          }
+        ]
+      },
       async redirects() {
         return [
           {
