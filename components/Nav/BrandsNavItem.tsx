@@ -88,6 +88,7 @@ const DesktopBrandsContainer = styled(Box)`
 `
 
 const MobileNavItem = ({ brands }) => {
+  const tracking = useTracking()
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
   return (
     <>
@@ -103,7 +104,19 @@ const MobileNavItem = ({ brands }) => {
           <Separator />
           <MobileBrandsContainer p={3}>
             {brands.map(({ name, slug }) => (
-              <Box key={slug} onClick={() => setIsOpen(false)} mb={2}>
+              <Box
+                key={slug}
+                onClick={() => {
+                  tracking.trackEvent({
+                    actionName: Schema.ActionNames.BrandTapped,
+                    actionType: Schema.ActionTypes.Tap,
+                    brandName: name,
+                    brandSlug: slug,
+                  })
+                  setIsOpen(false)
+                }}
+                mb={2}
+              >
                 <NextLink href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`}>
                   <Sans size={7} style={{ textDecoration: "underline", cursor: "pointer" }}>
                     {name}
