@@ -38,6 +38,7 @@
     "aws-sdk": "^2.691.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "chargebee": "^2.6.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "formik": "^2.1.4",
     "formik-material-ui": "^2.0.0",

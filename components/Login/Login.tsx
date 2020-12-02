@@ -15,10 +15,31 @@ import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      user {
-        email
-        firstName
-        lastName
+      customer {
+        id
+        status
+        detail {
+          id
+          shippingAddress {
+            id
+            state
+          }
+        }
+        bagItems {
+          id
+        }
+        admissions {
+          id
+          admissable
+          authorizationsCount
+        }
+        user {
+          id
+          email
+          firstName
+          lastName
+          createdAt
+        }
       }
       token
       refreshToken

@@ -139,6 +139,8 @@ export enum ActionNames {
   SupportTapped = "Support Tapped",
   PrivacyPolicyTapped = "Privacy Policy Tapped",
   TermsOfServiceTapped = "Terms Of Service Tapped",
+  InstagramFollowTapped = "Instagram Follow Tapped",
+  GetTheIOSAppTapped = "Get The iOS App Tapped",
   LogOutTapped = "Log Out Tapped",
   ChoosePlanTapped = "Choose Plan Tapped",
   PlanTapped = "Plan Tapped",
@@ -149,7 +151,7 @@ export enum ActionNames {
   GetMeasurementsFinishTapped = "Get Measurements Finish Tapped",
   SizeButtonTapped = "Size Button Tapped",
   SaveProductModalCancelTapped = "Save Product Modal Cancel Tapped",
-  SaveProductModalSaveTapped = "Save Product Modal Save Tapped"
+  SaveProductModalSaveTapped = "Save Product Modal Save Tapped",
 }
 
 /**

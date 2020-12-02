@@ -7,8 +7,9 @@ import { useRouter } from "next/router"
 import { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
-import { Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
+import { Image } from "mobile/Image"
 import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
@@ -84,7 +85,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
 
   const NonReservedItemContent = () => {
     return (
-      <Flex style={{ flex: 2, width: "100%" }} flexWrap="nowrap" flexDirection="column" justifyContent="space-between">
+      <Flex style={{ flex: 2 }} flexWrap="nowrap" flexDirection="column" justifyContent="space-between">
         <Box>
           <Box style={{ width: "100%" }}>
             <Sans size="3">{`${index + 1}. ${product?.brand?.name}`}</Sans>
@@ -129,13 +130,14 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
           </Box>
         </Box>
         {!isReserved && (
-          <Flex flexDirection="row" pt={1}>
+          <Flex flexDirection="row" pt={1} pb="2px">
             <Box>
               <Button
                 size="small"
                 variant="secondaryOutline"
                 disabled={isMutating}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   tracking.trackEvent({
                     actionName: Schema.ActionNames.BagItemRemoved,
                     actionType: Schema.ActionTypes.Tap,

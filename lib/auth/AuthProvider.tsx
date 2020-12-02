@@ -1,9 +1,9 @@
 import { getUserSession } from "lib/auth/auth"
 import React, { useEffect, useImperativeHandle } from "react"
+import { identify, reset } from "../../utils/analytics"
 
 import AuthContext from "./AuthContext"
-
-let analytics: any | null
+import { userSessionToIdentifyPayload } from "./auth"
 
 export interface AuthProviderProps {
   apolloClient: any
@@ -29,7 +29,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
         case "RESTORE_TOKEN":
           return {
             ...prevState,
-            userSession: action.userSession,
+            userSession: processSession(action.userSession),
             isSignedIn: !!action.token,
             authInitializing: false,
           }
@@ -37,7 +37,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
           return {
             ...prevState,
             isSignedIn: true,
-            userSession: action.userSession,
+            userSession: processSession(action.userSession),
           }
         case "SIGN_OUT":
           return {
@@ -67,8 +67,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
         if (userSession && userSession.token) {
           const user = userSession?.user
           if (user) {
-            // FIX: analytics is undefined by the time this gets called
-            analytics?.identify(user.id, user)
+            identify(user.id, userSessionToIdentifyPayload(userSession))
           }
           dispatch({ type: "RESTORE_TOKEN", token: userSession.token, userSession })
         } else {
@@ -90,10 +89,10 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
   const authContext = {
     signIn: async (session) => {
       dispatch({ type: "SIGN_IN", token: session.token, userSession: session })
-      localStorage.setItem("userSession", JSON.stringify(session))
-      const user = session?.user
+      localStorage.setItem("userSession", JSON.stringify(processSession(session)))
+      const user = session?.customer?.user
       if (user) {
-        analytics?.identify(user.id, user)
+        identify(user.id, userSessionToIdentifyPayload(session))
       }
       apolloClient.stop()
       apolloClient.resetStore()
@@ -103,7 +102,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
       for (const key of keysToClear) {
         localStorage.removeItem(key)
       }
-      analytics?.reset()
+      reset()
       dispatch({ type: "SIGN_OUT" })
       apolloClient.stop()
       apolloClient.resetStore()
@@ -122,3 +121,5 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
 
   return <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>
 })
+
+const processSession = (session) => ({ ...session, user: session?.customer?.user || session?.user })

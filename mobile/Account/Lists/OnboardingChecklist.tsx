@@ -36,7 +36,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({ userSt
   const detail =
     userState == UserState.Undetermined
       ? "You still have some steps to finish before you can place an order."
-      : "We’ll send you an email when your account is ready and you’re able to choose your plan. In the meantime, complete your profile below."
+      : "We’ll send you an email when your account is ready and you’re able to choose your plan."
 
   const router = useRouter()
   const { closeDrawer } = useDrawerContext()

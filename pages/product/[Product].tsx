@@ -17,7 +17,7 @@ import { withRouter } from "next/router"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
-import { Schema, screenTrack } from "utils/analytics"
+import { identify, Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 
@@ -36,6 +36,17 @@ const Product = screenTrack(({ router }) => {
     },
   })
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
+
+  useEffect(() => {
+    if (data?.me) {
+      const bagItems = data?.me?.bag?.length + data?.me?.savedItems?.length
+      if (bagItems) {
+        identify(data?.me?.customer?.user?.id, {
+          bagItems,
+        })
+      }
+    }
+  }, [data])
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState(
@@ -59,6 +70,7 @@ const Product = screenTrack(({ router }) => {
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
   const featuredBrandItems = navigationData?.brands || []
+  const variantInStock = selectedVariant?.reservable > 0
 
   return (
     <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
@@ -112,6 +124,7 @@ const Product = screenTrack(({ router }) => {
                   <Flex flex={1}>
                     <VariantSelect
                       product={product}
+                      variantInStock={variantInStock}
                       selectedVariant={selectedVariant}
                       setSelectedVariant={setSelectedVariant}
                       onSizeSelected={(size) => {
@@ -124,7 +137,7 @@ const Product = screenTrack(({ router }) => {
                     <AddToBagButton
                       selectedVariant={selectedVariant}
                       data={data}
-                      variantInStock={true}
+                      variantInStock={variantInStock}
                       isInBag={isInBag}
                     />
                   </Flex>

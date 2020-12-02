@@ -10,15 +10,12 @@ import { BrandNavItemFragment } from "components/Nav"
 import { Wizard } from "components/Forms/Wizard"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
-import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
-import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
 import { useRouter } from "next/router"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useState } from "react"
-import { Schema, screenTrack, useTracking } from "utils/analytics"
+import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
 import { CustomerStatus } from "mobile/Account/Lists"
@@ -46,16 +43,31 @@ const SIGN_UP_USER = gql`
       expiresIn
       refreshToken
       token
-      user {
-        id
-        email
-        firstName
-        lastName
-        beamsToken
-        roles
-      }
       customer {
         id
+        status
+        detail {
+          id
+          shippingAddress {
+            id
+            state
+          }
+        }
+        bagItems {
+          id
+        }
+        admissions {
+          id
+          admissable
+          authorizationsCount
+        }
+        user {
+          id
+          email
+          firstName
+          lastName
+          createdAt
+        }
         coupon {
           id
           amount
@@ -100,6 +112,9 @@ const GET_SIGNUP_USER = gql`
           id
           height
         }
+        user {
+          id
+        }
         membership {
           id
           plan {
@@ -132,13 +147,6 @@ const SignUpPage = screenTrack(() => ({
 
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
-  const [paymentProcessed, setPaymentProcessed] = useState(false)
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
-    }
-  }, [setPaymentProcessed])
 
   const customerStatus = data?.me?.customer?.status
   const customerDetail = data?.me?.customer?.detail
@@ -148,7 +156,6 @@ const SignUpPage = screenTrack(() => ({
   const hasMeasurements = !!customerDetail?.height
   const _isAuthorized = !!customerStatus && customerStatus === CustomerStatus.Authorized
   const _isWaitlisted = !!customerStatus && customerStatus === CustomerStatus.Waitlisted
-  const isActive = !!customerStatus && customerStatus === CustomerStatus.Active
 
   const [isWaitlisted, setIsWaitlisted] = useState(false)
   const [isAuthorized, setIsAuthorized] = useState(false)
@@ -175,19 +182,6 @@ const SignUpPage = screenTrack(() => ({
     height: "",
     topSizes: [""],
     waistSizes: [""],
-  }
-
-  const confirmData = {
-    waitlisted: {
-      icon: <CheckWithBackground backgroundColor={"#000"} />,
-      headerText: "You're Waitlisted",
-      bodyText: "We’ll let you know when your account is ready and you’re able to choose your plan.",
-    },
-    accountAccepted: {
-      icon: <CheckWithBackground />,
-      headerText: "Welcome to Seasons",
-      bodyText: "Your membership is active and you’re ready to start reserving. Tap below to start browsing.",
-    },
   }
 
   const closeSnackBar = () => {
@@ -326,60 +320,44 @@ const SignUpPage = screenTrack(() => ({
     </Step>
   )
 
-  let steps
-
-  const finishedFlow = paymentProcessed || isWaitlisted || isActive
   const finishedTriage = isAuthorized || isWaitlisted
 
-  if (finishedFlow) {
-    // User has already finished the flow
-    steps = [
-      <Step key="finishedFlow">
-        {() => {
-          const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
-          return <FormConfirmation {...data} />
-        }}
-      </Step>,
-    ]
-  } else {
-    steps = [
-      ...(hasAccount ? [] : [createAccountStep]),
-      ...(hasMeasurements ? [] : [measurementsStep]),
-      ...(finishedTriage ? [] : [triageStep]),
-      <Step key="formConfirmationOrChoosePlanStep">
-        {({ form, wizard }) => {
-          const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
-          return isWaitlisted ? (
-            <FormConfirmation {...data} />
-          ) : (
-            <ChoosePlanStep
-              onPlanSelected={(plan) => {
-                tracking.trackEvent({
-                  actionName: Schema.ActionNames.PlanSelectedButtonClicked,
-                  actionType: Schema.ActionTypes.Tap,
-                  plan,
-                  user: form.values,
-                })
-              }}
-              onSuccess={() => {
-                localStorage.setItem("paymentProcessed", "true")
-                setTimeout(() => {
-                  wizard.next()
-                }, 500)
-              }}
-              onError={() => {}}
-            />
-          )
-        }}
-      </Step>,
-      <Step>
-        {() => {
-          const data = confirmData["accountAccepted"]
-          return <FormConfirmation {...data} />
-        }}
-      </Step>,
-    ]
-  }
+  const steps = [
+    ...(hasAccount ? [] : [createAccountStep]),
+    ...(hasMeasurements ? [] : [measurementsStep]),
+    ...(finishedTriage ? [] : [triageStep]),
+    <Step key="formConfirmationOrChoosePlanStep">
+      {({ form, wizard }) => {
+        return isWaitlisted ? (
+          <FormConfirmation status={isWaitlisted ? "waitlisted" : "accountAccepted"} />
+        ) : (
+          <ChoosePlanStep
+            onPlanSelected={(plan) => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.PlanSelectedButtonClicked,
+                actionType: Schema.ActionTypes.Tap,
+                plan,
+                user: form.values,
+              })
+            }}
+            onSuccess={() => {
+              localStorage.setItem("paymentProcessed", "true")
+              identify(data?.me?.customer?.user?.id, { status: "Active" })
+              setTimeout(() => {
+                wizard.next()
+              }, 500)
+            }}
+            onError={() => {}}
+          />
+        )
+      }}
+    </Step>,
+    <Step>
+      {() => {
+        return <FormConfirmation status="accountAccepted" />
+      }}
+    </Step>,
+  ]
 
   const hasSteps = steps.length > 0
 
