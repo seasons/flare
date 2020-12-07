@@ -57,6 +57,19 @@ module.exports = withSourceMaps(
                 value: "GET",
               }
             ]
+          },
+          {
+            source: "/scripts/try-with-seasons.js",
+            headers: [
+              {
+                key: "Access-Control-Allow-Origin",
+                value: "*",
+              },
+              {
+                key: "Access-Control-Allow-Methods",
+                value: "GET",
+              }
+            ]
           }
         ]
       },
