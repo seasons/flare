@@ -1,6 +1,8 @@
 const withFonts = require("next-fonts")
 const withImages = require("next-images")
 const withSourceMaps = require("@zeit/next-source-maps")
+const CopyPlugin = require("copy-webpack-plugin")
+const path = require("path")
 
 const appDownload = "https://szns.co/app"
 module.exports = withSourceMaps(
@@ -22,7 +24,54 @@ module.exports = withSourceMaps(
           "react-native-svg": "react-native-svg-web",
         }
         config.resolve.extensions = [".web.js", ".web.ts", ".web.tsx", ...config.resolve.extensions]
+
+        config.plugins = [
+          ...(config.plugins || []),
+          new CopyPlugin({
+            patterns: [
+              {
+                from: require.resolve("@seasons/try-with-seasons"),
+                to: path.resolve(__dirname, "public/scripts/try-with-seasons.js"),
+              },
+            ],
+          }),
+        ]
+
         return config
+      },
+      async headers() {
+        return [
+          {
+            source: "/fonts/(.*)",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public,max-age=31536000,immutable"
+              },
+              {
+                key: "Access-Control-Allow-Origin",
+                value: "*",
+              },
+              {
+                key: "Access-Control-Allow-Methods",
+                value: "GET",
+              }
+            ]
+          },
+          {
+            source: "/scripts/try-with-seasons.js",
+            headers: [
+              {
+                key: "Access-Control-Allow-Origin",
+                value: "*",
+              },
+              {
+                key: "Access-Control-Allow-Methods",
+                value: "GET",
+              }
+            ]
+          }
+        ]
       },
       async redirects() {
         return [
