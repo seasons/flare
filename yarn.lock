@@ -1965,10 +1965,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@seasons/try-with-seasons@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@seasons/try-with-seasons/-/try-with-seasons-1.0.0.tgz#7da8b75d1c9c6c446b4ad180ba5f1a2e21e55225"
-  integrity sha512-FSfjSqxyymZvgK5SGujEEMoD+ZgB2h3pg9XE6pUxuGEfefdcR9srGsg8nlR2FkxMXQZTJ4eAK3ryHkGy28Zf2A==
+"@seasons/try-with-seasons@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@seasons/try-with-seasons/-/try-with-seasons-1.0.1.tgz#eff061cafb4fbb44255b1609ed0074687fbcd560"
+  integrity sha512-ckpKLxN10mT25MOvWkaTFpa2QorRFWgRJRdKw5rPSwaQoLeQUA2ljJbkzsHaoeQz0OFHjfNdcNS4/7ceS6UFew==
 
 "@segment/snippet@^4.12.0":
   version "4.12.0"
