@@ -3,11 +3,15 @@ import Head from "next/head"
 import { useEffect } from "react"
 
 export const Intercom = () => {
-  const { userSession } = useAuthContext()
+  const { authState, userSession } = useAuthContext()
   useEffect(() => {
-    if (typeof window !== "undefined" && !!userSession) {
+    if (authState.authInitializing || typeof window === "undefined") {
+      return
+    }
+    const APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID
+
+    if (authState.isSignedIn && !!userSession) {
       const { firstName, lastName, email } = userSession?.user
-      const APP_ID = "dtqi42qh"
 
       ;(window as any).intercomSettings = {
         app_id: APP_ID,
@@ -20,8 +24,12 @@ export const Intercom = () => {
         user_id: email,
         created_at: 1234567890,
       })
+    } else {
+      ;(window as any).Intercom?.("boot", {
+        app_id: APP_ID,
+      })
     }
-  }, [userSession])
+  }, [userSession, authState.authInitializing])
   return (
     <>
       <Head>
