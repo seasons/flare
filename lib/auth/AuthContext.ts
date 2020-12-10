@@ -1,8 +1,10 @@
 import React, { useContext } from "react"
 
+import { AuthContextProps } from "./AuthProvider"
+
 export const useAuthContext = () => useContext(AuthContext)
 
-const AuthContext = React.createContext({
+const AuthContext = React.createContext<AuthContextProps>({
   signIn: (session: string) => null,
   signOut: () => null,
   resetStore: () => null,

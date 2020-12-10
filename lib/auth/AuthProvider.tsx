@@ -1,25 +1,27 @@
-import { getUserSession } from "lib/auth/auth"
+import { getUserSession, UserSession } from "lib/auth/auth"
 import React, { useEffect, useImperativeHandle } from "react"
-import { identify, reset } from "../../utils/analytics"
 
-import AuthContext from "./AuthContext"
+import { identify, reset } from "../../utils/analytics"
 import { userSessionToIdentifyPayload } from "./auth"
+import AuthContext from "./AuthContext"
 
 export interface AuthProviderProps {
   apolloClient: any
   children?: any
 }
 
+export interface AuthContextProps {
+  signIn: (session: any) => Promise<void>
+  signOut: () => Promise<void>
+  toggleLoginModal: (toggle: boolean) => void
+  resetStore: () => void
+  authState: { authInitializing: boolean; isSignedIn: boolean; userSession: UserSession }
+  userSession: UserSession
+  loginModalOpen: boolean
+}
+
 export interface AuthProviderRef {
-  authContext: () => {
-    signIn: (session: any) => Promise<void>
-    signOut: () => Promise<void>
-    toggleLoginModal: (toggle: boolean) => void
-    resetStore: () => void
-    authState: any
-    userSession: any
-    loginModalOpen: boolean
-  }
+  authContext: () => AuthContextProps
 }
 
 export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>(({ apolloClient, children }, ref) => {

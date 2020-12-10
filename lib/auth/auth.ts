@@ -6,6 +6,8 @@ export interface UserSession {
   token: string
   refreshToken: string
   user?: {
+    firstName: string
+    lastName: string
     email: string
     id: string
   }
