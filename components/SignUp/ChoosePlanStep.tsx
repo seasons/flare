@@ -97,6 +97,7 @@ export function getChargebeeCheckout(planID: string, email: string): Promise<boo
 }
 
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
+  console.log(`Render choose plan step`)
   const [selectedPlan, setSelectedPlan] = useState(null)
   const { data } = useQuery(PAYMENT_PLANS)
   const { userSession } = useAuthContext()

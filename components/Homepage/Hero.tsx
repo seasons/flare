@@ -35,23 +35,9 @@ const DesktopTextContent = ({ ctaData }) => {
             {caption}
           </Sans>
           <Spacer mb={4} />
-          <Flex flexDirection="row">
-            <Link href={ctaData.link}>
-              <Button>{ctaData.text}</Button>
-            </Link>
-            <Spacer mr={1} />
-            <GetTheAppButton />
-          </Flex>
+          <HeroCTAs version="desktop" />
           <Spacer mb={4} />
-          {listText.map((listItem) => (
-            <Flex mb={2} key={listItem} flexDirection="row" alignItems="center">
-              <Check />
-              <Spacer mr={2} />
-              <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
-                {listItem}
-              </Sans>
-            </Flex>
-          ))}
+          <HeroBelowButtonDetailText version="desktop" />
         </Flex>
       </Flex>
     </Box>
@@ -69,9 +55,7 @@ const DesktopHero = ({ post, ctaData }) => {
           </StyledAnchor>
         </Flex>
         <Flex pt={1} flexDirection="row" justifyContent="space-between" width="100%" alignItems="center">
-          <Sans size="4" color="black50">
-            — Over 500+ curated, in-season, and archive styles.
-          </Sans>
+          <HeroBottomDetailText version="desktop" />
           <Flex flexDirection="row" justifyContent="flex-end">
             <a href={post?.url} style={{ color: "inherit", textDecoration: "none" }}>
               <Sans size="4">{post?.name}</Sans>
@@ -84,6 +68,13 @@ const DesktopHero = ({ post, ctaData }) => {
 }
 
 const MobileHero = ({ post, ctaData }) => {
+  const { authState, userSession } = useAuthContext()
+
+  const askAboutMembership = ["Waitlisted", "Authorized", "Active"].includes(userSession?.customer?.status)
+  const bottomDetailText = askAboutMembership
+    ? "Have a question about membership? "
+    : "- Over 500+ curated, in-season, and archive styles"
+
   return (
     <Grid>
       <Row>
@@ -99,25 +90,11 @@ const MobileHero = ({ post, ctaData }) => {
                 {caption}
               </Sans>
               <Spacer mb={4} />
-              <Link href={ctaData.link}>
-                <Button>{ctaData.text}</Button>
-              </Link>
-              <Spacer mb={1} />
-              <GetTheAppButton block />
+              <HeroCTAs version="mobile" />
               <Spacer mb={4} />
-              {listText.map((listItem) => (
-                <Flex mb={2} key={listItem} flexDirection="row" alignItems="center">
-                  <Check />
-                  <Spacer mr={2} />
-                  <Sans size="3" color="black50" style={{ whiteSpace: "pre-line" }}>
-                    {listItem}
-                  </Sans>
-                </Flex>
-              ))}
+              <HeroBelowButtonDetailText version="mobile" />
               <Spacer mb={2} />
-              <Sans size="3" color="black50">
-                — Over 500+ curated, in-season, and archive styles.
-              </Sans>
+              <HeroBottomDetailText version="mobile" />
               <Spacer mb={4} />
               <MobileImageWrapper>
                 <StyledAnchor href={post?.url}>
@@ -137,8 +114,99 @@ const MobileHero = ({ post, ctaData }) => {
   )
 }
 
+const HeroBottomDetailText = ({ version }: { version: "mobile" | "desktop" }) => {
+  const { userSession } = useAuthContext()
+
+  let bottomDetailText
+  switch (userSession?.customer?.status) {
+    case "Waitlisted":
+    case "Authorized":
+    case "Active":
+      bottomDetailText = (
+        <>
+          {"Have a question about membership? "}
+          {/* TODO: Add a mailto link here */}
+          <a style={{ textDecoration: "underline" }}>Contact Us</a>
+        </>
+      )
+      break
+    default:
+      bottomDetailText = "- Over 500+ curated, in-season, and archive styles"
+  }
+
+  return (
+    <Sans size={version === "mobile" ? "3" : "4"} color="black50">
+      {bottomDetailText}
+    </Sans>
+  )
+}
+
+const HeroBelowButtonDetailText = ({ version }: { version: "mobile" | "desktop" }) => {
+  const { userSession } = useAuthContext()
+
+  let text
+  switch (userSession?.customer?.status) {
+    case "Waitlisted":
+    case "Authorized":
+    case "Active":
+      text = <></>
+      break
+    default:
+      text = listText.map((listItem) => (
+        <Flex mb={2} key={listItem} flexDirection="row" alignItems="center">
+          <Check />
+          <Spacer mr={2} />
+          <Sans size={version === "mobile" ? "3" : "4"} color="black50" style={{ whiteSpace: "pre-line" }}>
+            {listItem}
+          </Sans>
+        </Flex>
+      ))
+  }
+
+  return text
+}
+
+const HeroCTAs = ({ version }: { version: "mobile" | "desktop" }) => {
+  const { authState, userSession } = useAuthContext()
+  const isUserSignedIn = authState?.isSignedIn
+
+  const browseData = { text: "Browse the collection", link: "browse" }
+  const applyData = { text: "Apply for membership", link: "/signup" }
+
+  let ctaData = browseData
+  if (isUserSignedIn) {
+    switch (userSession?.customer?.status) {
+      case "Created":
+        ctaData = { text: "Finish your application", link: "/signup" }
+        break
+      case "Waitlisted":
+        if (userSession?.customer?.admissions?.authorizationsCount > 0) {
+          ctaData = { text: "Request Access", link: "szns.co/requestAccess" }
+        }
+        break
+      case "Authorized":
+      case "Invited":
+        ctaData = { text: "Choose your plan", link: "/signup" }
+        break
+    }
+  } else {
+    ctaData = applyData
+  }
+
+  return (
+    <Flex flexDirection={version === "mobile" ? "column" : "row"}>
+      <Link href={ctaData.link}>
+        <Button>{ctaData.text}</Button>
+      </Link>
+      {version === "desktop" && <Spacer mr={1} />}
+      {version === "mobile" && <Spacer mb={1} />}
+      <GetTheAppButton block={version === "mobile"} />
+    </Flex>
+  )
+}
+
 export const Hero: React.FC<{ post: any }> = ({ post }) => {
-  const { authState } = useAuthContext()
+  const { authState, userSession } = useAuthContext()
   const isUserSignedIn = authState?.isSignedIn
 
   const ctaData = isUserSignedIn

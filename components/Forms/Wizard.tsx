@@ -147,6 +147,8 @@ export class Wizard extends React.Component<WizardProps, WizardState> {
         onSubmit={this.handleSubmit}
       >
         {(formikRenderProps) => {
+          console.log(this.steps)
+          console.log(this.currentStep)
           const context: WizardContext = {
             wizard: this.wizardProps,
             form: formikRenderProps,

@@ -19,6 +19,7 @@ export interface AuthProviderRef {
     authState: any
     userSession: any
     loginModalOpen: boolean
+    updateUserSession: ({ cust, user }: { cust?: any; user?: any }) => void
   }
 }
 
@@ -49,6 +50,17 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
           return {
             ...prevState,
             loginModalOpen: action.toggle,
+          }
+        case "UPDATE_USER_SESSION":
+          const newUserSession = {
+            ...prevState.userSession,
+            customer: { ...prevState.userSession.customer, ...action.cust },
+            user: { ...prevState.userSession.user, ...action.user },
+          }
+          localStorage.setItem("userSession", JSON.stringify(processSession(newUserSession)))
+          return {
+            ...prevState,
+            userSession: newUserSession,
           }
       }
     },
@@ -117,6 +129,9 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
     authState,
     userSession: authState.userSession,
     loginModalOpen: authState.loginModalOpen,
+    updateUserSession: ({ cust, user }) => {
+      dispatch({ type: "UPDATE_USER_SESSION", cust, user })
+    },
   }
 
   return <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>

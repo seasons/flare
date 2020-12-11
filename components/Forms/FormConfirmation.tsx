@@ -10,9 +10,11 @@ import HeaderText from "./HeaderText"
 
 interface FormConfirmationProps {
   status: "waitlisted" | "accountAccepted"
+  renderNum?: "type 1" | "type 2"
 }
 
-export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status }) => {
+export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status, renderNum }) => {
+  console.log(renderNum)
   let icon
   let headerText
   let bodyText

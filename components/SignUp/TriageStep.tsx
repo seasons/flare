@@ -16,6 +16,7 @@ const TRIAGE = gql`
 interface TriagePaneProps {
   check: boolean
   onTriageComplete: (userAdmitted: boolean) => void
+  onStartTriage: () => void
 }
 
 enum CheckStatus {
@@ -25,7 +26,7 @@ enum CheckStatus {
   Checked,
 }
 
-export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete }) => {
+export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete, onStartTriage }) => {
   const [checkStatus, setCheckStatus] = useState(CheckStatus.Waiting)
   const [status, setStatus] = useState(null)
   const { userSession } = useAuthContext()
@@ -52,6 +53,7 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
   useEffect(() => {
     if ((checkStatus === CheckStatus.Waiting && check) || (checkStatus === CheckStatus.AwaitingRetry && check)) {
       const runTriage = async () => {
+        onStartTriage()
         await triageCustomer()
       }
       runTriage()

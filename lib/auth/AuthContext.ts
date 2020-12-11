@@ -10,6 +10,7 @@ const AuthContext = React.createContext({
   userSession: null,
   authState: { authInitializing: true, isSignedIn: false, userSession: null },
   loginModalOpen: false,
+  updateUserSession: ({ cust, user }: { cust?: any; user?: any }) => null,
 })
 
 export default AuthContext

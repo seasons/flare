@@ -20,6 +20,7 @@ import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 import { useMutation, useQuery } from "@apollo/client"
 import { CustomerStatus } from "mobile/Account/Lists"
 import { Loader } from "mobile/Loader"
+import { getUserSession } from "lib/auth/auth"
 
 const SIGN_UP_USER = gql`
   mutation SignupUser(
@@ -136,17 +137,22 @@ const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
+  const { updateUserSession } = useAuthContext()
   const router = useRouter()
   const tracking = useTracking()
   const { data } = useQuery(GET_SIGNUP_USER)
   const featuredBrandItems = data?.brands || []
 
   const { signIn } = useAuthContext()
-  const [signUpUser] = useMutation(SIGN_UP_USER)
+  const [signUpUser] = useMutation(SIGN_UP_USER, {
+    refetchQueries: [{ query: GET_SIGNUP_USER }],
+    awaitRefetchQueries: true,
+  })
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
 
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
+  const [triageIsRunning, setTriageIsRunning] = useState(false)
 
   const customerStatus = data?.me?.customer?.status
   const customerDetail = data?.me?.customer?.detail
@@ -157,8 +163,8 @@ const SignUpPage = screenTrack(() => ({
   const _isAuthorized = !!customerStatus && customerStatus === CustomerStatus.Authorized
   const _isWaitlisted = !!customerStatus && customerStatus === CustomerStatus.Waitlisted
 
-  const [isWaitlisted, setIsWaitlisted] = useState(false)
-  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [isWaitlisted, setIsWaitlisted] = useState(_isWaitlisted)
+  const [isAuthorized, setIsAuthorized] = useState(_isAuthorized)
 
   useEffect(() => {
     if (_isAuthorized) {
@@ -302,10 +308,14 @@ const SignUpPage = screenTrack(() => ({
       {({ wizard, form }) => (
         <TriageStep
           check={startTriage}
+          onStartTriage={() => setTriageIsRunning(true)}
           onTriageComplete={(isWaitlisted) => {
+            console.log(`onTriageComplete runs`)
             if (isWaitlisted) {
+              updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
               setIsWaitlisted(true)
             } else {
+              updateUserSession({ cust: { status: CustomerStatus.Authorized } })
               setIsAuthorized(true)
             }
 
@@ -314,14 +324,17 @@ const SignUpPage = screenTrack(() => ({
               actionType: Schema.ActionTypes.Success,
               isWaitlisted,
             })
+
+            setTriageIsRunning(false)
           }}
         />
       )}
     </Step>
   )
 
-  const finishedTriage = isAuthorized || isWaitlisted
+  const finishedTriage = (isAuthorized || isWaitlisted) && !triageIsRunning // true && !true --> true && false --> false
 
+  console.log(`finishedTriage: ${finishedTriage}`)
   const steps = [
     ...(hasAccount ? [] : [createAccountStep]),
     ...(hasMeasurements ? [] : [measurementsStep]),
@@ -329,7 +342,7 @@ const SignUpPage = screenTrack(() => ({
     <Step key="formConfirmationOrChoosePlanStep">
       {({ form, wizard }) => {
         return isWaitlisted ? (
-          <FormConfirmation status={isWaitlisted ? "waitlisted" : "accountAccepted"} />
+          <FormConfirmation status={"waitlisted"} renderNum={"type 1"} />
         ) : (
           <ChoosePlanStep
             onPlanSelected={(plan) => {
@@ -352,9 +365,9 @@ const SignUpPage = screenTrack(() => ({
         )
       }}
     </Step>,
-    <Step>
+    <Step key="AccountAcceptedConfirmation">
       {() => {
-        return <FormConfirmation status="accountAccepted" />
+        return <FormConfirmation status="accountAccepted" renderNum={"type 2"} />
       }}
     </Step>,
   ]
