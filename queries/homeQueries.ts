@@ -56,7 +56,7 @@ export const HOME_QUERY = gql`
     }
     holiday: products(
       first: 4
-      orderBy: publishedAt_DESC
+      orderBy: updatedAt_DESC
       where: { AND: [{ tags_some: { name: "Holiday" } }, { status: Available }] }
     ) {
       ...HomePageProduct
