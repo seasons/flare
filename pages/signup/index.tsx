@@ -140,13 +140,14 @@ const SignUpPage = screenTrack(() => ({
   const { updateUserSession } = useAuthContext()
   const router = useRouter()
   const tracking = useTracking()
-  const { data } = useQuery(GET_SIGNUP_USER)
+  const { data, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const featuredBrandItems = data?.brands || []
 
   const { signIn } = useAuthContext()
   const [signUpUser] = useMutation(SIGN_UP_USER, {
-    refetchQueries: [{ query: GET_SIGNUP_USER }],
-    awaitRefetchQueries: true,
+    onCompleted: async () => {
+      await refetchGetSignupUser()
+    },
   })
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
 

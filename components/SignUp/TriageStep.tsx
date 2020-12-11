@@ -31,6 +31,11 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete,
   const [status, setStatus] = useState(null)
   const { userSession } = useAuthContext()
 
+  const endTriage = () =>
+    setTimeout(() => {
+      callTriageComplete()
+    }, 6000)
+
   const [triage] = useMutation(TRIAGE, {
     onCompleted: (result) => {
       // Allow FlatList to transition before hiding spinner
@@ -42,9 +47,13 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete,
         authorizations: newStatus === "Authorized" ? 1 : 0,
         admissable: newStatus === "Authorized" ? true : false,
       })
+
+      endTriage()
     },
     onError: (err) => {
       console.log("Error TriagePane.tsx:", err)
+
+      endTriage()
     },
     refetchQueries: [{ query: HOME_QUERY }, { query: PAYMENT_PLANS }],
     awaitRefetchQueries: true,
@@ -60,13 +69,13 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete,
     }
   }, [check, checkStatus])
 
-  useEffect(() => {
-    if (status) {
-      setTimeout(() => {
-        callTriageComplete()
-      }, 3000)
-    }
-  }, [status])
+  // useEffect(() => {
+  //   if (status) {
+  //     setTimeout(() => {
+  //       callTriageComplete()
+  //     }, 3000)
+  //   }
+  // }, [status])
 
   const triageCustomer = async () => {
     if (checkStatus === CheckStatus.Checking) {
