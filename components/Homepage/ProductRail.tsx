@@ -6,7 +6,7 @@ import { Link } from "../Link"
 import { ProductGridItem } from "../Product/ProductGridItem"
 import styled from "styled-components"
 
-export const ProductRail: React.FC<{ products: any; title?: string }> = ({ products, title }) => {
+export const ProductRail: React.FC<{ products: any; title?: string; tag?: string }> = ({ products, title, tag }) => {
   if (!products?.length) {
     return null
   }
@@ -14,11 +14,19 @@ export const ProductRail: React.FC<{ products: any; title?: string }> = ({ produ
     <Grid>
       <Flex flexDirection="row" justifyContent={!!title ? "space-between" : "flex-end"} px={[2, 2, 2, 5, 5]}>
         {title && <Display size="7">{title}</Display>}
-        <Link href="/browse">
-          <Sans size={["5", "6"]} color="black50" style={{ minWidth: "58px" }}>
-            See all
-          </Sans>
-        </Link>
+        {tag ? (
+          <Link href="collection/[Tag]" as={`collection/${tag}`}>
+            <Sans size={["5", "6"]} color="black50" style={{ minWidth: "58px" }}>
+              See all
+            </Sans>
+          </Link>
+        ) : (
+          <Link href="/browse">
+            <Sans size={["5", "6"]} color="black50" style={{ minWidth: "58px" }}>
+              See all
+            </Sans>
+          </Link>
+        )}
       </Flex>
       <Spacer mb={2} />
       <Box px={[0, 0, 0, 5, 5]}>

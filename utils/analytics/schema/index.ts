@@ -60,6 +60,7 @@ export interface PageViewEvent extends Event {
 
 export enum PageNames {
   BrandPage = "Brand",
+  CollectionPage = "CollectionPage",
   HomePage = "Home",
   BrowsePage = "Browse",
   ProductPage = "Product",

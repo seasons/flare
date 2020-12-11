@@ -54,6 +54,13 @@ export const HOME_QUERY = gql`
       author
       imageURL
     }
+    holiday: products(
+      first: 4
+      orderBy: publishedAt_DESC
+      where: { AND: [{ tags_some: { name: "Holiday" } }, { status: Available }] }
+    ) {
+      ...HomePageProduct
+    }
     justAddedTops: products(
       first: 4
       category: "tops"
