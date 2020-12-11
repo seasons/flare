@@ -44,7 +44,7 @@ const Collection = screenTrack(({ router }) => {
       tag,
       first: 8,
       skip: 0,
-      orderBy: "publishedAt_DESC",
+      orderBy: "updatedAt_DESC",
     },
   })
 
