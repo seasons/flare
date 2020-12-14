@@ -12,7 +12,7 @@ import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { DateTime } from "luxon"
+
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
@@ -21,64 +21,6 @@ import { useMutation, useQuery } from "@apollo/client"
 import { CustomerStatus } from "mobile/Account/Lists"
 import { Loader } from "mobile/Loader"
 import { getUserSession } from "lib/auth/auth"
-
-const SIGN_UP_USER = gql`
-  mutation SignupUser(
-    $email: String!
-    $password: String!
-    $firstName: String!
-    $lastName: String!
-    $details: CustomerDetailCreateInput!
-    $referrerId: String
-    $utm: UTMInput
-  ) {
-    signup(
-      email: $email
-      password: $password
-      firstName: $firstName
-      lastName: $lastName
-      details: $details
-      referrerId: $referrerId
-      utm: $utm
-    ) {
-      expiresIn
-      refreshToken
-      token
-      customer {
-        id
-        status
-        detail {
-          id
-          shippingAddress {
-            id
-            state
-          }
-        }
-        bagItems {
-          id
-        }
-        admissions {
-          id
-          admissable
-          authorizationsCount
-        }
-        user {
-          id
-          email
-          firstName
-          lastName
-          createdAt
-        }
-        coupon {
-          id
-          amount
-          percentage
-          type
-        }
-      }
-    }
-  }
-`
 
 const ADD_MEASUREMENTS = gql`
   mutation addMeasurements(
@@ -144,11 +86,6 @@ const SignUpPage = screenTrack(() => ({
   const featuredBrandItems = data?.brands || []
 
   const { signIn } = useAuthContext()
-  const [signUpUser] = useMutation(SIGN_UP_USER, {
-    onCompleted: async () => {
-      await refetchGetSignupUser()
-    },
-  })
   const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
 
   const [showSnackBar, setShowSnackBar] = useState(false)
@@ -216,63 +153,6 @@ const SignUpPage = screenTrack(() => ({
     )
   }
 
-  const createAccountStep = (
-    <Step
-      key="createAccountStep"
-      validationSchema={createAccountValidationSchema}
-      onSubmit={async (values, actions) => {
-        try {
-          const utm = JSON.parse(localStorage?.getItem("utm"))
-          const date = new Date(values.dob)
-          const dateToIso = DateTime.fromJSDate(date).toISO()
-          const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
-          const lastName = values.lastName.charAt(0).toUpperCase() + values.lastName.slice(1)
-          const response = await signUpUser({
-            variables: {
-              email: values.email,
-              password: values.password,
-              firstName,
-              lastName,
-              details: {
-                phoneNumber: values.tel,
-                birthday: dateToIso,
-                phoneOS: values.device,
-                shippingAddress: {
-                  create: { zipCode: values.zipCode },
-                },
-              },
-              referrerId: router.query.referrer_id,
-              utm,
-            },
-          })
-
-          tracking.trackEvent({
-            actionName: Schema.ActionNames.CreateAccountClicked,
-            actionType: Schema.ActionTypes.Tap,
-          })
-
-          if (response) {
-            signIn(response.data.signup)
-            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.customer?.coupon))
-            actions.setSubmitting(false)
-
-            return true
-          }
-        } catch (error) {
-          if (JSON.stringify(error).includes("email already in db")) {
-            actions.setFieldError("email", "User with that email already exists")
-          } else {
-            console.log("error", error)
-            setShowSnackBar(true)
-          }
-          actions.setSubmitting(false)
-        }
-      }}
-    >
-      {(context) => <CreateAccountForm context={context} />}
-    </Step>
-  )
-
   const measurementsStep = (
     <Step
       key="measurementsStep"
@@ -337,7 +217,6 @@ const SignUpPage = screenTrack(() => ({
 
   console.log(`finishedTriage: ${finishedTriage}`)
   const steps = [
-    ...(hasAccount ? [] : [createAccountStep]),
     ...(hasMeasurements ? [] : [measurementsStep]),
     ...(finishedTriage ? [] : [triageStep]),
     <Step key="formConfirmationOrChoosePlanStep">
@@ -375,12 +254,20 @@ const SignUpPage = screenTrack(() => ({
 
   const hasSteps = steps.length > 0
 
+  let CurrentForm
+  switch (customerStatus) {
+    case undefined:
+      CurrentForm = <CreateAccountForm initialValues={initialValues} onError={() => setShowSnackBar(true)} />
+      break
+  }
+
   return (
     <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-          {!(typeof window === "undefined") && hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
+          {CurrentForm}
+          {/* {!(typeof window === "undefined") && hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>} */}
         </Flex>
       </MaxWidth>
     </Layout>

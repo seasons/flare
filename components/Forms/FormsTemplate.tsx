@@ -160,7 +160,7 @@ export const FormTemplate = ({
   const menuItemStyle = useStyles()
   const {
     form: { handleChange, handleBlur, handleSubmit, isValid: formContextIsValid, isSubmitting, setFieldValue, values },
-    wizard: { previous },
+    wizard: { previous } = { previous: undefined },
   } = context
 
   const [clientSide, setClientSide] = useState(false)
