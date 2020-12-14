@@ -24,7 +24,7 @@ export const Picture: React.FC<PictureProps> = ({ src, alt, imgRef, onLoad }) =>
 
   return (
     <picture style={{ height: "100%" }}>
-      <source type="image/webp" srcSet={prefix + src + "&fm=webp"} />
+      <source type="image/webp" srcSet={prefix + src + "&fm=webp&cs=srgb"} />
       <source type="image/jpeg" srcSet={prefix + src + "&fm=jpg"} />
       <img src={prefix + src + "&fm=jpg"} ref={imgRef} alt={alt} onLoad={onLoad} />
     </picture>
