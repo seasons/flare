@@ -9,6 +9,7 @@ import { useQuery } from "@apollo/client"
 
 import { MembershipPlans } from "./MembershipPlans"
 import DetailText from "components/Forms/DetailText"
+import { Box } from "@material-ui/core"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -97,7 +98,6 @@ export function getChargebeeCheckout(planID: string, email: string): Promise<boo
 }
 
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
-  console.log(`Render choose plan step`)
   const [selectedPlan, setSelectedPlan] = useState(null)
   const { data } = useQuery(PAYMENT_PLANS)
   const { userSession } = useAuthContext()
@@ -138,7 +138,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
   }
 
   return (
-    <>
+    <Box style={{ height: "100%", width: "100%" }}>
       <MembershipPlans
         selectedPlan={selectedPlan}
         setSelectedPlan={setSelectedPlan}
@@ -177,6 +177,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
           </MaxWidth>
         </FormFooterInnerWrapper>
       </FormFooterWrapper>
-    </>
+    </Box>
   )
 }

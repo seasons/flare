@@ -69,14 +69,6 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete,
     }
   }, [check, checkStatus])
 
-  // useEffect(() => {
-  //   if (status) {
-  //     setTimeout(() => {
-  //       callTriageComplete()
-  //     }, 3000)
-  //   }
-  // }, [status])
-
   const triageCustomer = async () => {
     if (checkStatus === CheckStatus.Checking) {
       return

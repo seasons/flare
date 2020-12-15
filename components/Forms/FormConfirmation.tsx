@@ -2,7 +2,6 @@ import Link from "next/link"
 import styled from "styled-components"
 import { CheckWithBackground } from "components/SVGs"
 import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
-import { color } from "../../helpers"
 import { Button } from "../Button/Button"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import { FormFooter } from "./FormsTemplate"
@@ -10,11 +9,9 @@ import HeaderText from "./HeaderText"
 
 interface FormConfirmationProps {
   status: "waitlisted" | "accountAccepted"
-  renderNum?: "type 1" | "type 2"
 }
 
-export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status, renderNum }) => {
-  console.log(renderNum)
+export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status }) => {
   let icon
   let headerText
   let bodyText

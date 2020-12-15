@@ -12,6 +12,8 @@ import { DateTime } from "luxon"
 import gql from "graphql-tag"
 import { useRouter } from "next/router"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { FormWrapper } from "./FormWrapper"
+import { GET_SIGNUP_USER, SignupFormProps } from "pages/signup"
 
 export interface CreateAccountFormFields {
   firstName: string
@@ -92,6 +94,17 @@ const SIGN_UP_USER = gql`
   }
 `
 
+const initialValues = {
+  email: "",
+  firstName: "",
+  lastName: "",
+  tel: "",
+  confirmPassword: "",
+  password: "",
+  zipCode: "",
+  device: "",
+}
+
 export const createAccountValidationSchema = Yup.object().shape({
   email: Yup.string().trim().required("Required").email("Invalid email"),
   firstName: Yup.string().trim().required("Required"),
@@ -121,11 +134,14 @@ export const createAccountValidationSchema = Yup.object().shape({
   device: Yup.string().required("Required"),
 })
 
-export const CreateAccountForm = ({ initialValues, onError }: { initialValues: any; onError: () => void }) => {
+export const CreateAccountForm = ({ onError, onCompleted }: SignupFormProps) => {
   const router = useRouter()
   const tracking = useTracking()
   const { signIn } = useAuthContext()
-  const [signUpUser] = useMutation(SIGN_UP_USER)
+  const [signUpUser] = useMutation(SIGN_UP_USER, {
+    refetchQueries: [{ query: GET_SIGNUP_USER }],
+    awaitRefetchQueries: true,
+  })
 
   const onSubmit = async (values, actions) => {
     try {
@@ -163,6 +179,8 @@ export const CreateAccountForm = ({ initialValues, onError }: { initialValues: a
         localStorage?.setItem("coupon", JSON.stringify(response.data.signup.customer?.coupon))
         actions.setSubmitting(false)
 
+        onCompleted?.()
+
         return true
       }
     } catch (error) {
@@ -170,96 +188,87 @@ export const CreateAccountForm = ({ initialValues, onError }: { initialValues: a
         actions.setFieldError("email", "User with that email already exists")
       } else {
         console.log("error", error)
-        onError()
+        onError?.()
       }
       actions.setSubmitting(false)
     }
   }
 
   return (
-    <Formik
+    <FormWrapper
       initialValues={initialValues}
       initialTouched={{ fullName: true }}
-      //@ts-ignore
-      // validate={validate}
       validationSchema={createAccountValidationSchema}
-      validateOnChange={true}
       onSubmit={onSubmit}
     >
-      {(formikRenderProps) => {
-        const context = {
-          form: formikRenderProps,
-        }
-
-        return (
-          <FormTemplate
-            context={context}
-            headerText="Create an account"
-            HeaderDetail={<>You’ll use this to sign into the app, choose your plan, and manage your membership.</>}
-            footerText={
-              <>
-                {"By creating an account, you agree to our "}
-                <ExternalLink href="https://www.seasons.nyc/terms-of-service">Terms of Service</ExternalLink>
-                {" and "}
-                <ExternalLink href="https://www.seasons.nyc/privacy-policy">Privacy Policy</ExternalLink>
-              </>
-            }
-            buttonText="Next"
-            buttonActionName={Schema.ActionNames.CreateAccountSubmitButtonClicked}
-            fieldDefinitionList={[
-              { name: "firstName", placeholder: "Will", label: "First name", mobileOrder: 1 },
-              {
-                name: "lastName",
-                placeholder: "Smith",
-                label: "Last name",
-                mobileOrder: 2,
-              },
-              {
-                name: "email",
-                placeholder: "will.smith@gmail.com",
-                label: "Email",
-                mobileOrder: 3,
-              },
-              {
-                label: "Phone number",
-                placeholder: "(000) - 000 - 0000",
-                customElement: <TelephoneMaskField context={context} />,
-                mobileOrder: 6,
-              },
-              {
-                name: "password",
-                placeholder: "Must have at least 8 characters",
-                type: "password",
-                label: "Password",
-                id: "password",
-                mobileOrder: 4,
-              },
-              {
-                name: "confirmPassword",
-                placeholder: "Confirm password",
-                type: "password",
-                label: "Confirm password",
-                id: "confirmPassword",
-                mobileOrder: 5,
-              },
-              {
-                name: "zipCode",
-                type: "zipCode",
-                placeholder: "00000",
-                label: "Shipping ZIP code",
-                mobileOrder: 7,
-              },
-              {
-                name: "device",
-                selectOptions: deviceOptions,
-                placeholder: "Select",
-                label: "Device type",
-                mobileOrder: 8,
-              },
-            ]}
-          />
-        )
-      }}
-    </Formik>
+      {(context) => (
+        <FormTemplate
+          context={context}
+          headerText="Create an account"
+          HeaderDetail={<>You’ll use this to sign into the app, choose your plan, and manage your membership.</>}
+          footerText={
+            <>
+              {"By creating an account, you agree to our "}
+              <ExternalLink href="https://www.seasons.nyc/terms-of-service">Terms of Service</ExternalLink>
+              {" and "}
+              <ExternalLink href="https://www.seasons.nyc/privacy-policy">Privacy Policy</ExternalLink>
+            </>
+          }
+          buttonText="Next"
+          buttonActionName={Schema.ActionNames.CreateAccountSubmitButtonClicked}
+          fieldDefinitionList={[
+            { name: "firstName", placeholder: "Will", label: "First name", mobileOrder: 1 },
+            {
+              name: "lastName",
+              placeholder: "Smith",
+              label: "Last name",
+              mobileOrder: 2,
+            },
+            {
+              name: "email",
+              placeholder: "will.smith@gmail.com",
+              label: "Email",
+              mobileOrder: 3,
+            },
+            {
+              label: "Phone number",
+              placeholder: "(000) - 000 - 0000",
+              customElement: <TelephoneMaskField context={context} />,
+              mobileOrder: 6,
+            },
+            {
+              name: "password",
+              placeholder: "Must have at least 8 characters",
+              type: "password",
+              label: "Password",
+              id: "password",
+              mobileOrder: 4,
+            },
+            {
+              name: "confirmPassword",
+              placeholder: "Confirm password",
+              type: "password",
+              label: "Confirm password",
+              id: "confirmPassword",
+              mobileOrder: 5,
+            },
+            {
+              name: "zipCode",
+              type: "zipCode",
+              placeholder: "00000",
+              label: "Shipping ZIP code",
+              mobileOrder: 7,
+            },
+            {
+              name: "device",
+              selectOptions: deviceOptions,
+              placeholder: "Select",
+              label: "Device type",
+              mobileOrder: 8,
+            },
+          ]}
+        />
+      )}
+    </FormWrapper>
   )
 }
