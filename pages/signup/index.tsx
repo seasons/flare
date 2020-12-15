@@ -60,7 +60,7 @@ const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
-  const { updateUserSession } = useAuthContext()
+  const { updateUserSession, userSession } = useAuthContext()
   const tracking = useTracking()
   const { data, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const featuredBrandItems = data?.brands || []
@@ -69,7 +69,7 @@ const SignUpPage = screenTrack(() => ({
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
 
-  const customerStatus = data?.me?.customer?.status
+  const customerStatus = userSession?.customer?.status
 
   const closeSnackBar = () => {
     setShowSnackBar(false)
@@ -154,6 +154,7 @@ const SignUpPage = screenTrack(() => ({
             })
           }}
           onSuccess={() => {
+            updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")
             identify(data?.me?.customer?.user?.id, { status: "Active" })
             refetchGetSignupUser()

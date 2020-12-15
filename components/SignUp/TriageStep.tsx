@@ -28,12 +28,11 @@ enum CheckStatus {
 
 export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete, onStartTriage }) => {
   const [checkStatus, setCheckStatus] = useState(CheckStatus.Waiting)
-  const [status, setStatus] = useState(null)
   const { userSession } = useAuthContext()
 
-  const endTriage = () =>
+  const endTriage = (authorized: boolean) =>
     setTimeout(() => {
-      callTriageComplete()
+      onTriageComplete(authorized)
     }, 6000)
 
   const [triage] = useMutation(TRIAGE, {
@@ -48,12 +47,10 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete,
         admissable: newStatus === "Authorized" ? true : false,
       })
 
-      endTriage()
+      endTriage(newStatus === "Waitlisted")
     },
     onError: (err) => {
-      console.log("Error TriagePane.tsx:", err)
-
-      endTriage()
+      endTriage(true)
     },
     refetchQueries: [{ query: HOME_QUERY }, { query: PAYMENT_PLANS }],
     awaitRefetchQueries: true,
@@ -75,23 +72,7 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete,
     }
 
     setCheckStatus(CheckStatus.Checking)
-
-    const result = await triage()
-    setStatus(result?.data?.triageCustomer)
-  }
-
-  const callTriageComplete = () => {
-    switch (status) {
-      case "Authorized":
-        onTriageComplete(false)
-        break
-      case "Waitlisted":
-        onTriageComplete(true)
-        break
-      default:
-        onTriageComplete(true)
-        break
-    }
+    await triage()
   }
 
   return (
