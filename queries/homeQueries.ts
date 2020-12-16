@@ -34,6 +34,7 @@ export const HOME_QUERY = gql`
         admissions {
           id
           allAccessEnabled
+          authorizationWindowClosesAt
         }
       }
     }

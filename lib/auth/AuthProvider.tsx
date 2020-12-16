@@ -54,8 +54,8 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
         case "UPDATE_USER_SESSION":
           const newUserSession = {
             ...prevState.userSession,
-            customer: { ...prevState.userSession.customer, ...action.cust },
-            user: { ...prevState.userSession.user, ...action.user },
+            customer: { ...prevState.userSession?.customer, ...action.cust },
+            user: { ...prevState.userSession?.user, ...action.user },
           }
           localStorage.setItem("userSession", JSON.stringify(processSession(newUserSession)))
           return {

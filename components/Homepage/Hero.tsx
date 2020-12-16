@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Grid, Row, Col } from "../Grid"
 import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "../"
@@ -9,11 +9,12 @@ import { Media } from "../Responsive"
 import { Button } from "../Button"
 import { Check } from "../SVGs"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { Countdown } from "@seasons/eclipse"
+import { DateTime } from "luxon"
 
-const headerText = "Wear.Swap.Repeat."
-
-const caption =
-  "A members-only rental service for designer menswear. Access hundreds of styles and discover new brands with zero commitment."
+interface HeroComponentProps {
+  version: "mobile" | "desktop"
+}
 
 const listText = [
   "Free shipping, returns & dry cleaning.",
@@ -27,13 +28,9 @@ const DesktopTextContent = ({ ctaData }) => {
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
         <Flex flexDirection="column" justifyContent="center">
           <Spacer mb={10} />
-          <Display size="10" color="black100" style={{ letterSpacing: "-2px" }}>
-            {headerText}
-          </Display>
+          <HeroHeaderText version="desktop" />
           <Spacer mb={1} />
-          <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
-            {caption}
-          </Sans>
+          <HeroCaptionText />
           <Spacer mb={4} />
           <HeroCTAs version="desktop" />
           <Spacer mb={4} />
@@ -68,13 +65,6 @@ const DesktopHero = ({ post, ctaData }) => {
 }
 
 const MobileHero = ({ post, ctaData }) => {
-  const { authState, userSession } = useAuthContext()
-
-  const askAboutMembership = ["Waitlisted", "Authorized", "Active"].includes(userSession?.customer?.status)
-  const bottomDetailText = askAboutMembership
-    ? "Have a question about membership? "
-    : "- Over 500+ curated, in-season, and archive styles"
-
   return (
     <Grid>
       <Row>
@@ -82,13 +72,9 @@ const MobileHero = ({ post, ctaData }) => {
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Spacer mb={10} />
-              <Display size="9" color="black100" style={{ letterSpacing: "-2px" }}>
-                {headerText}
-              </Display>
+              <HeroHeaderText version="mobile" />
               <Spacer mb={1} />
-              <Sans size="4" color="black50" style={{ whiteSpace: "pre-line" }}>
-                {caption}
-              </Sans>
+              <HeroCaptionText />
               <Spacer mb={4} />
               <HeroCTAs version="mobile" />
               <Spacer mb={4} />
@@ -114,7 +100,7 @@ const MobileHero = ({ post, ctaData }) => {
   )
 }
 
-const HeroBottomDetailText = ({ version }: { version: "mobile" | "desktop" }) => {
+const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
   const { userSession } = useAuthContext()
 
   let bottomDetailText
@@ -141,7 +127,7 @@ const HeroBottomDetailText = ({ version }: { version: "mobile" | "desktop" }) =>
   )
 }
 
-const HeroBelowButtonDetailText = ({ version }: { version: "mobile" | "desktop" }) => {
+const HeroBelowButtonDetailText = ({ version }: HeroComponentProps) => {
   const { userSession } = useAuthContext()
 
   let text
@@ -166,7 +152,63 @@ const HeroBelowButtonDetailText = ({ version }: { version: "mobile" | "desktop" 
   return text
 }
 
-const HeroCTAs = ({ version }: { version: "mobile" | "desktop" }) => {
+const HeroHeaderText = ({ version }: HeroComponentProps) => {
+  const { userSession } = useAuthContext()
+  const [targetDate, setTargetDate] = useState(null)
+
+  useEffect(() => {
+    if (!!userSession) {
+      setTargetDate(DateTime.fromISO(userSession?.customer?.admissions?.authorizationWindowClosesAt))
+    }
+  }, [userSession])
+
+  let headerText = "Wear.Swap.Repeat." as any
+  // console.log(userSession)
+  switch (userSession?.customer?.status) {
+    case "Authorized":
+      if (!!targetDate) {
+        headerText = (
+          <>
+            {"Hi Regy, you're in. You have"} <Countdown underline display="inline" targetDate={targetDate} />{" "}
+            {"to choose your plan."}
+          </>
+        )
+      } else {
+        headerText = "Hi Regy, you're in."
+      }
+      break
+  }
+
+  return (
+    <Display
+      size={version === "desktop" ? "10" : "9"}
+      color="black100"
+      style={{ letterSpacing: "-2px", maxWidth: "600px" }}
+    >
+      {headerText}
+    </Display>
+  )
+}
+
+const HeroCaptionText = () => {
+  const { userSession } = useAuthContext()
+
+  let caption =
+    "A members-only rental service for designer menswear. Access hundreds of styles and discover new brands with zero commitment."
+  switch (userSession?.customer?.status) {
+    case "Authorized":
+      caption = "Finish setting up your account and choose your plan"
+      break
+  }
+
+  return (
+    <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
+      {caption}
+    </Sans>
+  )
+}
+
+const HeroCTAs = ({ version }: HeroComponentProps) => {
   const { authState, userSession } = useAuthContext()
   const isUserSignedIn = authState?.isSignedIn
 

@@ -8,12 +8,13 @@ import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import { CustomerStatus } from "mobile/Account/Lists"
 import { Loader } from "mobile/Loader"
+import { DateTime } from "luxon"
 
 export interface SignupFormProps {
   onError?: () => void
@@ -68,6 +69,13 @@ const SignUpPage = screenTrack(() => ({
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
+
+  useEffect(() => {
+    console.log(data)
+    if (!!data?.me?.customer) {
+      updateUserSession({ cust: data?.me?.customer })
+    }
+  }, [data])
 
   const customerStatus = userSession?.customer?.status
 

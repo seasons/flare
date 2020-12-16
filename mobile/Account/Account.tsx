@@ -22,7 +22,7 @@ import { useQuery } from "@apollo/client"
 
 import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
-import { AuthorizedCTA } from "./Components/AuthorizedCTA"
+import { AuthorizedCTA } from "@seasons/eclipse"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
 
 export enum UserState {

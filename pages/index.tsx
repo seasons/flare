@@ -16,22 +16,31 @@ import { ServiceableModal } from "components/ServiceableModal"
 import { initializeApollo } from "lib/apollo/apollo"
 import { HOME_QUERY } from "queries/homeQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import React from "react"
+import React, { useEffect } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
+import { useAuthContext } from "lib/auth/AuthContext"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { data } = useQuery(HOME_QUERY)
+  const { data } = useQuery(HOME_QUERY, { fetchPolicy: "cache-and-network" })
+  const { updateUserSession, userSession } = useAuthContext()
 
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
+
+  useEffect(() => {
+    console.log(data)
+    if (!!data?.me?.customer) {
+      updateUserSession({ cust: data?.me?.customer })
+    }
+  }, [data])
 
   return (
     <Layout fixedNav brandItems={featuredBrandItems}>

@@ -1,13 +1,8 @@
-import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
+import { Box, Button, Sans, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { CheckCircledIcon, ChevronIcon } from "components/Icons"
-import { color } from "helpers/color"
 import React from "react"
-import { TouchableOpacity } from "react-native"
-import styled from "styled-components"
-import { Tab as PreferencesTab } from "mobile/Account/PersonalPreferences/PersonalPreferences"
 
-import { State, UserState } from "../Account"
+import { UserState } from "../Account"
 import { useRouter } from "next/router"
 
 export enum OnboardingStep {
@@ -60,7 +55,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({ userSt
               closeDrawer()
             }}
           >
-            Sign up
+            Finish your application
           </Button>
         </>
       )}
