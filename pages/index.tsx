@@ -36,7 +36,6 @@ const Home = screenTrack(() => ({
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
 
   useEffect(() => {
-    console.log(data)
     if (!!data?.me?.customer) {
       updateUserSession({ cust: data?.me?.customer })
     }
