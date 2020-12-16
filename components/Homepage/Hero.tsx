@@ -65,7 +65,7 @@ const DesktopHero = ({ post }) => {
   )
 }
 
-const MobileHero = ({ post, ctaData }) => {
+const MobileHero = ({ post }) => {
   return (
     <Grid>
       <Row>
@@ -268,23 +268,16 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
 }
 
 export const Hero: React.FC<{ post: any }> = ({ post }) => {
-  const { authState, userSession } = useAuthContext()
-  const isUserSignedIn = authState?.isSignedIn
-
-  const ctaData = isUserSignedIn
-    ? { text: "Browse the collection", link: "/browse" }
-    : { text: "Apply for membership", link: "/signup" }
-
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopHero post={post} ctaData={ctaData} />
+        <DesktopHero post={post} />
         <Box px={[2, 2, 2, 5, 5]}>
           <Separator />
         </Box>
       </Media>
       <Media lessThan="md">
-        <MobileHero post={post} ctaData={ctaData} />
+        <MobileHero post={post} />
       </Media>
     </>
   )
