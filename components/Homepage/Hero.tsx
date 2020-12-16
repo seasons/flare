@@ -11,6 +11,7 @@ import { Check } from "../SVGs"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { Countdown } from "@seasons/eclipse"
 import { DateTime } from "luxon"
+import { Schema, useTracking } from "utils/analytics"
 
 interface HeroComponentProps {
   version: "mobile" | "desktop"
@@ -22,7 +23,7 @@ const listText = [
   "No commitment. Pause or cancel anytime.",
 ]
 
-const DesktopTextContent = ({ ctaData }) => {
+const DesktopTextContent = () => {
   return (
     <Box pb={5} style={{ zIndex: 3, position: "relative" }} pr={2}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
@@ -41,12 +42,12 @@ const DesktopTextContent = ({ ctaData }) => {
   )
 }
 
-const DesktopHero = ({ post, ctaData }) => {
+const DesktopHero = ({ post }) => {
   return (
     <MaxWidth>
       <Box width="100%" px={[2, 2, 2, 5, 5]} pb={5}>
         <Flex flexDirection="row" justifyContent="space-between">
-          <DesktopTextContent ctaData={ctaData} />
+          <DesktopTextContent />
           <StyledAnchor href={post?.url}>
             <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
           </StyledAnchor>
@@ -163,7 +164,6 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
   }, [userSession])
 
   let headerText = "Wear.Swap.Repeat." as any
-  // console.log(userSession)
   switch (userSession?.customer?.status) {
     case "Authorized":
       if (!!targetDate) {
@@ -175,6 +175,11 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
         )
       } else {
         headerText = "Hi Regy, you're in."
+      }
+      break
+    case "Waitlisted":
+      if (userSession?.customer?.admissions?.authorizationsCount > 0) {
+        headerText = "Hi Regy, your sign-up window has closed."
       }
       break
   }
@@ -199,6 +204,11 @@ const HeroCaptionText = () => {
     case "Authorized":
       caption = "Finish setting up your account and choose your plan"
       break
+    case "Waitlisted":
+      if (userSession?.customer?.admissions?.authorizationsCount > 0) {
+        caption = "We've had to pass along your invite and you're back on the waitlist."
+      }
+      break
   }
 
   return (
@@ -210,25 +220,26 @@ const HeroCaptionText = () => {
 
 const HeroCTAs = ({ version }: HeroComponentProps) => {
   const { authState, userSession } = useAuthContext()
+  const tracking = useTracking()
   const isUserSignedIn = authState?.isSignedIn
 
-  const browseData = { text: "Browse the collection", link: "browse" }
-  const applyData = { text: "Apply for membership", link: "/signup" }
+  const browseData = { text: "Browse the collection", link: "browse", actionName: "BrowseTheCollectionTapped" }
+  const applyData = { text: "Apply for membership", link: "/signup", actionName: "ApplyForMembershipTapped" }
 
   let ctaData = browseData
   if (isUserSignedIn) {
     switch (userSession?.customer?.status) {
       case "Created":
-        ctaData = { text: "Finish your application", link: "/signup" }
+        ctaData = { text: "Finish your application", link: "/signup", actionName: "FinishYourApplicationTapped" }
         break
       case "Waitlisted":
         if (userSession?.customer?.admissions?.authorizationsCount > 0) {
-          ctaData = { text: "Request Access", link: "szns.co/requestAccess" }
+          ctaData = { text: "Request Access", link: "https://szns.co/requestAccess", actionName: "RequestAccessTapped" }
         }
         break
       case "Authorized":
       case "Invited":
-        ctaData = { text: "Choose your plan", link: "/signup" }
+        ctaData = { text: "Choose your plan", link: "/signup", actionName: "ChoosePlanTapped" }
         break
     }
   } else {
@@ -238,7 +249,16 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   return (
     <Flex flexDirection={version === "mobile" ? "column" : "row"}>
       <Link href={ctaData.link}>
-        <Button>{ctaData.text}</Button>
+        <Button
+          onClick={() => {
+            tracking.trackEvent({
+              actionName: Schema.ActionNames[ctaData.actionName],
+              actionType: Schema.ActionTypes.Tap,
+            })
+          }}
+        >
+          {ctaData.text}
+        </Button>
       </Link>
       {version === "desktop" && <Spacer mr={1} />}
       {version === "mobile" && <Spacer mb={1} />}

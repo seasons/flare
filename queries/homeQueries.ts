@@ -33,8 +33,10 @@ export const HOME_QUERY = gql`
         id
         admissions {
           id
-          allAccessEnabled
+          admissable
+          authorizationsCount
           authorizationWindowClosesAt
+          allAccessEnabled
         }
       }
     }

@@ -49,7 +49,10 @@ export const GET_SIGNUP_USER = gql`
         authorizedAt
         admissions {
           id
+          admissable
+          authorizationsCount
           authorizationWindowClosesAt
+          allAccessEnabled
         }
       }
     }
