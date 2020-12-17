@@ -155,6 +155,7 @@ const SignUpPage = screenTrack(() => ({
       }
       break
     case "Authorized":
+    case "Invited":
       CurrentForm = (
         <ChoosePlanStep
           onPlanSelected={(plan) => {
