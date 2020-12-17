@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
+import { useDrawerContext } from "../../components/Drawer/DrawerContext"
 import { Grid, Row, Col } from "../Grid"
 import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "../"
 import { Display } from "../Typography"
@@ -223,10 +224,12 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   const tracking = useTracking()
   const isUserSignedIn = authState?.isSignedIn
 
+  const { openDrawer } = useDrawerContext()
+
   const browseData = { text: "Browse the collection", link: "browse", actionName: "BrowseTheCollectionTapped" }
   const applyData = { text: "Apply for membership", link: "/signup", actionName: "ApplyForMembershipTapped" }
 
-  let ctaData = browseData
+  let ctaData = browseData as any
   if (isUserSignedIn) {
     switch (userSession?.customer?.status) {
       case "Created":
@@ -240,6 +243,14 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
       case "Authorized":
       case "Invited":
         ctaData = { text: "Choose your plan", link: "/signup", actionName: "ChoosePlanTapped" }
+        break
+      case "Paused":
+        ctaData = {
+          text: "Resume Membership",
+          link: "/",
+          actionName: "ResumeMembershipTapped",
+          onClick: () => openDrawer("membershipInfo"),
+        }
         break
     }
   } else {
@@ -255,6 +266,7 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
               actionName: Schema.ActionNames[ctaData.actionName],
               actionType: Schema.ActionTypes.Tap,
             })
+            ctaData.onClick?.()
           }}
         >
           {ctaData.text}

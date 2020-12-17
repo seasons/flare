@@ -104,6 +104,7 @@ export enum ActionNames {
   BrowseTheCollectionTapped = "Browse The Collection Tapped",
   ApplyForMembershipTapped = "Apply For Membership Tapped",
   FinishYourApplicationTapped = "Finish Your Application Tapped",
+  ResumeMembershipTapped = "Resume Membership Tapped",
 
   // Sign up page
   CreateAccountSubmitButtonClicked = "Create account submit button clicked",
