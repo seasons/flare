@@ -4,6 +4,7 @@ import React from "react"
 
 import { UserState } from "../Account"
 import { useRouter } from "next/router"
+import { Schema, useTracking } from "utils/analytics"
 
 export enum OnboardingStep {
   CreateAccount = "CreateAccount",
@@ -35,6 +36,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({ userSt
 
   const router = useRouter()
   const { closeDrawer } = useDrawerContext()
+  const tracking = useTracking()
 
   return (
     <Box pb={2}>
@@ -51,6 +53,10 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({ userSt
             type="button"
             variant="primaryBlack"
             onClick={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.FinishYourApplicationTapped,
+                actionType: Schema.ActionTypes.Tap,
+              })
               router.push("/signup")
               closeDrawer()
             }}
