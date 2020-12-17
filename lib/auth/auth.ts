@@ -10,6 +10,8 @@ export interface UserSession {
     status: CustomerStatus
   }
   user?: {
+    firstName: string
+    lastName: string
     email: string
     id: string
   }

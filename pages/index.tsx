@@ -65,6 +65,14 @@ const Home = screenTrack(() => ({
       <ProductRail title="Just added tops" products={data?.justAddedTops} />
       <Spacer mb={10} />
 
+      {!!data?.holiday?.length && (
+        <>
+          <Spacer mb={10} />
+          <ProductRail title="Holiday cozy collection" products={data?.holiday} tag="Holiday" />
+          <Spacer mb={10} />
+        </>
+      )}
+
       <FromCommunity blogPosts={communityPosts} />
 
       {!!data?.justAddedBottoms?.length && (
@@ -119,10 +127,6 @@ const Home = screenTrack(() => ({
       <Spacer mb={10} />
       <FAQ />
       <Spacer mb={15} />
-
-      <Media greaterThan="md">
-        <ServiceableModal />
-      </Media>
     </Layout>
   )
 })

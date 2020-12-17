@@ -1,17 +1,18 @@
 import { PopUpProvider } from "components/PopUp/PopUpProvider"
+import { useRouter } from "next/router"
 import React, { useEffect } from "react"
+import styled from "styled-components"
 
 import { Theme } from "../lib/theme"
 import { Box } from "./Box"
 import { Drawer } from "./Drawer/Drawer"
 import { DrawerProvider } from "./Drawer/DrawerProvider"
 import { Footer } from "./Footer"
+import { Intercom } from "./Intercom"
 import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
 import { Nav } from "./Nav"
-import { useRouter } from "next/router"
 import { PopUp } from "./PopUp"
-import styled from "styled-components"
 
 interface LayoutProps {
   fixedNav?: boolean
@@ -55,6 +56,7 @@ export const Layout = ({
       <PopUpProvider>
         <DrawerProvider>
           <Theme>
+            <Intercom />
             {fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}
             <ScrollContainer mt={fixedNav ? 60 : 0} pb={60} onScroll={onScroll} ref={scrollRef}>
               <MaxWidth>

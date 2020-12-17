@@ -1972,10 +1972,10 @@
   dependencies:
     luxon "^1.25.0"
 
-"@seasons/try-with-seasons@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@seasons/try-with-seasons/-/try-with-seasons-1.0.2.tgz#de34087c92597c97a9b89ed3baace5e76c730b21"
-  integrity sha512-K3h/myUh+FxRI8qjCfmySH+FUmWKXzGPvBunwKqtUw5eH4cmH+zsyUBfWl+h+z2XgBC3CrIbajrkr0LoqzW61A==
+"@seasons/try-with-seasons@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@seasons/try-with-seasons/-/try-with-seasons-1.0.5.tgz#7a2f09928d655072c849adf897e238b15bbd33dd"
+  integrity sha512-BR+Q3K3JLo2bTF9RP76i2Bj4AH6YCWH4WbueYNTwm94wUywPLgU9D967oQrRxF7USlFppmeMr7SMsKxtGWoAOA==
 
 "@segment/snippet@^4.12.0":
   version "4.12.0"
