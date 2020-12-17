@@ -1,3 +1,4 @@
+import { Box } from "@material-ui/core"
 import { Formik } from "formik"
 import React from "react"
 
@@ -26,7 +27,9 @@ export const FormWrapper = ({
         const context = {
           form: formikRenderProps,
         }
-        return React.createElement(props.children as any, context)
+        return (
+          <Box style={{ height: "100%", width: "100%" }}>{React.createElement(props.children as any, context)}</Box>
+        )
       }}
     </Formik>
   )

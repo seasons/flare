@@ -35,7 +35,7 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status }) =>
   )
   return (
     <>
-      <Wrapper px={[2, 2, 2, 5, 5]}>
+      <Wrapper px={[2, 2, 2, 5, 5]} style={{ width: "100%" }}>
         {icon}
         <Spacer mb={3} />
         <HeaderText>{headerText}</HeaderText>
