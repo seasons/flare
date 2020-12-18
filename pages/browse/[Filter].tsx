@@ -21,6 +21,7 @@ import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES }
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import brandSlugs from "lib/brands"
 import { sans as sansSize } from "helpers/typeSizes"
+import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 
 const pageSize = 20
 
@@ -32,15 +33,23 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const router = useRouter()
   const scrollRef = useRef(null)
   const filter = router.query?.Filter || "all+all"
+  const _tops = router.query?.tops as string
+  const tops = _tops?.split(" ")
+  const _bottoms = router.query?.bottoms as string
+  const bottoms = _bottoms?.split(" ")
+  const available = (router.query?.available && router.query?.available === "available") ?? null
   const page = router.query?.page || 1
 
-  const queries = filter?.toString().split("+")
+  const baseFilters = filter?.toString().split("+")
 
-  const [category, brand] = queries
+  const [category, brand] = baseFilters
 
   const [currentCategory, setCurrentCategory] = useState(category)
   const [currentBrand, setCurrentBrand] = useState(brand)
   const [currentPage, setCurrentPage] = useState(Number(page))
+  const [currentBottoms, setCurrentBottoms] = useState(bottoms)
+  const [currentTops, setCurrentTops] = useState(tops)
+  const [availableOnly, setAvailableOnly] = useState(available)
   const { data: menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES, {
     variables: {
       brandOrderBy: "name_ASC",
@@ -55,6 +64,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const { data, error, loading, refetch } = useQuery(GET_BROWSE_PRODUCTS, {
     notifyOnNetworkStatusChange: true,
     variables: {
+      tops: currentTops,
+      bottoms: currentBottoms,
+      available: availableOnly,
       brandName: currentBrand,
       categoryName: currentCategory,
       first: pageSize,
@@ -72,6 +84,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   }
 
   useEffect(() => {
+    const bottomsParam = currentBottoms?.length ? "&bottoms=" + currentBottoms.join("+") : ""
+    const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
+    const availableParam = availableOnly ? "&available=true" : ""
+
     if (currentPage === 1 && page !== 1) {
       setCurrentPage(Number(page))
     }
@@ -87,7 +103,27 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       setCurrentBrand(brand)
       setCurrentCategory(category)
     }
-  }, [filter, setCurrentBrand, setCurrentCategory, page, currentPage, setCurrentPage, currentBrand, currentCategory])
+
+    router.push(
+      `/browse/${currentCategory}+${currentBrand}?page=${currentPage}${bottomsParam}${topsParam}${availableParam}`,
+      undefined,
+      {
+        shallow: true,
+      }
+    )
+  }, [
+    filter,
+    setCurrentBrand,
+    setCurrentCategory,
+    page,
+    currentPage,
+    setCurrentPage,
+    currentBrand,
+    currentCategory,
+    currentTops,
+    currentBottoms,
+    availableOnly,
+  ])
 
   useEffect(() => {}, [page, currentPage, setCurrentPage, currentBrand, currentCategory])
 
@@ -108,11 +144,12 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
-                currentCategory={currentCategory}
+                setParam={setCurrentBrand}
                 listItems={brands}
                 title="Designers"
                 hideTitle
                 currentBrand={currentBrand}
+                currentCategory={currentCategory}
                 listItemStyle={{
                   textDecoration: "underline",
                   fontSize: `${sansSize("7").fontSize}px`,
@@ -125,6 +162,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             }
             CategoriesListComponent={
               <BrowseFilters
+                setParam={setCurrentCategory}
                 title="Categories"
                 currentCategory={currentCategory}
                 listItems={categories}
@@ -144,12 +182,23 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     <BrowseFilters
                       currentCategory={currentCategory}
                       title="Categories"
+                      setParam={setCurrentCategory}
                       listItems={categories}
                       currentBrand={currentBrand}
                     />
                     <Spacer mb={3} />
+                    <BrowseSizeFilters
+                      currentTops={currentTops}
+                      currentBottoms={currentBottoms}
+                      available={availableOnly}
+                      setCurrentBottoms={setCurrentBottoms}
+                      setCurrentTops={setCurrentTops}
+                      setAvailableOnly={setAvailableOnly}
+                    />
+                    <Spacer mb={3} />
                     <BrowseFilters
                       title="Designers"
+                      setParam={setCurrentBrand}
                       currentCategory={currentCategory}
                       listItems={brands}
                       currentBrand={currentBrand}
@@ -199,7 +248,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                         onPageChange={(data) => {
                           const nextPage = data.selected + 1
                           setCurrentPage(nextPage)
-                          router.push(`/browse/${filter}?page=${nextPage}`, undefined, { shallow: true })
                           tracking.trackEvent({
                             actionName: Schema.ActionNames.ProductPageNumberChanged,
                             actionType: Schema.ActionTypes.Tap,
