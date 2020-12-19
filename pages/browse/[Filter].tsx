@@ -50,6 +50,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [currentBottoms, setCurrentBottoms] = useState(bottoms)
   const [currentTops, setCurrentTops] = useState(tops)
   const [availableOnly, setAvailableOnly] = useState(available)
+  const [params, setParams] = useState(null)
   const { data: menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES, {
     variables: {
       brandOrderBy: "name_ASC",
@@ -88,34 +89,29 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
     const availableParam = availableOnly ? "&available=true" : ""
 
-    if (currentPage === 1 && page !== 1) {
-      setCurrentPage(Number(page))
-    }
-
     if (filter) {
       const queries = filter?.toString().split("+")
+      const newParams = `${bottomsParam}${topsParam}${availableParam}`
       const [category, brand] = queries
+      let newURL
 
-      if (category !== currentCategory || currentBrand !== brand) {
+      if ((!!params && newParams !== params) || category !== currentCategory || currentBrand !== brand) {
         setCurrentPage(1)
+        newURL = `/browse/${currentCategory}+${currentBrand}?page=1${newParams}`
+      } else {
+        newURL = `/browse/${currentCategory}+${currentBrand}?page=${currentPage}${newParams}`
       }
 
-      setCurrentBrand(brand)
-      setCurrentCategory(category)
-    }
+      setParams(newParams)
 
-    router.push(
-      `/browse/${currentCategory}+${currentBrand}?page=${currentPage}${bottomsParam}${topsParam}${availableParam}`,
-      undefined,
-      {
+      router.push(newURL, undefined, {
         shallow: true,
-      }
-    )
+      })
+    }
   }, [
     filter,
     setCurrentBrand,
     setCurrentCategory,
-    page,
     currentPage,
     setCurrentPage,
     currentBrand,

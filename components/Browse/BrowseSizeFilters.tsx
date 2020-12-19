@@ -3,7 +3,6 @@ import { color } from "../../helpers"
 import styled from "styled-components"
 import React from "react"
 import { X } from "components/SVGs"
-import Link from "next/link"
 
 interface Props {
   available?: boolean
@@ -15,7 +14,6 @@ interface Props {
 }
 
 const SizeButton = ({ size, items, setParam }) => {
-  console.log("items", items)
   const itemArray = items || []
   let isActive = items?.includes(size)
   return (
