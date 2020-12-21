@@ -226,7 +226,7 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
 
   const { openDrawer } = useDrawerContext()
 
-  const browseData = { text: "Browse the collection", link: "browse", actionName: "BrowseTheCollectionTapped" }
+  const browseData = { text: "Browse the collection", link: "/browse", actionName: "BrowseTheCollectionTapped" }
   const applyData = { text: "Apply for membership", link: "/signup", actionName: "ApplyForMembershipTapped" }
 
   let ctaData = browseData as any
