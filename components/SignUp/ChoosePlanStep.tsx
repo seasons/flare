@@ -88,7 +88,6 @@ export function getChargebeeCheckout(planID: string, email: string): Promise<boo
       })
       .then((resp) => {
         resolve(resp.data.chargebeeCheckout)
-        console
       })
       .catch((error) => {
         // if they already subscribed, provide specific error message
