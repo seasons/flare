@@ -10,6 +10,7 @@ export interface UserSession {
     status: CustomerStatus
     admissions: {
       authorizationsCount: number
+      authorizationWindowClosesAt: string
     }
   }
   user?: {
