@@ -6,9 +6,6 @@
   "cacheDirectories": [
     ".next/cache"
   ],
-  "resolutions": {
-    "react": "16.12.0"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
