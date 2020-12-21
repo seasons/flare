@@ -165,22 +165,25 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
   }, [userSession])
 
   let headerText = "Wear.Swap.Repeat." as any
+  let firstName = userSession?.user?.firstName || ""
+  const youreStart = firstName !== "" ? "Hi " + firstName + ", you're" : "You're"
+  const yourStart = firstName !== "" ? "Hi " + firstName + ", your" : "Your"
   switch (userSession?.customer?.status) {
     case "Authorized":
       if (!!targetDate) {
         headerText = (
           <>
-            {"Hi Regy, you're in. You have"} <Countdown underline display="inline" targetDate={targetDate} />{" "}
+            {`${youreStart} in. You have`} <Countdown underline display="inline" targetDate={targetDate} />{" "}
             {"to choose your plan."}
           </>
         )
       } else {
-        headerText = "Hi Regy, you're in."
+        headerText = `${youreStart} in.`
       }
       break
     case "Waitlisted":
       if (userSession?.customer?.admissions?.authorizationsCount > 0) {
-        headerText = "Hi Regy, your sign-up window has closed."
+        headerText = `${yourStart} sign-up window has closed.`
       }
       break
   }
