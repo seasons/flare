@@ -80,7 +80,7 @@ export const Account = screenTrack()(({ navigation }) => {
   const router = useRouter()
   const { openDrawer, closeDrawer, isOpen, currentView } = useDrawerContext()
 
-  const { signOut } = useAuthContext()
+  const { signOut, updateUserSession } = useAuthContext()
   const { data, refetch } = useQuery(GET_USER, { fetchPolicy: "cache-and-network" })
 
   useEffect(() => {
@@ -88,6 +88,12 @@ export const Account = screenTrack()(({ navigation }) => {
       refetch()
     }
   }, [isOpen, currentView])
+
+  useEffect(() => {
+    if (!!data) {
+      updateUserSession({ cust: data?.me?.customer, user: data?.me?.customer?.user })
+    }
+  }, [data])
 
   const customer = data?.me?.customer
   const status = customer?.status
