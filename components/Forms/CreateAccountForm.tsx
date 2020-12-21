@@ -211,7 +211,7 @@ export const CreateAccountForm = ({ onError, onCompleted }: SignupFormProps) => 
           footerText={
             <>
               {"By creating an account, you agree to our "}
-              <ExternalLink href="https://www.seasons.nyc/terms-of-service">Terms of Service</ExternalLink>
+              <ExternalLink href="/terms-of-service">Terms of Service</ExternalLink>
               {" and "}
               <ExternalLink href="https://www.seasons.nyc/privacy-policy">Privacy Policy</ExternalLink>
             </>
