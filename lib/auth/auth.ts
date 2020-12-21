@@ -8,6 +8,11 @@ export interface UserSession {
   refreshToken: string
   customer?: {
     status: CustomerStatus
+    admissions?: {
+      id: string
+      authorizationWindowClosesAt: string
+      authorizationsCount: number
+    }
   }
   user?: {
     firstName: string
