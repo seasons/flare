@@ -260,7 +260,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 )}
               </Row>
               <Row>
-                <Flex align-items="center" mt={2} mb={[0, 4]} width="100%">
+                <Flex alignItems="center" mt={2} mb={[0, 4]} width="100%" justifyContent="center">
                   {showPagination && (
                     <Pagination currentPage={currentPage} pageCount={pageCount}>
                       <Paginate
