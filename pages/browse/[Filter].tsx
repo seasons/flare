@@ -25,6 +25,12 @@ import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 
 const pageSize = 20
 
+export interface SizeFilterParams {
+  currentTops: string[]
+  currentBottoms: string[]
+  availableOnly: boolean
+}
+
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   page: Schema.PageNames.BrowsePage,
   path: "/browse",
@@ -47,11 +53,13 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [currentCategory, setCurrentCategory] = useState(category)
   const [currentBrand, setCurrentBrand] = useState(brand)
   const [currentPage, setCurrentPage] = useState(Number(page))
-  const [currentBottoms, setCurrentBottoms] = useState(bottoms)
-  const [currentTops, setCurrentTops] = useState(tops)
-  const [availableOnly, setAvailableOnly] = useState(available)
   const [currentURL, setCurrentURL] = useState("")
-  const [params, setParams] = useState(null)
+  const [paramsString, setParamsString] = useState("")
+  const [params, setParams] = useState<SizeFilterParams>({
+    currentTops: tops ?? null,
+    currentBottoms: bottoms ?? null,
+    availableOnly: available ?? null,
+  })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { data: menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES, {
     variables: {
@@ -60,11 +68,13 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     },
   })
 
+  const { currentTops, currentBottoms, availableOnly } = params
+
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const skip = (currentPage - 1) * pageSize
 
-  const { data, error, loading, refetch } = useQuery(GET_BROWSE_PRODUCTS, {
+  const { data, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
     notifyOnNetworkStatusChange: true,
     variables: {
       tops: currentTops,
@@ -91,13 +101,16 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   }, [])
 
   useEffect(() => {
-    const bottomsParam = currentBottoms?.length ? "&bottoms=" + currentBottoms.join("+") : ""
-    const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
-    const availableParam = availableOnly ? "&available=true" : ""
+    const paramToURL = () => {
+      const bottomsParam = currentBottoms?.length ? "&bottoms=" + currentBottoms.join("+") : ""
+      const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
+      const availableParam = availableOnly ? "&available=true" : ""
+      return `${bottomsParam}${topsParam}${availableParam}`
+    }
+    const newParams = paramToURL()
 
     if (mounted) {
       const queries = filter?.toString().split("+")
-      const newParams = `${bottomsParam}${topsParam}${availableParam}`
       const [category, brand] = queries
       let newURL
       if (
@@ -107,26 +120,21 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           (tops?.length && !currentTops?.length))
       ) {
         // These are the initial params set on page load which happen after the page mounts since it's SSG
-        if (!!available && available !== availableOnly) {
-          setAvailableOnly(available)
-        }
-        if (bottoms?.length && !currentBottoms?.length) {
-          setCurrentBottoms(bottoms)
-        }
-        if (tops?.length && !currentTops?.length) {
-          setCurrentTops(tops)
-        }
+        setParams({
+          availableOnly: !!available && available !== availableOnly ? available : null,
+          currentBottoms: !!bottoms?.length && !currentBottoms?.length ? bottoms : [],
+          currentTops: tops?.length && !currentTops?.length ? tops : [],
+        })
         setInitialPageLoad(true)
       } else {
         // After the initial page load handle the URL and params through state
-        if ((!!params && newParams !== params) || category !== currentCategory || currentBrand !== brand) {
+        if ((!!paramsString && newParams !== paramsString) || category !== currentCategory || currentBrand !== brand) {
           setCurrentPage(1)
           newURL = `/browse/${currentCategory}+${currentBrand}?page=1${newParams}`
           scrollRef?.current?.scrollTo(0, 0)
         } else {
           newURL = `/browse/${currentCategory}+${currentBrand}?page=${currentPage}${newParams}`
         }
-        setParams(newParams)
         if (currentURL !== newURL) {
           setCurrentURL(newURL)
           router.push(newURL, undefined, {
@@ -134,6 +142,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           })
         }
       }
+      setParamsString(newParams)
     }
   }, [
     filter,
@@ -162,6 +171,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
   const featuredBrandItems = navigationData?.brands || []
+
+  console.log("data", data)
 
   return (
     <>
@@ -213,14 +224,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       currentBrand={currentBrand}
                     />
                     <Spacer mb={3} />
-                    <BrowseSizeFilters
-                      currentTops={currentTops}
-                      currentBottoms={currentBottoms}
-                      available={availableOnly}
-                      setCurrentBottoms={setCurrentBottoms}
-                      setCurrentTops={setCurrentTops}
-                      setAvailableOnly={setAvailableOnly}
-                    />
+                    <BrowseSizeFilters setParams={setParams} params={params} />
                     <Spacer mb={3} />
                     <BrowseFilters
                       title="Designers"

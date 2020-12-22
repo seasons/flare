@@ -3,25 +3,34 @@ import { color } from "../../helpers"
 import styled from "styled-components"
 import React from "react"
 import { X } from "components/SVGs"
+import { SizeFilterParams } from "pages/browse/[Filter]"
 
 interface Props {
-  available?: boolean
-  currentBottoms: string[]
-  currentTops: string[]
-  setCurrentBottoms: (param: string[]) => void
-  setCurrentTops: (param: string[]) => void
-  setAvailableOnly: (param: boolean) => void
+  setParams: (params: SizeFilterParams) => void
+  params: SizeFilterParams
 }
 
-const SizeButton = ({ size, items, setParam }) => {
+interface SizeButtonProps {
+  size: string
+  items: string[]
+  setParams: (params: SizeFilterParams) => void
+  params: SizeFilterParams
+  type: "bottoms" | "tops"
+}
+
+const SizeButton: React.FC<SizeButtonProps> = ({ size, items, setParams, params, type }) => {
   const itemArray = items || []
   let isActive = items?.includes(size)
   return (
     <SizeButtonWrapper
       isActive={isActive}
       onClick={() => {
-        const newParams = isActive ? itemArray.filter((i) => i !== size) : [size, ...itemArray]
-        setParam(newParams)
+        const newParamsArray = isActive ? itemArray.filter((i) => i !== size) : [size, ...itemArray]
+        if (type === "bottoms") {
+          setParams({ ...params, currentBottoms: newParamsArray })
+        } else {
+          setParams({ ...params, currentTops: newParamsArray })
+        }
       }}
     >
       <Sans size="3" my="2" color={isActive ? color("white100") : color("black100")}>
@@ -31,16 +40,10 @@ const SizeButton = ({ size, items, setParam }) => {
   )
 }
 
-export const BrowseSizeFilters: React.FC<Props> = ({
-  currentBottoms,
-  currentTops,
-  available,
-  setCurrentBottoms,
-  setCurrentTops,
-  setAvailableOnly,
-}) => {
+export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
   const topChoices = ["XS", "S", "M", "L", "XL", "XXL"]
   const bottomChoices = ["28", "29", "30", "31", "32", "33", "34", "35", "36", "37"]
+  const { currentTops, currentBottoms, availableOnly } = params
 
   return (
     <Box style={{ maxWidth: "148px" }}>
@@ -50,7 +53,13 @@ export const BrowseSizeFilters: React.FC<Props> = ({
       </Box>
       <Spacer mb={[0, 2]} />
       <Flex mb={2} alignItems="center" flexDirection="row">
-        <CheckBox mr={1} isActive={available} onClick={() => setAvailableOnly(!available)}>
+        <CheckBox
+          mr={1}
+          isActive={availableOnly}
+          onClick={() => {
+            setParams({ ...params, availableOnly: !availableOnly })
+          }}
+        >
           <X />
         </CheckBox>
         <Sans size="3">Available now</Sans>
@@ -58,14 +67,25 @@ export const BrowseSizeFilters: React.FC<Props> = ({
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>
         {topChoices.map((size) => {
-          return <SizeButton key={size} size={size} items={currentTops} setParam={setCurrentTops} />
+          return (
+            <SizeButton key={size} size={size} items={currentTops} params={params} setParams={setParams} type="tops" />
+          )
         })}
       </SizeButtonContainer>
       <Spacer mb={2} />
       <Sans size="3">Bottoms</Sans>
       <SizeButtonContainer>
         {bottomChoices.map((size) => {
-          return <SizeButton key={size} size={size} items={currentBottoms} setParam={setCurrentBottoms} />
+          return (
+            <SizeButton
+              key={size}
+              size={size}
+              items={currentBottoms}
+              params={params}
+              setParams={setParams}
+              type="bottoms"
+            />
+          )
         })}
       </SizeButtonContainer>
     </Box>
