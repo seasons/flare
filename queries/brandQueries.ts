@@ -35,23 +35,33 @@ export const GET_BROWSE_PRODUCTS = gql`
     $first: Int!
     $skip: Int!
     $orderBy: ProductOrderByInput!
+    $tops: [String]
+    $bottoms: [String]
+    $available: Boolean
   ) {
-    connection: productsConnection(category: $categoryName, brand: $brandName, where: { status: Available }) {
+    connection: productsConnection(
+      tops: $tops
+      bottoms: $bottoms
+      availableOnly: $available
+      category: $categoryName
+      brand: $brandName
+      where: { status: Available }
+    ) {
       aggregate {
         count
       }
     }
     products: productsConnection(
       category: $categoryName
+      tops: $tops
+      bottoms: $bottoms
+      availableOnly: $available
       brand: $brandName
       orderBy: $orderBy
       first: $first
       skip: $skip
       where: { status: Available }
     ) {
-      aggregate {
-        count
-      }
       edges {
         node {
           id

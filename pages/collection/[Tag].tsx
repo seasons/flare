@@ -54,8 +54,6 @@ const Collection = screenTrack(({ router }) => {
   const aggregateCount = data?.productsAggregate?.aggregate?.count
   const featuredBrandItems = navigationData?.brands || []
 
-  console.log("data", data)
-
   const onScroll = debounce(() => {
     const shouldLoadMore =
       !loading &&
