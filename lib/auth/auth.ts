@@ -1,10 +1,18 @@
 import { apolloClient } from "lib/apollo"
+import { CustomerStatus } from "mobile/Account/Lists"
 
 import { gql } from "@apollo/client"
 
 export interface UserSession {
   token: string
   refreshToken: string
+  customer?: {
+    status: CustomerStatus
+    admissions: {
+      authorizationsCount: number
+      authorizationWindowClosesAt: string
+    }
+  }
   user?: {
     firstName: string
     lastName: string

@@ -49,6 +49,9 @@ export const GET_PLANS = gql`
         }
         admissions {
           id
+          admissable
+          authorizationsCount
+          authorizationWindowClosesAt
           allAccessEnabled
         }
       }

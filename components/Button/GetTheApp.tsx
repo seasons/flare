@@ -4,18 +4,26 @@ import { Flex, Sans, Spacer, Box } from "../"
 import { color } from "../../helpers"
 import { AppleSVG } from "../SVGs"
 import { Button } from "./Button"
+import { Schema, useTracking } from "utils/analytics"
 
 interface Props {
   block?: boolean
 }
 
 export const GetTheAppButton: React.FC<Props> = ({ block }) => {
+  const tracking = useTracking()
   return (
     <GetAppWrapper block={block}>
       <Button
         variant="primaryWhite"
         width={block ? "100%" : "auto"}
-        onClick={() => window.open("https://szns.co/app", "_blank")}
+        onClick={() => {
+          tracking.trackEvent({
+            actionName: Schema.ActionNames.GetTheIOSAppTapped,
+            actionType: Schema.ActionTypes.Tap,
+          })
+          window.open("https://szns.co/app", "_blank")
+        }}
       >
         <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
           <Box top="2px" style={{ position: "relative" }}>

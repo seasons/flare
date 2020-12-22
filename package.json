@@ -27,6 +27,7 @@
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/styles": "^4.10.0",
+    "@seasons/eclipse": "^1.1.4",
     "@seasons/try-with-seasons": "^1.0.5",
     "@segment/snippet": "^4.12.0",
     "@sentry/react": "^5.27.4",
@@ -62,6 +63,7 @@
     "react-native-web": "^0.14.1",
     "react-paginate": "^6.3.2",
     "react-places-autocomplete": "^7.2.1",
+    "react-primitives": "^0.8.1",
     "react-redux": "^7.2.1",
     "react-snaplist-carousel": "^3.2.2",
     "react-spring": "^8.0.27",
@@ -97,7 +99,7 @@
     "eslint-plugin-react-hooks": "^4.1.2",
     "prettier": "^2.1.2",
     "prop-types": "15",
-    "typescript": "^3.7.5",
+    "typescript": "^3.8.3",
     "webpack": "4"
   },
   "prettier": {

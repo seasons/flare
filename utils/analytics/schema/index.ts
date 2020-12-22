@@ -94,6 +94,7 @@ export enum ActionTypes {
  * Action event discriptors / names
  */
 export enum ActionNames {
+  LearnMoreTapped = "Learn more tapped",
   ReadMoreTapped = "Read more tapped",
   // Nav
   NavigationButtonClicked = "Navigation button clicked",
@@ -101,6 +102,11 @@ export enum ActionNames {
   // Home page
   DownloadAppButtonClicked = "Download app button clicked",
   SignUpButtonClicked = "Sign up button clicked",
+  BrowseTheCollectionTapped = "Browse The Collection Tapped",
+  ApplyForMembershipTapped = "Apply For Membership Tapped",
+  FinishYourApplicationTapped = "Finish Your Application Tapped",
+  ResumeMembershipTapped = "Resume Membership Tapped",
+
   // Sign up page
   CreateAccountSubmitButtonClicked = "Create account submit button clicked",
   CustomerMeasurementsSubmitButtonClicked = "Customer measurements submit button clicked",
@@ -145,6 +151,7 @@ export enum ActionNames {
   GetTheIOSAppTapped = "Get The iOS App Tapped",
   LogOutTapped = "Log Out Tapped",
   ChoosePlanTapped = "Choose Plan Tapped",
+  RequestAccessTapped = "Request Access Tapped",
   PlanTapped = "Plan Tapped",
   Tier0PlanTabTapped = "Tier 0 Plan Tab Tapped",
   Tier1PlanTabTapped = "Tier 1 Plan Tab Tapped",

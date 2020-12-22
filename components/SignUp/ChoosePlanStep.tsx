@@ -9,6 +9,7 @@ import { useQuery } from "@apollo/client"
 
 import { MembershipPlans } from "./MembershipPlans"
 import DetailText from "components/Forms/DetailText"
+import { Box } from "@material-ui/core"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -36,6 +37,9 @@ export const PAYMENT_PLANS = gql`
         id
         admissions {
           id
+          admissable
+          authorizationsCount
+          authorizationWindowClosesAt
           allAccessEnabled
         }
       }
@@ -137,7 +141,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
   }
 
   return (
-    <>
+    <Box style={{ height: "100%", width: "100%" }}>
       <MembershipPlans
         selectedPlan={selectedPlan}
         setSelectedPlan={setSelectedPlan}
@@ -176,6 +180,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
           </MaxWidth>
         </FormFooterInnerWrapper>
       </FormFooterWrapper>
-    </>
+    </Box>
   )
 }

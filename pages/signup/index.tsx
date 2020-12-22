@@ -1,102 +1,27 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
-import {
-  CustomerMeasurementsForm,
-  customerMeasurementsValidationSchema,
-} from "components/Forms/CustomerMeasurementsForm"
+import { CreateAccountForm } from "components/Forms/CreateAccountForm"
+import { CustomerMeasurementsForm } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
-import { Step } from "components/Forms/Step"
 import { BrandNavItemFragment } from "components/Nav"
-import { Wizard } from "components/Forms/Wizard"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { DateTime } from "luxon"
-import { useRouter } from "next/router"
-import React, { useEffect, useState } from "react"
+
+import React, { useState, useEffect } from "react"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
-import { useMutation, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import { CustomerStatus } from "mobile/Account/Lists"
 import { Loader } from "mobile/Loader"
+import { DateTime } from "luxon"
 
-const SIGN_UP_USER = gql`
-  mutation SignupUser(
-    $email: String!
-    $password: String!
-    $firstName: String!
-    $lastName: String!
-    $details: CustomerDetailCreateInput!
-    $referrerId: String
-    $utm: UTMInput
-  ) {
-    signup(
-      email: $email
-      password: $password
-      firstName: $firstName
-      lastName: $lastName
-      details: $details
-      referrerId: $referrerId
-      utm: $utm
-    ) {
-      expiresIn
-      refreshToken
-      token
-      customer {
-        id
-        status
-        detail {
-          id
-          shippingAddress {
-            id
-            state
-          }
-        }
-        bagItems {
-          id
-        }
-        admissions {
-          id
-          admissable
-          authorizationsCount
-        }
-        user {
-          id
-          email
-          firstName
-          lastName
-          createdAt
-        }
-        coupon {
-          id
-          amount
-          percentage
-          type
-        }
-      }
-    }
-  }
-`
+export interface SignupFormProps {
+  onError?: () => void
+  onCompleted?: () => void
+}
 
-const ADD_MEASUREMENTS = gql`
-  mutation addMeasurements(
-    $height: Int
-    $weight: CustomerDetailCreateweightInput
-    $topSizes: CustomerDetailCreatetopSizesInput
-    $waistSizes: CustomerDetailCreatewaistSizesInput
-  ) {
-    addCustomerDetails(
-      details: { height: $height, weight: $weight, topSizes: $topSizes, waistSizes: $waistSizes }
-      status: Waitlisted
-      event: CompletedWaitlistForm
-    ) {
-      id
-    }
-  }
-`
-
-const GET_SIGNUP_USER = gql`
+export const GET_SIGNUP_USER = gql`
   query GetSignupUser {
     brands(
       where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
@@ -124,7 +49,10 @@ const GET_SIGNUP_USER = gql`
         authorizedAt
         admissions {
           id
+          admissable
+          authorizationsCount
           authorizationWindowClosesAt
+          allAccessEnabled
         }
       }
     }
@@ -136,53 +64,23 @@ const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
-  const router = useRouter()
+  const { updateUserSession, userSession } = useAuthContext()
   const tracking = useTracking()
-  const { data } = useQuery(GET_SIGNUP_USER)
+  const { data, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const featuredBrandItems = data?.brands || []
-
-  const { signIn } = useAuthContext()
-  const [signUpUser] = useMutation(SIGN_UP_USER)
-  const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
 
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
-
-  const customerStatus = data?.me?.customer?.status
-  const customerDetail = data?.me?.customer?.detail
-
-  // Steps completed
-  const hasAccount = !!customerStatus
-  const hasMeasurements = !!customerDetail?.height
-  const _isAuthorized = !!customerStatus && customerStatus === CustomerStatus.Authorized
-  const _isWaitlisted = !!customerStatus && customerStatus === CustomerStatus.Waitlisted
-
-  const [isWaitlisted, setIsWaitlisted] = useState(false)
-  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [triageIsRunning, setTriageIsRunning] = useState(false)
 
   useEffect(() => {
-    if (_isAuthorized) {
-      setIsAuthorized(true)
+    console.log(data)
+    if (!!data?.me?.customer) {
+      updateUserSession({ cust: data?.me?.customer })
     }
-    if (_isWaitlisted) {
-      setIsWaitlisted(true)
-    }
-  }, [_isWaitlisted, _isAuthorized])
+  }, [data])
 
-  const initialValues = {
-    email: "",
-    firstName: "",
-    lastName: "",
-    tel: "",
-    confirmPassword: "",
-    password: "",
-    zipCode: "",
-    device: "",
-    weight: "",
-    height: "",
-    topSizes: [""],
-    waistSizes: [""],
-  }
+  const customerStatus = userSession?.customer?.status
 
   const closeSnackBar = () => {
     setShowSnackBar(false)
@@ -209,164 +107,85 @@ const SignUpPage = screenTrack(() => ({
     )
   }
 
-  const createAccountStep = (
-    <Step
-      key="createAccountStep"
-      validationSchema={createAccountValidationSchema}
-      onSubmit={async (values, actions) => {
-        try {
-          const utm = JSON.parse(localStorage?.getItem("utm"))
-          const date = new Date(values.dob)
-          const dateToIso = DateTime.fromJSDate(date).toISO()
-          const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
-          const lastName = values.lastName.charAt(0).toUpperCase() + values.lastName.slice(1)
-          const response = await signUpUser({
-            variables: {
-              email: values.email,
-              password: values.password,
-              firstName,
-              lastName,
-              details: {
-                phoneNumber: values.tel,
-                birthday: dateToIso,
-                phoneOS: values.device,
-                shippingAddress: {
-                  create: { zipCode: values.zipCode },
-                },
-              },
-              referrerId: router.query.referrer_id,
-              utm,
-            },
-          })
-
-          tracking.trackEvent({
-            actionName: Schema.ActionNames.CreateAccountClicked,
-            actionType: Schema.ActionTypes.Tap,
-          })
-
-          if (response) {
-            signIn(response.data.signup)
-            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.customer?.coupon))
-            actions.setSubmitting(false)
-
-            return true
-          }
-        } catch (error) {
-          if (JSON.stringify(error).includes("email already in db")) {
-            actions.setFieldError("email", "User with that email already exists")
-          } else {
-            console.log("error", error)
-            setShowSnackBar(true)
-          }
-          actions.setSubmitting(false)
-        }
-      }}
-    >
-      {(context) => <CreateAccountForm context={context} />}
-    </Step>
-  )
-
-  const measurementsStep = (
-    <Step
-      key="measurementsStep"
-      validationSchema={customerMeasurementsValidationSchema}
-      onSubmit={async (values, actions) => {
-        const { height, weight, topSizes, waistSizes } = values
-        const filteredWaistSizes = waistSizes.filter((i) => i !== "")
-        const filteredTopSizes = topSizes.filter((i) => i !== "")
-        try {
-          const response = await addMeasurements({
-            variables: {
-              height,
-              weight: { set: weight },
-              topSizes: { set: filteredTopSizes },
-              waistSizes: { set: filteredWaistSizes },
-            },
-          })
-          if (response) {
-            actions.setSubmitting(false)
+  let CurrentForm
+  switch (customerStatus) {
+    case undefined:
+      CurrentForm = (
+        <CreateAccountForm onError={() => setShowSnackBar(true)} onCompleted={() => refetchGetSignupUser()} />
+      )
+      break
+    case "Created":
+      CurrentForm = (
+        <CustomerMeasurementsForm
+          onCompleted={() => {
             setStartTriage(true)
-            return true
-          }
-        } catch (error) {
-          actions.setSubmitting(false)
-        }
-      }}
-    >
-      {(context) => <CustomerMeasurementsForm context={context} />}
-    </Step>
-  )
-
-  const triageStep = (
-    <Step key="triage">
-      {({ wizard, form }) => (
-        <TriageStep
-          check={startTriage}
-          onTriageComplete={(isWaitlisted) => {
-            if (isWaitlisted) {
-              setIsWaitlisted(true)
-            } else {
-              setIsAuthorized(true)
-            }
-
-            tracking.trackEvent({
-              actionName: Schema.ActionNames.AccountTriaged,
-              actionType: Schema.ActionTypes.Success,
-              isWaitlisted,
-            })
+            refetchGetSignupUser()
+            updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
           }}
         />
-      )}
-    </Step>
-  )
+      )
+      break
+    case "Waitlisted":
+      if (startTriage) {
+        CurrentForm = (
+          <TriageStep
+            check={startTriage}
+            onStartTriage={() => setTriageIsRunning(true)}
+            onTriageComplete={(isWaitlisted) => {
+              if (isWaitlisted) {
+                updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
+              } else {
+                updateUserSession({ cust: { status: CustomerStatus.Authorized } })
+              }
 
-  const finishedTriage = isAuthorized || isWaitlisted
-
-  const steps = [
-    ...(hasAccount ? [] : [createAccountStep]),
-    ...(hasMeasurements ? [] : [measurementsStep]),
-    ...(finishedTriage ? [] : [triageStep]),
-    <Step key="formConfirmationOrChoosePlanStep">
-      {({ form, wizard }) => {
-        return isWaitlisted ? (
-          <FormConfirmation status={isWaitlisted ? "waitlisted" : "accountAccepted"} />
-        ) : (
-          <ChoosePlanStep
-            onPlanSelected={(plan) => {
               tracking.trackEvent({
-                actionName: Schema.ActionNames.PlanSelectedButtonClicked,
-                actionType: Schema.ActionTypes.Tap,
-                plan,
-                user: form.values,
+                actionName: Schema.ActionNames.AccountTriaged,
+                actionType: Schema.ActionTypes.Success,
+                isWaitlisted,
               })
+
+              refetchGetSignupUser()
+              setTriageIsRunning(false)
+              setStartTriage(false)
             }}
-            onSuccess={() => {
-              localStorage.setItem("paymentProcessed", "true")
-              identify(data?.me?.customer?.user?.id, { status: "Active" })
-              setTimeout(() => {
-                wizard.next()
-              }, 500)
-            }}
-            onError={() => {}}
           />
         )
-      }}
-    </Step>,
-    <Step>
-      {() => {
-        return <FormConfirmation status="accountAccepted" />
-      }}
-    </Step>,
-  ]
-
-  const hasSteps = steps.length > 0
+      } else {
+        CurrentForm = <FormConfirmation status={"waitlisted"} />
+      }
+      break
+    case "Authorized":
+    case "Invited":
+      CurrentForm = (
+        <ChoosePlanStep
+          onPlanSelected={(plan) => {
+            tracking.trackEvent({
+              actionName: Schema.ActionNames.PlanSelectedButtonClicked,
+              actionType: Schema.ActionTypes.Tap,
+              plan,
+            })
+          }}
+          onSuccess={() => {
+            updateUserSession({ cust: { status: CustomerStatus.Active } })
+            localStorage.setItem("paymentProcessed", "true")
+            identify(data?.me?.customer?.user?.id, { status: "Active" })
+            refetchGetSignupUser()
+          }}
+          onError={() => {}}
+        />
+      )
+      break
+    case "Active":
+      CurrentForm = <FormConfirmation status="accountAccepted" />
+      break
+  }
 
   return (
     <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-          {!(typeof window === "undefined") && hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
+          {CurrentForm}
         </Flex>
       </MaxWidth>
     </Layout>

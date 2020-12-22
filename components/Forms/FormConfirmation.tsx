@@ -2,7 +2,6 @@ import Link from "next/link"
 import styled from "styled-components"
 import { CheckWithBackground } from "components/SVGs"
 import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
-import { color } from "../../helpers"
 import { Button } from "../Button/Button"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import { FormFooter } from "./FormsTemplate"
@@ -36,7 +35,7 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status }) =>
   )
   return (
     <>
-      <Wrapper px={[2, 2, 2, 5, 5]}>
+      <Wrapper px={[2, 2, 2, 5, 5]} style={{ width: "100%" }}>
         {icon}
         <Spacer mb={3} />
         <HeaderText>{headerText}</HeaderText>

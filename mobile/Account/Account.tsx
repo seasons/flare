@@ -22,7 +22,7 @@ import { useQuery } from "@apollo/client"
 
 import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
-import { AuthorizedCTA } from "./Components/AuthorizedCTA"
+import { AuthorizedCTA, RewaitlistedCTA } from "@seasons/eclipse"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
 
 export enum UserState {
@@ -65,7 +65,10 @@ export const GET_USER = gql`
         authorizedAt
         admissions {
           id
+          admissable
+          authorizationsCount
           authorizationWindowClosesAt
+          allAccessEnabled
         }
       }
     }
@@ -77,14 +80,20 @@ export const Account = screenTrack()(({ navigation }) => {
   const router = useRouter()
   const { openDrawer, closeDrawer, isOpen, currentView } = useDrawerContext()
 
-  const { signOut } = useAuthContext()
-  const { data, refetch } = useQuery(GET_USER)
+  const { signOut, updateUserSession } = useAuthContext()
+  const { data, refetch } = useQuery(GET_USER, { fetchPolicy: "cache-and-network" })
 
   useEffect(() => {
     if (currentView === "profile" && isOpen) {
       refetch()
     }
   }, [isOpen, currentView])
+
+  useEffect(() => {
+    if (!!data) {
+      updateUserSession({ cust: data?.me?.customer, user: data?.me?.customer?.user })
+    }
+  }, [data])
 
   const customer = data?.me?.customer
   const status = customer?.status
@@ -196,6 +205,26 @@ export const Account = screenTrack()(({ navigation }) => {
       case CustomerStatus.Created:
       case CustomerStatus.Waitlisted:
         const userState = status == CustomerStatus.Created ? UserState.Undetermined : UserState.Waitlisted
+        if (status === CustomerStatus.Waitlisted && customer?.admissions?.authorizationsCount > 0) {
+          return (
+            <RewaitlistedCTA
+              authorizedAt={DateTime.fromISO(customer?.authorizedAt)}
+              authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
+              onPressLearnMore={() =>
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.LearnMoreTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+              }
+              onPressRequestAccess={() =>
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.RequestAccessTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+              }
+            />
+          )
+        }
         return <OnboardingChecklist userState={userState} />
       case CustomerStatus.Authorized:
         return (
@@ -204,7 +233,7 @@ export const Account = screenTrack()(({ navigation }) => {
             authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
             onPressLearnMore={() => {
               tracking.trackEvent({
-                actionName: Schema.ActionNames.ChoosePlanTapped,
+                actionName: Schema.ActionNames.LearnMoreTapped,
                 actionType: Schema.ActionTypes.Tap,
               })
               router.push("/signup")
