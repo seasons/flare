@@ -172,8 +172,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const showPagination = !!products?.length && aggregateCount > 20
   const featuredBrandItems = navigationData?.brands || []
 
-  console.log("data", data)
-
   return (
     <>
       <Layout fixedNav footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems} scrollRef={scrollRef}>
