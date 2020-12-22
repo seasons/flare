@@ -7,14 +7,13 @@ import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
-
-import React, { useState, useEffect } from "react"
+import { DateTime } from "luxon"
+import { CustomerStatus } from "mobile/Account/Lists"
+import { Loader } from "mobile/Loader"
+import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-import { CustomerStatus } from "mobile/Account/Lists"
-import { Loader } from "mobile/Loader"
-import { DateTime } from "luxon"
 
 export interface SignupFormProps {
   onError?: () => void
@@ -74,11 +73,17 @@ const SignUpPage = screenTrack(() => ({
   const [triageIsRunning, setTriageIsRunning] = useState(false)
 
   useEffect(() => {
-    console.log(data)
     if (!!data?.me?.customer) {
       updateUserSession({ cust: data?.me?.customer })
     }
   }, [data])
+
+  // 1. Check if it's a gift
+  // 2. Read recipient and gifter full name, subscription ID and plan ID from URL
+  // 3. Show welcome gift screen
+  // 4. Show create account and measurements screen
+  // 5. Create Subscription model in backend and add to customer
+  // 6. Redirect to home page
 
   const customerStatus = userSession?.customer?.status
 

@@ -1,15 +1,15 @@
 import { Button, Flex, MaxWidth, Spacer } from "components"
+import DetailText from "components/Forms/DetailText"
 import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
 import gql from "graphql-tag"
-import { apolloClient } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { executeChargebeeCheckout } from "lib/chargebee"
 import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
+import { Box } from "@material-ui/core"
 
 import { MembershipPlans } from "./MembershipPlans"
-import DetailText from "components/Forms/DetailText"
-import { Box } from "@material-ui/core"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -53,64 +53,10 @@ interface ChoosePlanStepProps {
   onSuccess?: () => void
 }
 
-const GET_CHARGEBEE_CHECKOUT = gql`
-  query GetChargebeeCheckout($planID: String!, $email: String, $couponID: String) {
-    chargebeeCheckout(planID: $planID, email: $email, couponID: $couponID) {
-      id
-      type
-      url
-      state
-      embed
-      created_at
-      expires_at
-    }
-  }
-`
-
-export function getChargebeeCheckout(planID: string, email: string): Promise<boolean | void> {
-  let coupon
-  try {
-    const couponData = localStorage?.getItem("coupon")
-    coupon = JSON.parse(couponData)
-  } catch (e) {
-    // Fail silently
-  }
-  // Set up the mutation
-  return new Promise((resolve, reject) => {
-    apolloClient
-      .query({
-        query: GET_CHARGEBEE_CHECKOUT,
-        variables: {
-          planID,
-          email,
-          couponID: coupon?.id,
-        },
-      })
-      .then((resp) => {
-        resolve(resp.data.chargebeeCheckout)
-      })
-      .catch((error) => {
-        // if they already subscribed, provide specific error message
-        if (error.message.includes("already has a subscription")) {
-          reject("Already subscribed. Please contact support@seasons.nyc to update your subscription")
-        } else {
-          reject("Something went wrong. Please try again later")
-        }
-      })
-  })
-}
-
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
   const [selectedPlan, setSelectedPlan] = useState(null)
   const { data } = useQuery(PAYMENT_PLANS)
   const { userSession } = useAuthContext()
-
-  useEffect(() => {
-    // @ts-ignore
-    Chargebee.init({
-      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
-    })
-  }, [])
 
   useEffect(() => {
     if (data?.paymentPlans && !selectedPlan) {
@@ -121,24 +67,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
 
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const faqSections = data?.faq?.sections
-
-  function executeChargebeeCheckout(planID) {
-    // @ts-ignore
-    const chargebee = Chargebee.getInstance()
-    chargebee.openCheckout({
-      hostedPage: async () => {
-        const { email } = userSession.user
-        return await getChargebeeCheckout(planID, email)
-      },
-      error: (error) => {
-        console.error(error)
-        onError?.(error)
-      },
-      success: (hostedPageId) => {
-        onSuccess?.()
-      },
-    })
-  }
 
   return (
     <Box style={{ height: "100%", width: "100%" }}>
@@ -171,7 +99,8 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
                 type="button"
                 onClick={() => {
                   onPlanSelected(selectedPlan)
-                  executeChargebeeCheckout(selectedPlan.planID)
+                  const { email } = userSession.user
+                  executeChargebeeCheckout({ planID: selectedPlan.planID, email, onError, onSuccess })
                 }}
               >
                 Select Plan
