@@ -43,6 +43,7 @@ const SizeButton: React.FC<SizeButtonProps> = ({ size, items, setParams, params,
 export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
   const topChoices = ["XS", "S", "M", "L", "XL", "XXL"]
   const bottomChoices = ["28", "29", "30", "31", "32", "33", "34", "35", "36", "37"]
+
   const { currentTops, currentBottoms, availableOnly } = params
 
   return (
