@@ -1,13 +1,11 @@
-import {
-  Box, Button, Display, Flex, Layout, MaxWidth, Media, Separator, Spacer, TextInput
-} from "components"
+import { Box, Button, Display, Flex, Layout, Media, Separator, Spacer } from "components"
 import { Col, Grid, Row } from "components/Grid"
 import { ZIPCODE_SERVICED } from "components/ServiceableModal"
 import { groupByPlanTier } from "components/SignUp/MembershipPlans"
 import { PlanTier } from "components/SignUp/PlanTier"
-import { initializeApollo } from "lib/apollo/apollo"
 import { executeChargebeeCheckout, initChargebee } from "lib/chargebee"
 import React, { useEffect, useState } from "react"
+import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { gql, useLazyQuery, useQuery } from "@apollo/client"
@@ -42,6 +40,7 @@ const Gift = screenTrack(() => ({
   page: Schema.PageNames.GiftPage,
   path: "/gift",
 }))(() => {
+  const tracking = useTracking()
   const { data } = useQuery(GET_GIFT_PAGE)
   const featuredBrandItems = data?.brands || []
   const plans = data?.paymentPlans
@@ -57,14 +56,6 @@ const Gift = screenTrack(() => ({
   }, [])
 
   useEffect(() => {
-    if (zipcode && zipcode.match(ZIPCODE_REGEX)) {
-      zipcodeServiced({
-        variables: { zipCode: zipcode },
-      })
-    }
-  }, [zipcode])
-
-  useEffect(() => {
     if (plans && plans.length > 0) {
       setSelectedPlan(plans[0])
     }
@@ -77,47 +68,74 @@ const Gift = screenTrack(() => ({
   }
 
   return (
-    <Layout fixedNav brandItems={featuredBrandItems}>
+    <Layout brandItems={featuredBrandItems}>
       <Grid>
         <Col>
-          <Box>
-            <Flex px={6} my={15} flexDirection="column" alignItems="center">
-              <Display color="black100" size="10" textAlign="center">
+          <Header>
+            <Flex
+              px={6}
+              pt={"200px"}
+              pb={"20px"}
+              flexDirection="column"
+              alignItems="center"
+              style={{ position: "relative", zIndex: 1 }}
+            >
+              <Display color="white100" size="10" textAlign="center">
                 Choose your Gift
               </Display>
               <Spacer mb={5} />
-              <Sans color="black50" size="6" textAlign="center">
+              <Sans color="black10" size="6" textAlign="center">
                 All gifts are sent via email so your recipient can redeem and customize themselves!
                 <br />
-                Gifts are one-time payments that do not renew.
+                Enter their zipcode below to see what plans are available
               </Sans>
               <Spacer mb={1} />
-            </Flex>
-
-            <Box px={[2, 2, 2, 5, 5]}>
-              <Separator />
-            </Box>
-
-            <Flex my={5} flexDirection="column" alignItems="center">
               <Flex flexDirection="row" alignItems="center">
-                <Sans color="black50" size="3" textAlign="center">
-                  Please enter your recipient's zipcode to see what plans are available for them
-                </Sans>
-                <Spacer ml={5} />
-                <TextField
-                  value={zipcode}
-                  placeholder={"Zipcode"}
-                  onChange={(e) => {
-                    setZipcode(e.target.value)
-                  }}
-                  error={!zipcode.match(ZIPCODE_REGEX)}
-                  required
-                />
+                <Box pt={3} mr={3} width="200px">
+                  {typeof window !== "undefined" && (
+                    <WhiteBorderTextField
+                      InputProps={{
+                        className: "text-field",
+                      }}
+                      value={zipcode}
+                      placeholder="ZIP Code"
+                      onChange={(e) => {
+                        setZipcode(e.target.value)
+                      }}
+                      error={!zipcode.match(ZIPCODE_REGEX)}
+                      fullWidth
+                    />
+                  )}
+                </Box>
+                <Box pt={3}>
+                  <Button
+                    variant="primaryWhite"
+                    onClick={() => {
+                      zipcodeServiced({
+                        variables: { zipCode: zipcode },
+                      })
+                      tracking.trackEvent({
+                        actionName: Schema.ActionNames.ServiceableModalZipCodeButtonClicked,
+                        actionType: Schema.ActionTypes.Tap,
+                        zipcode,
+                      })
+                    }}
+                  >
+                    Validate
+                  </Button>
+                </Box>
               </Flex>
+
+              <Box mt="130px">
+                <Sans size="3" color="black10">
+                  *Gifts are one-time payments that do not renew.
+                </Sans>
+              </Box>
             </Flex>
 
             <Spacer mb={2} />
-          </Box>
+            <HeaderOverlay />
+          </Header>
         </Col>
 
         <Col>
@@ -167,13 +185,13 @@ const Gift = screenTrack(() => ({
             <Separator />
           </Box>
         </Col>
-
-        <Box style={{ textAlign: "center" }} my={3}>
+      </Grid>
+      <FixedFooter>
+        <Box pt={1} pr="90px" style={{ textAlign: "right" }}>
           <Button
             onClick={() => {
               executeChargebeeCheckout({
                 planID: `${selectedPlan.planID}-gift`,
-                // TODO: read recipients email
                 email: "",
                 isGift: true,
               })
@@ -183,24 +201,47 @@ const Gift = screenTrack(() => ({
             Choose Gift
           </Button>
         </Box>
-      </Grid>
+      </FixedFooter>
     </Layout>
   )
 })
 
-export async function getStaticProps() {
-  const apolloClient = initializeApollo()
+const Header = styled(Box)`
+  position: relative;
+  background: url(./images/gift-bg.jpg) no-repeat center center;
+`
 
-  await apolloClient.query({
-    query: GET_GIFT_PAGE,
-  })
+const HeaderOverlay = styled.div`
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+`
 
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-    },
-    revalidate: 1,
+const FixedFooter = styled(Box)`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: white;
+  border-top: 1px solid ${color("black100")};
+  z-index: 50;
+`
+
+const WhiteBorderTextField = styled(TextField)`
+  input { 
+    color white !important;
   }
-}
+
+  .text-field::before, 
+  .text-field:not(.Mui-disabled):before, 
+  .text-field:hover:not(.Mui-disabled):before  {
+    border-bottom: 1px solid rgba(255,255,255,0.9);
+  }
+`
 
 export default Gift

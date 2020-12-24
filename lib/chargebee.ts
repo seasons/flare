@@ -8,7 +8,7 @@ declare var Chargebee: {
 }
 
 export function initChargebee() {
-  Chargebee.init({
+  Chargebee?.init({
     site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
   })
   //   const checkChargebee = setInterval(() => {

@@ -131,10 +131,6 @@ const SignUpPage = screenTrack(() => ({
     </Sans>
   )
 
-  // const GiftSnackBarMessage = (
-
-  // )
-
   if (!data || (hasGift && giftLoading)) {
     return (
       <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
