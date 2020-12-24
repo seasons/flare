@@ -121,12 +121,12 @@ const Gift = screenTrack(() => ({
                       })
                     }}
                   >
-                    Validate
+                    Check
                   </Button>
                 </Box>
               </Flex>
 
-              <Box mt="130px">
+              <Box mt="150px">
                 <Sans size="3" color="black10">
                   *Gifts are one-time payments that do not renew.
                 </Sans>
@@ -187,7 +187,7 @@ const Gift = screenTrack(() => ({
         </Col>
       </Grid>
       <FixedFooter>
-        <Box pt={1} pr={2} style={{ textAlign: "center" }}>
+        <Box pt={1} pr={2} style={{ textAlign: "right" }}>
           <Button
             onClick={() => {
               executeChargebeeCheckout({
