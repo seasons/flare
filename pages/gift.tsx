@@ -187,7 +187,7 @@ const Gift = screenTrack(() => ({
         </Col>
       </Grid>
       <FixedFooter>
-        <Box pt={1} pr="90px" style={{ textAlign: "right" }}>
+        <Box pt={1} pr={2} style={{ textAlign: "center" }}>
           <Button
             onClick={() => {
               executeChargebeeCheckout({
