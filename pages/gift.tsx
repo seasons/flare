@@ -224,6 +224,7 @@ const Gift = screenTrack(() => ({
 const Header = styled(Box)`
   position: relative;
   background: url(./images/gift-bg.jpg) no-repeat center center;
+  background-size: cover;
 `
 
 const HeaderOverlay = styled.div`
