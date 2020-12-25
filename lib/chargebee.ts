@@ -8,17 +8,14 @@ declare var Chargebee: {
 }
 
 export function initChargebee() {
-  Chargebee?.init({
-    site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
-  })
-  //   const checkChargebee = setInterval(() => {
-  //     if (typeof Chargebee !== "undefined") {
-  //       Chargebee.init({
-  //         site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
-  //       })
-  //       clearInterval(checkChargebee)
-  //     }
-  //   }, 500)
+  const checkChargebee = setInterval(() => {
+    if (typeof Chargebee !== "undefined") {
+      Chargebee.init({
+        site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
+      })
+      clearInterval(checkChargebee)
+    }
+  }, 500)
 }
 
 const GET_CHARGEBEE_CHECKOUT = gql`
