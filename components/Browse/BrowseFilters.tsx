@@ -6,6 +6,7 @@ import { color } from "../../helpers"
 import styled from "styled-components"
 
 interface BrowseFiltersProps {
+  setParam: (param: string) => void
   listItems: any
   title: string
   hideTitle?: boolean
@@ -23,6 +24,7 @@ export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
   hideTitle,
   listItemStyle,
   listItemSpacing = 1,
+  setParam,
 }) => {
   return (
     <>
@@ -32,18 +34,15 @@ export const BrowseFilters: React.FC<BrowseFiltersProps> = ({
         <CategoryLoader />
       ) : (
         listItems.map((item) => {
-          const query = title === "Designers" ? `${currentCategory}+${item.slug}` : `${item.slug}+${currentBrand}`
           const isActive = title === "Designers" ? currentBrand === item.slug : currentCategory === item.slug
           return (
             <div key={item.slug}>
-              <Link href="/browse/[Filter]" as={`/browse/${query}`}>
-                <Flex flexDirection="row" alignItems="center">
-                  {isActive && <ActiveLine />}
-                  <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer", ...listItemStyle }}>
-                    {item.name}
-                  </Sans>
-                </Flex>
-              </Link>
+              <Flex flexDirection="row" alignItems="center" onClick={() => setParam(item.slug)}>
+                {isActive && <ActiveLine />}
+                <Sans size="3" my="2" opacity={isActive ? 1.0 : 0.5} style={{ cursor: "pointer", ...listItemStyle }}>
+                  {item.name}
+                </Sans>
+              </Flex>
               <Spacer mb={listItemSpacing} />
             </div>
           )

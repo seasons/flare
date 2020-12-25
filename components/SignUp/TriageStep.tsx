@@ -16,6 +16,7 @@ const TRIAGE = gql`
 interface TriagePaneProps {
   check: boolean
   onTriageComplete: (userAdmitted: boolean) => void
+  onStartTriage: () => void
 }
 
 enum CheckStatus {
@@ -25,10 +26,14 @@ enum CheckStatus {
   Checked,
 }
 
-export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete }) => {
+export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete, onStartTriage }) => {
   const [checkStatus, setCheckStatus] = useState(CheckStatus.Waiting)
-  const [status, setStatus] = useState(null)
   const { userSession } = useAuthContext()
+
+  const endTriage = (authorized: boolean) =>
+    setTimeout(() => {
+      onTriageComplete(authorized)
+    }, 6000)
 
   const [triage] = useMutation(TRIAGE, {
     onCompleted: (result) => {
@@ -41,9 +46,11 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
         authorizations: newStatus === "Authorized" ? 1 : 0,
         admissable: newStatus === "Authorized" ? true : false,
       })
+
+      endTriage(newStatus === "Waitlisted")
     },
     onError: (err) => {
-      console.log("Error TriagePane.tsx:", err)
+      endTriage(true)
     },
     refetchQueries: [{ query: HOME_QUERY }, { query: PAYMENT_PLANS }],
     awaitRefetchQueries: true,
@@ -52,19 +59,12 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
   useEffect(() => {
     if ((checkStatus === CheckStatus.Waiting && check) || (checkStatus === CheckStatus.AwaitingRetry && check)) {
       const runTriage = async () => {
+        onStartTriage()
         await triageCustomer()
       }
       runTriage()
     }
   }, [check, checkStatus])
-
-  useEffect(() => {
-    if (status) {
-      setTimeout(() => {
-        callTriageComplete()
-      }, 3000)
-    }
-  }, [status])
 
   const triageCustomer = async () => {
     if (checkStatus === CheckStatus.Checking) {
@@ -72,23 +72,7 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
     }
 
     setCheckStatus(CheckStatus.Checking)
-
-    const result = await triage()
-    setStatus(result?.data?.triageCustomer)
-  }
-
-  const callTriageComplete = () => {
-    switch (status) {
-      case "Authorized":
-        onTriageComplete(false)
-        break
-      case "Waitlisted":
-        onTriageComplete(true)
-        break
-      default:
-        onTriageComplete(true)
-        break
-    }
+    await triage()
   }
 
   return (

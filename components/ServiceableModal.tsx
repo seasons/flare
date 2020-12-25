@@ -37,7 +37,7 @@ const CloseButton = styled(Box)`
   background: white;
 `
 
-const ZIPCODE_SERVICED = gql`
+export const ZIPCODE_SERVICED = gql`
   query ZipcodeServiced($zipCode: String!) {
     zipcodeServiced(zipcode: $zipCode)
   }

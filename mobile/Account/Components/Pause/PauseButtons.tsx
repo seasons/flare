@@ -10,7 +10,7 @@ import React, { useState } from "react"
 import { Linking } from "react-native"
 
 import { useMutation } from "@apollo/client"
-import { identify } from "utils/analytics"
+import { identify, useTracking, Schema } from "utils/analytics"
 
 export type PauseStatus = "active" | "pending" | "paused"
 
@@ -41,6 +41,8 @@ const UPDATE_RESUME_DATE = gql`
 export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = ({ customer, fullScreen }) => {
   const [isMutating, setIsMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
+
+  const tracking = useTracking()
 
   const pauseRequest = customer?.membership?.pauseRequests?.[0]
   const customerStatus = customer?.status
@@ -193,8 +195,16 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       awaitRefetchQueries: true,
     }
     if (pauseStatus === "paused") {
+      tracking.trackEvent({
+        actionName: Schema.ActionNames.ResumeMembershipTapped,
+        actionType: Schema.ActionTypes.Tap,
+      })
       await resumeSubscription(vars)
     } else if (pauseStatus === "pending") {
+      tracking.trackEvent({
+        actionName: Schema.ActionNames.ResumeMembershipTapped,
+        actionType: Schema.ActionTypes.Tap,
+      })
       await removeScheduledPause(vars)
     } else {
       await pauseSubscription(vars)
