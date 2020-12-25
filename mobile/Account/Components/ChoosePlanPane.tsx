@@ -3,12 +3,12 @@ import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { ChevronIcon } from "components/Icons/ChevronIcon"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { getChargebeeCheckout } from "components/SignUp/ChoosePlanStep"
 import { CheckWithBackground } from "components/SVGs"
 import { ListCheck } from "components/SVGs/ListCheck"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { getChargebeeCheckout, initChargebee } from "lib/chargebee"
 import { uniq } from "lodash"
 import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
 import { TabBar } from "mobile/TabBar"
@@ -147,10 +147,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
   })
 
   useEffect(() => {
-    // @ts-ignore
-    Chargebee.init({
-      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
-    })
+    initChargebee()
   }, [])
 
   useEffect(() => {

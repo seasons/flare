@@ -1,30 +1,31 @@
 import { Formik } from "formik"
+import gql from "graphql-tag"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { DateTime } from "luxon"
+import { useRouter } from "next/router"
+import { GET_SIGNUP_USER, SignupFormProps } from "pages/signup"
 import React, { useEffect } from "react"
 import * as Yup from "yup"
 
 import { useMutation, useQuery } from "@apollo/client"
+
 import { ExternalLink } from "../"
 import { Schema, useTracking } from "../../utils/analytics"
 import { TelephoneMaskField } from "../Fields/TelephoneMaskField"
 import { FormProps, FormTemplate } from "./FormsTemplate"
-import SelectItem from "./SelectItem"
-import { DateTime } from "luxon"
-import gql from "graphql-tag"
-import { useRouter } from "next/router"
-import { useAuthContext } from "lib/auth/AuthContext"
 import { FormWrapper } from "./FormWrapper"
-import { GET_SIGNUP_USER, SignupFormProps } from "pages/signup"
+import SelectItem from "./SelectItem"
 
 export interface CreateAccountFormFields {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  confirmPassword: string
-  tel: string
-  dob: string
-  zipCode: string
-  device: string
+  firstName?: string
+  lastName?: string
+  email?: string
+  password?: string
+  confirmPassword?: string
+  tel?: string
+  dob?: string
+  zipCode?: string
+  device?: string
 }
 
 export interface CustomerDetailCreateInput {
@@ -45,6 +46,7 @@ const SIGN_UP_USER = gql`
     $details: CustomerDetailCreateInput!
     $referrerId: String
     $utm: UTMInput
+    $giftId: String
   ) {
     signup(
       email: $email
@@ -54,6 +56,7 @@ const SIGN_UP_USER = gql`
       details: $details
       referrerId: $referrerId
       utm: $utm
+      giftId: $giftId
     ) {
       expiresIn
       refreshToken
@@ -96,17 +99,6 @@ const SIGN_UP_USER = gql`
   }
 `
 
-const initialValues = {
-  email: "",
-  firstName: "",
-  lastName: "",
-  tel: "",
-  confirmPassword: "",
-  password: "",
-  zipCode: "",
-  device: "",
-}
-
 export const createAccountValidationSchema = Yup.object().shape({
   email: Yup.string().trim().required("Required").email("Invalid email"),
   firstName: Yup.string().trim().required("Required"),
@@ -136,7 +128,20 @@ export const createAccountValidationSchema = Yup.object().shape({
   device: Yup.string().required("Required"),
 })
 
-export const CreateAccountForm = ({ onError, onCompleted }: SignupFormProps) => {
+interface CreateAccountFormProps extends SignupFormProps {
+  initialValues: CreateAccountFormFields
+  gift?: {
+    gift: {
+      id: string
+    }
+    subscription: {
+      id: string
+      plan_id: string
+    }
+  }
+}
+
+export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }: CreateAccountFormProps) => {
   const router = useRouter()
   const tracking = useTracking()
   const { signIn } = useAuthContext()
@@ -168,6 +173,7 @@ export const CreateAccountForm = ({ onError, onCompleted }: SignupFormProps) => 
           },
           referrerId: router.query.referrer_id,
           utm,
+          ...(!!gift ? { giftId: gift.gift?.id } : {}),
         },
       })
 
@@ -198,7 +204,17 @@ export const CreateAccountForm = ({ onError, onCompleted }: SignupFormProps) => 
 
   return (
     <FormWrapper
-      initialValues={initialValues}
+      initialValues={{
+        email: "",
+        firstName: "",
+        lastName: "",
+        tel: "",
+        confirmPassword: "",
+        password: "",
+        zipCode: "",
+        device: "",
+        ...initialValues,
+      }}
       initialTouched={{ fullName: true }}
       validationSchema={createAccountValidationSchema}
       onSubmit={onSubmit}

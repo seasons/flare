@@ -7,14 +7,13 @@ import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
-
-import React, { useState, useEffect } from "react"
-import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
-
-import { useQuery } from "@apollo/client"
 import { CustomerStatus } from "mobile/Account/Lists"
 import { Loader } from "mobile/Loader"
-import { DateTime } from "luxon"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
+
+import { useLazyQuery, useQuery } from "@apollo/client"
 
 export interface SignupFormProps {
   onError?: () => void
@@ -60,12 +59,22 @@ export const GET_SIGNUP_USER = gql`
   ${BrandNavItemFragment}
 `
 
+const GET_GIFT = gql`
+  query GetGift($giftID: String!) {
+    gift(id: $giftID) {
+      gift
+      subscription
+    }
+  }
+`
+
 const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
   const { updateUserSession, userSession } = useAuthContext()
   const tracking = useTracking()
+  const router = useRouter()
   const { data, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const featuredBrandItems = data?.brands || []
 
@@ -73,12 +82,39 @@ const SignUpPage = screenTrack(() => ({
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
 
+  const hasGift = !!router.query.gift_id
+  const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)
+
   useEffect(() => {
-    console.log(data)
     if (!!data?.me?.customer) {
       updateUserSession({ cust: data?.me?.customer })
     }
   }, [data])
+
+  useEffect(() => {
+    const giftID = router.query.gift_id
+    if (hasGift && giftID.length > 0) {
+      getGift({
+        variables: { giftID },
+      })
+    }
+  }, [hasGift])
+
+  const customerDataFromGift = () => {
+    if (!hasGift) {
+      return {}
+    }
+    const giftReceiver = giftData?.gift?.gift?.gift_receiver
+    if (!!giftReceiver) {
+      const { email, first_name, last_name } = giftReceiver
+      return {
+        email,
+        firstName: first_name,
+        lastName: last_name,
+      }
+    }
+    return {}
+  }
 
   const customerStatus = userSession?.customer?.status
 
@@ -95,7 +131,7 @@ const SignUpPage = screenTrack(() => ({
     </Sans>
   )
 
-  if (!data) {
+  if (!data || (hasGift && giftLoading)) {
     return (
       <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
         <MaxWidth>
@@ -111,7 +147,12 @@ const SignUpPage = screenTrack(() => ({
   switch (customerStatus) {
     case undefined:
       CurrentForm = (
-        <CreateAccountForm onError={() => setShowSnackBar(true)} onCompleted={() => refetchGetSignupUser()} />
+        <CreateAccountForm
+          initialValues={customerDataFromGift()}
+          gift={giftData?.gift}
+          onError={() => setShowSnackBar(true)}
+          onCompleted={() => refetchGetSignupUser()}
+        />
       )
       break
     case "Created":
@@ -134,6 +175,8 @@ const SignUpPage = screenTrack(() => ({
             onTriageComplete={(isWaitlisted) => {
               if (isWaitlisted) {
                 updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
+              } else if (hasGift) {
+                updateUserSession({ cust: { status: CustomerStatus.Active } })
               } else {
                 updateUserSession({ cust: { status: CustomerStatus.Authorized } })
               }

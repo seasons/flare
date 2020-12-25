@@ -1,4 +1,5 @@
 import { getUserSession, UserSession } from "lib/auth/auth"
+import { merge } from "lodash"
 import React, { useEffect, useImperativeHandle } from "react"
 
 import { identify, reset } from "../../utils/analytics"
@@ -56,8 +57,8 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
         case "UPDATE_USER_SESSION":
           const newUserSession = {
             ...prevState.userSession,
-            customer: { ...prevState.userSession?.customer, ...action.cust },
-            user: { ...prevState.userSession?.user, ...action.user },
+            customer: merge({}, prevState.userSession?.customer, action.cust),
+            user: merge({}, prevState.userSession?.user, action.user),
           }
           localStorage.setItem("userSession", JSON.stringify(processSession(newUserSession)))
           return {
