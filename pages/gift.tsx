@@ -102,7 +102,6 @@ const Gift = screenTrack(() => ({
                       onChange={(e) => {
                         setZipcode(e.target.value)
                       }}
-                      error={!zipcode.match(ZIPCODE_REGEX)}
                       fullWidth
                     />
                   )}
@@ -186,21 +185,37 @@ const Gift = screenTrack(() => ({
           </Box>
         </Col>
       </Grid>
-      <FixedFooter>
-        <Box pt={1} pr={2} style={{ textAlign: "right" }}>
-          <Button
-            onClick={() => {
-              executeChargebeeCheckout({
-                planID: `${selectedPlan.planID}-gift`,
-                email: "",
-                isGift: true,
-              })
-            }}
-            size="large"
-          >
-            Choose Gift
-          </Button>
-        </Box>
+      <FixedFooter height={["auto", "70px"]}>
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          py={1}
+          height={["auto", "65px"]}
+          style={{ width: "100%" }}
+          px={[2, 2, 2, 5, 5]}
+        >
+          <Box>
+            <Sans size={["2", "4"]} color="black50">
+              *The gifts are subscriptions with monthly-recurring payments. As the gifter, you will only be charged for
+              the first month.
+            </Sans>
+          </Box>
+          <Box pt={1} pr={2} style={{ textAlign: "right" }}>
+            <Button
+              onClick={() => {
+                executeChargebeeCheckout({
+                  planID: `${selectedPlan.planID}-gift`,
+                  email: "",
+                  isGift: true,
+                })
+              }}
+              size="large"
+            >
+              Choose Gift
+            </Button>
+          </Box>
+        </Flex>
       </FixedFooter>
     </Layout>
   )
@@ -209,6 +224,7 @@ const Gift = screenTrack(() => ({
 const Header = styled(Box)`
   position: relative;
   background: url(./images/gift-bg.jpg) no-repeat center center;
+  background-size: cover;
 `
 
 const HeaderOverlay = styled.div`
@@ -226,7 +242,6 @@ const FixedFooter = styled(Box)`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 70px;
   background: white;
   border-top: 1px solid ${color("black100")};
   z-index: 50;
@@ -238,6 +253,7 @@ const WhiteBorderTextField = styled(TextField)`
   }
 
   .text-field::before, 
+  .text-field::after,
   .text-field:not(.Mui-disabled):before, 
   .text-field:hover:not(.Mui-disabled):before  {
     border-bottom: 1px solid rgba(255,255,255,0.9);
