@@ -15,7 +15,6 @@ import { TabBar } from "mobile/TabBar"
 import { GET_BAG } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
 import { Dimensions, Linking } from "react-native"
-import styled from "styled-components"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
 import { Coupon } from "utils/calcFinalPrice"
 
