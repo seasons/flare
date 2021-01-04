@@ -3,7 +3,7 @@ import DetailText from "components/Forms/DetailText"
 import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { executeChargebeeCheckout, initChargebee } from "lib/chargebee"
+import { executeChargebeeCheckout } from "lib/chargebee"
 import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
@@ -64,10 +64,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
       setSelectedPlan(essential1)
     }
   }, [data, selectedPlan, setSelectedPlan])
-
-  useEffect(() => {
-    initChargebee()
-  }, [])
 
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const faqSections = data?.faq?.sections
