@@ -1,5 +1,7 @@
 import { Picture } from "components/Picture"
 import { Check } from "components/SVGs/Check"
+import Link from "next/link"
+import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
@@ -7,7 +9,10 @@ import { Modal } from "@material-ui/core"
 import { Box, Button, Flex, Sans, Spacer } from "@seasons/eclipse"
 
 interface PartnerBrandModalProps {
-  brandName?: string
+  brand?: {
+    name: string
+    slug: string
+  }
   imageURL?: string
   open?: boolean
   onClose?: () => void
@@ -15,7 +20,8 @@ interface PartnerBrandModalProps {
 
 export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
   const [isOpen, setOpen] = useState(false)
-  const { brandName, imageURL, open, onClose } = props
+  const router = useRouter()
+  const { brand, imageURL, open, onClose } = props
   const descriptionLines = [
     "Free shipping, returns & dry cleaning.",
     "Purchase items you love directly from the app.",
@@ -38,7 +44,10 @@ export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
           </CloseButton>
           <Box mb={2} mt={6}>
             <Sans size="7">
-              Seasons + <Underline>{brandName}</Underline>
+              Seasons +
+              <Link href="/designer/[Designer]" as={`/designer/${brand.slug}`}>
+                <Underline>{brand.name}</Underline>
+              </Link>
             </Sans>
           </Box>
           <Box mb={3}>
@@ -60,12 +69,25 @@ export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
             })}
           </Flex>
           <Box mt={2}>
-            <Button size="medium" block>
+            <Button
+              size="medium"
+              block
+              onClick={() => {
+                router.push("/signup")
+              }}
+            >
               Create an Account
             </Button>
           </Box>
           <Box>
-            <Button size="medium" variant="noOutline" block>
+            <Button
+              size="medium"
+              variant="noOutline"
+              block
+              onClick={() => {
+                router.push("/")
+              }}
+            >
               Learn more
             </Button>
           </Box>
