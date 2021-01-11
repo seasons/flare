@@ -112,12 +112,12 @@ export const themeProps = {
       /** Equivalent to 16px size / 26px line-height  */
       "4": {
         fontSize: 16,
-        lineHeight: 28,
+        lineHeight: 24,
       },
       /** Equivalent to 18px size / 30px line-height  */
       "5": {
         fontSize: 18,
-        lineHeight: 30,
+        lineHeight: 26,
       },
       /** Equivalent to 22px size / 30px line-height  */
       "6": {
