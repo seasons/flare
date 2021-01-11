@@ -51,6 +51,11 @@ export const GET_PRODUCT = gql`
         name
         logo
         since
+        images {
+          id
+          url
+          resized(width: 400)
+        }
       }
       outerMaterials
       innerMaterials

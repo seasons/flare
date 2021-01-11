@@ -3,23 +3,24 @@ import { AddToBagButton } from "components/AddToBagButton"
 import { Carousel } from "components/Carousel"
 import { Col, Grid, Row } from "components/Grid"
 import { ProgressiveImage } from "components/Image"
+import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
+import { BreadCrumbs } from "components/Product/BreadCrumbs"
 import { HowItWorks } from "components/Product/HowItWorks"
 import { ProductDetails } from "components/Product/ProductDetails"
-import { ProductMeasurements } from "components/Product/ProductMeasurements"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
+import { ProductMeasurements } from "components/Product/ProductMeasurements"
 import { VariantSelect } from "components/Product/VariantSelect"
 import { Media } from "components/Responsive"
 import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
-import { withRouter } from "next/router"
-import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
+import { useRouter, withRouter } from "next/router"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-import { BreadCrumbs } from "components/Product/BreadCrumbs"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -36,6 +37,7 @@ const Product = screenTrack(({ router }) => {
     },
   })
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
+  const { query } = useRouter()
 
   useEffect(() => {
     if (data?.me) {
@@ -47,6 +49,8 @@ const Product = screenTrack(({ router }) => {
       }
     }
   }, [data])
+
+  const isFromTryWithSeasons = query["try-with-seasons"] === "true"
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState(
@@ -150,6 +154,11 @@ const Product = screenTrack(({ router }) => {
         </Grid>
       </Box>
       <Spacer mb={10} />
+      <PartnerBrandModal
+        open={isFromTryWithSeasons}
+        brand={product?.brand}
+        imageURL={product?.brand?.images?.[0]?.resized}
+      />
     </Layout>
   )
 })
