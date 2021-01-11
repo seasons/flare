@@ -1973,9 +1973,9 @@
     luxon "^1.25.0"
 
 "@seasons/try-with-seasons@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@seasons/try-with-seasons/-/try-with-seasons-1.0.5.tgz#7a2f09928d655072c849adf897e238b15bbd33dd"
-  integrity sha512-BR+Q3K3JLo2bTF9RP76i2Bj4AH6YCWH4WbueYNTwm94wUywPLgU9D967oQrRxF7USlFppmeMr7SMsKxtGWoAOA==
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@seasons/try-with-seasons/-/try-with-seasons-1.0.6.tgz#a4c3c55d40f19a55b6c3958d19c0d09aeb8e03e7"
+  integrity sha512-Lsf/7KNzfHFLmYnQ18jI30J3wCOLY3iRE/S0HaC0safAMyEiVwVBAPeTV7t4SBLXcDsZ2rOYm8QTL2a4/kN+ZQ==
 
 "@segment/snippet@^4.12.0":
   version "4.12.0"
