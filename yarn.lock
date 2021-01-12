@@ -1965,14 +1965,14 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@seasons/eclipse@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.1.4.tgz#ea3abba0075d07c36f8e65746c255b5e4341908a"
-  integrity sha512-LAhQDUdQn34fn+fjX9/hU6uHYZu6xNJ0jqWM+KAUqtqOOOXPXmw+sQtldPsMAu6zicCF1zhC+oB1gvK3Fz0fHA==
+"@seasons/eclipse@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.1.5.tgz#5488c7ffcc2f032451b40b8b4c665b747e3cf34c"
+  integrity sha512-htfwgOrBbJVDfRDuVtkEAXE9GZDvDOcqFIPjNGKvwTARsVofNYnleA68fNzfrh5v2+1uxPR4JBIVoBykg7SNVQ==
   dependencies:
     luxon "^1.25.0"
 
-"@seasons/try-with-seasons@^1.0.5":
+"@seasons/try-with-seasons@^1.0.6":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@seasons/try-with-seasons/-/try-with-seasons-1.0.6.tgz#a4c3c55d40f19a55b6c3958d19c0d09aeb8e03e7"
   integrity sha512-Lsf/7KNzfHFLmYnQ18jI30J3wCOLY3iRE/S0HaC0safAMyEiVwVBAPeTV7t4SBLXcDsZ2rOYm8QTL2a4/kN+ZQ==
