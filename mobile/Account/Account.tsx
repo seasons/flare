@@ -222,6 +222,7 @@ export const Account = screenTrack()(({ navigation }) => {
                   actionType: Schema.ActionTypes.Tap,
                 })
               }
+              version="web"
             />
           )
         }
