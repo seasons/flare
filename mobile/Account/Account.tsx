@@ -22,7 +22,7 @@ import { useQuery } from "@apollo/client"
 
 import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
-import { AuthorizedCTA, RewaitlistedCTA } from "@seasons/eclipse"
+import { AuthorizedCTA, WaitlistedCTA } from "@seasons/eclipse"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
 
 export enum UserState {
@@ -205,10 +205,10 @@ export const Account = screenTrack()(({ navigation }) => {
       case CustomerStatus.Created:
       case CustomerStatus.Waitlisted:
         const userState = status == CustomerStatus.Created ? UserState.Undetermined : UserState.Waitlisted
-        if (status === CustomerStatus.Waitlisted && customer?.admissions?.authorizationsCount > 0) {
+        if (status === CustomerStatus.Waitlisted) {
           return (
-            <RewaitlistedCTA
-              authorizedAt={DateTime.fromISO(customer?.authorizedAt)}
+            <WaitlistedCTA
+              authorizedAt={!!customer?.authorizedAt ? DateTime.fromISO(customer?.authorizedAt) : null}
               authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
               onPressLearnMore={() =>
                 tracking.trackEvent({
@@ -222,6 +222,7 @@ export const Account = screenTrack()(({ navigation }) => {
                   actionType: Schema.ActionTypes.Tap,
                 })
               }
+              version="web"
             />
           )
         }
