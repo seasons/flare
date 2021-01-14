@@ -147,7 +147,6 @@ const Container = styled(Box)`
     height: 100%;
     top: 0;
     left: 0;
-    overflow-y: scroll;
   `};
 
   ${media.md`
