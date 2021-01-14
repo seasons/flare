@@ -1,8 +1,10 @@
 import { Picture } from "components/Picture"
+import { Media } from "components/Responsive"
 import { Check } from "components/SVGs/Check"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
+import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 
 import { Modal } from "@material-ui/core"
@@ -28,23 +30,23 @@ export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
     "No commitment. Pause or cancel anytime.",
   ]
 
-  const Content = () => (
+  const Content = ({ size }) => (
     <Container>
-      <Flex flexDirection="row">
-        <Flex style={{ width: "450px", height: "100%" }}>
+      <CloseButton
+        onClick={() => {
+          setOpen(false)
+        }}
+      >
+        X
+      </CloseButton>
+      <Flex flexDirection={size === "small" ? "column" : "row"}>
+        <Flex width={size === "small" ? "100%" : "450px"} height="100%">
           <Picture src={imageURL || ""} />
         </Flex>
-        <Flex flex={1} py={4} px={3}>
-          <CloseButton
-            onClick={() => {
-              setOpen(false)
-            }}
-          >
-            X
-          </CloseButton>
-          <Box mb={2} mt={6}>
+        <Flex flex={1} py={size === "small" ? 2 : 4} px={3}>
+          <Box mb={2} mt={size === "small" ? 2 : 6}>
             <Sans size="7">
-              Seasons +
+              Seasons +{" "}
               <Link href="/designer/[Designer]" as={`/designer/${brand.slug}`}>
                 <Underline>{brand.name}</Underline>
               </Link>
@@ -109,7 +111,14 @@ export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
 
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <Content />
+      <>
+        <Media lessThan="md">
+          <Content size="small" />
+        </Media>
+        <Media greaterThanOrEqual="md">
+          <Content size="large" />
+        </Media>
+      </>
     </Modal>
   )
 }
@@ -119,18 +128,35 @@ const Underline = styled.a`
 `
 
 const Container = styled(Box)`
-  border-top: 1px solid #000;
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
+  border: 1px solid #000;
   background: white;
-  width: 870px;
-  height: 450px;
+
   margin: 0 auto;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -225px;
-  margin-left: -435px;
+
+  ${media.xs`
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow-y: scroll;
+  `};
+
+  ${media.sm`
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  `};
+
+  ${media.md`
+    width: 870px;
+    height: 450px;
+    top: 50%;
+    left: 50%;
+    margin-top: -225px;
+    margin-left: -435px;
+  `};
 `
 
 const CloseButton = styled(Box)`
@@ -146,4 +172,5 @@ const CloseButton = styled(Box)`
   text-align: center;
   line-height: 40px;
   background: white;
+  z-index: 10;
 `
