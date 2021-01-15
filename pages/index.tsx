@@ -65,10 +65,10 @@ const Home = screenTrack(() => ({
       <ProductRail title="Just added tops" products={data?.justAddedTops} />
       <Spacer mb={10} />
 
-      {!!data?.holiday?.length && (
+      {!!data?.collection?.length && (
         <>
           <Spacer mb={10} />
-          <ProductRail title="Holiday cozy collection" products={data?.holiday} tag="Holiday" />
+          <ProductRail title="The revival collection" products={data?.collection} tag="Revival Collection" />
           <Spacer mb={10} />
         </>
       )}
