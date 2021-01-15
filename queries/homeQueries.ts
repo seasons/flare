@@ -57,10 +57,10 @@ export const HOME_QUERY = gql`
       author
       imageURL
     }
-    holiday: products(
+    collection: products(
       first: 4
       orderBy: updatedAt_DESC
-      where: { AND: [{ tags_some: { name: "Holiday" } }, { status: Available }] }
+      where: { AND: [{ tags_some: { name: "Revival Collection" } }, { status: Available }] }
     ) {
       ...HomePageProduct
     }

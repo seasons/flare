@@ -27,14 +27,15 @@ const Collection = screenTrack(({ router }) => {
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
   const [fetchingMore, setFetchingMore] = useState(false)
-  const tag = router.query.Tag || ""
+  const tag = decodeURI(router.query.Tag) || ""
 
   let title = ""
   let description = ""
 
-  if (tag === "Holiday") {
-    title = "Holiday cozy collection"
-    description = "Staying in for the holidays? Get cozy, flex on your roommates, 2020 is almost over — you earned it."
+  if (tag === "Revival Collection") {
+    title = "The revival collection"
+    description =
+      "Revisit, rethink, restore ♻️ We’re starting off the new year by looking back into our own closet and encouraging you to do the same. Sometimes a fresh set of eyes on a garment pushed to the back shelf can spark a whole new look.\n\n2021 is the year of making use of what’s already been produced and for a bit of inspiration, we’re putting together a Revival Collection by breathing new life into some hidden gems within the Seasons catalog."
   }
 
   const imageContainer = useRef(null)
