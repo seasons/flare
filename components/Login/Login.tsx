@@ -6,11 +6,11 @@ import { TextField } from "formik-material-ui"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { ResetPassword } from "mobile/LogIn/ResetPassword"
-import { HOME_QUERY } from "queries/homeQueries"
 import React, { useState } from "react"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
+import { HOME_QUERY_WEB } from "@seasons/eclipse"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -67,7 +67,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       }
     },
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: HOME_QUERY }, { query: PAYMENT_PLANS }],
+    refetchQueries: [{ query: HOME_QUERY_WEB }, { query: PAYMENT_PLANS }],
   })
 
   const handleSubmit = async ({ email, password }) => {

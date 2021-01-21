@@ -18,7 +18,7 @@ import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 import { GET_COLLECTION } from "queries/collectionQueries"
 
-const Collection = screenTrack(({ router }) => {
+const TagView = screenTrack(({ router }) => {
   return {
     page: Schema.PageNames.CollectionPage,
     tag: router?.query?.Tag,
@@ -194,7 +194,7 @@ const Collection = screenTrack(({ router }) => {
   )
 })
 
-export default withRouter(Collection)
+export default withRouter(TagView)
 
 const MediaWithHeight = styled(Media)`
   height: 100%;

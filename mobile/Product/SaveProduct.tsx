@@ -7,7 +7,7 @@ import { Box, Button, ProgressiveImage, Flex, Sans, Separator, Spacer, FixedBack
 import Radio from "@material-ui/core/Radio"
 import { sizeToName } from "components/Product/VariantSelect"
 import { Loader } from "mobile/Loader"
-import { GET_BAG } from "queries/bagQueries"
+import { GET_BAG } from "@seasons/eclipse"
 import { color, space } from "helpers"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { SAVE_ITEM } from "./SaveProductButton"
