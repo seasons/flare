@@ -1,9 +1,12 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CustomerMeasurementsForm } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { BrandNavItemFragment } from "components/Nav"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
+import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
+import {
+  CustomerMeasurementsForm
+} from "components/SignUp/CustomerMeasurementsStep/CustomerMeasurementsForm/CustomerMeasurementsForm"
 import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -159,11 +162,13 @@ const SignUpPage = screenTrack(() => ({
       break
     case "Created":
       CurrentStep = (
-        <CustomerMeasurementsForm
-          onCompleted={() => {
-            setStartTriage(true)
-            refetchGetSignupUser()
-            updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
+        <CustomerMeasurementsStep
+          form={{
+            onCompleted: () => {
+              setStartTriage(true)
+              refetchGetSignupUser()
+              updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
+            },
           }}
         />
       )

@@ -62,15 +62,13 @@ export const FormTemplate = ({
           <FieldsContainer px={isDesktop ? [2, 2, 2, 5, 5] : 1} pb={isDesktop ? 0 : 150}>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
-              const width = isDesktop ? "50%" : mobileWidth
+              const width = isDesktop ? (props.fullWidth ? "100%" : "50%") : mobileWidth
+
+              const paddingLeft = isDesktop ? (props.fullWidth ? 0 : index % 2 === 0 ? 0 : 30) : 1
+              const paddingRight = isDesktop ? (props.fullWidth ? 0 : index % 2 === 0 ? 30 : 0) : 1
 
               return (
-                <Box
-                  key={props.label}
-                  width={width}
-                  pl={isDesktop ? (index % 2 === 0 ? 0 : 30) : 1}
-                  pr={isDesktop ? (index % 2 === 0 ? 30 : 0) : 1}
-                >
+                <Box key={props.label} width={width} pl={paddingLeft} pr={paddingRight}>
                   <FormField {...props} />
                 </Box>
               )
@@ -84,9 +82,7 @@ export const FormTemplate = ({
   return (
     <Flex style={{ minHeight: "100%", width: "100%" }}>
       <DesktopMedia greaterThanOrEqual="md">
-        <Flex height="100%" width="100%" flexDirection="row" alignItems="center">
-          {Content("desktop")}
-        </Flex>
+        <ContentContainer>{Content("desktop")}</ContentContainer>
       </DesktopMedia>
       <Media lessThan="md">{Content("mobile")}</Media>
       <FormFooter
@@ -109,6 +105,14 @@ const Wrapper = styled("div")<{ clientSide }>`
   flex: 1;
   height: 100%;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
+`
+
+const ContentContainer = styled(Box)`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
 `
 
 const ImageContainer = styled(Box)<{ url?: string }>`

@@ -8,9 +8,11 @@ import * as Yup from "yup"
 
 import { useMutation } from "@apollo/client"
 
-import { MultiSelectionTableField } from "../Fields/MultiSelectionTableField"
-import { FormTemplate } from "./FormTemplate"
-import { customerMeasurements } from "./helpers/measurements"
+import { MultiSelectionTableField } from "../../../Fields/MultiSelectionTableField"
+import { FormTemplate } from "../../../Forms/FormTemplate"
+import { customerMeasurements } from "../../../Forms/helpers/measurements"
+
+const imageURL = require("public/images/signup/measurements_bg.jpg")
 
 export interface CustomerMeasurementsFormFields {
   height: string
@@ -90,6 +92,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
       <FormTemplate
         headerText="Let’s get your measurements"
         headerDescription="This helps us accurately recommend you sizes by material, style, and brand."
+        leftImage={imageURL}
         footerText={
           <>
             {"By creating an account, you agree to our "}
@@ -125,6 +128,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
             placeholder: "Select",
             label: "What are your preferred top sizes?",
             mobileOrder: 3,
+            fullWidth: true,
           },
           {
             name: "waistSizes",
@@ -140,6 +144,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
             placeholder: "Select",
             label: "Preferred waist sizes?",
             mobileOrder: 4,
+            fullWidth: true,
           },
         ]}
       />
