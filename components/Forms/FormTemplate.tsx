@@ -1,26 +1,23 @@
-import { Picture, ProgressiveImage } from "components"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { imageResize } from "utils/imageResize"
-import { IncludesAtLeastOne } from "utils/includesAtLeastOne"
 
-import { Box, Flex, Sans, Spacer } from "@seasons/eclipse"
+import { Box, Flex } from "@seasons/eclipse"
 
 import { Media } from "../Responsive"
-import { FieldDefinition, FormField } from "./FormField"
+import { Field, FormField } from "./FormField"
 import { FormFooter } from "./FormFooter"
 import { FormHeader } from "./FormHeader"
 
 export interface FormTemplateProps {
-  context: any
   headerText: string
   headerDescription: string
   headerLabel?: string
   footerText?: React.ReactFragment
   buttonText?: string
   leftImage?: string
-  fieldDefinitionList: FieldDefinition[]
+  fields: Field[]
   backButton?: boolean
   titleBottomSpacing?: number
   buttonActionName?: string
@@ -33,29 +30,13 @@ export const FormTemplate = ({
   footerText,
   buttonText,
   leftImage,
-  fieldDefinitionList,
+  fields,
   backButton,
   buttonActionName,
 }: FormTemplateProps) => {
   const { handleSubmit, isValid: formContextIsValid, isSubmitting, values } = useFormikContext()
 
   const [clientSide, setClientSide] = useState(false)
-  const [thisFormIsValid, setThisFormIsValid] = useState(false)
-  const nonCustomFieldNames = fieldDefinitionList.reduce((acc, currentFieldDefinition) => {
-    if (!currentFieldDefinition.customElement) {
-      return [...acc, currentFieldDefinition.name]
-    }
-    return acc
-  }, [])
-
-  useEffect(() => {
-    // Does the form pass validation? Note that we don't check for custom Elements,
-    // so a form with only custom elements will fail this validation
-    const formValuesIncludesThisForm =
-      nonCustomFieldNames?.length === 0 ||
-      (nonCustomFieldNames?.length >= 1 && !!values && IncludesAtLeastOne(Object.keys(values), nonCustomFieldNames))
-    setThisFormIsValid(!!formContextIsValid && !!formValuesIncludesThisForm)
-  }, [thisFormIsValid, values, formContextIsValid])
 
   useEffect(() => {
     if (typeof window !== "undefined" && !clientSide) {
@@ -64,37 +45,13 @@ export const FormTemplate = ({
     }
   }, [])
 
-  const mobileFieldDefinitionList = [...fieldDefinitionList].sort((a, b) => {
-    return a.mobileOrder - b.mobileOrder
-  })
+  const Content = (platform) => {
+    const isDesktop = platform === "desktop"
+    const sortedFields = isDesktop ? fields : fields.sort((a, b) => a.mobileOrder - b.mobileOrder)
 
-  return (
-    <Flex style={{ minHeight: "100%", width: "100%" }}>
-      <DesktopMedia greaterThanOrEqual="md">
-        <Flex height="100%" width="100%" flexDirection="row" alignItems="center">
-          {leftImage && <ImageContainer url={imageResize(leftImage, "large")} />}
-          <Wrapper clientSide={clientSide}>
-            <FormHeader
-              headerText={headerText}
-              headerDescription={headerDescription}
-              headerLabel={headerLabel}
-              showBackButton={backButton}
-            />
-            <FieldsContainer px={[2, 2, 2, 5, 5]}>
-              {fieldDefinitionList.map((props, index) => (
-                <Box key={props.label} width="50%" pl={index % 2 === 0 ? 0 : 50} pr={index % 2 === 0 ? 50 : 0}>
-                  <Box>
-                    <Spacer mt={4} />
-                    <Sans size="3">{props.label}</Sans>
-                    <FormField {...props} />
-                  </Box>
-                </Box>
-              ))}
-            </FieldsContainer>
-          </Wrapper>
-        </Flex>
-      </DesktopMedia>
-      <Media lessThan="md">
+    return (
+      <>
+        {isDesktop && leftImage && <ImageContainer url={imageResize(leftImage, "large")} />}
         <Wrapper clientSide={clientSide}>
           <FormHeader
             headerText={headerText}
@@ -102,32 +59,43 @@ export const FormTemplate = ({
             headerLabel={headerLabel}
             showBackButton={backButton}
           />
-          <FieldsContainer px={1} pb={150}>
-            {mobileFieldDefinitionList.map((props) => {
-              const width =
-                props.label === "Email" || props.label === "Password" || props.label === "Confirm password"
-                  ? "100%"
-                  : "50%"
+          <FieldsContainer px={isDesktop ? [2, 2, 2, 5, 5] : 1} pb={isDesktop ? 0 : 150}>
+            {sortedFields.map((props, index) => {
+              const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
+              const width = isDesktop ? "50%" : mobileWidth
+
               return (
-                <Box key={props.label} width={width} px={1}>
-                  <Box>
-                    <Spacer mt={4} />
-                    <Sans size="3">{props.label}</Sans>
-                    <FormField {...props} />
-                  </Box>
+                <Box
+                  key={props.label}
+                  width={width}
+                  pl={isDesktop ? (index % 2 === 0 ? 0 : 30) : 1}
+                  pr={isDesktop ? (index % 2 === 0 ? 30 : 0) : 1}
+                >
+                  <FormField {...props} />
                 </Box>
               )
             })}
           </FieldsContainer>
         </Wrapper>
-      </Media>
+      </>
+    )
+  }
+
+  return (
+    <Flex style={{ minHeight: "100%", width: "100%" }}>
+      <DesktopMedia greaterThanOrEqual="md">
+        <Flex height="100%" width="100%" flexDirection="row" alignItems="center">
+          {Content("desktop")}
+        </Flex>
+      </DesktopMedia>
+      <Media lessThan="md">{Content("mobile")}</Media>
       <FormFooter
         buttonActionName={buttonActionName}
         buttonText={buttonText}
         handleSubmit={handleSubmit}
         isSubmitting={isSubmitting}
         footerText={footerText}
-        disabled={!thisFormIsValid}
+        disabled={!formContextIsValid}
       />
     </Flex>
   )

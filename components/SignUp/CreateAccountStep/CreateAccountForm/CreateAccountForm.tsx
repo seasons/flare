@@ -128,75 +128,73 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
       validationSchema={createAccountValidationSchema}
       onSubmit={onSubmit}
     >
-      {(context) => (
-        <FormTemplate
-          context={context}
-          headerText="Create an account"
-          headerDescription="You’ll use this to sign into the app, choose your plan, and manage your membership."
-          footerText={
-            <>
-              {"By creating an account, you agree to our "}
-              <ExternalLink href="/terms-of-service">Terms of Service</ExternalLink>
-              {" and "}
-              <ExternalLink href="/privacy-policy">Privacy Policy</ExternalLink>
-            </>
-          }
-          buttonText="Next"
-          buttonActionName={Schema.ActionNames.CreateAccountSubmitButtonClicked}
-          leftImage={imageURL}
-          fieldDefinitionList={[
-            { name: "firstName", placeholder: "Will", label: "First name", mobileOrder: 1 },
-            {
-              name: "lastName",
-              placeholder: "Smith",
-              label: "Last name",
-              mobileOrder: 2,
-            },
-            {
-              name: "email",
-              placeholder: "will.smith@gmail.com",
-              label: "Email",
-              mobileOrder: 3,
-            },
-            {
-              label: "Phone number",
-              placeholder: "(000) - 000 - 0000",
-              customElement: <TelephoneMaskField name="tel" />,
-              mobileOrder: 6,
-            },
-            {
-              name: "password",
-              placeholder: "Must have at least 8 characters",
-              type: "password",
-              label: "Password",
-              id: "password",
-              mobileOrder: 4,
-            },
-            {
-              name: "confirmPassword",
-              placeholder: "Confirm password",
-              type: "password",
-              label: "Confirm password",
-              id: "confirmPassword",
-              mobileOrder: 5,
-            },
-            {
-              name: "zipCode",
-              type: "zipCode",
-              placeholder: "00000",
-              label: "Shipping ZIP code",
-              mobileOrder: 7,
-            },
-            {
-              name: "device",
-              selectOptions: deviceOptions,
-              placeholder: "Select",
-              label: "Device type",
-              mobileOrder: 8,
-            },
-          ]}
-        />
-      )}
+      <FormTemplate
+        headerText="Create an account"
+        headerDescription="You’ll use this to sign into the app, choose your plan, and manage your membership."
+        footerText={
+          <>
+            {"By creating an account, you agree to our "}
+            <ExternalLink href="/terms-of-service">Terms of Service</ExternalLink>
+            {" and "}
+            <ExternalLink href="/privacy-policy">Privacy Policy</ExternalLink>
+          </>
+        }
+        buttonText="Next"
+        buttonActionName={Schema.ActionNames.CreateAccountSubmitButtonClicked}
+        leftImage={imageURL}
+        fields={[
+          { name: "firstName", placeholder: "Will", label: "First name", mobileOrder: 1 },
+          {
+            name: "lastName",
+            placeholder: "Smith",
+            label: "Last name",
+            mobileOrder: 2,
+          },
+          {
+            name: "email",
+            placeholder: "will.smith@gmail.com",
+            label: "Email",
+            mobileOrder: 3,
+          },
+          {
+            name: "tel",
+            placeholder: "(000) - 000 - 0000",
+            label: "Phone number",
+            customElement: <TelephoneMaskField name="tel" />,
+            mobileOrder: 6,
+          },
+          {
+            name: "password",
+            placeholder: "Must have at least 8 characters",
+            type: "password",
+            label: "Password",
+            id: "password",
+            mobileOrder: 4,
+          },
+          {
+            name: "confirmPassword",
+            placeholder: "Confirm password",
+            type: "password",
+            label: "Confirm password",
+            id: "confirmPassword",
+            mobileOrder: 5,
+          },
+          {
+            name: "zipCode",
+            type: "zipCode",
+            placeholder: "00000",
+            label: "Shipping ZIP code",
+            mobileOrder: 7,
+          },
+          {
+            name: "device",
+            selectOptions: deviceOptions,
+            placeholder: "Select",
+            label: "Device type",
+            mobileOrder: 8,
+          },
+        ]}
+      />
     </Formik>
   )
 }

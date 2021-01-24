@@ -87,69 +87,62 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
       validationSchema={customerMeasurementsValidationSchema}
       onSubmit={onSubmit}
     >
-      {(context) => (
-        <FormTemplate
-          context={context}
-          headerText="Let’s get your measurements"
-          headerDescription="This helps us accurately recommend you sizes by material, style, and brand."
-          footerText={
-            <>
-              {"By creating an account, you agree to our "}
-              <ExternalLink href="/terms-of-service">Terms of Service</ExternalLink>
-              {" and "}
-              <ExternalLink href="/privacy-policy">Privacy Policy</ExternalLink>
-            </>
-          }
-          buttonText="Create account"
-          buttonActionName={Schema.ActionNames.CustomerMeasurementsSubmitButtonClicked}
-          fieldDefinitionList={[
-            {
-              name: "height",
-              selectOptions: customerMeasurements.heights,
-              placeholder: "Select",
-              label: "Height",
-              mobileOrder: 1,
-            },
-            {
-              name: "weight",
-              selectOptions: customerMeasurements.weights,
-              placeholder: "Select",
-              label: "Weight",
-              mobileOrder: 2,
-            },
-            {
-              name: "topSizes",
-              customElement: (
-                <Box mt={1}>
-                  <MultiSelectionTableField
-                    inputName={"topSizes"}
-                    items={customerMeasurements.topSizes}
-                    itemSize={64}
-                  />
-                </Box>
-              ),
-              placeholder: "Select",
-              label: "What are your preferred top sizes?",
-              mobileOrder: 3,
-            },
-            {
-              name: "waistSizes",
-              customElement: (
-                <Box mt={1}>
-                  <MultiSelectionTableField
-                    inputName={"waistSizes"}
-                    items={customerMeasurements.waistSizes}
-                    itemSize={64}
-                  />
-                </Box>
-              ),
-              placeholder: "Select",
-              label: "Preferred waist sizes?",
-              mobileOrder: 4,
-            },
-          ]}
-        />
-      )}
+      <FormTemplate
+        headerText="Let’s get your measurements"
+        headerDescription="This helps us accurately recommend you sizes by material, style, and brand."
+        footerText={
+          <>
+            {"By creating an account, you agree to our "}
+            <ExternalLink href="/terms-of-service">Terms of Service</ExternalLink>
+            {" and "}
+            <ExternalLink href="/privacy-policy">Privacy Policy</ExternalLink>
+          </>
+        }
+        buttonText="Create account"
+        buttonActionName={Schema.ActionNames.CustomerMeasurementsSubmitButtonClicked}
+        fields={[
+          {
+            name: "height",
+            selectOptions: customerMeasurements.heights,
+            placeholder: "Select",
+            label: "Height",
+            mobileOrder: 1,
+          },
+          {
+            name: "weight",
+            selectOptions: customerMeasurements.weights,
+            placeholder: "Select",
+            label: "Weight",
+            mobileOrder: 2,
+          },
+          {
+            name: "topSizes",
+            customElement: (
+              <Box mt={1}>
+                <MultiSelectionTableField inputName={"topSizes"} items={customerMeasurements.topSizes} itemSize={64} />
+              </Box>
+            ),
+            placeholder: "Select",
+            label: "What are your preferred top sizes?",
+            mobileOrder: 3,
+          },
+          {
+            name: "waistSizes",
+            customElement: (
+              <Box mt={1}>
+                <MultiSelectionTableField
+                  inputName={"waistSizes"}
+                  items={customerMeasurements.waistSizes}
+                  itemSize={64}
+                />
+              </Box>
+            ),
+            placeholder: "Select",
+            label: "Preferred waist sizes?",
+            mobileOrder: 4,
+          },
+        ]}
+      />
     </Formik>
   )
 }
