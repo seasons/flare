@@ -21,6 +21,7 @@ interface LayoutProps {
   footerBottomPadding?: string | string[]
   includeDefaultHead?: boolean
   brandItems: { name: string; slug: string }[]
+  showIntercom?: boolean
   onScroll?: () => void
   scrollRef?: any
 }
@@ -31,6 +32,7 @@ export const Layout = ({
   hideFooter,
   footerBottomPadding,
   includeDefaultHead = true,
+  showIntercom = false,
   brandItems,
   onScroll,
   scrollRef,
@@ -56,7 +58,7 @@ export const Layout = ({
       <PopUpProvider>
         <DrawerProvider>
           <Theme>
-            <Intercom />
+            {showIntercom && <Intercom />}
             {fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}
             <ScrollContainer mt={fixedNav ? 60 : 0} pb={60} onScroll={onScroll} ref={scrollRef}>
               <MaxWidth>

@@ -1,9 +1,9 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CreateAccountForm } from "components/Forms/CreateAccountForm"
 import { CustomerMeasurementsForm } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { BrandNavItemFragment } from "components/Nav"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
+import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -143,20 +143,22 @@ const SignUpPage = screenTrack(() => ({
     )
   }
 
-  let CurrentForm
+  let CurrentStep
   switch (customerStatus) {
     case undefined:
-      CurrentForm = (
-        <CreateAccountForm
-          initialValues={customerDataFromGift()}
-          gift={giftData?.gift}
-          onError={() => setShowSnackBar(true)}
-          onCompleted={() => refetchGetSignupUser()}
+      CurrentStep = (
+        <CreateAccountStep
+          form={{
+            initialValues: customerDataFromGift(),
+            gift: giftData?.gift,
+            onError: () => setShowSnackBar(true),
+            onCompleted: () => refetchGetSignupUser(),
+          }}
         />
       )
       break
     case "Created":
-      CurrentForm = (
+      CurrentStep = (
         <CustomerMeasurementsForm
           onCompleted={() => {
             setStartTriage(true)
@@ -168,7 +170,7 @@ const SignUpPage = screenTrack(() => ({
       break
     case "Waitlisted":
       if (startTriage) {
-        CurrentForm = (
+        CurrentStep = (
           <TriageStep
             check={startTriage}
             onStartTriage={() => setTriageIsRunning(true)}
@@ -194,12 +196,12 @@ const SignUpPage = screenTrack(() => ({
           />
         )
       } else {
-        CurrentForm = <FormConfirmation status={"waitlisted"} />
+        CurrentStep = <FormConfirmation status={"waitlisted"} />
       }
       break
     case "Authorized":
     case "Invited":
-      CurrentForm = (
+      CurrentStep = (
         <ChoosePlanStep
           onPlanSelected={(plan) => {
             tracking.trackEvent({
@@ -219,16 +221,16 @@ const SignUpPage = screenTrack(() => ({
       )
       break
     case "Active":
-      CurrentForm = <FormConfirmation status="accountAccepted" />
+      CurrentStep = <FormConfirmation status="accountAccepted" />
       break
   }
 
   return (
-    <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
+    <Layout fixedNav hideFooter brandItems={featuredBrandItems} showIntercom={false}>
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-          {CurrentForm}
+          {CurrentStep}
         </Flex>
       </MaxWidth>
     </Layout>
