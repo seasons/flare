@@ -1,15 +1,16 @@
-import { ExternalLink, Box } from "components"
+import { Box, ExternalLink } from "components"
+import { Formik } from "formik"
+import gql from "graphql-tag"
+import { GET_SIGNUP_USER, SignupFormProps } from "pages/signup"
 import React from "react"
 import { Schema } from "utils/analytics"
 import * as Yup from "yup"
 
-import { FormProps, FormTemplate } from "./FormsTemplate"
-import { MultiSelectionTableField } from "../Fields/MultiSelectionTableField"
-import { customerMeasurements } from "./helpers/measurements"
-import { FormWrapper } from "./FormWrapper"
-import { GET_SIGNUP_USER, SignupFormProps } from "pages/signup"
-import gql from "graphql-tag"
 import { useMutation } from "@apollo/client"
+
+import { MultiSelectionTableField } from "../Fields/MultiSelectionTableField"
+import { FormTemplate } from "./FormTemplate"
+import { customerMeasurements } from "./helpers/measurements"
 
 export interface CustomerMeasurementsFormFields {
   height: string
@@ -80,7 +81,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
   }
 
   return (
-    <FormWrapper
+    <Formik
       initialValues={initialValues}
       initialTouched={{ weight: true }}
       validationSchema={customerMeasurementsValidationSchema}
@@ -90,13 +91,13 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
         <FormTemplate
           context={context}
           headerText="Let’s get your measurements"
-          HeaderDetail={<>This helps us accurately recommend you sizes by material, style, and brand.</>}
+          headerDescription="This helps us accurately recommend you sizes by material, style, and brand."
           footerText={
             <>
               {"By creating an account, you agree to our "}
-              <ExternalLink href="https://www.seasons.nyc/terms-of-service">Terms of Service</ExternalLink>
+              <ExternalLink href="/terms-of-service">Terms of Service</ExternalLink>
               {" and "}
-              <ExternalLink href="https://www.seasons.nyc/privacy-policy">Privacy Policy</ExternalLink>
+              <ExternalLink href="/privacy-policy">Privacy Policy</ExternalLink>
             </>
           }
           buttonText="Create account"
@@ -149,6 +150,6 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
           ]}
         />
       )}
-    </FormWrapper>
+    </Formik>
   )
 }
