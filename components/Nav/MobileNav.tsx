@@ -17,7 +17,7 @@ import { NavProps } from "./Types"
 
 export const MENU_HEIGHT = "59px"
 
-export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
+export const MobileNav: React.FC<NavProps> = ({ links }) => {
   const [isOpen, toggleOpen] = useState(false)
   const router = useRouter()
   const tracking = useTracking()
@@ -28,7 +28,7 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
   }, [router.asPath])
 
   return (
-    <HeaderContainer fixed={fixed}>
+    <HeaderContainer>
       <Header>
         <Box px={2}>
           <SeasonsLogo />
@@ -229,8 +229,8 @@ const StyledAnchor = styled("a")`
   }
 `
 
-const HeaderContainer = styled.div<{ fixed: boolean }>`
-  position: ${(p) => (p.fixed ? "fixed" : "relative")};
+const HeaderContainer = styled.div`
+  position: fixed;
   box-sizing: border-box;
   height: ${MENU_HEIGHT};
   z-index: 100;

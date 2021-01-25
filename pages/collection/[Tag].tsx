@@ -121,7 +121,7 @@ const Collection = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{!!tag ? `${tag} Collection - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />

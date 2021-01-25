@@ -14,7 +14,7 @@ const PrivacyPolicy = screenTrack(() => ({
   const featuredBrandItems = data?.brands || []
 
   return (
-    <Layout fixedNav brandItems={featuredBrandItems}>
+    <Layout brandItems={featuredBrandItems}>
       <Grid px={[2, 2, 2, 5, 5]}>
         <div className="privacytopsection">
           <div className="privacytopcontainer">

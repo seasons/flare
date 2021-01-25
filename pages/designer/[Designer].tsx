@@ -193,7 +193,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />

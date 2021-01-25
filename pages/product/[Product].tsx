@@ -77,7 +77,7 @@ const Product = screenTrack(({ router }) => {
   const variantInStock = selectedVariant?.reservable > 0
 
   return (
-    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{`${title} - Seasons`}</title>
         <meta content={description} name="description" />

@@ -25,7 +25,6 @@ interface LayoutProps {
 }
 
 export const Layout = ({
-  fixedNav = false,
   children,
   hideFooter,
   footerBottomPadding,
@@ -54,10 +53,9 @@ export const Layout = ({
         <DrawerProvider>
           <Theme>
             <Intercom />
-            {fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}
+            <Nav brandItems={brandItems} />
             <MaxWidth>
               <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-                {!fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}
                 {children}
                 {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
               </Box>
