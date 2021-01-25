@@ -1,10 +1,7 @@
 import React from "react"
-import { ImageProps } from "react-native"
 import { imageResize, ImageSize } from "utils/imageResize"
 
-export type ImagePropsWithoutSource = Omit<ImageProps, "source">
-
-interface PictureProps extends ImagePropsWithoutSource {
+interface PictureProps extends React.ImgHTMLAttributes<any> {
   src: string
   imgRef?: any
   onLoad?: (event: any) => void
@@ -16,7 +13,7 @@ export const Picture: React.FC<PictureProps> = ({ src, alt, imgRef, onLoad, size
   const url = !!size ? imageResize(src, size) : src
 
   return (
-    <picture style={{ height: "100%" }}>
+    <picture style={{ height: "100%", ...style }}>
       <source type="image/webp" srcSet={url + "&fm=webp&cs=srgb"} />
       <source type="image/jpeg" srcSet={url + "&fm=jpg"} />
       <img src={url + "&fm=jpg"} ref={imgRef} alt={alt} onLoad={onLoad} />
