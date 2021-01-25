@@ -17,7 +17,7 @@ import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
 export const DesktopNav = (props: NavProps) => {
-  const { fixed = false, links } = props
+  const { fixed = true, links } = props
   const router = useRouter()
 
   const tracking = useTracking()
@@ -128,7 +128,7 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   ${({ fixed }) =>
     fixed &&
     `
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -140,7 +140,6 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   width: 100%;
   height: 58.5px;
   align-items: center;
-  padding-right: 15px;
 `
 
 const Link = styled.a<{ active?: boolean }>`

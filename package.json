@@ -19,7 +19,7 @@
     "node": "12"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.1",
+    "@apollo/client": "^3.3.6",
     "@apollo/react-ssr": "^4.0.0",
     "@artsy/fresnel": "^1.1.0",
     "@auth0/auth0-react": "^1.1.0",
