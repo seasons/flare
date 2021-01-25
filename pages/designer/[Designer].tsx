@@ -18,7 +18,6 @@ import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
 
 const Designer = screenTrack(({ router }) => {
@@ -29,15 +28,15 @@ const Designer = screenTrack(({ router }) => {
   }
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
-  const [fetchingMore, setFetchingMore] = useState(false)
+  const [productCount, setProductCount] = useState(8)
   const slug = router.query.Designer || ""
 
   const imageContainer = useRef(null)
 
-  const { data, fetchMore, loading } = useQuery(GET_BRAND, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_BRAND, {
     variables: {
       slug,
-      first: 8,
+      first: productCount,
       skip: 0,
       orderBy: "publishedAt_DESC",
     },
@@ -52,45 +51,29 @@ const Designer = screenTrack(({ router }) => {
   const onScroll = debounce(() => {
     const shouldLoadMore =
       !loading &&
-      !fetchingMore &&
       !!aggregateCount &&
       aggregateCount > products?.length &&
       window.innerHeight >= imageContainer?.current?.getBoundingClientRect().bottom - 200
 
     if (shouldLoadMore) {
-      setFetchingMore(true)
       fetchMore({
         variables: {
           skip: products?.length,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
-          if (!prev) {
-            return []
-          }
-
-          if (!fetchMoreResult) {
-            return prev
-          }
-
-          const newData = Object.assign({}, prev, {
-            brand: {
-              ...prev.brand,
-              products: {
-                ...prev.brand.products,
-                edges: [...prev.brand?.products?.edges, ...fetchMoreResult.brand?.products?.edges],
-              },
-            },
-          })
-
-          setFetchingMore(false)
-          return newData
-        },
+      }).then((fetchMoreResult: any) => {
+        setProductCount(products.length + fetchMoreResult?.data?.brand?.products?.edges?.length)
       })
     }
   }, 100)
 
-  const brand = data && data.brand
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", onScroll)
+    }
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [onScroll])
 
+  const brand = data && data.brand
   const title = brand?.name
   const description = brand?.description
 
@@ -210,7 +193,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems} onScroll={onScroll}>
+    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
@@ -277,12 +260,11 @@ const Designer = screenTrack(({ router }) => {
                 </Box>
               </Col>
             ))}
-            {loading ||
-              (fetchingMore && (
-                <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
-                  <Spinner />
-                </Box>
-              ))}
+            {loading && (
+              <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
+                <Spinner />
+              </Box>
+            )}
           </Row>
         </Grid>
       </Box>

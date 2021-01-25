@@ -13,6 +13,17 @@ export const cache = new InMemoryCache({
             return localBagVar()
           },
         },
+
+        products: {
+          merge(existing = [], incoming = [], { args: { skip = 0 } }) {
+            const merged = existing ? existing.slice(0) : []
+            for (let i = 0; i < incoming.length; ++i) {
+              merged[skip + i] = incoming[i]
+            }
+            existing = merged
+            return existing
+          },
+        },
       },
     },
   },

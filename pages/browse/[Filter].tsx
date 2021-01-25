@@ -174,7 +174,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   return (
     <>
-      <Layout fixedNav footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems} scrollRef={scrollRef}>
+      <Layout footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems} scrollRef={scrollRef}>
         <Media lessThan="md">
           <MobileFilters
             BrandsListComponent={
