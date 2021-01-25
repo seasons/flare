@@ -18,7 +18,6 @@ export interface FormTemplateProps {
   buttonText?: string
   leftImage?: string
   fields: Field[]
-  backButton?: boolean
   titleBottomSpacing?: number
   buttonActionName?: string
 }
@@ -31,7 +30,6 @@ export const FormTemplate = ({
   buttonText,
   leftImage,
   fields,
-  backButton,
   buttonActionName,
 }: FormTemplateProps) => {
   const { handleSubmit, isValid: formContextIsValid, isSubmitting, values } = useFormikContext()
@@ -53,12 +51,7 @@ export const FormTemplate = ({
       <>
         {isDesktop && leftImage && <ImageContainer url={imageResize(leftImage, "large")} />}
         <Wrapper clientSide={clientSide}>
-          <FormHeader
-            headerText={headerText}
-            headerDescription={headerDescription}
-            headerLabel={headerLabel}
-            showBackButton={backButton}
-          />
+          <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
           <FieldsContainer px={isDesktop ? [2, 2, 2, 5, 5] : 1} pb={isDesktop ? 0 : 150}>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
