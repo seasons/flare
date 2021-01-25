@@ -11,7 +11,7 @@ import { debounce } from "lodash"
 import Head from "next/head"
 import { withRouter } from "next/router"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import React from "react"
+import React, { useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
@@ -20,14 +20,20 @@ import { Collection } from "@seasons/eclipse"
 const CollectionScene = screenTrack(({ router }) => {
   return {
     page: Schema.PageNames.CollectionPage,
-    tag: router?.query?.Tag,
+    collection: router?.query?.Collection,
     path: router?.asPath,
   }
 })(({ router }) => {
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
   const collectionSlug = decodeURI(router.query.Collection)
+  const [onScroll, setOnScroll] = useState(null)
+  const featuredBrandItems = navigationData?.brands || []
 
-  return <Collection collectionSlug={collectionSlug} />
+  return (
+    <Layout fixedNav includeDefaultHead={false} onScroll={onScroll} brandItems={featuredBrandItems}>
+      <Collection collectionSlug={collectionSlug} setOnScroll={setOnScroll} />
+    </Layout>
+  )
 })
 
 export default withRouter(CollectionScene)

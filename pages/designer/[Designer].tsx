@@ -15,7 +15,7 @@ import Head from "next/head"
 import { withRouter } from "next/router"
 import { GET_BRAND, GET_BRANDS } from "queries/designerQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 
