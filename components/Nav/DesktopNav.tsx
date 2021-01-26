@@ -123,7 +123,7 @@ export const DesktopNav = (props: NavProps) => {
   )
 }
 
-const HeaderContainer = styled.div<{ fixed: boolean }>`
+const HeaderContainer = styled.div`
   background-color: ${color("white100")};
   position: fixed;
   top: 0;
