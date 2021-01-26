@@ -17,7 +17,7 @@ import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
 export const DesktopNav = (props: NavProps) => {
-  const { fixed = false, links } = props
+  const { links } = props
   const router = useRouter()
 
   const tracking = useTracking()
@@ -46,7 +46,7 @@ export const DesktopNav = (props: NavProps) => {
   }, [authState.authInitializing, authState.isSignedIn])
 
   return (
-    <HeaderContainer fixed={fixed}>
+    <HeaderContainer>
       <MaxWidth>
         <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
           <SeasonsLogo />
@@ -125,14 +125,10 @@ export const DesktopNav = (props: NavProps) => {
 
 const HeaderContainer = styled.div<{ fixed: boolean }>`
   background-color: ${color("white100")};
-  ${({ fixed }) =>
-    fixed &&
-    `
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-  `}
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
@@ -140,7 +136,6 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   width: 100%;
   height: 58.5px;
   align-items: center;
-  padding-right: 15px;
 `
 
 const Link = styled.a<{ active?: boolean }>`

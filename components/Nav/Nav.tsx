@@ -8,7 +8,7 @@ type Props = NavProps & {
   brandItems: { name: string; slug: string }[]
 }
 
-export const Nav: React.FC<Props> = ({ fixed, brandItems }) => {
+export const Nav: React.FC<Props> = ({ brandItems }) => {
   const links = [
     {
       text: "Home",
@@ -38,10 +38,10 @@ export const Nav: React.FC<Props> = ({ fixed, brandItems }) => {
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopNav links={links} fixed={fixed} />
+        <DesktopNav links={links} />
       </Media>
       <Media lessThan="md">
-        <MobileNav links={links} fixed={fixed} />
+        <MobileNav links={links} />
       </Media>
     </>
   )

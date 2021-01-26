@@ -14,7 +14,7 @@ const About = screenTrack(() => ({
   const featuredBrandItems = data?.brands || []
 
   return (
-    <Layout fixedNav brandItems={featuredBrandItems}>
+    <Layout brandItems={featuredBrandItems}>
       <AboutHero />
       <Spacer mb={15} />
       <AboutValues />
