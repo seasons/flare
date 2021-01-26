@@ -79,7 +79,7 @@ const Product = screenTrack(({ router }) => {
   return (
     <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
-        <title>{`${title} - Seasons`}</title>
+        <title>{title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />

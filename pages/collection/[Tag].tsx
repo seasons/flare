@@ -131,7 +131,7 @@ const Collection = screenTrack(({ router }) => {
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Seasons" />
         <meta property="og:url" content={`https://www.seasons.nyc/collection/${tag}`} />
-        <meta property="og:image" content="https://flare-public-assets.s3.amazonaws.com/logo.png" />
+        <meta property="og:image" content="https://flare-web.s3.amazonaws.com/assets/og-image.jpg" />
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]}>
