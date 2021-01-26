@@ -221,9 +221,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       listItems={categories}
                       currentBrand={currentBrand}
                     />
-                    <Spacer mb={3} />
+                    <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
-                    <Spacer mb={3} />
+                    <Spacer mb={5} />
                     <BrowseFilters
                       title="Designers"
                       setParam={setCurrentBrand}
@@ -392,7 +392,7 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
       cursor: pointer;
       font-family: ${fontFamily.sans.medium as CSSObject};
       display: inline-block;
-      margin-right: 5px;
+      margin-right: 6px;
       min-width: 24px;
       height: 24px;
       text-align: center;
@@ -409,6 +409,7 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
       }
 
       & a {
+        padding: 5px;
         height: 24px;
         min-width: 24px;
         top: 2px;
