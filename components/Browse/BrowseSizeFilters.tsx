@@ -49,9 +49,6 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
   return (
     <Box style={{ maxWidth: "148px" }}>
       <Sans size="3">Filter by</Sans>
-      <Box mr="2px">
-        <Separator />
-      </Box>
       <Spacer mb={[0, 2]} />
       <Flex mb={2} alignItems="center" flexDirection="row">
         <CheckBox
@@ -96,7 +93,7 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
 const CheckBox = styled(Box)<{ isActive: boolean }>`
   height: 24px;
   width: 24px;
-  border: 1px solid ${(p) => (p.isActive ? color("black100") : color("black25"))};
+  border: 1px solid ${(p) => (p.isActive ? color("black100") : color("black10"))};
   background-color: ${(p) => (p.isActive ? color("black100") : color("white100"))};
   cursor: pointer;
   display: flex;
@@ -117,7 +114,7 @@ const SizeButtonContainer = styled.div`
 `
 
 const SizeButtonWrapper = styled.div<{ isActive: boolean }>`
-  border: 1px solid ${(p) => (p.isActive ? color("black100") : color("black25"))};
+  border: 1px solid ${(p) => (p.isActive ? color("black100") : color("black10"))};
   background-color: ${(p) => (p.isActive ? color("black100") : color("white100"))};
   height: 33px;
   width: 33px;
