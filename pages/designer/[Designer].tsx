@@ -207,7 +207,7 @@ const Designer = screenTrack(({ router }) => {
           property="og:image"
           content={
             brand?.images?.[0]?.url.replace("fm=webp", "fm=jpg") ||
-            "https://flare-public-assets.s3.amazonaws.com/logo.png"
+            "https://flare-web.s3.amazonaws.com/assets/og-image.jpg"
           }
         />
         <meta property="twitter:card" content="summary" />
