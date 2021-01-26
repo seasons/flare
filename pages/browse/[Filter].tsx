@@ -23,7 +23,7 @@ import brandSlugs from "lib/brands"
 import { sans as sansSize } from "helpers/typeSizes"
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 
-const pageSize = 20
+const pageSize = 21
 
 export interface SizeFilterParams {
   currentTops: string[]
@@ -252,7 +252,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 ) : (
                   productsOrArray.map((product, i) => {
                     return (
-                      <Col sm="3" xs="6" key={i}>
+                      <Col sm="4" xs="6" key={i}>
                         <Box pt={[0.5, 0.5, 0.5, 0, 0]} pb={[0.5, 0.5, 0.5, 5, 5]}>
                           <ProductGridItem product={product?.node} loading={loading} />
                         </Box>
