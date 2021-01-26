@@ -162,7 +162,7 @@ const Collection = screenTrack(({ router }) => {
             </Col>
           </Row>
         </Grid>
-        <Grid>
+        <Grid px={[0, 2, 2, 5, 5]}>
           <Row ref={imageContainer}>
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>
