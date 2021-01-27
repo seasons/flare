@@ -23,7 +23,7 @@ import brandSlugs from "lib/brands"
 import { sans as sansSize } from "helpers/typeSizes"
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 
-const pageSize = 20
+const pageSize = 21
 
 export interface SizeFilterParams {
   currentTops: string[]
@@ -174,7 +174,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   return (
     <>
-      <Layout fixedNav footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems} scrollRef={scrollRef}>
+      <Layout footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems} scrollRef={scrollRef}>
         <Media lessThan="md">
           <MobileFilters
             BrandsListComponent={
@@ -221,9 +221,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       listItems={categories}
                       currentBrand={currentBrand}
                     />
-                    <Spacer mb={3} />
+                    <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
-                    <Spacer mb={3} />
+                    <Spacer mb={5} />
                     <BrowseFilters
                       title="Designers"
                       setParam={setCurrentBrand}
@@ -252,7 +252,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 ) : (
                   productsOrArray.map((product, i) => {
                     return (
-                      <Col sm="3" xs="6" key={i}>
+                      <Col sm="4" xs="6" key={i}>
                         <Box pt={[0.5, 0.5, 0.5, 0, 0]} pb={[0.5, 0.5, 0.5, 5, 5]}>
                           <ProductGridItem product={product?.node} loading={loading} />
                         </Box>
@@ -392,7 +392,7 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
       cursor: pointer;
       font-family: ${fontFamily.sans.medium as CSSObject};
       display: inline-block;
-      margin-right: 5px;
+      margin-right: 6px;
       min-width: 24px;
       height: 24px;
       text-align: center;
@@ -409,6 +409,7 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
       }
 
       & a {
+        padding: 5px;
         height: 24px;
         min-width: 24px;
         top: 2px;
