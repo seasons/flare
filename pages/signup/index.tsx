@@ -4,9 +4,7 @@ import { BrandNavItemFragment } from "components/Nav"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
-import {
-  CustomerMeasurementsForm
-} from "components/SignUp/CustomerMeasurementsStep/CustomerMeasurementsForm/CustomerMeasurementsForm"
+import { DiscoverStyleStep } from "components/SignUp/DiscoverStyleStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -85,6 +83,9 @@ const SignUpPage = screenTrack(() => ({
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
 
+  // TODO: Use data from backend to initialize show discover style value
+  const [showDiscoverStyle, setShowDiscoverStyle] = useState(true)
+
   const hasGift = !!router.query.gift_id
   const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)
 
@@ -119,7 +120,8 @@ const SignUpPage = screenTrack(() => ({
     return {}
   }
 
-  const customerStatus = userSession?.customer?.status
+  // const customerStatus = userSession?.customer?.status
+  const customerStatus = "Waitlisted"
 
   const closeSnackBar = () => {
     setShowSnackBar(false)
@@ -165,8 +167,8 @@ const SignUpPage = screenTrack(() => ({
         <CustomerMeasurementsStep
           form={{
             onCompleted: () => {
-              setStartTriage(true)
               refetchGetSignupUser()
+              setShowDiscoverStyle(true)
               updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
             },
           }}
@@ -174,7 +176,16 @@ const SignUpPage = screenTrack(() => ({
       )
       break
     case "Waitlisted":
-      if (startTriage) {
+      if (!startTriage && showDiscoverStyle) {
+        CurrentStep = (
+          <DiscoverStyleStep
+            onCompleted={() => {
+              setStartTriage(true)
+              setShowDiscoverStyle(false)
+            }}
+          />
+        )
+      } else if (startTriage) {
         CurrentStep = (
           <TriageStep
             check={startTriage}

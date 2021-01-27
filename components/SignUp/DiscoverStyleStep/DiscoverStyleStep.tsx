@@ -2,32 +2,37 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
 import { Flex, MaxWidth } from "components"
-import { Picture } from "components/Picture"
 import React, { useState } from "react"
 import Slider from "react-slick"
 import styled from "styled-components"
 
-import { Box, Button, color, Sans, Spacer } from "@seasons/eclipse"
+import { Box, color, Sans, Spacer } from "@seasons/eclipse"
 
-const streetwear = require("public/images/signup/streetwear.jpeg")
-const statement = require("public/images/signup/statement.jpeg")
-const casual = require("public/images/signup/casual.jpeg")
+const streetwear = require("public/images/signup/Streetwear.png")
+const statement = require("public/images/signup/Statement.png")
+const casual = require("public/images/signup/Casual.png")
 
 export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCompleted }) => {
-  const styleNames = ["Streetwear", "Statement", "Casual", "Athletic", "Everyday", "Warmth", "Party", "Layering"]
+  const styleNames = ["Streetwear", "Minimalist", "Classic", "Avant Garde", "Tech/Workwear"]
   const styleImages = [streetwear, statement, casual]
 
   const [stylesSelected, setStylesSelected] = useState({})
+  const [activeIndex, setActiveIndex] = useState(0)
 
   const sliderSettings = {
+    autoplay: true,
     className: "center",
     centerMode: true,
     infinite: true,
-    centerPadding: 60,
+    centerPadding: 140,
     slidesToShow: 1,
     speed: 500,
     arrows: true,
     initialSlide: 1,
+    afterChange: (index) => {
+      console.log("Change index:", index)
+      setActiveIndex(index)
+    },
   }
 
   return (
@@ -37,7 +42,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
           <Slider {...sliderSettings}>
             {styleImages.map((styleImage) => (
               <div key={styleImage}>
-                <FullPicture key={styleImage} src={styleImage} size="large" style={{ width: "50%", height: "50%" }} />
+                <FullPicture className="picture" backgroundURL={styleImage} />
               </div>
             ))}
           </Slider>
@@ -54,14 +59,10 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
             <Spacer mb={4} />
 
             <ButtonContainer py={2}>
-              {styleNames.map((styleName) => {
+              {styleNames.map((styleName, i) => {
                 return (
                   <Box key={styleName} mr={2} mt={2}>
                     <Button
-                      size="medium"
-                      variant={stylesSelected[styleName] ? "primaryBlack" : "primaryWhite"}
-                      width="120px"
-                      height="56px"
                       onClick={() => {
                         const value = !!stylesSelected[styleName]
 
@@ -70,8 +71,11 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
                           [styleName]: !value,
                         })
                       }}
+                      className={stylesSelected[styleName] ? "selected" : "" + (activeIndex === i - 1 ? " active" : "")}
                     >
-                      {styleName}
+                      <Sans weight={"medium"} size={"4"} style={{ textAlign: "center" }}>
+                        {styleName}
+                      </Sans>
                     </Button>
                   </Box>
                 )
@@ -119,7 +123,39 @@ const CarouselContainer = styled(Box)`
 
   .slick-list {
     height: 100%;
-    padding: 0 60px;
+    padding: 0 140px;
+    overflow-y: visible;
+  }
+
+  .slick-prev {
+    left: 120px;
+  }
+
+  .slick-next {
+    right: 120px;
+  }
+
+  .slick-prev:before {
+    content: "←";
+  }
+
+  .slick-next:before {
+    content: "→";
+  }
+
+  .slick-prev:before,
+  .slick-next:before {
+    color: black;
+  }
+
+  .center .slick-center .picture {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .center .picture {
+    opacity: 0.6;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
   }
 `
 
@@ -129,7 +165,44 @@ const ButtonContainer = styled(Box)`
   flex-wrap: wrap;
 `
 
-const FullPicture = styled(Picture)`
-  width: 50%;
-  height: 50%;
+const Button = styled.button<{}>`
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #e5e5e5;
+  background: white;
+  width: 120px;
+  height: 56px;
+
+  &.loading {
+    transition: none;
+    background-color: transparent;
+    color: transparent;
+    border: 0;
+    cursor: auto;
+  }
+
+  &.block {
+    width: 100%;
+  }
+
+  &.active {
+    border-color: ${color("black100")};
+  }
+
+  &.selected {
+    border-color: black;
+    background-color: black;
+    color: white;
+  }
+`
+
+const FullPicture = styled.div<{ backgroundURL: string }>`
+  background: url(${(p) => p.backgroundURL}) no-repeat center center;
+  background-size: contain;
+  width: 270px;
+  height: 600px;
+  margin: 0 auto;
 `
