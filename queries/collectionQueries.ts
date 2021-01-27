@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
-export const GET_COLLECTION = gql`
-  query GetCollection($tag: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
+export const GET_TAG = gql`
+  query GetTag($tag: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
     productsAggregate: productsConnection(where: { AND: [{ tags_some: { name: $tag } }, { status: Available }] }) {
       aggregate {
         count

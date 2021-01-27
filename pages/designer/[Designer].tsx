@@ -221,13 +221,7 @@ const Designer = screenTrack(({ router }) => {
                   <BreadCrumb />
                 </Box>
                 <Flex flexDirection="column" justifyContent="center" height="100%" pb={8}>
-                  {!data ? (
-                    <DesignerTextSkeleton />
-                  ) : (
-                    <>
-                      <TextContent />
-                    </>
-                  )}
+                  {!data ? <DesignerTextSkeleton /> : <TextContent />}
                 </Flex>
               </MediaWithHeight>
               <Media lessThan="md">

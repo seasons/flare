@@ -22,8 +22,6 @@ const Home = screenTrack(() => ({
   const featuredBrandItems = navigationData?.brands || []
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
 
-  console.log("data", data)
-
   useEffect(() => {
     if (!!data?.me?.customer) {
       updateUserSession({ cust: data?.me?.customer })

@@ -1,8 +1,5 @@
-import { Box, Flex, Layout, Sans, Separator, Spacer } from "components"
-import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
+import { Box, Flex, Layout, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "components/Grid"
-import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
-import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
 import { ProductGridItem } from "components/Product/ProductGridItem"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
@@ -16,7 +13,7 @@ import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-import { GET_COLLECTION } from "queries/collectionQueries"
+import { GET_TAG } from "queries/collectionQueries"
 
 const TagView = screenTrack(({ router }) => {
   return {
@@ -41,7 +38,7 @@ const TagView = screenTrack(({ router }) => {
 
   const imageContainer = useRef(null)
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_COLLECTION, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_TAG, {
     variables: {
       tag,
       first: productCount,
