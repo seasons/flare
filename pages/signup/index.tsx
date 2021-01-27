@@ -120,8 +120,7 @@ const SignUpPage = screenTrack(() => ({
     return {}
   }
 
-  // const customerStatus = userSession?.customer?.status
-  const customerStatus = "Waitlisted"
+  const customerStatus = userSession?.customer?.status
 
   const closeSnackBar = () => {
     setShowSnackBar(false)
@@ -138,7 +137,7 @@ const SignUpPage = screenTrack(() => ({
 
   if (!data || (hasGift && giftLoading)) {
     return (
-      <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
+      <Layout hideFooter brandItems={featuredBrandItems}>
         <MaxWidth>
           <Flex>
             <Loader />
@@ -242,7 +241,7 @@ const SignUpPage = screenTrack(() => ({
   }
 
   return (
-    <Layout fixedNav hideFooter brandItems={featuredBrandItems} showIntercom={false}>
+    <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">

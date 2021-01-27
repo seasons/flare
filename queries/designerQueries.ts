@@ -34,6 +34,7 @@ export const GET_BRAND = gql`
               id
               size
               internalSize {
+                id
                 display
               }
               total

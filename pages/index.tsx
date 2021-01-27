@@ -34,7 +34,7 @@ const Home = screenTrack(() => ({
   }, [data])
 
   return (
-    <Layout fixedNav showIntercom brandItems={featuredBrandItems}>
+    <Layout showIntercom brandItems={featuredBrandItems}>
       <Hero post={data?.blogPosts?.[0]} />
       <Spacer mb={10} />
 

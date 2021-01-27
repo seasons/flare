@@ -27,6 +27,7 @@ const Collection = screenTrack(({ router }) => {
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
   const [fetchingMore, setFetchingMore] = useState(false)
+  const [productCount, setProductCount] = useState(8)
   const tag = decodeURI(router.query.Tag) || ""
 
   let title = ""
@@ -40,10 +41,10 @@ const Collection = screenTrack(({ router }) => {
 
   const imageContainer = useRef(null)
 
-  const { data, fetchMore, loading } = useQuery(GET_COLLECTION, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_COLLECTION, {
     variables: {
       tag,
-      first: 8,
+      first: productCount,
       skip: 0,
       orderBy: "updatedAt_DESC",
     },
@@ -58,7 +59,6 @@ const Collection = screenTrack(({ router }) => {
   const onScroll = debounce(() => {
     const shouldLoadMore =
       !loading &&
-      !fetchingMore &&
       !!aggregateCount &&
       aggregateCount > products?.length &&
       window.innerHeight >= imageContainer?.current?.getBoundingClientRect().bottom - 200
@@ -69,28 +69,18 @@ const Collection = screenTrack(({ router }) => {
         variables: {
           skip: products?.length,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
-          if (!prev) {
-            return []
-          }
-
-          if (!fetchMoreResult) {
-            return prev
-          }
-
-          const newData = Object.assign({}, prev, {
-            products: {
-              ...prev.products,
-              edges: [...prev.products?.edges, ...fetchMoreResult.products?.edges],
-            },
-          })
-
-          setFetchingMore(false)
-          return newData
-        },
+      }).then((fetchMoreResult: any) => {
+        setProductCount(products.length + fetchMoreResult?.data?.products?.edges?.length)
       })
     }
   }, 100)
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", onScroll)
+    }
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [onScroll])
 
   const BreadCrumb = () => {
     return (
@@ -131,7 +121,7 @@ const Collection = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems} onScroll={onScroll}>
+    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{!!tag ? `${tag} Collection - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
@@ -141,7 +131,7 @@ const Collection = screenTrack(({ router }) => {
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Seasons" />
         <meta property="og:url" content={`https://www.seasons.nyc/collection/${tag}`} />
-        <meta property="og:image" content="https://flare-public-assets.s3.amazonaws.com/logo.png" />
+        <meta property="og:image" content="https://flare-web.s3.amazonaws.com/assets/og-image.jpg" />
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]}>
@@ -172,7 +162,7 @@ const Collection = screenTrack(({ router }) => {
             </Col>
           </Row>
         </Grid>
-        <Grid>
+        <Grid px={[0, 2, 2, 5, 5]}>
           <Row ref={imageContainer}>
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>
@@ -181,12 +171,11 @@ const Collection = screenTrack(({ router }) => {
                 </Box>
               </Col>
             ))}
-            {loading ||
-              (fetchingMore && (
-                <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
-                  <Spinner />
-                </Box>
-              ))}
+            {loading && (
+              <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
+                <Spinner />
+              </Box>
+            )}
           </Row>
         </Grid>
       </Box>

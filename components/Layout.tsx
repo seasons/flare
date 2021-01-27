@@ -22,20 +22,15 @@ interface LayoutProps {
   includeDefaultHead?: boolean
   brandItems: { name: string; slug: string }[]
   showIntercom?: boolean
-  onScroll?: () => void
-  scrollRef?: any
 }
 
 export const Layout = ({
-  fixedNav = false,
   children,
   hideFooter,
   footerBottomPadding,
   includeDefaultHead = true,
   showIntercom = false,
   brandItems,
-  onScroll,
-  scrollRef,
 }: LayoutProps) => {
   // If there are any UTM params, store them in a cookie
   const router = useRouter()
@@ -59,27 +54,18 @@ export const Layout = ({
         <DrawerProvider>
           <Theme>
             {showIntercom && <Intercom />}
-            {fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}
-            <ScrollContainer mt={fixedNav ? 60 : 0} pb={60} onScroll={onScroll} ref={scrollRef}>
-              <MaxWidth>
-                <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-                  {!fixedNav && <Nav fixed={fixedNav} brandItems={brandItems} />}
-                  {children}
-                  {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
-                </Box>
-              </MaxWidth>
-              <Drawer />
-              <PopUp />
-            </ScrollContainer>
+            <Nav brandItems={brandItems} />
+            <MaxWidth>
+              <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+                {children}
+                {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
+              </Box>
+            </MaxWidth>
+            <Drawer />
+            <PopUp />
           </Theme>
         </DrawerProvider>
       </PopUpProvider>
     </>
   )
 }
-
-const ScrollContainer = styled(Box)`
-  overflow-y: auto;
-  display: flex;
-  flex: 1;
-`
