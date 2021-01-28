@@ -33,7 +33,6 @@ const LOG_IN = gql`
           admissable
           authorizationsCount
           authorizationWindowClosesAt
-          allAccessEnabled
         }
         user {
           id

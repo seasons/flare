@@ -31,7 +31,6 @@ const Home = screenTrack(() => ({
 
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
 
   useEffect(() => {
     if (!!data?.me?.customer) {
@@ -92,7 +91,7 @@ const Home = screenTrack(() => ({
         <Separator />
       </Box>
 
-      <Plans plans={data?.paymentPlans} allAccessEnabled={allAccessEnabled} />
+      <Plans plans={data?.paymentPlans} />
 
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />

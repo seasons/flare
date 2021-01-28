@@ -14,7 +14,6 @@ import { Media } from "../Responsive"
 interface MembershipPlansProps {
   paymentPlans: any
   vertical?: boolean
-  allAccessEnabled: boolean
   faqSections: any
   selectedPlan: any
   setSelectedPlan: (plan: any) => void
@@ -37,7 +36,6 @@ export const groupByPlanTier = (paymentPlans) => {
 export const MembershipPlans: React.FC<MembershipPlansProps> = ({
   paymentPlans,
   setSelectedPlan,
-  allAccessEnabled,
   faqSections,
   selectedPlan,
 }) => {
@@ -78,12 +76,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                           <Spacer mb={5} />
                         </Box>
                       )}
-                      <PlanTier
-                        group={group}
-                        onSelectPlan={setSelectedPlan}
-                        allAccessEnabled={allAccessEnabled}
-                        selectedPlan={selectedPlan}
-                      />
+                      <PlanTier group={group} onSelectPlan={setSelectedPlan} selectedPlan={selectedPlan} />
                     </Box>
                   </Flex>
                 </Box>
@@ -148,12 +141,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                           <Spacer mb={5} />
                         </Box>
                       )}
-                      <PlanTier
-                        group={group}
-                        onSelectPlan={setSelectedPlan}
-                        allAccessEnabled={allAccessEnabled}
-                        selectedPlan={selectedPlan}
-                      />
+                      <PlanTier group={group} onSelectPlan={setSelectedPlan} selectedPlan={selectedPlan} />
                     </Box>
                   </Flex>
                 </Box>

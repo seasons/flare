@@ -8,7 +8,7 @@ import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 
-export const Plans: React.FC<{ plans: any; allAccessEnabled: boolean }> = ({ plans, allAccessEnabled }) => {
+export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   const plansGroupedByTier = groupByPlanTier(plans)
   const { authState } = useAuthContext()
   const { openDrawer } = useDrawerContext()
@@ -31,7 +31,7 @@ export const Plans: React.FC<{ plans: any; allAccessEnabled: boolean }> = ({ pla
               <Flex flexDirection="column" alignItems="center" width="100%">
                 <Spacer pb={[0, 10, 10, 10, 10]} />
                 <Flex width="100%" justifyContent="center" flexDirection="row">
-                  <PlanTier group={group} onSelectPlan={onSelectPlan} allAccessEnabled={allAccessEnabled} displayText />
+                  <PlanTier group={group} onSelectPlan={onSelectPlan} displayText />
                 </Flex>
                 <Spacer pb={[10, 10, 10, 10, 10]} />
               </Flex>

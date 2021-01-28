@@ -36,7 +36,6 @@ export const HOME_QUERY = gql`
           admissable
           authorizationsCount
           authorizationWindowClosesAt
-          allAccessEnabled
         }
       }
     }
