@@ -48,9 +48,9 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
         {plansGroupedByTier.map((group, index) => (
           <Col md="6" xs="12" key={index}>
             <Flex key={index} width="100%" height="100%" px={[2, 2, 2, 7, 7]} style={{ position: "relative" }}>
-              <Flex flexDirection="column" alignItems="center" width="100%">
+              <Flex flexDirection="column" alignItems="center" width="100%" justifyContent="center">
                 <Spacer pb={[0, 10, 10, 10, 10]} />
-                <Flex width="100%" justifyContent="center" flexDirection="row">
+                <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center">
                   <PlanTier group={group} onSelectPlan={onSelectPlan} displayText />
                 </Flex>
                 <Spacer pb={[10, 10, 10, 10, 10]} />
