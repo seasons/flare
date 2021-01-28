@@ -153,6 +153,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
   const onSubmit = async (values, actions) => {
     try {
       const utm = JSON.parse(localStorage?.getItem("utm"))
+      const impactId = localStorage?.getItem("impactId")
       const date = new Date(values.dob)
       const dateToIso = DateTime.fromJSDate(date).toISO()
       const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
@@ -170,6 +171,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
             shippingAddress: {
               create: { zipCode: values.zipCode },
             },
+            impactId,
           },
           referrerId: router.query.referrer_id,
           utm,

@@ -36,6 +36,7 @@ export const Layout = ({
   scrollRef,
 }: LayoutProps) => {
   // If there are any UTM params, store them in a cookie
+  // If there is an impact click id, store it in a cookie
   const router = useRouter()
   const utm = {
     source: router.query?.utm_source,
@@ -47,6 +48,9 @@ export const Layout = ({
   if (typeof window !== "undefined") {
     if (!!utm.source || !!utm.medium || !!utm.campaign || !!utm.term || !!utm.content) {
       localStorage?.setItem("utm", JSON.stringify(utm))
+    }
+    if (!!router.query?.irclickid) {
+      localStorage?.setItem("impactId", router.query.irclickid)
     }
   }
 
