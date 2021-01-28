@@ -10,9 +10,7 @@ import {
   TheApp,
   TheBag,
 } from "components/Homepage"
-import { Nav } from "components/Nav"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
-import { ServiceableModal } from "components/ServiceableModal"
 import { initializeApollo } from "lib/apollo/apollo"
 import { HOME_QUERY } from "queries/homeQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"

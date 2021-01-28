@@ -96,9 +96,9 @@ export const PlanTier: React.FC<{
   return (
     <Box width="100%" style={{ maxWidth: "500px" }}>
       {displayText ? (
-        <Display size="9">{tier === "AllAccess" ? "All Access" : tier}</Display>
+        <Display size="9">{tier === "Essential" ? "Monthly" : tier}</Display>
       ) : (
-        <Sans size="8">{tier === "AllAccess" ? "All Access" : tier}</Sans>
+        <Sans size="8">{tier === "Essential" ? "Monthly" : tier}</Sans>
       )}
       <Spacer mb={2} />
       <Flex flexDirection="row">

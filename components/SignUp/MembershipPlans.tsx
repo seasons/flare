@@ -43,15 +43,22 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
 }) => {
   const plansGroupedByTier = groupByPlanTier(paymentPlans)
 
+  console.log("plansGroupedByTier", plansGroupedByTier)
+  console.log("paymentPlans", paymentPlans)
+
   const Desktop = () => (
     <Grid px={[2, 2, 2, 5, 5]}>
       <Row>
         <Col md="8" xs="12">
           <Flex
-            style={{ borderRight: `1px solid ${color("black15")}`, borderLeft: `1px solid ${color("black15")}` }}
-            pt={10}
+            style={{
+              borderRight: `1px solid ${color("black15")}`,
+              borderLeft: `1px solid ${color("black15")}`,
+              minHeight: "100vh",
+            }}
             flexDirection="row"
             width="100%"
+            pt={150}
           >
             <Flex width="100%" flexDirection="column" alignItems="flex-end" height="100%">
               {plansGroupedByTier.map((group, index) => (
@@ -86,9 +93,12 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
           </Flex>
         </Col>
         <Col md="4" xs="12">
-          <Box style={{ borderRight: `1px solid ${color("black15")}`, height: "100%" }} px={[2, 2, 2, 5, 5]}>
+          <Box
+            style={{ borderRight: `1px solid ${color("black15")}`, height: "100%", minHeight: "100vh" }}
+            px={[2, 2, 2, 5, 5]}
+            pt={150}
+          >
             <FAQWrapper>
-              <Spacer mb={10} />
               <Sans size="8" color="black100">
                 FAQ
               </Sans>
