@@ -21,9 +21,12 @@ const streetwear = require("public/images/signup/Streetwear.png")
 const techwear = require("public/images/signup/Techwear.png")
 
 const SAVE_STYLES = gql`
-  mutation SaveStyles($customerID: ID!, $styles: [CustomerStyle!]!) {
-    updateCustomer(data: { detail: { update: { styles: { set: $styles } } } }, where: { id: $customerID }) {
+  mutation SaveStyles($styles: [CustomerStyle!]!) {
+    addCustomerDetails(details: { styles: { set: $styles } }) {
       id
+      detail {
+        styles
+      }
     }
   }
 `
@@ -34,7 +37,6 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
   const [saveStyles] = useMutation(SAVE_STYLES)
   const [stylesSelected, setStylesSelected] = useState({})
   const [activeIndex, setActiveIndex] = useState(0)
-  const { userSession } = useAuthContext()
 
   let slider = null
 
@@ -144,13 +146,14 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
           </>
         }
         buttonText="Next"
+        disabled={Object.keys(stylesSelected).length === 0}
         handleSubmit={() => {
           saveStyles({
             variables: {
               styles: Object.keys(stylesSelected).map((a) => a.replaceAll(" ", "")),
-              customerID: userSession?.customer?.id,
             },
           })
+          onCompleted?.()
         }}
       />
     </MaxWidth>

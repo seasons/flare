@@ -36,6 +36,7 @@ export const GET_SIGNUP_USER = gql`
         detail {
           id
           height
+          styles
         }
         user {
           id
@@ -83,8 +84,8 @@ const SignUpPage = screenTrack(() => ({
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
 
-  // TODO: Use data from backend to initialize show discover style value
-  const [showDiscoverStyle, setShowDiscoverStyle] = useState(true)
+  const hasStyles = data?.me?.customer?.detail?.styles.length > 0
+  const [showDiscoverStyle, setShowDiscoverStyle] = useState(!hasStyles)
 
   const hasGift = !!router.query.gift_id
   const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)

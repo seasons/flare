@@ -1,11 +1,11 @@
-import { MaxWidth } from "components"
+import { Flex, MaxWidth } from "components"
 import { Button } from "components/Button"
 import { color } from "helpers"
 import React from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
-import { Flex, Sans } from "@seasons/eclipse"
+import { Sans } from "@seasons/eclipse"
 
 interface FormFooterProps {
   buttonActionName?: string

@@ -79,6 +79,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
             shippingAddress: {
               create: { zipCode: values.zipCode },
             },
+            styles: [],
           },
           referrerId: router.query.referrer_id,
           utm,
