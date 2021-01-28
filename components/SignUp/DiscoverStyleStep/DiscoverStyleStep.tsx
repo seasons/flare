@@ -1,40 +1,70 @@
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
-import { Flex, MaxWidth } from "components"
+import { ExternalLink, Flex, MaxWidth } from "components"
+import { FormFooter } from "components/Forms/FormFooter"
+import { LeftArrow } from "components/SVGs/LeftArrow"
+import { RightArrow } from "components/SVGs/RightArrow"
+import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useState } from "react"
 import Slider from "react-slick"
 import styled from "styled-components"
 
+import { gql, useMutation } from "@apollo/client"
 import { Box, color, Sans, Spacer } from "@seasons/eclipse"
 
+const avantGarde = require("public/images/signup/AvantGarde.png")
+const bold = require("public/images/signup/Bold.png")
+const classic = require("public/images/signup/Classic.png")
+const minimalist = require("public/images/signup/Minimalist.png")
 const streetwear = require("public/images/signup/Streetwear.png")
-const statement = require("public/images/signup/Statement.png")
-const casual = require("public/images/signup/Casual.png")
+const techwear = require("public/images/signup/Techwear.png")
+
+const SAVE_STYLES = gql`
+  mutation SaveStyles($customerID: ID!, $styles: [CustomerStyle!]!) {
+    updateCustomer(data: { detail: { update: { styles: { set: $styles } } } }, where: { id: $customerID }) {
+      id
+    }
+  }
+`
 
 export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCompleted }) => {
-  const styleNames = ["Streetwear", "Minimalist", "Classic", "Avant Garde", "Tech/Workwear"]
-  const styleImages = [streetwear, statement, casual]
-
+  const styleNames = ["Avant Garde", "Bold", "Classic", "Minimalist", "Streetwear", "Techwear"]
+  const styleImages = [avantGarde, bold, classic, minimalist, streetwear, techwear]
+  const [saveStyles] = useMutation(SAVE_STYLES)
   const [stylesSelected, setStylesSelected] = useState({})
   const [activeIndex, setActiveIndex] = useState(0)
+  const { userSession } = useAuthContext()
+
+  let slider = null
 
   const sliderSettings = {
     autoplay: true,
     className: "center",
     centerMode: true,
     infinite: true,
-    centerPadding: 140,
+    centerPadding: 130,
     slidesToShow: 1,
     speed: 500,
     arrows: true,
     initialSlide: 1,
+    ref: (s) => (slider = s),
     afterChange: (index) => {
-      console.log("Change index:", index)
       setActiveIndex(index)
     },
+    prevArrow: (
+      <ArrowContainer>
+        <LeftArrow />
+      </ArrowContainer>
+    ),
+    nextArrow: (
+      <ArrowContainer>
+        <RightArrow />
+      </ArrowContainer>
+    ),
   }
 
+  const activeName = styleNames[activeIndex]
   return (
     <MaxWidth>
       <Flex flexDirection="row">
@@ -46,6 +76,9 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
               </div>
             ))}
           </Slider>
+          <Sans size="4" color={!!stylesSelected[activeName] ? "black100" : "black50"} textAlign="center">
+            {activeName}
+          </Sans>
         </CarouselContainer>
         <Wrapper>
           <Flex flexDirection="column" pl={6}>
@@ -70,8 +103,10 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
                           ...stylesSelected,
                           [styleName]: !value,
                         })
+
+                        slider.slickGoTo(i)
                       }}
-                      className={stylesSelected[styleName] ? "selected" : "" + (activeIndex === i - 1 ? " active" : "")}
+                      className={stylesSelected[styleName] ? "selected" : "" + (activeIndex === i ? " active" : "")}
                     >
                       <Sans weight={"medium"} size={"4"} style={{ textAlign: "center" }}>
                         {styleName}
@@ -99,6 +134,25 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
           </Flex>
         </Wrapper>
       </Flex>
+      <FormFooter
+        footerText={
+          <>
+            {"By creating an account, you agree to our "}
+            <ExternalLink href="/terms-of-service">Terms of Service</ExternalLink>
+            {" and "}
+            <ExternalLink href="/privacy-policy">Privacy Policy</ExternalLink>
+          </>
+        }
+        buttonText="Next"
+        handleSubmit={() => {
+          saveStyles({
+            variables: {
+              styles: Object.keys(stylesSelected).map((a) => a.replaceAll(" ", "")),
+              customerID: userSession?.customer?.id,
+            },
+          })
+        }}
+      />
     </MaxWidth>
   )
 }
@@ -114,7 +168,7 @@ const Wrapper = styled("div")`
 `
 
 const CarouselContainer = styled(Box)`
-  background: ${color("black10")};
+  background: #e9e9eb;
   width: 560px;
   height: 100%;
   display: flex;
@@ -123,29 +177,23 @@ const CarouselContainer = styled(Box)`
 
   .slick-list {
     height: 100%;
-    padding: 0 140px;
+    padding: 0 130px;
     overflow-y: visible;
   }
 
   .slick-prev {
-    left: 120px;
+    left: 110px;
   }
 
   .slick-next {
-    right: 120px;
-  }
-
-  .slick-prev:before {
-    content: "←";
-  }
-
-  .slick-next:before {
-    content: "→";
+    right: 110px;
   }
 
   .slick-prev:before,
   .slick-next:before {
+    content: "";
     color: black;
+    z-index: 999;
   }
 
   .center .slick-center .picture {
@@ -163,6 +211,11 @@ const ButtonContainer = styled(Box)`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  max-width: 450px;
+`
+
+const ArrowContainer = styled(Box)`
+  z-index: 999;
 `
 
 const Button = styled.button<{}>`
@@ -202,7 +255,7 @@ const Button = styled.button<{}>`
 const FullPicture = styled.div<{ backgroundURL: string }>`
   background: url(${(p) => p.backgroundURL}) no-repeat center center;
   background-size: contain;
-  width: 270px;
-  height: 600px;
+  width: 292.5px;
+  height: 650px;
   margin: 0 auto;
 `
