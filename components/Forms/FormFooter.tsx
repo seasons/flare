@@ -39,7 +39,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
             py={1}
             height={["auto", "63px"]}
             style={{ width: "100%" }}
-            px={[2, 2, 2, 5, 5]}
+            px={[2, 2, 8, 8, 8]}
           >
             {!!footerText ? (
               <Sans color="black50" my={2} size={["2", "4"]}>
