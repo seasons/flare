@@ -7,6 +7,8 @@ import { Col, Grid, Row } from "../Grid"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { Picture } from "@seasons/eclipse"
+import { imageResize } from "utils/imageResize"
 
 export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   const plansGroupedByTier = groupByPlanTier(plans)
@@ -22,11 +24,29 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
     }
   }
 
+  const image = require("../../public/images/homepage/OutfitGrid-1.jpg")
+
   return (
     <Grid px={[2, 2, 2, 5, 5]} pt={[10, 0, 0, 0, 0]}>
       <Row>
+        <Col md="6" xs="12">
+          <Flex
+            height="100%"
+            width="100%"
+            px={[0, 0, 4, 7, 7]}
+            pt={[2, 10, 0, 7, 7]}
+            pb={[5, 5, 2, 7, 7]}
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="row"
+          >
+            <Box>
+              <Picture src={imageResize(image, "large")} alt="A layout of clothing" />
+            </Box>
+          </Flex>
+        </Col>
         {plansGroupedByTier.map((group, index) => (
-          <Col md={plansGroupedByTier.length > 1 ? "6" : "12"} xs="12" key={index}>
+          <Col md="6" xs="12" key={index}>
             <Flex key={index} width="100%" height="100%" px={[2, 2, 2, 7, 7]} style={{ position: "relative" }}>
               <Flex flexDirection="column" alignItems="center" width="100%">
                 <Spacer pb={[0, 10, 10, 10, 10]} />
