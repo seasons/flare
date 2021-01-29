@@ -53,7 +53,6 @@ export const GET_SIGNUP_USER = gql`
           admissable
           authorizationsCount
           authorizationWindowClosesAt
-          allAccessEnabled
         }
       }
     }

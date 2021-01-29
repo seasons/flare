@@ -1,4 +1,3 @@
-import { Drawer } from "components/Drawer/Drawer"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { LoginModal } from "components/Login/LoginModal"
 import { color } from "helpers/color"
@@ -45,8 +44,13 @@ export const DesktopNav = (props: NavProps) => {
     }
   }, [authState.authInitializing, authState.isSignedIn])
 
+  let specialStyles = {}
+  if (router.pathname === "/signup") {
+    specialStyles = { borderBottom: `1px solid ${color("black15")}` }
+  }
+
   return (
-    <HeaderContainer>
+    <HeaderContainer style={specialStyles}>
       <MaxWidth>
         <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
           <SeasonsLogo />

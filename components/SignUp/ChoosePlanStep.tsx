@@ -39,7 +39,6 @@ export const PAYMENT_PLANS = gql`
           admissable
           authorizationsCount
           authorizationWindowClosesAt
-          allAccessEnabled
         }
       }
     }
@@ -68,7 +67,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     initChargebee()
   }, [])
 
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const faqSections = data?.faq?.sections
 
   return (
@@ -77,7 +75,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
         selectedPlan={selectedPlan}
         setSelectedPlan={setSelectedPlan}
         faqSections={faqSections}
-        allAccessEnabled={allAccessEnabled}
         paymentPlans={data?.paymentPlans}
       />
       <FormFooterWrapper>

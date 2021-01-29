@@ -8,14 +8,11 @@ import { Check } from "components/SVGs/Check"
 export const PlanTier: React.FC<{
   group: any
   onSelectPlan: (plan: any) => void
-  allAccessEnabled: boolean
   selectedPlan?: any
   displayText?: boolean
-}> = ({ group, onSelectPlan, allAccessEnabled, selectedPlan, displayText }) => {
+}> = ({ group, onSelectPlan, selectedPlan, displayText }) => {
   const tier = group?.[0].tier
   const descriptionLines = group?.[0]?.description?.split("\n") || []
-
-  const renderingDisabledAllAccess = tier === "AllAccess" && typeof allAccessEnabled === "boolean" && !allAccessEnabled
 
   const calcFinalPrice = (price: number) => {
     let couponData
@@ -89,16 +86,12 @@ export const PlanTier: React.FC<{
   }
 
   let planWrapperStyle = {}
-  if (renderingDisabledAllAccess) {
-    planWrapperStyle = { backgroundColor: color("black04") }
-  }
-
   return (
     <Box width="100%" style={{ maxWidth: "500px" }}>
       {displayText ? (
-        <Display size="9">{tier === "AllAccess" ? "All Access" : tier}</Display>
+        <Display size="9">{tier === "Essential" ? "Monthly" : tier}</Display>
       ) : (
-        <Sans size="8">{tier === "AllAccess" ? "All Access" : tier}</Sans>
+        <Sans size="8">{tier === "Essential" ? "Monthly" : tier}</Sans>
       )}
       <Spacer mb={2} />
       <Flex flexDirection="row">
@@ -122,13 +115,8 @@ export const PlanTier: React.FC<{
               <PlanWrapper
                 active={active}
                 key={plan.id}
-                withHover={!renderingDisabledAllAccess}
                 style={thisPlanWrapperStyle}
                 onClick={() => {
-                  if (renderingDisabledAllAccess) {
-                    // do nothing
-                    return
-                  }
                   onSelectPlan?.(plan)
                 }}
               >
@@ -166,21 +154,11 @@ export const PlanTier: React.FC<{
           )
         })}
       </Flex>
-      <Box style={{ position: "relative" }}>
-        {renderingDisabledAllAccess && (
-          <NoteWrapper>
-            <Spacer mb={1} />
-            <Sans color="black50" size="3">
-              * All Access is disabled in your area due to shipping time.
-            </Sans>
-          </NoteWrapper>
-        )}
-      </Box>
     </Box>
   )
 }
 
-const PlanWrapper = styled(Box)<{ withHover: boolean; active?: boolean }>`
+const PlanWrapper = styled(Box)<{ active?: boolean }>`
   width: 100%;
   flex: 3;
   border-bottom: 1px solid ${(p) => (p.active ? color("black100") : color("black15"))};
@@ -188,15 +166,9 @@ const PlanWrapper = styled(Box)<{ withHover: boolean; active?: boolean }>`
   border-right: 1px solid ${(p) => (p.active ? color("black100") : color("black15"))};
   box-shadow: ${(p) => (p.active ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
   background-color: ${color("white100")};
-  cursor: ${(props) => (props.withHover ? "pointer" : "auto")};
+  cursor: pointer;
 
   &:hover {
-    box-shadow: ${(props) => (props.withHover ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
   }
-`
-
-const NoteWrapper = styled(Box)`
-  position: absolute;
-  bottom: -16px;
-  left: 0;
 `

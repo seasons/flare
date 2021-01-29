@@ -19,7 +19,7 @@ const items = [
   {
     title: "How long can I keep my pieces?",
     text:
-      "We suggest returning your pieces after 28 days. If you love something in your order, feel free to hold on to it. We’ll only reset the slots of the items you decide to return.",
+      "We suggest returning your pieces 30 days after you receive them. If you love something in your order, feel free to hold on to it. We’ll only reset the slots of the items you decide to return.",
   },
   {
     title: "What if something doesn’t fit?",
