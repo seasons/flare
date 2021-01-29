@@ -79,7 +79,6 @@ const SIGN_UP_USER = gql`
           admissable
           authorizationsCount
           authorizationWindowClosesAt
-          allAccessEnabled
         }
         user {
           id

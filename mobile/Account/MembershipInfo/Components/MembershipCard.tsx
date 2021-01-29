@@ -18,12 +18,7 @@ export const MembershipCard: React.FC<MembershipCardProps> = ({ memberName, plan
     case "Essential":
       backgroundColor = color("white100")
       planTierColor = color("black100")
-      planName = "Essential"
-      break
-    case "AllAccess":
-      backgroundColor = color("black100")
-      planTierColor = color("white100")
-      planName = "All Access"
+      planName = "Monthly"
       break
   }
 
