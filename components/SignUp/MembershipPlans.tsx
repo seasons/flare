@@ -41,9 +41,6 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
 }) => {
   const plansGroupedByTier = groupByPlanTier(paymentPlans)
 
-  console.log("plansGroupedByTier", plansGroupedByTier)
-  console.log("paymentPlans", paymentPlans)
-
   const Desktop = () => (
     <Grid px={[2, 2, 2, 5, 5]}>
       <Row>
