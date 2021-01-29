@@ -14,7 +14,7 @@ import { useMutation } from "@apollo/client"
 import { SIGN_UP_USER } from "./queries"
 import { createAccountValidationSchema } from "./validationSchema"
 
-const imageURL = require("../../../public/images/signup/signup_bg.jpg")
+const imageURL = require("../../../../public/images/signup/signup_bg.jpg")
 
 export interface CreateAccountFormFields {
   firstName?: string
