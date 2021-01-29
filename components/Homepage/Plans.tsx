@@ -1,14 +1,14 @@
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { groupByPlanTier } from "components/SignUp/MembershipPlans"
 import { PlanTier } from "components/SignUp/PlanTier"
 import { color } from "helpers"
-import React from "react"
-import { Box, Flex, Media, Spacer } from "../"
-import { Col, Grid, Row } from "../Grid"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
-import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { Picture } from "@seasons/eclipse"
+import React from "react"
 import { imageResize } from "utils/imageResize"
+
+import { Box, Flex, Media, Picture, Spacer } from "../"
+import { Col, Grid, Row } from "../Grid"
 
 export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   const plansGroupedByTier = groupByPlanTier(plans)
