@@ -12,12 +12,12 @@ import styled from "styled-components"
 import { gql, useMutation } from "@apollo/client"
 import { Box, color, Sans, Spacer } from "@seasons/eclipse"
 
-const avantGarde = require("../../../public/images/signup/AvantGarde.png")
-const bold = require("../../../public/images/signup/Bold.png")
-const classic = require("../../../public/images/signup/Classic.png")
-const minimalist = require("../../../public/images/signup/Minimalist.png")
-const streetwear = require("../../../public/images/signup/Streetwear.png")
-const techwear = require("../../../public/images/signup/Techwear.png")
+import avantGarde from "../../../public/images/signup/AvantGarde.png"
+import bold from "../../../public/images/signup/Bold.png"
+import classic from "../../../public/images/signup/Classic.png"
+import minimalist from "../../../public/images/signup/Minimalist.png"
+import streetwear from "../../../public/images/signup/Streetwear.png"
+import techwear from "../../../public/images/signup/Techwear.png"
 
 const SAVE_STYLES = gql`
   mutation SaveStyles($styles: [CustomerStyle!]!) {
