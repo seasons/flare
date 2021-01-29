@@ -42,10 +42,10 @@ export const SplashScreen: React.FC<SplashScreenProps> = (props) => {
       </CloseButton>
       <Flex flexDirection={size === "small" ? "column" : "row"}>
         <Flex width={size === "small" ? "100%" : "450px"} height="100%">
-          <Picture src={imageURL || ""} />
+          <Picture src={imageURL || ""} size="medium" />
         </Flex>
         <Flex flex={1} py={size === "small" ? 2 : 4} px={3}>
-          <Box mb={2} mt={size === "small" ? 2 : 6}>
+          <Box mb={2} mt={size === "small" ? 2 : 0}>
             <Sans size="7">{title}</Sans>
           </Box>
           <Box mb={3}>
@@ -136,7 +136,7 @@ const Container = styled(Box)`
 
   ${media.md`
     width: 870px;
-    height: 450px;
+    height: auto;
     top: 50%;
     left: 50%;
     margin-top: -225px;

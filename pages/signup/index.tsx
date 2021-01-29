@@ -83,6 +83,7 @@ const SignUpPage = screenTrack(() => ({
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
+  const [showReferrerSplash, setShowReferrerSplash] = useState(false)
 
   const customer = data?.me?.customer
 
@@ -107,6 +108,10 @@ const SignUpPage = screenTrack(() => ({
       })
     }
   }, [hasGift])
+
+  useEffect(() => {
+    setShowReferrerSplash(!!router.query.referrer_id)
+  }, [router.query?.referrer_id])
 
   const customerDataFromGift = () => {
     if (!hasGift) {
@@ -256,7 +261,7 @@ const SignUpPage = screenTrack(() => ({
       </MaxWidth>
 
       <SplashScreen
-        open={!!router.query.referrer_id}
+        open={showReferrerSplash}
         title="Welcome to Seasons"
         subtitle="It looks like you were referred by a friend. Get a free month of Seasons when you successfully sign up!"
         descriptionLines={[
@@ -264,10 +269,12 @@ const SignUpPage = screenTrack(() => ({
           "Purchase items you love directly with us",
           "No commitment. Pause or cancel anytime",
         ]}
-        imageURL={require("../../public/images/signup/FriendPic.png")}
+        imageURL={require("../../public/images/signup/Friend_Pic.png")}
         primaryButton={{
           text: "Sign Up",
-          action: () => {},
+          action: () => {
+            setShowReferrerSplash(false)
+          },
         }}
       />
     </Layout>
