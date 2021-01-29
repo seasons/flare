@@ -66,6 +66,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
       const dateToIso = DateTime.fromJSDate(date).toISO()
       const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
       const lastName = values.lastName.charAt(0).toUpperCase() + values.lastName.slice(1)
+      const impactId = localStorage?.getItem("impactId")
       const response = await signUpUser({
         variables: {
           email: values.email,
@@ -80,6 +81,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
               create: { zipCode: values.zipCode },
             },
             styles: [],
+            impactId,
           },
           referrerId: router.query.referrer_id,
           utm,
