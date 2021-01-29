@@ -113,7 +113,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
       apolloClient.resetStore()
     },
     signOut: async () => {
-      const keysToClear = ["userSession", "allAccessEnabled", "utm", "paymentProcessed"]
+      const keysToClear = ["userSession", "allAccessEnabled", "utm", "paymentProcessed", "impactId"]
       for (const key of keysToClear) {
         localStorage.removeItem(key)
       }

@@ -14,7 +14,8 @@ import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
 import { Nav } from "./Nav"
 import { PopUp } from "./PopUp"
-import { gql, useMutation } from "@apollo/client"
+import { useMutation } from "@apollo/client"
+import { SET_IMPACT_ID } from "queries/customerQueries"
 
 interface LayoutProps {
   fixedNav?: boolean
@@ -25,14 +26,6 @@ interface LayoutProps {
   brandItems: { name: string; slug: string }[]
   showIntercom?: boolean
 }
-
-const SET_IMPACT_ID = gql`
-  mutation SetImpactID($impactId: String) {
-    addCustomerDetails(details: { impactId: $impactId }) {
-      id
-    }
-  }
-`
 
 export const Layout = ({
   children,
