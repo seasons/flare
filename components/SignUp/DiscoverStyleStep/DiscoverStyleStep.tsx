@@ -22,7 +22,7 @@ const techwear = require("public/images/signup/Techwear.png")
 
 const SAVE_STYLES = gql`
   mutation SaveStyles($styles: [CustomerStyle!]!) {
-    addCustomerDetails(details: { styles: { set: $styles } }) {
+    addCustomerDetails(details: { styles: { set: $styles } }, status: Waitlisted) {
       id
       detail {
         styles

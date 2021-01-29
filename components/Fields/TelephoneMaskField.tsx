@@ -30,7 +30,7 @@ export const TelephoneMaskField = ({ name }) => {
                 setFieldValue(name, maskVal)
                 setTelVal(maskVal)
               } else if (newInputLength <= 12) {
-                setFieldValue(name, maskVal)
+                setFieldValue(name, e.target.value)
                 setTelVal(e.target.value)
               }
             }

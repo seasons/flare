@@ -84,15 +84,18 @@ const SignUpPage = screenTrack(() => ({
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
 
-  const hasStyles = data?.me?.customer?.detail?.styles.length > 0
+  const customer = data?.me?.customer
+
+  const hasSetMeasurements = !!customer?.detail?.height
+  const hasStyles = customer?.detail?.styles.length > 0
   const [showDiscoverStyle, setShowDiscoverStyle] = useState(!hasStyles)
 
   const hasGift = !!router.query.gift_id
   const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)
 
   useEffect(() => {
-    if (!!data?.me?.customer) {
-      updateUserSession({ cust: data?.me?.customer })
+    if (!!customer) {
+      updateUserSession({ cust: customer })
     }
   }, [data])
 
@@ -163,29 +166,31 @@ const SignUpPage = screenTrack(() => ({
       )
       break
     case "Created":
-      CurrentStep = (
-        <CustomerMeasurementsStep
-          form={{
-            onCompleted: () => {
-              refetchGetSignupUser()
-              setShowDiscoverStyle(true)
-              updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
-            },
-          }}
-        />
-      )
-      break
-    case "Waitlisted":
-      if (!startTriage && showDiscoverStyle) {
+      if (hasSetMeasurements && showDiscoverStyle) {
         CurrentStep = (
           <DiscoverStyleStep
             onCompleted={() => {
               setStartTriage(true)
               setShowDiscoverStyle(false)
+              updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
             }}
           />
         )
-      } else if (startTriage) {
+      } else {
+        CurrentStep = (
+          <CustomerMeasurementsStep
+            form={{
+              onCompleted: () => {
+                refetchGetSignupUser()
+                setShowDiscoverStyle(true)
+              },
+            }}
+          />
+        )
+      }
+      break
+    case "Waitlisted":
+      if (startTriage) {
         CurrentStep = (
           <TriageStep
             check={startTriage}
