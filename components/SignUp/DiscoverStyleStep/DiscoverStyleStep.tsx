@@ -48,7 +48,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
     slidesToShow: 1,
     speed: 500,
     arrows: true,
-    initialSlide: 1,
+    initialSlide: 0,
     ref: (s) => (slider = s),
     afterChange: (index) => {
       setActiveIndex(index)
