@@ -12,7 +12,7 @@ import { MultiSelectionTableField } from "../../../Fields/MultiSelectionTableFie
 import { FormTemplate } from "../../../Forms/FormTemplate"
 import { customerMeasurements } from "../../../Forms/helpers/measurements"
 
-const imageURL = require("public/images/signup/measurements_bg.jpg")
+const imageURL = require("../../../public/images/signup/measurements_bg.jpg")
 
 export interface CustomerMeasurementsFormFields {
   height: string
