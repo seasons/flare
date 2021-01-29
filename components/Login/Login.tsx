@@ -8,6 +8,7 @@ import { useAuthContext } from "lib/auth/AuthContext"
 import { ResetPassword } from "mobile/LogIn/ResetPassword"
 import { HOME_QUERY } from "queries/homeQueries"
 import React, { useState } from "react"
+import { SET_IMPACT_ID } from "queries/customerQueries"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
@@ -69,6 +70,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
     refetchQueries: [{ query: HOME_QUERY }, { query: PAYMENT_PLANS }],
   })
 
+  const [setImpactId] = useMutation(SET_IMPACT_ID)
   const handleSubmit = async ({ email, password }) => {
     const result = await login({
       variables: {
@@ -82,6 +84,15 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       } = result
 
       await signIn(userSession)
+      const impactId = localStorage?.getItem("impactId")
+      if (!!impactId) {
+        setImpactId({
+          variables: {
+            impactId,
+          },
+        })
+      }
+
       toggleLoginModal(false)
     }
   }
