@@ -9,7 +9,7 @@ interface MobileImageProps extends ImageProps {
 }
 
 export const Image: React.FC<MobileImageProps> = (props) => {
-  const { ...rest } = props
+  const { style, ...rest } = props
   const src: string = imageResize(props?.source?.uri, props.size ? props.size : "small")
-  return <Picture {...rest} src={src} />
+  return <Picture src={src} />
 }
