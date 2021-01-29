@@ -12,7 +12,7 @@ export const TelephoneMaskField = ({ name }) => {
       InputProps={{
         onChange: (e) => {
           const [newInputLength, oldInputLength] = [e.target.value.length, telVal.length]
-          let maskVal
+          let maskVal = e.target.value
           // if they deleted a character, pass through
           if (newInputLength < oldInputLength) {
             setFieldValue(name, e.target.value || "")
@@ -30,7 +30,7 @@ export const TelephoneMaskField = ({ name }) => {
                 setFieldValue(name, maskVal)
                 setTelVal(maskVal)
               } else if (newInputLength <= 12) {
-                setFieldValue(name, maskVal)
+                setFieldValue(name, e.target.value)
                 setTelVal(e.target.value)
               }
             }
