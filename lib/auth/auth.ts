@@ -7,6 +7,7 @@ export interface UserSession {
   token: string
   refreshToken: string
   customer?: {
+    id: string
     status: CustomerStatus
     admissions: {
       authorizationsCount: number

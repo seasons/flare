@@ -1,10 +1,11 @@
+import { CheckWithBackground } from "components/SVGs"
 import Link from "next/link"
 import styled from "styled-components"
-import { CheckWithBackground } from "components/SVGs"
+
 import { Box, ExternalLink, Flex, Sans, Spacer } from "../"
 import { Button } from "../Button/Button"
 import { GetTheAppButton } from "../Button/GetTheApp"
-import { FormFooter } from "./FormsTemplate"
+import { FormFooter } from "./FormFooter"
 import HeaderText from "./HeaderText"
 
 interface FormConfirmationProps {

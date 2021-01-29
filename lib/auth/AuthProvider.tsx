@@ -86,7 +86,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
           }
           dispatch({ type: "RESTORE_TOKEN", token: userSession.token, userSession })
         } else {
-          dispatch({ type: "RESTORE_TOKEN", token: null, userSession: null })
+          dispatch({ type: "RESTORE_TOKEN", token: null, userSession })
         }
       } catch (e) {
         console.log("Restoring token failed: ", e)

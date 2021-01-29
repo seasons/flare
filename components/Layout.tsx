@@ -21,7 +21,7 @@ interface LayoutProps {
   footerBottomPadding?: string | string[]
   includeDefaultHead?: boolean
   brandItems: { name: string; slug: string }[]
-  scrollRef?: any
+  showIntercom?: boolean
 }
 
 export const Layout = ({
@@ -29,6 +29,7 @@ export const Layout = ({
   hideFooter,
   footerBottomPadding,
   includeDefaultHead = true,
+  showIntercom = false,
   brandItems,
 }: LayoutProps) => {
   // If there are any UTM params, store them in a cookie
@@ -52,7 +53,7 @@ export const Layout = ({
       <PopUpProvider>
         <DrawerProvider>
           <Theme>
-            <Intercom />
+            {showIntercom && <Intercom />}
             <Nav brandItems={brandItems} />
             <MaxWidth>
               <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>

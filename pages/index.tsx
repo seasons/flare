@@ -1,24 +1,16 @@
 import { Box, Layout, Media, Separator, Spacer } from "components"
 import {
-  ColumnList,
-  FAQ,
-  FromCommunity,
-  Hero,
-  MembershipBenefits,
-  Plans,
-  ProductRail,
-  TheApp,
-  TheBag,
+  ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, Plans, ProductRail, TheApp, TheBag
 } from "components/Homepage"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
 import { initializeApollo } from "lib/apollo/apollo"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { HOME_QUERY } from "queries/homeQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-import { useAuthContext } from "lib/auth/AuthContext"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
@@ -39,7 +31,7 @@ const Home = screenTrack(() => ({
   }, [data])
 
   return (
-    <Layout brandItems={featuredBrandItems}>
+    <Layout showIntercom brandItems={featuredBrandItems}>
       <Hero post={data?.blogPosts?.[0]} />
       <Spacer mb={10} />
 

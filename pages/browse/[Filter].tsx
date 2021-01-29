@@ -1,27 +1,30 @@
-import React, { useEffect, useMemo, useRef } from "react"
+import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
+import { sans as sansSize } from "helpers/typeSizes"
+import brandSlugs from "lib/brands"
 import { NextPage } from "next"
-import { useState } from "react"
-import { useQuery } from "@apollo/client"
-import { Layout, Flex, Spacer } from "../../components"
-import { Sans, fontFamily } from "../../components/Typography/Typography"
-import { Box } from "../../components/Box"
-import { Grid, Row, Col } from "../../components/Grid"
-import styled, { CSSObject } from "styled-components"
-import Paginate from "react-paginate"
-import { color } from "../../helpers"
 import { useRouter } from "next/router"
+import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
+import styled, { CSSObject } from "styled-components"
+
+import { useQuery } from "@apollo/client"
+
+import { Flex, Layout, Spacer } from "../../components"
+import { Box } from "../../components/Box"
+import { BrowseFilters } from "../../components/Browse"
+import { MobileFilters } from "../../components/Browse/MobileFilters"
+import { Col, Grid, Row } from "../../components/Grid"
 import { ProductGridItem } from "../../components/Product/ProductGridItem"
 import { Media } from "../../components/Responsive"
-import { MobileFilters } from "../../components/Browse/MobileFilters"
-import { BrowseFilters } from "../../components/Browse"
-import { Schema, screenTrack, useTracking } from "../../utils/analytics"
+import { fontFamily, Sans } from "../../components/Typography/Typography"
+import { color } from "../../helpers"
 import { initializeApollo } from "../../lib/apollo"
-import { GET_BROWSE_PRODUCTS, GET_CATEGORIES, GET_BROWSE_BRANDS_AND_CATEGORIES } from "../../queries/brandQueries"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import brandSlugs from "lib/brands"
-import { sans as sansSize } from "helpers/typeSizes"
-import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
+import {
+  GET_BROWSE_BRANDS_AND_CATEGORIES, GET_BROWSE_PRODUCTS, GET_CATEGORIES
+} from "../../queries/brandQueries"
+import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 
 const pageSize = 21
 
@@ -174,7 +177,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   return (
     <>
-      <Layout footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems} scrollRef={scrollRef}>
+      <Layout footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems}>
         <Media lessThan="md">
           <MobileFilters
             BrandsListComponent={

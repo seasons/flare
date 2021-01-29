@@ -1,9 +1,10 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CreateAccountForm } from "components/Forms/CreateAccountForm"
-import { CustomerMeasurementsForm } from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { BrandNavItemFragment } from "components/Nav"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
+import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
+import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
+import { DiscoverStyleStep } from "components/SignUp/DiscoverStyleStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -35,6 +36,7 @@ export const GET_SIGNUP_USER = gql`
         detail {
           id
           height
+          styles
         }
         user {
           id
@@ -81,12 +83,18 @@ const SignUpPage = screenTrack(() => ({
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
 
+  const customer = data?.me?.customer
+
+  const hasSetMeasurements = !!customer?.detail?.height
+  const hasStyles = customer?.detail?.styles.length > 0
+  const [showDiscoverStyle, setShowDiscoverStyle] = useState(!hasStyles)
+
   const hasGift = !!router.query.gift_id
   const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)
 
   useEffect(() => {
-    if (!!data?.me?.customer) {
-      updateUserSession({ cust: data?.me?.customer })
+    if (!!customer) {
+      updateUserSession({ cust: customer })
     }
   }, [data])
 
@@ -142,32 +150,47 @@ const SignUpPage = screenTrack(() => ({
     )
   }
 
-  let CurrentForm
+  let CurrentStep
   switch (customerStatus) {
     case undefined:
-      CurrentForm = (
-        <CreateAccountForm
-          initialValues={customerDataFromGift()}
-          gift={giftData?.gift}
-          onError={() => setShowSnackBar(true)}
-          onCompleted={() => refetchGetSignupUser()}
-        />
-      )
-      break
-    case "Created":
-      CurrentForm = (
-        <CustomerMeasurementsForm
-          onCompleted={() => {
-            setStartTriage(true)
-            refetchGetSignupUser()
-            updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
+      CurrentStep = (
+        <CreateAccountStep
+          form={{
+            initialValues: customerDataFromGift(),
+            gift: giftData?.gift,
+            onError: () => setShowSnackBar(true),
+            onCompleted: () => refetchGetSignupUser(),
           }}
         />
       )
       break
+    case "Created":
+      if (hasSetMeasurements && showDiscoverStyle) {
+        CurrentStep = (
+          <DiscoverStyleStep
+            onCompleted={() => {
+              setStartTriage(true)
+              setShowDiscoverStyle(false)
+              updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
+            }}
+          />
+        )
+      } else {
+        CurrentStep = (
+          <CustomerMeasurementsStep
+            form={{
+              onCompleted: () => {
+                refetchGetSignupUser()
+                setShowDiscoverStyle(true)
+              },
+            }}
+          />
+        )
+      }
+      break
     case "Waitlisted":
       if (startTriage) {
-        CurrentForm = (
+        CurrentStep = (
           <TriageStep
             check={startTriage}
             onStartTriage={() => setTriageIsRunning(true)}
@@ -193,12 +216,12 @@ const SignUpPage = screenTrack(() => ({
           />
         )
       } else {
-        CurrentForm = <FormConfirmation status={"waitlisted"} />
+        CurrentStep = <FormConfirmation status={"waitlisted"} />
       }
       break
     case "Authorized":
     case "Invited":
-      CurrentForm = (
+      CurrentStep = (
         <ChoosePlanStep
           onPlanSelected={(plan) => {
             tracking.trackEvent({
@@ -218,16 +241,16 @@ const SignUpPage = screenTrack(() => ({
       )
       break
     case "Active":
-      CurrentForm = <FormConfirmation status="accountAccepted" />
+      CurrentStep = <FormConfirmation status="accountAccepted" />
       break
   }
 
   return (
-    <Layout hideFooter brandItems={featuredBrandItems}>
+    <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-          {CurrentForm}
+          {CurrentStep}
         </Flex>
       </MaxWidth>
     </Layout>

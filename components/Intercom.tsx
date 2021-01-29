@@ -17,7 +17,6 @@ export const Intercom = () => {
         app_id: APP_ID,
         name: `${firstName} ${lastName}`,
         email: email,
-        vertical_padding: 80,
       }
       ;(window as any).Intercom?.("boot", {
         app_id: APP_ID,
@@ -28,7 +27,6 @@ export const Intercom = () => {
     } else {
       ;(window as any).intercomSettings = {
         app_id: APP_ID,
-        vertical_padding: 80,
       }
       ;(window as any).Intercom?.("boot", {
         app_id: APP_ID,
