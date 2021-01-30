@@ -55,7 +55,7 @@ export const FormTemplate = ({
           <FieldsContainer px={isDesktop ? [2, 2, 2, 5, 5] : 1} pb={isDesktop ? 0 : 150}>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
-              const width = isDesktop ? (props.fullWidth ? "100%" : "50%") : mobileWidth
+              const width = props.fullWidth ? "100%" : isDesktop ? "50%" : mobileWidth
 
               const paddingLeft = isDesktop ? (props.fullWidth ? 0 : index % 2 === 0 ? 0 : 30) : 1
               const paddingRight = isDesktop ? (props.fullWidth ? 0 : index % 2 === 0 ? 30 : 0) : 1
