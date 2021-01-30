@@ -49,8 +49,6 @@ const Gift = screenTrack(() => ({
   const [selectedPlan, setSelectedPlan] = useState(null)
   const [zipcodeServiced, { data: zipcodeData }] = useLazyQuery(ZIPCODE_SERVICED)
 
-  const allAccessEnabled = zipcodeData?.zipcodeServiced || false
-
   useEffect(() => {
     initChargebee()
   }, [])
@@ -150,13 +148,7 @@ const Gift = screenTrack(() => ({
                     <Flex flexDirection="column" alignItems="center" width="100%">
                       <Spacer pb={[0, 10, 10, 10, 10]} />
                       <Box width="100%">
-                        <PlanTier
-                          group={group}
-                          onSelectPlan={onSelectPlan}
-                          selectedPlan={selectedPlan}
-                          allAccessEnabled={allAccessEnabled}
-                          displayText
-                        />
+                        <PlanTier group={group} onSelectPlan={onSelectPlan} selectedPlan={selectedPlan} displayText />
                       </Box>
                       <Spacer pb={[10, 10, 10, 10, 10]} />
                     </Flex>

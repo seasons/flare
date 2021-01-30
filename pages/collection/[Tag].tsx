@@ -10,13 +10,13 @@ import { Spinner } from "components/Spinner"
 import { debounce } from "lodash"
 import Head from "next/head"
 import { withRouter } from "next/router"
+import { GET_COLLECTION } from "queries/collectionQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-import { GET_COLLECTION } from "queries/collectionQueries"
 
 const Collection = screenTrack(({ router }) => {
   return {
@@ -41,7 +41,7 @@ const Collection = screenTrack(({ router }) => {
 
   const imageContainer = useRef(null)
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_COLLECTION, {
+  const { data, fetchMore, loading } = useQuery(GET_COLLECTION, {
     variables: {
       tag,
       first: productCount,
