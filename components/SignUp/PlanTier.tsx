@@ -40,7 +40,7 @@ export const PlanTier: React.FC<{
   const PriceText = ({ originalPrice, finalPrice, month }) => {
     originalPrice /= 100
     finalPrice /= 100
-    const isDiscounted = originalPrice !== finalPrice && !!finalPrice
+    const isDiscounted = originalPrice !== finalPrice && finalPrice !== null
     return isDiscounted ? (
       <Sans color="black50" size="3">
         <span
