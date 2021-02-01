@@ -255,7 +255,14 @@ const SignUpPage = screenTrack(() => ({
     <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-        <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
+        <Flex
+          height="100%"
+          width="100%"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          px={[2, 2, 2, 5, 5]}
+        >
           {CurrentStep}
         </Flex>
       </MaxWidth>

@@ -112,7 +112,7 @@ const ImageContainer = styled(Box)<{ url?: string }>`
   width: 560px;
   height: 100%;
   background: url(${(p) => p.url}) no-repeat center center;
-  background-size: cover;
+  background-size: contain;
 `
 
 const FieldsContainer = styled(Box)`

@@ -39,7 +39,6 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete,
     onCompleted: (result) => {
       // Allow FlatList to transition before hiding spinner
       setCheckStatus(CheckStatus.Checked)
-
       const newStatus = result?.triageCustomer
       identify(userSession?.user?.id, {
         status: newStatus,
