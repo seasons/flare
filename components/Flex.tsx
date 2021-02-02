@@ -79,7 +79,7 @@ export const Flex = styled.div<FlexProps>`
   ${display};
   ${flex};
   ${flexBasis};
-  ${flexDirection};
+  ${flexDirection ? flexDirection : "flexDirection: row"};
   ${flexGrow};
   ${flexWrap};
   ${height};
