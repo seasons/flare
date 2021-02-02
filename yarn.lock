@@ -1984,7 +1984,7 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@seasons/eclipse@^1.1.5":
+"@seasons/eclipse@^1.1.6":
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.1.5.tgz#5488c7ffcc2f032451b40b8b4c665b747e3cf34c"
   integrity sha512-htfwgOrBbJVDfRDuVtkEAXE9GZDvDOcqFIPjNGKvwTARsVofNYnleA68fNzfrh5v2+1uxPR4JBIVoBykg7SNVQ==
