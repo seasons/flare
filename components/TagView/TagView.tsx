@@ -7,7 +7,6 @@ import { Spinner } from "components/Spinner"
 import { debounce } from "lodash"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { GET_COLLECTION } from "queries/collectionQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
@@ -39,7 +38,7 @@ const TagView = screenTrack(({ router }) => {
 
   const imageContainer = useRef(null)
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_COLLECTION, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_TAG, {
     variables: {
       tag,
       first: productCount,
