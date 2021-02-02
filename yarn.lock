@@ -1140,7 +1140,19 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@seasons/eclipse@^1.1.6":
+"@opentelemetry/api@0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-0.14.0.tgz#4e17d8d2f1da72b19374efa7b6526aa001267cae"
+  integrity sha512-L7RMuZr5LzMmZiQSQDy9O1jo0q+DaLy6XpYJfIGfYSfoJA5qzYwUP3sP1uMIQ549DvxAgM3ng85EaPTM/hUHwQ==
+  dependencies:
+    "@opentelemetry/context-base" "^0.14.0"
+
+"@opentelemetry/context-base@^0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.14.0.tgz#c67fc20a4d891447ca1a855d7d70fa79a3533001"
+  integrity sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
+
+"@seasons/eclipse@^1.1.5":
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.1.5.tgz#5488c7ffcc2f032451b40b8b4c665b747e3cf34c"
   integrity sha512-htfwgOrBbJVDfRDuVtkEAXE9GZDvDOcqFIPjNGKvwTARsVofNYnleA68fNzfrh5v2+1uxPR4JBIVoBykg7SNVQ==
