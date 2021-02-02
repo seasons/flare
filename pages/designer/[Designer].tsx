@@ -18,6 +18,7 @@ import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
+
 import { useQuery } from "@apollo/client"
 
 const Designer = screenTrack(({ router }) => {
@@ -33,7 +34,7 @@ const Designer = screenTrack(({ router }) => {
 
   const imageContainer = useRef(null)
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_BRAND, {
+  const { data, fetchMore, loading } = useQuery(GET_BRAND, {
     variables: {
       slug,
       first: productCount,

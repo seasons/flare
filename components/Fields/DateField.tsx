@@ -1,16 +1,14 @@
+import { Field, useFormikContext } from "formik"
 import React, { useState } from "react"
-import { Field } from "formik"
-import { FormProps } from "../Forms/FormsTemplate"
+
 import { TextField } from "./TextField"
 
-interface Props extends FormProps {
+interface Props {
   inputName: string
 }
 
-export const DateField: React.FC<Props> = ({ context, inputName }) => {
-  const {
-    form: { setValues, values, handleBlur },
-  } = context
+export const DateField: React.FC<Props> = ({ inputName }) => {
+  const { setValues, values, handleBlur } = useFormikContext<{ any }>()
   const [dateVal, setDateVal] = useState("")
   return (
     <Field

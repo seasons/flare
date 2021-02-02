@@ -4,18 +4,19 @@ import { Display } from "../Typography"
 import { color } from "helpers/color"
 import styled from "styled-components"
 import { Check } from "components/SVGs/Check"
+import { Button } from "@seasons/eclipse"
 
 export const PlanTier: React.FC<{
   group: any
   onSelectPlan: (plan: any) => void
-  allAccessEnabled: boolean
   selectedPlan?: any
   displayText?: boolean
-}> = ({ group, onSelectPlan, allAccessEnabled, selectedPlan, displayText }) => {
+  showButton?: boolean
+  title?: string
+  subtitle?: string
+}> = ({ group, onSelectPlan, selectedPlan, displayText, showButton, title, subtitle }) => {
   const tier = group?.[0].tier
   const descriptionLines = group?.[0]?.description?.split("\n") || []
-
-  const renderingDisabledAllAccess = tier === "AllAccess" && typeof allAccessEnabled === "boolean" && !allAccessEnabled
 
   const calcFinalPrice = (price: number) => {
     let couponData
@@ -43,7 +44,7 @@ export const PlanTier: React.FC<{
   const PriceText = ({ originalPrice, finalPrice, month }) => {
     originalPrice /= 100
     finalPrice /= 100
-    const isDiscounted = originalPrice !== finalPrice && !!finalPrice
+    const isDiscounted = originalPrice !== finalPrice && finalPrice !== null
     return isDiscounted ? (
       <Sans color="black50" size="3">
         <span
@@ -88,19 +89,35 @@ export const PlanTier: React.FC<{
     )
   }
 
-  let planWrapperStyle = {}
-  if (renderingDisabledAllAccess) {
-    planWrapperStyle = { backgroundColor: color("black04") }
+  let _title = tier === "Essential" ? "Monthly" : tier
+  if (title) {
+    _title = title
   }
 
+  let planWrapperStyle = {}
   return (
     <Box width="100%" style={{ maxWidth: "500px" }}>
-      {displayText ? (
-        <Display size="9">{tier === "AllAccess" ? "All Access" : tier}</Display>
-      ) : (
-        <Sans size="8">{tier === "AllAccess" ? "All Access" : tier}</Sans>
+      {displayText ? <Display size="9">{_title}</Display> : <Sans size="8">{_title}</Sans>}
+      {!!subtitle && (
+        <Sans size="4" color="black50">
+          {subtitle}
+        </Sans>
       )}
-      <Spacer mb={2} />
+      <Spacer mb={4} />
+      <Flex flexDirection="column">
+        {descriptionLines.map((line) => {
+          return (
+            <Flex flexDirection="row" alignItems="center" key={line} width="100%" pb={1}>
+              <Check />
+              <Spacer mr={2} />
+              <Sans color="black50" size="4">
+                {line}
+              </Sans>
+            </Flex>
+          )
+        })}
+      </Flex>
+      <Spacer mb={4} />
       <Flex flexDirection="row">
         {group
           ?.sort((a, b) => a.itemCount - b.itemCount)
@@ -122,13 +139,8 @@ export const PlanTier: React.FC<{
               <PlanWrapper
                 active={active}
                 key={plan.id}
-                withHover={!renderingDisabledAllAccess}
                 style={thisPlanWrapperStyle}
                 onClick={() => {
-                  if (renderingDisabledAllAccess) {
-                    // do nothing
-                    return
-                  }
                   onSelectPlan?.(plan)
                 }}
               >
@@ -152,35 +164,24 @@ export const PlanTier: React.FC<{
             )
           })}
       </Flex>
-      <Spacer mb={4} />
-      <Flex flexDirection="column">
-        {descriptionLines.map((line) => {
-          return (
-            <Flex flexDirection="row" alignItems="center" key={line} width="100%" pb={1}>
-              <Check />
-              <Spacer mr={2} />
-              <Sans color="black50" size="4">
-                {line}
-              </Sans>
-            </Flex>
-          )
-        })}
-      </Flex>
-      <Box style={{ position: "relative" }}>
-        {renderingDisabledAllAccess && (
-          <NoteWrapper>
-            <Spacer mb={1} />
-            <Sans color="black50" size="3">
-              * All Access is disabled in your area due to shipping time.
-            </Sans>
-          </NoteWrapper>
-        )}
-      </Box>
+      {showButton && (
+        <>
+          <Spacer mb={2} />
+          <Button
+            block
+            onClick={() => {
+              onSelectPlan(null)
+            }}
+          >
+            Try now
+          </Button>
+        </>
+      )}
     </Box>
   )
 }
 
-const PlanWrapper = styled(Box)<{ withHover: boolean; active?: boolean }>`
+const PlanWrapper = styled(Box)<{ active?: boolean }>`
   width: 100%;
   flex: 3;
   border-bottom: 1px solid ${(p) => (p.active ? color("black100") : color("black15"))};
@@ -188,15 +189,9 @@ const PlanWrapper = styled(Box)<{ withHover: boolean; active?: boolean }>`
   border-right: 1px solid ${(p) => (p.active ? color("black100") : color("black15"))};
   box-shadow: ${(p) => (p.active ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
   background-color: ${color("white100")};
-  cursor: ${(props) => (props.withHover ? "pointer" : "auto")};
+  cursor: pointer;
 
   &:hover {
-    box-shadow: ${(props) => (props.withHover ? "0 4px 12px 0 rgba(0, 0, 0, 0.2)" : "none")};
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
   }
-`
-
-const NoteWrapper = styled(Box)`
-  position: absolute;
-  bottom: -16px;
-  left: 0;
 `

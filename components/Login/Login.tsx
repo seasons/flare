@@ -7,6 +7,7 @@ import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { ResetPassword } from "mobile/LogIn/ResetPassword"
 import React, { useState } from "react"
+import { SET_IMPACT_ID } from "queries/customerQueries"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
@@ -33,7 +34,6 @@ const LOG_IN = gql`
           admissable
           authorizationsCount
           authorizationWindowClosesAt
-          allAccessEnabled
         }
         user {
           id
@@ -70,6 +70,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
     refetchQueries: [{ query: HOME_QUERY_WEB }, { query: PAYMENT_PLANS }],
   })
 
+  const [setImpactId] = useMutation(SET_IMPACT_ID)
   const handleSubmit = async ({ email, password }) => {
     const result = await login({
       variables: {
@@ -83,6 +84,15 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       } = result
 
       await signIn(userSession)
+      const impactId = localStorage?.getItem("impactId")
+      if (!!impactId) {
+        setImpactId({
+          variables: {
+            impactId,
+          },
+        })
+      }
+
       toggleLoginModal(false)
     }
   }

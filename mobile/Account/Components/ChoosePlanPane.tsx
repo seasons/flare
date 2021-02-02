@@ -14,7 +14,7 @@ import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInf
 import { TabBar } from "mobile/TabBar"
 import { GET_BAG } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
-import { Dimensions, Linking } from "react-native"
+import { Linking } from "react-native"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
 import { Coupon } from "utils/calcFinalPrice"
 
@@ -51,7 +51,6 @@ export const GET_PLANS = gql`
           admissable
           authorizationsCount
           authorizationWindowClosesAt
-          allAccessEnabled
         }
       }
     }
@@ -87,7 +86,6 @@ interface ChoosePlanPaneProps {
 export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coupon, source }) => {
   const { data } = useQuery(GET_PLANS)
   const [showSuccess, setShowSuccess] = useState(false)
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const plans = data?.paymentPlans
   const faqSections = data?.faq?.sections
   const { closeDrawer } = useDrawerContext()
@@ -152,24 +150,21 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
   useEffect(() => {
     // Update the selected plan if you switch tabs
     const newSelectedPlan =
-      plans?.filter(
-        (plan) => tierToReadableText(plan.tier) === tiers?.[currentView] && plan.itemCount === selectedPlan?.itemCount
-      ) || plans?.filter((plan) => tierToReadableText(plan.tier) === tiers?.[currentView])?.[0]
+      plans?.filter((plan) => plan.tier === tiers?.[currentView] && plan.itemCount === selectedPlan?.itemCount) ||
+      plans?.filter((plan) => plan.tier === tiers?.[currentView])?.[0]
     setSelectedPlan(newSelectedPlan?.[0])
   }, [currentView, setSelectedPlan])
 
   useEffect(() => {
     if (plans && plans.length > 0) {
       setSelectedPlan(plans?.[0])
-      const planTiers = uniq(plans?.map((plan) => tierToReadableText(plan.tier)))
+      const planTiers = uniq(plans?.map((plan) => plan.tier))
       setTiers(planTiers)
     }
 
     const customerPlan = data?.me?.customer?.membership?.plan
     const initialPlan = customerPlan ? plans?.find((plan) => plan.id === customerPlan.id) : plans?.[0]
-    const initialTab = customerPlan?.tier === "AllAccess" ? 1 : 0
 
-    setCurrentView(initialTab)
     setSelectedPlan(initialPlan)
   }, [plans])
 
@@ -225,14 +220,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
   const descriptionLines = selectedPlan?.description?.split("\n") || []
   const planColors = ["#000", "#e6b759"]
   const currentColor = planColors[currentView] || "black"
-
-  const tierToReadableText = (tier) => {
-    if (tier === "AllAccess") {
-      return "All Access"
-    } else {
-      return tier
-    }
-  }
 
   if (!data) {
     return null
@@ -295,7 +282,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
             tabColor={currentColor}
             spaceEvenly
             tabs={tiers}
-            strikethroughTabs={allAccessEnabled ? [] : ["All Access"]}
+            strikethroughTabs={[]}
             activeTab={currentView}
             goToPage={(page) => {
               tracking.trackEvent({
@@ -303,21 +290,12 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
                   page === 0 ? TrackSchema.ActionNames.Tier0PlanTabTapped : TrackSchema.ActionNames.Tier1PlanTabTapped,
                 actionType: TrackSchema.ActionTypes.Tap,
               })
-              if (page === 1 && !allAccessEnabled) {
-                showPopUp({
-                  title: "Not available in your city yet",
-                  note: "All Access is disabled in your area due to shipping time.",
-                  buttonText: "Got it",
-                  onClose: hidePopUp,
-                })
-              } else {
-                setCurrentView(page as number)
-              }
+              setCurrentView(page as number)
             }}
           />
           <Spacer mb={2} />
           {plans
-            ?.filter((plan) => tierToReadableText(plan.tier) === tiers?.[currentView])
+            ?.filter((plan) => plan.tier === tiers?.[currentView])
             ?.sort((a, b) => b.itemCount - a.itemCount)
             ?.map((plan) => {
               return (

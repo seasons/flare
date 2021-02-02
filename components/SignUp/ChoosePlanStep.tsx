@@ -1,6 +1,5 @@
-import { Button, Flex, MaxWidth, Spacer } from "components"
-import DetailText from "components/Forms/DetailText"
-import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
+import { Button, Flex, MaxWidth, Sans } from "components"
+import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormFooter"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { executeChargebeeCheckout, initChargebee } from "lib/chargebee"
@@ -40,7 +39,6 @@ export const PAYMENT_PLANS = gql`
           admissable
           authorizationsCount
           authorizationWindowClosesAt
-          allAccessEnabled
         }
       }
     }
@@ -69,7 +67,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     initChargebee()
   }, [])
 
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const faqSections = data?.faq?.sections
 
   return (
@@ -78,7 +75,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
         selectedPlan={selectedPlan}
         setSelectedPlan={setSelectedPlan}
         faqSections={faqSections}
-        allAccessEnabled={allAccessEnabled}
         paymentPlans={data?.paymentPlans}
       />
       <FormFooterWrapper>
@@ -93,9 +89,9 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
               style={{ width: "100%" }}
               px={[2, 2, 2, 5, 5]}
             >
-              <DetailText my={2} size={["2", "4"]}>
+              <Sans color="black50" my={2} size={["2", "4"]}>
                 You can upgrade or change your plan at any time from your account settings.
-              </DetailText>
+              </Sans>
               <Button
                 ml={2}
                 variant="primaryBlack"

@@ -2,11 +2,11 @@ import { Box, Layout, Media, Separator, Spacer } from "components"
 import { ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, Plans, TheApp, TheBag } from "components/Homepage"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
 import { initializeApollo } from "lib/apollo/apollo"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
-import { useAuthContext } from "lib/auth/AuthContext"
 import { HOME_QUERY_WEB, ProductsRail } from "@seasons/eclipse"
 
 const Home = screenTrack(() => ({
@@ -20,7 +20,6 @@ const Home = screenTrack(() => ({
 
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
 
   useEffect(() => {
     if (!!data?.me?.customer) {
@@ -29,7 +28,7 @@ const Home = screenTrack(() => ({
   }, [data])
 
   return (
-    <Layout brandItems={featuredBrandItems}>
+    <Layout showIntercom brandItems={featuredBrandItems}>
       <Hero post={data?.blogPosts?.[0]} />
       <Spacer mb={10} />
 
@@ -83,7 +82,7 @@ const Home = screenTrack(() => ({
         <Separator />
       </Box>
 
-      <Plans plans={data?.paymentPlans} allAccessEnabled={allAccessEnabled} />
+      <Plans plans={data?.paymentPlans} />
 
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
