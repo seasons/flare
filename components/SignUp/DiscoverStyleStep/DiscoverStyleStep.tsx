@@ -9,6 +9,7 @@ import React, { useState } from "react"
 import Slider from "react-slick"
 import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
+import { imageResize } from "utils/imageResize"
 
 import { gql, useMutation } from "@apollo/client"
 import { Box, color, Sans, Spacer } from "@seasons/eclipse"
@@ -44,7 +45,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
     const isDesktop = platform === "desktop"
 
     const sliderSettings = {
-      autoplay: false,
+      autoplay: true,
       className: "center",
       centerMode: true,
       infinite: true,
@@ -77,7 +78,11 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
             <Slider {...sliderSettings}>
               {styleImages.map((styleImage) => (
                 <div key={styleImage}>
-                  <FullPicture className="picture" backgroundURL={styleImage} platform={platform} />
+                  <FullPicture
+                    className="picture"
+                    backgroundURL={imageResize(styleImage, "medium")}
+                    platform={platform}
+                  />
                 </div>
               ))}
             </Slider>
