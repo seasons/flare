@@ -4,13 +4,17 @@ import { Display } from "../Typography"
 import { color } from "helpers/color"
 import styled from "styled-components"
 import { Check } from "components/SVGs/Check"
+import { Button } from "@seasons/eclipse"
 
 export const PlanTier: React.FC<{
   group: any
   onSelectPlan: (plan: any) => void
   selectedPlan?: any
   displayText?: boolean
-}> = ({ group, onSelectPlan, selectedPlan, displayText }) => {
+  showButton?: boolean
+  title?: string
+  subtitle?: string
+}> = ({ group, onSelectPlan, selectedPlan, displayText, showButton, title, subtitle }) => {
   const tier = group?.[0].tier
   const descriptionLines = group?.[0]?.description?.split("\n") || []
 
@@ -85,15 +89,35 @@ export const PlanTier: React.FC<{
     )
   }
 
+  let _title = tier === "Essential" ? "Monthly" : tier
+  if (title) {
+    _title = title
+  }
+
   let planWrapperStyle = {}
   return (
     <Box width="100%" style={{ maxWidth: "500px" }}>
-      {displayText ? (
-        <Display size="9">{tier === "Essential" ? "Monthly" : tier}</Display>
-      ) : (
-        <Sans size="8">{tier === "Essential" ? "Monthly" : tier}</Sans>
+      {displayText ? <Display size="9">{_title}</Display> : <Sans size="8">{_title}</Sans>}
+      {!!subtitle && (
+        <Sans size="4" color="black50">
+          {subtitle}
+        </Sans>
       )}
-      <Spacer mb={2} />
+      <Spacer mb={4} />
+      <Flex flexDirection="column">
+        {descriptionLines.map((line) => {
+          return (
+            <Flex flexDirection="row" alignItems="center" key={line} width="100%" pb={1}>
+              <Check />
+              <Spacer mr={2} />
+              <Sans color="black50" size="4">
+                {line}
+              </Sans>
+            </Flex>
+          )
+        })}
+      </Flex>
+      <Spacer mb={4} />
       <Flex flexDirection="row">
         {group
           ?.sort((a, b) => a.itemCount - b.itemCount)
@@ -140,20 +164,19 @@ export const PlanTier: React.FC<{
             )
           })}
       </Flex>
-      <Spacer mb={4} />
-      <Flex flexDirection="column">
-        {descriptionLines.map((line) => {
-          return (
-            <Flex flexDirection="row" alignItems="center" key={line} width="100%" pb={1}>
-              <Check />
-              <Spacer mr={2} />
-              <Sans color="black50" size="4">
-                {line}
-              </Sans>
-            </Flex>
-          )
-        })}
-      </Flex>
+      {showButton && (
+        <>
+          <Spacer mb={2} />
+          <Button
+            block
+            onClick={() => {
+              onSelectPlan(null)
+            }}
+          >
+            Try now
+          </Button>
+        </>
+      )}
     </Box>
   )
 }

@@ -51,7 +51,14 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
               <Flex flexDirection="column" alignItems="center" width="100%" justifyContent="center">
                 <Spacer pb={[0, 10, 10, 10, 10]} />
                 <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center">
-                  <PlanTier group={group} onSelectPlan={onSelectPlan} displayText />
+                  <PlanTier
+                    group={group}
+                    onSelectPlan={onSelectPlan}
+                    displayText
+                    showButton
+                    title="Membership"
+                    subtitle="What's included in a monthly membership"
+                  />
                 </Flex>
                 <Spacer pb={[10, 10, 10, 10, 10]} />
               </Flex>
