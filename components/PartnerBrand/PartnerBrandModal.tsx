@@ -133,7 +133,6 @@ const Container = styled(Box)`
 
   margin: 0 auto;
   position: absolute;
-  flex-direction: column;
 
   ${media.xs`
     width: 100%;
