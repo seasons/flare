@@ -43,7 +43,7 @@ export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
         <Flex width={size === "small" ? "100%" : "450px"} height="100%">
           <Picture src={imageURL || ""} />
         </Flex>
-        <Flex flex={1} py={size === "small" ? 2 : 4} px={3}>
+        <Flex flexDirection="column" flex={1} py={size === "small" ? 2 : 4} px={3}>
           <Box mb={2} mt={size === "small" ? 2 : 6}>
             <Sans size="7">
               Seasons +{" "}
