@@ -12,7 +12,7 @@ import { getChargebeeCheckout, initChargebee } from "lib/chargebee"
 import { uniq } from "lodash"
 import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
 import { TabBar } from "mobile/TabBar"
-import { GET_BAG } from "queries/bagQueries"
+import { GET_BAG } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
@@ -84,7 +84,7 @@ interface ChoosePlanPaneProps {
 }
 
 export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coupon, source }) => {
-  const { data } = useQuery(GET_PLANS)
+  const { previousData, data = previousData } = useQuery(GET_PLANS)
   const [showSuccess, setShowSuccess] = useState(false)
   const plans = data?.paymentPlans
   const faqSections = data?.faq?.sections

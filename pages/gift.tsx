@@ -41,7 +41,7 @@ const Gift = screenTrack(() => ({
   path: "/gift",
 }))(() => {
   const tracking = useTracking()
-  const { data } = useQuery(GET_GIFT_PAGE)
+  const { previousData, data = previousData } = useQuery(GET_GIFT_PAGE)
   const featuredBrandItems = data?.brands || []
   const plans = data?.paymentPlans
 

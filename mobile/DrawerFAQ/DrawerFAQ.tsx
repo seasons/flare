@@ -21,7 +21,7 @@ const GET_DRAWER_FAQ = gql`
 `
 
 export const DrawerFAQ = ({ previousScreen }) => {
-  const { data } = useQuery(GET_DRAWER_FAQ)
+  const { previousData, data = previousData } = useQuery(GET_DRAWER_FAQ)
   const { openDrawer } = useDrawerContext()
 
   const faqSections = data?.faq.sections

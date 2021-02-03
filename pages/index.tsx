@@ -1,23 +1,20 @@
 import { Box, Layout, Media, Separator, Spacer } from "components"
-import {
-  ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, Plans, ProductRail, TheApp, TheBag
-} from "components/Homepage"
+import { ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, Plans, TheApp, TheBag } from "components/Homepage"
 import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { HOME_QUERY } from "queries/homeQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect } from "react"
 import { Schema, screenTrack } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
+import { HOME_QUERY_WEB, ProductsRail } from "@seasons/eclipse"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { data } = useQuery(HOME_QUERY, { fetchPolicy: "cache-and-network" })
-  const { updateUserSession, userSession } = useAuthContext()
+  const { previousData, data = previousData } = useQuery(HOME_QUERY_WEB, { fetchPolicy: "cache-and-network" })
+  const { updateUserSession } = useAuthContext()
 
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
@@ -45,36 +42,38 @@ const Home = screenTrack(() => ({
       {!!data?.justAddedOuterwear?.length && (
         <>
           <Spacer mb={10} />
-          <ProductRail title="Just added outerwear" products={data?.justAddedOuterwear} />
+          <ProductsRail title="Just added outerwear" items={data?.justAddedOuterwear} />
           <Spacer mb={10} />
         </>
       )}
 
       <Spacer mb={10} />
-      <ProductRail title="Just added tops" products={data?.justAddedTops} />
+      <ProductsRail title="Just added tops" items={data?.justAddedTops} />
       <Spacer mb={10} />
 
-      {!!data?.collection?.length && (
-        <>
-          <Spacer mb={10} />
-          <ProductRail title="The revival collection" products={data?.collection} tag="Revival Collection" />
-          <Spacer mb={10} />
-        </>
-      )}
+      {data?.collections?.map((collection) => {
+        return (
+          <>
+            <Spacer mb={10} />
+            <ProductsRail title={collection.title} items={collection?.products} collectionSlug={collection.slug} />
+            <Spacer mb={10} />
+          </>
+        )
+      })}
 
       <FromCommunity blogPosts={communityPosts} />
 
       {!!data?.justAddedBottoms?.length && (
         <>
           <Spacer mb={10} />
-          <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
+          <ProductsRail title="Just added bottoms" items={data?.justAddedBottoms} />
           <Spacer mb={10} />
         </>
       )}
 
       {!!data?.newArchival?.length && (
         <>
-          <ProductRail title="New to the archive" products={data?.newArchival} />
+          <ProductsRail title="New to the archive" items={data?.newArchival} />
           <Spacer mb={10} />
         </>
       )}
@@ -125,7 +124,7 @@ export async function getStaticProps() {
 
   await Promise.all([
     apolloClient.query({
-      query: HOME_QUERY,
+      query: HOME_QUERY_WEB,
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,

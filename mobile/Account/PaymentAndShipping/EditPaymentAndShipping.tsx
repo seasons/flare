@@ -63,7 +63,7 @@ export const EditPaymentAndShipping: React.FC<{
 }> = screenTrack()(({ navigation, route }) => {
   const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
-  const { data } = useQuery(GET_CURRENT_PLAN)
+  const { previousData, data = previousData } = useQuery(GET_CURRENT_PLAN)
   const [openPaymentPopUp, setOpenPaymentPopUp] = useState(false)
   const billingInfo = route?.params?.billingInfo
   const currentShippingAddress = route?.params?.shippingAddress

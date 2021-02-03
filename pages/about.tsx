@@ -10,7 +10,7 @@ const About = screenTrack(() => ({
   page: Schema.PageNames.AboutPage,
   path: "/about",
 }))(() => {
-  const { data } = useQuery(NAVIGATION_QUERY)
+  const { previousData, data = previousData } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   return (

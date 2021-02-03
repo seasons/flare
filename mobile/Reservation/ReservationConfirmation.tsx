@@ -78,7 +78,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const tracking = useTracking()
   const { openDrawer } = useDrawerContext()
   const reservationID = props?.route?.params?.reservationID
-  const { data, error } = useQuery(GET_CUSTOMER_RESERVATION_CONFIRMATION, {
+  const { previousData, data = previousData, error } = useQuery(GET_CUSTOMER_RESERVATION_CONFIRMATION, {
     variables: {
       reservationID,
     },

@@ -10,7 +10,7 @@ export const TermsOfService = screenTrack(() => ({
   page: Schema.PageNames.TermsOfService,
   path: "/terms-of-service",
 }))(() => {
-  const { data } = useQuery(NAVIGATION_QUERY)
+  const { previousData, data = previousData } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   return (
