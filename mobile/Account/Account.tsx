@@ -80,7 +80,7 @@ export const Account = screenTrack()(({ navigation }) => {
   const { openDrawer, closeDrawer, isOpen, currentView } = useDrawerContext()
 
   const { signOut, updateUserSession } = useAuthContext()
-  const { data, refetch } = useQuery(GET_USER, { fetchPolicy: "cache-and-network" })
+  const { previousData, data = previousData, refetch } = useQuery(GET_USER, { fetchPolicy: "cache-and-network" })
 
   useEffect(() => {
     if (currentView === "profile" && isOpen) {

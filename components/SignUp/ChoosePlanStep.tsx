@@ -53,7 +53,7 @@ interface ChoosePlanStepProps {
 
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
   const [selectedPlan, setSelectedPlan] = useState(null)
-  const { data } = useQuery(PAYMENT_PLANS)
+  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS)
   const { userSession } = useAuthContext()
 
   useEffect(() => {

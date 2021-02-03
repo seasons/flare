@@ -61,7 +61,7 @@ export enum Tab {
 export const PersonalPreferences = screenTrack()(({ navigation, initialTab }) => {
   const [activeTab, setActiveTab] = useState(initialTab ? initialTab : Tab.Personal)
   const { openDrawer } = useDrawerContext()
-  const { loading, error, data, refetch } = useQuery(GET_PREFERENCES)
+  const { error, previousData, data = previousData, refetch } = useQuery(GET_PREFERENCES)
 
   useEffect(() => {
     const unsubscribe = navigation?.addListener("focus", () => {

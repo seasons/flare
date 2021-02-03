@@ -48,7 +48,7 @@ const ACTIVE_RESERVATION = gql`
 `
 
 export const CurrentRotation = (props) => {
-  const { data, loading, refetch } = useQuery(ACTIVE_RESERVATION)
+  const { previousData, data = previousData, loading, refetch } = useQuery(ACTIVE_RESERVATION)
 
   useEffect(() => {
     refetch()
@@ -78,29 +78,29 @@ export const CurrentRotation = (props) => {
 
   return (
     <Container>
-        <Box>
-          <FlatList
-            data={activeReservation ? activeReservation.products : []}
-            ListHeaderComponent={() => (
-              <Box p={2}>
-                <Sans size="3" color="black">
-                  Current Rotation
-                </Sans>
-                <Sans size="2" color="black50">
-                  Return By {returnDate}
-                </Sans>
-              </Box>
-            )}
-            ItemSeparatorComponent={() => (
-              <Box px={2}>
-                <Spacer mb={2} />
-              </Box>
-            )}
-            keyExtractor={(_item, index) => String(index)}
-            renderItem={(item) => renderItem(item)}
-            ListFooterComponent={() => <Spacer mb={40} />}
-          />
-        </Box>
+      <Box>
+        <FlatList
+          data={activeReservation ? activeReservation.products : []}
+          ListHeaderComponent={() => (
+            <Box p={2}>
+              <Sans size="3" color="black">
+                Current Rotation
+              </Sans>
+              <Sans size="2" color="black50">
+                Return By {returnDate}
+              </Sans>
+            </Box>
+          )}
+          ItemSeparatorComponent={() => (
+            <Box px={2}>
+              <Spacer mb={2} />
+            </Box>
+          )}
+          keyExtractor={(_item, index) => String(index)}
+          renderItem={(item) => renderItem(item)}
+          ListFooterComponent={() => <Spacer mb={40} />}
+        />
+      </Box>
     </Container>
   )
 }

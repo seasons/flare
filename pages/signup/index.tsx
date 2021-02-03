@@ -77,7 +77,7 @@ const SignUpPage = screenTrack(() => ({
   const { updateUserSession, userSession } = useAuthContext()
   const tracking = useTracking()
   const router = useRouter()
-  const { data, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
+  const { previousData, data = previousData, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const featuredBrandItems = data?.brands || []
 
   const [showSnackBar, setShowSnackBar] = useState(false)

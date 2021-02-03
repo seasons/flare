@@ -31,7 +31,7 @@ const Product = screenTrack(({ router }) => {
 })(({ router }) => {
   const slug = router.query.Product || ""
   const { authState } = useAuthContext()
-  const { data, refetch } = useQuery(GET_PRODUCT, {
+  const { previousData, data = previousData, refetch } = useQuery(GET_PRODUCT, {
     variables: {
       slug,
     },

@@ -21,9 +21,7 @@ import { Media } from "../../components/Responsive"
 import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { initializeApollo } from "../../lib/apollo"
-import {
-  GET_BROWSE_BRANDS_AND_CATEGORIES, GET_BROWSE_PRODUCTS, GET_CATEGORIES
-} from "../../queries/brandQueries"
+import { GET_BROWSE_BRANDS_AND_CATEGORIES, GET_BROWSE_PRODUCTS, GET_CATEGORIES } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 
 const pageSize = 21
@@ -77,7 +75,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   const skip = (currentPage - 1) * pageSize
 
-  const { data, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
+  const { previousData, data = previousData, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
     notifyOnNetworkStatusChange: true,
     variables: {
       tops: currentTops,

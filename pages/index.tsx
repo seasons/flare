@@ -13,7 +13,7 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { data } = useQuery(HOME_QUERY_WEB, { fetchPolicy: "cache-and-network" })
+  const { previousData, data = previousData } = useQuery(HOME_QUERY_WEB, { fetchPolicy: "cache-and-network" })
   const { updateUserSession } = useAuthContext()
 
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)

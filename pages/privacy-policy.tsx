@@ -10,7 +10,7 @@ const PrivacyPolicy = screenTrack(() => ({
   page: Schema.PageNames.PrivacyPolicy,
   path: "/privacy-policy",
 }))(() => {
-  const { data } = useQuery(NAVIGATION_QUERY)
+  const { previousData, data = previousData } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   return (

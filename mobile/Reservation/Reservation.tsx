@@ -92,7 +92,7 @@ const SectionHeader: React.FC<{ title: string; onEdit?: () => void }> = ({ title
 export const Reservation = screenTrack()((props) => {
   const [isMutating, setIsMutating] = useState(false)
   const tracking = useTracking()
-  const { data } = useQuery(GET_CUSTOMER)
+  const { previousData, data = previousData } = useQuery(GET_CUSTOMER)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
   const [reserveItems] = useMutation(RESERVE_ITEMS, {

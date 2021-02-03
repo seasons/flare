@@ -84,7 +84,7 @@ interface ChoosePlanPaneProps {
 }
 
 export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coupon, source }) => {
-  const { data } = useQuery(GET_PLANS)
+  const { previousData, data = previousData } = useQuery(GET_PLANS)
   const [showSuccess, setShowSuccess] = useState(false)
   const plans = data?.paymentPlans
   const faqSections = data?.faq?.sections
