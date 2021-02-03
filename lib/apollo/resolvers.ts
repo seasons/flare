@@ -1,4 +1,4 @@
-import { GET_LOCAL_BAG } from "queries/bagQueries"
+import { GET_LOCAL_BAG } from "@seasons/eclipse"
 
 import { ApolloCache, gql, Resolvers } from "@apollo/client"
 

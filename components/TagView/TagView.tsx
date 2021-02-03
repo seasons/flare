@@ -1,8 +1,5 @@
-import { Box, Flex, Layout, Sans, Separator, Spacer } from "components"
-import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
+import { Box, Flex, Layout, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "components/Grid"
-import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
-import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
 import { ProductGridItem } from "components/Product/ProductGridItem"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
@@ -10,15 +7,15 @@ import { Spinner } from "components/Spinner"
 import { debounce } from "lodash"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { GET_COLLECTION } from "queries/collectionQueries"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
+import { GET_TAG } from "queries/collectionQueries"
 
-const Collection = screenTrack(({ router }) => {
+const TagView = screenTrack(({ router }) => {
   return {
     page: Schema.PageNames.CollectionPage,
     tag: router?.query?.Tag,
@@ -41,7 +38,7 @@ const Collection = screenTrack(({ router }) => {
 
   const imageContainer = useRef(null)
 
-  const { data, fetchMore, loading } = useQuery(GET_COLLECTION, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_TAG, {
     variables: {
       tag,
       first: productCount,
@@ -183,7 +180,7 @@ const Collection = screenTrack(({ router }) => {
   )
 })
 
-export default withRouter(Collection)
+export default withRouter(TagView)
 
 const MediaWithHeight = styled(Media)`
   height: 100%;

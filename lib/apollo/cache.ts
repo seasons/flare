@@ -1,5 +1,6 @@
 import { InMemoryCache, makeVar } from "@apollo/client"
 import { concatPagination } from "@apollo/client/utilities"
+import { isEmpty } from "lodash"
 
 export const localBagVar = makeVar([])
 
@@ -13,7 +14,6 @@ export const cache = new InMemoryCache({
             return localBagVar()
           },
         },
-
         products: {
           merge(existing = [], incoming = [], { args: { skip = 0 } }) {
             const merged = existing ? existing.slice(0) : []
@@ -22,6 +22,17 @@ export const cache = new InMemoryCache({
             }
             existing = merged
             return existing
+          },
+        },
+        productsConnection: {
+          merge(existing = {}, incoming = {}, { args: { skip = 0 } }) {
+            let mergedEdges = !isEmpty(existing) ? existing?.edges?.slice(0) : []
+            if (incoming?.edges?.length > 0) {
+              for (let i = 0; i < incoming?.edges?.length; ++i) {
+                mergedEdges[skip + i] = incoming?.edges?.[i]
+              }
+            }
+            return { ...existing, ...incoming, edges: mergedEdges }
           },
         },
       },

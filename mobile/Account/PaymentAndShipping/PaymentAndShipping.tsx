@@ -113,7 +113,7 @@ const AccountSection: React.FC<{ title: string; value: string | [string] }> = ({
 }
 
 export const PaymentAndShipping = screenTrack()(({ navigation }) => {
-  const { error, data, startPolling, stopPolling } = useQuery(GET_PAYMENT_DATA)
+  const { error, previousData, data = previousData, startPolling, stopPolling } = useQuery(GET_PAYMENT_DATA)
   const { openDrawer } = useDrawerContext()
 
   useEffect(() => {

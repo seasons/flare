@@ -53,7 +53,7 @@ export const GET_MEMBERSHIP_INFO = gql`
 
 export const MembershipInfo = screenTrack()(({ navigation }) => {
   const { openDrawer } = useDrawerContext()
-  const { data } = useQuery(GET_MEMBERSHIP_INFO)
+  const { previousData, data = previousData } = useQuery(GET_MEMBERSHIP_INFO)
   const customer = data?.me?.customer
   const firstName = data?.me?.user?.firstName
   const lastName = data?.me?.user?.lastName

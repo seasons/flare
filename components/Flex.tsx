@@ -1,12 +1,43 @@
 import React, { ClassAttributes, HTMLAttributes } from "react"
 import styled from "styled-components"
 import {
-  alignContent, AlignContentProps, alignItems, AlignItemsProps, background, BackgroundProps, bottom,
-  BottomProps, display, DisplayProps, flex, flexBasis, FlexBasisProps, flexDirection,
-  FlexDirectionProps, FlexProps as IFlexProps, flexWrap, FlexWrapProps, height, HeightProps,
-  justifyContent, JustifyContentProps, maxHeight, MaxHeightProps, maxWidth, MaxWidthProps, order,
-  OrderProps, position, PositionProps, space, SpaceProps, style, width, WidthProps, zIndex,
-  ZIndexProps
+  alignContent,
+  AlignContentProps,
+  alignItems,
+  AlignItemsProps,
+  background,
+  BackgroundProps,
+  bottom,
+  BottomProps,
+  display,
+  DisplayProps,
+  flex,
+  flexBasis,
+  FlexBasisProps,
+  flexDirection,
+  FlexDirectionProps,
+  FlexProps as IFlexProps,
+  flexWrap,
+  FlexWrapProps,
+  height,
+  HeightProps,
+  justifyContent,
+  JustifyContentProps,
+  maxHeight,
+  MaxHeightProps,
+  maxWidth,
+  MaxWidthProps,
+  order,
+  OrderProps,
+  position,
+  PositionProps,
+  space,
+  SpaceProps,
+  style,
+  width,
+  WidthProps,
+  zIndex,
+  ZIndexProps,
 } from "styled-system"
 
 const flexGrow = style({
@@ -48,7 +79,7 @@ export const Flex = styled.div<FlexProps>`
   ${display};
   ${flex};
   ${flexBasis};
-  ${flexDirection};
+  ${flexDirection ? flexDirection : "flexDirection: row"};
   ${flexGrow};
   ${flexWrap};
   ${height};

@@ -3,9 +3,9 @@ import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
-import { GET_LOCAL_BAG_ITEMS } from "queries/bagQueries"
+import { GET_LOCAL_BAG_ITEMS } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
-import { Schema, useTracking } from "utils/analytics"
+import { useTracking } from "utils/analytics"
 
 import { useLazyQuery } from "@apollo/client"
 
