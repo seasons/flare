@@ -1,5 +1,6 @@
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { LoginModal } from "components/Login/LoginModal"
+import { SearchBar } from "components/Search/SearchBar"
 import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
@@ -9,7 +10,7 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
-import { MaxWidth } from "../"
+import { Box, MaxWidth } from "../"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
@@ -54,6 +55,9 @@ export const DesktopNav = (props: NavProps) => {
       <MaxWidth>
         <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
           <SeasonsLogo />
+          <Box px={2}>
+            <SearchBar />
+          </Box>
           <Flex ml="auto" flexDirection="row" alignItems="center">
             {links.map((link) => {
               if (link.external) {

@@ -67,6 +67,7 @@ export enum PageNames {
   SignUpPage = "SignUp",
   AboutPage = "About",
   GiftPage = "Gift",
+  SearchPage = "Search",
   PrivacyPolicy = "PrivacyPolicy",
   TermsOfService = "TermsOfService",
   App = "App",
