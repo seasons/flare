@@ -1,15 +1,19 @@
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { Box } from "../Box"
-import { imageResize, IMAGE_ASPECT_RATIO, ImageSize } from "../../utils/imageResize"
-import React, { useState, useRef, useEffect } from "react"
+
 import { color } from "../../helpers"
+import { IMAGE_ASPECT_RATIO, imageResize, ImageSize } from "../../utils/imageResize"
+import { Box } from "../Box"
 import { Picture } from "../Picture"
 
 export interface ProgressiveImageProps {
   size: ImageSize
   imageUrl: string
   aspectRatio?: number
-  alt: string
+  alt?: string
+  style?: any
+  height?: string
+  width?: string
 }
 
 export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
@@ -17,6 +21,9 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   size,
   aspectRatio = IMAGE_ASPECT_RATIO,
   alt,
+  height,
+  width,
+  style,
 }) => {
   const [loaded, setLoaded] = useState(false)
   const fullImageRef = useRef(null)
@@ -31,7 +38,7 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   const fullImage = imageResize(imageUrl, size)
 
   return (
-    <ImageWrapper aspectRatio={aspectRatio}>
+    <ImageWrapper aspectRatio={aspectRatio} style={style}>
       <FullImageWrapper loaded={loaded}>
         <Picture
           src={fullImage}
@@ -41,6 +48,7 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
           onLoad={() => {
             setLoaded(true)
           }}
+          style={style}
         />
       </FullImageWrapper>
       <InitialImageWrapper>

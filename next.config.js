@@ -15,6 +15,9 @@ module.exports = withSourceMaps(
         AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
         SEGMENT_KEY: process.env.SEGMENT_KEY,
         NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE,
+        ALGOLIA_INDEX: process.env.ALGOLIA_INDEX,
+        ALGOLIA_ACCOUNT_ID: process.env.ALGOLIA_ACCOUNT_ID,
+        ALGOLIA_KEY: process.env.ALGOLIA_KEY,
       },
       webpack: (config) => {
         config.resolve.alias = {
@@ -46,7 +49,7 @@ module.exports = withSourceMaps(
             headers: [
               {
                 key: "Cache-Control",
-                value: "public,max-age=31536000,immutable"
+                value: "public,max-age=31536000,immutable",
               },
               {
                 key: "Access-Control-Allow-Origin",
@@ -55,8 +58,8 @@ module.exports = withSourceMaps(
               {
                 key: "Access-Control-Allow-Methods",
                 value: "GET",
-              }
-            ]
+              },
+            ],
           },
           {
             source: "/scripts/try-with-seasons.js",
@@ -68,9 +71,9 @@ module.exports = withSourceMaps(
               {
                 key: "Access-Control-Allow-Methods",
                 value: "GET",
-              }
-            ]
-          }
+              },
+            ],
+          },
         ]
       },
       async redirects() {
