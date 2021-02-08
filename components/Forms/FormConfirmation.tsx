@@ -4,17 +4,18 @@ import Link from "next/link"
 import styled from "styled-components"
 import { imageResize } from "utils/imageResize"
 
-import { Box, ExternalLink, Flex, Sans, Spacer, Picture } from "../"
+import { Box, ExternalLink, Flex, Picture, Sans, Spacer } from "../"
 import { Button } from "../Button/Button"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import { FormFooter } from "./FormFooter"
 import HeaderText from "./HeaderText"
 
 interface FormConfirmationProps {
-  status: "waitlisted" | "accountAccepted"
+  status: "waitlisted" | "accountAccepted" | "giftPurchased"
+  showCTAs?: boolean
 }
 
-export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status }) => {
+export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status, showCTAs = true }) => {
   let icon
   let headerText
   let bodyText
@@ -25,6 +26,11 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status }) =>
     icon = <CheckWithBackground backgroundColor={"#000"} />
     headerText = "You're Waitlisted"
     bodyText = "We’ll let you know when your account is ready and you’re able to choose your plan."
+  } else if (status === "giftPurchased") {
+    imageURL = require("../../public/images/gift.jpg")
+    icon = <CheckWithBackground backgroundColor={"#000"} />
+    headerText = "Your gift was sent!"
+    bodyText = "We’ll send a receipt for your purchase to your email."
   } else {
     imageURL = require("../../public/images/welcome/WelcomeImage.png")
     icon = <CheckWithBackground />
@@ -52,17 +58,19 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status }) =>
             {bodyText}
           </Sans>
           <Spacer mb={3} />
-          <Flex flexDirection="row">
-            <Link href="/browse">
-              <Button variant="primaryBlack">
-                <Flex flexDirection="row" alignContent="center">
-                  <Sans size="4">Start Browsing</Sans>
-                </Flex>
-              </Button>
-            </Link>
-            <Spacer mr={1} />
-            <GetTheAppButton />
-          </Flex>
+          {showCTAs && (
+            <Flex flexDirection="row">
+              <Link href="/browse">
+                <Button variant="primaryBlack">
+                  <Flex flexDirection="row" alignContent="center">
+                    <Sans size="4">Start Browsing</Sans>
+                  </Flex>
+                </Button>
+              </Link>
+              <Spacer mr={1} />
+              <GetTheAppButton />
+            </Flex>
+          )}
         </Flex>
       </Flex>
       <FormFooter footerText={footerText} disabled={false} />
