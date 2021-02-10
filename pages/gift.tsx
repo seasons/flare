@@ -110,7 +110,9 @@ const Gift = screenTrack(() => ({
                   <PlanTier group={group} onSelectPlan={onSelectPlan} selectedPlan={selectedPlan} />
 
                   <Spacer pb={2} />
-                  <HowItWorks />
+                  <Box maxWidth="480px">
+                    <HowItWorks />
+                  </Box>
                 </Flex>
               </Col>
             ))}
