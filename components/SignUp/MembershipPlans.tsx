@@ -8,6 +8,7 @@ import { color } from "helpers"
 import { uniq } from "lodash"
 import React, { useState } from "react"
 import styled from "styled-components"
+
 import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
 
@@ -73,7 +74,12 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                           <Spacer mb={5} />
                         </Box>
                       )}
-                      <PlanTier group={group} onSelectPlan={setSelectedPlan} selectedPlan={selectedPlan} />
+                      <PlanTier
+                        group={group}
+                        onSelectPlan={setSelectedPlan}
+                        selectedPlan={selectedPlan}
+                        title="Monthly"
+                      />
                     </Box>
                   </Flex>
                 </Box>
@@ -138,7 +144,12 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                           <Spacer mb={5} />
                         </Box>
                       )}
-                      <PlanTier group={group} onSelectPlan={setSelectedPlan} selectedPlan={selectedPlan} />
+                      <PlanTier
+                        group={group}
+                        onSelectPlan={setSelectedPlan}
+                        selectedPlan={selectedPlan}
+                        title="Monthly"
+                      />
                     </Box>
                   </Flex>
                 </Box>

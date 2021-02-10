@@ -28,6 +28,7 @@ export const Autocomplete = connectAutoComplete(({ hits, refine }) => {
     placeholder: "Search...",
     onChange: onChange,
     value,
+    onFocus: () => refine(),
   }
 
   return (
@@ -38,7 +39,6 @@ export const Autocomplete = connectAutoComplete(({ hits, refine }) => {
       onSuggestionsFetchRequested={({ value }) => refine(value)}
       onSuggestionsClearRequested={() => refine()}
       onSuggestionSelected={(e, suggestion) => {
-        console.log(suggestion)
         router.push(`/search?q=${suggestion.suggestionValue}`)
       }}
       getSuggestionValue={(hit) => hit.name}
@@ -52,6 +52,9 @@ export const Autocomplete = connectAutoComplete(({ hits, refine }) => {
         }
       }}
       getSectionSuggestions={(section) => section.hits}
+      shouldRenderSuggestions={(value, reason) => {
+        return true
+      }}
     />
   )
 })

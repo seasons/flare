@@ -1,10 +1,12 @@
 import { Box, Flex, Media, Sans, Separator, Spacer } from "components"
-import React from "react"
-import { Display } from "../Typography"
-import { color } from "helpers/color"
-import styled from "styled-components"
 import { Check } from "components/SVGs/Check"
+import { color } from "helpers/color"
+import React from "react"
+import styled from "styled-components"
+
 import { Button } from "@seasons/eclipse"
+
+import { Display } from "../Typography"
 
 export const PlanTier: React.FC<{
   group: any
@@ -89,15 +91,10 @@ export const PlanTier: React.FC<{
     )
   }
 
-  let _title = tier === "Essential" ? "Monthly" : tier
-  if (title) {
-    _title = title
-  }
-
   let planWrapperStyle = {}
   return (
     <Box width="100%" style={{ maxWidth: "500px" }}>
-      {displayText ? <Display size="9">{_title}</Display> : <Sans size="8">{_title}</Sans>}
+      {displayText ? <Display size="9">{title}</Display> : <Sans size="8">{title}</Sans>}
       {!!subtitle && (
         <Sans size="4" color="black50">
           {subtitle}

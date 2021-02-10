@@ -10,6 +10,8 @@ import { imageResize } from "utils/imageResize"
 import { Box, Flex, Media, Picture, Spacer } from "../"
 import { Col, Grid, Row } from "../Grid"
 
+const image = require("../../public/images/homepage/OutfitGrid-1.jpg")
+
 export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   const plansGroupedByTier = groupByPlanTier(plans)
   const { authState } = useAuthContext()
@@ -23,8 +25,6 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
       router.push("/signup")
     }
   }
-
-  const image = require("../../public/images/homepage/OutfitGrid-1.jpg")
 
   return (
     <Grid px={[2, 2, 2, 5, 5]} pt={[10, 0, 0, 0, 0]}>

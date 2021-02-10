@@ -55,7 +55,7 @@ export const DesktopNav = (props: NavProps) => {
       <MaxWidth>
         <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
           <SeasonsLogo />
-          <Box px={2}>
+          <Box px={4}>
             <SearchBar />
           </Box>
           <Flex ml="auto" flexDirection="row" alignItems="center">
