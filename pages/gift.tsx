@@ -36,7 +36,7 @@ export const GET_GIFT_PAGE = gql`
   }
 `
 
-const image = require("public/images/gift.jpg")
+const image = require("public/images/gift-2.jpg")
 
 const Gift = screenTrack(() => ({
   page: Schema.PageNames.GiftPage,
@@ -95,15 +95,24 @@ const Gift = screenTrack(() => ({
               <Col md="7" xs="12" key={index}>
                 <Flex width="100%" height="100%" px={[2, 2, 2, 7, 7]} flexDirection="column">
                   <Box pt={5} pb={1}>
-                    <Sans size="9">Choose Your Gift</Sans>
+                    <Sans size="9" weight="medium">
+                      Choose Your Gift
+                    </Sans>
                   </Box>
-                  <Sans size="3" color="black50">
-                    Gift a month of Seasons to a special someone. Here's how it works:
+                  <Sans size="5" color="black50">
+                    Give the gift of Seasons and elevate your next special occasion.
+                    <br />
+                    Show-out together or send a helping hand to a dresser in need.
                   </Sans>
+
+                  <Spacer pb={5} />
+                  <Sans size="4">Here's how it works:</Sans>
                   <PlanTier group={group} onSelectPlan={onSelectPlan} selectedPlan={selectedPlan} />
 
                   <Spacer pb={2} />
-                  <HowItWorks />
+                  <Box maxWidth="480px">
+                    <HowItWorks />
+                  </Box>
                 </Flex>
               </Col>
             ))}
