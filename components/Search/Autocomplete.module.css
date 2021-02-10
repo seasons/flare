@@ -1,0 +1,55 @@
+.container {
+  position: relative;
+  width: 300px;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px;
+  font-family: ProximaNova-Medium, sans-serif;
+  border: 1px solid #d9d9d9;
+  transition: all 0.25s;
+}
+
+.inputFocused {
+  outline: none;
+  border: 1px solid #000;
+}
+
+.suggestionsContainer {
+  display: none;
+}
+
+.suggestionsContainerOpen {
+  display: block;
+  position: absolute;
+  box-sizing: border-box;
+  top: 51px;
+  width: 100%;
+  border: 1px solid #000;
+  background-color: #fff;
+  font-family: ProximaNova-Medium, sans-serif;
+  font-size: 16px;
+  z-index: 2;
+}
+
+.sectionTitle {
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+.suggestionsList {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.suggestionHighlighted {
+  background-color: #ddd;
+}

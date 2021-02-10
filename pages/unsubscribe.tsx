@@ -1,10 +1,10 @@
+import { Box, Sans, Spacer } from "components"
+import HeaderText from "components/Forms/HeaderText"
 import { CheckWithBackground } from "components/SVGs"
+import { useRouter } from "next/router"
 import styled from "styled-components"
 
-import { Box, Sans, Spacer } from "../components"
-import HeaderText from "../components/Forms/HeaderText"
 import { gql, useMutation } from "@apollo/client"
-import { useRouter } from "next/router"
 
 export const UNSUBSCRIBE_USER = gql`
   mutation UnsubscribeUser($id: String!) {
