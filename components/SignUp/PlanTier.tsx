@@ -91,15 +91,10 @@ export const PlanTier: React.FC<{
     )
   }
 
-  let _title = tier === "Essential" ? "Monthly" : tier
-  if (title) {
-    _title = title
-  }
-
   let planWrapperStyle = {}
   return (
     <Box width="100%" style={{ maxWidth: "500px" }}>
-      {displayText && <Display size="9">{_title}</Display>}
+      {displayText ? <Display size="9">{title}</Display> : <Sans size="8">{title}</Sans>}
       {!!subtitle && (
         <Sans size="4" color="black50">
           {subtitle}
