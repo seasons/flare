@@ -99,8 +99,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
 
   const [selectedPlan, setSelectedPlan] = useState(null)
 
-  console.log("data", data)
-
   const { openDrawer } = useDrawerContext()
 
   const [updatePaymentPlan] = useMutation(PLAN_UPDATE, {
@@ -173,8 +171,6 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
       awaitRefetchQueries: true,
     })
   }
-
-  console.log("selectedPlna", selectedPlan)
 
   function executeChargebeeCheckout(planID) {
     // @ts-ignore
