@@ -9,9 +9,7 @@ import gql from "graphql-tag"
 import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { getChargebeeCheckout, initChargebee } from "lib/chargebee"
-import { uniq } from "lodash"
 import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
-import { TabBar } from "mobile/TabBar"
 import { GET_BAG } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
@@ -33,6 +31,7 @@ export const GET_PLANS = gql`
       planID
       tier
       itemCount
+      status
     }
     me {
       customer {
@@ -84,19 +83,23 @@ interface ChoosePlanPaneProps {
 }
 
 export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coupon, source }) => {
-  const { previousData, data = previousData } = useQuery(GET_PLANS)
+  const { previousData, data = previousData } = useQuery(GET_PLANS, {
+    variables: {
+      where: { status: "active" },
+    },
+  })
   const [showSuccess, setShowSuccess] = useState(false)
   const plans = data?.paymentPlans
   const faqSections = data?.faq?.sections
   const { closeDrawer } = useDrawerContext()
   const tracking = useTracking()
-  const [currentView, setCurrentView] = useState(0)
-  const [tiers, setTiers] = useState([])
   const [isMutating, setIsMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { userSession } = useAuthContext()
 
   const [selectedPlan, setSelectedPlan] = useState(null)
+
+  console.log("data", data)
 
   const { openDrawer } = useDrawerContext()
 
@@ -148,23 +151,13 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
   }, [])
 
   useEffect(() => {
-    // Update the selected plan if you switch tabs
-    const newSelectedPlan =
-      plans?.filter((plan) => plan.tier === tiers?.[currentView] && plan.itemCount === selectedPlan?.itemCount) ||
-      plans?.filter((plan) => plan.tier === tiers?.[currentView])?.[0]
-    setSelectedPlan(newSelectedPlan?.[0])
-  }, [currentView, setSelectedPlan])
-
-  useEffect(() => {
     if (plans && plans.length > 0) {
       setSelectedPlan(plans?.[0])
-      const planTiers = uniq(plans?.map((plan) => plan.tier))
-      setTiers(planTiers)
     }
 
     const customerPlan = data?.me?.customer?.membership?.plan
-    const initialPlan = customerPlan ? plans?.find((plan) => plan.id === customerPlan.id) : plans?.[0]
-
+    const customerPlanInitialPlan = customerPlan && plans?.find((plan) => plan.id === customerPlan.id)
+    const initialPlan = customerPlanInitialPlan ?? plans?.[0]
     setSelectedPlan(initialPlan)
   }, [plans])
 
@@ -180,6 +173,8 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
       awaitRefetchQueries: true,
     })
   }
+
+  console.log("selectedPlna", selectedPlan)
 
   function executeChargebeeCheckout(planID) {
     // @ts-ignore
@@ -218,8 +213,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
   }
 
   const descriptionLines = selectedPlan?.description?.split("\n") || []
-  const planColors = ["#000", "#e6b759"]
-  const currentColor = planColors[currentView] || "black"
+  const currentColor = "black"
 
   if (!data) {
     return null
@@ -277,25 +271,8 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
               )
             })}
           </Flex>
-          <Spacer mb={1} />
-          <TabBar
-            tabColor={currentColor}
-            spaceEvenly
-            tabs={tiers}
-            strikethroughTabs={[]}
-            activeTab={currentView}
-            goToPage={(page) => {
-              tracking.trackEvent({
-                actionName:
-                  page === 0 ? TrackSchema.ActionNames.Tier0PlanTabTapped : TrackSchema.ActionNames.Tier1PlanTabTapped,
-                actionType: TrackSchema.ActionTypes.Tap,
-              })
-              setCurrentView(page as number)
-            }}
-          />
           <Spacer mb={2} />
-          {plans
-            ?.filter((plan) => plan.tier === tiers?.[currentView])
+          {[...(plans ?? [])]
             ?.sort((a, b) => b.itemCount - a.itemCount)
             ?.map((plan) => {
               return (
