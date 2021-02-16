@@ -8,7 +8,7 @@ export const BrandHit = ({ hit }) => {
   const { name } = brand
 
   return (
-    <Link href="/designer/[Designer]" as={`/designer/${slugify(name)}`}>
+    <Link href="/designer/[Designer]" as={`/designer/${slugify(name).toLowerCase()}`}>
       <Sans size={7} style={{ textDecoration: "underline", cursor: "pointer" }}>
         {name}
       </Sans>
