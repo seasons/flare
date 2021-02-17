@@ -14,6 +14,7 @@ import { Sans } from "../Typography"
 import { Burger } from "./Burger"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
+import { NotificationBar } from "@seasons/eclipse"
 
 export const MENU_HEIGHT = "59px"
 
@@ -59,6 +60,7 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
           toggleLogin(false)
         }}
       />
+      <NotificationBar title="title" description="descrip" onClick={() => alert("yo")} type="P0" />
     </HeaderContainer>
   )
 }

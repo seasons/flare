@@ -67,8 +67,8 @@ const DesktopNavItem = ({ brands }) => {
 }
 
 const DesktopNavItemContainer = styled.div`
-  height: 60px;
-  line-height: 60px;
+  height: 58px;
+  line-height: 58px;
 
   &:after {
     display: block;
