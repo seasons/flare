@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
@@ -97,8 +98,10 @@ export const GET_PRODUCT = gql`
           }
         }
       }
+      ...ProductBuyCTA_ProductFragment
     }
   }
+  ${ProductBuyCTA_ProductFragment}
 `
 
 export const GET_STATIC_PRODUCTS = gql`
