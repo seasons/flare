@@ -16,6 +16,7 @@ import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useLazyQuery, useQuery } from "@apollo/client"
+import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
 
 export interface SignupFormProps {
   onError?: () => void
@@ -247,7 +248,8 @@ const SignUpPage = screenTrack(() => ({
       )
       break
     case "Active":
-      CurrentStep = <FormConfirmation status="accountAccepted" />
+      CurrentStep = <DiscoverBagStep onCompleted={() => {}} />
+      // CurrentStep = <FormConfirmation status="accountAccepted" />
       break
   }
 
