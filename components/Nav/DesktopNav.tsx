@@ -15,11 +15,10 @@ import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
-import { Sans } from "../Typography"
 import { NotificationBar } from "@seasons/eclipse"
 
 export const DesktopNav = (props: NavProps) => {
-  const { links } = props
+  const { links, onClickNotificationBar } = props
   const router = useRouter()
 
   const tracking = useTracking()
@@ -123,7 +122,7 @@ export const DesktopNav = (props: NavProps) => {
               )}
             </Flex>
           </Flex>
-          <NotificationBar title="title" description="descrip" onClick={() => alert("yo")} type="P0" />
+          <NotificationBar onClick={onClickNotificationBar} />
         </Box>
       </MaxWidth>
       <LoginModal

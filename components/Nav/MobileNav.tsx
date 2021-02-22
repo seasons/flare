@@ -18,7 +18,7 @@ import { NotificationBar } from "@seasons/eclipse"
 
 export const MENU_HEIGHT = "59px"
 
-export const MobileNav: React.FC<NavProps> = ({ links }) => {
+export const MobileNav: React.FC<NavProps> = ({ links, onClickNotificationBar }) => {
   const [isOpen, toggleOpen] = useState(false)
   const router = useRouter()
   const tracking = useTracking()
@@ -60,7 +60,7 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
           toggleLogin(false)
         }}
       />
-      <NotificationBar title="title" description="descrip" onClick={() => alert("yo")} type="P0" />
+      <NotificationBar onClick={onClickNotificationBar} />
     </HeaderContainer>
   )
 }

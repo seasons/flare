@@ -3,12 +3,16 @@ import { BrandsNavItem } from "./BrandsNavItem"
 import { DesktopNav } from "./DesktopNav"
 import { MobileNav } from "./MobileNav"
 import { NavProps } from "./Types"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { useRouter } from "next/router"
 
 type Props = NavProps & {
   brandItems: { name: string; slug: string }[]
 }
 
 export const Nav: React.FC<Props> = ({ brandItems }) => {
+  const { openDrawer } = useDrawerContext()
+  const router = useRouter()
   const links = [
     {
       text: "Home",
@@ -35,13 +39,22 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
     },
   ]
 
+  const onClickNotificationBar = (route) => {
+    if (!!route.drawerView) {
+      openDrawer(route.drawerView)
+    }
+    if (!!route.url) {
+      router.push(route.url)
+    }
+  }
+
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopNav links={links} />
+        <DesktopNav links={links} onClickNotificationBar={onClickNotificationBar} />
       </Media>
       <Media lessThan="md">
-        <MobileNav links={links} />
+        <MobileNav links={links} onClickNotificationBar={onClickNotificationBar} />
       </Media>
     </>
   )
