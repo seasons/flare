@@ -1,7 +1,7 @@
 import { Flex, MaxWidth } from "components"
 import { Button } from "components/Button"
 import { color } from "helpers"
-import React from "react"
+import React, { ReactElement } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
@@ -9,22 +9,28 @@ import { Sans } from "@seasons/eclipse"
 
 interface FormFooterProps {
   buttonActionName?: string
+  secondaryButtonText?: string
   buttonText?: string
   handleSubmit?: () => void
   isSubmitting?: boolean
   disabled?: boolean
   footerText?: any
   buttonLink?: string
+  Element?: React.ReactNode
+  onSecondaryButtonClick?: () => void
 }
 
 export const FormFooter: React.FC<FormFooterProps> = ({
   buttonText,
   handleSubmit,
+  onSecondaryButtonClick,
   isSubmitting,
   disabled,
   footerText,
   buttonLink,
   buttonActionName,
+  secondaryButtonText,
+  Element,
 }) => {
   const tracking = useTracking()
 
@@ -41,34 +47,51 @@ export const FormFooter: React.FC<FormFooterProps> = ({
             style={{ width: "100%" }}
             px={[2, 2, 5, 5, 5]}
           >
-            {!!footerText ? (
-              <Sans color="black50" my={2} size={["2", "4"]}>
-                {footerText}
-              </Sans>
-            ) : null}
-            {!!buttonText && !!buttonLink ? (
-              <a href={buttonLink}>
-                <SubmitButton
-                  buttonActionName={buttonActionName}
-                  tracking={tracking}
-                  handleSubmit={handleSubmit}
-                  isSubmitting={isSubmitting}
-                  disabled={disabled}
-                  buttonText={buttonText}
-                />
-              </a>
-            ) : (
-              !!buttonText && (
-                <SubmitButton
-                  buttonActionName={buttonActionName}
-                  tracking={tracking}
-                  handleSubmit={handleSubmit}
-                  isSubmitting={isSubmitting}
-                  disabled={disabled}
-                  buttonText={buttonText}
-                />
-              )
-            )}
+            <Flex flexDirection="row">
+              {!!footerText ? (
+                <Sans color="black50" my={2} size={["2", "4"]}>
+                  {footerText}
+                </Sans>
+              ) : null}
+              {!!Element && <>{Element()}</>}
+            </Flex>
+            <Flex flexDirection="row">
+              {!!secondaryButtonText && (
+                <Button
+                  ml={2}
+                  variant="primaryWhite"
+                  onClick={() => {
+                    onSecondaryButtonClick()
+                  }}
+                  size="medium"
+                >
+                  {secondaryButtonText}
+                </Button>
+              )}
+              {!!buttonText && !!buttonLink ? (
+                <a href={buttonLink}>
+                  <SubmitButton
+                    buttonActionName={buttonActionName}
+                    tracking={tracking}
+                    handleSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
+                    disabled={disabled}
+                    buttonText={buttonText}
+                  />
+                </a>
+              ) : (
+                !!buttonText && (
+                  <SubmitButton
+                    buttonActionName={buttonActionName}
+                    tracking={tracking}
+                    handleSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
+                    disabled={disabled}
+                    buttonText={buttonText}
+                  />
+                )
+              )}
+            </Flex>
           </Flex>
         </MaxWidth>
       </FormFooterInnerWrapper>
