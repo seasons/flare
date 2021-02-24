@@ -1,6 +1,7 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { BrandNavItemFragment } from "components/Nav"
+import { PaymentStep } from "components/Payment"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
@@ -16,6 +17,10 @@ import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useLazyQuery, useQuery } from "@apollo/client"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
+
+const stripePromise = loadStripe("pk_test_RUHQ0ADqBJHmknHqApuPBGS900fJpiEabb")
 
 export interface SignupFormProps {
   onError?: () => void
@@ -255,7 +260,7 @@ const SignUpPage = screenTrack(() => ({
     <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
       <MaxWidth>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-        <Flex
+        {/* <Flex
           height="100%"
           width="100%"
           flexDirection="row"
@@ -264,7 +269,14 @@ const SignUpPage = screenTrack(() => ({
           px={[2, 2, 2, 5, 5]}
         >
           {CurrentStep}
-        </Flex>
+        </Flex> */}
+        <Elements stripe={stripePromise}>
+          <PaymentStep
+            plan={{
+              id: "essential",
+            }}
+          />
+        </Elements>
       </MaxWidth>
 
       <SplashScreen
