@@ -17,7 +17,6 @@ export const GET_PRODUCT = gql`
             itemCount
           }
         }
-        ...Order_CustomerFragment
       }
       bag {
         id
@@ -105,7 +104,6 @@ export const GET_PRODUCT = gql`
   }
   ${ProductBuyCTA_ProductFragment}
   ${ProductBuyCTA_ProductVariantFragment}
-  ${Order_CustomerFragment}
 `
 
 export const GET_STATIC_PRODUCTS = gql`

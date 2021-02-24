@@ -53,7 +53,9 @@ const Product = screenTrack(({ router }) => {
   const [createDraftOrder] = useMutation(CREATE_DRAFT_ORDER_MUTATION, {
     onCompleted: (res) => {
       setBuyButtonMutating(false)
+      console.log("data", res)
       if (res?.createDraftedOrder) {
+        console.log("openDrawer")
         openDrawer("reviewOrder", { order: res.createDraftedOrder })
       }
     },
@@ -201,6 +203,7 @@ const Product = screenTrack(({ router }) => {
                 {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
                 {product ? (
                   <ProductBuyCTA
+                    pt={8}
                     product={filter(ProductBuyCTA_ProductFragment, product)}
                     selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
                     buyButtonMutating={buyButtonMutating}

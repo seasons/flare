@@ -34,6 +34,7 @@ export const DrawerProvider = ({ children }) => {
 
   const drawerContext = {
     openDrawer: async (view, params) => {
+      console.log("openDrawer", view, params)
       dispatch({ type: DrawerAction.Open, view, params })
     },
     closeDrawer: async () => {
