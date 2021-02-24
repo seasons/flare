@@ -167,7 +167,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
           >
             <Box width={["auto", "auto", "500px", "500px", "500px"]}>
               <FAQWrapper>
-                <Spacer mb={10} />
+                <Spacer pb={10} />
                 <Sans size="8" color="black100">
                   FAQ
                 </Sans>
