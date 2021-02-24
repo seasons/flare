@@ -17,6 +17,24 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
     $skip: Int!
     $orderBy: ProductVariantOrderByInput!
   ) {
+    me {
+      id
+      customer {
+        id
+        detail {
+          id
+          shippingAddress {
+            id
+            city
+            state
+            weather {
+              temperature
+              emoji
+            }
+          }
+        }
+      }
+    }
     productsCount: availableProductVariantsConnectionForCustomer {
       aggregate {
         count
@@ -50,19 +68,17 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
 
 const PAGE_LENGTH = 24
 
-const Content = (platform: "desktop" | "mobile", productsChunked) => {
+const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
   const snapList = useRef(null)
   const isDesktop = platform === "desktop"
   const selected = useVisibleElements({ debounce: 50, ref: snapList }, (elements) => {
-    // console.log("eles", elements)
-    // if (elements.length > 1) {
-    //   return elements[1]
-    // } else {
     return elements[0]
-    // }
   })
   const goToSnapItem = useScroll({ ref: snapList })
-  console.log("selected", selected)
+  const temperature = location?.weather?.temperature
+  const emoji = location?.weather?.emoji
+  const city = location?.city
+  const state = location?.state
 
   const onSecondaryButtonClick = () => {
     return null
@@ -82,22 +98,46 @@ const Content = (platform: "desktop" | "mobile", productsChunked) => {
       </Flex>
     )
   }
+  const emojiToHex = parseInt(emoji, 16)
+
+  let locationText = ""
+  if (!!city && !!state) {
+    locationText = `Looks like you're in ${city}, ${state}`
+  } else if (!!city) {
+    locationText = `Looks like you're in ${city}`
+  }
+  let weatherText = ""
+  if (!!temperature && !!emoji) {
+    weatherText = `${temperature} ${String.fromCharCode(emojiToHex)}`
+  }
 
   return (
     <>
       <Flex pt={60}>
         <Flex flexDirection="column" pt={100} width="100%">
           <Flex flexDirection="row" width="100%">
-            <Box mx={isDesktop ? 0 : 2}>
+            <Box mx={isDesktop ? 0 : 2} width="100%">
               <Sans color="black100" size={["6", "10"]}>
                 You're in.
               </Sans>
-              <Sans color="black100" size={["6", "10"]}>
-                Let's discover your first bag
-              </Sans>
-              <Sans size="4" color="black50">
-                Here are some recommendations from us. Add up to 3 before checking out.
-              </Sans>
+              <Flex flexDirection="row" justifyContent="space-between" width="100%">
+                <Flex flexDirection="column">
+                  <Sans color="black100" size={["6", "10"]}>
+                    Let's discover your first bag
+                  </Sans>
+                  <Sans size="4" color="black50">
+                    Here are some recommendations from us. Add up to 3 before checking out.
+                  </Sans>
+                </Flex>
+                <Flex flexDirection="column">
+                  <Sans color="black100" size={["6", "10"]} style={{ textAlign: "right" }}>
+                    {weatherText}
+                  </Sans>
+                  <Sans size="4" color="black50" style={{ textAlign: "right" }}>
+                    {locationText}
+                  </Sans>
+                </Flex>
+              </Flex>
             </Box>
           </Flex>
           <Spacer mb={isDesktop ? 4 : 0} />
@@ -186,11 +226,14 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
 
   const products = data?.products?.edges
   const productsChunked = chunk(products, 4)
+  const location = data?.me?.customer?.detail?.shippingAddress
+
+  console.log("data", data)
 
   return (
     <>
-      <DesktopMedia greaterThanOrEqual="md">{Content("desktop", productsChunked)}</DesktopMedia>
-      <Media lessThan="md">{Content("mobile", productsChunked)}</Media>
+      <DesktopMedia greaterThanOrEqual="md">{Content("desktop", productsChunked, location)}</DesktopMedia>
+      <Media lessThan="md">{Content("mobile", productsChunked, location)}</Media>
     </>
   )
 }
