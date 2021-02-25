@@ -1,105 +1,32 @@
-import { Box, Flex, MaxWidth, Media, Picture, Sans, Spacer } from "components"
+import { Box, Flex, Media, Picture, Sans, Spacer } from "components"
 import React, { useRef, useState } from "react"
 import styled from "styled-components"
-import gql from "graphql-tag"
-import { useQuery } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplist-carousel"
 import { imageResize } from "utils/imageResize"
-import { space } from "helpers/space"
 import { chunk } from "lodash"
 import { FormFooter } from "components/Forms/FormFooter"
 import { color } from "helpers/color"
 import { ChevronIcon } from "components/Icons"
+import { GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
+import { ADD_TO_BAG, REMOVE_FROM_BAG } from "@seasons/eclipse"
+import { FooterElement } from "./FooterElement"
 
-export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
-  query AvailableProductVariantsConnectionForCustomer(
-    $first: Int!
-    $skip: Int!
-    $orderBy: ProductVariantOrderByInput!
-  ) {
-    paymentPlans(where: { status: "active" }) {
-      id
-      tier
-      itemCount
-      price
-    }
-    me {
-      id
-      customer {
-        id
-        detail {
-          id
-          shippingAddress {
-            id
-            city
-            state
-            weather {
-              temperature
-              emoji
-            }
-          }
-        }
-      }
-    }
-    productsCount: availableProductVariantsConnectionForCustomer {
-      aggregate {
-        count
-      }
-    }
-    products: availableProductVariantsConnectionForCustomer(skip: $skip, first: $first, orderBy: $orderBy) {
-      edges {
-        node {
-          id
-          isSaved
-          displayShort
-          product {
-            id
-            slug
-            name
-            brand {
-              id
-              slug
-              name
-            }
-            images(size: Small) {
-              id
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-`
+const PAGE_LENGTH = 16
 
-const PAGE_LENGTH = 24
-
-const FooterElement = (selectedProducts, plans) => {
-  let cost
-  if (selectedProducts?.length > 0) {
-    console.log("plans", plans)
-    const plan = plans.find((p) => p.itemCount === selectedProducts.length)
-    const planPrice = plan?.price / 100
-    cost = `$${planPrice}`
-  } else {
-    cost = "$0"
-  }
-
-  return (
-    <Flex height="100%" flexDirection="row" alignItems="center">
-      <EmptyBagItem />
-      <Spacer mr={2} />
-      <Flex flexDirection="column" justifyContent="center">
-        <Sans size="3">Your bag</Sans>
-        <Sans size="3" color="black50">
-          <span style={{ textDecoration: "underline", color: "black" }}>{cost}</span> per month
-        </Sans>
-      </Flex>
-    </Flex>
-  )
-}
-
-const Content = (platform: "desktop" | "mobile", data, selectedProducts, setSelectedProducts) => {
+const Content = (
+  platform: "desktop" | "mobile",
+  data,
+  addToBag,
+  removeFromBag,
+  isMutating,
+  setIsMutating,
+  fetchMore,
+  setProductCount,
+  productCount,
+  loading
+) => {
+  const bagItems = data?.me?.bag
   const products = data?.products?.edges
   const productsChunked = chunk(products, 4)
   const location = data?.me?.customer?.detail?.shippingAddress
@@ -114,15 +41,64 @@ const Content = (platform: "desktop" | "mobile", data, selectedProducts, setSele
   const emoji = location?.weather?.emoji
   const city = location?.city
   const state = location?.state
+  const aggregateCount = data?.productsCount?.aggregate?.count
+  const reachedEnd = aggregateCount && Math.max(aggregateCount / 4) <= productsChunked.length
+
+  console.log("data", data)
 
   const onSecondaryButtonClick = () => {
     return null
   }
 
-  const onAddProduct = (product) => {
-    if (selectedProducts.length < 3) {
-      setSelectedProducts([...selectedProducts, product])
+  const onAddProduct = (variant) => {
+    if (isMutating) {
+      return
     }
+    setIsMutating(true)
+    if (bagItems.length < 3) {
+      addToBag({
+        variables: {
+          id: variant.id,
+          productID: variant.product?.id,
+          variantID: variant.id,
+        },
+        awaitRefetchQueries: true,
+        refetchQueries: [
+          {
+            query: GET_DISCOVERY_PRODUCT_VARIANTS,
+            variables: {
+              first: productCount,
+              skip: 0,
+              orderBy: "updatedAt_DESC",
+            },
+          },
+        ],
+      })
+    }
+  }
+
+  const onRemoveProduct = (variant) => {
+    if (isMutating) {
+      return
+    }
+    setIsMutating(true)
+    removeFromBag({
+      variables: {
+        id: variant.id,
+        saved: false,
+      },
+      awaitRefetchQueries: true,
+      refetchQueries: [
+        {
+          query: GET_DISCOVERY_PRODUCT_VARIANTS,
+          variables: {
+            first: productCount,
+            skip: 0,
+            orderBy: "updatedAt_DESC",
+          },
+        },
+      ],
+    })
   }
 
   const emojiToHex = !!emoji && parseInt(emoji, 16)
@@ -180,7 +156,7 @@ const Content = (platform: "desktop" | "mobile", data, selectedProducts, setSele
                 }
               }}
             >
-              <ChevronIcon color={color("black100")} rotateDeg="180deg" />
+              <ChevronIcon color={selected === 0 ? color("black04") : color("black100")} rotateDeg="180deg" />
             </ArrowWrapper>
             <SnapList direction="horizontal" width="calc(100% - 100px)" ref={snapList}>
               {productsChunked?.map((chunk, index) => {
@@ -190,10 +166,9 @@ const Content = (platform: "desktop" | "mobile", data, selectedProducts, setSele
                       {chunk?.map((edge, index) => {
                         const variant = edge?.node
                         const product = variant?.product
-                        //   console.log("product", product)
                         const image = product?.images?.[0]
                         const imageSRC = imageResize(image?.url, "large")
-                        const added = selectedProducts?.includes(product)
+                        const added = bagItems?.find((bi) => bi.productVariant.id === variant.id)
                         return (
                           <Flex style={{ flex: 4 }} p="2px" flexDirection="column" key={imageSRC + index}>
                             <ImageWrapper>
@@ -201,16 +176,18 @@ const Content = (platform: "desktop" | "mobile", data, selectedProducts, setSele
                             </ImageWrapper>
                             <Spacer mb={1} />
                             <Flex flexDirection="row" justifyContent="space-between">
-                              <Sans size="3" style={{ textDecoration: "underline" }}>
-                                {product?.brand.name}
-                              </Sans>
-                              <Flex flexDirection="row" pr={2} onClick={() => onAddProduct(product)}>
+                              <Sans size="3">{product?.brand.name}</Sans>
+                              <Flex
+                                flexDirection="row"
+                                pr={2}
+                                onClick={() => (added ? onRemoveProduct(variant) : onAddProduct(variant))}
+                              >
                                 <Sans size="3" style={{ textDecoration: "underline", cursor: "pointer" }}>
                                   {added ? "Added" : "Add"}
                                 </Sans>
                               </Flex>
                             </Flex>
-                            <Sans size="3" color="black50" style={{ textDecoration: "underline" }}>
+                            <Sans size="3" color="black50">
                               {variant?.displayShort}
                             </Sans>
                           </Flex>
@@ -226,15 +203,30 @@ const Content = (platform: "desktop" | "mobile", data, selectedProducts, setSele
               onClick={() => {
                 const nextIndex = selected + 1
                 goToSnapItem(nextIndex)
+
+                const shouldLoadMore =
+                  !loading && !!aggregateCount && !reachedEnd && selected >= productsChunked.length - 2
+
+                if (shouldLoadMore) {
+                  fetchMore({
+                    variables: {
+                      skip: products?.length,
+                    },
+                  }).then((fetchMoreResult: any) => {
+                    setProductCount(products.length + fetchMoreResult?.data?.products?.edges?.length)
+                  })
+                }
               }}
             >
-              <ChevronIcon color={color("black100")} />
+              <ChevronIcon color={reachedEnd ? color("black04") : color("black100")} />
             </ArrowWrapper>
           </CarouselWrapper>
         </Flex>
       </Flex>
       <FormFooter
-        Element={() => FooterElement(selectedProducts, plans)}
+        Element={() => (
+          <FooterElement productCount={productCount} removeFromBag={removeFromBag} bagItems={bagItems} plans={plans} />
+        )}
         disabled={false}
         buttonText="Checkout"
         secondaryButtonText="Continue later"
@@ -245,23 +237,63 @@ const Content = (platform: "desktop" | "mobile", data, selectedProducts, setSele
 }
 
 export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompleted }) => {
-  const [selectedProducts, setSelectedProducts] = useState([])
-  const { previousData, data = previousData } = useQuery(GET_DISCOVERY_PRODUCT_VARIANTS, {
+  const [isMutating, setIsMutating] = useState(false)
+  const [productCount, setProductCount] = useState(PAGE_LENGTH)
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_DISCOVERY_PRODUCT_VARIANTS, {
     variables: {
-      first: PAGE_LENGTH,
+      first: productCount,
       skip: 0,
       orderBy: "updatedAt_DESC",
     },
   })
 
-  console.log("selectedProducts", selectedProducts)
+  const [addToBag] = useMutation(ADD_TO_BAG, {
+    onCompleted: () => {
+      setIsMutating(false)
+    },
+    onError: (err) => {
+      setIsMutating(false)
+    },
+  })
+  const [removeFromBag] = useMutation(REMOVE_FROM_BAG, {
+    onCompleted: () => {
+      setIsMutating(false)
+    },
+    onError: (err) => {
+      setIsMutating(false)
+    },
+  })
 
   return (
     <>
       <DesktopMedia greaterThanOrEqual="md">
-        {Content("desktop", data, selectedProducts, setSelectedProducts)}
+        {Content(
+          "desktop",
+          data,
+          addToBag,
+          removeFromBag,
+          isMutating,
+          setIsMutating,
+          fetchMore,
+          setProductCount,
+          productCount,
+          loading
+        )}
       </DesktopMedia>
-      <Media lessThan="md">{Content("mobile", data, selectedProducts, setSelectedProducts)}</Media>
+      <Media lessThan="md">
+        {Content(
+          "mobile",
+          data,
+          addToBag,
+          removeFromBag,
+          isMutating,
+          setIsMutating,
+          fetchMore,
+          setProductCount,
+          productCount,
+          loading
+        )}
+      </Media>
     </>
   )
 }
@@ -272,12 +304,6 @@ const ArrowWrapper = styled(Flex)`
   align-items: center;
   flex-direction: row;
   cursor: pointer;
-`
-
-const EmptyBagItem = styled.div`
-  width: 40px;
-  height: 50px;
-  background-color: ${color("black10")};
 `
 
 const DesktopMedia = styled(Media)`
@@ -294,6 +320,9 @@ const CarouselWrapper = styled.div`
 `
 const ImageWrapper = styled.div`
   width: 100%;
+  background-color: ${color("black04")};
+  height: 0;
+  padding-bottom: calc(100% * 1.25);
 
   img {
     width: 100%;
