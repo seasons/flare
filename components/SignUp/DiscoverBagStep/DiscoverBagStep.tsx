@@ -11,6 +11,7 @@ import { ChevronIcon } from "components/Icons"
 import { GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
 import { ADD_TO_BAG, REMOVE_FROM_BAG } from "@seasons/eclipse"
 import { FooterElement } from "./FooterElement"
+import { emojiUnixToString } from "utils/emojiUnixToString"
 
 const PAGE_LENGTH = 16
 
@@ -39,6 +40,7 @@ const Content = (
   const goToSnapItem = useScroll({ ref: snapList })
   const temperature = location?.weather?.temperature
   const emoji = location?.weather?.emoji
+  const emojiToString = emojiUnixToString(emoji)
   const city = location?.city
   const state = location?.state
   const aggregateCount = data?.productsCount?.aggregate?.count
@@ -101,8 +103,6 @@ const Content = (
     })
   }
 
-  const emojiToHex = !!emoji && parseInt(emoji, 16)
-
   let locationText = ""
   if (!!city && !!state) {
     locationText = `Looks like you're in ${city}, ${state}`
@@ -110,8 +110,8 @@ const Content = (
     locationText = `Looks like you're in ${city}`
   }
   let weatherText = ""
-  if (!!temperature && !!emojiToHex) {
-    weatherText = `${temperature}° ${String.fromCodePoint(emojiToHex)}`
+  if (!!temperature && !!emojiToString) {
+    weatherText = `${temperature}° ${emojiToString}`
   } else if (!!temperature) {
     weatherText = `${temperature}°`
   }
