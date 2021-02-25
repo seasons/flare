@@ -10,17 +10,22 @@ import { gql, useMutation, useQuery } from "@apollo/client"
 import { Box, Button, Col, Flex, Grid, Row, Sans, Spacer } from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
+import { AppleGooglePayButton } from "./AppleGooglePayButton"
 import { PaymentBillingAddress } from "./PaymentBillingAddress"
 import { PaymentForm } from "./PaymentForm"
+import { PaymentOrderSummary } from "./PaymentOrderSummary"
 
 interface PaymentStepProps {
   plan: {
     id: string
+    planID: string
+    name: string
+    price: number
   }
 }
 
 export const PAYMENT_PLANS = gql`
-  query GetPaymentPlans {
+  query GetPaymentPlans($planID: String!) {
     faq(sectionType: PaymentPlanPage) {
       sections {
         title
@@ -29,6 +34,13 @@ export const PAYMENT_PLANS = gql`
           text
         }
       }
+    }
+    paymentPlan(where: { planID: $planID }) {
+      id
+      name
+      planID
+      price
+      estimate
     }
     me {
       customer {
@@ -48,21 +60,21 @@ export const PAYMENT_PLANS = gql`
   }
 `
 
-const SUBMIT_PAYMENT_METHOD = gql`
-  mutation SubmitPaymentMethod($paymentMethodID: String!, $planID: String!, $billing: JSON) {
-    processPaymentMethod(paymentMethodID: $paymentMethodID, planID: $planID, billing: $billing)
+const SUBMIT_PAYMENT = gql`
+  mutation SubmitPayment($paymentMethodID: String!, $planID: String!, $billing: JSON) {
+    processPayment(paymentMethodID: $paymentMethodID, planID: $planID, billing: $billing)
   }
 `
 
 export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
-  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS)
-  const elements = useElements()
-  const stripe = useStripe()
-  const [submitPaymentMethod] = useMutation(SUBMIT_PAYMENT_METHOD, {
-    onCompleted: async (data) => {
-      console.log(data)
+  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS, {
+    variables: {
+      planID: plan.planID,
     },
   })
+  const elements = useElements()
+  const stripe = useStripe()
+  const [submitPayment] = useMutation(SUBMIT_PAYMENT)
   const [errorMessage, setErrorMessage] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState(null)
 
@@ -87,7 +99,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
         postal_code: values.postalCode,
         country: "US",
       },
-      email: data?.me?.customer?.user?.email || "luc@seasons.nyc",
+      email: data?.me?.customer?.user?.email,
     }
 
     const payload = await stripe.createPaymentMethod({
@@ -103,7 +115,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
     } else {
       console.log("[PaymentMethod]", payload.paymentMethod)
       setPaymentMethod(payload.paymentMethod)
-      const { data, errors } = await submitPaymentMethod({
+      const { data, errors } = await submitPayment({
         variables: {
           paymentMethodID: payload.paymentMethod.id,
           planID: plan?.id,
@@ -140,31 +152,26 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
             <Grid>
               <Row>
                 <BorderedCol md={7}>
-                  <Box p={4}>
+                  <Box pt={4} px={4} pb={2}>
                     <Box mt={12} p={2}>
-                      <Sans size="7" weight="medium">
+                      <Sans size="8" weight="medium">
                         Finish checking out
                       </Sans>
-                      <Sans size="5" color="black50">
+                      <Spacer mt={1} />
+                      <Sans size="4" color="black50">
                         Add your billing address and payment details
                       </Sans>
-                    </Box>
-                    <Box>
-                      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" px={2} pb={2}>
-                        <Box mt={2}>
-                          <Sans size="6">Order Total</Sans>
-                          <Sans size="4" color="black50">
-                            Billed every 30-days
-                          </Sans>
-                        </Box>
-                        <Box>
-                          <Sans size="8">$65</Sans>
-                        </Box>
-                      </Flex>
                     </Box>
                   </Box>
                   <Box my={2}>
                     <Separator />
+                  </Box>
+                  <PaymentOrderSummary plan={data?.paymentPlan} />
+                  <Box my={2}>
+                    <Separator />
+                  </Box>
+                  <Box>
+                    <AppleGooglePayButton plan={plan} />
                   </Box>
                   <Box>
                     <Box p={6}>
