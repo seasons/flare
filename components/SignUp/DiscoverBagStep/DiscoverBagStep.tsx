@@ -17,6 +17,12 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
     $skip: Int!
     $orderBy: ProductVariantOrderByInput!
   ) {
+    paymentPlans(where: { status: "active" }) {
+      id
+      tier
+      itemCount
+      price
+    }
     me {
       id
       customer {
@@ -68,7 +74,36 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
 
 const PAGE_LENGTH = 24
 
-const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
+const FooterElement = (selectedProducts, plans) => {
+  let cost
+  if (selectedProducts?.length > 0) {
+    console.log("plans", plans)
+    const plan = plans.find((p) => p.itemCount === selectedProducts.length)
+    const planPrice = plan?.price / 100
+    cost = `$${planPrice}`
+  } else {
+    cost = "$0"
+  }
+
+  return (
+    <Flex height="100%" flexDirection="row" alignItems="center">
+      <EmptyBagItem />
+      <Spacer mr={2} />
+      <Flex flexDirection="column" justifyContent="center">
+        <Sans size="3">Your bag</Sans>
+        <Sans size="3" color="black50">
+          <span style={{ textDecoration: "underline", color: "black" }}>{cost}</span> per month
+        </Sans>
+      </Flex>
+    </Flex>
+  )
+}
+
+const Content = (platform: "desktop" | "mobile", data, selectedProducts, setSelectedProducts) => {
+  const products = data?.products?.edges
+  const productsChunked = chunk(products, 4)
+  const location = data?.me?.customer?.detail?.shippingAddress
+  const plans = data?.paymentPlans
   const snapList = useRef(null)
   const isDesktop = platform === "desktop"
   const selected = useVisibleElements({ debounce: 50, ref: snapList }, (elements) => {
@@ -84,21 +119,13 @@ const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
     return null
   }
 
-  const FooterElement = () => {
-    return (
-      <Flex height="100%" flexDirection="row" alignItems="center">
-        <EmptyBagItem />
-        <Spacer mr={2} />
-        <Flex flexDirection="column" justifyContent="center">
-          <Sans size="3">Your bag</Sans>
-          <Sans size="3" color="black50">
-            0$ per month
-          </Sans>
-        </Flex>
-      </Flex>
-    )
+  const onAddProduct = (product) => {
+    if (selectedProducts.length < 3) {
+      setSelectedProducts([...selectedProducts, product])
+    }
   }
-  const emojiToHex = parseInt(emoji, 16)
+
+  const emojiToHex = !!emoji && parseInt(emoji, 16)
 
   let locationText = ""
   if (!!city && !!state) {
@@ -107,14 +134,16 @@ const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
     locationText = `Looks like you're in ${city}`
   }
   let weatherText = ""
-  if (!!temperature && !!emoji) {
-    weatherText = `${temperature} ${String.fromCharCode(emojiToHex)}`
+  if (!!temperature && !!emojiToHex) {
+    weatherText = `${temperature}° ${String.fromCodePoint(emojiToHex)}`
+  } else if (!!temperature) {
+    weatherText = `${temperature}°`
   }
 
   return (
     <>
-      <Flex pt={60}>
-        <Flex flexDirection="column" pt={100} width="100%">
+      <Flex flexDirection="column" justifyContent="center" height="100%">
+        <Flex flexDirection="column" width="100%" py={60}>
           <Flex flexDirection="row" width="100%">
             <Box mx={isDesktop ? 0 : 2} width="100%">
               <Sans color="black100" size={["6", "10"]}>
@@ -140,13 +169,12 @@ const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
               </Flex>
             </Box>
           </Flex>
-          <Spacer mb={isDesktop ? 4 : 0} />
+          <Spacer mb={isDesktop ? 6 : 0} />
           <CarouselWrapper>
             <ArrowWrapper
               justifyContent="flex-start"
               onClick={() => {
                 if (selected > 0) {
-                  console.log("selected", selected)
                   const nextIndex = selected - 1
                   goToSnapItem(nextIndex)
                 }
@@ -165,6 +193,7 @@ const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
                         //   console.log("product", product)
                         const image = product?.images?.[0]
                         const imageSRC = imageResize(image?.url, "large")
+                        const added = selectedProducts?.includes(product)
                         return (
                           <Flex style={{ flex: 4 }} p="2px" flexDirection="column" key={imageSRC + index}>
                             <ImageWrapper>
@@ -175,9 +204,9 @@ const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
                               <Sans size="3" style={{ textDecoration: "underline" }}>
                                 {product?.brand.name}
                               </Sans>
-                              <Flex flexDirection="row" pr={2}>
-                                <Sans size="3" style={{ textDecoration: "underline" }}>
-                                  Added
+                              <Flex flexDirection="row" pr={2} onClick={() => onAddProduct(product)}>
+                                <Sans size="3" style={{ textDecoration: "underline", cursor: "pointer" }}>
+                                  {added ? "Added" : "Add"}
                                 </Sans>
                               </Flex>
                             </Flex>
@@ -205,7 +234,7 @@ const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
         </Flex>
       </Flex>
       <FormFooter
-        Element={FooterElement}
+        Element={() => FooterElement(selectedProducts, plans)}
         disabled={false}
         buttonText="Checkout"
         secondaryButtonText="Continue later"
@@ -216,6 +245,7 @@ const Content = (platform: "desktop" | "mobile", productsChunked, location) => {
 }
 
 export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompleted }) => {
+  const [selectedProducts, setSelectedProducts] = useState([])
   const { previousData, data = previousData } = useQuery(GET_DISCOVERY_PRODUCT_VARIANTS, {
     variables: {
       first: PAGE_LENGTH,
@@ -224,16 +254,14 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
     },
   })
 
-  const products = data?.products?.edges
-  const productsChunked = chunk(products, 4)
-  const location = data?.me?.customer?.detail?.shippingAddress
-
-  console.log("data", data)
+  console.log("selectedProducts", selectedProducts)
 
   return (
     <>
-      <DesktopMedia greaterThanOrEqual="md">{Content("desktop", productsChunked, location)}</DesktopMedia>
-      <Media lessThan="md">{Content("mobile", productsChunked, location)}</Media>
+      <DesktopMedia greaterThanOrEqual="md">
+        {Content("desktop", data, selectedProducts, setSelectedProducts)}
+      </DesktopMedia>
+      <Media lessThan="md">{Content("mobile", data, selectedProducts, setSelectedProducts)}</Media>
     </>
   )
 }
