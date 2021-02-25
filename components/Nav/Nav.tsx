@@ -1,3 +1,4 @@
+import React from "react"
 import { Media } from "../Responsive"
 import { BrandsNavItem } from "./BrandsNavItem"
 import { DesktopNav } from "./DesktopNav"
@@ -5,7 +6,6 @@ import { MobileNav } from "./MobileNav"
 import { NavProps } from "./Types"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
-import React from "react"
 
 type Props = NavProps & {
   brandItems: { name: string; slug: string }[]

@@ -122,7 +122,7 @@ export const DesktopNav = (props: NavProps) => {
               )}
             </Flex>
           </Flex>
-          <NotificationBar onClick={onClickNotificationBar} />
+          <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isLoggedIn} />
         </Box>
       </MaxWidth>
       <LoginModal

@@ -23,6 +23,9 @@ export const MobileNav: React.FC<NavProps> = ({ links, onClickNotificationBar })
   const router = useRouter()
   const tracking = useTracking()
   const [isLoginOpen, toggleLogin] = useState(false)
+  const {
+    authState: { isSignedIn },
+  } = useAuthContext()
 
   // Delay rendering of notif bar by 1 second so simultaneous renders of
   // notif bar in DesktopNav and MobileNav do not create a race condition
@@ -66,7 +69,7 @@ export const MobileNav: React.FC<NavProps> = ({ links, onClickNotificationBar })
           toggleLogin(false)
         }}
       />
-      {renderNotifBar && <NotificationBar onClick={onClickNotificationBar} />}
+      {renderNotifBar && <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isSignedIn} />}
     </HeaderContainer>
   )
 }
