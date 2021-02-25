@@ -24,6 +24,12 @@ export const MobileNav: React.FC<NavProps> = ({ links, onClickNotificationBar })
   const tracking = useTracking()
   const [isLoginOpen, toggleLogin] = useState(false)
 
+  // Delay rendering of notif bar by 1 second so simultaneous renders of
+  // notif bar in DesktopNav and MobileNav do not create a race condition
+  // on the backend that ends up creating multiple receipts for a given notif.
+  const [renderNotifBar, setRenderNotifBar] = useState(false)
+  setTimeout(() => setRenderNotifBar(true), 1000)
+
   useEffect(() => {
     toggleOpen(false)
   }, [router.asPath])
@@ -60,7 +66,7 @@ export const MobileNav: React.FC<NavProps> = ({ links, onClickNotificationBar })
           toggleLogin(false)
         }}
       />
-      <NotificationBar onClick={onClickNotificationBar} />
+      {renderNotifBar && <NotificationBar onClick={onClickNotificationBar} />}
     </HeaderContainer>
   )
 }
