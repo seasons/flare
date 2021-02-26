@@ -4,7 +4,6 @@ const withSourceMaps = require("@zeit/next-source-maps")
 const CopyPlugin = require("copy-webpack-plugin")
 const path = require("path")
 
-const appDownload = "https://szns.co/app"
 module.exports = withSourceMaps(
   withImages(
     withFonts({
@@ -18,6 +17,7 @@ module.exports = withSourceMaps(
         ALGOLIA_INDEX: process.env.ALGOLIA_INDEX,
         ALGOLIA_ACCOUNT_ID: process.env.ALGOLIA_ACCOUNT_ID,
         ALGOLIA_KEY: process.env.ALGOLIA_KEY,
+        STRIPE_API_KEY: process.env.STRIPE_API_KEY,
       },
       webpack: (config) => {
         config.resolve.alias = {
