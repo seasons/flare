@@ -123,7 +123,7 @@ const Content = (
         <Flex flexDirection="column" width="100%" py={60}>
           <Flex flexDirection={isDesktop ? "row" : "column"} width="100%">
             <Box width="100%">
-              <Spacer mb={isDesktop ? 0 : 10} />
+              <Spacer pb={isDesktop ? 0 : 170} />
               <Sans color="black100" size={["8", "10"]}>
                 You're in.
               </Sans>
@@ -133,7 +133,8 @@ const Content = (
                     Let's discover your first bag
                   </Sans>
                   <Sans size="4" color="black50">
-                    Here are some recommendations from us. Add up to 3 before checking out.
+                    Here are some recommendations from us in your size. Add up to 3 before checking out, or skip for
+                    later.
                   </Sans>
                 </Flex>
                 <Flex flexDirection="column">

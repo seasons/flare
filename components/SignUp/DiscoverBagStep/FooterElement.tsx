@@ -31,6 +31,7 @@ export const FooterElement: React.FC<{
 
         return (
           <BagItem
+            isDesktop={isDesktop}
             key={index}
             onClick={() =>
               removeFromBag({
@@ -63,7 +64,7 @@ export const FooterElement: React.FC<{
         )
       })}
       {bagItems?.length < 3 && (
-        <EmptyBagItem>
+        <EmptyBagItem isDesktop={isDesktop}>
           <Sans size="8">+</Sans>
         </EmptyBagItem>
       )}
@@ -71,7 +72,8 @@ export const FooterElement: React.FC<{
       <Flex flexDirection="column" justifyContent="center">
         <Sans size="3">Your bag</Sans>
         <Sans size="3" color="black50">
-          <span style={{ textDecoration: "underline", color: "black" }}>{cost}</span> per month
+          <span style={{ textDecoration: "underline", color: "black" }}>{cost}</span>
+          {` ${isDesktop ? "per" : "/"} month`}
         </Sans>
       </Flex>
     </Flex>
@@ -89,15 +91,15 @@ const Overlay = styled.div`
   cursor: pointer;
 `
 
-const BagItem = styled.div`
+const BagItem = styled.div<{ isDesktop: boolean }>`
   position: relative;
-  width: 40px;
-  height: 50px;
+  width: ${(p) => (p.isDesktop ? 40 : 36)}px;
+  height: ${(p) => (p.isDesktop ? 50 : 45)}px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: ${color("black04")};
-  margin-right: ${space(1)}px;
+  margin-right: ${(p) => (p.isDesktop ? space(1) : space(0.5))}px;
 
   &:hover {
     .overlay {
@@ -106,14 +108,14 @@ const BagItem = styled.div`
   }
 `
 
-const EmptyBagItem = styled.div`
-  width: 40px;
-  height: 50px;
+const EmptyBagItem = styled.div<{ isDesktop: boolean }>`
+  width: ${(p) => (p.isDesktop ? 40 : 36)}px;
+  height: ${(p) => (p.isDesktop ? 50 : 45)}px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: ${color("black04")};
-  margin-right: ${space(1)}px;
+  margin-right: ${(p) => (p.isDesktop ? space(1) : space(0.5))}px;
 `
 
 const ImageWrapper = styled.div`
