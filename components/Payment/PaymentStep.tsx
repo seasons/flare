@@ -1,17 +1,19 @@
 import { Separator } from "components"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
+import { FormFooter } from "components/Forms/FormFooter"
 import { Formik } from "formik"
 import { color } from "helpers/color"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { colors } from "theme/colors"
+import * as Yup from "yup"
 
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { Box, Button, Col, Flex, Grid, Row, Sans, Spacer } from "@seasons/eclipse"
+import { Box, Col, Grid, Row, Sans, Spacer } from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
-import { AppleGooglePayButton } from "./AppleGooglePayButton"
 import { PaymentBillingAddress } from "./PaymentBillingAddress"
+import { PaymentExpressButtons } from "./PaymentExpressButtons"
 import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
 
@@ -22,6 +24,8 @@ interface PaymentStepProps {
     name: string
     price: number
   }
+  onSuccess?: (data: any) => void
+  onError?: (data: any) => void
 }
 
 export const PAYMENT_PLANS = gql`
@@ -66,17 +70,24 @@ const SUBMIT_PAYMENT = gql`
   }
 `
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
-  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS, {
-    variables: {
-      planID: plan.planID,
-    },
-  })
+export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => {
   const elements = useElements()
   const stripe = useStripe()
   const [submitPayment] = useMutation(SUBMIT_PAYMENT)
   const [errorMessage, setErrorMessage] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState(null)
+  const [planID, setPlanID] = useState(plan?.planID)
+  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS, {
+    variables: {
+      planID,
+    },
+  })
+
+  useEffect(() => {
+    if (plan) {
+      setPlanID(plan.planID)
+    }
+  }, [plan])
 
   const handleSubmit = async (values) => {
     console.log(values)
@@ -138,6 +149,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
           payment_method: payload.paymentMethod.id,
         })
 
+        onSuccess(data)
+
         console.log("HandleCardAction: ", result)
         setErrorMessage(null)
       }
@@ -145,10 +158,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
   }
 
   return (
-    <Formik onSubmit={handleSubmit} initialValues={{}}>
-      {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-        <form onSubmit={handleSubmit}>
-          <Box width="100%" height="100%" style={{ overflowY: "scroll" }}>
+    <Box width="100%" height="100%" style={{ overflowY: "scroll" }}>
+      <Formik onSubmit={handleSubmit} initialValues={{}} validationSchema={validationSchema}>
+        {({ handleSubmit, isValid }) => (
+          <form onSubmit={handleSubmit}>
             <Grid>
               <Row>
                 <BorderedCol md={7}>
@@ -171,10 +184,11 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
                     <Separator />
                   </Box>
                   <Box>
-                    <AppleGooglePayButton plan={plan} />
-                  </Box>
-                  <Box>
                     <Box p={6}>
+                      <Box py={4}>
+                        <Sans size="7">Express checkout</Sans>
+                        <PaymentExpressButtons plan={data?.paymentPlan} />
+                      </Box>
                       <Box width="100%" py={4}>
                         <Sans size="7">Billing address</Sans>
                         <Spacer mt={2} />
@@ -184,12 +198,9 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
                         <Sans size="7">Payment details</Sans>
                         <Spacer mt={2} />
                         <PaymentForm />
+                        <Box>{errorMessage && <ErrorResult size="3">{errorMessage}</ErrorResult>}</Box>
                       </Box>
-                      <Box>
-                        {errorMessage && <ErrorResult size="3">{errorMessage}</ErrorResult>}
-                        {paymentMethod && <Box>Got PaymentMethod: {paymentMethod.id}</Box>}
-                        <Button type="submit">Pay</Button>
-                      </Box>
+                      <Spacer mt={4} />
                     </Box>
                   </Box>
                 </BorderedCol>
@@ -214,10 +225,18 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan }) => {
                 </Col>
               </Row>
             </Grid>
-          </Box>
-        </form>
-      )}
-    </Formik>
+            <FormFooter
+              footerText={<>You can upgrade or change your plan at any time from your account settings.</>}
+              buttonText="Checkout"
+              disabled={!isValid}
+              handleSubmit={() => {
+                // onCom /pleted?.()
+              }}
+            />
+          </form>
+        )}
+      </Formik>
+    </Box>
   )
 }
 
@@ -234,3 +253,15 @@ const FAQWrapper = styled(Box)`
 const ErrorResult = styled(Sans)`
   color: red;
 `
+
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().trim().required("Required"),
+  lastName: Yup.string().trim().required("Required"),
+  address1: Yup.string().trim().required("Required"),
+  city: Yup.string().trim().required("Required"),
+  state: Yup.string().trim().required("Required"),
+  postalCode: Yup.string()
+    .trim()
+    .required("Required")
+    .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
+})

@@ -8,7 +8,7 @@ export const PaymentOrderSummary = ({ plan }) => {
   }
 
   const taxes = plan.estimate?.taxes?.map((a) => a.amount)
-  const totalTax = taxes.reduce((sum, amount) => sum + amount)
+  const totalTax = taxes.reduce((sum, amount) => sum + amount, 0)
 
   const formatPrice = (price) =>
     (price / 100).toLocaleString("en-US", {
