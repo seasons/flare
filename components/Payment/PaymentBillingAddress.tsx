@@ -1,27 +1,32 @@
-import { Separator } from "components"
-import { Field } from "formik"
+import { Field, useFormikContext } from "formik"
 import { TextField } from "formik-material-ui"
-import { color } from "helpers/color"
 import React from "react"
 import styled from "styled-components"
+import { colors } from "theme/colors"
 
-import { InputLabel } from "@material-ui/core"
+import { InputLabel, makeStyles, withStyles } from "@material-ui/core"
 import { Box, Flex } from "@seasons/eclipse"
 
-export const PaymentField = ({ id, name, placeholder }) => {
+const useStyles = makeStyles({
+  underline: {
+    "&&:before": {
+      borderBottomColor: colors.black15,
+    },
+    "&&:not(.Mui-error):after": {
+      borderBottomColor: colors.black50,
+    },
+  },
+})
+
+export const PaymentField = ({ id, name, ...rest }) => {
+  const { errors, touched } = useFormikContext()
+  const classes = useStyles()
+  const hasError = errors[id] && touched[id]
+
   return (
     <Box flex={1} mr={2}>
       <Label htmlFor={id}>{name}</Label>
-      <Field
-        component={TextField}
-        id={id}
-        name={id}
-        placeholder={placeholder}
-        InputProps={{
-          disableUnderline: true,
-        }}
-      />
-      <Separator color={color("black15")} />
+      <Field {...rest} component={TextField} id={id} name={id} error={hasError} fullWidth InputProps={{ classes }} />
     </Box>
   )
 }
@@ -35,14 +40,14 @@ export const PaymentBillingAddress = () => {
       </Flex>
       <Flex mt={2}>
         <PaymentField id="address1" name="Address 1" placeholder="123 Dream Blvd" />
-        <PaymentField id="address2" name="Address 2" placeholder="" />
+        <PaymentField id="address2" name="Address 2" placeholder="Apt 3" />
       </Flex>
       <Flex mt={2}>
         <PaymentField id="city" name="City" placeholder="Brooklyn" />
         <PaymentField id="state" name="State" placeholder="NY" />
       </Flex>
       <Flex mt={2}>
-        <PaymentField id="postalCode" name="Postal Code" placeholder="12345" />
+        <PaymentField id="postalCode" type="number" name="Postal Code" placeholder="12345" />
       </Flex>
     </Box>
   )
