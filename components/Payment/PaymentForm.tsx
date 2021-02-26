@@ -1,12 +1,10 @@
-import { Box, Flex, Separator } from "components"
-import { Field } from "formik"
-import { TextField } from "formik-material-ui"
-import { color } from "helpers/color"
-import React from "react"
+import classNames from "classnames"
+import { Box, Flex } from "components"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { colors } from "theme/colors"
 
-import { InputLabel } from "@material-ui/core"
+import { FormHelperText, InputLabel } from "@material-ui/core"
 import { CardCvcElement, CardExpiryElement, CardNumberElement } from "@stripe/react-stripe-js"
 
 const logEvent = (name) => (event) => {
@@ -26,7 +24,7 @@ const ELEMENT_OPTIONS = {
       },
     },
     invalid: {
-      color: "#9e2146",
+      color: "#f44336",
     },
   },
 }
@@ -35,61 +33,61 @@ interface PaymentFormProps {
   planID?: string
 }
 
-export const PaymentForm: React.FC<PaymentFormProps> = ({ planID }) => {
+const Field = ({ Element, id, label }) => {
+  const [focused, setFocused] = useState(false)
+  const [error, setError] = useState(null)
   return (
     <>
-      <Box>
-        <Label htmlFor="fullName">Full Name</Label>
-        <Field
-          component={TextField}
-          id="fullName"
-          name="fullName"
-          placeholder="Will Smith"
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <Separator color={color("black15")} />
-      </Box>
-      <Box py={2}>
-        <Label htmlFor="cardNumber">Card Number</Label>
-        <Box pt="5px" pb="3px">
-          <CardNumberElement
-            id="cardNumber"
-            onChange={logEvent("change")}
+      <FieldContainer pt={2} pb={1} className={classNames({ focused: focused, error: !!error })}>
+        <Label htmlFor={id}>{label}</Label>
+        <Box pt="5px">
+          <Element
+            id={id}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            onChange={(e) => {
+              setError(e.error)
+            }}
             onReady={logEvent("ready")}
             options={ELEMENT_OPTIONS}
           />
         </Box>
-        <Separator color={color("black15")} />
-      </Box>
+      </FieldContainer>
+      <FormHelperText error={!!error}>{error?.message ?? " "}</FormHelperText>
+    </>
+  )
+}
+
+const FieldContainer = styled(Box)`
+  border-bottom: 1px solid ${colors.black15};
+  margin-bottom: 1px;
+  transition: all 0.1s;
+
+  &:hover,
+  &.focused {
+    border-bottom: 2px solid ${colors.black85};
+    margin-bottom: 0px;
+  }
+
+  &.error {
+    border-bottom: 2px solid #f44336;
+    margin-bottom: 0px;
+  }
+`
+
+export const PaymentForm: React.FC<PaymentFormProps> = () => {
+  return (
+    <Box width="100%" maxWidth="600px">
+      <Field Element={CardNumberElement} id="cardNumber" label="Card Number" />
       <Flex flexDirection="row">
-        <Box py={2} flex="1" mr={2}>
-          <Label htmlFor="cardNumber">Card Expiration</Label>
-          <Box pt="5px" pb="3px">
-            <CardExpiryElement
-              id="expiry"
-              onChange={logEvent("change")}
-              onReady={logEvent("ready")}
-              options={ELEMENT_OPTIONS}
-            />
-          </Box>
-          <Separator color={color("black15")} />
+        <Box flex="1" mr={2}>
+          <Field Element={CardExpiryElement} id="expiry" label="Card Expiration" />
         </Box>
-        <Box py={2} flex="1">
-          <Label htmlFor="cardNumber">CVC</Label>
-          <Box pt="5px" pb="3px">
-            <CardCvcElement
-              id="cvc"
-              onChange={logEvent("change")}
-              onReady={logEvent("ready")}
-              options={ELEMENT_OPTIONS}
-            />
-          </Box>
-          <Separator color={color("black15")} />
+        <Box flex="1">
+          <Field Element={CardCvcElement} id="cardCVC" label="CVC" />
         </Box>
       </Flex>
-    </>
+    </Box>
   )
 }
 
