@@ -133,7 +133,7 @@ const Content = (
                     Let's discover your first bag
                   </Sans>
                   <Sans size="4" color="black50">
-                    Here are some recommendations from us in your size. Add up to 3 before checking out, or skip for
+                    Here are some recommendations from us in your size. Add up to 3 before checking out, or skip to do
                     later.
                   </Sans>
                 </Flex>
