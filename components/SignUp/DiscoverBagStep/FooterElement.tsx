@@ -6,11 +6,12 @@ import { imageResize } from "utils/imageResize"
 import { GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
 
 export const FooterElement: React.FC<{
+  isDesktop: boolean
   productCount: number
   bagItems: any[]
   plans: any[]
   removeFromBag: (any) => void
-}> = ({ bagItems, plans, removeFromBag, productCount }) => {
+}> = ({ isDesktop, bagItems, plans, removeFromBag, productCount }) => {
   let cost
   if (bagItems?.length > 0) {
     const plan = plans.find((p) => p.itemCount === bagItems.length)
@@ -61,10 +62,12 @@ export const FooterElement: React.FC<{
           </BagItem>
         )
       })}
-      <EmptyBagItem>
-        <Sans size="8">+</Sans>
-      </EmptyBagItem>
-      <Spacer mr={2} />
+      {bagItems?.length < 3 && (
+        <EmptyBagItem>
+          <Sans size="8">+</Sans>
+        </EmptyBagItem>
+      )}
+      <Spacer mr={1} />
       <Flex flexDirection="column" justifyContent="center">
         <Sans size="3">Your bag</Sans>
         <Sans size="3" color="black50">

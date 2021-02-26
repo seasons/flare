@@ -29,11 +29,12 @@ const Content = (
 ) => {
   const bagItems = data?.me?.bag
   const products = data?.products?.edges
-  const productsChunked = chunk(products, 4)
+  const isDesktop = platform === "desktop"
+  const chunkCount = isDesktop ? 4 : 1
+  const productsChunked = chunk(products, chunkCount)
   const location = data?.me?.customer?.detail?.shippingAddress
   const plans = data?.paymentPlans
   const snapList = useRef(null)
-  const isDesktop = platform === "desktop"
   const selected = useVisibleElements({ debounce: 50, ref: snapList }, (elements) => {
     return elements[0]
   })
@@ -44,7 +45,7 @@ const Content = (
   const city = location?.city
   const state = location?.state
   const aggregateCount = data?.productsCount?.aggregate?.count
-  const reachedEnd = aggregateCount && Math.max(aggregateCount / 4) <= productsChunked.length
+  const reachedEnd = aggregateCount && Math.max(aggregateCount / chunkCount) <= productsChunked.length
 
   console.log("data", data)
 
@@ -120,14 +121,15 @@ const Content = (
     <>
       <Flex flexDirection="column" justifyContent="center" height="100%">
         <Flex flexDirection="column" width="100%" py={60}>
-          <Flex flexDirection="row" width="100%">
-            <Box mx={isDesktop ? 0 : 2} width="100%">
-              <Sans color="black100" size={["6", "10"]}>
+          <Flex flexDirection={isDesktop ? "row" : "column"} width="100%">
+            <Box width="100%">
+              <Spacer mb={isDesktop ? 0 : 10} />
+              <Sans color="black100" size={["8", "10"]}>
                 You're in.
               </Sans>
-              <Flex flexDirection="row" justifyContent="space-between" width="100%">
+              <Flex flexDirection={isDesktop ? "row" : "column"} justifyContent="space-between" width="100%">
                 <Flex flexDirection="column">
-                  <Sans color="black100" size={["6", "10"]}>
+                  <Sans color="black100" size={["8", "10"]}>
                     Let's discover your first bag
                   </Sans>
                   <Sans size="4" color="black50">
@@ -135,30 +137,34 @@ const Content = (
                   </Sans>
                 </Flex>
                 <Flex flexDirection="column">
-                  <Sans color="black100" size={["6", "10"]} style={{ textAlign: "right" }}>
+                  <Spacer mb={isDesktop ? 0 : 4} />
+                  <Sans color="black100" size={["11", "10"]} style={{ textAlign: isDesktop ? "right" : "left" }}>
                     {weatherText}
                   </Sans>
-                  <Sans size="4" color="black50" style={{ textAlign: "right" }}>
+                  <Sans size="4" color="black50" style={{ textAlign: isDesktop ? "right" : "left" }}>
                     {locationText}
                   </Sans>
+                  <Spacer mb={isDesktop ? 0 : 2} />
                 </Flex>
               </Flex>
             </Box>
           </Flex>
           <Spacer mb={isDesktop ? 6 : 0} />
           <CarouselWrapper>
-            <ArrowWrapper
-              justifyContent="flex-start"
-              onClick={() => {
-                if (selected > 0) {
-                  const nextIndex = selected - 1
-                  goToSnapItem(nextIndex)
-                }
-              }}
-            >
-              <ChevronIcon color={selected === 0 ? color("black04") : color("black100")} rotateDeg="180deg" />
-            </ArrowWrapper>
-            <SnapList direction="horizontal" width="calc(100% - 100px)" ref={snapList}>
+            {isDesktop && (
+              <ArrowWrapper
+                justifyContent="flex-start"
+                onClick={() => {
+                  if (selected > 0) {
+                    const nextIndex = selected - 1
+                    goToSnapItem(nextIndex)
+                  }
+                }}
+              >
+                <ChevronIcon color={selected === 0 ? color("black04") : color("black100")} rotateDeg="180deg" />
+              </ArrowWrapper>
+            )}
+            <SnapList direction="horizontal" width={isDesktop ? "calc(100% - 100px)" : "100%"} ref={snapList}>
               {productsChunked?.map((chunk, index) => {
                 return (
                   <SnapItem snapAlign="center" key={index} width="100%" height="100%">
@@ -170,7 +176,7 @@ const Content = (
                         const imageSRC = imageResize(image?.url, "large")
                         const added = bagItems?.find((bi) => bi.productVariant.id === variant.id)
                         return (
-                          <Flex style={{ flex: 4 }} p="2px" flexDirection="column" key={imageSRC + index}>
+                          <Flex style={{ flex: chunkCount }} p="2px" flexDirection="column" key={imageSRC + index}>
                             <ImageWrapper>
                               <Picture src={imageSRC} alt={image.alt} key={imageSRC} />
                             </ImageWrapper>
@@ -180,7 +186,10 @@ const Content = (
                               <Flex
                                 flexDirection="row"
                                 pr={2}
-                                onClick={() => (added ? onRemoveProduct(variant) : onAddProduct(variant))}
+                                onClick={() => {
+                                  console.log("li<Spacer mb={isDesktop ? 0 : 10} />")
+                                  added ? onRemoveProduct(variant) : onAddProduct(variant)
+                                }}
                               >
                                 <Sans size="3" style={{ textDecoration: "underline", cursor: "pointer" }}>
                                   {added ? "Added" : "Add"}
@@ -198,39 +207,48 @@ const Content = (
                 )
               })}
             </SnapList>
-            <ArrowWrapper
-              justifyContent="flex-end"
-              onClick={() => {
-                const nextIndex = selected + 1
-                goToSnapItem(nextIndex)
+            {isDesktop && (
+              <ArrowWrapper
+                justifyContent="flex-end"
+                onClick={() => {
+                  const nextIndex = selected + 1
+                  goToSnapItem(nextIndex)
 
-                const shouldLoadMore =
-                  !loading && !!aggregateCount && !reachedEnd && selected >= productsChunked.length - 2
+                  const shouldLoadMore =
+                    !loading && !!aggregateCount && !reachedEnd && selected >= productsChunked.length - 2
 
-                if (shouldLoadMore) {
-                  fetchMore({
-                    variables: {
-                      skip: products?.length,
-                    },
-                  }).then((fetchMoreResult: any) => {
-                    setProductCount(products.length + fetchMoreResult?.data?.products?.edges?.length)
-                  })
-                }
-              }}
-            >
-              <ChevronIcon color={reachedEnd ? color("black04") : color("black100")} />
-            </ArrowWrapper>
+                  if (shouldLoadMore) {
+                    fetchMore({
+                      variables: {
+                        skip: products?.length,
+                      },
+                    }).then((fetchMoreResult: any) => {
+                      setProductCount(products.length + fetchMoreResult?.data?.products?.edges?.length)
+                    })
+                  }
+                }}
+              >
+                <ChevronIcon color={reachedEnd ? color("black04") : color("black100")} />
+              </ArrowWrapper>
+            )}
           </CarouselWrapper>
+          <Spacer mb={isDesktop ? 0 : 6} />
         </Flex>
       </Flex>
       <FormFooter
         Element={() => (
-          <FooterElement productCount={productCount} removeFromBag={removeFromBag} bagItems={bagItems} plans={plans} />
+          <FooterElement
+            isDesktop={isDesktop}
+            productCount={productCount}
+            removeFromBag={removeFromBag}
+            bagItems={bagItems}
+            plans={plans}
+          />
         )}
         disabled={false}
         buttonText="Checkout"
-        secondaryButtonText="Continue later"
-        onSecondaryButtonClick={onSecondaryButtonClick}
+        secondaryButtonText={isDesktop ? "Continue later" : null}
+        onSecondaryButtonClick={isDesktop ? onSecondaryButtonClick : null}
       />
     </>
   )
@@ -280,7 +298,7 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
           loading
         )}
       </DesktopMedia>
-      <Media lessThan="md">
+      <MobileMedia lessThan="md">
         {Content(
           "mobile",
           data,
@@ -293,7 +311,7 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
           productCount,
           loading
         )}
-      </Media>
+      </MobileMedia>
     </>
   )
 }
@@ -308,6 +326,11 @@ const ArrowWrapper = styled(Flex)`
 
 const DesktopMedia = styled(Media)`
   height: 100%;
+  width: 100%;
+  position: relative;
+`
+
+const MobileMedia = styled(Media)`
   width: 100%;
   position: relative;
 `
