@@ -20,7 +20,7 @@ import { useLazyQuery, useQuery } from "@apollo/client"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 
-const stripePromise = loadStripe("pk_test_RUHQ0ADqBJHmknHqApuPBGS900fJpiEabb")
+const stripePromise = loadStripe(process.env.STRIPE_API_KEY)
 
 export interface SignupFormProps {
   onError?: () => void
@@ -89,6 +89,7 @@ const SignUpPage = screenTrack(() => ({
   const [startTriage, setStartTriage] = useState(false)
   const [triageIsRunning, setTriageIsRunning] = useState(false)
   const [showReferrerSplash, setShowReferrerSplash] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState(null)
 
   const customer = data?.me?.customer
 
@@ -232,24 +233,34 @@ const SignUpPage = screenTrack(() => ({
       break
     case "Authorized":
     case "Invited":
-      CurrentStep = (
-        <ChoosePlanStep
-          onPlanSelected={(plan) => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames.PlanSelectedButtonClicked,
-              actionType: Schema.ActionTypes.Tap,
-              plan,
-            })
-          }}
-          onSuccess={() => {
-            updateUserSession({ cust: { status: CustomerStatus.Active } })
-            localStorage.setItem("paymentProcessed", "true")
-            identify(data?.me?.customer?.user?.id, { status: "Active" })
-            refetchGetSignupUser()
-          }}
-          onError={() => {}}
-        />
-      )
+      if (selectedPlan) {
+        CurrentStep = (
+          <PaymentStep
+            plan={selectedPlan}
+            onSuccess={() => {
+              updateUserSession({ cust: { status: CustomerStatus.Active } })
+              localStorage.setItem("paymentProcessed", "true")
+              identify(data?.me?.customer?.user?.id, { status: "Active" })
+              refetchGetSignupUser()
+            }}
+            onError={() => {}}
+          />
+        )
+      } else {
+        CurrentStep = (
+          <ChoosePlanStep
+            onPlanSelected={(plan) => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.PlanSelectedButtonClicked,
+                actionType: Schema.ActionTypes.Tap,
+                plan,
+              })
+
+              setSelectedPlan(plan)
+            }}
+          />
+        )
+      }
       break
     case "Active":
       CurrentStep = <FormConfirmation status="accountAccepted" />
@@ -257,46 +268,41 @@ const SignUpPage = screenTrack(() => ({
   }
 
   return (
-    <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
-      <MaxWidth>
-        <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-        {/* <Flex
-          height="100%"
-          width="100%"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-          px={[2, 2, 2, 5, 5]}
-        >
-          {CurrentStep}
-        </Flex> */}
-        <Elements stripe={stripePromise}>
-          <PaymentStep
-            plan={{
-              id: "essential",
-            }}
-          />
-        </Elements>
-      </MaxWidth>
+    <Elements stripe={stripePromise}>
+      <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
+        <MaxWidth>
+          <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
+          <Flex
+            height="100%"
+            width="100%"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="center"
+            px={[2, 2, 2, 5, 5]}
+          >
+            {CurrentStep}
+          </Flex>
+        </MaxWidth>
 
-      <SplashScreen
-        open={showReferrerSplash}
-        title="Welcome to Seasons"
-        subtitle="It looks like you were referred by a friend. Get a free month of Seasons when you successfully sign up!"
-        descriptionLines={[
-          "Free shipping, returns, & dry cleaning",
-          "Purchase items you love directly with us",
-          "No commitment. Pause or cancel anytime",
-        ]}
-        imageURL={require("../../public/images/signup/Friend_Pic.png")}
-        primaryButton={{
-          text: "Sign Up",
-          action: () => {
-            setShowReferrerSplash(false)
-          },
-        }}
-      />
-    </Layout>
+        <SplashScreen
+          open={showReferrerSplash}
+          title="Welcome to Seasons"
+          subtitle="It looks like you were referred by a friend. Get a free month of Seasons when you successfully sign up!"
+          descriptionLines={[
+            "Free shipping, returns, & dry cleaning",
+            "Purchase items you love directly with us",
+            "No commitment. Pause or cancel anytime",
+          ]}
+          imageURL={require("../../public/images/signup/Friend_Pic.png")}
+          primaryButton={{
+            text: "Sign Up",
+            action: () => {
+              setShowReferrerSplash(false)
+            },
+          }}
+        />
+      </Layout>
+    </Elements>
   )
 })
 
