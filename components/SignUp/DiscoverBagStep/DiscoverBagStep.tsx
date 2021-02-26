@@ -25,7 +25,8 @@ const Content = (
   fetchMore,
   setProductCount,
   productCount,
-  loading
+  loading,
+  onCompleted
 ) => {
   const bagItems = data?.me?.bag
   const products = data?.products?.edges
@@ -46,12 +47,6 @@ const Content = (
   const state = location?.state
   const aggregateCount = data?.productsCount?.aggregate?.count
   const reachedEnd = aggregateCount && Math.max(aggregateCount / chunkCount) <= productsChunked.length
-
-  console.log("data", data)
-
-  const onSecondaryButtonClick = () => {
-    return null
-  }
 
   const onAddProduct = (variant) => {
     if (isMutating) {
@@ -249,7 +244,7 @@ const Content = (
         disabled={false}
         buttonText="Checkout"
         secondaryButtonText={isDesktop ? "Continue later" : null}
-        onSecondaryButtonClick={isDesktop ? onSecondaryButtonClick : null}
+        onSecondaryButtonClick={isDesktop ? onCompleted : null}
       />
     </>
   )
@@ -296,7 +291,8 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
           fetchMore,
           setProductCount,
           productCount,
-          loading
+          loading,
+          onCompleted
         )}
       </DesktopMedia>
       <MobileMedia lessThan="md">
@@ -310,7 +306,8 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
           fetchMore,
           setProductCount,
           productCount,
-          loading
+          loading,
+          onCompleted
         )}
       </MobileMedia>
     </>

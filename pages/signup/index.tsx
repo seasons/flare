@@ -229,6 +229,16 @@ const SignUpPage = screenTrack(() => ({
     case "Authorized":
     case "Invited":
       CurrentStep = (
+        <DiscoverBagStep
+          onCompleted={() => {
+            refetchGetSignupUser()
+          }}
+        />
+      )
+      break
+    case "Authorized":
+    case "Invited":
+      CurrentStep = (
         <ChoosePlanStep
           onPlanSelected={(plan) => {
             tracking.trackEvent({
@@ -248,8 +258,7 @@ const SignUpPage = screenTrack(() => ({
       )
       break
     case "Active":
-      CurrentStep = <DiscoverBagStep onCompleted={() => {}} />
-      // CurrentStep = <FormConfirmation status="accountAccepted" />
+      CurrentStep = <FormConfirmation status="accountAccepted" />
       break
   }
 
