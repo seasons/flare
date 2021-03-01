@@ -52,9 +52,8 @@ const Content = (
     if (isMutating) {
       return
     }
-    console.log("bagItems.length", bagItems.length)
-    setIsMutating(true)
     if (bagItems.length < 3) {
+      setIsMutating(true)
       addToBag({
         variables: {
           id: variant.id,
@@ -112,7 +111,7 @@ const Content = (
   } else if (!!temperature) {
     weatherText = `${temperature}°`
   }
-  console.log("data", data)
+
   return (
     <>
       <Flex flexDirection="column" justifyContent="center" height="100%">
