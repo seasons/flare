@@ -1,10 +1,15 @@
+import { Skeleton } from "components"
 import React from "react"
 
 import { Box, Flex, Sans, Spacer } from "@seasons/eclipse"
 
 export const PaymentOrderSummary = ({ plan }) => {
   if (!plan) {
-    return <Box px={6} py={4}></Box>
+    return (
+      <Box px={6} py={4}>
+        <Loader />
+      </Box>
+    )
   }
 
   const taxes = plan.estimate?.taxes?.map((a) => a.amount)
@@ -48,6 +53,29 @@ export const PaymentOrderSummary = ({ plan }) => {
       <Sans size="3" color="black50">
         Billed every 30-days. Pause or cancel anytime.
       </Sans>
+    </Box>
+  )
+}
+
+const Loader = () => {
+  return (
+    <Box>
+      <Flex flexDirection="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between">
+        <Skeleton width={86} height={22} />
+        <Skeleton width={60} height={22} />
+      </Flex>
+      <Spacer mt={1} />
+      <Flex flexDirection="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between">
+        <Skeleton width={45} height={22} />
+        <Skeleton width={70} height={22} />
+      </Flex>
+      <Spacer mt={1} />
+      <Flex flexDirection="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between">
+        <Skeleton width={42} height={25} />
+        <Skeleton width={70} height={25} />
+      </Flex>
+      <Spacer mt={4} />
+      <Skeleton width={200} height={20} />
     </Box>
   )
 }
