@@ -16,7 +16,7 @@ interface FormFooterProps {
   disabled?: boolean
   footerText?: any
   buttonLink?: string
-  Element?: React.ReactNode
+  Element?: () => React.ReactNode
   onSecondaryButtonClick?: () => void
 }
 
