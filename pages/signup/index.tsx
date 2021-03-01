@@ -14,6 +14,7 @@ import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
 import { GET_SIGNUP_USER, GET_GIFT } from "./queries"
+import { GET_LOCAL_BAG } from "@seasons/eclipse"
 
 export interface SignupFormProps {
   onError?: () => void
@@ -37,6 +38,7 @@ const SignUpPage = screenTrack(() => ({
   const tracking = useTracking()
   const router = useRouter()
   const { previousData, data = previousData, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
+  const { data: localItems } = useQuery(GET_LOCAL_BAG)
   const featuredBrandItems = data?.brands || []
 
   const [currentStepState, setCurrentStepState] = useState<Steps>(Steps.CreateAccountStep)
@@ -46,7 +48,7 @@ const SignUpPage = screenTrack(() => ({
 
   const customer = data?.me?.customer
   const customerStatus = customer?.status
-  const hasBagItems = data?.me?.bag?.length > 0
+  const hasBagItems = data?.me?.bag?.length > 0 || localItems?.localBagItems?.length > 0
   const hasSetMeasurements = !!customer?.detail?.height
 
   const hasGift = !!router.query.gift_id
