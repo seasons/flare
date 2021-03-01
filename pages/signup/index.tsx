@@ -63,9 +63,6 @@ const SignUpPage = screenTrack(() => ({
     }
   }, [hasGift])
 
-  console.log("data", data)
-  console.log("customerStatus", customerStatus)
-
   useEffect(() => {
     if (!!customerStatus && currentStepState === Steps.CreateAccountStep) {
       switch (customerStatus) {

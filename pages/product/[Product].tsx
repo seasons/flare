@@ -76,8 +76,6 @@ const Product = screenTrack(({ router }) => {
   const featuredBrandItems = navigationData?.brands || []
   const variantInStock = selectedVariant?.reservable > 0
 
-  console.log("data", data)
-
   return (
     <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
