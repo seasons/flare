@@ -10,6 +10,7 @@ export const GET_SIGNUP_USER = gql`
       ...BrandNavItem
     }
     me {
+      id
       bag {
         id
       }

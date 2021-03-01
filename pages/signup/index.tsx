@@ -6,8 +6,6 @@ import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurements
 import { DiscoverStyleStep } from "components/SignUp/DiscoverStyleStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { SplashScreen } from "components/SplashScreen/SplashScreen"
-import { useAuthContext } from "lib/auth/AuthContext"
-import { CustomerStatus } from "mobile/Account/Lists"
 import { Loader } from "mobile/Loader"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
@@ -36,32 +34,23 @@ const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
-  const { updateUserSession, userSession } = useAuthContext()
   const tracking = useTracking()
   const router = useRouter()
   const { previousData, data = previousData, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const featuredBrandItems = data?.brands || []
 
-  const [currentStepState, setCurrentStepState] = useState<Steps>(null)
+  const [currentStepState, setCurrentStepState] = useState<Steps>(Steps.CreateAccountStep)
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
   const [showReferrerSplash, setShowReferrerSplash] = useState(false)
 
   const customer = data?.me?.customer
-  const hasBagItems = data?.me?.bag.length > 0
-
+  const customerStatus = customer?.status
+  const hasBagItems = data?.me?.bag?.length > 0
   const hasSetMeasurements = !!customer?.detail?.height
-  const hasStyles = customer?.detail?.styles.length > 0
-  const [showDiscoverStyle, setShowDiscoverStyle] = useState(!hasStyles)
 
   const hasGift = !!router.query.gift_id
   const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)
-
-  useEffect(() => {
-    if (!!customer) {
-      updateUserSession({ cust: customer })
-    }
-  }, [data])
 
   useEffect(() => {
     const giftID = router.query.gift_id
@@ -72,16 +61,17 @@ const SignUpPage = screenTrack(() => ({
     }
   }, [hasGift])
 
-  const customerStatus = userSession?.customer?.status
+  console.log("data", data)
+  console.log("customerStatus", customerStatus)
 
   useEffect(() => {
-    if (customerStatus !== null && !currentStepState) {
+    if (!!customerStatus && currentStepState === Steps.CreateAccountStep) {
       switch (customerStatus) {
         case undefined:
           setCurrentStepState(Steps.CreateAccountStep)
           break
         case "Created":
-          if (hasSetMeasurements && showDiscoverStyle) {
+          if (hasSetMeasurements) {
             setCurrentStepState(Steps.DiscoverStyleStep)
           } else {
             setCurrentStepState(Steps.CustomerMeasurementsStep)
@@ -101,7 +91,7 @@ const SignUpPage = screenTrack(() => ({
           break
       }
     }
-  }, [customerStatus])
+  }, [customerStatus, hasSetMeasurements, hasBagItems])
 
   useEffect(() => {
     setShowReferrerSplash(!!router.query.referrer_id)
@@ -167,6 +157,7 @@ const SignUpPage = screenTrack(() => ({
         <CustomerMeasurementsStep
           form={{
             onCompleted: () => {
+              refetchGetSignupUser()
               setCurrentStepState(Steps.DiscoverStyleStep)
             },
           }}
@@ -178,7 +169,6 @@ const SignUpPage = screenTrack(() => ({
         <DiscoverStyleStep
           onCompleted={() => {
             setStartTriage(true)
-            updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
             setCurrentStepState(Steps.TriageStep)
           }}
         />
@@ -189,14 +179,6 @@ const SignUpPage = screenTrack(() => ({
         <TriageStep
           check={startTriage}
           onTriageComplete={(isWaitlisted) => {
-            if (isWaitlisted) {
-              updateUserSession({ cust: { status: CustomerStatus.Waitlisted } })
-            } else if (hasGift) {
-              updateUserSession({ cust: { status: CustomerStatus.Active } })
-            } else {
-              updateUserSession({ cust: { status: CustomerStatus.Authorized } })
-            }
-
             tracking.trackEvent({
               actionName: Schema.ActionNames.AccountTriaged,
               actionType: Schema.ActionTypes.Success,
@@ -204,6 +186,8 @@ const SignUpPage = screenTrack(() => ({
             })
 
             setStartTriage(false)
+            refetchGetSignupUser()
+
             if (isWaitlisted) {
               setCurrentStepState(Steps.FormConfirmation)
             } else if (hasBagItems) {
@@ -220,6 +204,7 @@ const SignUpPage = screenTrack(() => ({
         <DiscoverBagStep
           onCompleted={() => {
             refetchGetSignupUser()
+            setCurrentStepState(Steps.ChoosePlanStep)
           }}
         />
       )
@@ -235,7 +220,6 @@ const SignUpPage = screenTrack(() => ({
             })
           }}
           onSuccess={() => {
-            updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")
             identify(data?.me?.customer?.user?.id, { status: "Active" })
             refetchGetSignupUser()

@@ -13,13 +13,14 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
       price
     }
     me {
+      id
       bag {
         id
         productVariant {
           id
           product {
             id
-            images(size: Small) {
+            images(size: Thumb) {
               id
               url
             }
@@ -35,6 +36,7 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
             city
             state
             weather {
+              id
               temperature
               emoji
             }

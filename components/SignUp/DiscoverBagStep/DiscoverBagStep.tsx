@@ -52,6 +52,7 @@ const Content = (
     if (isMutating) {
       return
     }
+    console.log("bagItems.length", bagItems.length)
     setIsMutating(true)
     if (bagItems.length < 3) {
       addToBag({
@@ -111,7 +112,7 @@ const Content = (
   } else if (!!temperature) {
     weatherText = `${temperature}°`
   }
-
+  console.log("data", data)
   return (
     <>
       <Flex flexDirection="column" justifyContent="center" height="100%">
@@ -183,7 +184,6 @@ const Content = (
                                 flexDirection="row"
                                 pr={2}
                                 onClick={() => {
-                                  console.log("li<Spacer mb={isDesktop ? 0 : 10} />")
                                   added ? onRemoveProduct(variant) : onAddProduct(variant)
                                 }}
                               >
@@ -245,6 +245,9 @@ const Content = (
         buttonText="Checkout"
         secondaryButtonText={isDesktop ? "Continue later" : null}
         onSecondaryButtonClick={isDesktop ? onCompleted : null}
+        handleSubmit={() => {
+          onCompleted?.()
+        }}
       />
     </>
   )
