@@ -5,7 +5,7 @@ import { Formik } from "formik"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
 import { useRouter } from "next/router"
-import { GET_SIGNUP_USER, SignupFormProps } from "pages/signup"
+import { SignupFormProps } from "pages/signup"
 import React from "react"
 import { Schema, useTracking } from "utils/analytics"
 
@@ -13,6 +13,7 @@ import { useMutation } from "@apollo/client"
 
 import { SIGN_UP_USER } from "./queries"
 import { createAccountValidationSchema } from "./validationSchema"
+import { GET_SIGNUP_USER } from "pages/signup/queries"
 
 const imageURL = require("../../../../public/images/signup/signup_bg.jpg")
 
