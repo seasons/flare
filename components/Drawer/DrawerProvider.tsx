@@ -23,6 +23,7 @@ export const DrawerProvider = ({ children }) => {
             ...prevState,
             isOpen: false,
             params: null,
+            currentView: null,
           }
       }
     },
@@ -34,7 +35,6 @@ export const DrawerProvider = ({ children }) => {
 
   const drawerContext = {
     openDrawer: async (view, params) => {
-      console.log("openDrawer", view, params)
       dispatch({ type: DrawerAction.Open, view, params })
     },
     closeDrawer: async () => {

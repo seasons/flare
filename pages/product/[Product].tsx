@@ -10,26 +10,19 @@ import { ProductDetails } from "components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
 import { ProductMeasurements } from "components/Product/ProductMeasurements"
 import { VariantSelect } from "components/Product/VariantSelect"
+import { ProductBuyCTA } from "components/Product/ProductBuyCTA"
 import { Media } from "components/Responsive"
-import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
 import { useRouter, withRouter } from "next/router"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
-import { CREATE_DRAFT_ORDER_MUTATION } from "queries/orderQueries"
-import { ProductBuyCTA, ProductBuyCTA_ProductVariantFragment, ProductBuyCTA_ProductFragment } from "@seasons/eclipse"
+import { ProductBuyCTA_ProductVariantFragment, ProductBuyCTA_ProductFragment } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack } from "utils/analytics"
 import { filter } from "graphql-anywhere"
-import { useQuery, useMutation } from "@apollo/client"
-
-export enum OrderType {
-  BUY_USED = "Used",
-  BUY_NEW = "New",
-}
+import { useQuery } from "@apollo/client"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -40,30 +33,12 @@ const Product = screenTrack(({ router }) => {
 })(({ router }) => {
   const slug = router.query.Product || ""
   const { authState } = useAuthContext()
-  const [buyButtonMutating, setBuyButtonMutating] = useState(false)
-  const { showPopUp, hidePopUp } = usePopUpContext()
-  const { openDrawer } = useDrawerContext()
   const { previousData, data = previousData, refetch } = useQuery(GET_PRODUCT, {
     variables: {
       slug,
     },
   })
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
-
-  const [createDraftOrder] = useMutation(CREATE_DRAFT_ORDER_MUTATION, {
-    onCompleted: (res) => {
-      setBuyButtonMutating(false)
-      console.log("data", res)
-      if (res?.createDraftedOrder) {
-        console.log("openDrawer")
-        openDrawer("reviewOrder", { order: res.createDraftedOrder })
-      }
-    },
-    onError: (error) => {
-      console.log("error createDraftOrder ", error)
-      setBuyButtonMutating(false)
-    },
-  })
 
   const { query } = useRouter()
 
@@ -104,28 +79,6 @@ const Product = screenTrack(({ router }) => {
   const featuredBrandItems = navigationData?.brands || []
   const variantInStock = selectedVariant?.reservable > 0
 
-  const handleCreateDraftOrder = (orderType: "Used" | "New") => {
-    if (Boolean(authState?.userSession)) {
-      return createDraftOrder({
-        variables: {
-          input: {
-            productVariantID: selectedVariant?.id,
-            orderType,
-          },
-        },
-      })
-    } else {
-      showPopUp({
-        title: "Sign up to buy this item",
-        note: "You need to sign in or create an account before you can order items",
-        buttonText: "Got it",
-        onClose: () => {
-          setBuyButtonMutating(false)
-          hidePopUp()
-        },
-      })
-    }
-  }
   const handleNavigateToBrand = (href: string) => {
     window.location.href = href
   }
@@ -206,15 +159,6 @@ const Product = screenTrack(({ router }) => {
                     pt={8}
                     product={filter(ProductBuyCTA_ProductFragment, product)}
                     selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
-                    buyButtonMutating={buyButtonMutating}
-                    onBuyNew={() => {
-                      setBuyButtonMutating(true)
-                      handleCreateDraftOrder(OrderType.BUY_NEW)
-                    }}
-                    onBuyUsed={() => {
-                      setBuyButtonMutating(true)
-                      handleCreateDraftOrder(OrderType.BUY_USED)
-                    }}
                     onNavigateToBrand={handleNavigateToBrand}
                   />
                 ) : null}

@@ -40,8 +40,6 @@ export const Drawer = (props: DrawerProps) => {
 
   const drawerWidth = getDrawerWidth()
 
-  console.log("drawerProps", props)
-
   useEffect(() => {
     if (open) {
       openDrawer(currentView)

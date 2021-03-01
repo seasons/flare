@@ -35,8 +35,6 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
     })
   }
 
-  console.log("rendering review order")
-
   return (
     <ReviewOrderBase
       onBackPressed={handleBackPressed}
