@@ -10,3 +10,13 @@ export const CREATE_DRAFT_ORDER_MUTATION = gql`
   }
   ${Order_OrderFragment}
 `
+
+export const SUBMIT_ORDER = gql`
+  mutation SubmitOrder($input: SubmitOrderInput!) {
+    submitOrder(input: $input) {
+      id
+      ...OrderFragment
+    }
+  }
+  ${Order_OrderFragment}
+`

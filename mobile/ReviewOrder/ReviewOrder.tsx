@@ -1,9 +1,12 @@
 import React from "react"
-import { ReviewOrder as ReviewOrderBase } from "@seasons/eclipse"
+import { useMutation, ApolloError } from "@apollo/client"
+import { ReviewOrder as ReviewOrderBase, GET_BAG } from "@seasons/eclipse"
+import { SUBMIT_ORDER } from "queries/orderQueries"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { getDrawerWidth } from "components/Drawer/Drawer"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useRouter } from "next/router"
+import { Schema, useTracking } from "utils/analytics"
 
 type Props = {
   order: any
@@ -13,6 +16,15 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
   const { closeDrawer, openDrawer } = useDrawerContext()
   const { showPopUp, hidePopUp } = usePopUpContext()
   const router = useRouter()
+  const tracking = useTracking()
+  const [submitOrder] = useMutation(SUBMIT_ORDER, {
+    refetchQueries: [
+      {
+        query: GET_BAG,
+      },
+    ],
+    awaitRefetchQueries: true,
+  })
 
   const handleBackPressed = () => {
     closeDrawer()
@@ -20,9 +32,31 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
   const handleOrderItemPressed = (product) => {
     router.push(`/product/${product.slug}`)
   }
-  const handleOrderSubmitted = ({ order, customer }) => {
+
+  const handleOrderSubmitted = async ({ order, customer }) => {
+    try {
+      tracking.trackEvent({
+        actionName: Schema.ActionNames.PlaceOrderTapped,
+        actionType: Schema.ActionTypes.Tap,
+      })
+      const result = await submitOrder({
+        variables: {
+          input: {
+            orderID: order.id,
+          },
+        },
+      })
+
+      if (result.errors) {
+        handleError((result.errors as any) as readonly ApolloError[])
+      }
+    } catch (e) {
+      handleError(e)
+    }
+
     openDrawer("orderConfirmation", { order, customer })
   }
+
   const handleError = (error) => {
     console.error(error)
     showPopUp({

@@ -13,9 +13,6 @@ export const OrderConfirmation: React.FC<Props> = ({ order, customer }) => {
   const { closeDrawer } = useDrawerContext()
   const router = useRouter()
 
-  const handleBackPressed = () => {
-    closeDrawer()
-  }
   const handleDonePressed = () => {
     closeDrawer()
   }
@@ -28,7 +25,6 @@ export const OrderConfirmation: React.FC<Props> = ({ order, customer }) => {
       order={order}
       customer={customer}
       windowWidth={getDrawerWidth()}
-      onBackPressed={handleBackPressed}
       onOrderItemPressed={handleOrderItemPressed}
       onDonePressed={handleDonePressed}
     />
