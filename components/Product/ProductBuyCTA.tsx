@@ -21,16 +21,32 @@ export const ProductBuyCTA = (props: Props) => {
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
   const [buyButtonMutating, setBuyButtonMutating] = React.useState(false)
+
+  const handleCreateDraftOrderError = (error) => {
+    console.error(error)
+    showPopUp({
+      title: "Oops! Try again!",
+      note: "There was an issue purchasing this item. Please retry or contact us.",
+      buttonText: "Close",
+      onClose: () => {
+        hidePopUp()
+      },
+    })
+  }
+
   const [createDraftOrder] = useMutation(CREATE_DRAFT_ORDER_MUTATION, {
     onCompleted: (res) => {
       setBuyButtonMutating(false)
+      if (res?.errors) {
+        return
+      }
       if (res?.createDraftedOrder) {
         openDrawer("reviewOrder", { order: res.createDraftedOrder })
       }
     },
     onError: (error) => {
-      console.log("error createDraftOrder ", error)
       setBuyButtonMutating(false)
+      handleCreateDraftOrderError(error)
     },
   })
 

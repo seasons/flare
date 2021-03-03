@@ -15,7 +15,7 @@ export const SUBMIT_ORDER = gql`
   mutation SubmitOrder($input: SubmitOrderInput!) {
     submitOrder(input: $input) {
       id
-      ...OrderFragment
+      ...Order_OrderFragment
     }
   }
   ${Order_OrderFragment}

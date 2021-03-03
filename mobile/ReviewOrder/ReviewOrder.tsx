@@ -49,9 +49,11 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
 
       if (result.errors) {
         handleError((result.errors as any) as readonly ApolloError[])
+        return
       }
     } catch (e) {
       handleError(e)
+      return
     }
 
     openDrawer("orderConfirmation", { order, customer })
