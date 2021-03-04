@@ -7,7 +7,7 @@ import { NavProps } from "./Types"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
 
-type Props = NavProps & {
+type Props = Omit<NavProps, "onClickNotificationBar"> & {
   brandItems: { name: string; slug: string }[]
 }
 

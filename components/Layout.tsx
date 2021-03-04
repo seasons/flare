@@ -74,8 +74,6 @@ export const Layout = ({
           <Theme>
             {showIntercom && <Intercom />}
             <Nav brandItems={brandItems} />
-
-            {/* <NotificationBar title={"Hello"} description="what's up" onClick={() => alert("clicked")} type="P0" /> */}
             <MaxWidth>
               <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                 {children}
