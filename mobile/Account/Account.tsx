@@ -254,6 +254,7 @@ export const Account = screenTrack()(({ navigation }) => {
       case CustomerStatus.Suspended:
       case CustomerStatus.Paused:
       case CustomerStatus.Deactivated:
+      case CustomerStatus.PaymentFailed:
         return <AccountList list={topList} roles={roles} />
     }
   }
