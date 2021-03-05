@@ -19,12 +19,12 @@ module.exports = withSourceMaps(
         ALGOLIA_ACCOUNT_ID: process.env.ALGOLIA_ACCOUNT_ID,
         ALGOLIA_KEY: process.env.ALGOLIA_KEY,
       },
-      webpack: (config) => {
+      webpack: (config, options) => {
         config.resolve.alias = {
           ...(config.resolve.alias || {}),
           // Transform all direct `react-native` imports to `react-native-web`
           "react-native$": "react-native-web",
-          "react-native-svg": "react-native-svg-web",
+          "react-native-svg": "react-native-svg-web-transform",
         }
         config.resolve.extensions = [".web.js", ".web.ts", ".web.tsx", ...config.resolve.extensions]
 
