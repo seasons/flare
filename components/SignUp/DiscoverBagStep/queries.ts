@@ -44,12 +44,15 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
         }
       }
     }
-    productsCount: availableProductVariantsConnectionForCustomer {
+    products: productVariantsConnection(
+      skip: $skip
+      first: $first
+      orderBy: $orderBy
+      personalizedForCurrentUser: true
+    ) {
       aggregate {
         count
       }
-    }
-    products: availableProductVariantsConnectionForCustomer(skip: $skip, first: $first, orderBy: $orderBy) {
       edges {
         node {
           id

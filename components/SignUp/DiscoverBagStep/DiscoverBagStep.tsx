@@ -1,17 +1,19 @@
 import { Box, Flex, Media, Picture, Sans, Spacer } from "components"
-import React, { useRef, useState } from "react"
-import styled from "styled-components"
-import { useMutation, useQuery } from "@apollo/client"
-import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplist-carousel"
-import { imageResize } from "utils/imageResize"
-import { chunk } from "lodash"
 import { FormFooter } from "components/Forms/FormFooter"
-import { color } from "helpers/color"
 import { ChevronIcon } from "components/Icons"
-import { GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
-import { ADD_TO_BAG, REMOVE_FROM_BAG } from "@seasons/eclipse"
-import { FooterElement } from "./FooterElement"
+import { color } from "helpers/color"
+import { chunk } from "lodash"
+import React, { useRef, useState } from "react"
+import { SnapItem, SnapList, useScroll, useVisibleElements } from "react-snaplist-carousel"
+import styled from "styled-components"
 import { emojiUnixToString } from "utils/emojiUnixToString"
+import { imageResize } from "utils/imageResize"
+
+import { useMutation, useQuery } from "@apollo/client"
+import { ADD_TO_BAG, REMOVE_FROM_BAG } from "@seasons/eclipse"
+
+import { FooterElement } from "./FooterElement"
+import { GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
 
 const PAGE_LENGTH = 16
 
@@ -45,7 +47,7 @@ const Content = (
   const emojiToString = emojiUnixToString(emoji)
   const city = location?.city
   const state = location?.state
-  const aggregateCount = data?.productsCount?.aggregate?.count
+  const aggregateCount = data?.products?.aggregate?.count
   const reachedEnd = aggregateCount && Math.max(aggregateCount / chunkCount) <= productsChunked.length
 
   const onAddProduct = (variant) => {
