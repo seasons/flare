@@ -1,7 +1,7 @@
 import { Separator } from "components"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
 import { FormFooter } from "components/Forms/FormFooter"
-import { Formik } from "formik"
+import { Formik, useFormikContext } from "formik"
 import { color } from "helpers/color"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
@@ -89,6 +89,19 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
     }
   }, [plan])
 
+  const valuesToBillingDetails = (values) => ({
+    name: values.name,
+    address: {
+      line1: values.address1,
+      line2: values.address2,
+      city: values.city,
+      state: values.state,
+      postal_code: values.postalCode,
+      country: "US",
+    },
+    email: data?.me?.customer?.user?.email,
+  })
+
   const handleSubmit = async (values) => {
     console.log(values)
 
@@ -99,19 +112,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
     }
 
     const cardElement = elements.getElement(CardNumberElement)
-
-    const billingDetails = {
-      name: values.name,
-      address: {
-        line1: values.address1,
-        line2: values.address2,
-        city: values.city,
-        state: values.state,
-        postal_code: values.postalCode,
-        country: "US",
-      },
-      email: data?.me?.customer?.user?.email,
-    }
+    const billingDetails = valuesToBillingDetails(values)
 
     const payload = await stripe.createPaymentMethod({
       type: "card",
@@ -126,41 +127,44 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
     } else {
       console.log("[PaymentMethod]", payload.paymentMethod)
       setPaymentMethod(payload.paymentMethod)
-      const { data, errors } = await submitPayment({
-        variables: {
-          paymentMethodID: payload.paymentMethod.id,
-          planID: plan?.id,
-          billing: {
-            ...billingDetails,
-            user: {
-              firstName: values.firstName,
-              lastName: values.lastName,
-              email: "luc@seasons.nyc",
-            },
+      processPayment(payload.paymentMethod, values, billingDetails)
+    }
+  }
+
+  const processPayment = async (paymentMethod, values, billingDetails) => {
+    const { data, errors } = await submitPayment({
+      variables: {
+        paymentMethodID: paymentMethod.id,
+        planID: plan?.id,
+        billing: {
+          ...billingDetails,
+          user: {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: "luc@seasons.nyc",
           },
         },
+      },
+    })
+
+    // handle errors
+    if (errors) {
+      console.log(errors)
+    } else {
+      const result = await stripe.confirmCardPayment(data.processPaymentMethod.client_secret, {
+        payment_method: paymentMethod.id,
       })
 
-      // handle errors
-      if (errors) {
-        console.log(errors)
-      } else {
-        const result = await stripe.confirmCardPayment(data.processPaymentMethod.client_secret, {
-          payment_method: payload.paymentMethod.id,
-        })
-
-        onSuccess(data)
-
-        console.log("HandleCardAction: ", result)
-        setErrorMessage(null)
-      }
+      console.log("HandleCardAction: ", result)
+      onSuccess(data)
+      setErrorMessage(null)
     }
   }
 
   return (
     <Box width="100%" height="100%" style={{ overflowY: "scroll" }}>
       <Formik onSubmit={handleSubmit} initialValues={{}} validationSchema={validationSchema}>
-        {({ handleSubmit, isValid }) => (
+        {({ handleSubmit, isValid, values }) => (
           <form onSubmit={handleSubmit}>
             <Grid>
               <Row>
@@ -187,7 +191,12 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
                     <Box p={6}>
                       <Box py={4}>
                         <Sans size="7">Express checkout</Sans>
-                        <PaymentExpressButtons plan={data?.paymentPlan} />
+                        <PaymentExpressButtons
+                          plan={data?.paymentPlan}
+                          onPaymentMethodReceived={(paymentMethod) => {
+                            processPayment(paymentMethod, values, valuesToBillingDetails(values))
+                          }}
+                        />
                       </Box>
                       <Box width="100%" py={4}>
                         <Sans size="7">Billing address</Sans>

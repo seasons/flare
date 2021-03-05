@@ -40,7 +40,7 @@ export const PaymentBillingAddress = () => {
       </Flex>
       <Flex mt={2}>
         <PaymentField id="address1" name="Address 1" placeholder="123 Dream Blvd" />
-        <PaymentField id="address2" name="Address 2" placeholder="Apt 3" />
+        <PaymentField id="address2" name="Address 2" placeholder="Suite or Apt #" />
       </Flex>
       <Flex mt={2}>
         <PaymentField id="city" name="City" placeholder="Brooklyn" />

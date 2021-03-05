@@ -1,11 +1,12 @@
 import { Box, Flex } from "components"
 import React, { useEffect, useState } from "react"
+import FadeIn from "react-fade-in"
 
 import { PaymentRequestButtonElement, useStripe } from "@stripe/react-stripe-js"
 
 import { PaypalButton } from "./PaypalButton"
 
-export const PaymentExpressButtons = ({ plan }) => {
+export const PaymentExpressButtons = ({ plan, onPaymentMethodReceived }) => {
   const stripe = useStripe()
   const [paymentRequest, setPaymentRequest] = useState(null)
 
@@ -22,6 +23,10 @@ export const PaymentExpressButtons = ({ plan }) => {
         requestPayerEmail: true,
       })
 
+      pr.on("paymentmethod", async (ev) => {
+        onPaymentMethodReceived?.(ev.paymentMethod)
+      })
+
       // Check the availability of the Payment Request API.
       pr.canMakePayment()
         .then((result) => {
@@ -34,17 +39,20 @@ export const PaymentExpressButtons = ({ plan }) => {
   }, [stripe, plan])
 
   return (
-    <Flex flexDirection="row" width="80%" mt={2}>
+    <Flex flexDirection="row" width="80%" height="45px" mt={2}>
       <Box width="30%" mr={2}>
         <PaypalButton plan={plan} />
       </Box>
+
       {paymentRequest && (
         <Box width="30%">
-          <PaymentRequestButtonElement
-            options={{
-              paymentRequest,
-            }}
-          />
+          <FadeIn>
+            <PaymentRequestButtonElement
+              options={{
+                paymentRequest,
+              }}
+            />
+          </FadeIn>
         </Box>
       )}
     </Flex>

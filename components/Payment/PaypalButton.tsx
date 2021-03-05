@@ -1,10 +1,12 @@
 import React, { useEffect } from "react"
+import FadeIn from "react-fade-in"
+import styled from "styled-components"
 
 export const PaypalButton = ({ plan }) => {
   useEffect(() => {
-    const el = document.getElementById("paypal-button-container")
+    const el = document.getElementsByClassName("paypal-button-container")?.[0]
 
-    if (plan && el.childNodes.length === 0) {
+    if (plan && el?.childNodes?.length === 0) {
       ;(window as any).paypal
         ?.Buttons({
           style: {
@@ -30,13 +32,14 @@ export const PaypalButton = ({ plan }) => {
             console.log(data)
           },
         })
-        .render("#paypal-button-container")
+        .render(".paypal-button-container")
     }
   }, [plan])
 
-  return (
-    <>
-      <div id="paypal-button-container"></div>
-    </>
-  )
+  return <Container className="paypal-button-container"></Container>
 }
+
+const Container = styled(FadeIn)`
+  width: 176px;
+  height: 45px;
+`
