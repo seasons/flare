@@ -23,6 +23,7 @@ export const DrawerProvider = ({ children }) => {
             ...prevState,
             isOpen: false,
             params: null,
+            currentView: null,
           }
       }
     },
