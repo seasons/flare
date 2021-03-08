@@ -1,14 +1,13 @@
 import { Picture } from "components/Picture"
 import { Media } from "components/Responsive"
 import { Check } from "components/SVGs/Check"
-import Link from "next/link"
-import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 
 import { Modal } from "@material-ui/core"
-import { Box, Button, Flex, Sans, Spacer } from "@seasons/eclipse"
+import { Box, Button, Sans, Spacer } from "@seasons/eclipse"
+import { Flex } from "components/Flex"
 
 interface SplashScreenProps {
   title: string
@@ -44,7 +43,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = (props) => {
         <Flex width={size === "small" ? "100%" : "450px"} height="100%">
           <Picture src={imageURL || ""} size="medium" />
         </Flex>
-        <Flex flex={1} py={size === "small" ? 2 : 4} px={3}>
+        <Flex flex={1} py={size === "small" ? 2 : 4} px={3} flexDirection="column">
           <Box mb={2} mt={size === "small" ? 2 : 0}>
             <Sans size="7">{title}</Sans>
           </Box>

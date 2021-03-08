@@ -11,9 +11,11 @@ module.exports = {
         alias: {
           Analytics: "./src/analytics",
           Components: "./src/components",
+          "react-native": "react-native-web",
+          "react-native-svg": "react-native-svg-web-transform",
         },
       },
     ],
-    ['react-native-web', { commonjs: true }]
+    ["react-native-web", { commonjs: true }],
   ],
 }
