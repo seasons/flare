@@ -63,6 +63,7 @@ export const PAYMENT_PLANS = gql`
     }
   }
 `
+const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
 const SUBMIT_PAYMENT = gql`
   mutation SubmitPayment($paymentMethodID: String!, $planID: String!, $billing: JSON) {
@@ -135,7 +136,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
     const { data, errors } = await submitPayment({
       variables: {
         paymentMethodID: paymentMethod.id,
-        planID: plan?.id,
+        planID: plan?.planID,
         billing: {
           ...billingDetails,
           user: {
@@ -151,7 +152,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
     if (errors) {
       console.log(errors)
     } else {
-      const result = await stripe.confirmCardPayment(data.processPaymentMethod.client_secret, {
+      const result = await stripe.confirmCardPayment(data.processPayment.client_secret, {
         payment_method: paymentMethod.id,
       })
 
@@ -189,15 +190,17 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
                   </Box>
                   <Box>
                     <Box p={6}>
-                      <Box py={4}>
-                        <Sans size="7">Express checkout</Sans>
-                        <PaymentExpressButtons
-                          plan={data?.paymentPlan}
-                          onPaymentMethodReceived={(paymentMethod) => {
-                            processPayment(paymentMethod, values, valuesToBillingDetails(values))
-                          }}
-                        />
-                      </Box>
+                      {EnableExpressCheckout && (
+                        <Box py={4}>
+                          <Sans size="7">Express checkout</Sans>
+                          <PaymentExpressButtons
+                            plan={data?.paymentPlan}
+                            onPaymentMethodReceived={(paymentMethod) => {
+                              processPayment(paymentMethod, values, valuesToBillingDetails(values))
+                            }}
+                          />
+                        </Box>
+                      )}
                       <Box width="100%" py={4}>
                         <Sans size="7">Billing address</Sans>
                         <Spacer mt={2} />

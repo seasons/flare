@@ -17,6 +17,7 @@ export const GET_SIGNUP_USER = gql`
       customer {
         id
         status
+        plan
         detail {
           id
           height
