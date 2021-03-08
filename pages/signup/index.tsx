@@ -3,6 +3,7 @@ import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
+import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
 import { DiscoverStyleStep } from "components/SignUp/DiscoverStyleStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { SplashScreen } from "components/SplashScreen/SplashScreen"
@@ -12,9 +13,9 @@ import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useLazyQuery, useQuery } from "@apollo/client"
-import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
-import { GET_SIGNUP_USER, GET_GIFT } from "./queries"
 import { GET_LOCAL_BAG } from "@seasons/eclipse"
+
+import { GET_GIFT, GET_SIGNUP_USER } from "../../components/SignUp/queries"
 
 export interface SignupFormProps {
   onError?: () => void

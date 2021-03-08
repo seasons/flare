@@ -1,6 +1,7 @@
 import { ExternalLink } from "components"
 import { TelephoneMaskField } from "components/Fields/TelephoneMaskField"
 import { FormTemplate } from "components/Forms/FormTemplate"
+import { GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Formik } from "formik"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
@@ -13,7 +14,6 @@ import { useMutation } from "@apollo/client"
 
 import { SIGN_UP_USER } from "./queries"
 import { createAccountValidationSchema } from "./validationSchema"
-import { GET_SIGNUP_USER } from "pages/signup/queries"
 
 const imageURL = require("../../../../public/images/signup/signup_bg.jpg")
 

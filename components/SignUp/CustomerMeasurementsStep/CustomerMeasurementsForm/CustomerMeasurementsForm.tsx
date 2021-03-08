@@ -1,4 +1,5 @@
 import { Box, ExternalLink } from "components"
+import { GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Formik } from "formik"
 import gql from "graphql-tag"
 import { SignupFormProps } from "pages/signup"
@@ -11,7 +12,6 @@ import { useMutation } from "@apollo/client"
 import { MultiSelectionTableField } from "../../../Fields/MultiSelectionTableField"
 import { FormTemplate } from "../../../Forms/FormTemplate"
 import { customerMeasurements } from "../../../Forms/helpers/measurements"
-import { GET_SIGNUP_USER } from "pages/signup/queries"
 
 const imageURL = require("../../../../public/images/signup/measurements_bg.jpg")
 
