@@ -6742,10 +6742,10 @@ react-slick@^0.27.14:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
-react-snaplist-carousel@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/react-snaplist-carousel/-/react-snaplist-carousel-3.2.2.tgz#7ae22819adaca82c720edf07654560161caf4ad0"
-  integrity sha512-H9BNv5aJoLZqEyCL3kU4y7H79BkAHuDdIsmK5Ta2g7yE0zVRz66EeWMA/D+MHZvIn3Ntpr5ucLFA+DR897UPdg==
+react-snaplist-carousel@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-snaplist-carousel/-/react-snaplist-carousel-4.3.0.tgz#0ad47c24f35ffecd411939c5cb9ab5351eb4a0a3"
+  integrity sha512-h+oF9RUrU5M8ETEJ114nb4uA6wlBXhIOmRi2c+jfsdPsP4ghi5+nTNquj95Wbebyw51zeh0TThyeSpCcQViFPg==
 
 react-spring@^8.0.27:
   version "8.0.27"

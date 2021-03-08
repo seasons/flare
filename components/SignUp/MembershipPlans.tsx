@@ -1,12 +1,10 @@
-import { Button, Flex, Sans, Separator, Spacer } from "components"
+import { Flex, Sans, Separator, Spacer } from "components"
 import { Box } from "components/Box"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
-import { Collapse } from "components/Collapse"
-import { ChevronIcon } from "components/Icons"
 import { PlanTier } from "components/SignUp/PlanTier"
 import { color } from "helpers"
 import { uniq } from "lodash"
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 
 import { Col, Grid, Row } from "../Grid"
@@ -65,7 +63,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                       {index === 0 && (
                         <Box>
                           <Sans size="8" color="black100">
-                            You're In. Let's choose your plan:
+                            Let's choose your plan:
                           </Sans>
                           <Spacer mb={1} />
                           <Sans size="4" color="black50">
@@ -167,7 +165,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
           >
             <Box width={["auto", "auto", "500px", "500px", "500px"]}>
               <FAQWrapper>
-                <Spacer mb={10} />
+                <Spacer pb={10} />
                 <Sans size="8" color="black100">
                   FAQ
                 </Sans>
