@@ -47,7 +47,7 @@ const Content = (
   const emojiToString = emojiUnixToString(emoji)
   const city = location?.city
   const state = location?.state
-  const aggregateCount = data?.products?.aggregate?.count
+  const aggregateCount = data?.productsCount?.aggregate?.count
   const reachedEnd = aggregateCount && Math.max(aggregateCount / chunkCount) <= productsChunked.length
 
   const onAddProduct = (variant) => {
