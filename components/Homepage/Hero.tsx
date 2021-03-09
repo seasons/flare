@@ -13,22 +13,17 @@ import { useAuthContext } from "lib/auth/AuthContext"
 import { Countdown } from "@seasons/eclipse"
 import { DateTime } from "luxon"
 import { Schema, useTracking } from "utils/analytics"
+import { color } from "helpers"
 
 interface HeroComponentProps {
   version: "mobile" | "desktop"
 }
 
-const listText = [
-  "Free shipping, returns & dry cleaning.",
-  "Purchase items you love directly from the app.",
-  "No commitment. Pause or cancel anytime.",
-]
-
 const DesktopTextContent = () => {
   return (
-    <Box pb={5} style={{ zIndex: 3, position: "relative" }} pr={2}>
+    <Box style={{ position: "relative", width: "50%" }}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
-        <Flex flexDirection="column" justifyContent="center">
+        <Flex flexDirection="column" justifyContent="center" alignContent="center">
           <Spacer mb={10} />
           <HeroHeaderText version="desktop" />
           <Spacer mb={1} />
@@ -36,7 +31,7 @@ const DesktopTextContent = () => {
           <Spacer mb={4} />
           <HeroCTAs version="desktop" />
           <Spacer mb={4} />
-          <HeroBelowButtonDetailText version="desktop" />
+          <HeroBottomDetailText version="desktop" />
         </Flex>
       </Flex>
     </Box>
@@ -50,16 +45,16 @@ const DesktopHero = ({ post }) => {
         <Flex flexDirection="row" justifyContent="space-between">
           <DesktopTextContent />
           <StyledAnchor href={post?.url}>
-            <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
+            <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})`, position: "relative" }}>
+              <Box
+                style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
+                pl={0.5}
+                py={0.5}
+              >
+                <Sans size="4">{post?.name}</Sans>
+              </Box>
+            </BackgroundImage>
           </StyledAnchor>
-        </Flex>
-        <Flex pt={1} flexDirection="row" justifyContent="space-between" width="100%" alignItems="center">
-          <HeroBottomDetailText version="desktop" />
-          <Flex flexDirection="row" justifyContent="flex-end">
-            <a href={post?.url} style={{ color: "inherit", textDecoration: "none" }}>
-              <Sans size="4">{post?.name}</Sans>
-            </a>
-          </Flex>
         </Flex>
       </Box>
     </MaxWidth>
@@ -80,8 +75,6 @@ const MobileHero = ({ post }) => {
               <Spacer mb={4} />
               <HeroCTAs version="mobile" />
               <Spacer mb={4} />
-              <HeroBelowButtonDetailText version="mobile" />
-              <Spacer mb={2} />
               <HeroBottomDetailText version="mobile" />
               <Spacer mb={4} />
               <MobileImageWrapper>
@@ -119,39 +112,14 @@ const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
       )
       break
     default:
-      bottomDetailText = "- Over 500+ curated, in-season, and archive styles"
+      bottomDetailText = "— Over +1000 styles right in your pocket"
   }
 
   return (
-    <Sans size={version === "mobile" ? "3" : "4"} color="black50">
+    <Sans size={version === "mobile" ? "3" : "4"} color="black50" style={{ textAlign: "center" }}>
       {bottomDetailText}
     </Sans>
   )
-}
-
-const HeroBelowButtonDetailText = ({ version }: HeroComponentProps) => {
-  const { userSession } = useAuthContext()
-
-  let text
-  switch (userSession?.customer?.status) {
-    case "Waitlisted":
-    case "Authorized":
-    case "Active":
-      text = <></>
-      break
-    default:
-      text = listText.map((listItem) => (
-        <Flex mb={2} key={listItem} flexDirection="row" alignItems="center">
-          <Check />
-          <Spacer mr={2} />
-          <Sans size={version === "mobile" ? "3" : "4"} color="black50" style={{ whiteSpace: "pre-line" }}>
-            {listItem}
-          </Sans>
-        </Flex>
-      ))
-  }
-
-  return text
 }
 
 const HeroHeaderText = ({ version }: HeroComponentProps) => {
@@ -164,7 +132,7 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
     }
   }, [userSession])
 
-  let headerText = "Wear.Swap.Repeat." as any
+  let headerText = "Wear,Swap,Repeat" as any
   let firstName = userSession?.user?.firstName || ""
   const youreStart = firstName !== "" ? "Hi " + firstName + ", you're" : "You're"
   const yourStart = firstName !== "" ? "Hi " + firstName + ", your" : "Your"
@@ -190,9 +158,9 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
 
   return (
     <Display
-      size={version === "desktop" ? "10" : "9"}
+      size={version === "desktop" ? "8" : "9"}
       color="black100"
-      style={{ letterSpacing: "-2px", maxWidth: "600px" }}
+      style={{ letterSpacing: "-2px", maxWidth: "600px", textAlign: "center" }}
     >
       {headerText}
     </Display>
@@ -202,8 +170,7 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
 const HeroCaptionText = () => {
   const { userSession } = useAuthContext()
 
-  let caption =
-    "A members-only rental service for designer menswear. Access hundreds of styles and discover new brands with zero commitment."
+  let caption = "A members-only rental service for designer menswear."
   switch (userSession?.customer?.status) {
     case "Authorized":
       caption = "Finish setting up your account and choose your plan"
@@ -216,7 +183,7 @@ const HeroCaptionText = () => {
   }
 
   return (
-    <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
+    <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: "center" }}>
       {caption}
     </Sans>
   )
@@ -259,7 +226,7 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   }
 
   return (
-    <Flex flexDirection={version === "mobile" ? "column" : "row"}>
+    <Flex flexDirection="column">
       <Link href={ctaData.link}>
         <Button
           onClick={() => {
@@ -273,9 +240,8 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
           {ctaData.text}
         </Button>
       </Link>
-      {version === "desktop" && <Spacer mr={1} />}
-      {version === "mobile" && <Spacer mb={1} />}
-      <GetTheAppButton block={version === "mobile"} />
+      <Spacer mb={1} />
+      <GetTheAppButton block />
     </Flex>
   )
 }
