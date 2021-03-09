@@ -1,5 +1,5 @@
-import { Box, Layout, Media, Separator, Spacer } from "components"
-import { HowItWorks, FAQ, FromCommunity, Hero, Plans, TheApp } from "components/Homepage"
+import { Box, Layout, Separator, Spacer } from "components"
+import { HowItWorks, FromCommunity, Hero, Plans, TheApp } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
@@ -82,14 +82,6 @@ const Home = screenTrack(() => ({
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
       </Box>
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
-
-      <Spacer mb={10} />
-      <FAQ />
-      <Spacer mb={15} />
     </Layout>
   )
 })
