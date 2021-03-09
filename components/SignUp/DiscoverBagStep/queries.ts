@@ -1,17 +1,7 @@
 import gql from "graphql-tag"
 
-export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
-  query AvailableProductVariantsConnectionForCustomer(
-    $first: Int!
-    $skip: Int!
-    $orderBy: ProductVariantOrderByInput!
-  ) {
-    paymentPlans(where: { status: "active" }) {
-      id
-      tier
-      itemCount
-      price
-    }
+export const GET_DISCOVERY_BAG = gql`
+  query GetDiscoveryBag {
     me {
       id
       bag {
@@ -42,6 +32,26 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
             }
           }
         }
+      }
+    }
+  }
+`
+
+export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
+  query AvailableProductVariantsConnectionForCustomer(
+    $first: Int!
+    $skip: Int!
+    $orderBy: ProductVariantOrderByInput!
+  ) {
+    paymentPlans(where: { status: "active" }) {
+      id
+      tier
+      itemCount
+      price
+    }
+    productsCount: productVariantsConnection(personalizedForCurrentUser: true) {
+      aggregate {
+        count
       }
     }
     products: productVariantsConnection(
