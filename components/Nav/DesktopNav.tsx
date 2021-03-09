@@ -51,83 +51,86 @@ export const DesktopNav = (props: NavProps) => {
   }
 
   return (
-    <HeaderContainer style={specialStyles}>
-      <MaxWidth>
-        <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
-          <SeasonsLogo />
-          <Box px={4}>
-            <SearchBar />
-          </Box>
-          <Flex ml="auto" flexDirection="row" alignItems="center">
-            {links.map((link) => {
-              if (link.external) {
-                return (
-                  <Link
-                    key={link.url}
-                    href={link.url}
-                    active={!!router.pathname.match(link.match)}
-                    onClick={() => trackClick(link.url)}
-                  >
-                    <NavItem link={link} />
-                  </Link>
-                )
-              } else if (link.url) {
-                return (
-                  <NextLink href={link.url} key={link.text}>
+    <>
+      <Box style={{ width: "100%", height: "58px" }} />
+      <HeaderContainer style={specialStyles}>
+        <MaxWidth>
+          <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
+            <SeasonsLogo />
+            <Box px={4}>
+              <SearchBar />
+            </Box>
+            <Flex ml="auto" flexDirection="row" alignItems="center">
+              {links.map((link) => {
+                if (link.external) {
+                  return (
                     <Link
+                      key={link.url}
                       href={link.url}
                       active={!!router.pathname.match(link.match)}
                       onClick={() => trackClick(link.url)}
                     >
                       <NavItem link={link} />
                     </Link>
-                  </NextLink>
-                )
-              } else {
-                return link.renderNavItem()
-              }
-            })}
-            {isLoggedIn ? (
-              <>
-                <Link
-                  onClick={() => {
-                    openDrawer("bag")
-                  }}
-                >
-                  <NavItem link={{ text: "Bag" }} />
-                </Link>
-                <Link
-                  onClick={() => {
-                    openDrawer("profile")
-                  }}
-                >
-                  <NavItem link={{ text: "Account" }} />
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href="/signup" active={!!router.pathname.match("/signup")}>
-                  <NavItem link={{ text: "Sign Up" }} />
-                </Link>
-                <Link
-                  onClick={() => {
-                    toggleLoginModal(true)
-                  }}
-                >
-                  <NavItem link={{ text: "Log In" }} />
-                </Link>
-              </>
-            )}
+                  )
+                } else if (link.url) {
+                  return (
+                    <NextLink href={link.url} key={link.text}>
+                      <Link
+                        href={link.url}
+                        active={!!router.pathname.match(link.match)}
+                        onClick={() => trackClick(link.url)}
+                      >
+                        <NavItem link={link} />
+                      </Link>
+                    </NextLink>
+                  )
+                } else {
+                  return link.renderNavItem()
+                }
+              })}
+              {isLoggedIn ? (
+                <>
+                  <Link
+                    onClick={() => {
+                      openDrawer("bag")
+                    }}
+                  >
+                    <NavItem link={{ text: "Bag" }} />
+                  </Link>
+                  <Link
+                    onClick={() => {
+                      openDrawer("profile")
+                    }}
+                  >
+                    <NavItem link={{ text: "Account" }} />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link href="/signup" active={!!router.pathname.match("/signup")}>
+                    <NavItem link={{ text: "Sign Up" }} />
+                  </Link>
+                  <Link
+                    onClick={() => {
+                      toggleLoginModal(true)
+                    }}
+                  >
+                    <NavItem link={{ text: "Log In" }} />
+                  </Link>
+                </>
+              )}
+            </Flex>
           </Flex>
-        </Flex>
-      </MaxWidth>
-      <LoginModal
-        open={loginModalOpen}
-        onClose={() => {
-          toggleLoginModal(false)
-        }}
-      />
-    </HeaderContainer>
+        </MaxWidth>
+        <LoginModal
+          open={loginModalOpen}
+          onClose={() => {
+            toggleLoginModal(false)
+          }}
+        />
+      </HeaderContainer>
+    </>
   )
 }
 
