@@ -1,6 +1,5 @@
 import { Box, Layout, Media, Separator, Spacer } from "components"
-import { ColumnList, FAQ, FromCommunity, Hero, MembershipBenefits, Plans, TheApp, TheBag } from "components/Homepage"
-import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
+import { HowItWorks, FAQ, FromCommunity, Hero, Plans, TheApp } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
@@ -32,20 +31,12 @@ const Home = screenTrack(() => ({
       <Hero post={data?.blogPosts?.[0]} />
       <Spacer mb={10} />
 
-      <ColumnList items={HOW_IT_WORKS_TEXT} />
+      <HowItWorks />
 
       <Spacer mb={10} />
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
       </Box>
-
-      {!!data?.justAddedOuterwear?.length && (
-        <>
-          <Spacer mb={10} />
-          <ProductsRail title="Just added outerwear" items={data?.justAddedOuterwear} />
-          <Spacer mb={10} />
-        </>
-      )}
 
       <Spacer mb={10} />
       <ProductsRail title="Just added tops" items={data?.justAddedTops} />
@@ -62,14 +53,6 @@ const Home = screenTrack(() => ({
       })}
 
       <FromCommunity blogPosts={communityPosts} />
-
-      {!!data?.justAddedBottoms?.length && (
-        <>
-          <Spacer mb={10} />
-          <ProductsRail title="Just added bottoms" items={data?.justAddedBottoms} />
-          <Spacer mb={10} />
-        </>
-      )}
 
       {!!data?.newArchival?.length && (
         <>
@@ -96,17 +79,9 @@ const Home = screenTrack(() => ({
         <Separator />
       </Box>
 
-      <Spacer mb={10} />
-      <MembershipBenefits />
-      <Spacer mb={10} />
-
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
       </Box>
-
-      <Spacer mb={10} />
-      <TheBag />
-      <Spacer mb={10} />
 
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
