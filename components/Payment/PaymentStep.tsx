@@ -1,7 +1,7 @@
 import { Separator } from "components"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
 import { FormFooter } from "components/Forms/FormFooter"
-import { Formik, useFormikContext } from "formik"
+import { Formik } from "formik"
 import { color } from "helpers/color"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
@@ -71,7 +71,7 @@ const SUBMIT_PAYMENT = gql`
   }
 `
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => {
+export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onError }) => {
   const elements = useElements()
   const stripe = useStripe()
   const [submitPayment] = useMutation(SUBMIT_PAYMENT)
@@ -142,11 +142,12 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
           user: {
             firstName: values.firstName,
             lastName: values.lastName,
-            email: "luc@seasons.nyc",
+            email: billingDetails.email,
           },
         },
       },
     })
+    console.log(data, errors)
 
     // handle errors
     if (errors) {
@@ -157,8 +158,13 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess }) => 
       })
 
       console.log("HandleCardAction: ", result)
-      onSuccess(data)
-      setErrorMessage(null)
+      if (result.error) {
+        onError(result.error)
+        setErrorMessage(result.error?.message)
+      } else {
+        onSuccess(data)
+        setErrorMessage(null)
+      }
     }
   }
 
