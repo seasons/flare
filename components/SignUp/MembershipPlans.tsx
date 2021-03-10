@@ -130,9 +130,6 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                       {index === 0 && (
                         <Box>
                           <Sans size="8" color="black100">
-                            You're In.
-                          </Sans>
-                          <Sans size="8" color="black100">
                             Let's choose your plan:
                           </Sans>
                           <Spacer mb={1} />

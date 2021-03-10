@@ -73,7 +73,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
     const activeName = styleNames[activeIndex]
     return (
       <>
-        <Flex flexDirection={isDesktop ? "row" : "column"} pt={isDesktop ? 0 : "150px"}>
+        <Flex flexDirection={isDesktop ? "row" : "column"} pt={isDesktop ? 0 : "150px"} alignItems="center">
           <CarouselContainer platform={platform}>
             <Slider {...sliderSettings}>
               {styleImages.map((styleImage) => (
@@ -198,7 +198,7 @@ const Wrapper = styled("div")`
 const CarouselContainer = styled(Box)<{ platform: string }>`
   background: #e9e9eb;
   width: 560px;
-  height: 100%;
+  height: 725px;
   display: flex;
   flex-direction: column;
   justify-content: center;
