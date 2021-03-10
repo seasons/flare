@@ -1,20 +1,68 @@
 import { Flex, Sans, Picture, Spacer } from "components"
+import { Spinner } from "components/Spinner"
 import { color, space } from "helpers"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { imageResize } from "utils/imageResize"
-import { GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
+import { GET_DISCOVERY_BAG } from "./queries"
+
+const Item = ({ bagItem, isDesktop, index, removeFromBag }) => {
+  const [isRemoving, setIsRemoving] = useState(false)
+  const variant = bagItem.productVariant
+  const product = variant.product
+  const image = product?.images?.[0]
+  const imageSRC = imageResize(image?.url, "large")
+
+  return (
+    <BagItem
+      isDesktop={isDesktop}
+      key={variant.id}
+      onClick={() => {
+        setIsRemoving(true)
+        removeFromBag({
+          variables: {
+            id: variant.id,
+            saved: false,
+          },
+          awaitRefetchQueries: true,
+          refetchQueries: [
+            {
+              query: GET_DISCOVERY_BAG,
+            },
+          ],
+        })
+      }}
+    >
+      {!isRemoving && (
+        <Overlay className="overlay">
+          <Sans size="8">-</Sans>
+        </Overlay>
+      )}
+
+      {isRemoving && (
+        <VisibleOverlay>
+          {" "}
+          <Spinner size="small" />
+        </VisibleOverlay>
+      )}
+
+      <ImageWrapper>
+        <Picture src={imageSRC} alt={image.alt} key={imageSRC} />
+      </ImageWrapper>
+    </BagItem>
+  )
+}
 
 export const FooterElement: React.FC<{
   isDesktop: boolean
-  productCount: number
+  isMutating: boolean
   bagItems: any[]
   plans: any[]
   removeFromBag: (any) => void
-}> = ({ isDesktop, bagItems, plans, removeFromBag, productCount }) => {
+}> = ({ isDesktop, bagItems, plans, removeFromBag, isMutating }) => {
   let cost
   if (bagItems?.length > 0) {
-    const plan = plans.find((p) => p.itemCount === bagItems.length)
+    const plan = plans?.find((p) => p.itemCount === bagItems.length)
     const planPrice = plan?.price / 100
     cost = `$${planPrice}`
   } else {
@@ -24,48 +72,19 @@ export const FooterElement: React.FC<{
   return (
     <Flex height="100%" flexDirection="row" alignItems="center">
       {bagItems?.map((bagItem, index) => {
-        const variant = bagItem.productVariant
-        const product = variant.product
-        const image = product?.images?.[0]
-        const imageSRC = imageResize(image?.url, "large")
-
         return (
-          <BagItem
+          <Item
+            bagItem={bagItem}
             isDesktop={isDesktop}
-            key={index}
-            onClick={() =>
-              removeFromBag({
-                variables: {
-                  id: variant.id,
-                  saved: false,
-                },
-                awaitRefetchQueries: true,
-                refetchQueries: [
-                  {
-                    query: GET_DISCOVERY_PRODUCT_VARIANTS,
-                    variables: {
-                      first: productCount,
-                      skip: 0,
-                      orderBy: "updatedAt_DESC",
-                    },
-                  },
-                ],
-              })
-            }
-          >
-            <Overlay className="overlay">
-              <Sans size="8">-</Sans>
-            </Overlay>
-
-            <ImageWrapper>
-              <Picture src={imageSRC} alt={image.alt} key={imageSRC} />
-            </ImageWrapper>
-          </BagItem>
+            index={index}
+            removeFromBag={removeFromBag}
+            key={bagItem.productVariant.id}
+          />
         )
       })}
       {bagItems?.length < 3 && (
         <EmptyBagItem isDesktop={isDesktop}>
-          <Sans size="8">+</Sans>
+          {isMutating ? <Spinner size="small" /> : <Sans size="8">+</Sans>}
         </EmptyBagItem>
       )}
       <Spacer mr={1} />
@@ -91,6 +110,10 @@ const Overlay = styled.div`
   cursor: pointer;
 `
 
+const VisibleOverlay = styled(Overlay)`
+  display: block;
+`
+
 const BagItem = styled.div<{ isDesktop: boolean }>`
   position: relative;
   width: ${(p) => (p.isDesktop ? 40 : 36)}px;
@@ -114,6 +137,7 @@ const EmptyBagItem = styled.div<{ isDesktop: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   background-color: ${color("black04")};
   margin-right: ${(p) => (p.isDesktop ? space(1) : space(0.5))}px;
 `

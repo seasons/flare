@@ -12,8 +12,8 @@ export const ChevronIcon = (props: Props) => {
   const rotationStyle = props.rotateDeg ? { transform: [{ rotate: props.rotateDeg }] } : {}
   const scale = props.scale || 1
   return (
-    <View {...props}>
-      <Svg width={11 * scale} height={18 * scale} viewBox="0 0 11 18" style={rotationStyle}>
+    <View {...props} style={rotationStyle}>
+      <Svg width={11 * scale} height={18 * scale} viewBox="0 0 11 18">
         <G fill="none" fillRule="evenodd">
           <Path
             stroke={props.color || "#C6C6C6"}
