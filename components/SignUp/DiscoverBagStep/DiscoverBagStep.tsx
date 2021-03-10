@@ -1,10 +1,12 @@
 import { Media } from "components"
 import React, { useState } from "react"
 import styled from "styled-components"
+
 import { useMutation, useQuery } from "@apollo/client"
 import { ADD_TO_BAG, REMOVE_FROM_BAG } from "@seasons/eclipse"
-import { GET_DISCOVERY_PRODUCT_VARIANTS, GET_DISCOVERY_BAG } from "./queries"
+
 import { DiscoverBagContent } from "./DiscoverBagContent"
+import { GET_DISCOVERY_BAG, GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
 
 const PAGE_LENGTH = 16
 
@@ -37,8 +39,6 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
       setIsMutating(false)
     },
   })
-
-  console.log("bagData", bagData)
 
   return (
     <>

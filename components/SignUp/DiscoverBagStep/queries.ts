@@ -60,9 +60,6 @@ export const GET_DISCOVERY_PRODUCT_VARIANTS = gql`
       orderBy: $orderBy
       personalizedForCurrentUser: true
     ) {
-      aggregate {
-        count
-      }
       edges {
         node {
           id

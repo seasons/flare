@@ -1,5 +1,6 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
+import { PaymentStep } from "components/Payment"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
@@ -7,6 +8,8 @@ import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
 import { DiscoverStyleStep } from "components/SignUp/DiscoverStyleStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { SplashScreen } from "components/SplashScreen/SplashScreen"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { CustomerStatus } from "mobile/Account/Lists"
 import { Loader } from "mobile/Loader"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
@@ -14,9 +17,12 @@ import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { GET_LOCAL_BAG } from "@seasons/eclipse"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 
 import { GET_GIFT, GET_SIGNUP_USER } from "../../components/SignUp/queries"
 
+const stripePromise = loadStripe(process.env.STRIPE_API_KEY)
 export interface SignupFormProps {
   onError?: () => void
   onCompleted?: () => void
@@ -30,6 +36,7 @@ enum Steps {
   DiscoverBagStep = "DiscoverBagStep",
   ChoosePlanStep = "ChoosePlanStep",
   FormConfirmation = "FormConfirmation",
+  PaymentStep = "PaymentStep",
 }
 
 const SignUpPage = screenTrack(() => ({
@@ -41,16 +48,19 @@ const SignUpPage = screenTrack(() => ({
   const { previousData, data = previousData, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
   const featuredBrandItems = data?.brands || []
+  const { updateUserSession } = useAuthContext()
 
   const [currentStepState, setCurrentStepState] = useState<Steps>(Steps.CreateAccountStep)
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
   const [showReferrerSplash, setShowReferrerSplash] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState(null)
 
   const customer = data?.me?.customer
   const customerStatus = customer?.status
   const hasBagItems = data?.me?.bag?.length > 0 || localItems?.localBagItems?.length > 0
   const hasSetMeasurements = !!customer?.detail?.height
+  const hasPlan = !!customer?.plan
 
   const hasGift = !!router.query.gift_id
   const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)
@@ -79,7 +89,9 @@ const SignUpPage = screenTrack(() => ({
           break
         case "Authorized":
         case "Invited":
-          if (hasBagItems) {
+          if (hasPlan) {
+            setCurrentStepState(Steps.PaymentStep)
+          } else if (hasBagItems) {
             setCurrentStepState(Steps.ChoosePlanStep)
           } else {
             setCurrentStepState(Steps.DiscoverBagStep)
@@ -218,11 +230,27 @@ const SignUpPage = screenTrack(() => ({
               actionType: Schema.ActionTypes.Tap,
               plan,
             })
+            setSelectedPlan(plan)
+            setCurrentStepState(Steps.PaymentStep)
           }}
           onSuccess={() => {
+            identify(data?.me?.customer?.user?.id, { status: "Active" })
+            refetchGetSignupUser()
+          }}
+          onError={() => {}}
+        />
+      )
+      break
+    case Steps.PaymentStep:
+      CurrentStep = (
+        <PaymentStep
+          plan={selectedPlan}
+          onSuccess={() => {
+            updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")
             identify(data?.me?.customer?.user?.id, { status: "Active" })
             refetchGetSignupUser()
+            setCurrentStepState(Steps.FormConfirmation)
           }}
           onError={() => {}}
         />
@@ -234,39 +262,41 @@ const SignUpPage = screenTrack(() => ({
   }
 
   return (
-    <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
-      <MaxWidth>
-        <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-        <Flex
-          height="100%"
-          width="100%"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-          px={[2, 2, 2, 5, 5]}
-        >
-          {CurrentStep}
-        </Flex>
-      </MaxWidth>
+    <Elements stripe={stripePromise}>
+      <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
+        <MaxWidth>
+          <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
+          <Flex
+            height="100%"
+            width="100%"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="center"
+            px={[2, 2, 2, 5, 5]}
+          >
+            {CurrentStep}
+          </Flex>
+        </MaxWidth>
 
-      <SplashScreen
-        open={showReferrerSplash}
-        title="Welcome to Seasons"
-        subtitle="It looks like you were referred by a friend. Get a free month of Seasons when you successfully sign up!"
-        descriptionLines={[
-          "Free shipping, returns, & dry cleaning",
-          "Purchase items you love directly with us",
-          "No commitment. Pause or cancel anytime",
-        ]}
-        imageURL={require("../../public/images/signup/Friend_Pic.png")}
-        primaryButton={{
-          text: "Sign Up",
-          action: () => {
-            setShowReferrerSplash(false)
-          },
-        }}
-      />
-    </Layout>
+        <SplashScreen
+          open={showReferrerSplash}
+          title="Welcome to Seasons"
+          subtitle="It looks like you were referred by a friend. Get a free month of Seasons when you successfully sign up!"
+          descriptionLines={[
+            "Free shipping, returns, & dry cleaning",
+            "Purchase items you love directly with us",
+            "No commitment. Pause or cancel anytime",
+          ]}
+          imageURL={require("../../public/images/signup/Friend_Pic.png")}
+          primaryButton={{
+            text: "Sign Up",
+            action: () => {
+              setShowReferrerSplash(false)
+            },
+          }}
+        />
+      </Layout>
+    </Elements>
   )
 })
 
