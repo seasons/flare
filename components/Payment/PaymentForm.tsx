@@ -7,10 +7,6 @@ import { colors } from "theme/colors"
 import { FormHelperText, InputLabel } from "@material-ui/core"
 import { CardCvcElement, CardExpiryElement, CardNumberElement } from "@stripe/react-stripe-js"
 
-const logEvent = (name) => (event) => {
-  console.log(`[${name}]`, event)
-}
-
 const ELEMENT_OPTIONS = {
   style: {
     base: {
@@ -48,7 +44,6 @@ const Field = ({ Element, id, label }) => {
             onChange={(e) => {
               setError(e.error)
             }}
-            onReady={logEvent("ready")}
             options={ELEMENT_OPTIONS}
           />
         </Box>

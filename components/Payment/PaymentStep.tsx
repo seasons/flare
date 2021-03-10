@@ -104,8 +104,6 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
   })
 
   const handleSubmit = async (values) => {
-    console.log(values)
-
     if (!stripe || !elements) {
       // Stripe.js has not loaded yet. Make sure to disable
       // form submission until Stripe.js has loaded.
@@ -147,7 +145,6 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
         },
       },
     })
-    console.log(data, errors)
 
     // handle errors
     if (errors) {
@@ -157,7 +154,6 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
         payment_method: paymentMethod.id,
       })
 
-      console.log("HandleCardAction: ", result)
       if (result.error) {
         onError(result.error)
         setErrorMessage(result.error?.message)
@@ -248,7 +244,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
               buttonText="Checkout"
               disabled={!isValid}
               handleSubmit={() => {
-                // onCom /pleted?.()
+                // onCompleted?.()
               }}
             />
           </form>
