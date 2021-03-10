@@ -29,19 +29,19 @@ export const ProductBuyAlert = ({ productVariantId, tabs, initialTab, onDismiss,
 
   const handleCreateDraftOrder = async (orderType) => {
     try {
-      const result = await createDraftOrder({
+      const result = (await createDraftOrder({
         variables: {
           input: {
             productVariantID: productVariantId,
             orderType,
           },
         },
-      })
+      })) as any
       if (result.errors) {
         handleError(result.errors)
       }
 
-      openDrawer("reviewOrder", { order: result.createDraftedOrder })
+      openDrawer("reviewOrder", { order: result?.createDraftedOrder })
     } catch (error) {
       handleError(error)
     }
