@@ -1,23 +1,28 @@
 import React from "react"
-import { Box, Sans, Spacer } from "../"
+import { Box, Flex, Sans, Spacer } from "../"
 import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import { Media } from "../Responsive"
+import { BuyIcon, SwapIcon, WearIcon, ReserveIcon } from "components/Icons"
 
 export const HOW_IT_WORKS_TEXT = [
   {
+    icon: <ReserveIcon />,
     title: "1. Reserve your favorite styles",
     text: "Reserve up to 5 pieces at a time. Save your favorites for later & build a queue.",
   },
   {
+    icon: <WearIcon />,
     title: "2. Wear as long as you want",
     text: "Try styles you want to buy without the commitment or buyers remorse. ",
   },
   {
+    icon: <SwapIcon />,
     title: "3. Swap & repeat",
     text: "Ready for something new? Send back your bag & place a new order.",
   },
   {
+    icon: <BuyIcon />,
     title: "4. Buy styles you love",
     text: "Enjoy exclusive access to our archive sale & own your favorites.",
   },
@@ -27,6 +32,7 @@ const Item = ({ step, index }) => {
   return (
     <Box key={index}>
       {index > 0 && <Spacer mb={[5, 5, 0, 0, 0]} />}
+      <Flex justifyContent="center">{step.icon}</Flex>
       <Spacer mb={1} />
       <Display size="4" style={{ textAlign: "center" }}>
         {step.title}
@@ -44,10 +50,10 @@ const Item = ({ step, index }) => {
 export const HowItWorks: React.FC = () => {
   return (
     <Grid>
-      <Box px={[2, 2, 2, 5, 5]} pb={4}>
-        <Sans size="9" style={{ textAlign: "center" }}>
+      <Box px={[2, 2, 2, 5, 5]} pb={6}>
+        <Display size="9" style={{ textAlign: "center" }}>
           How it works
-        </Sans>
+        </Display>
         <Spacer mb={1} />
         <Sans size="4" color="black50" style={{ textAlign: "center" }}>
           No commitment, pause or cancel anytime.{" "}

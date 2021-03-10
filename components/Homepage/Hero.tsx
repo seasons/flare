@@ -41,7 +41,7 @@ const DesktopTextContent = () => {
 const DesktopHero = ({ post }) => {
   return (
     <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 5, 5]} pb={5}>
+      <Box width="100%" px={[2, 2, 2, 5, 5]} pb={2}>
         <Flex flexDirection="row" justifyContent="space-between">
           <DesktopTextContent />
           <StyledAnchor href={post?.url}>

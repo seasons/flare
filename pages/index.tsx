@@ -1,5 +1,5 @@
 import { Box, Layout, Separator, Spacer } from "components"
-import { HowItWorks, FromCommunity, Hero, Plans, TheApp } from "components/Homepage"
+import { HowItWorks, Hero, FeaturedIn, TheApp } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
@@ -7,6 +7,7 @@ import React, { useEffect } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 import { HOME_QUERY_WEB, ProductsRail } from "@seasons/eclipse"
+import { useRouter } from "next/router"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
@@ -14,11 +15,12 @@ const Home = screenTrack(() => ({
 }))(() => {
   const { previousData, data = previousData } = useQuery(HOME_QUERY_WEB, { fetchPolicy: "cache-and-network" })
   const { updateUserSession } = useAuthContext()
-
+  const router = useRouter()
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
-  const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
+
+  const newestBrand = data?.newestBrandProducts?.[0]?.brand
 
   useEffect(() => {
     if (!!data?.me?.customer) {
@@ -29,59 +31,39 @@ const Home = screenTrack(() => ({
   return (
     <Layout showIntercom brandItems={featuredBrandItems}>
       <Hero post={data?.blogPosts?.[0]} />
-      <Spacer mb={10} />
 
-      <HowItWorks />
-
-      <Spacer mb={10} />
+      <FeaturedIn />
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
       </Box>
 
-      <Spacer mb={10} />
-      <ProductsRail title="Just added tops" items={data?.justAddedTops} />
-      <Spacer mb={10} />
-
-      {data?.collections?.map((collection) => {
-        return (
-          <>
-            <Spacer mb={10} />
-            <ProductsRail title={collection.title} items={collection?.products} collectionSlug={collection.slug} />
-            <Spacer mb={10} />
-          </>
-        )
-      })}
-
-      <FromCommunity blogPosts={communityPosts} />
-
-      {!!data?.newArchival?.length && (
+      {!!data?.newestBrandProducts?.length && newestBrand && (
         <>
-          <ProductsRail title="New to the archive" items={data?.newArchival} />
+          <Spacer mb={10} />
+          <ProductsRail
+            title="New arrivals from"
+            underlineTitleText={newestBrand?.name}
+            showProductName
+            underlineTitleOnClick={() => {
+              router.push(`/designer/${newestBrand?.slug}`)
+            }}
+            imageIndex={1}
+            items={data?.newestBrandProducts}
+          />
           <Spacer mb={10} />
         </>
       )}
-
       <Box px={[2, 2, 2, 5, 5]}>
         <Separator />
       </Box>
 
-      <Plans plans={data?.paymentPlans} />
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
+      <Spacer mb={10} />
+      <HowItWorks />
+      <Spacer mb={10} />
 
       <Spacer mb={10} />
       <TheApp />
       <Spacer mb={10} />
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
     </Layout>
   )
 })
