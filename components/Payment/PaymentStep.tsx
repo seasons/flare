@@ -131,36 +131,33 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
   }
 
   const processPayment = async (paymentMethod, values, billingDetails) => {
-    const { data, errors } = await submitPayment({
-      variables: {
-        paymentMethodID: paymentMethod.id,
-        planID: plan?.planID,
-        billing: {
-          ...billingDetails,
-          user: {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: billingDetails.email,
+    try {
+      const { data, errors } = await submitPayment({
+        variables: {
+          paymentMethodID: paymentMethod.id,
+          planID: plan?.planID,
+          billing: {
+            ...billingDetails,
+            user: {
+              firstName: values.firstName,
+              lastName: values.lastName,
+              email: billingDetails.email,
+            },
           },
         },
-      },
-    })
-
-    // handle errors
-    if (errors) {
-      console.log(errors)
-    } else {
-      const result = await stripe.confirmCardPayment(data.processPayment.client_secret, {
-        payment_method: paymentMethod.id,
       })
 
-      if (result.error) {
-        onError(result.error)
-        setErrorMessage(result.error?.message)
+      // handle errors
+      if (errors) {
+        const error = errors?.[0]
+        setErrorMessage(error?.message)
       } else {
         onSuccess(data)
         setErrorMessage(null)
       }
+    } catch (e) {
+      console.error(e)
+      setErrorMessage(e.message)
     }
   }
 
@@ -209,10 +206,17 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
                         <PaymentBillingAddress />
                       </Box>
                       <Box width="100%" py={4}>
+                        <Box>
+                          {errorMessage && (
+                            <>
+                              <ErrorResult size="3">{errorMessage}</ErrorResult>
+                              <Spacer mt={2} />
+                            </>
+                          )}
+                        </Box>
                         <Sans size="7">Payment details</Sans>
                         <Spacer mt={2} />
                         <PaymentForm />
-                        <Box>{errorMessage && <ErrorResult size="3">{errorMessage}</ErrorResult>}</Box>
                       </Box>
                       <Spacer mt={4} />
                     </Box>
