@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Box, Sans, Flex, MaxWidth } from "../"
+import { Box, Sans, Flex, MaxWidth, Media } from "../"
 
 const bi = require("../../public/images/homepage/BusinessInsider.png")
 const nyt = require("../../public/images/homepage/NYT.png")
@@ -24,41 +24,85 @@ export const FeaturedIn: React.FC = () => {
     },
   ]
 
-  return (
-    <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 5, 5]} py={2}>
-        <Flex
-          style={{ width: "100%" }}
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          flexWrap="wrap"
-        >
-          <Flex pr="140px" flexDirection="row" justifyContent="flex-end" alignItems="center" py={3}>
-            <Sans size="4" color="black50">
-              Featured in
-            </Sans>
-          </Flex>
+  const Desktop = () => {
+    return (
+      <MaxWidth>
+        <Box width="100%" px={[2, 2, 2, 5, 5]} py={2}>
           <Flex
+            style={{ width: "100%" }}
             flexDirection="row"
             justifyContent="space-between"
             alignItems="center"
-            style={{ flex: 1 }}
             flexWrap="wrap"
           >
-            {items.map((item) => {
-              return (
-                <StyledAnchor href={item.link} target="_blank" key={item.link}>
-                  <Box pr={2} pl={3} py={3}>
-                    <Image src={item.logo} />
-                  </Box>
-                </StyledAnchor>
-              )
-            })}
+            <Flex pr="140px" flexDirection="row" justifyContent="flex-end" alignItems="center" py={3}>
+              <Sans size="4" color="black50">
+                Featured in
+              </Sans>
+            </Flex>
+            <Flex
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center"
+              style={{ flex: 1 }}
+              flexWrap="wrap"
+            >
+              {items.map((item) => {
+                return (
+                  <StyledAnchor href={item.link} target="_blank" key={item.link}>
+                    <Box pr={2} pl={3} py={3}>
+                      <Image src={item.logo} />
+                    </Box>
+                  </StyledAnchor>
+                )
+              })}
+            </Flex>
           </Flex>
-        </Flex>
-      </Box>
-    </MaxWidth>
+        </Box>
+      </MaxWidth>
+    )
+  }
+
+  const Mobile = () => {
+    return (
+      <MaxWidth>
+        <Box width="100%" px={[2, 2, 2, 5, 5]} py={2}>
+          <Flex
+            style={{ width: "100%" }}
+            flexDirection="row"
+            alignItems="center"
+            flexWrap="wrap"
+            justifyContent="space-between"
+          >
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+              <Sans size="4" color="black50">
+                Featured in
+              </Sans>
+              {items.map((item) => {
+                return (
+                  <StyledAnchor href={item.link} target="_blank" key={item.link}>
+                    <Box py={2}>
+                      <MobileImage src={item.logo} />
+                    </Box>
+                  </StyledAnchor>
+                )
+              })}
+            </Flex>
+          </Flex>
+        </Box>
+      </MaxWidth>
+    )
+  }
+
+  return (
+    <>
+      <Media greaterThan="md">
+        <Desktop />
+      </Media>
+      <Media lessThan="lg">
+        <Mobile />
+      </Media>
+    </>
   )
 }
 
@@ -68,4 +112,8 @@ const StyledAnchor = styled.a`
 
 const Image = styled.img`
   height: 26px;
+`
+
+const MobileImage = styled.img`
+  height: 20px;
 `

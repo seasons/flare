@@ -1,8 +1,7 @@
 import React from "react"
-import { Sans, Spacer, Flex, MaxWidth, Box, Link, Picture } from "../"
+import { Sans, Spacer, Flex, MaxWidth, Box, Link, Picture, Media } from "../"
 import { Display } from "../Typography"
 import { head } from "lodash"
-import styled from "styled-components"
 import { ProductGridItem } from "@seasons/eclipse"
 import { imageResize } from "utils/imageResize"
 
@@ -13,40 +12,56 @@ export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections
   }
 
   const title = collection.title
-  const subTitle = collection.subTitle
   const products = collection.products
   const url = collection.images?.[0].url
   const imageSRC = imageResize(url, "small")
 
-  return (
-    <MaxWidth>
-      <Box px={[2, 2, 2, 5, 5]} width="100%">
-        <Flex flexDirection="row" alignItems="center" justifyContent="space-between" width="100%">
-          <Display size="8">{title}</Display>
-          <Link href={`/collection/${collection.slug}`}>
-            <Sans size="4" style={{ textDecoration: "underline" }}>
-              View collection
-            </Sans>
-          </Link>
-        </Flex>
-        <Spacer mb={2} />
-        <Flex flexDirection="row" width="100%">
-          <Box width="23.7%" px="2px" py="2px">
-            <Picture src={imageSRC} />
-            <Spacer mb={1} />
-            <Sans size="3">{subTitle}</Sans>
-          </Box>
-          <Flex flexDirection="row" style={{ flex: 1 }}>
-            {products?.map((product, index) => {
-              return (
-                <Box key={index} width="25%">
-                  <ProductGridItem product={product} />
-                </Box>
-              )
-            })}
+  const Content = ({ platform }) => {
+    const isDesktop = platform === "desktop"
+
+    return (
+      <MaxWidth>
+        <Box px={[2, 2, 2, 5, 5]} width="100%">
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-between" width="100%">
+            <Display size="8">{title}</Display>
+            <Link href={`/collection/${collection.slug}`}>
+              <Sans size="4" style={{ textDecoration: "underline", textAlign: "right" }}>
+                View collection
+              </Sans>
+            </Link>
           </Flex>
-        </Flex>
-      </Box>
-    </MaxWidth>
+          <Spacer mb={2} />
+          <Flex flexDirection="row" width="100%">
+            <Box width={isDesktop ? "29.35%" : "100%"} px={isDesktop ? "2px" : "0"} py={isDesktop ? "2px" : "0"}>
+              <Link href={`/collection/${collection.slug}`}>
+                <Picture src={imageSRC} />
+              </Link>
+            </Box>
+            {isDesktop && (
+              <Flex flexDirection="row" style={{ flex: 1 }}>
+                {products?.map((product, index) => {
+                  return (
+                    <Box key={index} width="33.33%">
+                      <ProductGridItem product={product} />
+                    </Box>
+                  )
+                })}
+              </Flex>
+            )}
+          </Flex>
+        </Box>
+      </MaxWidth>
+    )
+  }
+
+  return (
+    <>
+      <Media greaterThan="md">
+        <Content platform="desktop" />
+      </Media>
+      <Media lessThan="lg">
+        <Content platform="mobile" />
+      </Media>
+    </>
   )
 }

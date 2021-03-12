@@ -26,7 +26,7 @@ const listItems = [
   },
 ]
 
-const Content = () => {
+const TextContent = () => {
   return (
     <Flex flexDirection="column" justifyContent="center" style={{ maxWidth: "464px" }} pr={3}>
       <Display size="8">{title}</Display>
@@ -56,19 +56,21 @@ const Content = () => {
   )
 }
 
-const Desktop = () => {
+const Content = ({ platform }) => {
+  const isDesktop = platform === "desktop"
   return (
     <MaxWidth>
-      <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" px={[2, 2, 2, 5, 5]} width="100%">
+      <Flex
+        flexDirection={isDesktop ? "row" : "column"}
+        flexWrap="nowrap"
+        justifyContent="space-between"
+        px={[2, 2, 2, 5, 5]}
+        width="100%"
+      >
         <Flex flexDirection="row" justifyContent="flex-start" width="100%" style={{ flex: 2 }}>
-          <Content />
+          <TextContent />
         </Flex>
-        <Flex
-          flexDirection="row"
-          justifyContent="center"
-          width="100%"
-          style={{ flex: 2, height: 0, paddingBottom: "50%" }}
-        >
+        <Flex pt={isDesktop ? 0 : 6} flexDirection="row" justifyContent="center" width="100%" style={{ flex: 2 }}>
           <BackgroundImage />
         </Flex>
       </Flex>
@@ -77,7 +79,16 @@ const Desktop = () => {
 }
 
 export const TheApp: React.FC = () => {
-  return <Desktop />
+  return (
+    <>
+      <Media greaterThan="md">
+        <Content platform="desktop" />
+      </Media>
+      <Media lessThan="lg">
+        <Content platform="mobile" />
+      </Media>
+    </>
+  )
 }
 
 const BackgroundImage = styled.div`

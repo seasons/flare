@@ -61,7 +61,7 @@ const Home = screenTrack(() => ({
             underlineTitleOnClick={() => {
               router.push(`/designer/${newestBrand?.slug}`)
             }}
-            imageIndex={1}
+            imageIndex={2}
             items={data?.newestBrandProducts}
           />
           <Spacer mb={10} />

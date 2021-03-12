@@ -27,7 +27,7 @@ const DesktopTextContent = () => {
           <Spacer mb={10} />
           <HeroHeaderText version="desktop" />
           <Spacer mb={1} />
-          <HeroCaptionText />
+          <HeroCaptionText version="desktop" />
           <Spacer mb={4} />
           <HeroCTAs version="desktop" />
           <Spacer mb={4} />
@@ -68,10 +68,11 @@ const MobileHero = ({ post }) => {
         <Col xs="12" px={2}>
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer mb={10} />
+              <Spacer pb={10} />
+              <Spacer pb={6} />
               <HeroHeaderText version="mobile" />
               <Spacer mb={1} />
-              <HeroCaptionText />
+              <HeroCaptionText version="mobile" />
               <Spacer mb={4} />
               <HeroCTAs version="mobile" />
               <Spacer mb={4} />
@@ -79,14 +80,17 @@ const MobileHero = ({ post }) => {
               <Spacer mb={4} />
               <MobileImageWrapper>
                 <StyledAnchor href={post?.url}>
-                  <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
+                  <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }}>
+                    <Box
+                      style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
+                      pl={0.5}
+                      py={0.5}
+                    >
+                      <Sans size="4">{post?.name}</Sans>
+                    </Box>
+                  </BackgroundImage>
                 </StyledAnchor>
               </MobileImageWrapper>
-              <Flex flexDirection="row" justifyContent="flex-end">
-                <a href={post?.url} style={{ color: "inherit", textDecoration: "none" }}>
-                  <Sans size="4">{post?.name}</Sans>
-                </a>
-              </Flex>
             </Flex>
           </Flex>
         </Col>
@@ -96,6 +100,7 @@ const MobileHero = ({ post }) => {
 }
 
 const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
+  const isMobile = version === "mobile"
   const { userSession } = useAuthContext()
 
   let bottomDetailText
@@ -116,7 +121,7 @@ const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
   }
 
   return (
-    <Sans size={version === "mobile" ? "3" : "4"} color="black50" style={{ textAlign: "center" }}>
+    <Sans size={isMobile ? "3" : "4"} color="black50" style={{ textAlign: isMobile ? "left" : "center" }}>
       {bottomDetailText}
     </Sans>
   )
@@ -125,6 +130,7 @@ const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
 const HeroHeaderText = ({ version }: HeroComponentProps) => {
   const { userSession } = useAuthContext()
   const [targetDate, setTargetDate] = useState(null)
+  const isMobile = version === "mobile"
 
   useEffect(() => {
     if (!!userSession) {
@@ -158,17 +164,18 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
 
   return (
     <Display
-      size={version === "desktop" ? "8" : "9"}
+      size={isMobile ? "9" : "8"}
       color="black100"
-      style={{ letterSpacing: "-2px", maxWidth: "600px", textAlign: "center" }}
+      style={{ letterSpacing: "-2px", maxWidth: "600px", textAlign: isMobile ? "left" : "center" }}
     >
       {headerText}
     </Display>
   )
 }
 
-const HeroCaptionText = () => {
+const HeroCaptionText = ({ version }) => {
   const { userSession } = useAuthContext()
+  const isMobile = version === "mobile"
 
   let caption = "A members-only rental service for designer menswear."
   switch (userSession?.customer?.status) {
@@ -183,7 +190,11 @@ const HeroCaptionText = () => {
   }
 
   return (
-    <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: "center" }}>
+    <Sans
+      size="4"
+      color="black50"
+      style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
+    >
       {caption}
     </Sans>
   )

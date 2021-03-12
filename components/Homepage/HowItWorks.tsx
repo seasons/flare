@@ -8,22 +8,22 @@ import { BuyIcon, SwapIcon, WearIcon, ReserveIcon } from "components/Icons"
 export const HOW_IT_WORKS_TEXT = [
   {
     icon: <ReserveIcon />,
-    title: "1. Reserve your favorite styles",
-    text: "Reserve up to 5 pieces at a time. Save your favorites for later & build a queue.",
+    title: "Reserve your favorite styles",
+    text: "Reserve up to 3 pieces at a time. Save your favorites for later & build a queue.",
   },
   {
     icon: <WearIcon />,
-    title: "2. Wear as long as you want",
+    title: "Wear as long as you want",
     text: "Try styles you want to buy without the commitment or buyers remorse. ",
   },
   {
     icon: <SwapIcon />,
-    title: "3. Swap & repeat",
+    title: "Swap & repeat",
     text: "Ready for something new? Send back your bag & place a new order.",
   },
   {
     icon: <BuyIcon />,
-    title: "4. Buy styles you love",
+    title: "Buy styles you love",
     text: "Enjoy exclusive access to our archive sale & own your favorites.",
   },
 ]
@@ -45,8 +45,6 @@ const Item = ({ step, index }) => {
   )
 }
 
-// FIXME: learn more goes where?
-
 export const HowItWorks: React.FC = () => {
   return (
     <Grid>
@@ -56,16 +54,13 @@ export const HowItWorks: React.FC = () => {
         </Display>
         <Spacer mb={1} />
         <Sans size="4" color="black50" style={{ textAlign: "center" }}>
-          No commitment, pause or cancel anytime.{" "}
-          <span style={{ textDecoration: "underline", cursor: "pointer" }} onClick={null}>
-            Learn more
-          </span>
+          No commitment, pause or cancel anytime.
         </Sans>
       </Box>
       <Media greaterThanOrEqual="lg">
         <Row px={[2, 2, 2, 5, 5]}>
           {HOW_IT_WORKS_TEXT?.map((step, index) => (
-            <Col md="3" xs="12" key={index} px={3}>
+            <Col md="3" xs="12" key={index} px={2}>
               <Item index={index} step={step} />
             </Col>
           ))}
