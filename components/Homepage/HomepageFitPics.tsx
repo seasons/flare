@@ -66,10 +66,10 @@ export const HomepageFitPics: React.FC<{ fitPics: any }> = ({ fitPics }) => {
 
   return (
     <>
-      <Media greaterThan="md">
+      <Media greaterThan="sm">
         <Content platform="desktop" />
       </Media>
-      <Media lessThan="lg">
+      <Media lessThan="md">
         <Content platform="mobile" />
       </Media>
     </>

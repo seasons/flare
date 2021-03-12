@@ -13,8 +13,8 @@ export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections
 
   const title = collection.title
   const products = collection.products
-  const url = collection.images?.[0].url
-  const imageSRC = imageResize(url, "small")
+  const url = collection.images?.[0]?.url
+  const imageSRC = url ? imageResize(url, "large") : ""
 
   const Content = ({ platform }) => {
     const isDesktop = platform === "desktop"
@@ -56,10 +56,10 @@ export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections
 
   return (
     <>
-      <Media greaterThan="md">
+      <Media greaterThan="sm">
         <Content platform="desktop" />
       </Media>
-      <Media lessThan="lg">
+      <Media lessThan="md">
         <Content platform="mobile" />
       </Media>
     </>

@@ -35,28 +35,20 @@ export const FeaturedIn: React.FC = () => {
             alignItems="center"
             flexWrap="wrap"
           >
-            <Flex pr="140px" flexDirection="row" justifyContent="flex-end" alignItems="center" py={3}>
+            <Flex pr={1} flexDirection="row" justifyContent="flex-end" alignItems="center" py={3}>
               <Sans size="4" color="black50">
                 Featured in
               </Sans>
             </Flex>
-            <Flex
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center"
-              style={{ flex: 1 }}
-              flexWrap="wrap"
-            >
-              {items.map((item) => {
-                return (
-                  <StyledAnchor href={item.link} target="_blank" key={item.link}>
-                    <Box pr={2} pl={3} py={3}>
-                      <Image src={item.logo} />
-                    </Box>
-                  </StyledAnchor>
-                )
-              })}
-            </Flex>
+            {items.map((item, index) => {
+              return (
+                <StyledAnchor href={item.link} target="_blank" key={item.link}>
+                  <Box pr={2} py={3}>
+                    <Image src={item.logo} />
+                  </Box>
+                </StyledAnchor>
+              )
+            })}
           </Flex>
         </Box>
       </MaxWidth>
@@ -78,10 +70,11 @@ export const FeaturedIn: React.FC = () => {
               <Sans size="4" color="black50">
                 Featured in
               </Sans>
-              {items.map((item) => {
+              {items.map((item, index) => {
+                const isRight = index % 2 === 0
                 return (
                   <StyledAnchor href={item.link} target="_blank" key={item.link}>
-                    <Box py={2}>
+                    <Box py={2} pr={isRight ? 0 : 5} pl={isRight ? 5 : 0}>
                       <MobileImage src={item.logo} />
                     </Box>
                   </StyledAnchor>
@@ -96,10 +89,10 @@ export const FeaturedIn: React.FC = () => {
 
   return (
     <>
-      <Media greaterThan="md">
+      <Media greaterThan="sm">
         <Desktop />
       </Media>
-      <Media lessThan="lg">
+      <Media lessThan="md">
         <Mobile />
       </Media>
     </>
@@ -111,7 +104,7 @@ const StyledAnchor = styled.a`
 `
 
 const Image = styled.img`
-  height: 26px;
+  height: 22px;
 `
 
 const MobileImage = styled.img`

@@ -23,7 +23,7 @@ const DesktopTextContent = () => {
   return (
     <Box style={{ position: "relative", width: "50%" }}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
-        <Flex flexDirection="column" justifyContent="center" alignContent="center">
+        <Flex flexDirection="column" justifyContent="center" alignContent="center" px={3}>
           <Spacer mb={10} />
           <HeroHeaderText version="desktop" />
           <Spacer mb={1} />

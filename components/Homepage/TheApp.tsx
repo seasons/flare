@@ -81,10 +81,10 @@ const Content = ({ platform }) => {
 export const TheApp: React.FC = () => {
   return (
     <>
-      <Media greaterThan="md">
+      <Media greaterThan="sm">
         <Content platform="desktop" />
       </Media>
-      <Media lessThan="lg">
+      <Media lessThan="md">
         <Content platform="mobile" />
       </Media>
     </>

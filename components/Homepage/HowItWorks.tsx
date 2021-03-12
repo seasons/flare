@@ -69,7 +69,7 @@ export const HowItWorks: React.FC = () => {
       <Media lessThan="lg">
         <Row px={[2, 2, 2, 5, 5]}>
           {HOW_IT_WORKS_TEXT?.map((step, index) => (
-            <Col md="6" xs="12" key={index} px={3}>
+            <Col md="6" xs="12" key={index} px={3} pt={2}>
               <Item index={index} step={step} />
             </Col>
           ))}

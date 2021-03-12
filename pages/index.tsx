@@ -8,6 +8,7 @@ import {
   HomepageFitPics,
   FeaturedCollection,
   Testimonials,
+  Plans,
 } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -74,6 +75,12 @@ const Home = screenTrack(() => ({
       <Spacer mb={10} />
 
       <BrowseAllWithImage />
+
+      <Box px={[2, 2, 2, 5, 5]}>
+        <Separator />
+      </Box>
+
+      <Plans plans={data?.paymentPlans} />
 
       {data?.newArchival.length > 0 && (
         <>
