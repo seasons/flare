@@ -1,5 +1,13 @@
 import { Box, Layout, Separator, Spacer } from "components"
-import { HowItWorks, Hero, FeaturedIn, TheApp, BrowseAllWithImage } from "components/Homepage"
+import {
+  HowItWorks,
+  Hero,
+  FeaturedIn,
+  TheApp,
+  BrowseAllWithImage,
+  HomepageFitPics,
+  FeaturedCollection,
+} from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
@@ -19,7 +27,6 @@ const Home = screenTrack(() => ({
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const featuredBrandItems = navigationData?.brands || []
-
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
 
   useEffect(() => {
@@ -63,6 +70,46 @@ const Home = screenTrack(() => ({
 
       <BrowseAllWithImage />
 
+      {data?.newArchival.length > 0 && (
+        <>
+          <Spacer mb={10} />
+          <ProductsRail
+            title="New to the archive"
+            underlineTitleOnClick={() => {
+              router.push(`/browse}`)
+            }}
+            items={data?.newArchival}
+          />
+          <Spacer mb={10} />
+        </>
+      )}
+
+      <Box px={[2, 2, 2, 5, 5]}>
+        <Separator />
+      </Box>
+      <Spacer mb={10} />
+
+      {data?.fitPics?.length > 0 && (
+        <>
+          <HomepageFitPics fitPics={data.fitPics} />
+          <Spacer mb={10} />
+          <Box px={[2, 2, 2, 5, 5]}>
+            <Separator />
+          </Box>
+          <Spacer mb={10} />
+        </>
+      )}
+
+      {data?.collections?.length > 0 && (
+        <>
+          <FeaturedCollection collections={data.collections} />
+          <Spacer mb={10} />
+        </>
+      )}
+
+      <Box px={[2, 2, 2, 5, 5]}>
+        <Separator />
+      </Box>
       <Spacer mb={10} />
       <TheApp />
       <Spacer mb={10} />

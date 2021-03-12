@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Sans, Spacer, Flex, MaxWidth } from "../"
+import { Sans, Spacer, Flex, MaxWidth } from "../"
 import { Media } from "../Responsive"
 import { Display } from "../Typography"
 import { imageResize } from "utils/imageResize"
@@ -11,7 +11,7 @@ import { space } from "helpers"
 const title = "Download the Seasons app"
 const subtitle = "Manage membership, browse releases & reserve your order."
 
-const imageSRC = require("../../public/images/homepage/AppImage1.png")
+const imageSRC = require("../../public/images/homepage/web-devices.png")
 const image = imageResize(imageSRC, "large")
 
 const listItems = [
@@ -77,19 +77,7 @@ const Desktop = () => {
 }
 
 export const TheApp: React.FC = () => {
-  return (
-    <>
-      <Media greaterThanOrEqual="lg">
-        <Desktop />
-      </Media>
-      <Media between={["md", "lg"]}>
-        <Desktop />
-      </Media>
-      <Media lessThan="md">
-        <Desktop />
-      </Media>
-    </>
-  )
+  return <Desktop />
 }
 
 const BackgroundImage = styled.div`
