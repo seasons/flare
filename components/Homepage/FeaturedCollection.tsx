@@ -50,11 +50,3 @@ export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections
     </MaxWidth>
   )
 }
-
-const BackgroundImage = styled.div<{ image: string }>`
-  background: url(${(p) => p.image}) no-repeat center center;
-  background-size: cover;
-  height: 0;
-  width: 100%;
-  padding-bottom: calc(100% * 1.25);
-`

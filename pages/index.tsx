@@ -7,6 +7,7 @@ import {
   BrowseAllWithImage,
   HomepageFitPics,
   FeaturedCollection,
+  Testimonials,
 } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -35,14 +36,20 @@ const Home = screenTrack(() => ({
     }
   }, [data])
 
+  const SeparatorWithPadding = () => {
+    return (
+      <Box px={[2, 2, 2, 5, 5]}>
+        <Separator />
+      </Box>
+    )
+  }
+
   return (
     <Layout showIntercom brandItems={featuredBrandItems}>
       <Hero post={data?.blogPosts?.[0]} />
 
       <FeaturedIn />
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
+      <SeparatorWithPadding />
 
       {!!data?.newestBrandProducts?.length && newestBrand && (
         <>
@@ -60,9 +67,7 @@ const Home = screenTrack(() => ({
           <Spacer mb={10} />
         </>
       )}
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
+      <SeparatorWithPadding />
 
       <Spacer mb={10} />
       <HowItWorks />
@@ -84,9 +89,7 @@ const Home = screenTrack(() => ({
         </>
       )}
 
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
+      <SeparatorWithPadding />
       <Spacer mb={10} />
 
       {data?.fitPics?.length > 0 && (
@@ -100,6 +103,13 @@ const Home = screenTrack(() => ({
         </>
       )}
 
+      <Testimonials />
+      <Spacer mb={10} />
+
+      <SeparatorWithPadding />
+
+      <Spacer mb={10} />
+
       {data?.collections?.length > 0 && (
         <>
           <FeaturedCollection collections={data.collections} />
@@ -107,9 +117,7 @@ const Home = screenTrack(() => ({
         </>
       )}
 
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
+      <SeparatorWithPadding />
       <Spacer mb={10} />
       <TheApp />
       <Spacer mb={10} />
