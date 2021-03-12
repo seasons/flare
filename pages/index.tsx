@@ -68,7 +68,6 @@ const Home = screenTrack(() => ({
           <Spacer mb={10} />
         </>
       )}
-      <SeparatorWithPadding />
 
       <Spacer mb={10} />
       <HowItWorks />
@@ -76,15 +75,18 @@ const Home = screenTrack(() => ({
 
       <BrowseAllWithImage />
 
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
+      <Spacer mb={10} />
+      <SeparatorWithPadding />
+      <Spacer mb={3} />
 
       <Plans plans={data?.paymentPlans} />
+      <Spacer mb={3} />
+
+      <SeparatorWithPadding />
+      <Spacer mb={10} />
 
       {data?.newArchival.length > 0 && (
         <>
-          <Spacer mb={10} />
           <ProductsRail
             title="New to the archive"
             underlineTitleOnClick={() => {
