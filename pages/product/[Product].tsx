@@ -155,12 +155,14 @@ const Product = screenTrack(({ router }) => {
                 </Flex>
                 {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
                 {product && (
-                  <ProductBuyCTA
-                    pt={8}
-                    product={filter(ProductBuyCTA_ProductFragment, product)}
-                    selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
-                    onNavigateToBrand={handleNavigateToBrand}
-                  />
+                  <>
+                    <Spacer mb={8} />
+                    <ProductBuyCTA
+                      product={filter(ProductBuyCTA_ProductFragment, product)}
+                      selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
+                      onNavigateToBrand={handleNavigateToBrand}
+                    />
+                  </>
                 )}
                 <ProductHowItWorks />
               </Box>

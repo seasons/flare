@@ -1,8 +1,6 @@
 import { Button, Flex, MaxWidth, Sans } from "components"
 import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormFooter"
 import gql from "graphql-tag"
-import { useAuthContext } from "lib/auth/AuthContext"
-import { executeChargebeeCheckout, initChargebee } from "lib/chargebee"
 import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
@@ -54,7 +52,6 @@ interface ChoosePlanStepProps {
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
   const [selectedPlan, setSelectedPlan] = useState(null)
   const { previousData, data = previousData } = useQuery(PAYMENT_PLANS)
-  const { userSession } = useAuthContext()
 
   useEffect(() => {
     if (data?.paymentPlans && !selectedPlan) {
@@ -62,10 +59,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
       setSelectedPlan(essential1)
     }
   }, [data, selectedPlan, setSelectedPlan])
-
-  useEffect(() => {
-    initChargebee()
-  }, [])
 
   const faqSections = data?.faq?.sections
 
@@ -99,8 +92,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
                 type="button"
                 onClick={() => {
                   onPlanSelected(selectedPlan)
-                  const { email } = userSession.user
-                  executeChargebeeCheckout({ planID: selectedPlan.planID, email, onError, onSuccess })
                 }}
               >
                 Select Plan

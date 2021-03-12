@@ -42,6 +42,11 @@ function App({ Component, pageProps }) {
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
         <script src="https://js.chargebee.com/v2/chargebee.js" async defer />
+        <script
+          src="https://www.paypal.com/sdk/js?client-id=ARy5d0-3a-eUf8v_5ZaBdJ42ZJ8RDJcH-zCmtXNsX907lWBgkOPYX3n-4HPRtymgjZFrA6srEjZujGVd"
+          async
+          defer
+        ></script>
         <Theme>
           <Component {...pageProps} />
         </Theme>

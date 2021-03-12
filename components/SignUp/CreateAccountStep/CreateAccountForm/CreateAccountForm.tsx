@@ -1,11 +1,12 @@
 import { ExternalLink } from "components"
 import { TelephoneMaskField } from "components/Fields/TelephoneMaskField"
 import { FormTemplate } from "components/Forms/FormTemplate"
+import { GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Formik } from "formik"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
 import { useRouter } from "next/router"
-import { GET_SIGNUP_USER, SignupFormProps } from "pages/signup"
+import { SignupFormProps } from "pages/signup"
 import React from "react"
 import { Schema, useTracking } from "utils/analytics"
 
