@@ -1,5 +1,5 @@
 import React from "react"
-import { Sans, Spacer, Flex, MaxWidth, Media } from "../"
+import { Sans, Spacer, Flex, MaxWidth, Media } from "components"
 import { Display } from "../Typography"
 import styled from "styled-components"
 import { space } from "helpers"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
-import { Box, Flex, Sans } from "../"
+import { Box, Flex, Sans } from "components"
 import { color } from "../../helpers"
 
 interface TriageProgressScreenProps {

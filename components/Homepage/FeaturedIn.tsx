@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Box, Sans, Flex, MaxWidth, Media } from "../"
+import { Box, Sans, Flex, MaxWidth, Media } from "components"
 
 const bi = require("../../public/images/homepage/BusinessInsider.png")
 const nyt = require("../../public/images/homepage/NYT.png")

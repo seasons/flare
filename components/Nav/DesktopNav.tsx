@@ -10,7 +10,7 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
-import { Box, MaxWidth } from "../"
+import { Box, MaxWidth } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"

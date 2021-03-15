@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { useRouter } from "next/router"
 import { imageResize } from "utils/imageResize"
-import { Box, Button, Display, MaxWidth, Sans, Spacer, Flex } from "../"
+import { Box, Button, Display, MaxWidth, Sans, Spacer, Flex } from "components"
 
 const imageSRC = require("../../public/images/homepage/StylesBG.png")
 const image = imageResize(imageSRC, "large")

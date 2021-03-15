@@ -1,12 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 
-import {
-  Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper
-} from "@material-ui/core"
+import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 
-import { Box, Sans, Separator } from "../"
+import { Box, Sans, Separator } from "components"
 
 export const MenuNavItem = ({ link, isMenu = false, menu = [] }) => {
   const [open, setOpen] = React.useState(false)

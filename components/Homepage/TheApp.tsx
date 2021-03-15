@@ -1,5 +1,5 @@
 import React from "react"
-import { Sans, Spacer, Flex, MaxWidth } from "../"
+import { Sans, Spacer, Flex, MaxWidth } from "components"
 import { Media } from "../Responsive"
 import { Display } from "../Typography"
 import { imageResize } from "utils/imageResize"

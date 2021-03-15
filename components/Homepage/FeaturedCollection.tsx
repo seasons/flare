@@ -1,5 +1,5 @@
 import React from "react"
-import { Sans, Spacer, Flex, MaxWidth, Box, Link, Picture, Media } from "../"
+import { Sans, Spacer, Flex, MaxWidth, Box, Link, Picture, Media } from "components"
 import { Display } from "../Typography"
 import { head } from "lodash"
 import { ProductGridItem } from "@seasons/eclipse"
