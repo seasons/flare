@@ -51,6 +51,7 @@ export const GET_USER = gql`
       customer {
         id
         status
+        referralLink
         user {
           id
           firstName
@@ -102,6 +103,9 @@ export const Account = screenTrack()(({ navigation }) => {
   const firstName = user?.firstName
   const lastName = user?.lastName
   const roles = user?.roles
+  const referralLink = customer?.referralLink
+
+  console.log("referralLink", referralLink)
 
   const ListSkeleton = () => {
     return (
@@ -120,6 +124,10 @@ export const Account = screenTrack()(({ navigation }) => {
         ))}
       </Box>
     )
+  }
+
+  const referralLinkOnPress = () => {
+    return null
   }
 
   const topList = [
@@ -285,6 +293,12 @@ export const Account = screenTrack()(({ navigation }) => {
         <Box px={2} py={4}>
           {!!data ? renderBody() : <ListSkeleton />}
         </Box>
+        {referralLink && (
+          <>
+            <InsetSeparator />
+            <ReferAFriend onPress={referralLinkOnPress} />
+          </>
+        )}
         <InsetSeparator />
         <Spacer mb={4} />
         <Box px={2}>
