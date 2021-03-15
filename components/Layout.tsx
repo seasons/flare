@@ -73,7 +73,7 @@ export const Layout = ({
           <Theme>
             {showIntercom && <Intercom />}
             <Nav brandItems={brandItems} />
-            <MaxWidth>
+            <MaxWidth height="100%">
               <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                 {children}
                 {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
