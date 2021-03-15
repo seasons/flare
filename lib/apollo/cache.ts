@@ -1,8 +1,8 @@
-import { InMemoryCache, makeVar } from "@apollo/client"
-import { concatPagination } from "@apollo/client/utilities"
+import { localBagVar } from "lib/localBag"
 import { isEmpty } from "lodash"
 
-export const localBagVar = makeVar([])
+import { InMemoryCache } from "@apollo/client"
+import { concatPagination } from "@apollo/client/utilities"
 
 export const cache = new InMemoryCache({
   typePolicies: {
@@ -11,7 +11,9 @@ export const cache = new InMemoryCache({
         allPosts: concatPagination(),
         localBagItems: {
           read() {
-            return localBagVar()
+            const val = localBagVar()
+            console.log("Local bag: ", val)
+            return val
           },
         },
         products: {

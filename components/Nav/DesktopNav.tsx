@@ -87,15 +87,15 @@ export const DesktopNav = (props: NavProps) => {
                 return link.renderNavItem()
               }
             })}
+            <Link
+              onClick={() => {
+                openDrawer("bag")
+              }}
+            >
+              <NavItem link={{ text: "Bag" }} />
+            </Link>
             {isLoggedIn ? (
               <>
-                <Link
-                  onClick={() => {
-                    openDrawer("bag")
-                  }}
-                >
-                  <NavItem link={{ text: "Bag" }} />
-                </Link>
                 <Link
                   onClick={() => {
                     openDrawer("profile")

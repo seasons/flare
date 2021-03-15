@@ -1,12 +1,14 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { localBagVar } from "lib/apollo/cache"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "@seasons/eclipse"
+import { addToLocalBag } from "lib/localBag"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
+import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "@seasons/eclipse"
 
 import { useDrawerContext } from "./Drawer/DrawerContext"
 import { CheckWithBackground } from "./SVGs"
@@ -56,26 +58,8 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       },
     ],
     onCompleted: (res) => {
-      setIsMutating(false)
-      setAdded(true)
-      onAdded?.(true)
-      const itemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
       const bagItemCount = authState?.isSignedIn ? data?.me?.bag?.length : res.addOrRemoveFromLocalBag.length
-      if (itemCount && bagItemCount && bagItemCount >= itemCount) {
-        showPopUp({
-          icon: <CheckWithBackground />,
-          title: "Added to bag",
-          note: "Your bag is full. Place your reservation.",
-          buttonText: "Got It",
-          secondaryButtonText: "Go to bag",
-          secondaryButtonOnPress: () => {
-            openDrawer("bag")
-            hidePopUp()
-          },
-          onClose: () => hidePopUp(),
-        })
-        openDrawer("bag")
-      }
+      handleAddedToBag(bagItemCount)
     },
     onError: (err) => {
       setIsMutating(false)
@@ -91,10 +75,41 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     },
   })
 
+  const handleAddedToBag = (bagItemCount: number) => {
+    setIsMutating(false)
+    setAdded(true)
+    onAdded?.(true)
+    const itemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
+
+    if (itemCount && bagItemCount && bagItemCount >= itemCount) {
+      showPopUp({
+        icon: <CheckWithBackground />,
+        title: "Added to bag",
+        note: "Your bag is full. Place your reservation.",
+        buttonText: "Got It",
+        secondaryButtonText: "Go to bag",
+        secondaryButtonOnPress: () => {
+          openDrawer("bag")
+          hidePopUp()
+        },
+        onClose: () => hidePopUp(),
+      })
+      openDrawer("bag")
+    }
+  }
+
   const handleReserve = () => {
     if (!isMutating) {
       setIsMutating(true)
-      addToBag()
+      if (isUserSignedIn) {
+        addToBag()
+      } else {
+        const updatedBag = addToLocalBag({
+          productID: props.data?.product?.id,
+          variantID: selectedVariant.id,
+        })
+        handleAddedToBag(updatedBag.length)
+      }
     }
   }
 
@@ -119,11 +134,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
           actionName: Schema.ActionNames.ProductAddedToBag,
           actionType: Schema.ActionTypes.Tap,
         })
-        if (authState.isSignedIn) {
-          handleReserve()
-        } else {
-          toggleLoginModal(true)
-        }
+        handleReserve()
       }}
     >
       {text}

@@ -132,7 +132,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
 
   const processPayment = async (paymentMethod, values, billingDetails) => {
     try {
-      const { data, errors } = await submitPayment({
+      const { data: paymentData, errors } = await submitPayment({
         variables: {
           paymentMethodID: paymentMethod.id,
           planID: plan?.planID,
@@ -152,7 +152,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
         const error = errors?.[0]
         setErrorMessage(error?.message)
       } else {
-        onSuccess(data)
+        onSuccess(paymentData)
         setErrorMessage(null)
       }
     } catch (e) {

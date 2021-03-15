@@ -1,19 +1,19 @@
 import { Box, Button, Flex, Sans, Spacer } from "components"
 import { Spinner } from "components/Spinner"
+import { Check } from "components/SVGs/Check"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { get, head } from "lodash"
+import { Image } from "mobile/Image"
 import { useRouter } from "next/router"
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_BAG } from "@seasons/eclipse"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
-import { Image } from "mobile/Image"
 import { Schema, useTracking } from "utils/analytics"
-import { Check } from "components/SVGs/Check"
 
 import { useMutation } from "@apollo/client"
+import { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_BAG } from "@seasons/eclipse"
 
 interface BagItemProps {
   bagItem: any
