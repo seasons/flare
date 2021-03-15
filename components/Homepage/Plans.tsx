@@ -7,7 +7,7 @@ import { useRouter } from "next/router"
 import React from "react"
 import { imageResize } from "utils/imageResize"
 
-import { Box, Flex, Media, Picture, Spacer } from "../"
+import { Box, Flex, Media, Picture, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
 
 const image = require("../../public/images/homepage/OutfitGrid-1.jpg")

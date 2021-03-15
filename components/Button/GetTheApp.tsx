@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { Flex, Sans, Spacer, Box } from "../"
+import { Flex, Sans, Spacer, Box } from "components"
 import { color } from "../../helpers"
 import { AppleSVG } from "../SVGs"
 import { Button } from "./Button"

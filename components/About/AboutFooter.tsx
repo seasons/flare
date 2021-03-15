@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Sans, Spacer } from "../"
+import { Box, Sans, Spacer } from "components"
 import { Grid, Row, Col } from "../Grid"
 import { color } from "../../helpers"
 import { Separator } from "../Separator"

@@ -1,11 +1,11 @@
 import React from "react"
 import styled from "styled-components"
 
-import { Box, Sans } from "../"
+import { Box, Sans } from "components"
 import { color } from "../../helpers"
 
 type Props = {
-  link: { text: string } 
+  link: { text: string }
   active?: boolean
 }
 
@@ -29,7 +29,9 @@ const Wrapper = styled<any>(Box)`
       display: block;
     }
   }
-  ${({ active }: Props) => active && `
+  ${({ active }: Props) =>
+    active &&
+    `
     div {
       display: block;
     }
