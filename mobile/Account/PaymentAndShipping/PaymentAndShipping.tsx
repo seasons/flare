@@ -1,4 +1,4 @@
-import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer } from "components"
+import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer, Flex } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
@@ -89,10 +89,19 @@ export const createBillingAddress = (billingInfo) => {
   return addressArray
 }
 
-const AccountSection: React.FC<{ title: string; value: string | [string] }> = ({ title, value }) => {
+const AccountSection: React.FC<{ title: string; value: string | [string]; onClick: () => void }> = ({
+  title,
+  value,
+  onClick,
+}) => {
   return (
     <Box key={title} px={2}>
-      <Sans size="4">{title}</Sans>
+      <Flex justifyContent="space-between">
+        <Sans size="4">{title}</Sans>
+        <Sans size="4" style={{ textDecoration: "underline" }} onClick={onClick}>
+          Edit
+        </Sans>
+      </Flex>
       <Box mb={1} />
       <Separator color={color("black10")} />
       <Box mb={1} />
@@ -150,33 +159,8 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
   let billingInfo = null
   let phoneNumber = null
   const customer = data?.me?.customer
-  if (customer) {
-    const details = customer.detail
-    if (details?.shippingAddress) {
-      shippingAddress = details.shippingAddress
-      sections.push({ title: "Shipping address", value: createShippingAddress(details.shippingAddress) })
-    }
 
-    if (customer?.billingInfo) {
-      billingInfo = customer.billingInfo
-      sections.push({
-        title: "Billing address",
-        value: createBillingAddress(customer.billingInfo),
-      })
-
-      sections.push({
-        title: "Payment info",
-        value: `${customer.billingInfo.brand.toUpperCase()} ${customer.billingInfo.last_digits}`,
-      })
-    }
-
-    if (details?.phoneNumber) {
-      phoneNumber = details?.phoneNumber
-      sections.push({ title: "Phone number", value: details.phoneNumber })
-    }
-  }
-
-  const handleEditBtnPressed = () => {
+  const openEditAddressesAndPhoneNumber = () => {
     openDrawer("editPaymentAndShipping", {
       billingInfo: customer?.billingInfo,
       shippingAddress: customer?.detail?.shippingAddress,
@@ -184,8 +168,40 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
     })
   }
 
+  if (customer) {
+    const details = customer.detail
+    if (details?.shippingAddress) {
+      shippingAddress = details.shippingAddress
+      sections.push({
+        title: "Shipping address",
+        value: createShippingAddress(details.shippingAddress),
+        onClick: openEditAddressesAndPhoneNumber,
+      })
+    }
+
+    if (customer?.billingInfo) {
+      billingInfo = customer.billingInfo
+      sections.push({
+        title: "Billing address",
+        value: createBillingAddress(customer.billingInfo),
+        onClick: openEditAddressesAndPhoneNumber,
+      })
+
+      sections.push({
+        title: "Payment info",
+        value: `${customer.billingInfo.brand.toUpperCase()} ${customer.billingInfo.last_digits}`,
+        onClick: () => openDrawer("editPaymentMethod"),
+      })
+    }
+
+    if (details?.phoneNumber) {
+      phoneNumber = details?.phoneNumber
+      sections.push({ title: "Phone number", value: details.phoneNumber, onClick: openEditAddressesAndPhoneNumber })
+    }
+  }
+
   const renderItem = (item) => {
-    return <AccountSection title={item.title} value={item.value} />
+    return <AccountSection title={item.title} value={item.value} onClick={item.onClick} />
   }
 
   return (
@@ -209,11 +225,6 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => renderItem(item)}
       />
-      <Box p={2}>
-        <Button block variant="primaryWhite" onClick={handleEditBtnPressed}>
-          Edit
-        </Button>
-      </Box>
     </Container>
   )
 })
