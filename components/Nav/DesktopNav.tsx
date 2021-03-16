@@ -10,7 +10,7 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
-import { Box, MaxWidth } from "../"
+import { Box, MaxWidth } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
@@ -52,9 +52,10 @@ export const DesktopNav = (props: NavProps) => {
   }
 
   return (
-    <HeaderContainer style={specialStyles}>
-      <MaxWidth>
-        <Box width="100%">
+    <>
+      <Box style={{ width: "100%", height: "58px" }} />
+      <HeaderContainer style={specialStyles}>
+        <MaxWidth>
           <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
             <SeasonsLogo />
             <Box px={4}>
@@ -123,15 +124,15 @@ export const DesktopNav = (props: NavProps) => {
             </Flex>
           </Flex>
           <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isLoggedIn} />
-        </Box>
-      </MaxWidth>
-      <LoginModal
-        open={loginModalOpen}
-        onClose={() => {
-          toggleLoginModal(false)
-        }}
-      />
-    </HeaderContainer>
+        </MaxWidth>
+        <LoginModal
+          open={loginModalOpen}
+          onClose={() => {
+            toggleLoginModal(false)
+          }}
+        />
+      </HeaderContainer>
+    </>
   )
 }
 

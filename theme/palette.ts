@@ -15,8 +15,8 @@ export default {
   },
   error: {
     contrastText: colors.white100,
-    dark: colors.black100,
-    main: colors.black85,
+    dark: colors.red500,
+    main: colors.red500,
     light: colors.black50,
   },
   text: {

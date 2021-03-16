@@ -1,7 +1,7 @@
 import { Box, Button, Display, Flex, Layout, Media, Separator, Spacer } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Col, Grid, Row } from "components/Grid"
-import { HowItWorks } from "components/Product/HowItWorks"
+import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
 import { groupByPlanTier } from "components/SignUp/MembershipPlans"
 import { PlanTier } from "components/SignUp/PlanTier"
 import { executeChargebeeCheckout, initChargebee } from "lib/chargebee"
@@ -111,7 +111,7 @@ const Gift = screenTrack(() => ({
 
                   <Spacer pb={2} />
                   <Box maxWidth="480px">
-                    <HowItWorks />
+                    <ProductHowItWorks />
                   </Box>
                 </Flex>
               </Col>

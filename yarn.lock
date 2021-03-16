@@ -1429,10 +1429,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.6.0.tgz#dd5f19601eb3684c6bcdd3df3d0c04cf44c24cff"
   integrity sha512-emBGKvhJ0h++lLJQ5ejsj+od9G67nEaihjvfSx7/JWvNrQGAhP9U0OZqgb9dkKzor9Ufaj9SGt8RNY97cGzttw==
 
-"@seasons/eclipse@^1.1.10":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.2.2.tgz#fc7c119e8776341460548c1e600a9a82539e9251"
-  integrity sha512-uVhV+aWH7TX700pKV314XPo++EnNRB7a7nnJmTi63XK1w1Hss/qWUvrLO7f1KbdshRZAzCGSWHZYghO1dxbmjg==
+"@seasons/eclipse@^1.2.9":
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.2.9.tgz#e5772b61a0f09c71ed5cf2798f9770ec3f4ec4c4"
+  integrity sha512-SMiXbpCSqvijhzDF+vkfrGHRQDPwNBrf33OAHqZUUCbwUMABO2MPwfk/ra8BaY4C+RffymYQegolDEDjwNW2Vw==
   dependencies:
     dripsy "^1.4.6"
 
@@ -1523,17 +1523,17 @@
     "@sentry/types" "5.27.4"
     tslib "^1.9.3"
 
-"@stripe/react-stripe-js@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-1.1.2.tgz#a7f5ef5b4d7dc7fa723501b706644414cfe6dcba"
-  integrity sha512-07hu8RJXwWKGbvdvd1yt1cYvGtDB8jFX+q10f7FQuItUt9rlSo0am3WIx845iMHANiYgxyRb1PS201Yle9xxPQ==
+"@stripe/react-stripe-js@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-1.2.2.tgz#efbb1230f3e1d4726ed6e80637b081aa82a4d63e"
+  integrity sha512-ziIdXSl4zRo8Pgq9TlnGPRVAe6Fjh/vkVqFr6eWS/ylr7vUE4zHFTE3rlo7Ys+fGM5WFcC+nFbXsPBCh1iG/6w==
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.9.0.tgz#a4a166b5de88903573c9a7fd04f39610648f4769"
-  integrity sha512-/8+zfeRHlsEsxj0qmq9qbrnyF3fx+r97sDxfv7kqOyZFUFzC7DBwQwZlmss6XiV3ez5vz1G1QIjEW29PmLmsAw==
+"@stripe/stripe-js@^1.12.1":
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.12.1.tgz#baa5f1d8cfdbda174a0419cb42d2f1c8d622a7eb"
+  integrity sha512-CE602Mzx6DnUHGrL+S9Kk7UK6674BCYlklh9F2NWU6ue0xdVzRTfFCuL5LHvs7Plicw5rsjuDhJ9sIdwFBVCIQ==
 
 "@styled-system/background@^5.1.2":
   version "5.1.2"
@@ -6637,6 +6637,11 @@ react-dom@16.12.0:
     prop-types "^15.6.2"
     scheduler "^0.18.0"
 
+react-fade-in@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-fade-in/-/react-fade-in-2.0.1.tgz#b4bcd7dac63d6857ebcd68facbff2f5f9616278f"
+  integrity sha512-oqS/WT4znaXEHmL+yo0IDUDY7uC9K4RP35j1SdRUEBspR09B2iIC0i8oJ28tPOr6Ez/L2aktF9p89j+DbsTVNw==
+
 react-fast-compare@^2.0.1:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
@@ -6765,10 +6770,10 @@ react-slick@^0.27.14:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
-react-snaplist-carousel@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/react-snaplist-carousel/-/react-snaplist-carousel-3.2.2.tgz#7ae22819adaca82c720edf07654560161caf4ad0"
-  integrity sha512-H9BNv5aJoLZqEyCL3kU4y7H79BkAHuDdIsmK5Ta2g7yE0zVRz66EeWMA/D+MHZvIn3Ntpr5ucLFA+DR897UPdg==
+react-snaplist-carousel@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-snaplist-carousel/-/react-snaplist-carousel-4.3.0.tgz#0ad47c24f35ffecd411939c5cb9ab5351eb4a0a3"
+  integrity sha512-h+oF9RUrU5M8ETEJ114nb4uA6wlBXhIOmRi2c+jfsdPsP4ghi5+nTNquj95Wbebyw51zeh0TThyeSpCcQViFPg==
 
 react-spring@^8.0.27:
   version "8.0.27"

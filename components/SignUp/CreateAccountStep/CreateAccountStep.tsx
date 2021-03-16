@@ -1,4 +1,5 @@
-import { MaxWidth } from "components"
+import { Flex, MaxWidth } from "components"
+import { SIGNUP_FOOTER_HEIGHT } from "pages/signup"
 import React from "react"
 
 import { CreateAccountForm, CreateAccountFormProps } from "./CreateAccountForm"
@@ -8,9 +9,5 @@ interface CreateAccountStepProps {
 }
 
 export const CreateAccountStep: React.FC<CreateAccountStepProps> = ({ form }) => {
-  return (
-    <MaxWidth>
-      <CreateAccountForm {...form} />
-    </MaxWidth>
-  )
+  return <CreateAccountForm {...form} />
 }

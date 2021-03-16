@@ -29,6 +29,11 @@ export const Autocomplete = connectAutoComplete(({ hits, refine }) => {
     onChange: onChange,
     value,
     onFocus: () => refine(),
+    onKeyDown: (event) => {
+      if (event.key === "Enter") {
+        router.push(`/search?q=${value}`)
+      }
+    },
   }
 
   return (

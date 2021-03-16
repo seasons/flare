@@ -5,7 +5,7 @@ import { Col, Grid, Row } from "components/Grid"
 import { ProgressiveImage } from "components/Image"
 import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
 import { BreadCrumbs } from "components/Product/BreadCrumbs"
-import { HowItWorks } from "components/Product/HowItWorks"
+import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
 import { ProductDetails } from "components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
 import { ProductMeasurements } from "components/Product/ProductMeasurements"
@@ -154,15 +154,17 @@ const Product = screenTrack(({ router }) => {
                   </Flex>
                 </Flex>
                 {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
-                {product ? (
-                  <ProductBuyCTA
-                    pt={8}
-                    product={filter(ProductBuyCTA_ProductFragment, product)}
-                    selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
-                    onNavigateToBrand={handleNavigateToBrand}
-                  />
-                ) : null}
-                <HowItWorks />
+                {product && (
+                  <>
+                    <Spacer mb={8} />
+                    <ProductBuyCTA
+                      product={filter(ProductBuyCTA_ProductFragment, product)}
+                      selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
+                      onNavigateToBrand={handleNavigateToBrand}
+                    />
+                  </>
+                )}
+                <ProductHowItWorks />
               </Box>
             </Col>
           </Row>

@@ -1,4 +1,4 @@
-import { Sans, Box, Flex, Spacer, Separator } from "../"
+import { Sans, Box, Flex, Spacer, Separator } from "components"
 import { color } from "../../helpers"
 import { Link } from "../Link"
 import { Grid, Row, Col } from "../Grid"
