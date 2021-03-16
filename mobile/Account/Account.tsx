@@ -48,6 +48,11 @@ export enum State {
 
 export const GET_USER = gql`
   query GetUser {
+    view(viewID: "Referral") {
+      id
+      title
+      caption
+    }
     me {
       customer {
         id
@@ -291,7 +296,7 @@ export const Account = screenTrack()(({ navigation }) => {
         {referralLink && (
           <>
             <InsetSeparator />
-            <ReferAFriend referralLink={referralLink} />
+            <ReferAFriend referralLink={referralLink} referralData={data?.view} />
           </>
         )}
         <InsetSeparator />

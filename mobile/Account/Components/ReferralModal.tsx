@@ -4,12 +4,18 @@ import { useModalContext } from "components/Modal/ModalContext"
 import React from "react"
 import styled from "styled-components"
 
-export const ReferralModal: React.FC<{ referralLink: string }> = ({ referralLink }) => {
+export const ReferralModal: React.FC<{ referralLink: string; referralData: ReferralData }> = ({
+  referralLink,
+  referralData,
+}) => {
   const { toggleModal } = useModalContext()
 
   const onCopy = () => {
     navigator?.clipboard?.writeText(referralLink)
   }
+
+  const title = referralData?.title
+  const caption = referralData?.caption
 
   return (
     <Wrapper px={1}>
@@ -18,16 +24,16 @@ export const ReferralModal: React.FC<{ referralLink: string }> = ({ referralLink
           <CloseXIcon variant="light" />
         </Box>
       </Flex>
-      <Box>
-        <Sans size="8">Your referral link</Sans>
+      <Box pt={3} pb={8}>
+        <Sans size="8">{title}</Sans>
         <Sans size="3" color="black50">
-          Copy the below link and send it to your friends
+          {caption}
         </Sans>
         <Spacer mb={4} />
         <Flex flexDirection="row" alignItems="center" width="100%" justifyContent="space-between">
           <Sans size="6">{referralLink}</Sans>
           <Sans size="3" style={{ textDecoration: "underline", cursor: "pointer" }} onClick={onCopy}>
-            copy to clipboard
+            Copy link
           </Sans>
         </Flex>
       </Box>
@@ -36,7 +42,6 @@ export const ReferralModal: React.FC<{ referralLink: string }> = ({ referralLink
 }
 
 const Wrapper = styled(Box)`
-  height: 250px;
   width: 450px;
   max-width: calc(100vw - 16px);
 `

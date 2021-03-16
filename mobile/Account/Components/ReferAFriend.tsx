@@ -6,11 +6,20 @@ import { TouchableOpacity } from "react-native"
 import styled from "styled-components"
 import { ReferralModal } from "./ReferralModal"
 
-export const ReferAFriend: React.FC<{ referralLink: string }> = ({ referralLink }) => {
+export interface ReferralData {
+  id: string
+  title: string
+  caption: string
+}
+
+export const ReferAFriend: React.FC<{ referralLink: string; referralData: ReferralData }> = ({
+  referralLink,
+  referralData,
+}) => {
   const { toggleModal } = useModalContext()
 
   const onPress = () => {
-    return toggleModal(true, <ReferralModal referralLink={referralLink} />)
+    return toggleModal(true, <ReferralModal referralLink={referralLink} referralData={referralData} />)
   }
 
   return (
