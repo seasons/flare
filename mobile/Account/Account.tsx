@@ -293,7 +293,7 @@ export const Account = screenTrack()(({ navigation }) => {
         {referralLink && (
           <>
             <InsetSeparator />
-            <ReferAFriend />
+            <ReferAFriend referralLink={referralLink} />
           </>
         )}
         <InsetSeparator />

@@ -16,12 +16,20 @@ export const Modal = () => {
     <MaterialUIModal open={show} onClose={() => toggleModal(false, null)}>
       <Fade in={show}>
         <Slide direction="up" in={show} mountOnEnter unmountOnExit>
-          <Container>{children}</Container>
+          <OuterContainer>
+            <Container>{children}</Container>
+          </OuterContainer>
         </Slide>
       </Fade>
     </MaterialUIModal>
   )
 }
+
+const OuterContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`
 
 const Container = styled(Box)({
   background: "white",

@@ -4,16 +4,13 @@ import { useModalContext } from "components/Modal/ModalContext"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components"
+import { ReferralModal } from "./ReferralModal"
 
-const ReferralModal = () => {
-  return <Sans size="4">Testing</Sans>
-}
-
-export const ReferAFriend = () => {
+export const ReferAFriend: React.FC<{ referralLink: string }> = ({ referralLink }) => {
   const { toggleModal } = useModalContext()
 
   const onPress = () => {
-    return toggleModal(true, <ReferralModal />)
+    return toggleModal(true, <ReferralModal referralLink={referralLink} />)
   }
 
   return (
