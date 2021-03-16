@@ -68,7 +68,7 @@ const MobileHero = ({ post }) => {
         <Col xs="12" px={2}>
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer pb={2} />
+              <Spacer pb={6} />
               <HeroHeaderText version="mobile" />
               <Spacer mb={1} />
               <HeroCaptionText version="mobile" />
