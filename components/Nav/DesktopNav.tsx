@@ -52,7 +52,7 @@ export const DesktopNav = (props: NavProps) => {
 
   return (
     <>
-      <Box style={{ width: "100%", height: "58px" }} />
+      <Box style={{ width: "100%" }} height={["60px", "74px", "58px", "58px", "58px"]} />
       <HeaderContainer style={specialStyles}>
         <MaxWidth>
           <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>

@@ -16,7 +16,8 @@ export const PlanTier: React.FC<{
   showButton?: boolean
   title?: string
   subtitle?: string
-}> = ({ group, onSelectPlan, selectedPlan, displayText, showButton, title, subtitle }) => {
+  isMobile?: boolean
+}> = ({ group, isMobile, onSelectPlan, selectedPlan, displayText, showButton, title, subtitle }) => {
   const tier = group?.[0].tier
   const descriptionLines = group?.[0]?.description?.split("\n") || []
 
@@ -94,13 +95,17 @@ export const PlanTier: React.FC<{
   let planWrapperStyle = {}
   return (
     <Box width="100%" style={{ maxWidth: "500px" }}>
-      {displayText ? <Display size="9">{title}</Display> : <Sans size="8">{title}</Sans>}
-      {!!subtitle && (
-        <Sans size="4" color="black50">
-          {subtitle}
-        </Sans>
+      {!isMobile && (
+        <>
+          {displayText ? <Display size="9">{title}</Display> : <Sans size="8">{title}</Sans>}
+          {!!subtitle && (
+            <Sans size="4" color="black50">
+              {subtitle}
+            </Sans>
+          )}
+        </>
       )}
-      <Spacer mb={4} />
+      <Spacer mb={[0, 4, 4, 4, 4]} />
       <Flex flexDirection="column">
         {descriptionLines.map((line) => {
           return (
