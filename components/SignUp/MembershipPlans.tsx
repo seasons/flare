@@ -41,7 +41,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
   const plansGroupedByTier = groupByPlanTier(paymentPlans)
 
   const Desktop = () => (
-    <Grid px={[2, 2, 2, 5, 5]}>
+    <Grid px={[2, 2, 2, 2, 2]}>
       <Row>
         <Col md="8" xs="12">
           <Flex
@@ -58,7 +58,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
               {plansGroupedByTier.map((group, index) => (
                 <Box key={index} width="100%">
                   {index !== 0 && <Separator />}
-                  <Flex pb={6} pt={index !== 0 ? 6 : 0} px={[2, 2, 2, 5, 5]} flexDirection="column" alignItems="center">
+                  <Flex pb={6} pt={index !== 0 ? 6 : 0} px={[2, 2, 2, 2, 2]} flexDirection="column" alignItems="center">
                     <Box width="500px">
                       {index === 0 && (
                         <Box>
@@ -89,7 +89,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
         <Col md="4" xs="12">
           <Box
             style={{ borderRight: `1px solid ${color("black15")}`, height: "100%", minHeight: "100vh" }}
-            px={[2, 2, 2, 5, 5]}
+            px={[2, 2, 2, 2, 2]}
             pt={150}
           >
             <FAQWrapper>
@@ -121,7 +121,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                   <Flex
                     pb={6}
                     pt={index !== 0 ? 6 : 0}
-                    px={[2, 2, 2, 5, 5]}
+                    px={[2, 2, 2, 2, 2]}
                     flexDirection="column"
                     alignItems="center"
                     justifyContent="center"
@@ -158,7 +158,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            px={[2, 2, 2, 5, 5]}
+            px={[2, 2, 2, 2, 2]}
           >
             <Box width={["auto", "auto", "500px", "500px", "500px"]}>
               <FAQWrapper>

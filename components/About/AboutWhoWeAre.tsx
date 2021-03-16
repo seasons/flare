@@ -88,7 +88,7 @@ export const AboutWhoWeAre: React.FC = () => {
   return (
     <Grid>
       <Spacer mb={10} />
-      <Box px={[2, 2, 2, 5, 5]}>
+      <Box px={[2, 2, 2, 2, 2]}>
         <Sans size="6">Who we are</Sans>
       </Box>
       <Spacer mb={1} />

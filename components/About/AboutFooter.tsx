@@ -61,7 +61,7 @@ const ContactContent = () => {
 
 export const AboutFooter: React.FC = () => {
   return (
-    <Box px={[2, 2, 2, 5, 5]}>
+    <Box px={[2, 2, 2, 2, 2]}>
       <Separator />
       <Grid>
         <Row>

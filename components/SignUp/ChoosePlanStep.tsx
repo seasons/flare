@@ -80,7 +80,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
               py={1}
               height={["auto", "63px"]}
               style={{ width: "100%" }}
-              px={[2, 2, 2, 5, 5]}
+              px={[2, 2, 2, 2, 2]}
             >
               <Sans color="black50" my={2} size={["2", "4"]}>
                 You can upgrade or change your plan at any time from your account settings.

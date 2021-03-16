@@ -48,7 +48,7 @@ const Item = ({ step, index }) => {
 export const HowItWorks: React.FC = () => {
   return (
     <Grid>
-      <Box px={[2, 2, 2, 5, 5]} pb={6}>
+      <Box px={[2, 2, 2, 2, 2]} pb={6}>
         <Display size="9" style={{ textAlign: "center" }}>
           How it works
         </Display>
@@ -58,7 +58,7 @@ export const HowItWorks: React.FC = () => {
         </Sans>
       </Box>
       <Media greaterThanOrEqual="lg">
-        <Row px={[2, 2, 2, 5, 5]}>
+        <Row px={[2, 2, 2, 2, 2]}>
           {HOW_IT_WORKS_TEXT?.map((step, index) => (
             <Col md="3" xs="12" key={index} px={2}>
               <Item index={index} step={step} />
@@ -67,7 +67,7 @@ export const HowItWorks: React.FC = () => {
         </Row>
       </Media>
       <Media lessThan="lg">
-        <Row px={[2, 2, 2, 5, 5]}>
+        <Row px={[2, 2, 2, 2, 2]}>
           {HOW_IT_WORKS_TEXT?.map((step, index) => (
             <Col md="6" xs="12" key={index} px={3} pt={2}>
               <Item index={index} step={step} />
