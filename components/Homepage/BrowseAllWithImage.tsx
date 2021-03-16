@@ -7,6 +7,9 @@ import { Box, Button, Display, MaxWidth, Sans, Spacer, Flex, Media } from "compo
 const imageSRC = require("../../public/images/homepage/StylesBG.png")
 const image = imageResize(imageSRC, "large")
 
+const mobileImageSRC = require("../../public/images/homepage/StylesMobileBG.png")
+const mobileImage = imageResize(mobileImageSRC, "medium")
+
 export const BrowseAllWithImage: React.FC = () => {
   const router = useRouter()
 
@@ -17,7 +20,7 @@ export const BrowseAllWithImage: React.FC = () => {
       <MaxWidth>
         <Box width="100%" px={[2, 2, 2, 2, 2]}>
           <BackgroundImage isMobile={isMobile}>
-            <Flex flexDirection="column" justifyContent="center" alignItems="center" pb={isMobile ? 2 : 0}>
+            <Flex flexDirection="column" justifyContent="center" alignItems="center">
               <Display size="8" color="white100" style={{ textAlign: "center" }}>
                 +1,000 styles in your pocket
               </Display>
@@ -58,9 +61,9 @@ export const BrowseAllWithImage: React.FC = () => {
 const BackgroundImage = styled.div<{ isMobile: boolean }>`
   display: flex;
   justify-content: center;
-  align-items: ${(p) => (p.isMobile ? "flex-end" : "center")};
+  align-items: center;
   flex-direction: row;
-  background: url(${image}) no-repeat center center;
+  background: url(${(p) => (p.isMobile ? mobileImage : image)}) no-repeat center center;
   background-size: cover;
   height: 610px;
 `
