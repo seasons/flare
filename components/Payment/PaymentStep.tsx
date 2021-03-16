@@ -4,6 +4,7 @@ import { FormFooter } from "components/Forms/FormFooter"
 import { Formik } from "formik"
 import { color } from "helpers/color"
 import React, { useEffect, useState } from "react"
+import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 import { colors } from "theme/colors"
 import * as Yup from "yup"
@@ -92,13 +93,27 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError }) 
   const [errorMessage, setErrorMessage] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState(null)
   const [plan, setPlan] = useState(null)
-  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS)
+  const { previousData, data = previousData, loading } = useQuery(PAYMENT_PLANS)
+  const [planError, setPlanError] = useState(null)
 
   useEffect(() => {
-    if (data) {
-      setPlan(data?.paymentPlans?.[0])
+    if (data && !loading) {
+      const bagCount = data?.me?.bag.length || 3
+      const paymentPlanIndex = bagCount - 1 < data?.paymentPlans?.length ? bagCount - 1 : 0
+      setPlan(data?.paymentPlans?.[paymentPlanIndex])
     }
-  }, [data])
+  }, [data, loading])
+
+  useEffect(() => {
+    if (plan) {
+      if (plan.itemCount < data?.me?.bag.length) {
+        // TODO: set error
+        setPlanError(data?.me?.bag.length - plan.itemCount)
+      } else {
+        setPlanError(null)
+      }
+    }
+  }, [plan])
 
   const valuesToBillingDetails = (values) => ({
     name: values.name,
@@ -239,10 +254,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError }) 
                     </Box>
                   </Box>
                 </BorderedCol>
-                <Col md={4}>
-                  <Box style={{ borderRight: `1px solid ${color("black15")}`, height: "100%", minHeight: "100vh" }}>
+                <RightColumn md={4}>
+                  <Box style={{ height: "100%", minHeight: "100vh" }}>
                     <Box px={[2, 2, 2, 5, 5]} pt={150}>
-                      <Box>
+                      <Box mb={4}>
                         <Sans size="8" color="black100">
                           Your first order
                         </Sans>
@@ -250,7 +265,13 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError }) 
                         <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
                           Take these styles home today
                         </Sans>
-                        <Spacer mb={5} />
+                        <Spacer mb={3} />
+                        {planError && (
+                          <>
+                            <ErrorResult size="3">Please remove {planError} item(s) in your bag</ErrorResult>
+                            <Spacer mt={2} />
+                          </>
+                        )}
 
                         {data?.me?.bag?.map((bagItem, index) => {
                           return (
@@ -274,13 +295,13 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError }) 
                       </FAQWrapper>
                     </Box>
                   </Box>
-                </Col>
+                </RightColumn>
               </Row>
             </Grid>
             <FormFooter
               footerText={<>You can upgrade or change your plan at any time from your account settings.</>}
               buttonText="Checkout"
-              disabled={!isValid}
+              disabled={!isValid || planError}
               handleSubmit={() => {
                 // onCompleted?.()
               }}
@@ -295,6 +316,14 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError }) 
 const BorderedCol = styled(Col)`
   border-left: 1px solid ${colors.black15};
   border-right: 1px solid ${colors.black15};
+`
+
+const RightColumn = styled(Col)`
+  border-right: 1px solid ${colors.black15};
+
+  ${media.xs`
+    border-left: 1px solid ${colors.black15};
+  `}
 `
 
 const FAQWrapper = styled(Box)`

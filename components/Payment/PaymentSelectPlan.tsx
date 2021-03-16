@@ -16,18 +16,21 @@ export const PaymentSelectPlan: React.FC<PaymentSelectPlanProps> = ({ paymentPla
   }
 
   return (
-    <ButtonGroup>
-      {paymentPlans?.map((paymentPlan, index) => (
-        <Button
-          key={index}
-          active={paymentPlan.id === selectedPlan?.id}
-          onClick={() => {
-            onPlanSelected(paymentPlan)
-          }}
-        >
-          {paymentPlan?.name}
-        </Button>
-      ))}
+    <ButtonGroup mx={2}>
+      {paymentPlans?.map((paymentPlan, index) => {
+        const count = paymentPlan?.itemCount
+        return (
+          <Button
+            key={index}
+            active={paymentPlan.id === selectedPlan?.id}
+            onClick={() => {
+              onPlanSelected(paymentPlan)
+            }}
+          >
+            {count} {count === 1 ? "item" : "items"}
+          </Button>
+        )
+      })}
     </ButtonGroup>
   )
 }
@@ -53,7 +56,7 @@ const Container = styled.button`
   white-space: nowrap;
   border-style: solid;
 
-  border: 0.5px solid ${colors.black100};
+  border: 0.5px solid ${colors.black15};
   border-left-width: 0px;
 
   &:first-child {
@@ -71,7 +74,6 @@ const Container = styled.button`
   flex: 1;
 
   background-color: ${colors.white100};
-  border-color: ${colors.black100};
   color: ${colors.black100};
 
   &.active {
