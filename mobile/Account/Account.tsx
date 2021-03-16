@@ -24,6 +24,7 @@ import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
 import { AuthorizedCTA, WaitlistedCTA } from "@seasons/eclipse"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
+import { ReferAFriend } from "./Components/ReferAFriend"
 
 export enum UserState {
   Undetermined,
