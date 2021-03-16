@@ -14,6 +14,7 @@ import { ApolloProvider } from "@apollo/client"
 import * as Sentry from "@sentry/react"
 import { Integrations } from "@sentry/tracing"
 import { ModalProvider } from "components/Modal/ModalProvider"
+import { Modal } from "components/Modal"
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -51,6 +52,7 @@ function App({ Component, pageProps }) {
           ></script>
           <Theme>
             <Component {...pageProps} />
+            <Modal />
           </Theme>
         </ModalProvider>
       </ApolloProvider>

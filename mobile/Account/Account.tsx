@@ -14,7 +14,7 @@ import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
-import { Linking, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { DateTime } from "luxon"
 
@@ -125,10 +125,6 @@ export const Account = screenTrack()(({ navigation }) => {
         ))}
       </Box>
     )
-  }
-
-  const referralLinkOnPress = () => {
-    return null
   }
 
   const topList = [
@@ -297,7 +293,7 @@ export const Account = screenTrack()(({ navigation }) => {
         {referralLink && (
           <>
             <InsetSeparator />
-            <ReferAFriend onPress={referralLinkOnPress} />
+            <ReferAFriend />
           </>
         )}
         <InsetSeparator />

@@ -4,6 +4,7 @@ import ModalContext from "./ModalContext"
 enum ModalAction {
   Show = "SHOW",
   Hide = "HIDE",
+  Clear = "CLEAR",
 }
 
 export const ModalProvider = ({ children }) => {
@@ -13,6 +14,7 @@ export const ModalProvider = ({ children }) => {
         case ModalAction.Show:
           return {
             ...prevState,
+            children: action.children,
             show: true,
           }
         case ModalAction.Hide:
@@ -20,19 +22,31 @@ export const ModalProvider = ({ children }) => {
             ...prevState,
             show: false,
           }
+        case ModalAction.Clear:
+          return {
+            ...prevState,
+            children: null,
+            show: false,
+          }
       }
     },
     {
       show: false,
+      children: null,
     }
   )
 
+  let clearChildren
+
   const modalContext = {
-    toggleModal: async (show: boolean) => {
+    toggleModal: async (show: boolean, children) => {
       if (show) {
-        dispatch({ type: ModalAction.Show })
+        dispatch({ type: ModalAction.Show, children })
       } else {
         dispatch({ type: ModalAction.Hide })
+        clearChildren = setTimeout(() => {
+          dispatch({ type: ModalAction.Clear })
+        }, 1000)
       }
     },
     modalState,

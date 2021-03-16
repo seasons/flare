@@ -1,9 +1,21 @@
-import { Flex, Sans } from "components"
+import { Box, Flex, Sans } from "components"
 import { ChevronIcon } from "components/Icons"
+import { useModalContext } from "components/Modal/ModalContext"
 import React from "react"
 import { TouchableOpacity } from "react-native"
+import styled from "styled-components"
 
-export const ReferAFriend = ({ onPress }) => {
+const ReferralModal = () => {
+  return <Sans size="4">Testing</Sans>
+}
+
+export const ReferAFriend = () => {
+  const { toggleModal } = useModalContext()
+
+  const onPress = () => {
+    return toggleModal(true, <ReferralModal />)
+  }
+
   return (
     <TouchableOpacity onPress={onPress}>
       <Flex flexDirection="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between" px={2} py={4}>
