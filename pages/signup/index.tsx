@@ -28,6 +28,8 @@ export interface SignupFormProps {
   onCompleted?: () => void
 }
 
+export const SIGNUP_FOOTER_HEIGHT = "68px"
+
 enum Steps {
   CreateAccountStep = "CreateAccountStep",
   DiscoverStyleStep = "DiscoverStyleStep",
@@ -249,7 +251,6 @@ const SignUpPage = screenTrack(() => ({
             updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")
             identify(data?.me?.customer?.user?.id, { status: "Active" })
-            refetchGetSignupUser()
             setCurrentStepState(Steps.FormConfirmation)
           }}
           onError={() => {}}
@@ -264,19 +265,19 @@ const SignUpPage = screenTrack(() => ({
   return (
     <Elements stripe={stripePromise}>
       <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
-        <MaxWidth>
-          <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-          <Flex
-            height="100%"
-            width="100%"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-            px={[2, 2, 2, 5, 5]}
-          >
+        <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
+        <Flex
+          height="100%"
+          width="100%"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          px={[2, 2, 2, 5, 5]}
+        >
+          <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
             {CurrentStep}
           </Flex>
-        </MaxWidth>
+        </Flex>
 
         <SplashScreen
           open={showReferrerSplash}
