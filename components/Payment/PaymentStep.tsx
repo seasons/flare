@@ -79,10 +79,12 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
     onError: (error) => {
       console.error(error)
       setErrorMessage(error?.message)
+      setIsProcessingPayment(false)
     },
     onCompleted: () => {
       onSuccess(data)
       setErrorMessage(null)
+      setIsProcessingPayment(false)
     },
     awaitRefetchQueries: true,
     refetchQueries: [
