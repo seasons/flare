@@ -3,6 +3,7 @@ import { CloseXIcon } from "components/Icons/CloseXIcon"
 import { useModalContext } from "components/Modal/ModalContext"
 import React from "react"
 import styled from "styled-components"
+import { ReferralData } from "./ReferAFriend"
 
 export const ReferralModal: React.FC<{ referralLink: string; referralData: ReferralData }> = ({
   referralLink,
