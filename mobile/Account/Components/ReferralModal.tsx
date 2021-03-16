@@ -19,7 +19,7 @@ export const ReferralModal: React.FC<{ referralLink: string }> = ({ referralLink
         </Box>
       </Flex>
       <Box>
-        <Sans size="8">Your referral code</Sans>
+        <Sans size="8">Your referral link</Sans>
         <Sans size="3" color="black50">
           Copy the below link and send it to your friends
         </Sans>
