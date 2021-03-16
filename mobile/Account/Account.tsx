@@ -106,8 +106,6 @@ export const Account = screenTrack()(({ navigation }) => {
   const roles = user?.roles
   const referralLink = customer?.referralLink
 
-  console.log("referralLink", referralLink)
-
   const ListSkeleton = () => {
     return (
       <Box pt="5px">
