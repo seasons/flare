@@ -131,7 +131,7 @@ export const DesktopNav = (props: NavProps) => {
                 {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
               </Flex>
             </Flex>
-            <Box px={[0, 0, 0, 4]}>
+            <Box px={[0, 0, 0, 2]}>
               <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isLoggedIn} />
             </Box>
           </Box>
