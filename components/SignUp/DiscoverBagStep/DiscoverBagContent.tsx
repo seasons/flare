@@ -232,7 +232,7 @@ export const DiscoverBagContent: React.FC<Props> = ({
           />
         )}
         disabled={false}
-        buttonText="Checkout"
+        buttonText="Next"
         secondaryButtonText={isDesktop ? "Continue later" : null}
         onSecondaryButtonClick={isDesktop ? onCompleted : null}
         handleSubmit={() => {

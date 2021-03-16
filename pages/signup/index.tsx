@@ -251,7 +251,6 @@ const SignUpPage = screenTrack(() => ({
             updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")
             identify(data?.me?.customer?.user?.id, { status: "Active" })
-            refetchGetSignupUser()
             setCurrentStepState(Steps.FormConfirmation)
           }}
           onError={() => {}}
