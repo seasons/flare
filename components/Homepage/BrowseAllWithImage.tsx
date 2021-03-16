@@ -12,7 +12,7 @@ export const BrowseAllWithImage: React.FC = () => {
 
   return (
     <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 5, 5]}>
+      <Box width="100%" px={[2, 2, 2, 2, 2]}>
         <BackgroundImage>
           <Flex flexDirection="column" justifyContent="center" alignItems="center">
             <Display size="8" color="white100" style={{ textAlign: "center" }}>

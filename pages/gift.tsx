@@ -83,7 +83,7 @@ const Gift = screenTrack(() => ({
   return (
     <Layout brandItems={featuredBrandItems}>
       <Box>
-        <Grid px={[2, 2, 2, 5, 5]} py={12}>
+        <Grid px={[2, 2, 2, 2, 2]} py={12}>
           <Row>
             <Col md="5" xs="12">
               <Box>
@@ -127,7 +127,7 @@ const Gift = screenTrack(() => ({
           py={1}
           height={["auto", "65px"]}
           style={{ width: "100%" }}
-          px={[2, 2, 2, 5, 5]}
+          px={[2, 2, 2, 2, 2]}
         >
           <Box>
             <Sans size={["2", "4"]} color="black50">

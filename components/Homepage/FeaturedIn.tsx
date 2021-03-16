@@ -27,7 +27,7 @@ export const FeaturedIn: React.FC = () => {
   const Desktop = () => {
     return (
       <MaxWidth>
-        <Box width="100%" px={[2, 2, 2, 5, 5]} py={2}>
+        <Box width="100%" px={[2, 2, 2, 2, 2]} py={2}>
           <Flex
             style={{ width: "100%" }}
             flexDirection="row"
@@ -58,7 +58,7 @@ export const FeaturedIn: React.FC = () => {
   const Mobile = () => {
     return (
       <MaxWidth>
-        <Box width="100%" px={[2, 2, 2, 5, 5]} py={2}>
+        <Box width="100%" px={[2, 2, 2, 2, 2]} py={2}>
           <Flex
             style={{ width: "100%" }}
             flexDirection="row"

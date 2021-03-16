@@ -64,7 +64,7 @@ const Content = ({ platform }) => {
         flexDirection={isDesktop ? "row" : "column"}
         flexWrap="nowrap"
         justifyContent="space-between"
-        px={[2, 2, 2, 5, 5]}
+        px={[2, 2, 2, 2, 2]}
         width="100%"
       >
         <Flex flexDirection="row" justifyContent="flex-start" width="100%" style={{ flex: 2 }}>

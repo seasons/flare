@@ -26,7 +26,7 @@ const DesktopTextContent = () => {
         <Flex flexDirection="column" justifyContent="center" alignContent="center" px={3}>
           <Spacer mb={10} />
           <HeroHeaderText version="desktop" />
-          <Spacer mb={1} />
+          <Spacer mb="12px" />
           <HeroCaptionText version="desktop" />
           <Spacer mb={4} />
           <HeroCTAs version="desktop" />
@@ -41,7 +41,7 @@ const DesktopTextContent = () => {
 const DesktopHero = ({ post }) => {
   return (
     <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 5, 5]} pb={2}>
+      <Box width="100%" px={[2, 2, 2, 2, 2]} pb={2}>
         <Flex flexDirection="row" justifyContent="space-between">
           <DesktopTextContent />
           <StyledAnchor href={post?.url}>
@@ -237,7 +237,7 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   }
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" style={{ maxWidth: "400px" }}>
       <Link href={ctaData.link}>
         <Button
           onClick={() => {
@@ -262,7 +262,7 @@ export const Hero: React.FC<{ post: any }> = ({ post }) => {
     <>
       <Media greaterThanOrEqual="md">
         <DesktopHero post={post} />
-        <Box px={[2, 2, 2, 5, 5]}>
+        <Box px={[2, 2, 2, 2, 2]}>
           <Separator />
         </Box>
       </Media>

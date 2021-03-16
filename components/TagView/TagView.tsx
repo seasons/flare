@@ -132,7 +132,7 @@ const TagView = screenTrack(({ router }) => {
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]}>
-        <Grid px={[2, 2, 2, 5, 5]}>
+        <Grid px={[2, 2, 2, 2, 2]}>
           <Row>
             <Col md="6" sm="12">
               <MediaWithHeight greaterThanOrEqual="md">

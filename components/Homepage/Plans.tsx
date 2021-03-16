@@ -27,7 +27,7 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   }
 
   return (
-    <Grid px={[2, 2, 2, 5, 5]} pt={[10, 0, 0, 0, 0]}>
+    <Grid px={[2, 2, 2, 2, 2]} pt={[10, 0, 0, 0, 0]}>
       <Row>
         <Col md="6" xs="12">
           <Flex

@@ -23,7 +23,7 @@ const UnsubscribePage: React.FC = () => {
 
   return (
     <>
-      <Wrapper px={[2, 2, 2, 5, 5]} style={{ width: "100%" }}>
+      <Wrapper px={[2, 2, 2, 2, 2]} style={{ width: "100%" }}>
         <CheckWithBackground />
         <Spacer mb={3} />
         <HeaderText>Sorry to see you go</HeaderText>

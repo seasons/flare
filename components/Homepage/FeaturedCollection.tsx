@@ -21,7 +21,7 @@ export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections
 
     return (
       <MaxWidth>
-        <Box px={[2, 2, 2, 5, 5]} width="100%">
+        <Box px={[2, 2, 2, 2, 2]} width="100%">
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between" width="100%">
             <Display size="8">{title}</Display>
             <Link href={`/collection/${collection.slug}`}>
