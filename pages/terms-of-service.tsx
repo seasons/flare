@@ -15,7 +15,7 @@ export const TermsOfService = screenTrack(() => ({
 
   return (
     <Layout brandItems={featuredBrandItems}>
-      <Grid px={[2, 2, 2, 5, 5]}>
+      <Grid px={[2, 2, 2, 2, 2]}>
         <div className="termsofservicetopsection">
           <div className="privacytopcontainer">
             <div className="privacyheadertitle">Terms of Service</div>

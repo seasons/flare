@@ -28,38 +28,41 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
   }, [router.asPath])
 
   return (
-    <HeaderContainer>
-      <Header>
-        <Box px={2}>
-          <SeasonsLogo />
-        </Box>
-        <Burger
-          onClick={() => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames.BurgerClicked,
-              actionType: Schema.ActionTypes.Tap,
-            })
-            toggleOpen(!isOpen)
+    <>
+      <Box style={{ width: "100%" }} height={["60px", "74px", "58px", "58px", "58px"]} />
+      <HeaderContainer>
+        <Header>
+          <Box px={2}>
+            <SeasonsLogo />
+          </Box>
+          <Burger
+            onClick={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.BurgerClicked,
+                actionType: Schema.ActionTypes.Tap,
+              })
+              toggleOpen(!isOpen)
+            }}
+          />
+        </Header>
+        <Menu
+          items={links}
+          open={isOpen}
+          onSelect={() => {
+            toggleOpen(false)
+          }}
+          openLogin={() => {
+            toggleLogin(true)
           }}
         />
-      </Header>
-      <Menu
-        items={links}
-        open={isOpen}
-        onSelect={() => {
-          toggleOpen(false)
-        }}
-        openLogin={() => {
-          toggleLogin(true)
-        }}
-      />
-      <LoginModal
-        open={isLoginOpen}
-        onClose={() => {
-          toggleLogin(false)
-        }}
-      />
-    </HeaderContainer>
+        <LoginModal
+          open={isLoginOpen}
+          onClose={() => {
+            toggleLogin(false)
+          }}
+        />
+      </HeaderContainer>
+    </>
   )
 }
 

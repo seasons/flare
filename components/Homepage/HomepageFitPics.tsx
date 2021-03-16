@@ -27,7 +27,6 @@ const ImageItem = ({ item, isDesktop }) => {
     <Flex flexDirection="column" justifyContent="center" p="2px" style={styles}>
       <BackgroundImage image={imageSRC} />
       <Spacer mb={1} />
-      {!!item.author && <Sans size="3">{item.author}</Sans>}
       {!!location && (
         <Sans size="3" color="black50">
           {location}
@@ -43,7 +42,7 @@ export const HomepageFitPics: React.FC<{ fitPics: any }> = ({ fitPics }) => {
     const items = isDesktop ? fitPics : fitPics.slice(0, 4)
     return (
       <MaxWidth>
-        <Flex flexDirection="column" flexWrap="nowrap" justifyContent="space-between" px={[2, 2, 2, 5, 5]} width="100%">
+        <Flex flexDirection="column" flexWrap="nowrap" justifyContent="space-between" px={[2, 2, 2, 2, 2]} width="100%">
           <Flex flexDirection="column" alignItems="center" justifyContent="center" width="100%">
             <Display size="8" style={{ textAlign: "center" }}>
               How they wear Seasons

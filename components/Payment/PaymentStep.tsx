@@ -234,7 +234,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
                 <Col md={5}>
                   <Box
                     style={{ borderRight: `1px solid ${color("black15")}`, height: "100%", minHeight: "100vh" }}
-                    px={[2, 2, 2, 5, 5]}
+                    px={[2, 2, 2, 2, 2]}
                     pt={150}
                   >
                     <FAQWrapper>

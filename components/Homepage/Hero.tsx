@@ -21,12 +21,12 @@ interface HeroComponentProps {
 
 const DesktopTextContent = () => {
   return (
-    <Box style={{ position: "relative", width: "50%" }}>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
+    <Flex style={{ position: "relative", width: "50%" }} flexDirection="column" justifyContent="center">
+      <Flex flexDirection="column" justifyContent="center" alignItems="center">
         <Flex flexDirection="column" justifyContent="center" alignContent="center" px={3}>
-          <Spacer mb={10} />
+          <Spacer mb={[10, 0, 10, 10, 10]} />
           <HeroHeaderText version="desktop" />
-          <Spacer mb={1} />
+          <Spacer mb="12px" />
           <HeroCaptionText version="desktop" />
           <Spacer mb={4} />
           <HeroCTAs version="desktop" />
@@ -34,14 +34,14 @@ const DesktopTextContent = () => {
           <HeroBottomDetailText version="desktop" />
         </Flex>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 
 const DesktopHero = ({ post }) => {
   return (
     <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 5, 5]} pb={2}>
+      <Box width="100%" px={[2, 2, 2, 2, 2]} pb={2}>
         <Flex flexDirection="row" justifyContent="space-between">
           <DesktopTextContent />
           <StyledAnchor href={post?.url}>
@@ -68,8 +68,7 @@ const MobileHero = ({ post }) => {
         <Col xs="12" px={2}>
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer pb={10} />
-              <Spacer pb={6} />
+              <Spacer pb={2} />
               <HeroHeaderText version="mobile" />
               <Spacer mb={1} />
               <HeroCaptionText version="mobile" />
@@ -164,7 +163,7 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
 
   return (
     <Display
-      size={isMobile ? "9" : "8"}
+      size="8"
       color="black100"
       style={{ letterSpacing: "-2px", maxWidth: "600px", textAlign: isMobile ? "left" : "center" }}
     >
@@ -191,7 +190,7 @@ const HeroCaptionText = ({ version }) => {
 
   return (
     <Sans
-      size="4"
+      size={isMobile ? "6" : "4"}
       color="black50"
       style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
     >
@@ -237,7 +236,7 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   }
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" style={{ maxWidth: "400px" }}>
       <Link href={ctaData.link}>
         <Button
           onClick={() => {
@@ -262,7 +261,7 @@ export const Hero: React.FC<{ post: any }> = ({ post }) => {
     <>
       <Media greaterThanOrEqual="md">
         <DesktopHero post={post} />
-        <Box px={[2, 2, 2, 5, 5]}>
+        <Box px={[2, 2, 2, 2, 2]}>
           <Separator />
         </Box>
       </Media>
@@ -297,5 +296,4 @@ const StyledAnchor = styled.a`
   cursor: pointer;
   width: 50%;
   max-width: 800px;
-  min-height: 450px;
 `

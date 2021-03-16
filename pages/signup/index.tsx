@@ -272,7 +272,7 @@ const SignUpPage = screenTrack(() => ({
           flexDirection="row"
           alignItems="center"
           justifyContent="center"
-          px={[2, 2, 2, 5, 5]}
+          px={[2, 2, 2, 2, 2]}
         >
           <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
             {CurrentStep}

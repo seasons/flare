@@ -39,7 +39,7 @@ const Home = screenTrack(() => ({
 
   const SeparatorWithPadding = () => {
     return (
-      <Box px={[2, 2, 2, 5, 5]}>
+      <Box px={[2, 2, 2, 2, 2]}>
         <Separator />
       </Box>
     )
@@ -69,9 +69,9 @@ const Home = screenTrack(() => ({
         </>
       )}
 
-      <Spacer mb={10} />
+      <Spacer mb="105px" />
       <HowItWorks />
-      <Spacer mb={10} />
+      <Spacer mb="120px" />
 
       <BrowseAllWithImage />
 
@@ -105,7 +105,7 @@ const Home = screenTrack(() => ({
         <>
           <HomepageFitPics fitPics={data.fitPics} />
           <Spacer mb={10} />
-          <Box px={[2, 2, 2, 5, 5]}>
+          <Box px={[2, 2, 2, 2, 2]}>
             <Separator />
           </Box>
           <Spacer mb={10} />

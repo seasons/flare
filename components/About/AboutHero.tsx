@@ -14,7 +14,7 @@ const image2 = imageResize(imageImport2, "large")
 
 const Desktop = () => {
   return (
-    <Grid px={[2, 2, 2, 5, 5]}>
+    <Grid px={[2, 2, 2, 2, 2]}>
       <Spacer mb={15} />
       <Box style={{ position: "relative" }}>
         <Spacer pb="120px" />
@@ -48,7 +48,7 @@ const Desktop = () => {
 
 const Mobile = () => {
   return (
-    <Box px={[2, 2, 2, 5, 5]}>
+    <Box px={[2, 2, 2, 2, 2]}>
       <Grid>
         <Row>
           <Col xs="12" md="12" px={[2, 0.5]}>

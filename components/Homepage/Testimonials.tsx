@@ -34,7 +34,7 @@ export const Testimonials: React.FC = () => {
 
   return (
     <MaxWidth>
-      <Flex flexDirection="column" width="100%" px={[2, 2, 2, 5, 5]}>
+      <Flex flexDirection="column" width="100%" px={[2, 2, 2, 2, 2]}>
         <Flex width="100%" flexDirection="row" justifyContent="center">
           <Display size="4">What members are saying</Display>
         </Flex>
@@ -49,15 +49,22 @@ export const Testimonials: React.FC = () => {
                   snapAlign="center"
                   width="100%"
                 >
-                  <Box onClick={() => goToSnapItem(index === testimonialItems.length - 1 ? 0 : index + 1)} px={4}>
-                    <Display size="7" style={{ textAlign: "center" }}>
+                  <Flex
+                    onClick={() => goToSnapItem(index === testimonialItems.length - 1 ? 0 : index + 1)}
+                    px={4}
+                    width="100%"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Display size="7" style={{ textAlign: "center", maxWidth: "880px" }}>
                       {item.text}
                     </Display>
                     <Spacer mb={2} />
                     <Sans size="4" color="black50" style={{ textAlign: "center" }}>
                       {item.author}
                     </Sans>
-                  </Box>
+                  </Flex>
                 </SnapItem>
               )
             })}
