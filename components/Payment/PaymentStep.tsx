@@ -9,13 +9,15 @@ import { colors } from "theme/colors"
 import * as Yup from "yup"
 
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { Box, Col, Grid, Row, Sans, Spacer } from "@seasons/eclipse"
+import { BagItemFragment, Box, Col, Grid, Row, Sans, Spacer } from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
+import { PaymentBagItem } from "./PaymentBagItem"
 import { PaymentBillingAddress } from "./PaymentBillingAddress"
 import { PaymentExpressButtons } from "./PaymentExpressButtons"
 import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
+import { PaymentSelectPlan } from "./PaymentSelectPlan"
 
 interface PaymentStepProps {
   plan: {
@@ -29,7 +31,7 @@ interface PaymentStepProps {
 }
 
 export const PAYMENT_PLANS = gql`
-  query GetPaymentPlans($planID: String!) {
+  query GetPaymentPlans {
     faq(sectionType: PaymentPlanPage) {
       sections {
         title
@@ -39,14 +41,25 @@ export const PAYMENT_PLANS = gql`
         }
       }
     }
-    paymentPlan(where: { planID: $planID }) {
+    paymentPlans(where: { status: "active" }, orderBy: itemCount_ASC) {
       id
       name
-      planID
       price
+      planID
+      itemCount
       estimate
     }
     me {
+      bag {
+        id
+        productVariant {
+          id
+          ...BagItemProductVariant
+        }
+        position
+        saved
+        status
+      }
       customer {
         id
         user {
@@ -62,6 +75,7 @@ export const PAYMENT_PLANS = gql`
       }
     }
   }
+  ${BagItemFragment}
 `
 const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
@@ -71,24 +85,20 @@ const SUBMIT_PAYMENT = gql`
   }
 `
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onError }) => {
+export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError }) => {
   const elements = useElements()
   const stripe = useStripe()
   const [submitPayment] = useMutation(SUBMIT_PAYMENT)
   const [errorMessage, setErrorMessage] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState(null)
-  const [planID, setPlanID] = useState(plan?.planID)
-  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS, {
-    variables: {
-      planID,
-    },
-  })
+  const [plan, setPlan] = useState(null)
+  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS)
 
   useEffect(() => {
-    if (plan) {
-      setPlanID(plan.planID)
+    if (data) {
+      setPlan(data?.paymentPlans?.[0])
     }
-  }, [plan])
+  }, [data])
 
   const valuesToBillingDetails = (values) => ({
     name: values.name,
@@ -168,7 +178,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
           <form onSubmit={handleSubmit}>
             <Grid>
               <Row>
-                <BorderedCol md={7}>
+                <BorderedCol md={8}>
                   <Box pt={4} px={4} pb={2}>
                     <Box mt={12} p={2}>
                       <Sans size="8" weight="medium">
@@ -179,11 +189,18 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
                         Add your billing address and payment details
                       </Sans>
                     </Box>
+                    <Box mt={2}>
+                      <PaymentSelectPlan
+                        paymentPlans={data?.paymentPlans}
+                        selectedPlan={plan}
+                        onPlanSelected={(selectedPlan) => setPlan(selectedPlan)}
+                      />
+                    </Box>
                   </Box>
                   <Box my={2}>
                     <Separator />
                   </Box>
-                  <PaymentOrderSummary plan={data?.paymentPlan} />
+                  <PaymentOrderSummary plan={plan} />
                   <Box my={2}>
                     <Separator />
                   </Box>
@@ -222,23 +239,40 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
                     </Box>
                   </Box>
                 </BorderedCol>
-                <Col md={5}>
-                  <Box
-                    style={{ borderRight: `1px solid ${color("black15")}`, height: "100%", minHeight: "100vh" }}
-                    px={[2, 2, 2, 5, 5]}
-                    pt={150}
-                  >
-                    <FAQWrapper>
-                      <Sans size="8" color="black100">
-                        FAQ
-                      </Sans>
-                      <Spacer mb={1} />
-                      <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
-                        What to know about membership
-                      </Sans>
-                      <Spacer mb={5} />
-                      <CollapsableFAQ faqSections={data?.faq?.sections} />
-                    </FAQWrapper>
+                <Col md={4}>
+                  <Box style={{ borderRight: `1px solid ${color("black15")}`, height: "100%", minHeight: "100vh" }}>
+                    <Box px={[2, 2, 2, 5, 5]} pt={150}>
+                      <Box>
+                        <Sans size="8" color="black100">
+                          Your first order
+                        </Sans>
+                        <Spacer mb={1} />
+                        <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
+                          Take these styles home today
+                        </Sans>
+                        <Spacer mb={5} />
+
+                        {data?.me?.bag?.map((bagItem, index) => {
+                          return (
+                            <Box py={2}>
+                              <PaymentBagItem index={index} bagItem={bagItem} />
+                            </Box>
+                          )
+                        })}
+                      </Box>
+
+                      <FAQWrapper>
+                        <Sans size="8" color="black100">
+                          FAQ
+                        </Sans>
+                        <Spacer mb={1} />
+                        <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
+                          What to know about membership
+                        </Sans>
+                        <Spacer mb={5} />
+                        <CollapsableFAQ faqSections={data?.faq?.sections} />
+                      </FAQWrapper>
+                    </Box>
                   </Box>
                 </Col>
               </Row>
