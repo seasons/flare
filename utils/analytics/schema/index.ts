@@ -158,11 +158,12 @@ export enum ActionNames {
   Tier0PlanTabTapped = "Tier 0 Plan Tab Tapped",
   Tier1PlanTabTapped = "Tier 1 Plan Tab Tapped",
   NotificationToggleTapped = "Notification Toggle Tapped",
-  AddCreditCardTapped = "AddCreditCardTapped",
+  AddCreditCardTapped = "Add Credit Card Tapped",
   GetMeasurementsFinishTapped = "Get Measurements Finish Tapped",
   SizeButtonTapped = "Size Button Tapped",
   SaveProductModalCancelTapped = "Save Product Modal Cancel Tapped",
   SaveProductModalSaveTapped = "Save Product Modal Save Tapped",
+  ApplyPromoCodeTapped = "Apply Promo Code Tapped",
 }
 
 /**

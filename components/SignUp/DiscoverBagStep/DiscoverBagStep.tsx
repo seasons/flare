@@ -30,6 +30,12 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
     onError: (err) => {
       setIsMutating(false)
     },
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      {
+        query: GET_DISCOVERY_BAG,
+      },
+    ],
   })
   const [removeFromBag] = useMutation(REMOVE_FROM_BAG, {
     onCompleted: () => {
