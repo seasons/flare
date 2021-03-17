@@ -2,6 +2,7 @@ import { Separator } from "components"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
 import { FormFooter } from "components/Forms/FormFooter"
 import { BackArrowIcon } from "components/Icons"
+import { GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -93,7 +94,25 @@ const SUBMIT_PAYMENT = gql`
 export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, onBack }) => {
   const elements = useElements()
   const stripe = useStripe()
-  const [submitPayment] = useMutation(SUBMIT_PAYMENT)
+  const [submitPayment] = useMutation(SUBMIT_PAYMENT, {
+    onError: (error) => {
+      console.error(error)
+      setErrorMessage(error?.message)
+      setIsProcessingPayment(false)
+    },
+    onCompleted: () => {
+      onSuccess(data)
+      setErrorMessage(null)
+      setIsProcessingPayment(false)
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      {
+        query: GET_SIGNUP_USER,
+      },
+    ],
+  })
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState(null)
   const [plan, setPlan] = useState(null)
@@ -170,34 +189,24 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
   }
 
   const processPayment = async (paymentMethod, values, billingDetails) => {
-    try {
-      const { data, errors } = await submitPayment({
-        variables: {
-          paymentMethodID: paymentMethod.id,
-          planID: plan?.planID,
-          billing: {
-            ...billingDetails,
-            user: {
-              firstName: values.firstName,
-              lastName: values.lastName,
-              email: billingDetails.email,
-            },
+    if (isProcessingPayment) {
+      return
+    }
+    setIsProcessingPayment(true)
+    await submitPayment({
+      variables: {
+        paymentMethodID: paymentMethod.id,
+        planID: plan?.planID,
+        billing: {
+          ...billingDetails,
+          user: {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: billingDetails.email,
           },
         },
-      })
-
-      // handle errors
-      if (errors) {
-        const error = errors?.[0]
-        setErrorMessage(error?.message)
-      } else {
-        onSuccess(data)
-        setErrorMessage(null)
-      }
-    } catch (e) {
-      console.error(e)
-      setErrorMessage(e.message)
-    }
+      },
+    })
   }
 
   return (
@@ -321,7 +330,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
             <FormFooter
               footerText={<>You can upgrade or change your plan at any time from your account settings.</>}
               buttonText="Checkout"
-              disabled={!isValid || planError}
+              isSubmitting={isProcessingPayment}
+              disabled={!isValid || isProcessingPayment || planError}
               handleSubmit={() => {
                 // onCompleted?.()
               }}

@@ -18,7 +18,7 @@ const About = screenTrack(() => ({
       <AboutHero />
       <Spacer mb={15} />
       <AboutValues />
-      <Box px={[2, 2, 2, 5, 5]}>
+      <Box px={[2, 2, 2, 2, 2]}>
         <Separator />
       </Box>
       <AboutWhoWeAre />

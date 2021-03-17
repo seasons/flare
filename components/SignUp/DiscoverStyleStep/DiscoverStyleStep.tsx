@@ -73,7 +73,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
     const activeName = styleNames[activeIndex]
     return (
       <>
-        <Flex flexDirection={isDesktop ? "row" : "column"} pt={isDesktop ? 0 : "150px"} alignItems="center">
+        <Flex height="100%" flexDirection={isDesktop ? "row" : "column"} alignItems="center">
           <CarouselContainer platform={platform}>
             <Slider {...sliderSettings}>
               {styleImages.map((styleImage) => (
@@ -177,13 +177,15 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
 
   return (
     <>
-      <DesktopMedia greaterThanOrEqual="md">
-        <MaxWidth>{Content("desktop")} </MaxWidth>
-      </DesktopMedia>
-      <Media lessThan="md">{Content("mobile")}</Media>
+      <DesktopMedia greaterThanOrEqual="md">{Content("desktop")}</DesktopMedia>
+      <MobileMedia lessThan="md">{Content("mobile")}</MobileMedia>
     </>
   )
 }
+
+const MobileMedia = styled(Media)`
+  height: 100%;
+`
 
 const Wrapper = styled("div")`
   align-items: flex-start;
@@ -221,7 +223,7 @@ const CarouselContainer = styled(Box)<{ platform: string }>`
   .slick-next:before {
     content: "";
     color: black;
-    z-index: 999;
+    z-index: 3;
   }
 
   .center .slick-center .picture {
@@ -237,7 +239,7 @@ const CarouselContainer = styled(Box)<{ platform: string }>`
   ${(p) =>
     p.platform === "mobile" &&
     `
-    margin-top: 100px;
+    margin-top: 60px;
     width: 100vw;
     height: 400px;
 
@@ -278,7 +280,7 @@ const ButtonContainer = styled(Box)<{ platform: string }>`
 `
 
 const ArrowContainer = styled(Box)`
-  z-index: 999;
+  z-index: 3;
 `
 
 const Button = styled.button`

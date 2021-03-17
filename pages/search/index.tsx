@@ -47,7 +47,7 @@ const Search: React.FC = screenTrack(({ router }) => {
   return (
     <Layout brandItems={featuredBrandItems}>
       <Box pt={"80px"}>
-        <Grid px={[2, 2, 2, 5, 5]}>
+        <Grid px={[2, 2, 2, 2, 2]}>
           <Row>
             <Col md="12" sm="12">
               <Box mb={5}>

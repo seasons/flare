@@ -4,7 +4,7 @@ import Link from "next/link"
 import styled from "styled-components"
 import { imageResize } from "utils/imageResize"
 
-import { Box, ExternalLink, Flex, Picture, Sans, Spacer } from "../"
+import { Box, ExternalLink, Flex, Picture, Sans, Spacer } from "components"
 import { Button } from "../Button/Button"
 import { GetTheAppButton } from "../Button/GetTheApp"
 import { FormFooter } from "./FormFooter"

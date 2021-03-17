@@ -1,4 +1,4 @@
-import { Sans, Box, Flex, Spacer, Separator } from "../"
+import { Sans, Box, Flex, Spacer, Separator } from "components"
 import { color } from "../../helpers"
 import { Link } from "../Link"
 import { Grid, Row, Col } from "../Grid"
@@ -7,11 +7,11 @@ import { Display } from "../Typography"
 export const Footer: React.FC<{ footerBottomPadding?: string | string[] }> = ({ footerBottomPadding }) => {
   return (
     <Grid pb={footerBottomPadding ? footerBottomPadding : 0}>
-      <Box px={[2, 2, 2, 5, 5]}>
+      <Box px={[2, 2, 2, 2, 2]}>
         <Separator />
         <Spacer mb={5} />
       </Box>
-      <Row px={[2, 2, 2, 5, 5]}>
+      <Row px={[2, 2, 2, 2, 2]}>
         <Col lg="2" xs="9">
           <Display size="3">Info</Display>
           <Spacer mb={[1, 1, 1, 2, 2]} />
@@ -98,7 +98,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[] }> = ({ 
         </Col>
       </Row>
       <Spacer mb={[0, 0, 0, "124px", "124px"]} />
-      <Flex flexDirection={["column", "row"]} width="100%" justifyContent="space-between" px={[2, 2, 2, 5, 5]}>
+      <Flex flexDirection={["column", "row"]} width="100%" justifyContent="space-between" px={[2, 2, 2, 2, 2]}>
         <Display size="3">© 2020 Seasons. All Rights Reserved.</Display>
         <Display size="3">Made remotely with love ❤️</Display>
       </Flex>
