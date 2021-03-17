@@ -143,11 +143,9 @@ const SignUpPage = screenTrack(() => ({
   if (!data || (hasGift && giftLoading) || !currentStepState) {
     return (
       <Layout hideFooter brandItems={featuredBrandItems}>
-        <MaxWidth>
-          <Flex>
-            <Loader />
-          </Flex>
-        </MaxWidth>
+        <Flex>
+          <Loader />
+        </Flex>
       </Layout>
     )
   }
