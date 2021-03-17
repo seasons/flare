@@ -1,12 +1,20 @@
 import { Box, Button, Flex, Sans, Spacer } from "components"
 import { color } from "helpers"
 import { get, head } from "lodash"
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 import { Picture, PRODUCT_ASPECT_RATIO } from "@seasons/eclipse"
 
-export const PaymentBagItem = ({ index, bagItem }) => {
+interface PaymentBagItemProps {
+  index: number
+  bagItem: any
+  hideRemove?: boolean
+  removeFromBag: (options: any) => void
+}
+
+export const PaymentBagItem: React.FC<PaymentBagItemProps> = ({ index, bagItem, hideRemove, removeFromBag }) => {
+  const [isRemoving, setIsRemoving] = useState(false)
   const product = get(bagItem, "productVariant.product")
   if (!product) {
     return null
@@ -25,9 +33,24 @@ export const PaymentBagItem = ({ index, bagItem }) => {
               {product.name}
             </Sans>
             <Spacer mt={4} />
-            <Button size="small" variant="secondaryOutline">
-              Remove
-            </Button>
+            {!hideRemove && (
+              <Button
+                size="small"
+                variant="secondaryOutline"
+                loading={isRemoving}
+                onClick={() => {
+                  setIsRemoving(true)
+                  removeFromBag({
+                    variables: {
+                      id: bagItem?.productVariant?.id,
+                      saved: false,
+                    },
+                  })
+                }}
+              >
+                Remove
+              </Button>
+            )}
           </Box>
         </Flex>
         <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">

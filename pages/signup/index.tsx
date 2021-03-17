@@ -225,6 +225,9 @@ const SignUpPage = screenTrack(() => ({
       CurrentStep = (
         <PaymentStep
           plan={selectedPlan}
+          onBack={() => {
+            setCurrentStepState(Steps.DiscoverBagStep)
+          }}
           onSuccess={() => {
             updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")

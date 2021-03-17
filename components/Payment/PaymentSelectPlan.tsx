@@ -20,13 +20,7 @@ export const PaymentSelectPlan: React.FC<PaymentSelectPlanProps> = ({ paymentPla
       {paymentPlans?.map((paymentPlan, index) => {
         const count = paymentPlan?.itemCount
         return (
-          <Button
-            key={index}
-            active={paymentPlan.id === selectedPlan?.id}
-            onClick={() => {
-              onPlanSelected(paymentPlan)
-            }}
-          >
+          <Button key={index} active={paymentPlan.id === selectedPlan?.id}>
             {count} {count === 1 ? "item" : "items"}
           </Button>
         )
@@ -35,9 +29,9 @@ export const PaymentSelectPlan: React.FC<PaymentSelectPlanProps> = ({ paymentPla
   )
 }
 
-const Button = ({ onClick, active, children, ...rest }) => {
+const Button = ({ active, children, ...rest }) => {
   return (
-    <Container {...rest} onClick={onClick} className={clsx({ active })}>
+    <Container {...rest} className={clsx({ active })}>
       <Sans weight="medium" size="4" style={{ textAlign: "center" }}>
         {children}
       </Sans>
@@ -73,8 +67,8 @@ const Container = styled.button`
   height: 56px;
   flex: 1;
 
-  background-color: ${colors.white100};
-  color: ${colors.black100};
+  background-color: ${colors.black04};
+  color: ${colors.black50};
 
   &.active {
     background-color: ${colors.black100};
