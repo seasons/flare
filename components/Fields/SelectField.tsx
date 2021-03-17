@@ -4,7 +4,7 @@ import { styled as muiStyled } from "@material-ui/core"
 
 const StyledSelect = muiStyled(Select)({
   width: "100%",
-  height: "36px",
+  height: "29px",
   fontFamily: "ProximaNova-Medium, sans-serif",
 })
 

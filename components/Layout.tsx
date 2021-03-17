@@ -67,6 +67,8 @@ export const Layout = ({
     }
   }
 
+  console.log("showIntercom", showIntercom)
+
   return (
     <>
       {includeDefaultHead && <LayoutHead />}

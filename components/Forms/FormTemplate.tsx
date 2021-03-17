@@ -52,7 +52,7 @@ export const FormTemplate = ({
         {isDesktop && leftImage && <ImageContainer url={imageResize(leftImage, "large")} />}
         <Wrapper clientSide={clientSide}>
           <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
-          <FieldsContainer px={isDesktop ? [2, 2, 2, 5, 5] : 1} pb={isDesktop ? 0 : 150}>
+          <FieldsContainer pl={isDesktop ? [0, 2, 2, 4, 4] : 0} pb={isDesktop ? 0 : 150}>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
               const width = props.fullWidth ? "100%" : isDesktop ? "50%" : mobileWidth
@@ -111,6 +111,7 @@ const ContentContainer = styled(Box)`
 const ImageContainer = styled(Box)<{ url?: string }>`
   width: 560px;
   height: 100%;
+  max-width: 40vw;
   background: url(${(p) => p.url}) no-repeat center center;
   background-size: contain;
 `
