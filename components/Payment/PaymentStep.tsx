@@ -1,22 +1,28 @@
 import { Separator } from "components"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
 import { FormFooter } from "components/Forms/FormFooter"
+import { BackArrowIcon } from "components/Icons"
+import { GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Formik } from "formik"
-import { color } from "helpers/color"
 import React, { useEffect, useState } from "react"
+import { TouchableOpacity } from "react-native"
+import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 import { colors } from "theme/colors"
 import * as Yup from "yup"
 
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { Box, Col, Grid, Row, Sans, Spacer } from "@seasons/eclipse"
+import {
+  BagItemFragment, Box, Col, Grid, REMOVE_FROM_BAG, Row, Sans, Spacer
+} from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
+import { PaymentBagItem } from "./PaymentBagItem"
 import { PaymentBillingAddress } from "./PaymentBillingAddress"
 import { PaymentExpressButtons } from "./PaymentExpressButtons"
 import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
-import { GET_SIGNUP_USER } from "components/SignUp/queries"
+import { PaymentSelectPlan } from "./PaymentSelectPlan"
 
 interface PaymentStepProps {
   plan: {
@@ -27,10 +33,11 @@ interface PaymentStepProps {
   }
   onSuccess?: (data: any) => void
   onError?: (data: any) => void
+  onBack?: () => void
 }
 
 export const PAYMENT_PLANS = gql`
-  query GetPaymentPlans($planID: String!) {
+  query GetPaymentPlans {
     faq(sectionType: PaymentPlanPage) {
       sections {
         title
@@ -40,14 +47,25 @@ export const PAYMENT_PLANS = gql`
         }
       }
     }
-    paymentPlan(where: { planID: $planID }) {
+    paymentPlans(where: { status: "active" }, orderBy: itemCount_ASC) {
       id
       name
-      planID
       price
+      planID
+      itemCount
       estimate
     }
     me {
+      bag {
+        id
+        productVariant {
+          id
+          ...BagItemProductVariant
+        }
+        position
+        saved
+        status
+      }
       customer {
         id
         user {
@@ -63,6 +81,7 @@ export const PAYMENT_PLANS = gql`
       }
     }
   }
+  ${BagItemFragment}
 `
 const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
@@ -72,7 +91,7 @@ const SUBMIT_PAYMENT = gql`
   }
 `
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onError }) => {
+export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, onBack }) => {
   const elements = useElements()
   const stripe = useStripe()
   const [submitPayment] = useMutation(SUBMIT_PAYMENT, {
@@ -96,16 +115,36 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState(null)
-  const [planID, setPlanID] = useState(plan?.planID)
-  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS, {
-    variables: {
-      planID,
-    },
+  const [plan, setPlan] = useState(null)
+  const { previousData, data = previousData, loading } = useQuery(PAYMENT_PLANS, {
+    fetchPolicy: "network-only",
+  })
+  const [planError, setPlanError] = useState(null)
+  const [removeFromBag] = useMutation(REMOVE_FROM_BAG, {
+    refetchQueries: [
+      {
+        query: PAYMENT_PLANS,
+      },
+    ],
+    awaitRefetchQueries: true,
   })
 
   useEffect(() => {
+    if (data && !loading) {
+      const bagCount = data?.me?.bag.length || 3
+      const paymentPlanIndex = bagCount - 1 < data?.paymentPlans?.length ? bagCount - 1 : 0
+      setPlan(data?.paymentPlans?.[paymentPlanIndex])
+    }
+  }, [data, loading])
+
+  useEffect(() => {
     if (plan) {
-      setPlanID(plan.planID)
+      if (plan.itemCount < data?.me?.bag.length) {
+        // TODO: set error
+        setPlanError(data?.me?.bag.length - plan.itemCount)
+      } else {
+        setPlanError(null)
+      }
     }
   }, [plan])
 
@@ -177,7 +216,14 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
           <form onSubmit={handleSubmit}>
             <Grid>
               <Row>
-                <BorderedCol md={7}>
+                <LeftColumn md={8}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      onBack?.()
+                    }}
+                  >
+                    <Arrow color={colors.black100} />
+                  </TouchableOpacity>
                   <Box pt={4} px={4} pb={2}>
                     <Box mt={12} p={2}>
                       <Sans size="8" weight="medium">
@@ -185,19 +231,25 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
                       </Sans>
                       <Spacer mt={1} />
                       <Sans size="4" color="black50">
-                        Add your billing address and payment details
+                        You're checking out with a {plan?.itemCount}-item plan. To change plans, update your bag.
                       </Sans>
                     </Box>
+                    <Spacer mt={2} />
+                    <PaymentSelectPlan
+                      paymentPlans={data?.paymentPlans}
+                      selectedPlan={plan}
+                      onPlanSelected={(selectedPlan) => setPlan(selectedPlan)}
+                    />
                   </Box>
                   <Box my={2}>
                     <Separator />
                   </Box>
-                  <PaymentOrderSummary plan={data?.paymentPlan} />
+                  <PaymentOrderSummary plan={plan} />
                   <Box my={2}>
                     <Separator />
                   </Box>
                   <Box>
-                    <Box p={6}>
+                    <Box p={6} pt={2}>
                       {EnableExpressCheckout && (
                         <Box py={4}>
                           <Sans size="7">Express checkout</Sans>
@@ -209,7 +261,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
                           />
                         </Box>
                       )}
-                      <Box width="100%" py={4}>
+                      <Box width="100%" py={[2, 2, 4]}>
                         <Sans size="7">Billing address</Sans>
                         <Spacer mt={2} />
                         <PaymentBillingAddress />
@@ -230,33 +282,56 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
                       <Spacer mt={4} />
                     </Box>
                   </Box>
-                </BorderedCol>
-                <Col md={5}>
-                  <Box
-                    style={{ borderRight: `1px solid ${color("black15")}`, height: "100%", minHeight: "100vh" }}
-                    px={[2, 2, 2, 2, 2]}
-                    pt={150}
-                  >
-                    <FAQWrapper>
-                      <Sans size="8" color="black100">
-                        FAQ
-                      </Sans>
-                      <Spacer mb={1} />
-                      <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
-                        What to know about membership
-                      </Sans>
-                      <Spacer mb={5} />
-                      <CollapsableFAQ faqSections={data?.faq?.sections} />
-                    </FAQWrapper>
+                </LeftColumn>
+                <RightColumn md={4}>
+                  <Box style={{ height: "100%", minHeight: "100vh" }}>
+                    <Box px={[2, 2, 2, 5, 5]} pt={[50, 50, 150]}>
+                      <Box mb={4}>
+                        <Sans size="8" color="black100">
+                          Your bag
+                        </Sans>
+                        <Spacer mb={1} />
+                        <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
+                          Finish checking out to reserve these today
+                        </Sans>
+                        <Spacer mb={3} />
+                        {planError && (
+                          <>
+                            <ErrorResult size="3">Please remove {planError} item(s) in your bag</ErrorResult>
+                            <Spacer mt={2} />
+                          </>
+                        )}
+
+                        {data?.me?.bag?.map((bagItem, index) => {
+                          return (
+                            <Box pb={1}>
+                              <PaymentBagItem index={index} bagItem={bagItem} removeFromBag={removeFromBag} />
+                            </Box>
+                          )
+                        })}
+                      </Box>
+
+                      <FAQWrapper>
+                        <Sans size="8" color="black100">
+                          FAQ
+                        </Sans>
+                        <Spacer mb={1} />
+                        <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
+                          What to know about membership
+                        </Sans>
+                        <Spacer mb={5} />
+                        <CollapsableFAQ faqSections={data?.faq?.sections} />
+                      </FAQWrapper>
+                    </Box>
                   </Box>
-                </Col>
+                </RightColumn>
               </Row>
             </Grid>
             <FormFooter
               footerText={<>You can upgrade or change your plan at any time from your account settings.</>}
               buttonText="Checkout"
               isSubmitting={isProcessingPayment}
-              disabled={!isValid || isProcessingPayment}
+              disabled={!isValid || isProcessingPayment || planError}
               handleSubmit={() => {
                 // onCompleted?.()
               }}
@@ -268,9 +343,29 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ plan, onSuccess, onErr
   )
 }
 
-const BorderedCol = styled(Col)`
+const LeftColumn = styled(Col)`
   border-left: 1px solid ${colors.black15};
   border-right: 1px solid ${colors.black15};
+  border-top: 1px solid ${colors.black15};
+
+  ${media.md`
+    border-top: 0px;
+  `}
+`
+
+const RightColumn = styled(LeftColumn)`
+  padding: 0 20px;
+
+  ${media.md`
+    border-left: 0px;
+    border-top: 0px;
+  `}
+`
+
+const Arrow = styled(BackArrowIcon)`
+  position: absolute;
+  left: 50px;
+  top: 90px;
 `
 
 const FAQWrapper = styled(Box)`
