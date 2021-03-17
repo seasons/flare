@@ -94,7 +94,7 @@ const SignUpPage = screenTrack(() => ({
           if (hasPlan) {
             setCurrentStepState(Steps.PaymentStep)
           } else if (hasBagItems) {
-            setCurrentStepState(Steps.ChoosePlanStep)
+            setCurrentStepState(Steps.PaymentStep)
           } else {
             setCurrentStepState(Steps.DiscoverBagStep)
           }
@@ -205,7 +205,7 @@ const SignUpPage = screenTrack(() => ({
             if (isWaitlisted) {
               setCurrentStepState(Steps.FormConfirmation)
             } else if (hasBagItems) {
-              setCurrentStepState(Steps.ChoosePlanStep)
+              setCurrentStepState(Steps.PaymentStep)
             } else {
               setCurrentStepState(Steps.DiscoverBagStep)
             }
@@ -218,28 +218,8 @@ const SignUpPage = screenTrack(() => ({
         <DiscoverBagStep
           onCompleted={() => {
             refetchGetSignupUser()
-            setCurrentStepState(Steps.ChoosePlanStep)
-          }}
-        />
-      )
-      break
-    case Steps.ChoosePlanStep:
-      CurrentStep = (
-        <ChoosePlanStep
-          onPlanSelected={(plan) => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames.PlanSelectedButtonClicked,
-              actionType: Schema.ActionTypes.Tap,
-              plan,
-            })
-            setSelectedPlan(plan)
             setCurrentStepState(Steps.PaymentStep)
           }}
-          onSuccess={() => {
-            identify(data?.me?.customer?.user?.id, { status: "Active" })
-            refetchGetSignupUser()
-          }}
-          onError={() => {}}
         />
       )
       break
@@ -247,6 +227,9 @@ const SignUpPage = screenTrack(() => ({
       CurrentStep = (
         <PaymentStep
           plan={selectedPlan}
+          onBack={() => {
+            setCurrentStepState(Steps.DiscoverBagStep)
+          }}
           onSuccess={() => {
             updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")
