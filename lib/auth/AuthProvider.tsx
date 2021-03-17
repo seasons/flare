@@ -99,6 +99,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
             email: email,
             user_id: email,
             created_at: 1234567890,
+            hide_default_launcher: true,
           })
         } else {
           dispatch({ type: "RESTORE_TOKEN", token: null, userSession })
@@ -107,6 +108,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
           }
           ;(window as any).Intercom?.("boot", {
             app_id: APP_ID,
+            hide_default_launcher: true,
           })
         }
       } catch (e) {
@@ -133,16 +135,13 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
       apolloClient.stop()
       apolloClient.resetStore()
       const { firstName, lastName, email } = user
-      ;(window as any).intercomSettings = {
+      ;(window as any).Intercom?.("update", {
         app_id: APP_ID,
         name: `${firstName} ${lastName}`,
         email: email,
-      }
-      ;(window as any).Intercom?.("update", {
-        app_id: APP_ID,
-        email: email,
         user_id: email,
         created_at: 1234567890,
+        hide_default_launcher: true,
       })
     },
     signOut: async () => {
@@ -160,6 +159,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
       }
       ;(window as any).Intercom?.("boot", {
         app_id: APP_ID,
+        hide_default_launcher: true,
       })
     },
     toggleLoginModal: (toggle: boolean) => {
