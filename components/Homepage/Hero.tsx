@@ -8,7 +8,6 @@ import { GetTheAppButton } from "../Button/GetTheApp"
 import Link from "next/link"
 import { Media } from "../Responsive"
 import { Button } from "../Button"
-import { Check } from "../SVGs"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { Countdown } from "@seasons/eclipse"
 import { DateTime } from "luxon"
@@ -24,7 +23,7 @@ const DesktopTextContent = () => {
     <Flex style={{ position: "relative", width: "50%" }} flexDirection="column" justifyContent="center">
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
         <Flex flexDirection="column" justifyContent="center" alignContent="center" px={3}>
-          <Spacer mb={[10, 0, 10, 10, 10]} />
+          <Spacer mb={[10, 0, 0, 0, 0]} />
           <HeroHeaderText version="desktop" />
           <Spacer mb="12px" />
           <HeroCaptionText version="desktop" />
