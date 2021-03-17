@@ -8,9 +8,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
-
 import { useQuery } from "@apollo/client"
-
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"

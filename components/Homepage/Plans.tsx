@@ -38,14 +38,13 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
             <Flex
               height="100%"
               width="100%"
-              px={[0, 0, 4, 7, 7]}
               pt={[2, 10, 0, 7, 7]}
               pb={[5, 5, 2, 7, 7]}
               alignItems="center"
-              justifyContent="center"
+              justifyContent="flex-start"
               flexDirection="row"
             >
-              <Box>
+              <Box style={{ maxWidth: "700px" }}>
                 {isMobile && (
                   <>
                     <Display size="9">{title}</Display>
