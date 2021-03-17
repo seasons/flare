@@ -246,7 +246,7 @@ const Designer = screenTrack(({ router }) => {
           </Row>
           <Spacer mb={8} />
         </Grid>
-        <Grid px={[0, 2, 2, 5, 5]}>
+        <Grid px={[0, 2, 2, 2, 2]}>
           <Row ref={imageContainer}>
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>

@@ -45,7 +45,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
             py={1}
             height={["auto", "63px"]}
             style={{ width: "100%" }}
-            px={[2, 2, 5, 5, 5]}
+            px={[2, 2, 2, 2, 2]}
           >
             <Flex flexDirection="row">
               {!!footerText ? (
