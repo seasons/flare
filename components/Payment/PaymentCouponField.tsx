@@ -1,4 +1,3 @@
-import { Box, Button, Sans } from "components"
 import gql from "graphql-tag"
 import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -7,6 +6,7 @@ import { Schema as TrackSchema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
 import { Input } from "@material-ui/core"
+import { Box, Sans, Spacer } from "@seasons/eclipse"
 
 const CHECK_COUPON = gql`
   mutation CheckCoupon($couponID: String!) {
@@ -27,6 +27,7 @@ export const PaymentCouponField: React.FC<PaymentCouponFieldProps> = ({ onApplyP
 
   const [promoCode, setPromoCode] = useState("")
   const [isFormValid, setIsFormValid] = useState(false)
+  const [error, setError] = useState(null)
   const [isMutating, setIsMutating] = useState(false)
 
   const [checkCoupon] = useMutation(CHECK_COUPON, {
@@ -36,23 +37,20 @@ export const PaymentCouponField: React.FC<PaymentCouponFieldProps> = ({ onApplyP
       onApplyPromoCode(amount, percentage, type, id)
     },
     onError: (err) => {
-      const popUpData = {
-        title: "Sorry!",
-        note: "We couldn't apply that promo code.",
-        buttonText: "Close",
-      }
-
+      setError("Sorry! We couldn't find that promo code")
       console.log("Error ApplyPromoCodePane.tsx", err)
       setIsMutating(false)
     },
   })
 
   const onPromoCodeChange = (val: string) => {
+    setError(null)
     setPromoCode(val)
     setIsFormValid(val.length > 0)
   }
 
   const applyPromoCode = async () => {
+    setError(null)
     if (isMutating) {
       return
     }
@@ -70,23 +68,31 @@ export const PaymentCouponField: React.FC<PaymentCouponFieldProps> = ({ onApplyP
   }
 
   return (
-    <Container>
-      <Input
-        value={promoCode}
-        placeholder={"Enter promo code"}
-        onChange={(e) => {
-          onPromoCodeChange(e.target.value)
-        }}
-        disableUnderline
-        style={{ flex: 1 }}
-      />
+    <>
+      <Container>
+        <Input
+          value={promoCode}
+          placeholder={"Enter promo code"}
+          onChange={(e) => {
+            onPromoCodeChange(e.target.value)
+          }}
+          disableUnderline
+          style={{ flex: 1 }}
+        />
 
-      <TouchableOpacity onPress={applyPromoCode}>
-        <Sans size={5} style={{ textDecoration: "underline", cursor: "pointer" }}>
-          Apply
-        </Sans>
-      </TouchableOpacity>
-    </Container>
+        <TouchableOpacity onPress={applyPromoCode}>
+          <Sans size={5} style={{ textDecoration: "underline", cursor: "pointer" }}>
+            Apply
+          </Sans>
+        </TouchableOpacity>
+      </Container>
+      {error && (
+        <>
+          <Spacer mt={2} />
+          <ErrorResult size="3">{error}</ErrorResult>
+        </>
+      )}
+    </>
   )
 }
 
@@ -101,4 +107,8 @@ const Container = styled(Box)`
   font-family: ProximaNova-Medium, sans-serif;
   border: 1px solid #d9d9d9;
   transition: all 0.25s;
+`
+
+const ErrorResult = styled(Sans)`
+  color: red;
 `

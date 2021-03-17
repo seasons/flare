@@ -87,8 +87,8 @@ export const PAYMENT_PLANS = gql`
 const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
 const SUBMIT_PAYMENT = gql`
-  mutation SubmitPayment($paymentMethodID: String!, $planID: String!, $billing: JSON) {
-    processPayment(paymentMethodID: $paymentMethodID, planID: $planID, billing: $billing)
+  mutation SubmitPayment($paymentMethodID: String!, $planID: String!, $couponID: String, $billing: JSON) {
+    processPayment(paymentMethodID: $paymentMethodID, planID: $planID, couponID: $couponID, billing: $billing)
   }
 `
 
@@ -202,6 +202,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       variables: {
         paymentMethodID: paymentMethod.id,
         planID: plan?.planID,
+        couponID: !!coupon ? coupon.code : null,
         billing: {
           ...billingDetails,
           user: {
@@ -382,7 +383,7 @@ const RightColumn = styled(LeftColumn)`
 const Arrow = styled(BackArrowIcon)`
   position: absolute;
   left: 50px;
-  top: 90px;
+  top: 70px;
 `
 
 const FAQWrapper = styled(Box)`
