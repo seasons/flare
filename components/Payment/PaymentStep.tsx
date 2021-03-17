@@ -12,9 +12,7 @@ import { colors } from "theme/colors"
 import * as Yup from "yup"
 
 import { gql, useMutation, useQuery } from "@apollo/client"
-import {
-  BagItemFragment, Box, Col, Grid, REMOVE_FROM_BAG, Row, Sans, Spacer
-} from "@seasons/eclipse"
+import { BagItemFragment, Box, Col, Grid, REMOVE_FROM_BAG, Row, Sans, Spacer } from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 import { PaymentBagItem } from "./PaymentBagItem"
@@ -321,6 +319,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                         </Sans>
                         <Spacer mb={5} />
                         <CollapsableFAQ faqSections={data?.faq?.sections} />
+                        <Spacer pb={10} />
                       </FAQWrapper>
                     </Box>
                   </Box>
