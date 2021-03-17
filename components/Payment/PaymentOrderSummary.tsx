@@ -3,7 +3,7 @@ import React from "react"
 
 import { Box, Flex, Sans, Spacer } from "@seasons/eclipse"
 
-export const PaymentOrderSummary = ({ plan }) => {
+export const PaymentOrderSummary = ({ plan, coupon }) => {
   if (!plan) {
     return (
       <Box px={6} py={4}>
@@ -14,6 +14,7 @@ export const PaymentOrderSummary = ({ plan }) => {
 
   const taxes = plan.estimate?.taxes?.map((a) => a.amount)
   const totalTax = taxes.reduce((sum, amount) => sum + amount, 0)
+  const discounts = plan?.estimate?.discounts || []
 
   const formatPrice = (price) =>
     (price / 100).toLocaleString("en-US", {
@@ -32,6 +33,25 @@ export const PaymentOrderSummary = ({ plan }) => {
         </Sans>
       </Flex>
       <Spacer mt={1} />
+      {discounts.length > 0 && (
+        <>
+          {discounts?.map((discount) => {
+            return (
+              <>
+                <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                  <Sans size="5" color="black50">
+                    {discount.description}
+                  </Sans>
+                  <Sans size="5" color="black50">
+                    -{formatPrice(discount.amount)}
+                  </Sans>
+                </Flex>
+              </>
+            )
+          })}
+          <Spacer mt={1} />
+        </>
+      )}
       {taxes.length > 0 && (
         <>
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
@@ -45,6 +65,7 @@ export const PaymentOrderSummary = ({ plan }) => {
           <Spacer mt={1} />
         </>
       )}
+      {coupon && <></>}
       <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
         <Sans size="6">Total</Sans>
         <Sans size="6">{formatPrice(plan.estimate?.total)}</Sans>

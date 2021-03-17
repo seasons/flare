@@ -1,18 +1,18 @@
+import { Box, Flex, MaxWidth, Sans, Separator, Spacer } from "components"
+import { color } from "helpers"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { DateTime } from "luxon"
+import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { useDrawerContext } from "../../components/Drawer/DrawerContext"
-import { Grid, Row, Col } from "../Grid"
-import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "components"
-import { Display } from "../Typography"
-import { GetTheAppButton } from "../Button/GetTheApp"
-import Link from "next/link"
-import { Media } from "../Responsive"
-import { Button } from "../Button"
-import { useAuthContext } from "lib/auth/AuthContext"
-import { Countdown } from "@seasons/eclipse"
-import { DateTime } from "luxon"
 import { Schema, useTracking } from "utils/analytics"
-import { color } from "helpers"
+import { useDrawerContext } from "../../components/Drawer/DrawerContext"
+import { Button } from "../Button"
+import { GetTheAppButton } from "../Button/GetTheApp"
+import { Col, Grid, Row } from "../Grid"
+import { Media } from "../Responsive"
+import { Countdown } from "@seasons/eclipse"
+import { Display } from "../Typography"
 
 interface HeroComponentProps {
   version: "mobile" | "desktop"
@@ -136,7 +136,7 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
     }
   }, [userSession])
 
-  let headerText = "Wear,Swap,Repeat" as any
+  let headerText = "Wear.Swap.Repeat." as any
   let firstName = userSession?.user?.firstName || ""
   const youreStart = firstName !== "" ? "Hi " + firstName + ", you're" : "You're"
   const yourStart = firstName !== "" ? "Hi " + firstName + ", your" : "Your"

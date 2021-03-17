@@ -7,8 +7,9 @@ import React, { useRef } from "react"
 import { SnapItem, SnapList, useScroll, useVisibleElements } from "react-snaplist-carousel"
 import styled from "styled-components"
 import { emojiUnixToString } from "utils/emojiUnixToString"
-import { FooterElement } from "./FooterElement"
+
 import { DiscoverBagProductItem } from "./DiscoverBagProductItem"
+import { FooterElement } from "./FooterElement"
 import { GET_DISCOVERY_BAG } from "./queries"
 
 interface Props {
@@ -103,12 +104,6 @@ export const DiscoverBagContent: React.FC<Props> = ({
           productID: variant.product?.id,
           variantID: variant.id,
         },
-        awaitRefetchQueries: true,
-        refetchQueries: () => [
-          {
-            query: GET_DISCOVERY_BAG,
-          },
-        ],
       })
     }
   }
