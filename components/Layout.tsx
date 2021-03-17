@@ -17,6 +17,8 @@ import { PopUp } from "./PopUp"
 import { useMutation } from "@apollo/client"
 import { SET_IMPACT_ID } from "queries/customerQueries"
 import { NotificationBar, NotificationBarProvider } from "@seasons/eclipse"
+import { ModalProvider } from "./Modal/ModalProvider"
+import { Modal } from "./Modal"
 
 interface LayoutProps {
   fixedNav?: boolean
@@ -69,24 +71,27 @@ export const Layout = ({
   return (
     <>
       {includeDefaultHead && <LayoutHead />}
-      <PopUpProvider>
-        <DrawerProvider>
-          <NotificationBarProvider>
-            <Theme>
-              {showIntercom && <Intercom />}
-              <Nav brandItems={brandItems} />
-              <MaxWidth height="100%">
-                <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-                  {children}
-                  {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
-                </Box>
-              </MaxWidth>
-              <Drawer />
-              <PopUp />
-            </Theme>
-          </NotificationBarProvider>
-        </DrawerProvider>
-      </PopUpProvider>
+      <ModalProvider>
+        <PopUpProvider>
+          <DrawerProvider>
+            <NotificationBarProvider>
+              <Theme>
+                {showIntercom && <Intercom />}
+                <Nav brandItems={brandItems} />
+                <MaxWidth height="100%">
+                  <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+                    {children}
+                    {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
+                  </Box>
+                </MaxWidth>
+                <Drawer />
+                <PopUp />
+                <Modal />
+              </Theme>
+            </NotificationBarProvider>
+          </DrawerProvider>
+        </PopUpProvider>
+      </ModalProvider>
     </>
   )
 }

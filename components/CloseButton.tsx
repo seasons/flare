@@ -11,13 +11,14 @@ export type CloseButtonVariant = "light" | "dark"
 
 export const CloseButton: React.FC<{
   variant?: CloseButtonVariant
-}> = ({ variant }) => {
+  onClick?: () => void
+}> = ({ variant, onClick }) => {
   const { closeDrawer } = useDrawerContext()
   return (
     <Wrapper>
       <TouchableOpacity
         onPress={() => {
-          closeDrawer()
+          onClick ? onClick() : closeDrawer()
         }}
       >
         <Circle variant={variant}>

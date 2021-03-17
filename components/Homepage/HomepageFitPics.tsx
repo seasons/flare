@@ -42,9 +42,9 @@ export const HomepageFitPics: React.FC<{ fitPics: any }> = ({ fitPics }) => {
     const items = isDesktop ? fitPics : fitPics.slice(0, 4)
     return (
       <MaxWidth>
-        <Flex flexDirection="column" flexWrap="nowrap" justifyContent="space-between" px={[2, 2, 2, 2, 2]} width="100%">
+        <Flex flexDirection="column" flexWrap="nowrap" justifyContent="space-between" px={[0, 0, 2, 2, 2]} width="100%">
           <Flex flexDirection="column" alignItems="center" justifyContent="center" width="100%">
-            <Display size="8" style={{ textAlign: "center" }}>
+            <Display size="8" style={{ textAlign: "center" }} px={2}>
               How they wear Seasons
             </Display>
             <Spacer mb={1} />
