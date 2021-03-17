@@ -72,9 +72,9 @@ const Home = screenTrack(() => ({
         </>
       )}
 
-      <Spacer mb="105px" />
+      <Spacer mb="128px" />
       <HowItWorks />
-      <Spacer mb="120px" />
+      <Spacer mb="135px" />
 
       <BrowseAllWithImage />
 
