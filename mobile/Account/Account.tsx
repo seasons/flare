@@ -14,7 +14,7 @@ import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
-import { Linking, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { DateTime } from "luxon"
 
@@ -24,6 +24,7 @@ import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
 import { AuthorizedCTA, WaitlistedCTA } from "@seasons/eclipse"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
+import { ReferAFriend } from "./Components/ReferAFriend"
 
 export enum UserState {
   Undetermined,
@@ -47,10 +48,16 @@ export enum State {
 
 export const GET_USER = gql`
   query GetUser {
+    view(viewID: "Referral") {
+      id
+      title
+      caption
+    }
     me {
       customer {
         id
         status
+        referralLink
         user {
           id
           firstName
@@ -102,6 +109,7 @@ export const Account = screenTrack()(({ navigation }) => {
   const firstName = user?.firstName
   const lastName = user?.lastName
   const roles = user?.roles
+  const referralLink = customer?.referralLink
 
   const ListSkeleton = () => {
     return (
@@ -285,6 +293,12 @@ export const Account = screenTrack()(({ navigation }) => {
         <Box px={2} py={4}>
           {!!data ? renderBody() : <ListSkeleton />}
         </Box>
+        {referralLink && (
+          <>
+            <InsetSeparator />
+            <ReferAFriend referralLink={referralLink} referralData={data?.view} />
+          </>
+        )}
         <InsetSeparator />
         <Spacer mb={4} />
         <Box px={2}>

@@ -7,7 +7,7 @@ import { useApollo } from "lib/apollo/apollo"
 import { AuthProvider } from "lib/auth/AuthProvider"
 import { FontStyles } from "lib/fonts"
 import { Theme } from "lib/theme"
-import React, { useEffect } from "react"
+import React from "react"
 import { BaseCSS } from "styled-bootstrap-grid"
 
 import { ApolloProvider } from "@apollo/client"
