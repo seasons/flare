@@ -19,6 +19,7 @@ import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-
 
 import { PaymentBagItem } from "./PaymentBagItem"
 import { PaymentBillingAddress } from "./PaymentBillingAddress"
+import { PaymentCouponField } from "./PaymentCouponField"
 import { PaymentExpressButtons } from "./PaymentExpressButtons"
 import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
@@ -37,7 +38,7 @@ interface PaymentStepProps {
 }
 
 export const PAYMENT_PLANS = gql`
-  query GetPaymentPlans {
+  query GetPaymentPlans($couponID: String) {
     faq(sectionType: PaymentPlanPage) {
       sections {
         title
@@ -53,7 +54,7 @@ export const PAYMENT_PLANS = gql`
       price
       planID
       itemCount
-      estimate
+      estimate(couponID: $couponID)
     }
     me {
       bag {
@@ -115,9 +116,13 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState(null)
+  const [coupon, setCoupon] = useState(null)
   const [plan, setPlan] = useState(null)
   const { previousData, data = previousData, loading } = useQuery(PAYMENT_PLANS, {
     fetchPolicy: "network-only",
+    variables: {
+      couponID: !!coupon ? coupon.code : null,
+    },
   })
   const [planError, setPlanError] = useState(null)
   const [removeFromBag] = useMutation(REMOVE_FROM_BAG, {
@@ -244,12 +249,24 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                   <Box my={2}>
                     <Separator />
                   </Box>
-                  <PaymentOrderSummary plan={plan} />
+                  <PaymentOrderSummary plan={plan} coupon={coupon} />
+                  <Box mx={6} mb={6}>
+                    <PaymentCouponField
+                      onApplyPromoCode={(amount, percentage, type, code) => {
+                        setCoupon({
+                          amount,
+                          percentage,
+                          type,
+                          code,
+                        })
+                      }}
+                    />
+                  </Box>
                   <Box my={2}>
                     <Separator />
                   </Box>
                   <Box>
-                    <Box p={6} pt={2}>
+                    <Box p={6} pt={0}>
                       {EnableExpressCheckout && (
                         <Box py={4}>
                           <Sans size="7">Express checkout</Sans>
@@ -285,7 +302,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                 </LeftColumn>
                 <RightColumn md={4}>
                   <Box style={{ height: "100%", minHeight: "100vh" }}>
-                    <Box px={[2, 2, 2, 5, 5]} pt={[50, 50, 150]}>
+                    <Box px={[2, 2, 2, 2]} pt={[50, 50, 150]}>
                       <Box mb={4}>
                         <Sans size="8" color="black100">
                           Your bag
