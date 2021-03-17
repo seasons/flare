@@ -188,13 +188,15 @@ const HeroCaptionText = ({ version }) => {
   }
 
   return (
-    <Sans
-      size={isMobile ? "6" : "4"}
-      color="black50"
-      style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
-    >
-      {caption}
-    </Sans>
+    <Flex width="100%" flexDirection="row" justifyContent="center">
+      <Sans
+        size={isMobile ? "6" : "4"}
+        color="black50"
+        style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
+      >
+        {caption}
+      </Sans>
+    </Flex>
   )
 }
 
@@ -235,22 +237,24 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   }
 
   return (
-    <Flex flexDirection="column" style={{ maxWidth: "400px" }}>
-      <Link href={ctaData.link}>
-        <Button
-          onClick={() => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames[ctaData.actionName],
-              actionType: Schema.ActionTypes.Tap,
-            })
-            ctaData.onClick?.()
-          }}
-        >
-          {ctaData.text}
-        </Button>
-      </Link>
-      <Spacer mb={1} />
-      <GetTheAppButton block />
+    <Flex width="100%" flexDirection="row" justifyContent="center">
+      <Flex flexDirection="column" style={{ maxWidth: "400px", width: "100%" }}>
+        <Link href={ctaData.link}>
+          <Button
+            onClick={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames[ctaData.actionName],
+                actionType: Schema.ActionTypes.Tap,
+              })
+              ctaData.onClick?.()
+            }}
+          >
+            {ctaData.text}
+          </Button>
+        </Link>
+        <Spacer mb={1} />
+        <GetTheAppButton block />
+      </Flex>
     </Flex>
   )
 }
