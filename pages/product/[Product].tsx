@@ -154,7 +154,7 @@ const Product = screenTrack(({ router }) => {
                   </Flex>
                 </Flex>
                 {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
-                {product && (
+                {process.env.ENABLE_BUY_USED && product && (
                   <>
                     <Spacer mb={8} />
                     <ProductBuyCTA
