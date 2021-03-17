@@ -7,6 +7,7 @@ import {
   BrowseAllWithImage,
   HomepageFitPics,
   FeaturedCollection,
+  FromCommunity,
   Testimonials,
   Plans,
 } from "components/Homepage"
@@ -30,6 +31,8 @@ const Home = screenTrack(() => ({
 
   const featuredBrandItems = navigationData?.brands || []
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
+
+  const communityPosts = data?.blogPosts?.slice(1, 3)
 
   useEffect(() => {
     if (!!data?.me?.customer) {
@@ -119,12 +122,9 @@ const Home = screenTrack(() => ({
 
       <Spacer mb={10} />
 
-      {data?.collections?.length > 0 && (
-        <>
-          <FeaturedCollection collections={data.collections} />
-          <Spacer mb={10} />
-        </>
-      )}
+      <FromCommunity blogPosts={communityPosts} />
+
+      <Spacer mb={10} />
 
       <SeparatorWithPadding />
       <Spacer mb={10} />
