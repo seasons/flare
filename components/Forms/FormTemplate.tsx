@@ -90,7 +90,7 @@ export const FormTemplate = ({
   )
 }
 
-const Wrapper = styled("div")<{ clientSide: string; isDesktop: boolean }>`
+const Wrapper = styled("div")<{ clientSide: boolean; isDesktop: boolean }>`
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
