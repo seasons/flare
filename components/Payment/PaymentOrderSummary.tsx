@@ -23,7 +23,7 @@ export const PaymentOrderSummary = ({ plan, coupon }) => {
     })
 
   return (
-    <Box px={6} py={4}>
+    <Box>
       <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
         <Sans size="5" color="black50">
           {plan.name}

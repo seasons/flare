@@ -12,7 +12,9 @@ import { colors } from "theme/colors"
 import * as Yup from "yup"
 
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { BagItemFragment, Box, Col, Grid, REMOVE_FROM_BAG, Row, Sans, Spacer } from "@seasons/eclipse"
+import {
+  BagItemFragment, Box, Col, Grid, REMOVE_FROM_BAG, Row, Sans, Spacer
+} from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 import { PaymentBagItem } from "./PaymentBagItem"
@@ -228,8 +230,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                   >
                     <Arrow color={colors.black100} />
                   </TouchableOpacity>
-                  <Box pt={4} px={4} pb={2}>
-                    <Box mt={12} p={2}>
+                  <Box pt={4} px={[0, 0, 4, 4, 4]} pb={2}>
+                    <Box mt={[4, 4, 12]} p={2}>
                       <Sans size="8" weight="medium">
                         Finish checking out
                       </Sans>
@@ -248,8 +250,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                   <Box my={2}>
                     <Separator />
                   </Box>
-                  <PaymentOrderSummary plan={plan} coupon={coupon} />
-                  <Box mx={6} mb={6}>
+                  <Box px={[2, 2, 6]} py={4}>
+                    <PaymentOrderSummary plan={plan} coupon={coupon} />
+                  </Box>
+                  <Box mx={[2, 2, 6]} mb={6}>
                     <PaymentCouponField
                       onApplyPromoCode={(amount, percentage, type, code) => {
                         setCoupon({
@@ -265,7 +269,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                     <Separator />
                   </Box>
                   <Box>
-                    <Box p={6} pt={0}>
+                    <Box p={[2, 2, 6]} pt={0}>
                       {EnableExpressCheckout && (
                         <Box py={4}>
                           <Sans size="7">Express checkout</Sans>
@@ -282,7 +286,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                         <Spacer mt={2} />
                         <PaymentBillingAddress />
                       </Box>
-                      <Box width="100%" py={4}>
+                      <Box width="100%" py={[2, 2, 4]}>
                         <Box>
                           {errorMessage && (
                             <>
@@ -301,31 +305,33 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                 </LeftColumn>
                 <RightColumn md={4}>
                   <Box style={{ height: "100%", minHeight: "100vh" }}>
-                    <Box px={[2, 2, 2, 2]} pt={[50, 50, 150]}>
-                      <Box mb={4}>
-                        <Sans size="8" color="black100">
-                          Your bag
-                        </Sans>
-                        <Spacer mb={1} />
-                        <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
-                          Finish checking out to reserve these today
-                        </Sans>
-                        <Spacer mb={3} />
-                        {planError && (
-                          <>
-                            <ErrorResult size="3">Please remove {planError} item(s) in your bag</ErrorResult>
-                            <Spacer mt={2} />
-                          </>
-                        )}
+                    <Box px={[0, 0, 2, 2]} pt={[50, 50, 150]}>
+                      {data?.me?.bag.length > 0 && (
+                        <Box mb={4}>
+                          <Sans size="8" color="black100">
+                            Your bag
+                          </Sans>
+                          <Spacer mb={1} />
+                          <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
+                            Finish checking out to reserve these today
+                          </Sans>
+                          <Spacer mb={3} />
+                          {planError && (
+                            <>
+                              <ErrorResult size="3">Please remove {planError} item(s) in your bag</ErrorResult>
+                              <Spacer mt={2} />
+                            </>
+                          )}
 
-                        {data?.me?.bag?.map((bagItem, index) => {
-                          return (
-                            <Box pb={1}>
-                              <PaymentBagItem index={index} bagItem={bagItem} removeFromBag={removeFromBag} />
-                            </Box>
-                          )
-                        })}
-                      </Box>
+                          {data?.me?.bag?.map((bagItem, index) => {
+                            return (
+                              <Box pb={1}>
+                                <PaymentBagItem index={index} bagItem={bagItem} removeFromBag={removeFromBag} />
+                              </Box>
+                            )
+                          })}
+                        </Box>
+                      )}
 
                       <FAQWrapper>
                         <Sans size="8" color="black100">
@@ -383,6 +389,11 @@ const Arrow = styled(BackArrowIcon)`
   position: absolute;
   left: 50px;
   top: 70px;
+
+  ${media.xs`
+    left: 16px;
+    top: 30px;
+  `}
 `
 
 const FAQWrapper = styled(Box)`

@@ -50,7 +50,7 @@ export const FormTemplate = ({
     return (
       <>
         {isDesktop && leftImage && <ImageContainer url={imageResize(leftImage, "large")} />}
-        <Wrapper clientSide={clientSide}>
+        <Wrapper clientSide={clientSide} isDesktop={isDesktop}>
           <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
           <FieldsContainer pl={isDesktop ? [0, 2, 2, 4, 4] : 0} pb={isDesktop ? 0 : 150}>
             {sortedFields.map((props, index) => {
@@ -90,7 +90,7 @@ export const FormTemplate = ({
   )
 }
 
-const Wrapper = styled("div")<{ clientSide }>`
+const Wrapper = styled("div")<{ clientSide: string; isDesktop: boolean }>`
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
@@ -98,6 +98,7 @@ const Wrapper = styled("div")<{ clientSide }>`
   flex: 1;
   height: 100%;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
+  padding-top: ${(p) => (p.isDesktop ? "0px" : "100px")};
 `
 
 const ContentContainer = styled(Box)`

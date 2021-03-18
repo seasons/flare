@@ -112,7 +112,7 @@ export const DiscoverBagContent: React.FC<Props> = ({
     <>
       <Flex flexDirection="column" justifyContent="center" height="100%">
         <Flex flexDirection="column" width="100%" py={60}>
-          <Flex flexDirection={isDesktop ? "row" : "column"} width="100%">
+          <Flex flexDirection={isDesktop ? "row" : "column"} width="100%" px={[2, 2, 2, 2, 2]}>
             <Box width="100%">
               <Spacer pb={isDesktop ? 0 : 170} />
               <Sans color="black100" size={["8", "10"]}>
