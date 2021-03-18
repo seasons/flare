@@ -112,17 +112,18 @@ export const DiscoverBagContent: React.FC<Props> = ({
     <>
       <Flex flexDirection="column" justifyContent="center" height="100%">
         <Flex flexDirection="column" width="100%" py={60}>
-          <Flex flexDirection={isDesktop ? "row" : "column"} width="100%">
+          <Flex flexDirection={isDesktop ? "row" : "column"} width="100%" px={[2, 2, 2, 2, 2]}>
             <Box width="100%">
               <Spacer pb={isDesktop ? 0 : 170} />
-              <Sans color="black100" size={["8", "10"]}>
+              <Sans color="black100" size={["7", "9"]}>
                 You're in.
               </Sans>
               <Flex flexDirection={isDesktop ? "row" : "column"} justifyContent="space-between" width="100%">
                 <Flex flexDirection="column">
-                  <Sans color="black100" size={["8", "10"]}>
+                  <Sans color="black100" size={["7", "9"]}>
                     Let's discover your first bag
                   </Sans>
+                  <Spacer mt={2} />
                   <Sans size="4" color="black50">
                     Here are some recommendations from us in your size. Add up to 3 before checking out, or skip to do
                     later.
@@ -143,19 +144,19 @@ export const DiscoverBagContent: React.FC<Props> = ({
           </Flex>
           <Spacer mb={isDesktop ? 6 : 0} />
           <CarouselWrapper>
-            {isDesktop && (
-              <ArrowWrapper
-                justifyContent="flex-start"
-                onClick={() => {
-                  if (selected > 0) {
-                    const nextIndex = selected - 1
-                    goToSnapItem(nextIndex)
-                  }
-                }}
-              >
-                <ChevronIcon color={selected === 0 ? color("black04") : color("black100")} rotateDeg="180deg" />
-              </ArrowWrapper>
-            )}
+            <ArrowWrapper
+              justifyContent="flex-start"
+              p={[2, 2]}
+              onClick={() => {
+                if (selected > 0) {
+                  const nextIndex = selected - 1
+                  goToSnapItem(nextIndex)
+                }
+              }}
+            >
+              <ChevronIcon color={selected === 0 ? color("black04") : color("black100")} rotateDeg="180deg" />
+            </ArrowWrapper>
+
             <SnapList direction="horizontal" width={isDesktop ? "calc(100% - 100px)" : "100%"} ref={snapList}>
               {!productsChunked?.length && (
                 <Flex width="100%" height="100%">
@@ -188,30 +189,30 @@ export const DiscoverBagContent: React.FC<Props> = ({
                   )
                 })}
             </SnapList>
-            {isDesktop && (
-              <ArrowWrapper
-                justifyContent="flex-end"
-                onClick={() => {
-                  const nextIndex = selected + 1
-                  goToSnapItem(nextIndex)
 
-                  const shouldLoadMore =
-                    !loading && !!aggregateCount && !reachedEnd && selected >= productsChunked.length - 2
+            <ArrowWrapper
+              justifyContent="flex-end"
+              p={[2, 2]}
+              onClick={() => {
+                const nextIndex = selected + 1
+                goToSnapItem(nextIndex)
 
-                  if (shouldLoadMore) {
-                    fetchMore({
-                      variables: {
-                        skip: products?.length,
-                      },
-                    }).then((fetchMoreResult: any) => {
-                      setProductCount(products.length + fetchMoreResult?.data?.products?.edges?.length)
-                    })
-                  }
-                }}
-              >
-                <ChevronIcon color={reachedEnd ? color("black04") : color("black100")} />
-              </ArrowWrapper>
-            )}
+                const shouldLoadMore =
+                  !loading && !!aggregateCount && !reachedEnd && selected >= productsChunked.length - 2
+
+                if (shouldLoadMore) {
+                  fetchMore({
+                    variables: {
+                      skip: products?.length,
+                    },
+                  }).then((fetchMoreResult: any) => {
+                    setProductCount(products.length + fetchMoreResult?.data?.products?.edges?.length)
+                  })
+                }
+              }}
+            >
+              <ChevronIcon color={reachedEnd ? color("black04") : color("black100")} />
+            </ArrowWrapper>
           </CarouselWrapper>
           <Spacer mb={isDesktop ? 0 : 6} />
         </Flex>

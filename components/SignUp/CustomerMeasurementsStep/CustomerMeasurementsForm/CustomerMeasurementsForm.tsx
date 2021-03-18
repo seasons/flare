@@ -101,7 +101,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
             <ExternalLink href="/privacy-policy">Privacy Policy</ExternalLink>
           </>
         }
-        buttonText="Create account"
+        buttonText="Next"
         buttonActionName={Schema.ActionNames.CustomerMeasurementsSubmitButtonClicked}
         fields={[
           {

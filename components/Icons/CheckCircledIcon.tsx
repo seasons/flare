@@ -10,9 +10,16 @@ interface Props {
 
 export const CheckCircledIcon: React.FC<Props> = (props) => {
   return (
-    <Svg width={props.width || 42} height={props.height || 42} {...props} viewBox="0 0 56 56">
+    <Svg width={props.width || 42} height={props.height || 42} {...props} viewBox="-1 -1 58 58">
       <G fill="none" fillRule="evenodd">
-        <Circle fill={props.backgroundColor ? props.backgroundColor : "#04B853"} cx={28} cy={28} r={28} />
+        <Circle
+          fill={props.backgroundColor ? props.backgroundColor : "#04B853"}
+          stroke="#FFF"
+          strokeWidth={props.strokeWidth ? props.strokeWidth : 0}
+          cx={28}
+          cy={28}
+          r={28}
+        />
         <Path
           stroke="#FFF"
           strokeWidth={props.strokeWidth ? props.strokeWidth : 2}

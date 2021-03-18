@@ -1,5 +1,5 @@
-import styled from "styled-components"
 import { Container } from "styled-bootstrap-grid"
+import styled from "styled-components"
 
 export const MaxWidth = styled(Container)<{ height?: string }>`
   width: 100%;
