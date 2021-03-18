@@ -8,9 +8,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
-
 import { useQuery } from "@apollo/client"
-
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"
@@ -209,7 +207,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           />
         </Media>
         <Spacer mb={[0, 5]} />
-        <Grid px={[0, 2, 2, 5, 5]}>
+        <Grid px={[0, 2, 2, 2, 2]}>
           <Row style={{ minHeight: "calc(100vh - 160px)" }}>
             <Col md="2" sm="12">
               <Media greaterThanOrEqual="md">

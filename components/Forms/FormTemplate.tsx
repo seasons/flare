@@ -50,9 +50,9 @@ export const FormTemplate = ({
     return (
       <>
         {isDesktop && leftImage && <ImageContainer url={imageResize(leftImage, "large")} />}
-        <Wrapper clientSide={clientSide}>
+        <Wrapper clientSide={clientSide} isDesktop={isDesktop}>
           <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
-          <FieldsContainer px={isDesktop ? [2, 2, 2, 5, 5] : 1} pb={isDesktop ? 0 : 150}>
+          <FieldsContainer pl={isDesktop ? [0, 2, 2, 4, 4] : 0} pb={isDesktop ? 0 : 150}>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
               const width = props.fullWidth ? "100%" : isDesktop ? "50%" : mobileWidth
@@ -90,7 +90,7 @@ export const FormTemplate = ({
   )
 }
 
-const Wrapper = styled("div")<{ clientSide }>`
+const Wrapper = styled("div")<{ clientSide: boolean; isDesktop: boolean }>`
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
@@ -98,6 +98,7 @@ const Wrapper = styled("div")<{ clientSide }>`
   flex: 1;
   height: 100%;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
+  padding-top: ${(p) => (p.isDesktop ? "0px" : "100px")};
 `
 
 const ContentContainer = styled(Box)`
@@ -111,6 +112,7 @@ const ContentContainer = styled(Box)`
 const ImageContainer = styled(Box)<{ url?: string }>`
   width: 560px;
   height: 100%;
+  max-width: 40vw;
   background: url(${(p) => p.url}) no-repeat center center;
   background-size: contain;
 `

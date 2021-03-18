@@ -132,7 +132,7 @@ const TagView = screenTrack(({ router }) => {
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]}>
-        <Grid px={[2, 2, 2, 5, 5]}>
+        <Grid px={[2, 2, 2, 2, 2]}>
           <Row>
             <Col md="6" sm="12">
               <MediaWithHeight greaterThanOrEqual="md">
@@ -159,7 +159,7 @@ const TagView = screenTrack(({ router }) => {
             </Col>
           </Row>
         </Grid>
-        <Grid px={[0, 2, 2, 5, 5]}>
+        <Grid px={[0, 2, 2, 2, 2]}>
           <Row ref={imageContainer}>
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>

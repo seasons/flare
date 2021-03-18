@@ -1,65 +1,59 @@
+import { Box, Flex, MaxWidth, Sans, Separator, Spacer } from "components"
+import { color } from "helpers"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { DateTime } from "luxon"
+import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { useDrawerContext } from "../../components/Drawer/DrawerContext"
-import { Grid, Row, Col } from "../Grid"
-import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "../"
-import { Display } from "../Typography"
-import { GetTheAppButton } from "../Button/GetTheApp"
-import Link from "next/link"
-import { Media } from "../Responsive"
-import { Button } from "../Button"
-import { Check } from "../SVGs"
-import { useAuthContext } from "lib/auth/AuthContext"
-import { Countdown } from "@seasons/eclipse"
-import { DateTime } from "luxon"
 import { Schema, useTracking } from "utils/analytics"
+import { useDrawerContext } from "../../components/Drawer/DrawerContext"
+import { Button } from "../Button"
+import { GetTheAppButton } from "../Button/GetTheApp"
+import { Col, Grid, Row } from "../Grid"
+import { Media } from "../Responsive"
+import { Countdown } from "@seasons/eclipse"
+import { Display } from "../Typography"
 
 interface HeroComponentProps {
   version: "mobile" | "desktop"
 }
 
-const listText = [
-  "Free shipping, returns & dry cleaning.",
-  "Purchase items you love directly from the app.",
-  "No commitment. Pause or cancel anytime.",
-]
-
 const DesktopTextContent = () => {
   return (
-    <Box pb={5} style={{ zIndex: 3, position: "relative" }} pr={2}>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
-        <Flex flexDirection="column" justifyContent="center">
-          <Spacer mb={10} />
+    <Flex style={{ position: "relative", width: "50%" }} flexDirection="column" justifyContent="center">
+      <Flex flexDirection="column" justifyContent="center" alignItems="center">
+        <Flex flexDirection="column" justifyContent="center" alignContent="center" px={3}>
+          <Spacer mb={[10, 0, 0, 0, 0]} />
           <HeroHeaderText version="desktop" />
-          <Spacer mb={1} />
-          <HeroCaptionText />
+          <Spacer mb="12px" />
+          <HeroCaptionText version="desktop" />
           <Spacer mb={4} />
           <HeroCTAs version="desktop" />
           <Spacer mb={4} />
-          <HeroBelowButtonDetailText version="desktop" />
+          <HeroBottomDetailText version="desktop" />
         </Flex>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 
 const DesktopHero = ({ post }) => {
   return (
     <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 5, 5]} pb={5}>
+      <Box width="100%" px={[2, 2, 2, 2, 2]} pb={2}>
         <Flex flexDirection="row" justifyContent="space-between">
           <DesktopTextContent />
           <StyledAnchor href={post?.url}>
-            <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
+            <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})`, position: "relative" }}>
+              <Box
+                style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
+                pl={0.5}
+                py={0.5}
+              >
+                <Sans size="4">{post?.name}</Sans>
+              </Box>
+            </BackgroundImage>
           </StyledAnchor>
-        </Flex>
-        <Flex pt={1} flexDirection="row" justifyContent="space-between" width="100%" alignItems="center">
-          <HeroBottomDetailText version="desktop" />
-          <Flex flexDirection="row" justifyContent="flex-end">
-            <a href={post?.url} style={{ color: "inherit", textDecoration: "none" }}>
-              <Sans size="4">{post?.name}</Sans>
-            </a>
-          </Flex>
         </Flex>
       </Box>
     </MaxWidth>
@@ -73,27 +67,28 @@ const MobileHero = ({ post }) => {
         <Col xs="12" px={2}>
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer mb={10} />
+              <Spacer pb={6} />
               <HeroHeaderText version="mobile" />
               <Spacer mb={1} />
-              <HeroCaptionText />
+              <HeroCaptionText version="mobile" />
               <Spacer mb={4} />
               <HeroCTAs version="mobile" />
               <Spacer mb={4} />
-              <HeroBelowButtonDetailText version="mobile" />
-              <Spacer mb={2} />
               <HeroBottomDetailText version="mobile" />
               <Spacer mb={4} />
               <MobileImageWrapper>
                 <StyledAnchor href={post?.url}>
-                  <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }} />
+                  <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }}>
+                    <Box
+                      style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
+                      pl={0.5}
+                      py={0.5}
+                    >
+                      <Sans size="4">{post?.name}</Sans>
+                    </Box>
+                  </BackgroundImage>
                 </StyledAnchor>
               </MobileImageWrapper>
-              <Flex flexDirection="row" justifyContent="flex-end">
-                <a href={post?.url} style={{ color: "inherit", textDecoration: "none" }}>
-                  <Sans size="4">{post?.name}</Sans>
-                </a>
-              </Flex>
             </Flex>
           </Flex>
         </Col>
@@ -103,6 +98,7 @@ const MobileHero = ({ post }) => {
 }
 
 const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
+  const isMobile = version === "mobile"
   const { userSession } = useAuthContext()
 
   let bottomDetailText
@@ -119,44 +115,20 @@ const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
       )
       break
     default:
-      bottomDetailText = "- Over 500+ curated, in-season, and archive styles"
+      bottomDetailText = "— Over +1000 styles right in your pocket"
   }
 
   return (
-    <Sans size={version === "mobile" ? "3" : "4"} color="black50">
+    <Sans size={isMobile ? "3" : "4"} color="black50" style={{ textAlign: isMobile ? "left" : "center" }}>
       {bottomDetailText}
     </Sans>
   )
 }
 
-const HeroBelowButtonDetailText = ({ version }: HeroComponentProps) => {
-  const { userSession } = useAuthContext()
-
-  let text
-  switch (userSession?.customer?.status) {
-    case "Waitlisted":
-    case "Authorized":
-    case "Active":
-      text = <></>
-      break
-    default:
-      text = listText.map((listItem) => (
-        <Flex mb={2} key={listItem} flexDirection="row" alignItems="center">
-          <Check />
-          <Spacer mr={2} />
-          <Sans size={version === "mobile" ? "3" : "4"} color="black50" style={{ whiteSpace: "pre-line" }}>
-            {listItem}
-          </Sans>
-        </Flex>
-      ))
-  }
-
-  return text
-}
-
 const HeroHeaderText = ({ version }: HeroComponentProps) => {
   const { userSession } = useAuthContext()
   const [targetDate, setTargetDate] = useState(null)
+  const isMobile = version === "mobile"
 
   useEffect(() => {
     if (!!userSession) {
@@ -190,20 +162,20 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
 
   return (
     <Display
-      size={version === "desktop" ? "10" : "9"}
+      size="8"
       color="black100"
-      style={{ letterSpacing: "-2px", maxWidth: "600px" }}
+      style={{ letterSpacing: "-2px", maxWidth: "600px", textAlign: isMobile ? "left" : "center" }}
     >
       {headerText}
     </Display>
   )
 }
 
-const HeroCaptionText = () => {
+const HeroCaptionText = ({ version }) => {
   const { userSession } = useAuthContext()
+  const isMobile = version === "mobile"
 
-  let caption =
-    "A members-only rental service for designer menswear. Access hundreds of styles and discover new brands with zero commitment."
+  let caption = "A members-only rental service for designer menswear."
   switch (userSession?.customer?.status) {
     case "Authorized":
       caption = "Finish setting up your account and choose your plan"
@@ -216,9 +188,15 @@ const HeroCaptionText = () => {
   }
 
   return (
-    <Sans size="4" color="black50" style={{ whiteSpace: "pre-line", maxWidth: "400px" }}>
-      {caption}
-    </Sans>
+    <Flex width="100%" flexDirection="row" justifyContent="center">
+      <Sans
+        size={isMobile ? "6" : "4"}
+        color="black50"
+        style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
+      >
+        {caption}
+      </Sans>
+    </Flex>
   )
 }
 
@@ -259,23 +237,24 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   }
 
   return (
-    <Flex flexDirection={version === "mobile" ? "column" : "row"}>
-      <Link href={ctaData.link}>
-        <Button
-          onClick={() => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames[ctaData.actionName],
-              actionType: Schema.ActionTypes.Tap,
-            })
-            ctaData.onClick?.()
-          }}
-        >
-          {ctaData.text}
-        </Button>
-      </Link>
-      {version === "desktop" && <Spacer mr={1} />}
-      {version === "mobile" && <Spacer mb={1} />}
-      <GetTheAppButton block={version === "mobile"} />
+    <Flex width="100%" flexDirection="row" justifyContent="center">
+      <Flex flexDirection="column" style={{ maxWidth: "400px", width: "100%" }}>
+        <Link href={ctaData.link}>
+          <Button
+            onClick={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames[ctaData.actionName],
+                actionType: Schema.ActionTypes.Tap,
+              })
+              ctaData.onClick?.()
+            }}
+          >
+            {ctaData.text}
+          </Button>
+        </Link>
+        <Spacer mb={1} />
+        <GetTheAppButton block />
+      </Flex>
     </Flex>
   )
 }
@@ -285,7 +264,7 @@ export const Hero: React.FC<{ post: any }> = ({ post }) => {
     <>
       <Media greaterThanOrEqual="md">
         <DesktopHero post={post} />
-        <Box px={[2, 2, 2, 5, 5]}>
+        <Box px={[2, 2, 2, 2, 2]}>
           <Separator />
         </Box>
       </Media>
@@ -320,5 +299,4 @@ const StyledAnchor = styled.a`
   cursor: pointer;
   width: 50%;
   max-width: 800px;
-  min-height: 450px;
 `

@@ -7,6 +7,8 @@ import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
 import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
+import { ReviewOrder } from "mobile/ReviewOrder"
+import { OrderConfirmation } from "mobile/OrderConfirmation"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
@@ -21,17 +23,22 @@ interface DrawerProps {
   onClose?: () => void
 }
 
+export const getDrawerWidth = () => {
+  if (typeof window !== "undefined") {
+    const windowWidth = window.innerWidth
+    if (windowWidth < 800) {
+      return windowWidth
+    }
+  }
+
+  return 380
+}
+
 export const Drawer = (props: DrawerProps) => {
   const { open, onClose } = props
   const { isOpen, closeDrawer, openDrawer, currentView, params } = useDrawerContext()
 
-  let drawerWidth = 380
-  if (typeof window !== "undefined") {
-    const windowWidth = window.innerWidth
-    if (windowWidth < 800) {
-      drawerWidth = windowWidth
-    }
-  }
+  const drawerWidth = getDrawerWidth()
 
   useEffect(() => {
     if (open) {
@@ -75,6 +82,10 @@ export const Drawer = (props: DrawerProps) => {
         return <ChoosePlanPane headerText={"Let's choose your plan"} source={params?.source} />
       case "editPaymentAndShipping":
         return <EditPaymentAndShipping navigation={{}} route={{ params }} />
+      case "reviewOrder":
+        return <ReviewOrder order={params.order} />
+      case "orderConfirmation":
+        return <OrderConfirmation order={params.order} customer={params.customer} />
     }
   }
 

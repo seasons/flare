@@ -1,132 +1,104 @@
 import React from "react"
-import { Box, Sans, Spacer, Flex, MaxWidth } from "../"
-import { TextList } from "./TextList"
+import { Sans, Spacer, Flex, MaxWidth } from "components"
 import { Media } from "../Responsive"
 import { Display } from "../Typography"
-import { HomepageCarousel } from "./HomepageCarousel"
-import { Grid, Col, Row } from "../Grid"
-import { ProgressiveImageProps } from "../Image/ProgressiveImage"
+import { imageResize } from "utils/imageResize"
+import styled from "styled-components"
+import { ListCheck } from "components/SVGs/ListCheck"
+import { GetTheAppButton } from "components/Button/GetTheApp"
+import { space } from "helpers"
 
-const title = "The app"
-const subtitle = "After receiving an invite, you’ll get a link to download the Seasons app."
+const title = "Download the Seasons app"
+const subtitle = "Manage membership, browse releases & reserve your order."
 
-const image1 = require("../../public/images/homepage/AppImage1.png")
-const image2 = require("../../public/images/homepage/AppImage2.png")
-const image3 = require("../../public/images/homepage/AppImage3.png")
+const imageSRC = require("../../public/images/homepage/web-devices.png")
+const image = imageResize(imageSRC, "large")
 
-const textItems = [
+const listItems = [
   {
-    title: "Browse",
-    text:
-      "See featured designers, sort by category or filter by size. See something you like? Save it in your queue for later.",
+    text: "Get push notifications for every release & restock",
   },
   {
-    title: "Reserve",
-    text: "Choose your favorite styles and place your reservation. We pack, ship and deliver within 2-3 business days.",
+    text: "Chat with a stylist & discover styles available in your size",
   },
   {
-    title: "Manage",
-    text: "Update personal preferences, membership, payment and shipping information all right from the app.",
+    text: "Access your unique referral code & earn a free month",
   },
 ]
 
-const desktopImages: ProgressiveImageProps[] = [
-  { imageUrl: image1, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
-  { imageUrl: image2, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
-  { imageUrl: image3, alt: "image of the iOS app", aspectRatio: 1, size: "xlarge" },
-]
+const TextContent = () => {
+  return (
+    <Flex flexDirection="column" justifyContent="center" style={{ maxWidth: "464px" }} pr={3}>
+      <Display size="8">{title}</Display>
+      <Spacer mb={1} />
+      <Sans size="4" color="black50">
+        {subtitle}
+      </Sans>
+      <Spacer mb={3} />
+      <Sans size="4">
+        4.9 <span style={{ paddingLeft: space(1) }}>★★★★★</span>
+      </Sans>
+      <Spacer mb={3} />
+      {listItems?.map((item) => {
+        return (
+          <Flex flexDirection="row" alignItems="center" mb={2}>
+            <ListCheck />
+            <Spacer mr={2} />
+            <Sans size="4" color="black50" style={{ textDecoration: "underline" }}>
+              {item.text}
+            </Sans>
+          </Flex>
+        )
+      })}
+      <Spacer mb={2} />
+      <GetTheAppButton block />
+    </Flex>
+  )
+}
 
-const mobileImages: ProgressiveImageProps[] = [
-  { imageUrl: image1, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },
-  { imageUrl: image2, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },
-  { imageUrl: image3, alt: "image of the iOS app", aspectRatio: 1, size: "medium" },
-]
-
-const Desktop = () => {
+const Content = ({ platform }) => {
+  const isDesktop = platform === "desktop"
   return (
     <MaxWidth>
-      <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" px={[2, 2, 2, 5, 5]} width="100%">
-        <Flex flexDirection="row" justifyContent="center" width="100%" pr={2}>
-          <TextList title={title} subtitle={subtitle} listItems={textItems} />
+      <Flex
+        flexDirection={isDesktop ? "row" : "column"}
+        flexWrap="nowrap"
+        justifyContent="space-between"
+        px={[2, 2, 2, 2, 2]}
+        width="100%"
+      >
+        <Flex flexDirection="row" justifyContent="flex-start" width="100%" style={{ flex: 2 }}>
+          <TextContent />
         </Flex>
-        <HomepageCarousel images={desktopImages} maxWidth="50%" />
+        <Flex pt={isDesktop ? 0 : 6} flexDirection="row" justifyContent="center" width="100%" style={{ flex: 2 }}>
+          <BackgroundImage />
+        </Flex>
       </Flex>
     </MaxWidth>
-  )
-}
-
-const Tablet = () => {
-  return (
-    <Grid px={[2, 2, 2, 5, 5]}>
-      <Box pb={4}>
-        {title && <Display size="9">{title}</Display>}
-        <Spacer mb={1} />
-        {subtitle && (
-          <Sans size="6" color="black50">
-            {subtitle}
-          </Sans>
-        )}
-      </Box>
-      <Row>
-        {textItems.map((step, index) => (
-          <Col md="4" key={index} mb={3}>
-            <Sans size="6">{step.title}</Sans>
-            <Spacer mb={1} />
-            <Sans size="4" color="black50" style={{ maxWidth: "80%" }}>
-              {step.text}
-            </Sans>
-          </Col>
-        ))}
-      </Row>
-
-      <Row md={12}>
-        <Spacer mb={2} />
-        <HomepageCarousel images={desktopImages} />
-      </Row>
-    </Grid>
-  )
-}
-
-const Mobile = () => {
-  return (
-    <>
-      <Box px={2}>
-        <Spacer mb={5} />
-        <Display size="9">{title}</Display>
-        <Sans size="4" color="black50">
-          {subtitle}
-        </Sans>
-        <Spacer mb={3} />
-        <Flex flexDirection="row" justifyContent="center" style={{ maxHeight: "768px", overflow: "hidden" }}>
-          <HomepageCarousel images={mobileImages} />
-        </Flex>
-      </Box>
-      {textItems?.map((item) => (
-        <Box pl={2} pr={4} key={item.title}>
-          <Spacer mt={5} />
-          <Sans size="4">{item.title}</Sans>
-          <Sans size="4" color="black50">
-            {item.text}
-          </Sans>
-          <Spacer mt={5} />
-        </Box>
-      ))}
-    </>
   )
 }
 
 export const TheApp: React.FC = () => {
   return (
     <>
-      <Media greaterThanOrEqual="lg">
-        <Desktop />
-      </Media>
-      <Media between={["md", "lg"]}>
-        <Tablet />
+      <Media greaterThan="sm">
+        <Content platform="desktop" />
       </Media>
       <Media lessThan="md">
-        <Mobile />
+        <Content platform="mobile" />
       </Media>
     </>
   )
 }
+
+const BackgroundImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  flex-direction: row;
+  background: url(${image}) no-repeat center center;
+  background-size: contain;
+`

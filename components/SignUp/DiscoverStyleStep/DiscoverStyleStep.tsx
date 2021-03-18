@@ -70,10 +70,21 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
       ),
     }
 
+    const title = (
+      <Sans color="black100" size={["8", "10"]}>
+        Let’s discover your style
+      </Sans>
+    )
+
     const activeName = styleNames[activeIndex]
     return (
       <>
-        <Flex flexDirection={isDesktop ? "row" : "column"} pt={isDesktop ? 0 : "150px"}>
+        {!isDesktop && (
+          <Box mt={4} mx={2}>
+            {title}
+          </Box>
+        )}
+        <Flex height="100%" flexDirection={isDesktop ? "row" : "column"} alignItems="center">
           <CarouselContainer platform={platform}>
             <Slider {...sliderSettings}>
               {styleImages.map((styleImage) => (
@@ -93,9 +104,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
           <Wrapper>
             <Flex flexDirection="column" pl={isDesktop ? 6 : 0} mt={isDesktop ? 0 : 3} mb={isDesktop ? 0 : 15}>
               <Box mx={isDesktop ? 0 : 2}>
-                <Sans color="black100" size={["6", "10"]}>
-                  Let’s discover your style
-                </Sans>
+                {isDesktop && title}
 
                 <Sans size="4" color="black50">
                   Select the styles that best describe what you’re looking to wear with us:
@@ -160,7 +169,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
               <ExternalLink href="/privacy-policy">Privacy Policy</ExternalLink>
             </>
           }
-          buttonText="Next"
+          buttonText="Create Account"
           disabled={Object.keys(stylesSelected).length === 0}
           handleSubmit={() => {
             saveStyles({
@@ -177,13 +186,15 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
 
   return (
     <>
-      <DesktopMedia greaterThanOrEqual="md">
-        <MaxWidth>{Content("desktop")} </MaxWidth>
-      </DesktopMedia>
-      <Media lessThan="md">{Content("mobile")}</Media>
+      <DesktopMedia greaterThanOrEqual="md">{Content("desktop")}</DesktopMedia>
+      <MobileMedia lessThan="md">{Content("mobile")}</MobileMedia>
     </>
   )
 }
+
+const MobileMedia = styled(Media)`
+  height: 100%;
+`
 
 const Wrapper = styled("div")`
   align-items: flex-start;
@@ -198,7 +209,7 @@ const Wrapper = styled("div")`
 const CarouselContainer = styled(Box)<{ platform: string }>`
   background: #e9e9eb;
   width: 560px;
-  height: 100%;
+  height: 725px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -221,7 +232,7 @@ const CarouselContainer = styled(Box)<{ platform: string }>`
   .slick-next:before {
     content: "";
     color: black;
-    z-index: 999;
+    z-index: 3;
   }
 
   .center .slick-center .picture {
@@ -237,7 +248,7 @@ const CarouselContainer = styled(Box)<{ platform: string }>`
   ${(p) =>
     p.platform === "mobile" &&
     `
-    margin-top: 100px;
+    margin-top: 60px;
     width: 100vw;
     height: 400px;
 
@@ -278,7 +289,7 @@ const ButtonContainer = styled(Box)<{ platform: string }>`
 `
 
 const ArrowContainer = styled(Box)`
-  z-index: 999;
+  z-index: 3;
 `
 
 const Button = styled.button`

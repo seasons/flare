@@ -93,6 +93,26 @@ export class Button extends Component<WebButtonProps> {
               `
           }};
         `
+      case "primaryWhiteNoBorder":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+
+            return `
+                background-color: ${colors.white100};
+                border-color: ${colors.white100};
+                color: ${colors.black100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color: ${colors.black100};
+                    border-color: ${colors.black100};
+                    color: ${colors.white100};
+                  }
+                }
+              `
+          }};
+        `
       case "secondaryGray":
         return css`
           ${(props) => {
@@ -218,10 +238,12 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
 }
 
 const Container = styled.button<ButtonBaseProps>`
+  display: inline-block;
   cursor: pointer;
   position: relative;
   white-space: nowrap;
-  border-radius: 400px;
+  text-decoration: none;
+  align-items: center;
 
   ${borders};
   ${borderRadius};

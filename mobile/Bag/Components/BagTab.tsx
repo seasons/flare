@@ -6,12 +6,12 @@ import { DateTime } from "luxon"
 import { GET_LOCAL_BAG_ITEMS } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
 import { useTracking } from "utils/analytics"
-
 import { useLazyQuery } from "@apollo/client"
-
+import { ProductBuyAlertTabType } from "@seasons/eclipse"
 import { BagItem } from "./BagItem"
 import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
+import { ProductBuyAlert } from "./ProductBuyAlert"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 
 const DEFAULT_ITEM_COUNT = 3
@@ -33,6 +33,7 @@ export const BagTab: React.FC<{
   const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
   const hasActiveReservation = !!activeReservation
 
+  const [productBuyAlertTabs, setProductBuyAlertTabs] = useState(null)
   const [getLocalBag, { data: localItems }] = useLazyQuery(GET_LOCAL_BAG_ITEMS, {
     variables: {
       ids: items?.map((i) => i.productID),
@@ -48,6 +49,30 @@ export const BagTab: React.FC<{
     : items
 
   const paddedItems = assign(fill(new Array(itemCount), { variantID: "", productID: "" }), bagItems) || []
+
+  const handleShowBuyAlert = (bagItem) => {
+    const { name: brandName, websiteUrl: brandHref } = bagItem?.productVariant?.product?.brand
+    const price = bagItem?.productVariant?.price || {
+      buyNewEnabled: false,
+      buNewAvailableForSale: false,
+      buyUsedEnabled: false,
+      buyUsedAvailableForSale: false,
+    }
+
+    const newTab = price.buyNewAvailableForSale
+      ? { type: ProductBuyAlertTabType.NEW, price: price.buyNewPrice, brandHref, brandName }
+      : { type: ProductBuyAlertTabType.NEW_UNAVAILABLE, brandHref, brandName }
+
+    const usedTab = price.buyUsedAvailableForSale
+      ? { type: ProductBuyAlertTabType.USED, price: price.buyUsedPrice, brandHref, brandName }
+      : { type: ProductBuyAlertTabType.USED_UNAVAILABLE }
+
+    setProductBuyAlertTabs({
+      tabs: [newTab, usedTab],
+      initialTab: price.buyNewEnabled ? 0 : 1,
+      productVariantId: bagItem?.productVariant?.id,
+    })
+  }
 
   useEffect(() => {
     if (!authState.isSignedIn) {
@@ -123,6 +148,7 @@ export const BagTab: React.FC<{
             <BagItem
               removeItemFromBag={deleteBagItem}
               removeFromBagAndSaveItem={removeFromBagAndSaveItem}
+              onShowBuyAlert={handleShowBuyAlert}
               index={index}
               bagItem={bagItem}
             />
@@ -152,6 +178,9 @@ export const BagTab: React.FC<{
             </a>
           </Sans>
         </Box>
+      )}
+      {productBuyAlertTabs && (
+        <ProductBuyAlert onDismiss={() => setProductBuyAlertTabs(null)} {...productBuyAlertTabs} />
       )}
     </Box>
   )

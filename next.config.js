@@ -4,7 +4,6 @@ const withSourceMaps = require("@zeit/next-source-maps")
 const CopyPlugin = require("copy-webpack-plugin")
 const path = require("path")
 
-const appDownload = "https://szns.co/app"
 module.exports = withSourceMaps(
   withImages(
     withFonts({
@@ -18,13 +17,16 @@ module.exports = withSourceMaps(
         ALGOLIA_INDEX: process.env.ALGOLIA_INDEX,
         ALGOLIA_ACCOUNT_ID: process.env.ALGOLIA_ACCOUNT_ID,
         ALGOLIA_KEY: process.env.ALGOLIA_KEY,
+        STRIPE_API_KEY: process.env.STRIPE_API_KEY,
+        ENABLE_EXPRESS_CHECKOUT: process.env.ENABLE_EXPRESS_CHECKOUT,
+        ENABLE_BUY_USED: process.env.ENABLE_BUY_USED
       },
-      webpack: (config) => {
+      webpack: (config, options) => {
         config.resolve.alias = {
           ...(config.resolve.alias || {}),
           // Transform all direct `react-native` imports to `react-native-web`
           "react-native$": "react-native-web",
-          "react-native-svg": "react-native-svg-web",
+          "react-native-svg": "react-native-svg-web-transform",
         }
         config.resolve.extensions = [".web.js", ".web.ts", ".web.tsx", ...config.resolve.extensions]
 

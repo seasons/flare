@@ -1,5 +1,5 @@
-import { MaxWidth } from "components"
-import { SignupFormProps } from "pages/signup"
+import { Flex, MaxWidth } from "components"
+import { SignupFormProps, SIGNUP_FOOTER_HEIGHT } from "pages/signup"
 import React from "react"
 
 import { CustomerMeasurementsForm } from "./CustomerMeasurementsForm"
@@ -9,9 +9,5 @@ interface CustomerMeasurementsStepProps {
 }
 
 export const CustomerMeasurementsStep: React.FC<CustomerMeasurementsStepProps> = ({ form }) => {
-  return (
-    <MaxWidth>
-      <CustomerMeasurementsForm {...form} />
-    </MaxWidth>
-  )
+  return <CustomerMeasurementsForm {...form} />
 }

@@ -5,11 +5,12 @@ import { Col, Grid, Row } from "components/Grid"
 import { ProgressiveImage } from "components/Image"
 import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
 import { BreadCrumbs } from "components/Product/BreadCrumbs"
-import { HowItWorks } from "components/Product/HowItWorks"
+import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
 import { ProductDetails } from "components/Product/ProductDetails"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
 import { ProductMeasurements } from "components/Product/ProductMeasurements"
 import { VariantSelect } from "components/Product/VariantSelect"
+import { ProductBuyCTA } from "components/Product/ProductBuyCTA"
 import { Media } from "components/Responsive"
 import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -17,9 +18,10 @@ import Head from "next/head"
 import { useRouter, withRouter } from "next/router"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
+import { ProductBuyCTA_ProductVariantFragment, ProductBuyCTA_ProductFragment } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack } from "utils/analytics"
-
+import { filter } from "graphql-anywhere"
 import { useQuery } from "@apollo/client"
 
 const Product = screenTrack(({ router }) => {
@@ -37,6 +39,7 @@ const Product = screenTrack(({ router }) => {
     },
   })
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
+
   const { query } = useRouter()
 
   useEffect(() => {
@@ -75,6 +78,10 @@ const Product = screenTrack(({ router }) => {
   const description = product && product.description
   const featuredBrandItems = navigationData?.brands || []
   const variantInStock = selectedVariant?.reservable > 0
+
+  const handleNavigateToBrand = (href: string) => {
+    window.location.href = href
+  }
 
   return (
     <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
@@ -147,7 +154,17 @@ const Product = screenTrack(({ router }) => {
                   </Flex>
                 </Flex>
                 {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
-                <HowItWorks />
+                {process.env.ENABLE_BUY_USED && product && (
+                  <>
+                    <Spacer mb={8} />
+                    <ProductBuyCTA
+                      product={filter(ProductBuyCTA_ProductFragment, product)}
+                      selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
+                      onNavigateToBrand={handleNavigateToBrand}
+                    />
+                  </>
+                )}
+                <ProductHowItWorks />
               </Box>
             </Col>
           </Row>

@@ -15,7 +15,7 @@ const PrivacyPolicy = screenTrack(() => ({
 
   return (
     <Layout brandItems={featuredBrandItems}>
-      <Grid px={[2, 2, 2, 5, 5]}>
+      <Grid px={[2, 2, 2, 2, 2]}>
         <div className="privacytopsection">
           <div className="privacytopcontainer">
             <div className="privacyheadertitle">Privacy Policy</div>

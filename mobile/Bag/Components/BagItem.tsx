@@ -11,6 +11,7 @@ import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
 import { Image } from "mobile/Image"
 import { Schema, useTracking } from "utils/analytics"
+import { Check } from "components/SVGs/Check"
 
 import { useMutation } from "@apollo/client"
 
@@ -20,9 +21,16 @@ interface BagItemProps {
   navigation?: any
   removeItemFromBag?: Function
   removeFromBagAndSaveItem?: Function
+  onShowBuyAlert: (bagItem: any) => void
 }
 
-export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFromBag, removeFromBagAndSaveItem }) => {
+export const BagItem: React.FC<BagItemProps> = ({
+  bagItem,
+  index,
+  removeItemFromBag,
+  removeFromBagAndSaveItem,
+  onShowBuyAlert,
+}) => {
   const router = useRouter()
   const { authState } = useAuthContext()
   const [isMutating, setIsMutating] = useState(false)
@@ -41,6 +49,10 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
   const isReserved = bagItem.status !== "Added"
   const imageURL = product?.images?.[0]?.url || ""
 
+  // Show buy alert whenever a sellable status is enabled, regardless of underlying availability
+  const isBuyable = variantToUse?.price?.buyNewEnabled || variantToUse?.price?.buyUsedEnabled
+  const purchased = variantToUse?.purchased
+
   const variantSize = get(variantToUse, "internalSize.display")
   const variantId = bagItem.variantID
 
@@ -56,6 +68,11 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
       },
     ],
   })
+  const handleShowBuyAlert = (ev) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    onShowBuyAlert(bagItem)
+  }
 
   const ReservedItemContent = () => {
     return (
@@ -66,7 +83,7 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
         }}
         flexWrap="nowrap"
         flexDirection="column"
-        justifyContent="flex-end"
+        justifyContent="space-between"
       >
         <Box style={{ width: "100%" }} p={2}>
           <Sans size="4">{`${index + 1}.`}</Sans>
@@ -78,6 +95,22 @@ export const BagItem: React.FC<BagItemProps> = ({ bagItem, index, removeItemFrom
           <Sans size="4" color="black50">
             Size {variantSize}
           </Sans>
+        </Box>
+        <Box p={2}>
+          {process.env.ENABLE_BUY_USED && isBuyable && !purchased && (
+            <Button size="small" variant="secondaryOutline" onClick={handleShowBuyAlert}>
+              Buy
+            </Button>
+          )}
+          {purchased && (
+            <Flex flexDirection="row" alignItems="center">
+              <Check color={color("black50")} />
+              <Spacer mr={1} />
+              <Sans size="3" color="black50">
+                Purchased
+              </Sans>
+            </Flex>
+          )}
         </Box>
       </Flex>
     )

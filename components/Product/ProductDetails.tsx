@@ -2,7 +2,7 @@ import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
 import React from "react"
 
-import { Box, Flex, Sans, Separator, Spacer } from "../"
+import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { color } from "../../helpers"
 import { VariantSizes } from "../VariantSizes"
 import { ProductInfoItem } from "./ProductInfoItem"

@@ -1,12 +1,10 @@
-import { Button, Flex, Sans, Separator, Spacer } from "components"
+import { Flex, Sans, Separator, Spacer } from "components"
 import { Box } from "components/Box"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
-import { Collapse } from "components/Collapse"
-import { ChevronIcon } from "components/Icons"
 import { PlanTier } from "components/SignUp/PlanTier"
 import { color } from "helpers"
 import { uniq } from "lodash"
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 
 import { Col, Grid, Row } from "../Grid"
@@ -43,7 +41,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
   const plansGroupedByTier = groupByPlanTier(paymentPlans)
 
   const Desktop = () => (
-    <Grid px={[2, 2, 2, 5, 5]}>
+    <Grid px={[2, 2, 2, 2, 2]}>
       <Row>
         <Col md="8" xs="12">
           <Flex
@@ -60,12 +58,12 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
               {plansGroupedByTier.map((group, index) => (
                 <Box key={index} width="100%">
                   {index !== 0 && <Separator />}
-                  <Flex pb={6} pt={index !== 0 ? 6 : 0} px={[2, 2, 2, 5, 5]} flexDirection="column" alignItems="center">
+                  <Flex pb={6} pt={index !== 0 ? 6 : 0} px={[2, 2, 2, 2, 2]} flexDirection="column" alignItems="center">
                     <Box width="500px">
                       {index === 0 && (
                         <Box>
                           <Sans size="8" color="black100">
-                            You're In. Let's choose your plan:
+                            Let's choose your plan:
                           </Sans>
                           <Spacer mb={1} />
                           <Sans size="4" color="black50">
@@ -91,7 +89,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
         <Col md="4" xs="12">
           <Box
             style={{ borderRight: `1px solid ${color("black15")}`, height: "100%", minHeight: "100vh" }}
-            px={[2, 2, 2, 5, 5]}
+            px={[2, 2, 2, 2, 2]}
             pt={150}
           >
             <FAQWrapper>
@@ -123,7 +121,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                   <Flex
                     pb={6}
                     pt={index !== 0 ? 6 : 0}
-                    px={[2, 2, 2, 5, 5]}
+                    px={[2, 2, 2, 2, 2]}
                     flexDirection="column"
                     alignItems="center"
                     justifyContent="center"
@@ -131,9 +129,6 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
                     <Box width={["auto", "auto", "500px", "500px", "500px"]}>
                       {index === 0 && (
                         <Box>
-                          <Sans size="8" color="black100">
-                            You're In.
-                          </Sans>
                           <Sans size="8" color="black100">
                             Let's choose your plan:
                           </Sans>
@@ -163,11 +158,11 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            px={[2, 2, 2, 5, 5]}
+            px={[2, 2, 2, 2, 2]}
           >
             <Box width={["auto", "auto", "500px", "500px", "500px"]}>
               <FAQWrapper>
-                <Spacer mb={10} />
+                <Spacer pb={10} />
                 <Sans size="8" color="black100">
                   FAQ
                 </Sans>
