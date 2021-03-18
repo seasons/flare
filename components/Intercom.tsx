@@ -13,31 +13,26 @@ export const Intercom = () => {
     if (authState.isSignedIn && !!userSession) {
       const { firstName, lastName, email } = userSession?.user
 
-      ;(window as any).intercomSettings = {
-        app_id: APP_ID,
+      ;(window as any).Intercom?.("update", {
         name: `${firstName} ${lastName}`,
-        email: email,
-      }
-      ;(window as any).Intercom?.("boot", {
         app_id: APP_ID,
         email: email,
         user_id: email,
         created_at: 1234567890,
+        hide_default_launcher: false,
       })
     } else {
-      ;(window as any).intercomSettings = {
+      ;(window as any).Intercom?.("update", {
         app_id: APP_ID,
-      }
-      ;(window as any).Intercom?.("boot", {
+        hide_default_launcher: false,
+      })
+    }
+    return () => {
+      ;(window as any).Intercom?.("update", {
         app_id: APP_ID,
+        hide_default_launcher: true,
       })
     }
   }, [userSession, authState.authInitializing])
-  return (
-    <>
-      <Head>
-        <script type="text/javascript" src="/js/intercom.js"></script>
-      </Head>
-    </>
-  )
+  return <></>
 }

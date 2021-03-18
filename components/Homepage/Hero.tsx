@@ -1,19 +1,18 @@
+import { Box, Flex, MaxWidth, Sans, Separator, Spacer } from "components"
+import { color } from "helpers"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { DateTime } from "luxon"
+import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { useDrawerContext } from "../../components/Drawer/DrawerContext"
-import { Grid, Row, Col } from "../Grid"
-import { Flex, Sans, Spacer, Box, MaxWidth, Picture, Separator } from "components"
-import { Display } from "../Typography"
-import { GetTheAppButton } from "../Button/GetTheApp"
-import Link from "next/link"
-import { Media } from "../Responsive"
-import { Button } from "../Button"
-import { Check } from "../SVGs"
-import { useAuthContext } from "lib/auth/AuthContext"
-import { Countdown } from "@seasons/eclipse"
-import { DateTime } from "luxon"
 import { Schema, useTracking } from "utils/analytics"
-import { color } from "helpers"
+import { useDrawerContext } from "../../components/Drawer/DrawerContext"
+import { Button } from "../Button"
+import { GetTheAppButton } from "../Button/GetTheApp"
+import { Col, Grid, Row } from "../Grid"
+import { Media } from "../Responsive"
+import { Countdown } from "@seasons/eclipse"
+import { Display } from "../Typography"
 
 interface HeroComponentProps {
   version: "mobile" | "desktop"
@@ -24,7 +23,7 @@ const DesktopTextContent = () => {
     <Flex style={{ position: "relative", width: "50%" }} flexDirection="column" justifyContent="center">
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
         <Flex flexDirection="column" justifyContent="center" alignContent="center" px={3}>
-          <Spacer mb={[10, 0, 10, 10, 10]} />
+          <Spacer mb={[10, 0, 0, 0, 0]} />
           <HeroHeaderText version="desktop" />
           <Spacer mb="12px" />
           <HeroCaptionText version="desktop" />
@@ -137,7 +136,7 @@ const HeroHeaderText = ({ version }: HeroComponentProps) => {
     }
   }, [userSession])
 
-  let headerText = "Wear,Swap,Repeat" as any
+  let headerText = "Wear.Swap.Repeat." as any
   let firstName = userSession?.user?.firstName || ""
   const youreStart = firstName !== "" ? "Hi " + firstName + ", you're" : "You're"
   const yourStart = firstName !== "" ? "Hi " + firstName + ", your" : "Your"
@@ -189,13 +188,15 @@ const HeroCaptionText = ({ version }) => {
   }
 
   return (
-    <Sans
-      size={isMobile ? "6" : "4"}
-      color="black50"
-      style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
-    >
-      {caption}
-    </Sans>
+    <Flex width="100%" flexDirection="row" justifyContent="center">
+      <Sans
+        size={isMobile ? "6" : "4"}
+        color="black50"
+        style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
+      >
+        {caption}
+      </Sans>
+    </Flex>
   )
 }
 
@@ -236,22 +237,24 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   }
 
   return (
-    <Flex flexDirection="column" style={{ maxWidth: "400px" }}>
-      <Link href={ctaData.link}>
-        <Button
-          onClick={() => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames[ctaData.actionName],
-              actionType: Schema.ActionTypes.Tap,
-            })
-            ctaData.onClick?.()
-          }}
-        >
-          {ctaData.text}
-        </Button>
-      </Link>
-      <Spacer mb={1} />
-      <GetTheAppButton block />
+    <Flex width="100%" flexDirection="row" justifyContent="center">
+      <Flex flexDirection="column" style={{ maxWidth: "400px", width: "100%" }}>
+        <Link href={ctaData.link}>
+          <Button
+            onClick={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames[ctaData.actionName],
+                actionType: Schema.ActionTypes.Tap,
+              })
+              ctaData.onClick?.()
+            }}
+          >
+            {ctaData.text}
+          </Button>
+        </Link>
+        <Spacer mb={1} />
+        <GetTheAppButton block />
+      </Flex>
     </Flex>
   )
 }

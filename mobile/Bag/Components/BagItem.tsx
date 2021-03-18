@@ -50,7 +50,7 @@ export const BagItem: React.FC<BagItemProps> = ({
   const imageURL = product?.images?.[0]?.url || ""
 
   // Show buy alert whenever a sellable status is enabled, regardless of underlying availability
-  const isBuyable = variantToUse.price?.buyNewEnabled || variantToUse?.price?.buyUsedEnabled
+  const isBuyable = variantToUse?.price?.buyNewEnabled || variantToUse?.price?.buyUsedEnabled
   const purchased = variantToUse?.purchased
 
   const variantSize = get(variantToUse, "internalSize.display")
@@ -97,7 +97,7 @@ export const BagItem: React.FC<BagItemProps> = ({
           </Sans>
         </Box>
         <Box p={2}>
-          {isBuyable && !purchased && (
+          {process.env.ENABLE_BUY_USED && isBuyable && !purchased && (
             <Button size="small" variant="secondaryOutline" onClick={handleShowBuyAlert}>
               Buy
             </Button>

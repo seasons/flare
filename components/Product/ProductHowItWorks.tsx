@@ -16,11 +16,9 @@ export const ProductHowItWorks = () => {
           <Box key={index}>
             <Separator />
             <Spacer mb={5} />
-            <Sans size="4" style={{ textAlign: "center" }}>
-              {item.title}
-            </Sans>
+            <Sans size="4">{item.title}</Sans>
             <Spacer mb={1} />
-            <Sans size="3" color="black50" style={{ textAlign: "center" }}>
+            <Sans size="3" color="black50">
               {item.text}
             </Sans>
             <Spacer mb={5} />
