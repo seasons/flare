@@ -6,7 +6,6 @@ import {
   TheApp,
   BrowseAllWithImage,
   HomepageFitPics,
-  FeaturedCollection,
   FromCommunity,
   Testimonials,
   Plans,
@@ -17,14 +16,22 @@ import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
-import { HOME_QUERY_WEB, ProductsRail } from "@seasons/eclipse"
+import { ProductsRail } from "@seasons/eclipse"
 import { useRouter } from "next/router"
+import { Home_Query } from "queries/homeQueries"
+
+const now = new Date(Date.now()).toISOString()
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { previousData, data = previousData } = useQuery(HOME_QUERY_WEB, { fetchPolicy: "cache-and-network" })
+  const { previousData, data = previousData } = useQuery(Home_Query, {
+    fetchPolicy: "cache-and-network",
+    variables: {
+      now,
+    },
+  })
   const { updateUserSession } = useAuthContext()
   const router = useRouter()
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
@@ -139,7 +146,10 @@ export async function getStaticProps() {
 
   await Promise.all([
     apolloClient.query({
-      query: HOME_QUERY_WEB,
+      query: Home_Query,
+      variables: {
+        now,
+      },
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,

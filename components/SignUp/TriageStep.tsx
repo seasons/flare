@@ -5,7 +5,7 @@ import { TriageProgressScreen } from "./TriageProgressScreen"
 import { PAYMENT_PLANS } from "./ChoosePlanStep"
 import { identify } from "utils/analytics/track"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { HOME_QUERY_WEB } from "@seasons/eclipse"
+import { Home_Query } from "queries/homeQueries"
 
 const TRIAGE = gql`
   mutation triage {
@@ -24,6 +24,8 @@ enum CheckStatus {
   Checking,
   Checked,
 }
+
+const now = new Date(Date.now()).toISOString()
 
 export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete }) => {
   const [checkStatus, setCheckStatus] = useState(CheckStatus.Waiting)
@@ -50,7 +52,15 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
     onError: (err) => {
       endTriage(true)
     },
-    refetchQueries: [{ query: HOME_QUERY_WEB }, { query: PAYMENT_PLANS }],
+    refetchQueries: [
+      {
+        query: Home_Query,
+        variables: {
+          now,
+        },
+      },
+      { query: PAYMENT_PLANS },
+    ],
     awaitRefetchQueries: true,
   })
 
