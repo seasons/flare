@@ -8,7 +8,7 @@ import { DateTime } from "luxon"
 
 export const LaunchCalendarFragment_Query = gql`
   fragment LaunchCalendarFragment_Query on Query {
-    launches(where: { launchAt_gte: $now, published: true }) {
+    launches(where: { published: true }) {
       id
       launchAt
       brand {

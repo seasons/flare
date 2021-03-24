@@ -72,9 +72,6 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
     refetchQueries: [
       {
         query: Home_Query,
-        variables: {
-          now,
-        },
       },
       { query: PAYMENT_PLANS },
     ],

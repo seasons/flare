@@ -55,9 +55,6 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
     refetchQueries: [
       {
         query: Home_Query,
-        variables: {
-          now,
-        },
       },
       { query: PAYMENT_PLANS },
     ],

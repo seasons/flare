@@ -20,17 +20,12 @@ import { ProductsRail } from "@seasons/eclipse"
 import { useRouter } from "next/router"
 import { Home_Query } from "queries/homeQueries"
 
-const now = new Date(Date.now()).toISOString()
-
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
   const { previousData, data = previousData } = useQuery(Home_Query, {
     fetchPolicy: "cache-and-network",
-    variables: {
-      now,
-    },
   })
   const { updateUserSession } = useAuthContext()
   const router = useRouter()
@@ -143,13 +138,9 @@ const Home = screenTrack(() => ({
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
-
   await Promise.all([
     apolloClient.query({
       query: Home_Query,
-      variables: {
-        now,
-      },
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,
