@@ -28,7 +28,7 @@ const HomePageProductFragment_Product = gql`
 `
 
 export const Home_Query = gql`
-  query Home_Query($now: DateTime) {
+  query Home_Query {
     me {
       id
       customer {
