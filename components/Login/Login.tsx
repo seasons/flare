@@ -50,8 +50,6 @@ const LOG_IN = gql`
   }
 `
 
-const now = new Date(Date.now()).toISOString()
-
 export interface LoginViewProps {
   open?: boolean
 }

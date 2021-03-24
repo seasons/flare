@@ -25,8 +25,6 @@ enum CheckStatus {
   Checked,
 }
 
-const now = new Date(Date.now()).toISOString()
-
 export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete }) => {
   const [checkStatus, setCheckStatus] = useState(CheckStatus.Waiting)
   const { userSession } = useAuthContext()
