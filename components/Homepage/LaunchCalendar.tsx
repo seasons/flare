@@ -5,11 +5,10 @@ import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import styled from "styled-components"
 import { DateTime } from "luxon"
-import { Separator } from "@seasons/eclipse"
 
 export const LaunchCalendarFragment_Query = gql`
   fragment LaunchCalendarFragment_Query on Query {
-    launches(where: { published: true }) {
+    launches(where: { published: true }, first: 8, orderBy: launchAt_ASC, upcoming: true) {
       id
       launchAt
       brand {
@@ -71,6 +70,25 @@ const Item = ({ launch, index, breakpoint }) => {
   )
 }
 
+const getSeasonString = () => {
+  const now = DateTime.local()
+  const nowMonth = now.month
+  let year
+  let season
+  if (nowMonth < 2) {
+    year = now.year
+    season = "Fall / Winter"
+  } else if (nowMonth > 7) {
+    year = now.year + 1
+    season = "Fall / Winter"
+  } else {
+    year = now.year
+    season = "Spring / Summer"
+  }
+
+  return `${season} ${year}`
+}
+
 export const LaunchCalendar: React.FC<{ launches: any }> = ({ launches }) => {
   if (!launches) {
     return null
@@ -82,12 +100,12 @@ export const LaunchCalendar: React.FC<{ launches: any }> = ({ launches }) => {
 
   const Content = ({ breakpoint }) => (
     <Grid>
-      <Flex px={[2, 2, 2, 2, 2]} pb={6} flexDirection="row" justifyContent="space-between" alignItems="flex-end">
+      <Flex px={[2, 2, 2, 2, 2]} pb={2} flexDirection="row" justifyContent="space-between" alignItems="flex-end">
         <Display size="9" style={{ textAlign: "center" }}>
           Launch calendar
         </Display>
         <Sans size="4" color="black50" style={{ textAlign: "center" }}>
-          Sprint / Summer 2021
+          {getSeasonString()}
         </Sans>
       </Flex>
       <Row px={[2, 2, 2, 2, 2]}>

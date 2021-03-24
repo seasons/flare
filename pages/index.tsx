@@ -129,12 +129,13 @@ const Home = screenTrack(() => ({
 
       <Spacer mb={10} />
 
-      <LaunchCalendar launches={data.launches} />
-
-      <Spacer mb={10} />
-
       <SeparatorWithPadding />
+
       <Spacer mb={10} />
+
+      <LaunchCalendar launches={data?.launches} />
+
+      <Spacer mb="112px" />
       <TheApp />
       <Spacer mb={10} />
     </Layout>
