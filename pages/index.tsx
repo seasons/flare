@@ -19,6 +19,7 @@ import { useQuery } from "@apollo/client"
 import { ProductsRail } from "@seasons/eclipse"
 import { useRouter } from "next/router"
 import { Home_Query } from "queries/homeQueries"
+import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
@@ -125,6 +126,10 @@ const Home = screenTrack(() => ({
       <Spacer mb={10} />
 
       <FromCommunity blogPosts={communityPosts} />
+
+      <Spacer mb={10} />
+
+      <LaunchCalendar launches={data.launches} />
 
       <Spacer mb={10} />
 
