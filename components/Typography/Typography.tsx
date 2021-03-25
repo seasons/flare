@@ -1,10 +1,5 @@
 import React, { CSSProperties } from "react"
-import styled, {
-  StyledComponent,
-  StyledComponentInnerAttrs,
-  StyledComponentInnerComponent,
-  StyledComponentInnerOtherProps,
-} from "styled-components"
+import styled, { StyledComponent } from "styled-components"
 import {
   color,
   ColorProps,

@@ -1,45 +1,36 @@
-import { Box, Button, Container, FixedBackArrow, Flex, Sans, Spacer, TextInput } from "components"
+import { Container, FixedBackArrow } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { space } from "helpers/space"
-import React, { useState } from "react"
-import { FlatList, KeyboardAvoidingView } from "react-native"
-import styled from "styled-components"
-import { Schema, screenTrack, useTracking, identify } from "utils/analytics"
+import React from "react"
+import { screenTrack } from "utils/analytics"
+import { Elements } from "@stripe/react-stripe-js"
+import { gql, useQuery } from "@apollo/client"
+import { loadStripe } from "@stripe/stripe-js"
+import { EditPaymentForm, EditPaymentFormFragment_Query } from "./EditPaymentForm"
 
-import { useMutation, useQuery } from "@apollo/client"
-import { Radio } from "@material-ui/core"
+const stripePromise = loadStripe(process.env.STRIPE_API_KEY)
 
-export const EditPaymentMethod: React.FC<{
-  navigation: any
-  route: any
-}> = screenTrack()(({ navigation, route }) => {
+export const EditPaymentMethod_Query = gql`
+  query EditPaymentMethod_Query {
+    ...EditPaymentFormFragment_Query
+  }
+  ${EditPaymentFormFragment_Query}
+`
+
+export const EditPaymentMethod: React.FC = screenTrack()(() => {
   const { openDrawer } = useDrawerContext()
   const goBack = () => {
     openDrawer("paymentAndShipping")
   }
+  const { previousData, data = previousData } = useQuery(EditPaymentMethod_Query, {
+    fetchPolicy: "network-only",
+  })
+
   return (
-    <>
+    <Elements stripe={stripePromise}>
       <Container insetsBottom={false}>
-        <FixedBackArrow navigation={navigation} variant="whiteBackground" onPress={goBack} />
-        <Box px={2}>
-          <FlatList
-            data={[]}
-            ListHeaderComponent={() => (
-              <Box pt={4}>
-                <Spacer mb={80} />
-                <Sans size="6">Edit Payment Method</Sans>
-                <Spacer mb={4} />
-              </Box>
-            )}
-            // ItemSeparatorComponent={() => <Spacer mb={6} />}
-            // keyExtractor={(item, index) => item + String(index)}
-            renderItem={() => <></>}
-            // ListFooterComponent={() => <Spacer mb={2} />}
-            // showsVerticalScrollIndicator={false}
-          />
-        </Box>
+        <FixedBackArrow variant="whiteBackground" onPress={goBack} />
+        <EditPaymentForm data={data} />
       </Container>
-    </>
+    </Elements>
   )
 })

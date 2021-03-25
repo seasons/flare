@@ -1,4 +1,5 @@
-import { Separator } from "components"
+import { Separator, Spacer, Box } from "components"
+import { Sans } from "components/Typography"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
 import { FormFooter } from "components/Forms/FormFooter"
 import { BackArrowIcon } from "components/Icons"
@@ -10,13 +11,9 @@ import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 import { colors } from "theme/colors"
 import * as Yup from "yup"
-
 import { gql, useMutation, useQuery } from "@apollo/client"
-import {
-  BagItemFragment, Box, Col, Grid, REMOVE_FROM_BAG, Row, Sans, Spacer
-} from "@seasons/eclipse"
+import { BagItemFragment, REMOVE_FROM_BAG } from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
-
 import { PaymentBagItem } from "./PaymentBagItem"
 import { PaymentBillingAddress } from "./PaymentBillingAddress"
 import { PaymentCouponField } from "./PaymentCouponField"
@@ -24,6 +21,7 @@ import { PaymentExpressButtons } from "./PaymentExpressButtons"
 import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
 import { PaymentSelectPlan } from "./PaymentSelectPlan"
+import { Col, Grid, Row } from "components/Grid"
 
 interface PaymentStepProps {
   plan: {
@@ -115,7 +113,6 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
   })
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [paymentMethod, setPaymentMethod] = useState(null)
   const [coupon, setCoupon] = useState(null)
   const [plan, setPlan] = useState(null)
   const { previousData, data = previousData, loading } = useQuery(PAYMENT_PLANS, {
@@ -185,10 +182,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
     if (payload.error) {
       console.log("[error]", payload.error)
       setErrorMessage(payload.error.message)
-      setPaymentMethod(null)
     } else {
       console.log("[PaymentMethod]", payload.paymentMethod)
-      setPaymentMethod(payload.paymentMethod)
       processPayment(payload.paymentMethod, values, billingDetails)
     }
   }
@@ -401,7 +396,7 @@ const FAQWrapper = styled(Box)`
   height: 100%;
 `
 
-const ErrorResult = styled(Sans)`
+const ErrorResult = styled((props) => <Sans {...props} />)`
   color: red;
 `
 
