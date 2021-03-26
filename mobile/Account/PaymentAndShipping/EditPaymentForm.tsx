@@ -9,6 +9,7 @@ import { PaymentBillingAddress } from "components/Payment/PaymentBillingAddress"
 import { PaymentForm } from "components/Payment"
 import { Formik } from "formik"
 import { EditPaymentMethod_Query } from "./EditPaymentMethod"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 
 const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
@@ -42,6 +43,7 @@ const UpdatePaymentMethod_Mutation = gql`
 
 export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
   const elements = useElements()
+  const { openDrawer } = useDrawerContext()
   const stripe = useStripe()
   const [updatePaymentMethod] = useMutation(UpdatePaymentMethod_Mutation, {
     onError: (error) => {
@@ -50,9 +52,9 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
       setIsProcessingPayment(false)
     },
     onCompleted: () => {
-      // onSuccess(data)
       setErrorMessage(null)
       setIsProcessingPayment(false)
+      openDrawer("paymentAndShipping")
     },
     awaitRefetchQueries: true,
     refetchQueries: [
@@ -134,10 +136,14 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
         {({ handleSubmit, isValid, values }) => (
           <form onSubmit={handleSubmit}>
             <Spacer mt={10} />
+            <Box px={2}>
+              <Spacer mb={112} />
+              <Sans size="6">Edit payment and billing</Sans>
+            </Box>
             <Box p={[2, 2, 2]}>
               {EnableExpressCheckout && (
                 <Box py={4}>
-                  <Sans size="7">Express checkout</Sans>
+                  <Sans size="4">Express checkout</Sans>
                   <PaymentExpressButtons
                     plan={data?.paymentPlan}
                     onPaymentMethodReceived={(paymentMethod) => {
@@ -147,7 +153,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
                 </Box>
               )}
               <Box width="100%" py={[2, 2, 4]}>
-                <Sans size="7">Billing address</Sans>
+                <Sans size="4">Billing address</Sans>
                 <Spacer mt={2} />
                 <PaymentBillingAddress />
               </Box>
@@ -160,7 +166,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
                     </>
                   )}
                 </Box>
-                <Sans size="7">Payment details</Sans>
+                <Sans size="4">Payment details</Sans>
                 <Spacer mt={2} />
                 <PaymentForm />
               </Box>

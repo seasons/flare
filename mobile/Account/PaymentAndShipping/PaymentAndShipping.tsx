@@ -161,7 +161,7 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
   const customer = data?.me?.customer
 
   const openEditAddressesAndPhoneNumber = () => {
-    openDrawer("editPaymentAndShipping", {
+    openDrawer("editShipping", {
       billingInfo: customer?.billingInfo,
       shippingAddress: customer?.detail?.shippingAddress,
       phoneNumber: customer?.detail?.phoneNumber,
@@ -184,7 +184,7 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
       sections.push({
         title: "Billing address",
         value: createBillingAddress(customer.billingInfo),
-        onClick: openEditAddressesAndPhoneNumber,
+        onClick: () => openDrawer("editPaymentMethod"),
       })
 
       sections.push({

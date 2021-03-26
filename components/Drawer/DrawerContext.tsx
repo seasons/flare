@@ -12,7 +12,7 @@ export type DrawerView =
   | "paymentAndShipping"
   | "resumeConfirmation"
   | "choosePlan"
-  | "editPaymentAndShipping"
+  | "editShipping"
   | "reviewOrder"
   | "orderConfirmation"
   | "editPaymentMethod"

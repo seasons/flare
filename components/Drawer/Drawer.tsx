@@ -1,5 +1,5 @@
 import { Box, Flex } from "components"
-import { EditPaymentAndShipping, PaymentAndShipping, EditPaymentMethod } from "mobile/Account"
+import { EditShipping, PaymentAndShipping, EditPaymentMethod } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
 import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
 import { ResumeConfirmation } from "mobile/Account/Components/Pause"
@@ -80,8 +80,8 @@ export const Drawer = (props: DrawerProps) => {
         return <ResumeConfirmation />
       case "choosePlan":
         return <ChoosePlanPane headerText={"Let's choose your plan"} source={params?.source} />
-      case "editPaymentAndShipping":
-        return <EditPaymentAndShipping navigation={{}} route={{ params }} />
+      case "editShipping":
+        return <EditShipping navigation={{}} route={{ params }} />
       case "editPaymentMethod":
         return <EditPaymentMethod />
       case "reviewOrder":
