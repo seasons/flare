@@ -13,7 +13,7 @@ export const LaunchCalendarFragment_Query = gql`
       launchAt
       brand {
         id
-        logo {
+        logoImage {
           id
           url
         }
@@ -27,7 +27,7 @@ export const LaunchCalendarFragment_Query = gql`
 `
 
 const Item = ({ launch, index, breakpoint }) => {
-  const imageURL = launch?.brand?.logo?.url
+  const imageURL = launch?.brand?.logoImage?.url
 
   let breakpointStyles
 
@@ -95,26 +95,39 @@ export const LaunchCalendar: React.FC<{ launches: any }> = ({ launches }) => {
   }
 
   const filteredLaunched = launches.filter((l) => {
-    return l.brand?.logo?.url || l.collection?.title
+    return l.brand?.logoImage?.url || l.collection?.title
   })
 
-  const Content = ({ breakpoint }) => (
-    <Grid>
-      <Flex px={[2, 2, 2, 2, 2]} pb={2} flexDirection="row" justifyContent="space-between" alignItems="flex-end">
-        <Display size="9" style={{ textAlign: "center" }}>
-          Launch calendar
-        </Display>
-        <Sans size="4" color="black50" style={{ textAlign: "center" }}>
-          {getSeasonString()}
-        </Sans>
-      </Flex>
-      <Row px={[2, 2, 2, 2, 2]}>
-        {filteredLaunched.map((launch, index) => (
-          <Item launch={launch} key={index} index={index} breakpoint={breakpoint} />
-        ))}
-      </Row>
-    </Grid>
-  )
+  const Content = ({ breakpoint }) => {
+    let slice
+    if (breakpoint === "small") {
+      slice = 2
+    } else if (breakpoint === "medium") {
+      slice = 4
+    } else {
+      slice = 8
+    }
+
+    const sliceLaunches = filteredLaunched.slice(0, slice)
+
+    return (
+      <Grid>
+        <Flex px={[2, 2, 2, 2, 2]} pb={2} flexDirection="row" justifyContent="space-between" alignItems="flex-end">
+          <Display size="9" style={{ textAlign: "center" }}>
+            Launch calendar
+          </Display>
+          <Sans size="4" color="black50" style={{ textAlign: "center" }}>
+            {getSeasonString()}
+          </Sans>
+        </Flex>
+        <Row px={[2, 2, 2, 2, 2]}>
+          {sliceLaunches.map((launch, index) => (
+            <Item launch={launch} key={index} index={index} breakpoint={breakpoint} />
+          ))}
+        </Row>
+      </Grid>
+    )
+  }
 
   return (
     <>
