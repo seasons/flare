@@ -90,7 +90,9 @@ export const Home_Query = gql`
       user {
         id
         customer {
+          id
           detail {
+            id
             instagramHandle
           }
         }
