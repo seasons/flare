@@ -39,9 +39,9 @@ const TextContent = () => {
         4.9 <span style={{ paddingLeft: space(1) }}>★★★★★</span>
       </Sans>
       <Spacer mb={3} />
-      {listItems?.map((item) => {
+      {listItems?.map((item, index) => {
         return (
-          <Flex flexDirection="row" alignItems="center" mb={2}>
+          <Flex flexDirection="row" alignItems="center" mb={2} key={index}>
             <ListCheck />
             <Spacer mr={2} />
             <Sans size="4" color="black50" style={{ textDecoration: "underline" }}>
