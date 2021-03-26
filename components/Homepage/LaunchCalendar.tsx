@@ -51,7 +51,12 @@ const Item = ({ launch, index, breakpoint }) => {
   return (
     <Col lg="3" md="6" xs="12">
       <ItemContainer index={index}>
-        <LaunchContentWrapper p={["100px", "100px", 10]} height="100%" width="100%" breakpointStyles={breakpointStyles}>
+        <LaunchContentWrapper
+          p={["70px", "70px", "70px", "40px", "80px"]}
+          height="100%"
+          width="100%"
+          breakpointStyles={breakpointStyles}
+        >
           {imageURL ? (
             <BackgroundImage imageURL={imageURL} />
           ) : (
@@ -113,10 +118,10 @@ export const LaunchCalendar: React.FC<{ launches: any }> = ({ launches }) => {
     return (
       <Grid>
         <Flex px={[2, 2, 2, 2, 2]} pb={2} flexDirection="row" justifyContent="space-between" alignItems="flex-end">
-          <Display size="9" style={{ textAlign: "center" }}>
+          <Display size="9" style={{ textAlign: "left" }}>
             Launch calendar
           </Display>
-          <Sans size="4" color="black50" style={{ textAlign: "center" }}>
+          <Sans size="4" color="black50" style={{ textAlign: "right" }}>
             {getSeasonString()}
           </Sans>
         </Flex>
