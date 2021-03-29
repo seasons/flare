@@ -11,7 +11,7 @@ import { SET_IMPACT_ID } from "queries/customerQueries"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
-import { HOME_QUERY_WEB } from "@seasons/eclipse"
+import { Home_Query } from "queries/homeQueries"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -67,7 +67,12 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       }
     },
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: HOME_QUERY_WEB }, { query: PAYMENT_PLANS }],
+    refetchQueries: [
+      {
+        query: Home_Query,
+      },
+      { query: PAYMENT_PLANS },
+    ],
   })
 
   const [setImpactId] = useMutation(SET_IMPACT_ID)
