@@ -36,12 +36,14 @@ const UPDATE_PAYMENT_AND_SHIPPING = gql`
     $state: String!
     $address1: String!
     $address2: String
+    $phoneNumber: String!
   ) {
     addCustomerDetails(
       details: {
         shippingAddress: {
           create: { city: $city, zipCode: $zipCode, state: $state, address1: $address1, address2: $address2 }
         }
+        phoneNumber: $phoneNumber
       }
     ) {
       id
@@ -50,6 +52,7 @@ const UPDATE_PAYMENT_AND_SHIPPING = gql`
 `
 
 const SHIPPING_ADDRESS = "Shipping address"
+const PHONE_NUMBER = "Phone number"
 
 export const EditShipping: React.FC<{
   navigation: any
@@ -57,7 +60,9 @@ export const EditShipping: React.FC<{
 }> = screenTrack()(({ navigation, route }) => {
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { previousData, data = previousData } = useQuery(GET_CURRENT_PLAN)
+  const currentPhoneNumber = route?.params?.phoneNumber
   const currentShippingAddress = route?.params?.shippingAddress
+  const [phoneNumber, setPhoneNumber] = useState(currentPhoneNumber)
 
   const [isMutating, setIsMutating] = useState(false)
   const [shippingAddress, setShippingAddress] = useState({
@@ -73,7 +78,7 @@ export const EditShipping: React.FC<{
     onError: (error) => {
       let popUpData = {
         buttonText: "Got it",
-        note: "Make sure your shipping and billing address are valid.",
+        note: "Make sure your shipping address and phone number are valid.",
         title: "Something went wrong!",
         onClose: () => hidePopUp(),
       }
@@ -103,6 +108,7 @@ export const EditShipping: React.FC<{
         state: shippingState,
         address1: shippingAddress1,
         address2: shippingAddress2,
+        phoneNumber,
       },
       refetchQueries: [
         {
@@ -116,10 +122,22 @@ export const EditShipping: React.FC<{
     }
   }
 
-  const sections = [SHIPPING_ADDRESS]
+  const sections = [SHIPPING_ADDRESS, PHONE_NUMBER]
 
   const renderItem = ({ item: section }) => {
     switch (section) {
+      case PHONE_NUMBER:
+        return (
+          <>
+            <Sans size="4">{PHONE_NUMBER}</Sans>
+            <Spacer mb={2} />
+            <TextInput
+              currentValue={phoneNumber}
+              placeholder="Phone number"
+              onChangeText={(inputKey, text) => setPhoneNumber(text)}
+            />
+          </>
+        )
       case SHIPPING_ADDRESS:
         return (
           <>
