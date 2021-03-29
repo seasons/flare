@@ -1,6 +1,6 @@
 import { Button, Display, Sans, Spacer, Text } from "components"
 import { Link } from "components/Link"
-import { PAYMENT_PLANS } from "components/SignUp/ChoosePlanStep"
+import { ChoosePlanStep_Query } from "components/SignUp/ChoosePlanStep"
 import { Field, Form, Formik } from "formik"
 import { TextField } from "formik-material-ui"
 import gql from "graphql-tag"
@@ -71,7 +71,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       {
         query: Home_Query,
       },
-      { query: PAYMENT_PLANS },
+      { query: ChoosePlanStep_Query },
     ],
   })
 

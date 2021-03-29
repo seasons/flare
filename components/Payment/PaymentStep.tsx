@@ -35,8 +35,8 @@ interface PaymentStepProps {
   onBack?: () => void
 }
 
-export const PAYMENT_PLANS = gql`
-  query GetPaymentPlans($couponID: String) {
+const PaymentStep_Query = gql`
+  query PaymentStep_Query($couponID: String) {
     faq(sectionType: PaymentPlanPage) {
       sections {
         title
@@ -115,7 +115,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
   const [errorMessage, setErrorMessage] = useState(null)
   const [coupon, setCoupon] = useState(null)
   const [plan, setPlan] = useState(null)
-  const { previousData, data = previousData, loading } = useQuery(PAYMENT_PLANS, {
+  const { previousData, data = previousData, loading } = useQuery(PaymentStep_Query, {
     fetchPolicy: "network-only",
     variables: {
       couponID: !!coupon ? coupon.code : null,
@@ -125,7 +125,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
   const [removeFromBag] = useMutation(REMOVE_FROM_BAG, {
     refetchQueries: [
       {
-        query: PAYMENT_PLANS,
+        query: PaymentStep_Query,
       },
     ],
     awaitRefetchQueries: true,
