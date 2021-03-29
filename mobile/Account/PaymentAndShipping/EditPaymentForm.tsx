@@ -4,7 +4,10 @@ import styled from "styled-components"
 import * as Yup from "yup"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import { gql, useMutation } from "@apollo/client"
-import { PaymentExpressButtons } from "components/Payment/PaymentExpressButtons"
+import {
+  PaymentExpressButtons,
+  PaymentExpressButtonsFragment_PaymentPlan,
+} from "components/Payment/PaymentExpressButtons"
 import { PaymentBillingAddress } from "components/Payment/PaymentBillingAddress"
 import { PaymentForm } from "components/Payment"
 import { Formik } from "formik"
@@ -26,6 +29,9 @@ export const EditPaymentFormFragment_Query = gql`
             planID
           }
         }
+        paymentPlan {
+          ...PaymentExpressButtonsFragment_PaymentPlan
+        }
         user {
           id
           email
@@ -33,6 +39,7 @@ export const EditPaymentFormFragment_Query = gql`
       }
     }
   }
+  ${PaymentExpressButtonsFragment_PaymentPlan}
 `
 
 const UpdatePaymentMethod_Mutation = gql`
@@ -67,8 +74,8 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
 
   const planID = data?.me?.customer?.membership?.plan?.planID
+  const paymentPlan = data?.me?.customer?.paymentPlan
 
-  console.log("planID", planID)
   console.log("data", data)
 
   const valuesToBillingDetails = (values) => ({
@@ -145,7 +152,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
                 <Box py={4}>
                   <Sans size="4">Express checkout</Sans>
                   <PaymentExpressButtons
-                    plan={data?.paymentPlan}
+                    plan={paymentPlan}
                     onPaymentMethodReceived={(paymentMethod) => {
                       handleUpdatePayment(paymentMethod, values, valuesToBillingDetails(values))
                     }}
