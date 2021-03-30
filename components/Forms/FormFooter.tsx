@@ -1,7 +1,7 @@
 import { Flex, MaxWidth } from "components"
 import { Button } from "components/Button"
 import { color } from "helpers"
-import React, { ReactElement } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 

@@ -154,6 +154,8 @@ export enum ActionNames {
   LogOutTapped = "Log Out Tapped",
   ChoosePlanTapped = "Choose Plan Tapped",
   RequestAccessTapped = "Request Access Tapped",
+  DiscoverBagNextTapped = "Discover Bag Next Tapped",
+  DiscoverBagContinueLaterTapped = "Discover Bag Continue Later Tapped",
   PlanTapped = "Plan Tapped",
   Tier0PlanTabTapped = "Tier 0 Plan Tab Tapped",
   Tier1PlanTabTapped = "Tier 1 Plan Tab Tapped",

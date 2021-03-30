@@ -11,6 +11,7 @@ import { emojiUnixToString } from "utils/emojiUnixToString"
 import { DiscoverBagProductItem } from "./DiscoverBagProductItem"
 import { FooterElement } from "./FooterElement"
 import { GET_DISCOVERY_BAG } from "./queries"
+import { Schema, screenTrack, useTracking } from "utils/analytics"
 
 interface Props {
   platform: "desktop" | "mobile"
@@ -59,6 +60,8 @@ export const DiscoverBagContent: React.FC<Props> = ({
   const state = location?.state
   const aggregateCount = data?.productsCount?.aggregate?.count
   const reachedEnd = aggregateCount && Math.max(aggregateCount / chunkCount) <= productsChunked.length
+
+  const tracking = useTracking()
 
   let locationText = ""
   if (!!city && !!state) {
@@ -229,8 +232,17 @@ export const DiscoverBagContent: React.FC<Props> = ({
         )}
         disabled={false}
         buttonText="Next"
+        buttonActionName={Schema.ActionNames.DiscoverBagNextTapped}
         secondaryButtonText={isDesktop ? "Continue later" : null}
-        onSecondaryButtonClick={isDesktop ? onCompleted : null}
+        onSecondaryButtonClick={() => {
+          if (isDesktop) {
+            tracking.trackEvent({
+              actionName: Schema.ActionNames.DiscoverBagContinueLaterTapped,
+              actionType: Schema.ActionTypes.Tap,
+            })
+            onCompleted?.()
+          }
+        }}
         handleSubmit={() => {
           onCompleted?.()
         }}
