@@ -1,7 +1,6 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { PaymentStep } from "components/Payment"
-import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
 import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
@@ -106,6 +105,13 @@ const SignUpPage = screenTrack(() => ({
       }
     }
   }, [customerStatus, hasSetMeasurements, hasBagItems])
+
+  useEffect(() => {
+    tracking.trackEvent({
+      actionName: currentStepState,
+      actionType: Schema.ActionTypes.ViewedPageStep,
+    })
+  }, [currentStepState])
 
   useEffect(() => {
     setShowReferrerSplash(!!router.query.referrer_id)
