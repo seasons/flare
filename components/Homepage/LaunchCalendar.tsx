@@ -39,7 +39,7 @@ const Item = ({ launch, index, breakpoint }) => {
   const collection = launch?.collection
   const imageURL = brand?.logoImage?.url
 
-  const onPress = () => {
+  const onClick = () => {
     let link
     if (brand?.published) {
       link = `/designer/${brand.slug}`
@@ -74,7 +74,7 @@ const Item = ({ launch, index, breakpoint }) => {
 
   return (
     <Col lg="3" md="6" xs="12">
-      <ItemContainer index={index} onClick={onPress}>
+      <ItemContainer index={index} onClick={onClick}>
         <LaunchContentWrapper
           p={["70px", "70px", "70px", "40px", "80px"]}
           height="100%"
