@@ -1,9 +1,9 @@
 import gql from "graphql-tag"
-import { NavFragment_Query } from "components/Nav/Nav"
+import { LayoutFragment_Query } from "components/Layout"
 
 export const Navigation_Query = gql`
   query Navigation_Query {
-    ...NavFragment_Query
+    ...LayoutFragment_Query
   }
-  ${NavFragment_Query}
+  ${LayoutFragment_Query}
 `

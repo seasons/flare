@@ -7,11 +7,9 @@ import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { ResetPassword } from "mobile/LogIn/ResetPassword"
 import React, { useState } from "react"
-import { SET_IMPACT_ID } from "queries/customerQueries"
-
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
-import { Home_Query } from "queries/homeQueries"
+import { SET_IMPACT_ID } from "components/Layout"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -67,12 +65,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       }
     },
     awaitRefetchQueries: true,
-    refetchQueries: [
-      {
-        query: Home_Query,
-      },
-      { query: PAYMENT_PLANS },
-    ],
+    refetchQueries: [{ query: PAYMENT_PLANS }],
   })
 
   const [setImpactId] = useMutation(SET_IMPACT_ID)

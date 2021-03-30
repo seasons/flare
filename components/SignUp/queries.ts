@@ -1,4 +1,4 @@
-import { NavFragment_Query } from "components/Nav/Nav"
+import { LayoutFragment_Query } from "components/Layout"
 import gql from "graphql-tag"
 
 export const GET_SIGNUP_USER = gql`
@@ -35,9 +35,9 @@ export const GET_SIGNUP_USER = gql`
         }
       }
     }
-    ...NavFragment_Query
+    ...LayoutFragment_Query
   }
-  ${NavFragment_Query}
+  ${LayoutFragment_Query}
 `
 
 export const GET_GIFT = gql`

@@ -1,6 +1,6 @@
 import gql from "graphql-tag"
 import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
-import { NavFragment_Query } from "components/Nav/Nav"
+import { LayoutFragment_Query } from "components/Layout"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
@@ -102,11 +102,11 @@ export const GET_PRODUCT = gql`
       }
       ...ProductBuyCTA_ProductFragment
     }
-    ...NavFragment_Query
+    ...LayoutFragment_Query
   }
   ${ProductBuyCTA_ProductFragment}
   ${ProductBuyCTA_ProductVariantFragment}
-  ${NavFragment_Query}
+  ${LayoutFragment_Query}
 `
 
 export const GET_STATIC_PRODUCTS = gql`

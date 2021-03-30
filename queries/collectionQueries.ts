@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"
-import { NavFragment_Query } from "components/Nav/Nav"
+import { LayoutFragment_Query } from "components/Layout"
 
 export const TagView_Query = gql`
   query TagView_Query($tag: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
@@ -37,7 +37,7 @@ export const TagView_Query = gql`
         }
       }
     }
-    ...NavFragment_Query
+    ...LayoutFragment_Query
   }
-  ${NavFragment_Query}
+  ${LayoutFragment_Query}
 `

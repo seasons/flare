@@ -1,4 +1,4 @@
-import { Box, Layout, Separator, Spacer } from "components"
+import { Box, Separator, Spacer } from "components"
 import {
   HowItWorks,
   Hero,
@@ -12,34 +12,42 @@ import {
 } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
+import { Layout } from "components/Layout"
 import { ProductsRail } from "@seasons/eclipse"
 import { useRouter } from "next/router"
-import { Home_Query } from "queries/homeQueries"
 import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
+import { Home_Query } from "queries/homeQueries"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { previousData, data = previousData } = useQuery(Home_Query, {
-    fetchPolicy: "cache-and-network",
-  })
-  const { updateUserSession } = useAuthContext()
+  const { previousData, data = previousData, refetch } = useQuery(Home_Query)
+  const { updateUserSession, authState } = useAuthContext()
   const router = useRouter()
 
   const featuredBrandItems = data?.navigationBrands || []
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
-
   const communityPosts = data?.blogPosts?.slice(1, 3)
+  const isUserSignedIn = authState?.isSignedIn
+  const [userSignedIn, setUserSignedIn] = useState(isUserSignedIn)
 
   useEffect(() => {
     if (!!data?.me?.customer) {
       updateUserSession({ cust: data?.me?.customer })
     }
   }, [data])
+
+  useEffect(() => {
+    // Keep track of when a user signs in and refresh the page if they do
+    if (isUserSignedIn !== userSignedIn) {
+      refetch()
+      setUserSignedIn(isUserSignedIn)
+    }
+  }, [isUserSignedIn])
 
   const SeparatorWithPadding = () => {
     return (

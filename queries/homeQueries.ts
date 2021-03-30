@@ -1,6 +1,6 @@
 import gql from "graphql-tag"
 import { LaunchCalendarFragment_Query } from "components/Homepage/LaunchCalendar"
-import { NavFragment_Query } from "components/Nav/Nav"
+import { LayoutFragment_Query } from "components/Layout"
 
 const HomePageProductFragment_Product = gql`
   fragment HomePageProductFragment_Product on Product {
@@ -107,11 +107,11 @@ export const Home_Query = gql`
       ...HomePageProductFragment_Product
     }
 
-    ...NavFragment_Query
+    ...LayoutFragment_Query
     ...LaunchCalendarFragment_Query
   }
 
-  ${NavFragment_Query}
+  ${LayoutFragment_Query}
   ${LaunchCalendarFragment_Query}
   ${HomePageProductFragment_Product}
 `
