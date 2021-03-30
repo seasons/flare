@@ -21,7 +21,7 @@ interface BagItemProps {
   navigation?: any
   removeItemFromBag?: Function
   removeFromBagAndSaveItem?: Function
-  onShowBuyAlert: (bagItem: any) => void
+  onShowBuyAlert: ({ bagItem, variantToUse }: any) => void
 }
 
 export const BagItem: React.FC<BagItemProps> = ({
@@ -71,7 +71,7 @@ export const BagItem: React.FC<BagItemProps> = ({
   const handleShowBuyAlert = (ev) => {
     ev.preventDefault()
     ev.stopPropagation()
-    onShowBuyAlert(bagItem)
+    onShowBuyAlert({ variantToUse, bagItem })
   }
 
   const ReservedItemContent = () => {
