@@ -6,8 +6,8 @@ import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { Loader } from "mobile/Loader"
 import React from "react"
 
-const GET_DRAWER_FAQ = gql`
-  query GetPaymentPlans {
+const DrawerFAQ_Query = gql`
+  query DrawerFAQ_Query {
     faq {
       sections {
         title
@@ -21,7 +21,7 @@ const GET_DRAWER_FAQ = gql`
 `
 
 export const DrawerFAQ = ({ previousScreen }) => {
-  const { previousData, data = previousData } = useQuery(GET_DRAWER_FAQ)
+  const { previousData, data = previousData } = useQuery(DrawerFAQ_Query)
   const { openDrawer } = useDrawerContext()
 
   const faqSections = data?.faq.sections
