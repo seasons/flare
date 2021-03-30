@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import styled from "styled-components"
 
 import { Modal } from "@material-ui/core"
 
@@ -26,7 +25,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <LoginView open={isOpen} />
+      <>
+        <LoginView open={isOpen} />
+      </>
     </Modal>
   )
 }

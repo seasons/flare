@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Sans, Spacer, Flex } from "../"
+import { Box, Sans, Spacer, Flex } from "components"
 import { Display } from "../Typography"
 
 type ListItem = {

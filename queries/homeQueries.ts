@@ -1,41 +1,66 @@
-import { gql } from "@apollo/client"
+import { LaunchCalendarFragment_Query } from "components/Homepage/LaunchCalendar"
+import gql from "graphql-tag"
 
-const HomePageProductFragment = gql`
-  fragment HomePageProduct on Product {
+const HomePageProductFragment_Product = gql`
+  fragment HomePageProductFragment_Product on Product {
     id
     slug
     name
-    images {
-      url
+    modelSize {
       id
+      display
     }
     brand {
       id
+      slug
       name
+    }
+    images(size: XLarge) {
+      id
+      url
     }
     variants {
       id
-      total
       reservable
-      nonReservable
-      reserved
-      internalSize {
-        display
-      }
+      displayShort
     }
   }
 `
 
-export const HOME_QUERY = gql`
-  query GetBrowseProducts {
+export const Home_Query = gql`
+  query Home_Query {
     me {
+      id
       customer {
         id
         admissions {
           id
+          admissable
+          authorizationsCount
+          authorizationWindowClosesAt
           allAccessEnabled
         }
       }
+    }
+    collections(orderBy: updatedAt_DESC, first: 1, where: { published: true }) {
+      id
+      slug
+      title
+      subTitle
+      images {
+        id
+        url
+      }
+      products(first: 3, orderBy: updatedAt_DESC) {
+        ...HomePageProductFragment_Product
+      }
+    }
+    blogPosts(count: 3) {
+      id
+      url
+      name
+      author
+      imageURL
     }
     paymentPlans(where: { status: "active" }) {
       id
@@ -47,44 +72,42 @@ export const HOME_QUERY = gql`
       tier
       itemCount
     }
-    blogPosts(count: 3) {
+    newestBrandProducts(first: 3) {
+      ...HomePageProductFragment_Product
+    }
+    fitPics(first: 5, orderBy: createdAt_DESC, where: { status: Published }) {
       id
-      url
-      name
-      author
-      imageURL
-    }
-    justAddedTops: products(
-      first: 4
-      category: "tops"
-      orderBy: publishedAt_DESC
-      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
-    ) {
-      ...HomePageProduct
-    }
-    justAddedBottoms: products(
-      first: 4
-      category: "bottoms"
-      orderBy: publishedAt_DESC
-      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
-    ) {
-      ...HomePageProduct
-    }
-    justAddedOuterwear: products(
-      first: 4
-      category: "outerwear"
-      orderBy: publishedAt_DESC
-      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
-    ) {
-      ...HomePageProduct
+      location {
+        id
+        city
+        state
+      }
+      image(size: Medium) {
+        id
+        url
+      }
+      includeInstagramHandle
+      user {
+        id
+        customer {
+          id
+          detail {
+            id
+            instagramHandle
+          }
+        }
+      }
     }
     newArchival: products(
-      first: 4
+      first: 3
       orderBy: publishedAt_DESC
       where: { AND: [{ tags_some: { name: "Vintage" } }, { status: Available }] }
     ) {
-      ...HomePageProduct
+      ...HomePageProductFragment_Product
     }
+    ...LaunchCalendarFragment_Query
   }
-  ${HomePageProductFragment}
+
+  ${HomePageProductFragment_Product}
+  ${LaunchCalendarFragment_Query}
 `

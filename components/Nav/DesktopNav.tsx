@@ -1,6 +1,6 @@
-import { Drawer } from "components/Drawer/Drawer"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { LoginModal } from "components/Login/LoginModal"
+import { SearchBar } from "components/Search/SearchBar"
 import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
@@ -10,14 +10,14 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
-import { MaxWidth } from "../"
+import { Box, MaxWidth } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
 export const DesktopNav = (props: NavProps) => {
-  const { fixed = false, links } = props
+  const { links } = props
   const router = useRouter()
 
   const tracking = useTracking()
@@ -45,94 +45,101 @@ export const DesktopNav = (props: NavProps) => {
     }
   }, [authState.authInitializing, authState.isSignedIn])
 
+  let specialStyles = {}
+  if (router.pathname === "/signup") {
+    specialStyles = { borderBottom: `1px solid ${color("black15")}` }
+  }
+
   return (
-    <HeaderContainer fixed={fixed}>
-      <MaxWidth>
-        <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 5, 5]}>
-          <SeasonsLogo />
-          <Flex ml="auto" flexDirection="row" alignItems="center">
-            {links.map((link) => {
-              if (link.external) {
-                return (
-                  <Link
-                    key={link.url}
-                    href={link.url}
-                    active={!!router.pathname.match(link.match)}
-                    onClick={() => trackClick(link.url)}
-                  >
-                    <NavItem link={link} />
-                  </Link>
-                )
-              } else if (link.url) {
-                return (
-                  <NextLink href={link.url} key={link.text}>
+    <>
+      <Box style={{ width: "100%" }} height={["60px", "74px", "58px", "58px", "58px"]} />
+      <HeaderContainer style={specialStyles}>
+        <MaxWidth>
+          <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
+            <SeasonsLogo />
+            <Box px={4}>
+              <SearchBar />
+            </Box>
+            <Flex ml="auto" flexDirection="row" alignItems="center">
+              {links.map((link) => {
+                if (link.external) {
+                  return (
                     <Link
+                      key={link.url}
                       href={link.url}
                       active={!!router.pathname.match(link.match)}
                       onClick={() => trackClick(link.url)}
                     >
                       <NavItem link={link} />
                     </Link>
-                  </NextLink>
-                )
-              } else {
-                return link.renderNavItem()
-              }
-            })}
-            {isLoggedIn ? (
-              <>
-                <Link
-                  onClick={() => {
-                    openDrawer("bag")
-                  }}
-                >
-                  <NavItem link={{ text: "Bag" }} />
-                </Link>
-                <Link
-                  onClick={() => {
-                    openDrawer("profile")
-                  }}
-                >
-                  <NavItem link={{ text: "Account" }} />
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href="/signup" active={!!router.pathname.match("/signup")}>
-                  <NavItem link={{ text: "Sign Up" }} />
-                </Link>
-                <Link
-                  onClick={() => {
-                    toggleLoginModal(true)
-                  }}
-                >
-                  <NavItem link={{ text: "Log In" }} />
-                </Link>
-              </>
-            )}
+                  )
+                } else if (link.url) {
+                  return (
+                    <NextLink href={link.url} key={link.text}>
+                      <Link
+                        href={link.url}
+                        active={!!router.pathname.match(link.match)}
+                        onClick={() => trackClick(link.url)}
+                      >
+                        <NavItem link={link} />
+                      </Link>
+                    </NextLink>
+                  )
+                } else {
+                  return link.renderNavItem()
+                }
+              })}
+              {isLoggedIn ? (
+                <>
+                  <Link
+                    onClick={() => {
+                      openDrawer("bag")
+                    }}
+                  >
+                    <NavItem link={{ text: "Bag" }} />
+                  </Link>
+                  <Link
+                    onClick={() => {
+                      openDrawer("profile")
+                    }}
+                  >
+                    <NavItem link={{ text: "Account" }} />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link href="/signup" active={!!router.pathname.match("/signup")}>
+                    <NavItem link={{ text: "Sign Up" }} />
+                  </Link>
+                  <Link
+                    onClick={() => {
+                      toggleLoginModal(true)
+                    }}
+                  >
+                    <NavItem link={{ text: "Log In" }} />
+                  </Link>
+                </>
+              )}
+            </Flex>
           </Flex>
-        </Flex>
-      </MaxWidth>
-      <LoginModal
-        open={loginModalOpen}
-        onClose={() => {
-          toggleLoginModal(false)
-        }}
-      />
-    </HeaderContainer>
+        </MaxWidth>
+        <LoginModal
+          open={loginModalOpen}
+          onClose={() => {
+            toggleLoginModal(false)
+          }}
+        />
+      </HeaderContainer>
+    </>
   )
 }
 
-const HeaderContainer = styled.div<{ fixed: boolean }>`
+const HeaderContainer = styled.div`
   background-color: ${color("white100")};
-  ${({ fixed }) =>
-    fixed &&
-    `
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-  `}
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
@@ -140,7 +147,6 @@ const HeaderContainer = styled.div<{ fixed: boolean }>`
   width: 100%;
   height: 58.5px;
   align-items: center;
-  padding-right: 15px;
 `
 
 const Link = styled.a<{ active?: boolean }>`

@@ -6,7 +6,7 @@ import { space } from "helpers/space"
 import React, { useState } from "react"
 import { FlatList, KeyboardAvoidingView } from "react-native"
 import styled from "styled-components"
-import { Schema, screenTrack, useTracking } from "utils/analytics"
+import { Schema, screenTrack, useTracking, identify } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
 import { Radio } from "@material-ui/core"
@@ -18,6 +18,9 @@ export const GET_CURRENT_PLAN = gql`
     me {
       customer {
         id
+        user {
+          id
+        }
         paymentPlan {
           id
           planID
@@ -60,7 +63,7 @@ export const EditPaymentAndShipping: React.FC<{
 }> = screenTrack()(({ navigation, route }) => {
   const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
-  const { data } = useQuery(GET_CURRENT_PLAN)
+  const { previousData, data = previousData } = useQuery(GET_CURRENT_PLAN)
   const [openPaymentPopUp, setOpenPaymentPopUp] = useState(false)
   const billingInfo = route?.params?.billingInfo
   const currentShippingAddress = route?.params?.shippingAddress
@@ -120,6 +123,9 @@ export const EditPaymentAndShipping: React.FC<{
 
       showPopUp(popUpData)
       console.log("Error EditView.tsx: ", error)
+    },
+    onCompleted: () => {
+      identify(data?.me?.customer?.user?.id, { state: shippingAddress.state })
     },
   })
 

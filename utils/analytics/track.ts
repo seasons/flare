@@ -1,15 +1,37 @@
 import _track, { Track as _Track, TrackingInfo, TrackingProp, useTracking as _useTracking } from "react-tracking"
-
+import { useEffect, useState } from "react"
 import * as Schema from "./schema"
 
 export { Schema }
 
-let analytics = null
+const getAnalytics = () => {
+  if (typeof window !== "undefined") {
+    return (window as any)?.analytics
+  }
+  return null
+}
 
-declare const window: any
+const useAnalytics = () => {
+  const [analytics, setAnalytics] = useState(null)
 
-if (typeof window !== "undefined") {
-  analytics = window?.analytics
+  useEffect(() => {
+    setAnalytics(getAnalytics())
+  }, [typeof window])
+
+  return analytics
+}
+
+const wrapEventData = (data, analytics) => {
+  const newData = {
+    ...data,
+    platform: "web",
+    application: "flare",
+    anonymousId: analytics?.user?.().anonymousId?.(),
+  }
+  if (process.env.ENVIRONMENT !== "production") {
+    console.log("[Event tracked]", JSON.stringify(newData, null, 2))
+  }
+  return newData
 }
 
 /**
@@ -79,15 +101,13 @@ export const track: Track = _track
  */
 
 export function screenTrack<P>(trackingInfo?: TrackingInfo<Schema.PageViewEvent, P, null>) {
+  const analytics = getAnalytics()
+
   return _track(trackingInfo as any, {
     dispatch: (data) => {
-      const newData = { ...data, platform: "web", application: "flare" }
-      data.anonymousId = analytics?.user?.().anonymousId?.()
-      if (process.env.ENVIRONMENT !== "production") {
-        console.log("[Event tracked]", JSON.stringify(newData, null, 2))
-      }
+      const newData = wrapEventData(data, analytics)
       if (data.actionName) {
-        return analytics?.track(data.actionName, newData)
+        return analytics?.track(data.actionName, newData, { traits: analytics?.user?.()?.traits() })
       } else {
         return analytics?.page(newData)
       }
@@ -96,4 +116,27 @@ export function screenTrack<P>(trackingInfo?: TrackingInfo<Schema.PageViewEvent,
   })
 }
 
-export const useTracking: () => TrackingProp<TrackingInfo<Schema.Event, null, null>> = _useTracking
+export const useTracking: () => TrackingProp<TrackingInfo<Schema.Event, null, null>> = () => {
+  const analytics = useAnalytics()
+  const tracking = _useTracking()
+
+  return {
+    ...tracking,
+    trackEvent: (data) => {
+      const newData = wrapEventData(data, analytics)
+      analytics?.track(newData.actionName, newData, { traits: analytics?.user?.()?.traits() })
+    },
+  }
+}
+
+export const identify = (userId: string, traits: any) => {
+  const analytics = getAnalytics()
+
+  analytics?.identify(userId, traits)
+}
+
+export const reset = () => {
+  const analytics = getAnalytics()
+
+  analytics?.reset()
+}

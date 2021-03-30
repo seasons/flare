@@ -10,6 +10,7 @@ import React, { useState } from "react"
 import { Linking } from "react-native"
 
 import { useMutation } from "@apollo/client"
+import { identify, useTracking, Schema } from "utils/analytics"
 
 export type PauseStatus = "active" | "pending" | "paused"
 
@@ -40,6 +41,8 @@ const UPDATE_RESUME_DATE = gql`
 export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = ({ customer, fullScreen }) => {
   const [isMutating, setIsMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
+
+  const tracking = useTracking()
 
   const pauseRequest = customer?.membership?.pauseRequests?.[0]
   const customerStatus = customer?.status
@@ -91,6 +94,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
     ],
     onCompleted: () => {
       setIsMutating(false)
+      identify(customer?.user?.id, { status: "Active" })
       const popUpData = {
         title: "Got it!",
         note: "Your membership is no longer scheduled to be paused.",
@@ -123,6 +127,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       //   screen: Schema.PageNames.PauseConfirmation,
       //   params: { dueDate },
       // })
+      identify(customer?.user?.id, { status: "Paused" })
       setIsMutating(false)
     },
     onError: (err) => {
@@ -145,6 +150,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       },
     ],
     onCompleted: () => {
+      identify(customer?.user?.id, { status: "Active" })
       openDrawer("resumeConfirmation")
       setIsMutating(false)
     },
@@ -189,8 +195,16 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       awaitRefetchQueries: true,
     }
     if (pauseStatus === "paused") {
+      tracking.trackEvent({
+        actionName: Schema.ActionNames.ResumeMembershipTapped,
+        actionType: Schema.ActionTypes.Tap,
+      })
       await resumeSubscription(vars)
     } else if (pauseStatus === "pending") {
+      tracking.trackEvent({
+        actionName: Schema.ActionNames.ResumeMembershipTapped,
+        actionType: Schema.ActionTypes.Tap,
+      })
       await removeScheduledPause(vars)
     } else {
       await pauseSubscription(vars)

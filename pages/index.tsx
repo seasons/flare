@@ -1,130 +1,152 @@
-import { Box, Layout, Media, Separator, Spacer } from "components"
+import { Box, Layout, Separator, Spacer } from "components"
 import {
-  ColumnList,
-  FAQ,
-  FromCommunity,
+  HowItWorks,
   Hero,
-  MembershipBenefits,
-  Plans,
-  ProductRail,
+  FeaturedIn,
   TheApp,
-  TheBag,
+  BrowseAllWithImage,
+  HomepageFitPics,
+  FromCommunity,
+  Testimonials,
+  Plans,
 } from "components/Homepage"
-import { Nav } from "components/Nav"
-import { HOW_IT_WORKS_TEXT } from "components/Product/HowItWorks"
-import { ServiceableModal } from "components/ServiceableModal"
 import { initializeApollo } from "lib/apollo/apollo"
-import { HOME_QUERY } from "queries/homeQueries"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import React from "react"
+import React, { useEffect } from "react"
 import { Schema, screenTrack } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
+import { ProductsRail } from "@seasons/eclipse"
+import { useRouter } from "next/router"
+import { Home_Query } from "queries/homeQueries"
+import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { data } = useQuery(HOME_QUERY)
-
+  const { previousData, data = previousData } = useQuery(Home_Query, {
+    fetchPolicy: "cache-and-network",
+  })
+  const { updateUserSession } = useAuthContext()
+  const router = useRouter()
   const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
-  const communityPosts = data?.blogPosts?.slice(1, 3)
   const featuredBrandItems = navigationData?.brands || []
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
+  const newestBrand = data?.newestBrandProducts?.[0]?.brand
 
-  return (
-    <Layout fixedNav brandItems={featuredBrandItems}>
-      <Hero post={data?.blogPosts?.[0]} />
-      <Spacer mb={10} />
+  const communityPosts = data?.blogPosts?.slice(1, 3)
 
-      <ColumnList items={HOW_IT_WORKS_TEXT} />
+  useEffect(() => {
+    if (!!data?.me?.customer) {
+      updateUserSession({ cust: data?.me?.customer })
+    }
+  }, [data])
 
-      <Spacer mb={10} />
-      <Box px={[2, 2, 2, 5, 5]}>
+  const SeparatorWithPadding = () => {
+    return (
+      <Box px={[2, 2, 2, 2, 2]}>
         <Separator />
       </Box>
+    )
+  }
 
-      {!!data?.justAddedOuterwear?.length && (
+  return (
+    <Layout showIntercom brandItems={featuredBrandItems}>
+      <Hero post={data?.blogPosts?.[0]} />
+
+      <FeaturedIn />
+      <SeparatorWithPadding />
+
+      {!!data?.newestBrandProducts?.length && newestBrand && (
         <>
           <Spacer mb={10} />
-          <ProductRail title="Just added outerwear" products={data?.justAddedOuterwear} />
+          <ProductsRail
+            title="New arrivals from"
+            underlineTitleText={newestBrand?.name}
+            showProductName
+            underlineTitleOnClick={() => {
+              router.push(`/designer/${newestBrand?.slug}`)
+            }}
+            imageIndex={2}
+            items={data?.newestBrandProducts}
+          />
           <Spacer mb={10} />
         </>
       )}
 
+      <Spacer mb="128px" />
+      <HowItWorks />
+      <Spacer mb="135px" />
+
+      <BrowseAllWithImage />
+
       <Spacer mb={10} />
-      <ProductRail title="Just added tops" products={data?.justAddedTops} />
+      <SeparatorWithPadding />
+      <Spacer mb={3} />
+
+      <Plans plans={data?.paymentPlans} />
+      <Spacer mb={3} />
+
+      <SeparatorWithPadding />
+      <Spacer mb={10} />
+
+      {data?.newArchival.length > 0 && (
+        <>
+          <ProductsRail
+            title="New to the archive"
+            underlineTitleOnClick={() => {
+              router.push(`/browse}`)
+            }}
+            items={data?.newArchival}
+          />
+          <Spacer mb={10} />
+        </>
+      )}
+
+      <SeparatorWithPadding />
+      <Spacer mb={10} />
+
+      {data?.fitPics?.length > 0 && (
+        <>
+          <HomepageFitPics fitPics={data.fitPics} />
+          <Spacer mb={10} />
+          <Box px={[2, 2, 2, 2, 2]}>
+            <Separator />
+          </Box>
+          <Spacer mb={10} />
+        </>
+      )}
+
+      <Testimonials />
+      <Spacer mb={10} />
+
+      <SeparatorWithPadding />
+
       <Spacer mb={10} />
 
       <FromCommunity blogPosts={communityPosts} />
 
-      {!!data?.justAddedBottoms?.length && (
-        <>
-          <Spacer mb={10} />
-          <ProductRail title="Just added bottoms" products={data?.justAddedBottoms} />
-          <Spacer mb={10} />
-        </>
-      )}
+      <Spacer mb={10} />
 
-      {!!data?.newArchival?.length && (
-        <>
-          <ProductRail title="New to the archive" products={data?.newArchival} />
-          <Spacer mb={10} />
-        </>
-      )}
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
-
-      <Plans plans={data?.paymentPlans} allAccessEnabled={allAccessEnabled} />
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
+      <SeparatorWithPadding />
 
       <Spacer mb={10} />
+
+      <LaunchCalendar launches={data?.launches} />
+
+      <Spacer mb="112px" />
       <TheApp />
       <Spacer mb={10} />
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
-
-      <Spacer mb={10} />
-      <MembershipBenefits />
-      <Spacer mb={10} />
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
-
-      <Spacer mb={10} />
-      <TheBag />
-      <Spacer mb={10} />
-
-      <Box px={[2, 2, 2, 5, 5]}>
-        <Separator />
-      </Box>
-
-      <Spacer mb={10} />
-      <FAQ />
-      <Spacer mb={15} />
-
-      <Media greaterThan="md">
-        <ServiceableModal />
-      </Media>
     </Layout>
   )
 })
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
-
   await Promise.all([
     apolloClient.query({
-      query: HOME_QUERY,
+      query: Home_Query,
     }),
     apolloClient.query({
       query: NAVIGATION_QUERY,

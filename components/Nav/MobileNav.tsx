@@ -17,7 +17,7 @@ import { NavProps } from "./Types"
 
 export const MENU_HEIGHT = "59px"
 
-export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
+export const MobileNav: React.FC<NavProps> = ({ links }) => {
   const [isOpen, toggleOpen] = useState(false)
   const router = useRouter()
   const tracking = useTracking()
@@ -28,38 +28,41 @@ export const MobileNav: React.FC<NavProps> = ({ links, fixed }) => {
   }, [router.asPath])
 
   return (
-    <HeaderContainer fixed={fixed}>
-      <Header>
-        <Box px={2}>
-          <SeasonsLogo />
-        </Box>
-        <Burger
-          onClick={() => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames.BurgerClicked,
-              actionType: Schema.ActionTypes.Tap,
-            })
-            toggleOpen(!isOpen)
+    <>
+      <Box style={{ width: "100%" }} height={["60px", "74px", "58px", "58px", "58px"]} />
+      <HeaderContainer>
+        <Header>
+          <Box px={2}>
+            <SeasonsLogo />
+          </Box>
+          <Burger
+            onClick={() => {
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.BurgerClicked,
+                actionType: Schema.ActionTypes.Tap,
+              })
+              toggleOpen(!isOpen)
+            }}
+          />
+        </Header>
+        <Menu
+          items={links}
+          open={isOpen}
+          onSelect={() => {
+            toggleOpen(false)
+          }}
+          openLogin={() => {
+            toggleLogin(true)
           }}
         />
-      </Header>
-      <Menu
-        items={links}
-        open={isOpen}
-        onSelect={() => {
-          toggleOpen(false)
-        }}
-        openLogin={() => {
-          toggleLogin(true)
-        }}
-      />
-      <LoginModal
-        open={isLoginOpen}
-        onClose={() => {
-          toggleLogin(false)
-        }}
-      />
-    </HeaderContainer>
+        <LoginModal
+          open={isLoginOpen}
+          onClose={() => {
+            toggleLogin(false)
+          }}
+        />
+      </HeaderContainer>
+    </>
   )
 }
 
@@ -229,8 +232,8 @@ const StyledAnchor = styled("a")`
   }
 `
 
-const HeaderContainer = styled.div<{ fixed: boolean }>`
-  position: ${(p) => (p.fixed ? "fixed" : "relative")};
+const HeaderContainer = styled.div`
+  position: fixed;
   box-sizing: border-box;
   height: ${MENU_HEIGHT};
   z-index: 100;

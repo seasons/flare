@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Sans, Spacer } from "../"
+import { Box, Sans, Spacer } from "components"
 import { Grid, Row, Col } from "../Grid"
 import { color } from "../../helpers"
 import { Separator } from "../Separator"
@@ -61,7 +61,7 @@ const ContactContent = () => {
 
 export const AboutFooter: React.FC = () => {
   return (
-    <Box px={[2, 2, 2, 5, 5]}>
+    <Box px={[2, 2, 2, 2, 2]}>
       <Separator />
       <Grid>
         <Row>

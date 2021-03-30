@@ -6,19 +6,42 @@ import { TextField } from "formik-material-ui"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { ResetPassword } from "mobile/LogIn/ResetPassword"
-import { HOME_QUERY } from "queries/homeQueries"
 import React, { useState } from "react"
+import { SET_IMPACT_ID } from "queries/customerQueries"
 
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
+import { Home_Query } from "queries/homeQueries"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      user {
-        email
-        firstName
-        lastName
+      customer {
+        id
+        status
+        detail {
+          id
+          shippingAddress {
+            id
+            state
+          }
+        }
+        bagItems {
+          id
+        }
+        admissions {
+          id
+          admissable
+          authorizationsCount
+          authorizationWindowClosesAt
+        }
+        user {
+          id
+          email
+          firstName
+          lastName
+          createdAt
+        }
       }
       token
       refreshToken
@@ -44,9 +67,15 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       }
     },
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: HOME_QUERY }, { query: PAYMENT_PLANS }],
+    refetchQueries: [
+      {
+        query: Home_Query,
+      },
+      { query: PAYMENT_PLANS },
+    ],
   })
 
+  const [setImpactId] = useMutation(SET_IMPACT_ID)
   const handleSubmit = async ({ email, password }) => {
     const result = await login({
       variables: {
@@ -60,6 +89,15 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       } = result
 
       await signIn(userSession)
+      const impactId = localStorage?.getItem("impactId")
+      if (!!impactId) {
+        setImpactId({
+          variables: {
+            impactId,
+          },
+        })
+      }
+
       toggleLoginModal(false)
     }
   }

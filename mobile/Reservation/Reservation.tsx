@@ -4,7 +4,7 @@ import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
-import { BagItemFragment, GET_BAG } from "queries/bagQueries"
+import { BagItemFragment, GET_BAG } from "@seasons/eclipse"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components"
@@ -92,7 +92,7 @@ const SectionHeader: React.FC<{ title: string; onEdit?: () => void }> = ({ title
 export const Reservation = screenTrack()((props) => {
   const [isMutating, setIsMutating] = useState(false)
   const tracking = useTracking()
-  const { data } = useQuery(GET_CUSTOMER)
+  const { previousData, data = previousData } = useQuery(GET_CUSTOMER)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
   const [reserveItems] = useMutation(RESERVE_ITEMS, {

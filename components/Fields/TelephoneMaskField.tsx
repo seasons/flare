@@ -1,12 +1,10 @@
+import { Field, useFormikContext } from "formik"
 import React, { useState } from "react"
-import { Field } from "formik"
-import { TextField } from "./TextField"
-import { FormProps } from "../Forms/FormsTemplate"
 
-export function TelephoneMaskField({ context }: FormProps) {
-  const {
-    form: { setValues, values, handleBlur },
-  } = context
+import { TextField } from "./TextField"
+
+export const TelephoneMaskField = ({ name }) => {
+  const { values, handleBlur, setFieldValue } = useFormikContext<{ tel: string }>()
   const [telVal, setTelVal] = useState("")
   return (
     <Field
@@ -14,10 +12,10 @@ export function TelephoneMaskField({ context }: FormProps) {
       InputProps={{
         onChange: (e) => {
           const [newInputLength, oldInputLength] = [e.target.value.length, telVal.length]
-          let maskVal
+          let maskVal = e.target.value
           // if they deleted a character, pass through
           if (newInputLength < oldInputLength) {
-            setValues({ ...values, tel: e.target.value || "" })
+            setFieldValue(name, e.target.value || "")
             setTelVal(e.target.value || "")
           } else if (newInputLength === oldInputLength + 1) {
             // if they added a character, apply the mask as needed
@@ -25,14 +23,14 @@ export function TelephoneMaskField({ context }: FormProps) {
             if (/[0-9]/.test(lastChar)) {
               if (newInputLength === 4) {
                 maskVal = `${e.target.value.slice(0, 3)}-${lastChar}`
-                setValues({ ...values, tel: maskVal })
+                setFieldValue(name, maskVal)
                 setTelVal(maskVal)
               } else if (newInputLength === 8) {
                 maskVal = `${e.target.value.slice(0, 7)}-${lastChar}`
-                setValues({ ...values, tel: maskVal })
+                setFieldValue(name, maskVal)
                 setTelVal(maskVal)
               } else if (newInputLength <= 12) {
-                setValues({ ...values, tel: e.target.value })
+                setFieldValue(name, e.target.value)
                 setTelVal(e.target.value)
               }
             }
@@ -52,7 +50,7 @@ export function TelephoneMaskField({ context }: FormProps) {
               maskVal = maskVal.slice(0, 12)
             }
             // Set the value
-            setValues({ ...values, tel: maskVal })
+            setFieldValue(name, maskVal)
             setTelVal(maskVal)
           }
         },
@@ -62,7 +60,7 @@ export function TelephoneMaskField({ context }: FormProps) {
       }}
       onBlur={handleBlur}
       type="tel"
-      name="tel"
+      name={name}
       placeholder="000-000-0000"
     />
   )

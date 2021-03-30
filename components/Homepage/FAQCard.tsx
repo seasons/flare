@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react"
 import styled from "styled-components"
 
-import { Box, Flex, Sans, Spacer } from "../"
+import { Box, Flex, Sans, Spacer } from "components"
 import { color } from "../../helpers"
 import { Col } from "../Grid"
 import { Display } from "../Typography"
@@ -59,10 +59,3 @@ export const FAQCard: React.FC<{
     </Col>
   )
 }
-
-// const InjectedSans = styled(Sans)`
-//   a {
-//     text-decoration: underline;
-//     color: ${color("black100")};
-//   }
-// `

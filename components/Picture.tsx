@@ -1,27 +1,22 @@
 import React from "react"
+import { imageResize, ImageSize } from "utils/imageResize"
 
-const isProd = process.env.ENVIRONMENT === "production"
-
-export const Picture: React.FC<{
+interface PictureProps extends React.ImgHTMLAttributes<any> {
   src: string
-  alt: string
-  onLoad?: () => void
   imgRef?: any
-}> = ({ src, alt, imgRef, onLoad }) => {
-  let prefix
-  if (src.includes("seasons-s3.imgix.net") || src.includes("seasons-s3-staging.imgix.net")) {
-    prefix = ""
-  } else if (isProd) {
-    prefix = "https://flare-web.imgix.net"
-  } else {
-    prefix = "https://flare-web-staging.imgix.net"
-  }
+  onLoad?: (event: any) => void
+  alt?: string
+  size?: ImageSize
+}
+
+export const Picture: React.FC<PictureProps> = ({ src, alt, imgRef, onLoad, size, style }) => {
+  const url = !!size ? imageResize(src, size) : src
 
   return (
-    <picture style={{ height: "100%" }}>
-      <source type="image/webp" srcSet={prefix + src + "&fm=webp"} />
-      <source type="image/jpeg" srcSet={prefix + src + "&fm=jpg"} />
-      <img src={prefix + src + "&fm=jpg"} ref={imgRef} alt={alt} onLoad={onLoad} />
+    <picture style={{ height: "100%", ...style }}>
+      <source type="image/webp" srcSet={url + "&fm=webp&cs=srgb"} />
+      <source type="image/jpeg" srcSet={url + "&fm=jpg"} />
+      <img src={url + "&fm=jpg"} ref={imgRef} alt={alt} onLoad={onLoad} />
     </picture>
   )
 }

@@ -7,14 +7,14 @@ import { Box, Button, ProgressiveImage, Flex, Sans, Separator, Spacer, FixedBack
 import Radio from "@material-ui/core/Radio"
 import { sizeToName } from "components/Product/VariantSelect"
 import { Loader } from "mobile/Loader"
-import { GET_BAG } from "queries/bagQueries"
+import { GET_BAG } from "@seasons/eclipse"
 import { color, space } from "helpers"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { SAVE_ITEM } from "./SaveProductButton"
 
 interface SaveProductProps {
-  onDismiss: () => void;
-  product: any;
+  onDismiss: () => void
+  product: any
 }
 
 export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product, onDismiss }) => {
@@ -25,7 +25,7 @@ export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product,
       {
         query: GET_PRODUCT,
         variables: {
-          slug: product?.slug
+          slug: product?.slug,
         },
       },
       {
@@ -221,6 +221,8 @@ export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product,
 })
 
 const Container = styled.div`
+  max-height: 100vh;
+  overflow: auto;
   position: relative;
   display: flex;
   flex-direction: column;

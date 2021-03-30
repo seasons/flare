@@ -10,15 +10,15 @@ const About = screenTrack(() => ({
   page: Schema.PageNames.AboutPage,
   path: "/about",
 }))(() => {
-  const { data } = useQuery(NAVIGATION_QUERY)
+  const { previousData, data = previousData } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   return (
-    <Layout fixedNav brandItems={featuredBrandItems}>
+    <Layout brandItems={featuredBrandItems}>
       <AboutHero />
       <Spacer mb={15} />
       <AboutValues />
-      <Box px={[2, 2, 2, 5, 5]}>
+      <Box px={[2, 2, 2, 2, 2]}>
         <Separator />
       </Box>
       <AboutWhoWeAre />

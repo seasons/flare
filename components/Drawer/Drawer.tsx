@@ -1,5 +1,4 @@
 import { Box, Flex } from "components"
-import { FAQ } from "components/Homepage"
 import { EditPaymentAndShipping, PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
 import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
@@ -8,6 +7,8 @@ import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
 import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
+import { ReviewOrder } from "mobile/ReviewOrder"
+import { OrderConfirmation } from "mobile/OrderConfirmation"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
@@ -15,23 +16,29 @@ import { Drawer as MuiDrawer } from "@material-ui/core"
 
 import { DrawerBottomButton } from "./DrawerBottomButton"
 import { useDrawerContext } from "./DrawerContext"
+import { DrawerFAQ } from "mobile/DrawerFAQ/DrawerFAQ"
 
 interface DrawerProps {
   open?: boolean
   onClose?: () => void
 }
 
+export const getDrawerWidth = () => {
+  if (typeof window !== "undefined") {
+    const windowWidth = window.innerWidth
+    if (windowWidth < 800) {
+      return windowWidth
+    }
+  }
+
+  return 380
+}
+
 export const Drawer = (props: DrawerProps) => {
   const { open, onClose } = props
   const { isOpen, closeDrawer, openDrawer, currentView, params } = useDrawerContext()
 
-  let drawerWidth = 380
-  if (typeof window !== "undefined") {
-    const windowWidth = window.innerWidth
-    if (windowWidth < 800) {
-      drawerWidth = windowWidth
-    }
-  }
+  const drawerWidth = getDrawerWidth()
 
   useEffect(() => {
     if (open) {
@@ -68,13 +75,17 @@ export const Drawer = (props: DrawerProps) => {
       case "paymentAndShipping":
         return <PaymentAndShipping />
       case "faq":
-        return <FAQ />
+        return <DrawerFAQ previousScreen={params?.previousScreen} />
       case "resumeConfirmation":
         return <ResumeConfirmation />
       case "choosePlan":
         return <ChoosePlanPane headerText={"Let's choose your plan"} source={params?.source} />
       case "editPaymentAndShipping":
         return <EditPaymentAndShipping navigation={{}} route={{ params }} />
+      case "reviewOrder":
+        return <ReviewOrder order={params.order} />
+      case "orderConfirmation":
+        return <OrderConfirmation order={params.order} customer={params.customer} />
     }
   }
 
@@ -94,9 +105,7 @@ export const Drawer = (props: DrawerProps) => {
         {view()}
       </Flex>
       {showCloseButton && (
-        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "secondaryOutlineWhite" }}>
-          Close
-        </DrawerBottomButton>
+        <DrawerBottomButton buttonProps={{ onClick: handleClose, variant: "primaryWhite" }}>Close</DrawerBottomButton>
       )}
     </StyledDrawer>
   )

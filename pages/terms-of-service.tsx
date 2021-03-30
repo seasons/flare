@@ -10,12 +10,12 @@ export const TermsOfService = screenTrack(() => ({
   page: Schema.PageNames.TermsOfService,
   path: "/terms-of-service",
 }))(() => {
-  const { data } = useQuery(NAVIGATION_QUERY)
+  const { previousData, data = previousData } = useQuery(NAVIGATION_QUERY)
   const featuredBrandItems = data?.brands || []
 
   return (
-    <Layout fixedNav brandItems={featuredBrandItems}>
-      <Grid px={[2, 2, 2, 5, 5]}>
+    <Layout brandItems={featuredBrandItems}>
+      <Grid px={[2, 2, 2, 2, 2]}>
         <div className="termsofservicetopsection">
           <div className="privacytopcontainer">
             <div className="privacyheadertitle">Terms of Service</div>

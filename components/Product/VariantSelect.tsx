@@ -6,7 +6,9 @@ import { TouchableOpacity } from "react-native"
 import { Schema, useTracking } from "utils/analytics"
 
 import { Popover, Radio } from "@material-ui/core"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import styled from "styled-components"
+import { SansSize } from "lib/theme"
+import { ChevronIcon } from "components/Icons"
 
 export interface Variant {
   sizeDisplay?: string
@@ -109,7 +111,7 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
 
 const getElementWidth = (el: HTMLElement) => (el ? el.clientWidth : "auto")
 
-export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelected, product }) => {
+export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelected, product, variantInStock }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [popoverWidth, setPopoverWidth] = React.useState(getElementWidth(anchorEl))
 
@@ -151,10 +153,13 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
   return (
     <>
       <Button variant="primaryWhite" onClick={handleClick} aria-describedby={id} block>
-        <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center">
-          <Sans size="4">{text}</Sans>
-          <Flex flexDirection="row" alignItems="center">
-            <ExpandMoreIcon />
+        <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center" flexWrap="nowrap">
+          <Flex style={{ position: "relative" }} flexDirection="row" alignItems="center">
+            {!variantInStock && <Strikethrough size="4" className="hover-white-background" />}
+            <Sans size="4">{text}</Sans>
+          </Flex>
+          <Flex ml={1} className="hover-white-path__svg">
+            <ChevronIcon rotateDeg="90deg" color={color("black100")} scale={0.7} />
           </Flex>
         </Flex>
       </Button>
@@ -194,3 +199,12 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
     </>
   )
 }
+
+const Strikethrough = styled.div<{ size: SansSize }>`
+  background-color: ${color("black100")};
+  height: 2px;
+  width: 100%;
+  position: absolute;
+  top: ${(p) => (p.size === "2" ? 7 : 14)}px;
+  left: 0;
+`

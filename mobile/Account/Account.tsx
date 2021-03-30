@@ -14,7 +14,7 @@ import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
-import { Linking, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { DateTime } from "luxon"
 
@@ -22,7 +22,9 @@ import { useQuery } from "@apollo/client"
 
 import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
-import { AuthorizedCTA } from "./Components/AuthorizedCTA"
+import { AuthorizedCTA, WaitlistedCTA } from "@seasons/eclipse"
+import { AppleSVG, InstagramSVG } from "components/SVGs"
+import { ReferAFriend } from "./Components/ReferAFriend"
 
 export enum UserState {
   Undetermined,
@@ -46,10 +48,16 @@ export enum State {
 
 export const GET_USER = gql`
   query GetUser {
+    view(viewID: "Referral") {
+      id
+      title
+      caption
+    }
     me {
       customer {
         id
         status
+        referralLink
         user {
           id
           firstName
@@ -64,6 +72,8 @@ export const GET_USER = gql`
         authorizedAt
         admissions {
           id
+          admissable
+          authorizationsCount
           authorizationWindowClosesAt
         }
       }
@@ -76,14 +86,20 @@ export const Account = screenTrack()(({ navigation }) => {
   const router = useRouter()
   const { openDrawer, closeDrawer, isOpen, currentView } = useDrawerContext()
 
-  const { signOut } = useAuthContext()
-  const { data, refetch } = useQuery(GET_USER)
+  const { signOut, updateUserSession } = useAuthContext()
+  const { previousData, data = previousData, refetch } = useQuery(GET_USER, { fetchPolicy: "cache-and-network" })
 
   useEffect(() => {
     if (currentView === "profile" && isOpen) {
       refetch()
     }
   }, [isOpen, currentView])
+
+  useEffect(() => {
+    if (!!data) {
+      updateUserSession({ cust: data?.me?.customer, user: data?.me?.customer?.user })
+    }
+  }, [data])
 
   const customer = data?.me?.customer
   const status = customer?.status
@@ -93,6 +109,7 @@ export const Account = screenTrack()(({ navigation }) => {
   const firstName = user?.firstName
   const lastName = user?.lastName
   const roles = user?.roles
+  const referralLink = customer?.referralLink
 
   const ListSkeleton = () => {
     return (
@@ -132,13 +149,34 @@ export const Account = screenTrack()(({ navigation }) => {
       onPress: () => openDrawer("paymentAndShipping"),
       tracking: Schema.ActionNames.PaymentAndShippingTapped,
     },
+    {
+      title: "Frequently asked questions",
+      icon: <PaymentShippingIcon />,
+      onPress: () => openDrawer("faq", { previousScreen: "profile" }),
+      tracking: Schema.ActionNames.FAQTapped,
+    },
+  ]
+
+  const middleList = [
+    {
+      title: "Follow us on Instagram",
+      icon: <InstagramSVG />,
+      onPress: () => window.open("https://www.instagram.com/seasons.ny", "_blank"),
+      tracking: Schema.ActionNames.InstagramFollowTapped,
+    },
+    {
+      title: "Download the iOS app",
+      icon: <AppleSVG width="20px" height="23px" opacity={0.3} />,
+      tracking: Schema.ActionNames.GetTheIOSAppTapped,
+      onPress: () => window.open("https://szns.co/app", "_blank"),
+    },
   ]
 
   const bottomList = [
     {
       title: "Help and support",
       icon: <QuestionMark />,
-      onPress: () => Linking.openURL(`mailto:membership@seasons.nyc?subject=Support`),
+      onPress: () => window.open(`mailto:membership@seasons.nyc?subject=Support`),
       tracking: Schema.ActionNames.SupportTapped,
     },
     {
@@ -174,6 +212,27 @@ export const Account = screenTrack()(({ navigation }) => {
       case CustomerStatus.Created:
       case CustomerStatus.Waitlisted:
         const userState = status == CustomerStatus.Created ? UserState.Undetermined : UserState.Waitlisted
+        if (status === CustomerStatus.Waitlisted) {
+          return (
+            <WaitlistedCTA
+              authorizedAt={!!customer?.authorizedAt ? DateTime.fromISO(customer?.authorizedAt) : null}
+              authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
+              onPressLearnMore={() =>
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.LearnMoreTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+              }
+              onPressRequestAccess={() =>
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.RequestAccessTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+              }
+              version="web"
+            />
+          )
+        }
         return <OnboardingChecklist userState={userState} />
       case CustomerStatus.Authorized:
         return (
@@ -182,7 +241,7 @@ export const Account = screenTrack()(({ navigation }) => {
             authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
             onPressLearnMore={() => {
               tracking.trackEvent({
-                actionName: Schema.ActionNames.ChoosePlanTapped,
+                actionName: Schema.ActionNames.LearnMoreTapped,
                 actionType: Schema.ActionTypes.Tap,
               })
               router.push("/signup")
@@ -234,6 +293,18 @@ export const Account = screenTrack()(({ navigation }) => {
         <Box px={2} py={4}>
           {!!data ? renderBody() : <ListSkeleton />}
         </Box>
+        {referralLink && (
+          <>
+            <InsetSeparator />
+            <ReferAFriend referralLink={referralLink} referralData={data?.view} />
+          </>
+        )}
+        <InsetSeparator />
+        <Spacer mb={4} />
+        <Box px={2}>
+          <AccountList list={middleList} roles={roles} />
+        </Box>
+        <Spacer mb={4} />
         <InsetSeparator />
         <Spacer mb={4} />
         <Box px={2}>

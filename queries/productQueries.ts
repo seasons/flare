@@ -1,5 +1,6 @@
-import { gql } from "@apollo/client"
 import { BrandNavItemFragment } from "components/Nav/BrandsNavItem"
+import gql from "graphql-tag"
+import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
@@ -13,6 +14,9 @@ export const GET_PRODUCT = gql`
       customer {
         id
         status
+        user {
+          id
+        }
         membership {
           id
           plan {
@@ -22,6 +26,9 @@ export const GET_PRODUCT = gql`
         }
       }
       bag {
+        id
+      }
+      savedItems {
         id
       }
     }
@@ -52,6 +59,11 @@ export const GET_PRODUCT = gql`
         name
         logo
         since
+        images {
+          id
+          url
+          resized(width: 400)
+        }
       }
       outerMaterials
       innerMaterials
@@ -92,10 +104,14 @@ export const GET_PRODUCT = gql`
             value
           }
         }
+        ...ProductBuyCTA_ProductVariantFragment
       }
+      ...ProductBuyCTA_ProductFragment
     }
   }
   ${BrandNavItemFragment}
+  ${ProductBuyCTA_ProductFragment}
+  ${ProductBuyCTA_ProductVariantFragment}
 `
 
 export const GET_STATIC_PRODUCTS = gql`

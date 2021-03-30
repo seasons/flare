@@ -3,23 +3,26 @@ import { AddToBagButton } from "components/AddToBagButton"
 import { Carousel } from "components/Carousel"
 import { Col, Grid, Row } from "components/Grid"
 import { ProgressiveImage } from "components/Image"
-import { HowItWorks } from "components/Product/HowItWorks"
+import { BreadCrumbs } from "components/Product/BreadCrumbs"
+import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
 import { ProductDetails } from "components/Product/ProductDetails"
-import { ProductMeasurements } from "components/Product/ProductMeasurements"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
+import { ProductMeasurements } from "components/Product/ProductMeasurements"
 import { VariantSelect } from "components/Product/VariantSelect"
+import { ProductBuyCTA } from "components/Product/ProductBuyCTA"
 import { Media } from "components/Responsive"
 import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
-import { withRouter } from "next/router"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
+import { useRouter, withRouter } from "next/router"
+import { ProductBuyCTA_ProductVariantFragment, ProductBuyCTA_ProductFragment } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
-import { Schema, screenTrack } from "utils/analytics"
-
+import { identify, Schema, screenTrack } from "utils/analytics"
+import { filter } from "graphql-anywhere"
 import { useQuery } from "@apollo/client"
-import { BreadCrumbs } from "components/Product/BreadCrumbs"
 import { Loader } from "mobile/Loader"
+import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -30,11 +33,26 @@ const Product = screenTrack(({ router }) => {
 })(({ router }) => {
   const slug = router.query.Product || ""
   const { authState } = useAuthContext()
-  const { data, refetch } = useQuery(GET_PRODUCT, {
+  const { previousData, data = previousData, refetch } = useQuery(GET_PRODUCT, {
     variables: {
       slug,
     },
   })
+
+  const { query } = useRouter()
+
+  useEffect(() => {
+    if (data?.me) {
+      const bagItems = data?.me?.bag?.length + data?.me?.savedItems?.length
+      if (bagItems) {
+        identify(data?.me?.customer?.user?.id, {
+          bagItems,
+        })
+      }
+    }
+  }, [data])
+
+  const isFromTryWithSeasons = query["try-with-seasons"] === "true"
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState(
@@ -52,7 +70,7 @@ const Product = screenTrack(({ router }) => {
     refetch()
   }, [authState.isSignedIn])
 
-  const featuredBrandItems = data?.navigationBrands || []
+  const featuredBrandItems = previousData?.brands || []
 
   if (router.isFallback) {
     return (
@@ -71,11 +89,16 @@ const Product = screenTrack(({ router }) => {
 
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
+  const variantInStock = selectedVariant?.reservable > 0
+
+  const handleNavigateToBrand = (href: string) => {
+    window.location.href = href
+  }
 
   return (
-    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
-        <title>{`${title} - Seasons`}</title>
+        <title>{title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -124,6 +147,7 @@ const Product = screenTrack(({ router }) => {
                   <Flex flex={1}>
                     <VariantSelect
                       product={product}
+                      variantInStock={variantInStock}
                       selectedVariant={selectedVariant}
                       setSelectedVariant={setSelectedVariant}
                       onSizeSelected={(size) => {
@@ -136,19 +160,34 @@ const Product = screenTrack(({ router }) => {
                     <AddToBagButton
                       selectedVariant={selectedVariant}
                       data={data}
-                      variantInStock={true}
+                      variantInStock={variantInStock}
                       isInBag={isInBag}
                     />
                   </Flex>
                 </Flex>
                 {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
-                <HowItWorks />
+                {process.env.ENABLE_BUY_USED && product && (
+                  <>
+                    <Spacer mb={8} />
+                    <ProductBuyCTA
+                      product={filter(ProductBuyCTA_ProductFragment, product)}
+                      selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
+                      onNavigateToBrand={handleNavigateToBrand}
+                    />
+                  </>
+                )}
+                <ProductHowItWorks />
               </Box>
             </Col>
           </Row>
         </Grid>
       </Box>
       <Spacer mb={10} />
+      <PartnerBrandModal
+        open={isFromTryWithSeasons}
+        brand={product?.brand}
+        imageURL={product?.brand?.images?.[0]?.resized}
+      />
     </Layout>
   )
 })

@@ -7,13 +7,12 @@ import { PauseButtons } from "mobile/Account/Components/Pause"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
-import { CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
+import { CHECK_ITEMS, GET_BAG, GET_LOCAL_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { Schema, screenTrack, useTracking } from "utils/analytics"
+import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
-
 import { BagTab, ReservationHistoryTab, SavedItemsTab } from "./Components"
 
 export enum BagView {
@@ -36,7 +35,7 @@ export const Bag = screenTrack()((props) => {
 
   const [currentView, setCurrentView] = useState<BagView>(BagView.Bag)
 
-  const { data, refetch } = useQuery(GET_BAG)
+  const { previousData, data = previousData, refetch } = useQuery(GET_BAG)
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
 
   const me = data?.me
@@ -44,6 +43,7 @@ export const Bag = screenTrack()((props) => {
   useEffect(() => {
     if (data) {
       setIsLoading(false)
+      identify(me?.customer?.user?.id, { bagItems: data?.me?.bag?.length + data?.me?.savedItems?.length })
     }
   }, [data])
 
@@ -217,7 +217,6 @@ export const Bag = screenTrack()((props) => {
             px={2}
             pb={5}
           >
-            <></>
             <PauseButtons customer={me?.customer} fullScreen />
           </Box>
         )
@@ -291,7 +290,7 @@ export const Bag = screenTrack()((props) => {
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
       {isBagView && pauseStatus !== "paused" && !hasActiveReservation && (
-        <Box p={2}>
+        <Box px={2}>
           <Button
             block
             onClick={() => {

@@ -1,11 +1,22 @@
 import { apolloClient } from "lib/apollo"
+import { CustomerStatus } from "mobile/Account/Lists"
 
 import { gql } from "@apollo/client"
 
 export interface UserSession {
   token: string
   refreshToken: string
+  customer?: {
+    id: string
+    status: CustomerStatus
+    admissions: {
+      authorizationsCount: number
+      authorizationWindowClosesAt: string
+    }
+  }
   user?: {
+    firstName: string
+    lastName: string
     email: string
     id: string
   }
@@ -64,4 +75,19 @@ export const getAccessTokenFromSession = () => {
   const userSession = getUserSession()
   const accessToken = userSession ? userSession.token : ""
   return accessToken
+}
+
+export const userSessionToIdentifyPayload = (session) => {
+  const cust = session?.customer
+  const traits = {
+    ...session?.user,
+    ...session?.customer?.user,
+    status: cust?.status,
+    admissable: cust?.admissions?.admissable,
+    authorizations: cust?.admissions?.authorizationsCount,
+    state: cust?.detail?.shippingAddress?.state,
+    bagItems: cust?.bagItems?.length,
+    customerID: cust?.id,
+  }
+  return traits
 }

@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/client"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useTracking, Schema } from "utils/analytics"
 import { GET_PRODUCT } from "queries/productQueries"
-import { GET_BAG } from "queries/bagQueries"
+import { GET_BAG } from "@seasons/eclipse"
 import styled from "styled-components"
 import { SaveProduct } from "./SaveProduct"
 import { Modal } from "@material-ui/core"
@@ -121,7 +121,7 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
       </Wrapper>
       <Modal open={isPopUpVisible} onClose={handlePopUpDismiss}>
         <ModalRoot>
-          <SaveProduct product={product} onDismiss={handlePopUpDismiss}  />
+          <SaveProduct product={product} onDismiss={handlePopUpDismiss} />
         </ModalRoot>
       </Modal>
     </>

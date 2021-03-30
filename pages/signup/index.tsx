@@ -1,190 +1,130 @@
 import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
-import { CreateAccountForm, createAccountValidationSchema } from "components/Forms/CreateAccountForm"
-import {
-  CustomerMeasurementsForm,
-  customerMeasurementsValidationSchema,
-} from "components/Forms/CustomerMeasurementsForm"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
-import { Step } from "components/Forms/Step"
-import { BrandNavItemFragment } from "components/Nav"
-import { Wizard } from "components/Forms/Wizard"
+import { PaymentStep } from "components/Payment"
 import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
+import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
+import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
+import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
+import { DiscoverStyleStep } from "components/SignUp/DiscoverStyleStep"
 import { TriageStep } from "components/SignUp/TriageStep"
-import { CheckWithBackground } from "components/SVGs"
-import gql from "graphql-tag"
-import { initializeApollo } from "lib/apollo/apollo"
+import { SplashScreen } from "components/SplashScreen/SplashScreen"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { DateTime } from "luxon"
-import { useRouter } from "next/router"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import React, { useEffect, useState } from "react"
-import { Schema, screenTrack, useTracking } from "utils/analytics"
-
-import { useMutation, useQuery } from "@apollo/client"
 import { CustomerStatus } from "mobile/Account/Lists"
 import { Loader } from "mobile/Loader"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
-const SIGN_UP_USER = gql`
-  mutation SignupUser(
-    $email: String!
-    $password: String!
-    $firstName: String!
-    $lastName: String!
-    $details: CustomerDetailCreateInput!
-    $referrerId: String
-    $utm: UTMInput
-  ) {
-    signup(
-      email: $email
-      password: $password
-      firstName: $firstName
-      lastName: $lastName
-      details: $details
-      referrerId: $referrerId
-      utm: $utm
-    ) {
-      expiresIn
-      refreshToken
-      token
-      user {
-        id
-        email
-        firstName
-        lastName
-        beamsToken
-        roles
-      }
-      coupon {
-        id
-        amount
-        percentage
-        type
-      }
-    }
-  }
-`
+import { useLazyQuery, useQuery } from "@apollo/client"
+import { GET_LOCAL_BAG } from "@seasons/eclipse"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 
-const ADD_MEASUREMENTS = gql`
-  mutation addMeasurements(
-    $height: Int
-    $weight: CustomerDetailCreateweightInput
-    $topSizes: CustomerDetailCreatetopSizesInput
-    $waistSizes: CustomerDetailCreatewaistSizesInput
-  ) {
-    addCustomerDetails(
-      details: { height: $height, weight: $weight, topSizes: $topSizes, waistSizes: $waistSizes }
-      status: Waitlisted
-      event: CompletedWaitlistForm
-    ) {
-      id
-    }
-  }
-`
+import { GET_GIFT, GET_SIGNUP_USER } from "../../components/SignUp/queries"
 
-const GET_SIGNUP_USER = gql`
-  query GetSignupUser {
-    brands(
-      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
-      orderBy: name_ASC
-    ) {
-      ...BrandNavItem
-    }
-    me {
-      customer {
-        id
-        status
-        detail {
-          id
-          height
-        }
-        membership {
-          id
-          plan {
-            id
-          }
-        }
-        authorizedAt
-        admissions {
-          id
-          authorizationWindowClosesAt
-        }
-      }
-    }
-  }
-  ${BrandNavItemFragment}
-`
+const stripePromise = loadStripe(process.env.STRIPE_API_KEY)
+export interface SignupFormProps {
+  onError?: () => void
+  onCompleted?: () => void
+}
+
+export const SIGNUP_FOOTER_HEIGHT = "68px"
+
+enum Steps {
+  CreateAccountStep = "CreateAccountStep",
+  DiscoverStyleStep = "DiscoverStyleStep",
+  CustomerMeasurementsStep = "CustomerMeasurementsStep",
+  TriageStep = "TriageStep",
+  DiscoverBagStep = "DiscoverBagStep",
+  ChoosePlanStep = "ChoosePlanStep",
+  FormConfirmation = "FormConfirmation",
+  PaymentStep = "PaymentStep",
+}
 
 const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
 }))(() => {
-  const router = useRouter()
   const tracking = useTracking()
-  const { data } = useQuery(GET_SIGNUP_USER)
+  const router = useRouter()
+  const { previousData, data = previousData, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
+  const { data: localItems } = useQuery(GET_LOCAL_BAG)
   const featuredBrandItems = data?.brands || []
+  const { updateUserSession } = useAuthContext()
 
-  const { signIn } = useAuthContext()
-  const [signUpUser] = useMutation(SIGN_UP_USER)
-  const [addMeasurements] = useMutation(ADD_MEASUREMENTS)
-
+  const [currentStepState, setCurrentStepState] = useState<Steps>(Steps.CreateAccountStep)
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
-  const [paymentProcessed, setPaymentProcessed] = useState(false)
+  const [showReferrerSplash, setShowReferrerSplash] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState(null)
+
+  const customer = data?.me?.customer
+  const customerStatus = customer?.status
+  const hasBagItems = data?.me?.bag?.length > 0 || localItems?.localBagItems?.length > 0
+  const hasSetMeasurements = !!customer?.detail?.height
+  const hasPlan = !!customer?.plan
+
+  const hasGift = !!router.query.gift_id
+  const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setPaymentProcessed(localStorage.getItem("paymentProcessed") === "true")
+    const giftID = router.query.gift_id
+    if (hasGift && giftID.length > 0) {
+      getGift({
+        variables: { giftID },
+      })
     }
-  }, [setPaymentProcessed])
-
-  const customerStatus = data?.me?.customer?.status
-  const customerDetail = data?.me?.customer?.detail
-
-  // Steps completed
-  const hasAccount = !!customerStatus
-  const hasMeasurements = !!customerDetail?.height
-  const _isAuthorized = !!customerStatus && customerStatus === CustomerStatus.Authorized
-  const _isWaitlisted = !!customerStatus && customerStatus === CustomerStatus.Waitlisted
-  const isActive = !!customerStatus && customerStatus === CustomerStatus.Active
-
-  const [isWaitlisted, setIsWaitlisted] = useState(false)
-  const [isAuthorized, setIsAuthorized] = useState(false)
+  }, [hasGift])
 
   useEffect(() => {
-    if (_isAuthorized) {
-      setIsAuthorized(true)
+    if (!!customerStatus && currentStepState === Steps.CreateAccountStep) {
+      switch (customerStatus) {
+        case undefined:
+          setCurrentStepState(Steps.CreateAccountStep)
+          break
+        case "Created":
+          if (hasSetMeasurements) {
+            setCurrentStepState(Steps.DiscoverStyleStep)
+          } else {
+            setCurrentStepState(Steps.CustomerMeasurementsStep)
+          }
+          break
+        case "Authorized":
+        case "Invited":
+          if (hasPlan) {
+            setCurrentStepState(Steps.PaymentStep)
+          } else if (hasBagItems) {
+            setCurrentStepState(Steps.PaymentStep)
+          } else {
+            setCurrentStepState(Steps.DiscoverBagStep)
+          }
+          break
+        case "Waitlisted":
+        case "Active":
+          setCurrentStepState(Steps.FormConfirmation)
+          break
+      }
     }
-    if (_isWaitlisted) {
-      setIsWaitlisted(true)
+  }, [customerStatus, hasSetMeasurements, hasBagItems])
+
+  useEffect(() => {
+    setShowReferrerSplash(!!router.query.referrer_id)
+  }, [router.query?.referrer_id])
+
+  const customerDataFromGift = () => {
+    if (!hasGift) {
+      return {}
     }
-  }, [_isWaitlisted, _isAuthorized])
-
-  const initialValues = {
-    email: "",
-    firstName: "",
-    lastName: "",
-    tel: "",
-    confirmPassword: "",
-    password: "",
-    zipCode: "",
-    device: "",
-    weight: "",
-    height: "",
-    topSizes: [""],
-    waistSizes: [""],
-  }
-
-  const confirmData = {
-    waitlisted: {
-      icon: <CheckWithBackground backgroundColor={"#000"} />,
-      headerText: "You're Waitlisted",
-      bodyText: "We’ll let you know when your account is ready and you’re able to choose your plan.",
-    },
-    accountAccepted: {
-      icon: <CheckWithBackground />,
-      headerText: "Welcome to Seasons",
-      bodyText: "Your membership is active and you’re ready to start reserving. Tap below to start browsing.",
-    },
+    const giftReceiver = giftData?.gift?.gift?.gift_receiver
+    if (!!giftReceiver) {
+      const { email, first_name, last_name } = giftReceiver
+      return {
+        email,
+        firstName: first_name,
+        lastName: last_name,
+      }
+    }
+    return {}
   }
 
   const closeSnackBar = () => {
@@ -200,193 +140,145 @@ const SignUpPage = screenTrack(() => ({
     </Sans>
   )
 
-  if (!data) {
+  if (!data || (hasGift && giftLoading) || !currentStepState) {
     return (
-      <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
-        <MaxWidth>
-          <Flex>
-            <Loader />
-          </Flex>
-        </MaxWidth>
+      <Layout hideFooter brandItems={featuredBrandItems}>
+        <Flex>
+          <Loader />
+        </Flex>
       </Layout>
     )
   }
 
-  const createAccountStep = (
-    <Step
-      validationSchema={createAccountValidationSchema}
-      onSubmit={async (values, actions) => {
-        try {
-          const utm = JSON.parse(localStorage?.getItem("utm"))
-          const date = new Date(values.dob)
-          const dateToIso = DateTime.fromJSDate(date).toISO()
-          const firstName = values.firstName.charAt(0).toUpperCase() + values.firstName.slice(1)
-          const lastName = values.lastName.charAt(0).toUpperCase() + values.lastName.slice(1)
-          const response = await signUpUser({
-            variables: {
-              email: values.email,
-              password: values.password,
-              firstName,
-              lastName,
-              details: {
-                phoneNumber: values.tel,
-                birthday: dateToIso,
-                phoneOS: values.device,
-                shippingAddress: {
-                  create: { zipCode: values.zipCode },
-                },
-              },
-              referrerId: router.query.referrer_id,
-              utm,
+  let CurrentStep
+  switch (currentStepState) {
+    case Steps.CreateAccountStep:
+      CurrentStep = (
+        <CreateAccountStep
+          form={{
+            initialValues: customerDataFromGift(),
+            gift: giftData?.gift,
+            onError: () => setShowSnackBar(true),
+            onCompleted: () => setCurrentStepState(Steps.CustomerMeasurementsStep),
+          }}
+        />
+      )
+      break
+    case Steps.CustomerMeasurementsStep:
+      CurrentStep = (
+        <CustomerMeasurementsStep
+          form={{
+            onCompleted: () => {
+              refetchGetSignupUser()
+              setCurrentStepState(Steps.DiscoverStyleStep)
             },
-          })
-
-          tracking.trackEvent({
-            actionName: Schema.ActionNames.CreateAccountClicked,
-            actionType: Schema.ActionTypes.Tap,
-          })
-
-          if (response) {
-            signIn(response.data.signup)
-            localStorage?.setItem("coupon", JSON.stringify(response.data.signup.coupon))
-            actions.setSubmitting(false)
-
-            return true
-          }
-        } catch (error) {
-          if (JSON.stringify(error).includes("email already in db")) {
-            actions.setFieldError("email", "User with that email already exists")
-          } else {
-            console.log("error", error)
-            setShowSnackBar(true)
-          }
-          actions.setSubmitting(false)
-        }
-      }}
-    >
-      {(context) => <CreateAccountForm context={context} />}
-    </Step>
-  )
-
-  const measurementsStep = (
-    <Step
-      validationSchema={customerMeasurementsValidationSchema}
-      onSubmit={async (values, actions) => {
-        const { height, weight, topSizes, waistSizes } = values
-        const filteredWaistSizes = waistSizes.filter((i) => i !== "")
-        const filteredTopSizes = topSizes.filter((i) => i !== "")
-        try {
-          const response = await addMeasurements({
-            variables: {
-              height,
-              weight: { set: weight },
-              topSizes: { set: filteredTopSizes },
-              waistSizes: { set: filteredWaistSizes },
-            },
-          })
-          if (response) {
-            actions.setSubmitting(false)
+          }}
+        />
+      )
+      break
+    case Steps.DiscoverStyleStep:
+      CurrentStep = (
+        <DiscoverStyleStep
+          onCompleted={() => {
             setStartTriage(true)
-            return true
-          }
-        } catch (error) {
-          actions.setSubmitting(false)
-        }
-      }}
-    >
-      {(context) => <CustomerMeasurementsForm context={context} />}
-    </Step>
-  )
-
-  const triageStep = (
-    <Step>
-      {({ wizard, form }) => (
+            setCurrentStepState(Steps.TriageStep)
+          }}
+        />
+      )
+      break
+    case Steps.TriageStep:
+      CurrentStep = (
         <TriageStep
           check={startTriage}
           onTriageComplete={(isWaitlisted) => {
-            if (isWaitlisted) {
-              setIsWaitlisted(true)
-            } else {
-              setIsAuthorized(true)
-            }
-
             tracking.trackEvent({
               actionName: Schema.ActionNames.AccountTriaged,
               actionType: Schema.ActionTypes.Success,
               isWaitlisted,
             })
+
+            setStartTriage(false)
+            refetchGetSignupUser()
+
+            if (isWaitlisted) {
+              setCurrentStepState(Steps.FormConfirmation)
+            } else if (hasBagItems) {
+              setCurrentStepState(Steps.PaymentStep)
+            } else {
+              setCurrentStepState(Steps.DiscoverBagStep)
+            }
           }}
         />
-      )}
-    </Step>
-  )
-
-  let steps
-
-  const finishedFlow = paymentProcessed || isWaitlisted || isActive
-  const finishedTriage = isAuthorized || isWaitlisted
-
-  if (finishedFlow) {
-    // User has already finished the flow
-    steps = [
-      <Step>
-        {() => {
-          const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
-          return <FormConfirmation {...data} />
-        }}
-      </Step>,
-    ]
-  } else {
-    steps = [
-      ...(hasAccount ? [] : [createAccountStep]),
-      ...(hasMeasurements ? [] : [measurementsStep]),
-      ...(finishedTriage ? [] : [triageStep]),
-      <Step>
-        {({ form, wizard }) => {
-          const data = confirmData[isWaitlisted ? "waitlisted" : "accountAccepted"]
-          return isWaitlisted ? (
-            <FormConfirmation {...data} />
-          ) : (
-            <ChoosePlanStep
-              onPlanSelected={(plan) => {
-                tracking.trackEvent({
-                  actionName: Schema.ActionNames.PlanSelectedButtonClicked,
-                  actionType: Schema.ActionTypes.Tap,
-                  plan,
-                  user: form.values,
-                })
-              }}
-              onSuccess={() => {
-                localStorage.setItem("paymentProcessed", "true")
-                setTimeout(() => {
-                  wizard.next()
-                }, 500)
-              }}
-              onError={() => {}}
-            />
-          )
-        }}
-      </Step>,
-      <Step>
-        {() => {
-          const data = confirmData["accountAccepted"]
-          return <FormConfirmation {...data} />
-        }}
-      </Step>,
-    ]
+      )
+      break
+    case Steps.DiscoverBagStep:
+      CurrentStep = (
+        <DiscoverBagStep
+          onCompleted={() => {
+            refetchGetSignupUser()
+            setCurrentStepState(Steps.PaymentStep)
+          }}
+        />
+      )
+      break
+    case Steps.PaymentStep:
+      CurrentStep = (
+        <PaymentStep
+          plan={selectedPlan}
+          onBack={() => {
+            setCurrentStepState(Steps.DiscoverBagStep)
+          }}
+          onSuccess={() => {
+            updateUserSession({ cust: { status: CustomerStatus.Active } })
+            localStorage.setItem("paymentProcessed", "true")
+            identify(data?.me?.customer?.user?.id, { status: "Active" })
+            setCurrentStepState(Steps.FormConfirmation)
+          }}
+          onError={() => {}}
+        />
+      )
+      break
+    case Steps.FormConfirmation:
+      CurrentStep = <FormConfirmation status={customerStatus === "Active" ? "accountAccepted" : "waitlisted"} />
+      break
   }
 
-  const hasSteps = steps.length > 0
-
   return (
-    <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
-      <MaxWidth>
+    <Elements stripe={stripePromise}>
+      <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-        <Flex height="100%" width="100%" flexDirection="row" alignItems="center" justifyContent="center">
-          {!(typeof window === "undefined") && hasSteps && <Wizard initialValues={initialValues}>{steps}</Wizard>}
+        <Flex
+          height="100%"
+          width="100%"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          px={[0, 0, 2, 2, 2]}
+        >
+          <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
+            {CurrentStep}
+          </Flex>
         </Flex>
-      </MaxWidth>
-    </Layout>
+
+        <SplashScreen
+          open={showReferrerSplash}
+          title="Welcome to Seasons"
+          subtitle="It looks like you were referred by a friend. Get a free month of Seasons when you successfully sign up!"
+          descriptionLines={[
+            "Free shipping, returns, & dry cleaning",
+            "Purchase items you love directly with us",
+            "No commitment. Pause or cancel anytime",
+          ]}
+          imageURL={require("../../public/images/signup/Friend_Pic.png")}
+          primaryButton={{
+            text: "Sign Up",
+            action: () => {
+              setShowReferrerSplash(false)
+            },
+          }}
+        />
+      </Layout>
+    </Elements>
   )
 })
 

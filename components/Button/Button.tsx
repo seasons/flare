@@ -1,3 +1,4 @@
+import { color } from "helpers"
 import React, { Component } from "react"
 import styled, { css } from "styled-components"
 import { borderRadius, borders, height, space, textAlign, width } from "styled-system"
@@ -25,8 +26,8 @@ export class Button extends Component<WebButtonProps> {
     switch (this.props.size) {
       case "small":
         return {
-          height: inline ? "17px" : "26px",
-          size: "2",
+          height: inline ? "17px" : "32px",
+          size: "3",
           px: inline ? 0 : 2,
         }
       case "medium-x":
@@ -80,6 +81,26 @@ export class Button extends Component<WebButtonProps> {
             return `
                 background-color: ${colors.white100};
                 border-color: ${colors.black100};
+                color: ${colors.black100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color: ${colors.black100};
+                    border-color: ${colors.black100};
+                    color: ${colors.white100};
+                  }
+                }
+              `
+          }};
+        `
+      case "primaryWhiteNoBorder":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+
+            return `
+                background-color: ${colors.white100};
+                border-color: ${colors.white100};
                 color: ${colors.black100};
 
                 @media ${themeProps.mediaQueries.hover} {
@@ -217,10 +238,12 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
 }
 
 const Container = styled.button<ButtonBaseProps>`
+  display: inline-block;
   cursor: pointer;
   position: relative;
   white-space: nowrap;
-  border-radius: 400px;
+  text-decoration: none;
+  align-items: center;
 
   ${borders};
   ${borderRadius};
@@ -230,6 +253,22 @@ const Container = styled.button<ButtonBaseProps>`
   ${height};
 
   border-style: solid;
+
+  &:hover {
+    .hover-white-background {
+      background-color: ${color("white100")} !important;
+
+      path {
+        stroke: ${color("white100")} !important;
+      }
+    }
+
+    .hover-white-path__svg {
+      path {
+        stroke: ${color("white100")} !important;
+      }
+    }
+  }
 
   ${(props) => {
     if (!props.loading) {

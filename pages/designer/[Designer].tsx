@@ -28,15 +28,15 @@ const Designer = screenTrack(({ router }) => {
   }
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
-  const [fetchingMore, setFetchingMore] = useState(false)
+  const [productCount, setProductCount] = useState(8)
   const slug = router.query.Designer || ""
 
   const imageContainer = useRef(null)
 
-  const { data, fetchMore, loading } = useQuery(GET_BRAND, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_BRAND, {
     variables: {
       slug,
-      first: 8,
+      first: productCount,
       skip: 0,
       orderBy: "publishedAt_DESC",
     },
@@ -51,39 +51,17 @@ const Designer = screenTrack(({ router }) => {
   const onScroll = debounce(() => {
     const shouldLoadMore =
       !loading &&
-      !fetchingMore &&
       !!aggregateCount &&
       aggregateCount > products?.length &&
       window.innerHeight >= imageContainer?.current?.getBoundingClientRect().bottom - 200
 
     if (shouldLoadMore) {
-      setFetchingMore(true)
       fetchMore({
         variables: {
           skip: products?.length,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
-          if (!prev) {
-            return []
-          }
-
-          if (!fetchMoreResult) {
-            return prev
-          }
-
-          const newData = Object.assign({}, prev, {
-            brand: {
-              ...prev.brand,
-              products: {
-                ...prev.brand.products,
-                edges: [...prev.brand?.products?.edges, ...fetchMoreResult.brand?.products?.edges],
-              },
-            },
-          })
-
-          setFetchingMore(false)
-          return newData
-        },
+      }).then((fetchMoreResult: any) => {
+        setProductCount(products.length + fetchMoreResult?.data?.brand?.products?.edges?.length)
       })
     }
   }, 100)
@@ -96,7 +74,6 @@ const Designer = screenTrack(({ router }) => {
   }, [onScroll])
 
   const brand = data && data.brand
-
   const title = brand?.name
   const description = brand?.description
 
@@ -216,7 +193,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
       <Head>
         <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
@@ -230,13 +207,13 @@ const Designer = screenTrack(({ router }) => {
           property="og:image"
           content={
             brand?.images?.[0]?.url.replace("fm=webp", "fm=jpg") ||
-            "https://flare-public-assets.s3.amazonaws.com/logo.png"
+            "https://flare-web.s3.amazonaws.com/assets/og-image.jpg"
           }
         />
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]}>
-        <Grid px={[2, 2, 2, 5, 5]}>
+        <Grid px={[2, 2, 2, 2, 2]}>
           <Row>
             <Col md="6" sm="12">
               <MediaWithHeight greaterThanOrEqual="md">
@@ -244,13 +221,7 @@ const Designer = screenTrack(({ router }) => {
                   <BreadCrumb />
                 </Box>
                 <Flex flexDirection="column" justifyContent="center" height="100%" pb={8}>
-                  {!data ? (
-                    <DesignerTextSkeleton />
-                  ) : (
-                    <>
-                      <TextContent />
-                    </>
-                  )}
+                  {!data ? <DesignerTextSkeleton /> : <TextContent />}
                 </Flex>
               </MediaWithHeight>
               <Media lessThan="md">
@@ -274,7 +245,7 @@ const Designer = screenTrack(({ router }) => {
           </Row>
           <Spacer mb={8} />
         </Grid>
-        <Grid>
+        <Grid px={[0, 2, 2, 2, 2]}>
           <Row ref={imageContainer}>
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>
@@ -283,12 +254,11 @@ const Designer = screenTrack(({ router }) => {
                 </Box>
               </Col>
             ))}
-            {loading ||
-              (fetchingMore && (
-                <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
-                  <Spinner />
-                </Box>
-              ))}
+            {loading && (
+              <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
+                <Spinner />
+              </Box>
+            )}
           </Row>
         </Grid>
       </Box>

@@ -8,6 +8,7 @@ import { VariantSizes } from "../VariantSizes"
 import ContentLoader from "react-content-loader"
 import { ProgressiveImage } from "../Image"
 import { Spacer } from "../Spacer"
+import { Schema, useTracking } from "utils/analytics"
 
 export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showName?: boolean }> = ({
   product,
@@ -15,6 +16,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   showName,
 }) => {
   const image = get(product, "images[0]", { url: "" })
+  const tracking = useTracking()
   let showBrand = true
 
   const brandName = product?.brand?.name
@@ -24,13 +26,13 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
     showBrand = false
   }
 
-  if(!product || loading){
+  if (!product || loading) {
     return (
       <Box m="2px">
         <ContentLoader viewBox="0 0 100 125">
           <rect x={0} y={0} width="100%" height="100%" />
         </ContentLoader>
-        <Spacer mb="5px"/>
+        <Spacer mb="5px" />
         <ContentLoader width="100%" height="42px">
           <rect x={0} y={0} width="40%" height={12} />
           <rect x={0} y={19} width={37} height={12} />
@@ -66,11 +68,24 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   }
 
   return (
-    <ProductContainer key={product.id}>
+    <ProductContainer
+      key={product.id}
+      onClick={() =>
+        tracking.trackEvent({
+          actionName: Schema.ActionNames.ProductTapped,
+          actionType: Schema.ActionTypes.Tap,
+          productName: product.name,
+          productSlug: product.slug,
+          productId: product.id,
+        })
+      }
+    >
       <Link href="/product/[Product]" as={`/product/${product.slug}`}>
-        <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
-        <Spacer mb={1}/>
-        <Text/>
+        <a href={`/product/${product.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
+          <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
+          <Spacer mb={1} />
+          <Text />
+        </a>
       </Link>
     </ProductContainer>
   )

@@ -60,11 +60,14 @@ export interface PageViewEvent extends Event {
 
 export enum PageNames {
   BrandPage = "Brand",
+  CollectionPage = "CollectionPage",
   HomePage = "Home",
   BrowsePage = "Browse",
   ProductPage = "Product",
   SignUpPage = "SignUp",
   AboutPage = "About",
+  GiftPage = "Gift",
+  SearchPage = "Search",
   PrivacyPolicy = "PrivacyPolicy",
   TermsOfService = "TermsOfService",
   App = "App",
@@ -93,6 +96,7 @@ export enum ActionTypes {
  * Action event discriptors / names
  */
 export enum ActionNames {
+  LearnMoreTapped = "Learn more tapped",
   ReadMoreTapped = "Read more tapped",
   // Nav
   NavigationButtonClicked = "Navigation button clicked",
@@ -100,6 +104,11 @@ export enum ActionNames {
   // Home page
   DownloadAppButtonClicked = "Download app button clicked",
   SignUpButtonClicked = "Sign up button clicked",
+  BrowseTheCollectionTapped = "Browse The Collection Tapped",
+  ApplyForMembershipTapped = "Apply For Membership Tapped",
+  FinishYourApplicationTapped = "Finish Your Application Tapped",
+  ResumeMembershipTapped = "Resume Membership Tapped",
+
   // Sign up page
   CreateAccountSubmitButtonClicked = "Create account submit button clicked",
   CustomerMeasurementsSubmitButtonClicked = "Customer measurements submit button clicked",
@@ -122,6 +131,7 @@ export enum ActionNames {
   ProductSaved = "Product Saved",
 
   ReservationConfirmationDoneButtonTapped = "Reservation Confirmation Done Button Clicked",
+  BrandTapped = "Brand Tapped",
   ProductTapped = "Product Tapped",
   ReserveButtonTapped = "Reserve Button Tapped",
   BagTabTapped = "Bag Tab Tapped",
@@ -139,17 +149,21 @@ export enum ActionNames {
   SupportTapped = "Support Tapped",
   PrivacyPolicyTapped = "Privacy Policy Tapped",
   TermsOfServiceTapped = "Terms Of Service Tapped",
+  InstagramFollowTapped = "Instagram Follow Tapped",
+  GetTheIOSAppTapped = "Get The iOS App Tapped",
   LogOutTapped = "Log Out Tapped",
   ChoosePlanTapped = "Choose Plan Tapped",
+  RequestAccessTapped = "Request Access Tapped",
   PlanTapped = "Plan Tapped",
   Tier0PlanTabTapped = "Tier 0 Plan Tab Tapped",
   Tier1PlanTabTapped = "Tier 1 Plan Tab Tapped",
   NotificationToggleTapped = "Notification Toggle Tapped",
-  AddCreditCardTapped = "AddCreditCardTapped",
+  AddCreditCardTapped = "Add Credit Card Tapped",
   GetMeasurementsFinishTapped = "Get Measurements Finish Tapped",
   SizeButtonTapped = "Size Button Tapped",
   SaveProductModalCancelTapped = "Save Product Modal Cancel Tapped",
-  SaveProductModalSaveTapped = "Save Product Modal Save Tapped"
+  SaveProductModalSaveTapped = "Save Product Modal Save Tapped",
+  ApplyPromoCodeTapped = "Apply Promo Code Tapped",
 }
 
 /**

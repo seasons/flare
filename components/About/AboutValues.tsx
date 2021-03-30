@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Sans, Spacer } from "../"
+import { Box, Sans, Spacer } from "components"
 import { Grid, Row, Col } from "../Grid"
 
 const items = [
@@ -23,7 +23,7 @@ const items = [
 
 export const AboutValues: React.FC = () => {
   return (
-    <Grid px={[2, 2, 2, 5, 5]}>
+    <Grid px={[2, 2, 2, 2, 2]}>
       <Sans size="6" style={{ maxWidth: "80%" }}>
         Company values
       </Sans>

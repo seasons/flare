@@ -12,6 +12,7 @@ import { BoxProps } from "../Box"
 export type ButtonVariant =
   | "primaryBlack"
   | "primaryWhite"
+  | "primaryWhiteNoBorder"
   | "secondaryGray"
   | "secondaryOutline"
   | "secondaryOutlineWhite"

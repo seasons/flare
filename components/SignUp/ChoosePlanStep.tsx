@@ -1,14 +1,12 @@
-import { Button, Flex, MaxWidth, Spacer } from "components"
-import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormsTemplate"
+import { Button, Flex, MaxWidth, Sans } from "components"
+import { FormFooterInnerWrapper, FormFooterWrapper } from "components/Forms/FormFooter"
 import gql from "graphql-tag"
-import { apolloClient } from "lib/apollo"
-import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
+import { Box } from "@material-ui/core"
 
 import { MembershipPlans } from "./MembershipPlans"
-import DetailText from "components/Forms/DetailText"
 
 export const PAYMENT_PLANS = gql`
   query GetPaymentPlans {
@@ -36,7 +34,9 @@ export const PAYMENT_PLANS = gql`
         id
         admissions {
           id
-          allAccessEnabled
+          admissable
+          authorizationsCount
+          authorizationWindowClosesAt
         }
       }
     }
@@ -49,64 +49,9 @@ interface ChoosePlanStepProps {
   onSuccess?: () => void
 }
 
-const GET_CHARGEBEE_CHECKOUT = gql`
-  query GetChargebeeCheckout($planID: String!, $email: String, $couponID: String) {
-    chargebeeCheckout(planID: $planID, email: $email, couponID: $couponID) {
-      id
-      type
-      url
-      state
-      embed
-      created_at
-      expires_at
-    }
-  }
-`
-
-export function getChargebeeCheckout(planID: string, email: string): Promise<boolean | void> {
-  let coupon
-  try {
-    const couponData = localStorage?.getItem("coupon")
-    coupon = JSON.parse(couponData)
-  } catch (e) {
-    // Fail silently
-  }
-  // Set up the mutation
-  return new Promise((resolve, reject) => {
-    apolloClient
-      .query({
-        query: GET_CHARGEBEE_CHECKOUT,
-        variables: {
-          planID,
-          email,
-          couponID: coupon?.id,
-        },
-      })
-      .then((resp) => {
-        resolve(resp.data.chargebeeCheckout)
-      })
-      .catch((error) => {
-        // if they already subscribed, provide specific error message
-        if (error.message.includes("already has a subscription")) {
-          reject("Already subscribed. Please contact support@seasons.nyc to update your subscription")
-        } else {
-          reject("Something went wrong. Please try again later")
-        }
-      })
-  })
-}
-
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
   const [selectedPlan, setSelectedPlan] = useState(null)
-  const { data } = useQuery(PAYMENT_PLANS)
-  const { userSession } = useAuthContext()
-
-  useEffect(() => {
-    // @ts-ignore
-    Chargebee.init({
-      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
-    })
-  }, [])
+  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS)
 
   useEffect(() => {
     if (data?.paymentPlans && !selectedPlan) {
@@ -115,34 +60,14 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
     }
   }, [data, selectedPlan, setSelectedPlan])
 
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const faqSections = data?.faq?.sections
 
-  function executeChargebeeCheckout(planID) {
-    // @ts-ignore
-    const chargebee = Chargebee.getInstance()
-    chargebee.openCheckout({
-      hostedPage: async () => {
-        const { email } = userSession.user
-        return await getChargebeeCheckout(planID, email)
-      },
-      error: (error) => {
-        console.error(error)
-        onError?.(error)
-      },
-      success: (hostedPageId) => {
-        onSuccess?.()
-      },
-    })
-  }
-
   return (
-    <>
+    <Box style={{ height: "100%", width: "100%" }}>
       <MembershipPlans
         selectedPlan={selectedPlan}
         setSelectedPlan={setSelectedPlan}
         faqSections={faqSections}
-        allAccessEnabled={allAccessEnabled}
         paymentPlans={data?.paymentPlans}
       />
       <FormFooterWrapper>
@@ -155,11 +80,11 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
               py={1}
               height={["auto", "63px"]}
               style={{ width: "100%" }}
-              px={[2, 2, 2, 5, 5]}
+              px={[2, 2, 2, 2, 2]}
             >
-              <DetailText my={2} size={["2", "4"]}>
+              <Sans color="black50" my={2} size={["2", "4"]}>
                 You can upgrade or change your plan at any time from your account settings.
-              </DetailText>
+              </Sans>
               <Button
                 ml={2}
                 variant="primaryBlack"
@@ -167,7 +92,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
                 type="button"
                 onClick={() => {
                   onPlanSelected(selectedPlan)
-                  executeChargebeeCheckout(selectedPlan.planID)
                 }}
               >
                 Select Plan
@@ -176,6 +100,6 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
           </MaxWidth>
         </FormFooterInnerWrapper>
       </FormFooterWrapper>
-    </>
+    </Box>
   )
 }

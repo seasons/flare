@@ -3,19 +3,16 @@ import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { ChevronIcon } from "components/Icons/ChevronIcon"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { getChargebeeCheckout } from "components/SignUp/ChoosePlanStep"
 import { CheckWithBackground } from "components/SVGs"
 import { ListCheck } from "components/SVGs/ListCheck"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { uniq } from "lodash"
+import { getChargebeeCheckout, initChargebee } from "lib/chargebee"
 import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
-import { TabBar } from "mobile/TabBar"
-import { GET_BAG } from "queries/bagQueries"
+import { GET_BAG } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
-import { Dimensions, Linking } from "react-native"
-import styled from "styled-components"
+import { Linking } from "react-native"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
 import { Coupon } from "utils/calcFinalPrice"
 
@@ -34,6 +31,7 @@ export const GET_PLANS = gql`
       planID
       tier
       itemCount
+      status
     }
     me {
       customer {
@@ -49,7 +47,9 @@ export const GET_PLANS = gql`
         }
         admissions {
           id
-          allAccessEnabled
+          admissable
+          authorizationsCount
+          authorizationWindowClosesAt
         }
       }
     }
@@ -83,15 +83,16 @@ interface ChoosePlanPaneProps {
 }
 
 export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coupon, source }) => {
-  const { data } = useQuery(GET_PLANS)
+  const { previousData, data = previousData } = useQuery(GET_PLANS, {
+    variables: {
+      where: { status: "active" },
+    },
+  })
   const [showSuccess, setShowSuccess] = useState(false)
-  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled
   const plans = data?.paymentPlans
   const faqSections = data?.faq?.sections
   const { closeDrawer } = useDrawerContext()
   const tracking = useTracking()
-  const [currentView, setCurrentView] = useState(0)
-  const [tiers, setTiers] = useState([])
   const [isMutating, setIsMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { userSession } = useAuthContext()
@@ -144,33 +145,17 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
   })
 
   useEffect(() => {
-    // @ts-ignore
-    Chargebee.init({
-      site: process.env.NEXT_PUBLIC_GATSBY_CHARGEBEE_SITE || "seasons-test",
-    })
+    initChargebee()
   }, [])
-
-  useEffect(() => {
-    // Update the selected plan if you switch tabs
-    const newSelectedPlan =
-      plans?.filter(
-        (plan) => tierToReadableText(plan.tier) === tiers?.[currentView] && plan.itemCount === selectedPlan?.itemCount
-      ) || plans?.filter((plan) => tierToReadableText(plan.tier) === tiers?.[currentView])?.[0]
-    setSelectedPlan(newSelectedPlan?.[0])
-  }, [currentView, setSelectedPlan])
 
   useEffect(() => {
     if (plans && plans.length > 0) {
       setSelectedPlan(plans?.[0])
-      const planTiers = uniq(plans?.map((plan) => tierToReadableText(plan.tier)))
-      setTiers(planTiers)
     }
 
     const customerPlan = data?.me?.customer?.membership?.plan
-    const initialPlan = customerPlan ? plans?.find((plan) => plan.id === customerPlan.id) : plans?.[0]
-    const initialTab = customerPlan?.tier === "AllAccess" ? 1 : 0
-
-    setCurrentView(initialTab)
+    const customerPlanInitialPlan = customerPlan && plans?.find((plan) => plan.id === customerPlan.id)
+    const initialPlan = customerPlanInitialPlan ?? plans?.[0]
     setSelectedPlan(initialPlan)
   }, [plans])
 
@@ -224,16 +209,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
   }
 
   const descriptionLines = selectedPlan?.description?.split("\n") || []
-  const planColors = ["#000", "#e6b759"]
-  const currentColor = planColors[currentView] || "black"
-
-  const tierToReadableText = (tier) => {
-    if (tier === "AllAccess") {
-      return "All Access"
-    } else {
-      return tier
-    }
-  }
+  const currentColor = "black"
 
   if (!data) {
     return null
@@ -291,34 +267,8 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
               )
             })}
           </Flex>
-          <Spacer mb={1} />
-          <TabBar
-            tabColor={currentColor}
-            spaceEvenly
-            tabs={tiers}
-            strikethroughTabs={allAccessEnabled ? [] : ["All Access"]}
-            activeTab={currentView}
-            goToPage={(page) => {
-              tracking.trackEvent({
-                actionName:
-                  page === 0 ? TrackSchema.ActionNames.Tier0PlanTabTapped : TrackSchema.ActionNames.Tier1PlanTabTapped,
-                actionType: TrackSchema.ActionTypes.Tap,
-              })
-              if (page === 1 && !allAccessEnabled) {
-                showPopUp({
-                  title: "Not available in your city yet",
-                  note: "All Access is disabled in your area due to shipping time.",
-                  buttonText: "Got it",
-                  onClose: hidePopUp,
-                })
-              } else {
-                setCurrentView(page as number)
-              }
-            }}
-          />
           <Spacer mb={2} />
-          {plans
-            ?.filter((plan) => tierToReadableText(plan.tier) === tiers?.[currentView])
+          {[...(plans ?? [])]
             ?.sort((a, b) => b.itemCount - a.itemCount)
             ?.map((plan) => {
               return (

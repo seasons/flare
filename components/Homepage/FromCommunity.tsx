@@ -30,12 +30,12 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
   }
   return (
     <Grid>
-      <Box px={[2, 2, 2, 5, 5]}>
+      <Box px={[2, 2, 2, 2, 2]}>
         <Display size="7">Latest thoughts</Display>
       </Box>
       <Spacer mb={2} />
       <Media greaterThanOrEqual="md">
-        <Box px={[0, 0, 0, 3, 3]}>
+        <Box px={[0, 0, 0, 0, 0]}>
           <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
             {blogPosts.map((post, index) => {
               return (

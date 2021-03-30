@@ -3,15 +3,16 @@ import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
-import { GET_LOCAL_BAG_ITEMS } from "queries/bagQueries"
+import { GET_LOCAL_BAG_ITEMS } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
-import { Schema, useTracking } from "utils/analytics"
-
+import { useTracking } from "utils/analytics"
 import { useLazyQuery } from "@apollo/client"
-
+import { ProductBuyAlertTabType } from "@seasons/eclipse"
 import { BagItem } from "./BagItem"
 import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
+import { ProductBuyAlert } from "./ProductBuyAlert"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
 
 const DEFAULT_ITEM_COUNT = 3
 
@@ -25,13 +26,14 @@ export const BagTab: React.FC<{
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
   const tracking = useTracking()
-
+  const { openDrawer } = useDrawerContext()
   const me = data?.me
   const paymentPlans = data?.paymentPlans
   const activeReservation = me?.activeReservation
   const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
   const hasActiveReservation = !!activeReservation
 
+  const [productBuyAlertTabs, setProductBuyAlertTabs] = useState(null)
   const [getLocalBag, { data: localItems }] = useLazyQuery(GET_LOCAL_BAG_ITEMS, {
     variables: {
       ids: items?.map((i) => i.productID),
@@ -48,6 +50,30 @@ export const BagTab: React.FC<{
 
   const paddedItems = assign(fill(new Array(itemCount), { variantID: "", productID: "" }), bagItems) || []
 
+  const handleShowBuyAlert = (bagItem) => {
+    const { name: brandName, websiteUrl: brandHref } = bagItem?.productVariant?.product?.brand
+    const price = bagItem?.productVariant?.price || {
+      buyNewEnabled: false,
+      buNewAvailableForSale: false,
+      buyUsedEnabled: false,
+      buyUsedAvailableForSale: false,
+    }
+
+    const newTab = price.buyNewAvailableForSale
+      ? { type: ProductBuyAlertTabType.NEW, price: price.buyNewPrice, brandHref, brandName }
+      : { type: ProductBuyAlertTabType.NEW_UNAVAILABLE, brandHref, brandName }
+
+    const usedTab = price.buyUsedAvailableForSale
+      ? { type: ProductBuyAlertTabType.USED, price: price.buyUsedPrice, brandHref, brandName }
+      : { type: ProductBuyAlertTabType.USED_UNAVAILABLE }
+
+    setProductBuyAlertTabs({
+      tabs: [newTab, usedTab],
+      initialTab: price.buyNewEnabled ? 0 : 1,
+      productVariantId: bagItem?.productVariant?.id,
+    })
+  }
+
   useEffect(() => {
     if (!authState.isSignedIn) {
       getLocalBag()
@@ -62,15 +88,27 @@ export const BagTab: React.FC<{
   const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
   const showPendingMessage = pauseStatus === "pending" && !!pauseRequest?.pauseDate
 
+  let subTitle
+  if (hasActiveReservation && !!returnReminder) {
+    subTitle = returnReminder
+  } else if (!hasActiveReservation) {
+    subTitle = "Reserve your order below"
+  }
+
   return (
     <Box>
       <Box px={2} pt={4}>
         <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
           <Sans size="5">{hasActiveReservation ? "Current rotation" : "My bag"}</Sans>
+          <Sans size="5" style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => openDrawer("faq")}>
+            View FAQ
+          </Sans>
         </Flex>
-        <Sans size="3" color="black50">
-          {hasActiveReservation && !!returnReminder ? returnReminder : "Reserve your order below"}
-        </Sans>
+        {!!subTitle && (
+          <Sans size="3" color="black50">
+            {subTitle}
+          </Sans>
+        )}
         <Spacer mb={3} />
       </Box>
       {showPendingMessage && (
@@ -110,10 +148,15 @@ export const BagTab: React.FC<{
             <BagItem
               removeItemFromBag={deleteBagItem}
               removeFromBagAndSaveItem={removeFromBagAndSaveItem}
+              onShowBuyAlert={handleShowBuyAlert}
               index={index}
               bagItem={bagItem}
             />
-            {!hasActiveReservation && index !== items.length - 1 && <Separator color={color("black10")} />}
+            {!hasActiveReservation && index !== items.length - 1 && (
+              <Box pt={1}>
+                <Separator color={color("black10")} />
+              </Box>
+            )}
           </Box>
         ) : (
           <Box key={index} px={2}>
@@ -122,6 +165,23 @@ export const BagTab: React.FC<{
           </Box>
         )
       })}
+      {hasActiveReservation && (
+        <Box px={2}>
+          <Spacer mb={3} />
+          <Sans size="4" color="black50" style={{ textAlign: "center" }}>
+            Questions about your order?{" "}
+            <a
+              href="mailto:membership@seasons.nyc?subject=Support"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <span style={{ textDecoration: "underline", cursor: "pointer" }}>Contact us</span>
+            </a>
+          </Sans>
+        </Box>
+      )}
+      {productBuyAlertTabs && (
+        <ProductBuyAlert onDismiss={() => setProductBuyAlertTabs(null)} {...productBuyAlertTabs} />
+      )}
     </Box>
   )
 }
