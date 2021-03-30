@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client"
-import { BrandNavItemFragment } from "components/Nav"
 
 export const GET_CATEGORIES = gql`
   query GetCategories {
@@ -8,31 +7,6 @@ export const GET_CATEGORIES = gql`
       slug
     }
   }
-`
-
-export const GET_BROWSE_BRANDS_AND_CATEGORIES = gql`
-  query GetBrandsAndCategories {
-    navigationBrands: brands(
-      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
-      orderBy: name_ASC
-    ) {
-      ...BrandNavItem
-    }
-    categories(where: { visible: true }, orderBy: name_ASC) {
-      id
-      slug
-      name
-      children {
-        slug
-      }
-    }
-    brands(orderBy: name_ASC, where: { products_some: { id_not: null }, name_not: null, published: true }) {
-      id
-      slug
-      name
-    }
-  }
-  ${BrandNavItemFragment}
 `
 
 export const GET_BROWSE_PRODUCTS = gql`

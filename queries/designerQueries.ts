@@ -1,7 +1,8 @@
 import { gql } from "@apollo/client"
+import { NavFragment_Query } from "components/Nav/Nav"
 
-export const GET_BRAND = gql`
-  query GetBrand($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
+export const Brand_Query = gql`
+  query Brand_Query($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
     brand(where: { slug: $slug }) {
       id
       name
@@ -46,7 +47,9 @@ export const GET_BRAND = gql`
         }
       }
     }
+    ...NavFragment_Query
   }
+  ${NavFragment_Query}
 `
 
 export const GET_BRANDS = gql`

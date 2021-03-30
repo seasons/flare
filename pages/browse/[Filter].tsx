@@ -6,7 +6,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
-import { useQuery } from "@apollo/client"
+import { gql, useQuery } from "@apollo/client"
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"
@@ -17,8 +17,29 @@ import { Media } from "../../components/Responsive"
 import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { initializeApollo } from "../../lib/apollo"
-import { GET_BROWSE_BRANDS_AND_CATEGORIES, GET_BROWSE_PRODUCTS, GET_CATEGORIES } from "../../queries/brandQueries"
+import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
+import { NavFragment_Query } from "components/Nav/Nav"
+
+export const Browse_Query = gql`
+  query Browse_Query {
+    categories(where: { visible: true }, orderBy: name_ASC) {
+      id
+      slug
+      name
+      children {
+        slug
+      }
+    }
+    brands(orderBy: name_ASC, where: { products_some: { id_not: null }, name_not: null, published: true }) {
+      id
+      slug
+      name
+    }
+    ...NavFragment_Query
+  }
+  ${NavFragment_Query}
+`
 
 const pageSize = 21
 
@@ -50,7 +71,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [currentCategory, setCurrentCategory] = useState(category)
   const [currentBrand, setCurrentBrand] = useState(brand)
   const [currentPage, setCurrentPage] = useState(Number(page))
-  const { data: menuData, previousData: previousMenuData = menuData } = useQuery(GET_BROWSE_BRANDS_AND_CATEGORIES)
+  const { previousData: previousMenuData, data: menuData = previousMenuData } = useQuery(Browse_Query)
   const [currentURL, setCurrentURL] = useState("")
   const [paramsString, setParamsString] = useState("")
   const [params, setParams] = useState<SizeFilterParams>({
@@ -61,7 +82,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { currentTops, currentBottoms, availableOnly } = params
 
-  const navigationData = previousMenuData?.navigationBrands.brands
+  const featuredBrandItems = menuData?.navigationBrands || []
 
   const skip = (currentPage - 1) * pageSize
 
@@ -161,7 +182,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const categories = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.categories ?? [])], [menuData])
   const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
-  const featuredBrandItems = navigationData?.brands || []
 
   return (
     <>
@@ -296,7 +316,7 @@ export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
   const response = await apolloClient.query({
-    query: GET_BROWSE_BRANDS_AND_CATEGORIES,
+    query: Browse_Query,
   })
 
   const paths = [{ params: { Filter: `all+all` } }]
@@ -342,7 +362,7 @@ export async function getStaticProps({ params }) {
   })
 
   await apolloClient.query({
-    query: GET_BROWSE_BRANDS_AND_CATEGORIES,
+    query: Browse_Query,
   })
 
   return {

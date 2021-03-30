@@ -12,12 +12,10 @@ import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { GET_BRAND, GET_BRANDS } from "queries/designerQueries"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import { Brand_Query } from "queries/designerQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
 
 const Designer = screenTrack(({ router }) => {
@@ -33,7 +31,7 @@ const Designer = screenTrack(({ router }) => {
 
   const imageContainer = useRef(null)
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_BRAND, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(Brand_Query, {
     variables: {
       slug,
       first: productCount,
@@ -42,11 +40,9 @@ const Designer = screenTrack(({ router }) => {
     },
   })
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
-
   const products = data?.brand?.products?.edges
   const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
-  const featuredBrandItems = navigationData?.brands || []
+  const featuredBrandItems = data?.navigationBrands || []
 
   const onScroll = debounce(() => {
     const shouldLoadMore =
@@ -270,7 +266,7 @@ export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
   const response = await apolloClient.query({
-    query: GET_BRANDS,
+    query: Brand_Query,
   })
 
   const paths = []
@@ -293,17 +289,13 @@ export async function getStaticProps({ params }) {
   const filter = params?.Designer
 
   await apolloClient.query({
-    query: GET_BRAND,
+    query: Brand_Query,
     variables: {
       slug: filter,
       first: 8,
       skip: 0,
       orderBy: "publishedAt_DESC",
     },
-  })
-
-  await apolloClient.query({
-    query: NAVIGATION_QUERY,
   })
 
   return {

@@ -1,15 +1,9 @@
-import { BrandNavItemFragment } from "components/Nav/BrandsNavItem"
 import gql from "graphql-tag"
 import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
+import { NavFragment_Query } from "components/Nav/Nav"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
-    navigationBrands: brands(
-      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
-      orderBy: name_ASC
-    ) {
-      ...BrandNavItem
-    }
     me {
       customer {
         id
@@ -108,10 +102,11 @@ export const GET_PRODUCT = gql`
       }
       ...ProductBuyCTA_ProductFragment
     }
+    ...NavFragment_Query
   }
-  ${BrandNavItemFragment}
   ${ProductBuyCTA_ProductFragment}
   ${ProductBuyCTA_ProductVariantFragment}
+  ${NavFragment_Query}
 `
 
 export const GET_STATIC_PRODUCTS = gql`

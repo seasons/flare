@@ -5,7 +5,7 @@ import { ProductHit } from "components/Search/ProductHit"
 import { SearchProvider } from "components/Search/SearchProvider"
 import { initializeApollo } from "lib/apollo"
 import { useRouter, withRouter } from "next/router"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import { Navigation_Query } from "queries/navigationQueries"
 import React from "react"
 import { connectSearchBox, Hits, Index } from "react-instantsearch-dom"
 import styled from "styled-components"
@@ -37,7 +37,7 @@ const Search: React.FC = screenTrack(({ router }) => {
 })(() => {
   const router = useRouter()
   const query = router.query?.q as string
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
+  const { data: navigationData } = useQuery(Navigation_Query)
   const featuredBrandItems = navigationData?.brands || []
 
   if (!query) {
@@ -82,7 +82,7 @@ export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
-    query: NAVIGATION_QUERY,
+    query: Navigation_Query,
   })
 
   return {

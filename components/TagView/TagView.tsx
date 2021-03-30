@@ -7,13 +7,12 @@ import { Spinner } from "components/Spinner"
 import { debounce } from "lodash"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-import { GET_TAG } from "queries/collectionQueries"
+import { TagView_Query } from "queries/collectionQueries"
 
 const TagView = screenTrack(({ router }) => {
   return {
@@ -23,7 +22,6 @@ const TagView = screenTrack(({ router }) => {
   }
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
-  const [fetchingMore, setFetchingMore] = useState(false)
   const [productCount, setProductCount] = useState(8)
   const tag = decodeURI(router.query.Tag) || ""
 
@@ -38,7 +36,7 @@ const TagView = screenTrack(({ router }) => {
 
   const imageContainer = useRef(null)
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_TAG, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(TagView_Query, {
     variables: {
       tag,
       first: productCount,
@@ -47,11 +45,9 @@ const TagView = screenTrack(({ router }) => {
     },
   })
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
-
   const products = data?.products?.edges
   const aggregateCount = data?.productsAggregate?.aggregate?.count
-  const featuredBrandItems = navigationData?.brands || []
+  const featuredBrandItems = data?.navigationBrands || []
 
   const onScroll = debounce(() => {
     const shouldLoadMore =
@@ -61,7 +57,6 @@ const TagView = screenTrack(({ router }) => {
       window.innerHeight >= imageContainer?.current?.getBoundingClientRect().bottom - 200
 
     if (shouldLoadMore) {
-      setFetchingMore(true)
       fetchMore({
         variables: {
           skip: products?.length,

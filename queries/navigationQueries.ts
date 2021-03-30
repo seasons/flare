@@ -1,14 +1,9 @@
-import { gql } from "@apollo/client"
-import { BrandNavItemFragment } from "components/Nav"
+import gql from "graphql-tag"
+import { NavFragment_Query } from "components/Nav/Nav"
 
-export const NAVIGATION_QUERY = gql`
-  query GetAbout {
-    brands(
-      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
-      orderBy: name_ASC
-    ) {
-      ...BrandNavItem
-    }
+export const Navigation_Query = gql`
+  query Navigation_Query {
+    ...NavFragment_Query
   }
-  ${BrandNavItemFragment}
+  ${NavFragment_Query}
 `

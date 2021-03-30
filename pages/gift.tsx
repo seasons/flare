@@ -1,4 +1,4 @@
-import { Box, Button, Display, Flex, Layout, Media, Separator, Spacer } from "components"
+import { Box, Button, Flex, Layout, Spacer } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Col, Grid, Row } from "components/Grid"
 import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
@@ -8,14 +8,15 @@ import { executeChargebeeCheckout, initChargebee } from "lib/chargebee"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Schema, screenTrack, useTracking } from "utils/analytics"
+import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
 
 import { gql, useQuery } from "@apollo/client"
 import { color, Picture, Sans } from "@seasons/eclipse"
+import { NavFragment_Query } from "components/Nav/Nav"
 
-export const GET_GIFT_PAGE = gql`
-  query GetGiftPage($where: PaymentPlanWhereInput) {
+export const Gift_Query = gql`
+  query Gift_Query($where: PaymentPlanWhereInput) {
     paymentPlans(where: $where) {
       id
       name
@@ -26,14 +27,9 @@ export const GET_GIFT_PAGE = gql`
       tier
       itemCount
     }
-    brands(
-      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
-      orderBy: name_ASC
-    ) {
-      name
-      slug
-    }
+    ...NavFragment_Query
   }
+  ${NavFragment_Query}
 `
 
 const image = require("public/images/gift-2.jpg")
@@ -42,14 +38,13 @@ const Gift = screenTrack(() => ({
   page: Schema.PageNames.GiftPage,
   path: "/gift",
 }))(() => {
-  const tracking = useTracking()
   const router = useRouter()
-  const { previousData, data = previousData } = useQuery(GET_GIFT_PAGE, {
+  const { previousData, data = previousData } = useQuery(Gift_Query, {
     variables: {
       where: { status: "active" },
     },
   })
-  const featuredBrandItems = data?.brands || []
+  const featuredBrandItems = data?.navigationBrands || []
   const plans = data?.paymentPlans
 
   const [selectedPlan, setSelectedPlan] = useState(null)

@@ -1,6 +1,6 @@
 import { Layout } from "components"
 import { withRouter } from "next/router"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import { Navigation_Query } from "queries/navigationQueries"
 import React from "react"
 import { Schema, screenTrack } from "utils/analytics"
 
@@ -14,9 +14,9 @@ const CollectionScene = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
+  const { data: navigationData } = useQuery(Navigation_Query)
   const collectionSlug = decodeURI(router.query.Collection)
-  const featuredBrandItems = navigationData?.brands || []
+  const featuredBrandItems = navigationData?.navigationBrands || []
 
   return (
     <Layout fixedNav includeDefaultHead={false} brandItems={featuredBrandItems}>

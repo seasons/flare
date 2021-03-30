@@ -1,7 +1,8 @@
 import { gql } from "@apollo/client"
+import { NavFragment_Query } from "components/Nav/Nav"
 
-export const GET_TAG = gql`
-  query GetTag($tag: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
+export const TagView_Query = gql`
+  query TagView_Query($tag: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
     productsAggregate: productsConnection(where: { AND: [{ tags_some: { name: $tag } }, { status: Available }] }) {
       aggregate {
         count
@@ -36,5 +37,7 @@ export const GET_TAG = gql`
         }
       }
     }
+    ...NavFragment_Query
   }
+  ${NavFragment_Query}
 `

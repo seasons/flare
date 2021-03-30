@@ -12,7 +12,6 @@ import {
 } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import React, { useEffect } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
@@ -30,9 +29,8 @@ const Home = screenTrack(() => ({
   })
   const { updateUserSession } = useAuthContext()
   const router = useRouter()
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
-  const featuredBrandItems = navigationData?.brands || []
+  const featuredBrandItems = data?.navigationBrands || []
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
 
   const communityPosts = data?.blogPosts?.slice(1, 3)
@@ -147,9 +145,6 @@ export async function getStaticProps() {
   await Promise.all([
     apolloClient.query({
       query: Home_Query,
-    }),
-    apolloClient.query({
-      query: NAVIGATION_QUERY,
     }),
   ])
 

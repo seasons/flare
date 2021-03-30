@@ -1,22 +1,27 @@
 import React from "react"
 import { NavItem } from "./NavItem"
 import { MENU_HEIGHT } from "./MobileNav"
-import { Sans, Box, Media, Separator, Button, Flex } from "components"
+import { Sans, Box, Media, Separator, Button } from "components"
 import styled from "styled-components"
 import { ClickAwayListener, Grow, Paper, Popper, Modal } from "@material-ui/core"
 import { color } from "helpers/color"
 import NextLink from "next/link"
-import { gql } from "@apollo/client"
+import gql from "graphql-tag"
 import { Schema, useTracking } from "utils/analytics"
 
 type Props = {
   brandItems: Array<{ slug: string; name: string }>
 }
 
-export const BrandNavItemFragment = gql`
-  fragment BrandNavItem on Brand {
-    name
-    slug
+export const BrandsNavItemFragment_Query = gql`
+  fragment BrandsNavItemFragment_Query on Query {
+    navigationBrands: brands(
+      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
+      orderBy: name_ASC
+    ) {
+      name
+      slug
+    }
   }
 `
 
