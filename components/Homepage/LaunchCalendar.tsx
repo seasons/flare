@@ -5,6 +5,7 @@ import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import styled from "styled-components"
 import { DateTime } from "luxon"
+import { useRouter } from "next/router"
 
 export const LaunchCalendarFragment_Query = gql`
   fragment LaunchCalendarFragment_Query on Query {
@@ -13,6 +14,9 @@ export const LaunchCalendarFragment_Query = gql`
       launchAt
       brand {
         id
+        slug
+        published
+        websiteUrl
         logoImage {
           id
           url
@@ -20,6 +24,8 @@ export const LaunchCalendarFragment_Query = gql`
       }
       collection {
         id
+        published
+        slug
         title
       }
     }
@@ -27,7 +33,25 @@ export const LaunchCalendarFragment_Query = gql`
 `
 
 const Item = ({ launch, index, breakpoint }) => {
-  const imageURL = launch?.brand?.logoImage?.url
+  const router = useRouter()
+
+  const brand = launch?.brand
+  const collection = launch?.collection
+  const imageURL = brand?.logoImage?.url
+
+  const onPress = () => {
+    let link
+    if (brand?.published) {
+      link = `/designer/${brand.slug}`
+    } else if (brand?.websiteUrl) {
+      link = brand.websiteUrl
+    } else if (collection?.slug && collection?.published) {
+      link = `/collection/${collection.slug}`
+    }
+    if (link) {
+      router.push(link)
+    }
+  }
 
   let breakpointStyles
 
@@ -50,7 +74,7 @@ const Item = ({ launch, index, breakpoint }) => {
 
   return (
     <Col lg="3" md="6" xs="12">
-      <ItemContainer index={index}>
+      <ItemContainer index={index} onClick={onPress}>
         <LaunchContentWrapper
           p={["70px", "70px", "70px", "40px", "80px"]}
           height="100%"
@@ -163,6 +187,7 @@ const BackgroundImage = styled.div<{ imageURL: string }>`
 const ItemContainer = styled(Box)<{ index: number }>`
   width: 100%;
   position: relative;
+  cursor: pointer;
 `
 
 const DateTextWrapper = styled(Box)<{ breakpointStyles: any }>`
