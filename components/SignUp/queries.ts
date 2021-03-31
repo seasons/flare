@@ -1,14 +1,7 @@
-import { BrandNavItemFragment } from "components/Nav"
 import gql from "graphql-tag"
 
 export const GET_SIGNUP_USER = gql`
   query GetSignupUser {
-    brands(
-      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
-      orderBy: name_ASC
-    ) {
-      ...BrandNavItem
-    }
     me {
       id
       bag {
@@ -42,7 +35,6 @@ export const GET_SIGNUP_USER = gql`
       }
     }
   }
-  ${BrandNavItemFragment}
 `
 
 export const GET_GIFT = gql`

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react"
-
 import { Modal } from "@material-ui/core"
-
 import { LoginView } from "./Login"
 
 interface LoginModalProps {

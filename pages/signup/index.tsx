@@ -1,4 +1,4 @@
-import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
+import { Flex, Layout, Sans, SnackBar } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { PaymentStep } from "components/Payment"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
@@ -48,7 +48,6 @@ const SignUpPage = screenTrack(() => ({
   const router = useRouter()
   const { previousData, data = previousData, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
-  const featuredBrandItems = data?.brands || []
   const { updateUserSession } = useAuthContext()
 
   const [currentStepState, setCurrentStepState] = useState<Steps>(Steps.CreateAccountStep)
@@ -148,7 +147,7 @@ const SignUpPage = screenTrack(() => ({
 
   if (!data || (hasGift && giftLoading) || !currentStepState) {
     return (
-      <Layout hideFooter brandItems={featuredBrandItems}>
+      <Layout hideFooter>
         <Flex>
           <Loader />
         </Flex>
@@ -251,7 +250,7 @@ const SignUpPage = screenTrack(() => ({
 
   return (
     <Elements stripe={stripePromise}>
-      <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
+      <Layout hideFooter showIntercom={false}>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex
           height="100%"

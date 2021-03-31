@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Flex, Media, Sans, Spacer } from "components"
+import { Box, Flex, Media, Sans } from "components"
 import gql from "graphql-tag"
 import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"

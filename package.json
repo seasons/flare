@@ -1,6 +1,6 @@
 {
   "name": "flare",
-  "description": "seasons.nyc main website",
+  "description": "wearseasons.com main website",
   "version": "0.1.0",
   "private": true,
   "cacheDirectories": [
@@ -50,7 +50,7 @@
     "graphql": "^15.3.0",
     "graphql-anywhere": "^4.2.7",
     "luxon": "^1.24.1",
-    "next": "^10.0.5",
+    "next": "^10.1.2",
     "next-fonts": "^1.0.3",
     "next-images": "^1.4.0",
     "next-redux-wrapper": "^6.0.2",

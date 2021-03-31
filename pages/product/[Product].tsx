@@ -1,9 +1,8 @@
-import { Box, Flex, Layout, Spacer } from "components"
+import { Box, Flex, Layout, MaxWidth, Spacer } from "components"
 import { AddToBagButton } from "components/AddToBagButton"
 import { Carousel } from "components/Carousel"
 import { Col, Grid, Row } from "components/Grid"
 import { ProgressiveImage } from "components/Image"
-import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
 import { BreadCrumbs } from "components/Product/BreadCrumbs"
 import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
 import { ProductDetails } from "components/Product/ProductDetails"
@@ -15,14 +14,15 @@ import { Media } from "components/Responsive"
 import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
-import { useRouter, withRouter } from "next/router"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
+import { useRouter, withRouter } from "next/router"
 import { ProductBuyCTA_ProductVariantFragment, ProductBuyCTA_ProductFragment } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack } from "utils/analytics"
 import { filter } from "graphql-anywhere"
 import { useQuery } from "@apollo/client"
+import { Loader } from "mobile/Loader"
+import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -38,7 +38,6 @@ const Product = screenTrack(({ router }) => {
       slug,
     },
   })
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
 
   const { query } = useRouter()
 
@@ -76,7 +75,6 @@ const Product = screenTrack(({ router }) => {
 
   const title = `${product?.name} by ${product?.brand?.name}`
   const description = product && product.description
-  const featuredBrandItems = navigationData?.brands || []
   const variantInStock = selectedVariant?.reservable > 0
 
   const handleNavigateToBrand = (href: string) => {
@@ -84,7 +82,7 @@ const Product = screenTrack(({ router }) => {
   }
 
   return (
-    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false}>
       <Head>
         <title>{title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
@@ -210,26 +208,21 @@ export async function getStaticPaths() {
 }
 
 /*
- If you export an async function called getStaticProps from a page, 
- Next.js will pre-render this page at build time using the 
- props returned by getStaticProps.
+  If you export an async function called getStaticProps from a page,
+  Next.js will pre-render this page at build time using the
+  props returned by getStaticProps.
 */
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo()
 
   const filter = params?.Product
 
-  await Promise.all([
-    apolloClient.query({
-      query: GET_PRODUCT,
-      variables: {
-        slug: filter,
-      },
-    }),
-    apolloClient.query({
-      query: NAVIGATION_QUERY,
-    }),
-  ])
+  await apolloClient.query({
+    query: GET_PRODUCT,
+    variables: {
+      slug: filter,
+    },
+  })
 
   return {
     props: {

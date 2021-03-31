@@ -1,5 +1,5 @@
-import { LaunchCalendarFragment_Query } from "components/Homepage/LaunchCalendar"
 import gql from "graphql-tag"
+import { LaunchCalendarFragment_Query } from "components/Homepage/LaunchCalendar"
 
 const HomePageProductFragment_Product = gql`
   fragment HomePageProductFragment_Product on Product {
@@ -105,9 +105,10 @@ export const Home_Query = gql`
     ) {
       ...HomePageProductFragment_Product
     }
+
     ...LaunchCalendarFragment_Query
   }
 
-  ${HomePageProductFragment_Product}
   ${LaunchCalendarFragment_Query}
+  ${HomePageProductFragment_Product}
 `
