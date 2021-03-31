@@ -2,19 +2,14 @@ import React from "react"
 import { Layout } from "../components"
 import { screenTrack, Schema } from "../utils/analytics"
 import { Grid } from "../components/Grid"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
-import { useQuery } from "@apollo/client"
 import { initializeApollo } from "lib/apollo/apollo"
 
 const PrivacyPolicy = screenTrack(() => ({
   page: Schema.PageNames.PrivacyPolicy,
   path: "/privacy-policy",
 }))(() => {
-  const { previousData, data = previousData } = useQuery(NAVIGATION_QUERY)
-  const featuredBrandItems = data?.brands || []
-
   return (
-    <Layout brandItems={featuredBrandItems}>
+    <Layout>
       <Grid px={[2, 2, 2, 2, 2]}>
         <div className="privacytopsection">
           <div className="privacytopcontainer">
@@ -412,10 +407,6 @@ const PrivacyPolicy = screenTrack(() => ({
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
-
-  await apolloClient.query({
-    query: NAVIGATION_QUERY,
-  })
 
   return {
     props: {

@@ -1,4 +1,4 @@
-import { Box, Button, Display, Flex, Layout, Media, Separator, Spacer } from "components"
+import { Box, Button, Flex, Layout, Spacer } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { Col, Grid, Row } from "components/Grid"
 import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
@@ -8,14 +8,13 @@ import { executeChargebeeCheckout, initChargebee } from "lib/chargebee"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Schema, screenTrack, useTracking } from "utils/analytics"
+import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
-
 import { gql, useQuery } from "@apollo/client"
 import { color, Picture, Sans } from "@seasons/eclipse"
 
-export const GET_GIFT_PAGE = gql`
-  query GetGiftPage($where: PaymentPlanWhereInput) {
+export const Gift_Query = gql`
+  query Gift_Query($where: PaymentPlanWhereInput) {
     paymentPlans(where: $where) {
       id
       name
@@ -26,13 +25,6 @@ export const GET_GIFT_PAGE = gql`
       tier
       itemCount
     }
-    brands(
-      where: { products_some: { id_not: null }, name_not: null, featured: true, published: true }
-      orderBy: name_ASC
-    ) {
-      name
-      slug
-    }
   }
 `
 
@@ -42,14 +34,12 @@ const Gift = screenTrack(() => ({
   page: Schema.PageNames.GiftPage,
   path: "/gift",
 }))(() => {
-  const tracking = useTracking()
   const router = useRouter()
-  const { previousData, data = previousData } = useQuery(GET_GIFT_PAGE, {
+  const { previousData, data = previousData } = useQuery(Gift_Query, {
     variables: {
       where: { status: "active" },
     },
   })
-  const featuredBrandItems = data?.brands || []
   const plans = data?.paymentPlans
 
   const [selectedPlan, setSelectedPlan] = useState(null)
@@ -74,14 +64,14 @@ const Gift = screenTrack(() => ({
 
   if (isSuccessPage) {
     return (
-      <Layout brandItems={featuredBrandItems}>
+      <Layout>
         <FormConfirmation status="giftPurchased" showCTAs={false} />
       </Layout>
     )
   }
 
   return (
-    <Layout brandItems={featuredBrandItems}>
+    <Layout>
       <Box>
         <Grid px={[2, 2, 2, 2, 2]} py={12}>
           <Row>

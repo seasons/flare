@@ -1,9 +1,7 @@
 import { PopUpProvider } from "components/PopUp/PopUpProvider"
 import { useRouter } from "next/router"
-import React, { useEffect } from "react"
-import styled from "styled-components"
+import React from "react"
 import { useAuthContext } from "lib/auth/AuthContext"
-
 import { Theme } from "../lib/theme"
 import { Box } from "./Box"
 import { Drawer } from "./Drawer/Drawer"
@@ -12,12 +10,27 @@ import { Footer } from "./Footer"
 import { Intercom } from "./Intercom"
 import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
-import { Nav } from "./Nav"
+import { Nav, NavFragment_Query } from "./Nav/Nav"
 import { PopUp } from "./PopUp"
-import { useMutation } from "@apollo/client"
-import { SET_IMPACT_ID } from "queries/customerQueries"
+import { useMutation, useQuery } from "@apollo/client"
 import { ModalProvider } from "./Modal/ModalProvider"
 import { Modal } from "./Modal"
+import { gql } from "@apollo/client"
+
+export const SET_IMPACT_ID = gql`
+  mutation SetImpactID($impactId: String) {
+    addCustomerDetails(details: { impactId: $impactId }) {
+      id
+    }
+  }
+`
+
+export const Layout_Query = gql`
+  query Layout_Query {
+    ...NavFragment_Query
+  }
+  ${NavFragment_Query}
+`
 
 interface LayoutProps {
   fixedNav?: boolean
@@ -25,7 +38,6 @@ interface LayoutProps {
   children?: any
   footerBottomPadding?: string | string[]
   includeDefaultHead?: boolean
-  brandItems: { name: string; slug: string }[]
   showIntercom?: boolean
 }
 
@@ -35,10 +47,13 @@ export const Layout = ({
   footerBottomPadding,
   includeDefaultHead = true,
   showIntercom = false,
-  brandItems,
 }: LayoutProps) => {
   const { authState } = useAuthContext()
   const [setImpactId] = useMutation(SET_IMPACT_ID)
+
+  const { previousData, data = previousData } = useQuery(Layout_Query)
+
+  const brandItems = data?.navigationBrands
 
   // If there are any UTM params, store them in a cookie
   // If there is an impact click id, store it in a cookie

@@ -8,8 +8,8 @@ import { Box } from "@material-ui/core"
 
 import { MembershipPlans } from "./MembershipPlans"
 
-export const PAYMENT_PLANS = gql`
-  query GetPaymentPlans {
+export const ChoosePlanStep_Query = gql`
+  query ChoosePlanStep_Query {
     paymentPlans(where: { status: "active" }) {
       id
       name
@@ -51,7 +51,7 @@ interface ChoosePlanStepProps {
 
 export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, onError, onSuccess }) => {
   const [selectedPlan, setSelectedPlan] = useState(null)
-  const { previousData, data = previousData } = useQuery(PAYMENT_PLANS)
+  const { previousData, data = previousData } = useQuery(ChoosePlanStep_Query)
 
   useEffect(() => {
     if (data?.paymentPlans && !selectedPlan) {

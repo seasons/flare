@@ -2,7 +2,7 @@ import gql from "graphql-tag"
 import React, { useEffect, useState } from "react"
 import { useMutation } from "@apollo/client"
 import { TriageProgressScreen } from "./TriageProgressScreen"
-import { PAYMENT_PLANS } from "./ChoosePlanStep"
+import { ChoosePlanStep_Query } from "./ChoosePlanStep"
 import { identify } from "utils/analytics/track"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { Home_Query } from "queries/homeQueries"
@@ -54,7 +54,7 @@ export const TriageStep: React.FC<TriagePaneProps> = ({ check, onTriageComplete 
       {
         query: Home_Query,
       },
-      { query: PAYMENT_PLANS },
+      { query: ChoosePlanStep_Query },
     ],
     awaitRefetchQueries: true,
   })

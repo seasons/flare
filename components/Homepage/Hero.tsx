@@ -110,7 +110,12 @@ const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
         <>
           {"Have a question about membership? "}
           {/* TODO: Add a mailto link here */}
-          <a style={{ textDecoration: "underline" }}>Contact Us</a>
+          <a
+            href="mailto:membership@seasons.nyc?subject=Hello"
+            style={{ textDecoration: "underline", color: color("black100") }}
+          >
+            Contact Us
+          </a>
         </>
       )
       break

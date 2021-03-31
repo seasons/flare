@@ -65,11 +65,12 @@ export const PaymentBagItem: React.FC<PaymentBagItemProps> = ({ index, bagItem, 
   )
 }
 
-const BagItemContainer = styled(Flex)`
+const BagItemContainer = styled(Box)`
   height: 216px;
   overflow: hidden;
   flex-direction: row;
   background-color: ${color("white100")};
   border: 1px solid ${color("black10")};
   border-radius: 8px;
+  display: flex;
 `

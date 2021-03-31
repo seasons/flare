@@ -4,7 +4,18 @@ import FadeIn from "react-fade-in"
 
 import { PaymentRequestButtonElement, useStripe } from "@stripe/react-stripe-js"
 
-import { PaypalButton } from "./PaypalButton"
+import { PaypalButton, PayPalFragment_PaymentPlan } from "./PaypalButton"
+import { gql } from "@apollo/client"
+
+export const PaymentExpressButtonsFragment_PaymentPlan = gql`
+  fragment PaymentExpressButtonsFragment_PaymentPlan on PaymentPlan {
+    id
+    name
+    estimate
+    ...PayPalFragment_PaymentPlan
+  }
+  ${PayPalFragment_PaymentPlan}
+`
 
 export const PaymentExpressButtons = ({ plan, onPaymentMethodReceived }) => {
   const stripe = useStripe()
