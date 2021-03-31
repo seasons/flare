@@ -70,18 +70,6 @@ const Product = screenTrack(({ router }) => {
     refetch()
   }, [authState.isSignedIn])
 
-  if (router.isFallback) {
-    return (
-      <Layout fixedNav hideFooter>
-        <MaxWidth>
-          <Flex>
-            <Loader />
-          </Flex>
-        </MaxWidth>
-      </Layout>
-    )
-  }
-
   const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
   const isInBag = updatedVariant?.isInBag || false
 
