@@ -219,11 +219,11 @@ export async function getStaticPaths() {
   }
 }
 
-// /*
-//  If you export an async function called getStaticProps from a page,
-//  Next.js will pre-render this page at build time using the
-//  props returned by getStaticProps.
-// */
+/*
+  If you export an async function called getStaticProps from a page,
+  Next.js will pre-render this page at build time using the
+  props returned by getStaticProps.
+*/
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo()
 
