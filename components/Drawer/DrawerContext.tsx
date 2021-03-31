@@ -12,9 +12,10 @@ export type DrawerView =
   | "paymentAndShipping"
   | "resumeConfirmation"
   | "choosePlan"
-  | "editPaymentAndShipping"
+  | "editShipping"
   | "reviewOrder"
   | "orderConfirmation"
+  | "editPaymentMethod"
 
 export const DrawerContext = React.createContext({
   isOpen: false,

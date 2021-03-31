@@ -1,17 +1,15 @@
 import { Button, Display, Sans, Spacer, Text } from "components"
 import { Link } from "components/Link"
-import { PAYMENT_PLANS } from "components/SignUp/ChoosePlanStep"
+import { ChoosePlanStep_Query } from "components/SignUp/ChoosePlanStep"
 import { Field, Form, Formik } from "formik"
 import { TextField } from "formik-material-ui"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { ResetPassword } from "mobile/LogIn/ResetPassword"
 import React, { useState } from "react"
-import { SET_IMPACT_ID } from "queries/customerQueries"
-
 import { useMutation } from "@apollo/client"
 import { Box, colors, Fade, Slide, styled } from "@material-ui/core"
-import { HOME_QUERY_WEB } from "@seasons/eclipse"
+import { SET_IMPACT_ID } from "components/Layout"
 
 const LOG_IN = gql`
   mutation LogIn($email: String!, $password: String!) {
@@ -67,7 +65,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       }
     },
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: HOME_QUERY_WEB }, { query: PAYMENT_PLANS }],
+    refetchQueries: [{ query: ChoosePlanStep_Query }],
   })
 
   const [setImpactId] = useMutation(SET_IMPACT_ID)

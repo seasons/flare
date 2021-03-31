@@ -1,7 +1,6 @@
-import { Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
+import { Flex, Layout, Sans, SnackBar } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { PaymentStep } from "components/Payment"
-import { ChoosePlanStep } from "components/SignUp/ChoosePlanStep"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
 import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
@@ -49,7 +48,6 @@ const SignUpPage = screenTrack(() => ({
   const router = useRouter()
   const { previousData, data = previousData, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
   const { data: localItems } = useQuery(GET_LOCAL_BAG)
-  const featuredBrandItems = data?.brands || []
   const { updateUserSession } = useAuthContext()
 
   const [currentStepState, setCurrentStepState] = useState<Steps>(Steps.CreateAccountStep)
@@ -108,6 +106,13 @@ const SignUpPage = screenTrack(() => ({
   }, [customerStatus, hasSetMeasurements, hasBagItems])
 
   useEffect(() => {
+    tracking.trackEvent({
+      actionName: currentStepState,
+      actionType: Schema.ActionTypes.ViewedPageStep,
+    })
+  }, [currentStepState])
+
+  useEffect(() => {
     setShowReferrerSplash(!!router.query.referrer_id)
   }, [router.query?.referrer_id])
 
@@ -142,7 +147,7 @@ const SignUpPage = screenTrack(() => ({
 
   if (!data || (hasGift && giftLoading) || !currentStepState) {
     return (
-      <Layout hideFooter brandItems={featuredBrandItems}>
+      <Layout hideFooter>
         <Flex>
           <Loader />
         </Flex>
@@ -245,7 +250,7 @@ const SignUpPage = screenTrack(() => ({
 
   return (
     <Elements stripe={stripePromise}>
-      <Layout hideFooter brandItems={featuredBrandItems} showIntercom={false}>
+      <Layout hideFooter showIntercom={false}>
         <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
         <Flex
           height="100%"

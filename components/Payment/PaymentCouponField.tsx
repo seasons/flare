@@ -6,7 +6,7 @@ import { Schema as TrackSchema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
 import { Input } from "@material-ui/core"
-import { Box, Sans, Spacer } from "@seasons/eclipse"
+import { Box, Sans, Spacer } from "components"
 
 const CHECK_COUPON = gql`
   mutation CheckCoupon($couponID: String!) {
@@ -109,6 +109,6 @@ const Container = styled(Box)`
   transition: all 0.25s;
 `
 
-const ErrorResult = styled(Sans)`
+const ErrorResult = styled((props) => <Sans {...props} />)`
   color: red;
 `

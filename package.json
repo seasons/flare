@@ -1,6 +1,6 @@
 {
   "name": "flare",
-  "description": "seasons.nyc main website",
+  "description": "wearseasons.com main website",
   "version": "0.1.0",
   "private": true,
   "cacheDirectories": [
@@ -15,7 +15,8 @@
     "upload-assets": "node scripts/uploadAssetsToS3.js",
     "heroku-prebuild": "echo \"//registry.npmjs.org/:_authToken=\\${NPM_TOKEN}\" >> .npmrc",
     "heroku-cleanup": "yarn upload-assets",
-    "prettier": "prettier --write 'pages/**/*.{js,ts,tsx,md,graphql}' '*.{js,ts,tsx,md,graphql}' --ignore-path ./.prettierignore"
+    "prettier": "prettier --write 'pages/**/*.{js,ts,tsx,md,graphql}' '*.{js,ts,tsx,md,graphql}' --ignore-path ./.prettierignore",
+    "apollo": "apollo service:push && rm -rf __generated__ && apollo codegen:generate --excludes=node_modules/* --target typescript --tagName gql --outputFlat __generated__"
   },
   "engines": {
     "node": "12"
@@ -51,7 +52,7 @@
     "graphql": "^15.3.0",
     "graphql-anywhere": "^4.2.7",
     "luxon": "^1.24.1",
-    "next": "^10.0.5",
+    "next": "^10.1.2",
     "next-fonts": "^1.0.3",
     "next-images": "^1.4.0",
     "next-redux-wrapper": "^6.0.2",

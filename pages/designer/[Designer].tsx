@@ -8,17 +8,14 @@ import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
 import { initializeApollo } from "lib/apollo"
-import brandSlugs from "lib/brands"
 import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { GET_BRAND, GET_BRANDS } from "queries/designerQueries"
-import { NAVIGATION_QUERY } from "queries/navigationQueries"
+import { Designer_Query, DesignerBrands_Query } from "queries/designerQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
 
 const Designer = screenTrack(({ router }) => {
@@ -32,9 +29,11 @@ const Designer = screenTrack(({ router }) => {
   const [productCount, setProductCount] = useState(8)
   const slug = router.query.Designer || ""
 
+  console.log("slug", slug)
+
   const imageContainer = useRef(null)
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(GET_BRAND, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(Designer_Query, {
     variables: {
       slug,
       first: productCount,
@@ -43,11 +42,8 @@ const Designer = screenTrack(({ router }) => {
     },
   })
 
-  const { data: navigationData } = useQuery(NAVIGATION_QUERY)
-
   const products = data?.brand?.products?.edges
   const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
-  const featuredBrandItems = navigationData?.brands || []
 
   const onScroll = debounce(() => {
     const shouldLoadMore =
@@ -194,7 +190,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false}>
       <Head>
         <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />
@@ -271,10 +267,7 @@ export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
   const response = await apolloClient.query({
-    query: GET_BRANDS,
-    variables: {
-      brandSlugs,
-    },
+    query: DesignerBrands_Query,
   })
 
   const paths = []
@@ -297,17 +290,13 @@ export async function getStaticProps({ params }) {
   const filter = params?.Designer
 
   await apolloClient.query({
-    query: GET_BRAND,
+    query: Designer_Query,
     variables: {
       slug: filter,
       first: 8,
       skip: 0,
       orderBy: "publishedAt_DESC",
     },
-  })
-
-  await apolloClient.query({
-    query: NAVIGATION_QUERY,
   })
 
   return {
