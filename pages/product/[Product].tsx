@@ -74,7 +74,7 @@ const Product = screenTrack(({ router }) => {
 
   if (router.isFallback) {
     return (
-      <Layout fixedNav hideFooter brandItems={featuredBrandItems}>
+      <Layout fixedNav hideFooter>
         <MaxWidth>
           <Flex>
             <Loader />
@@ -96,7 +96,7 @@ const Product = screenTrack(({ router }) => {
   }
 
   return (
-    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false}>
       <Head>
         <title>{title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />

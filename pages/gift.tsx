@@ -12,7 +12,6 @@ import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
 import { gql, useQuery } from "@apollo/client"
 import { color, Picture, Sans } from "@seasons/eclipse"
-import { LayoutFragment_Query } from "components/Layout"
 
 export const Gift_Query = gql`
   query Gift_Query($where: PaymentPlanWhereInput) {
@@ -26,9 +25,7 @@ export const Gift_Query = gql`
       tier
       itemCount
     }
-    ...LayoutFragment_Query
   }
-  ${LayoutFragment_Query}
 `
 
 const image = require("public/images/gift-2.jpg")

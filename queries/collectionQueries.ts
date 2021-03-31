@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client"
-import { LayoutFragment_Query } from "components/Layout"
 
 export const TagView_Query = gql`
   query TagView_Query($tag: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
@@ -37,7 +36,5 @@ export const TagView_Query = gql`
         }
       }
     }
-    ...LayoutFragment_Query
   }
-  ${LayoutFragment_Query}
 `

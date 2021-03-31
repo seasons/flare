@@ -1,4 +1,3 @@
-import { LayoutFragment_Query } from "components/Layout"
 import gql from "graphql-tag"
 
 export const GET_SIGNUP_USER = gql`
@@ -35,9 +34,7 @@ export const GET_SIGNUP_USER = gql`
         }
       }
     }
-    ...LayoutFragment_Query
   }
-  ${LayoutFragment_Query}
 `
 
 export const GET_GIFT = gql`

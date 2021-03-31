@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client"
-import { LayoutFragment_Query } from "components/Layout"
 
 export const Brand_Query = gql`
   query Brand_Query($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
@@ -47,9 +46,7 @@ export const Brand_Query = gql`
         }
       }
     }
-    ...LayoutFragment_Query
   }
-  ${LayoutFragment_Query}
 `
 
 export const GET_BRANDS = gql`

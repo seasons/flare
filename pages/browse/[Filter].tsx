@@ -19,7 +19,6 @@ import { color } from "../../helpers"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { LayoutFragment_Query } from "components/Layout"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -36,9 +35,7 @@ export const Browse_Query = gql`
       slug
       name
     }
-    ...LayoutFragment_Query
   }
-  ${LayoutFragment_Query}
 `
 
 const pageSize = 21
