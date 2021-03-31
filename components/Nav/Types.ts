@@ -9,5 +9,5 @@ export type Link = {
 export interface NavProps {
   fixed?: boolean
   links?: Link[]
-  onClickNotificationBar: (route: { drawerView: string; url: string }) => void
+  onClickNotificationBar?: (route: { drawerView: string; url: string }) => void
 }
