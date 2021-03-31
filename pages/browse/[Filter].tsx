@@ -79,8 +79,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { currentTops, currentBottoms, availableOnly } = params
 
-  const featuredBrandItems = menuData?.navigationBrands || []
-
   const skip = (currentPage - 1) * pageSize
 
   const { previousData, data = previousData, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
@@ -182,7 +180,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   return (
     <>
-      <Layout footerBottomPadding={["59px", "0px"]} brandItems={featuredBrandItems}>
+      <Layout footerBottomPadding={["59px", "0px"]}>
         <Media lessThan="md">
           <MobileFilters
             BrandsListComponent={

@@ -29,7 +29,6 @@ const Home = screenTrack(() => ({
   const { updateUserSession, authState } = useAuthContext()
   const router = useRouter()
 
-  const featuredBrandItems = data?.navigationBrands || []
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const isUserSignedIn = authState?.isSignedIn
@@ -58,7 +57,7 @@ const Home = screenTrack(() => ({
   }
 
   return (
-    <Layout showIntercom brandItems={featuredBrandItems}>
+    <Layout showIntercom>
       <Hero post={data?.blogPosts?.[0]} />
 
       <FeaturedIn />

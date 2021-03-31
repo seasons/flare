@@ -40,7 +40,6 @@ const Gift = screenTrack(() => ({
       where: { status: "active" },
     },
   })
-  const featuredBrandItems = data?.navigationBrands || []
   const plans = data?.paymentPlans
 
   const [selectedPlan, setSelectedPlan] = useState(null)
@@ -65,14 +64,14 @@ const Gift = screenTrack(() => ({
 
   if (isSuccessPage) {
     return (
-      <Layout brandItems={featuredBrandItems}>
+      <Layout>
         <FormConfirmation status="giftPurchased" showCTAs={false} />
       </Layout>
     )
   }
 
   return (
-    <Layout brandItems={featuredBrandItems}>
+    <Layout>
       <Box>
         <Grid px={[2, 2, 2, 2, 2]} py={12}>
           <Row>

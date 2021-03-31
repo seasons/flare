@@ -42,7 +42,6 @@ const Designer = screenTrack(({ router }) => {
 
   const products = data?.brand?.products?.edges
   const aggregateCount = data?.brand?.productsAggregate?.aggregate?.count
-  const featuredBrandItems = data?.navigationBrands || []
 
   const onScroll = debounce(() => {
     const shouldLoadMore =
@@ -189,7 +188,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false}>
       <Head>
         <title>{!!title ? `${title} - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />

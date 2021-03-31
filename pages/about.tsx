@@ -1,19 +1,14 @@
 import { Layout, Spacer, Separator, Box } from "../components"
 import { AboutFooter, AboutHero, AboutValues, AboutWhoWeAre } from "../components/About"
 import { screenTrack, Schema } from "../utils/analytics"
-import { Navigation_Query } from "queries/navigationQueries"
-import { useQuery } from "@apollo/client"
 import { initializeApollo } from "lib/apollo/apollo"
 
 const About = screenTrack(() => ({
   page: Schema.PageNames.AboutPage,
   path: "/about",
 }))(() => {
-  const { previousData, data = previousData } = useQuery(Navigation_Query)
-  const featuredBrandItems = data?.navigationBrands || []
-
   return (
-    <Layout brandItems={featuredBrandItems}>
+    <Layout>
       <AboutHero />
       <Spacer mb={15} />
       <AboutValues />

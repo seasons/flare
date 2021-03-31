@@ -47,7 +47,6 @@ const TagView = screenTrack(({ router }) => {
 
   const products = data?.products?.edges
   const aggregateCount = data?.productsAggregate?.aggregate?.count
-  const featuredBrandItems = data?.navigationBrands || []
 
   const onScroll = debounce(() => {
     const shouldLoadMore =
@@ -113,7 +112,7 @@ const TagView = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout includeDefaultHead={false} brandItems={featuredBrandItems}>
+    <Layout includeDefaultHead={false}>
       <Head>
         <title>{!!tag ? `${tag} Collection - Seasons` : "Seasons"}</title>
         <meta content={description} name="description" />

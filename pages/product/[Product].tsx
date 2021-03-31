@@ -70,8 +70,6 @@ const Product = screenTrack(({ router }) => {
     refetch()
   }, [authState.isSignedIn])
 
-  const featuredBrandItems = previousData?.brands || []
-
   if (router.isFallback) {
     return (
       <Layout fixedNav hideFooter>

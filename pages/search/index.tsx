@@ -38,14 +38,13 @@ const Search: React.FC = screenTrack(({ router }) => {
   const router = useRouter()
   const query = router.query?.q as string
   const { data: navigationData } = useQuery(Navigation_Query)
-  const featuredBrandItems = navigationData?.brands || []
 
   if (!query) {
     return <></>
   }
 
   return (
-    <Layout brandItems={featuredBrandItems}>
+    <Layout>
       <Box pt={"80px"}>
         <Grid px={[2, 2, 2, 2, 2]}>
           <Row>
