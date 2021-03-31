@@ -29,8 +29,6 @@ const Designer = screenTrack(({ router }) => {
   const [productCount, setProductCount] = useState(8)
   const slug = router.query.Designer || ""
 
-  console.log("slug", slug)
-
   const imageContainer = useRef(null)
 
   const { previousData, data = previousData, fetchMore, loading } = useQuery(Designer_Query, {

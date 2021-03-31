@@ -21,8 +21,8 @@ import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack } from "utils/analytics"
 import { filter } from "graphql-anywhere"
 import { useQuery } from "@apollo/client"
-import { Loader } from "mobile/Loader"
 import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
+import { FourOhFour } from "components/FourOhFour/FourOhFour"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -52,6 +52,8 @@ const Product = screenTrack(({ router }) => {
     }
   }, [data])
 
+  console.log("data", data)
+
   const isFromTryWithSeasons = query["try-with-seasons"] === "true"
 
   const product = data && data?.product
@@ -79,6 +81,10 @@ const Product = screenTrack(({ router }) => {
 
   const handleNavigateToBrand = (href: string) => {
     window.location.href = href
+  }
+
+  if (data && !data.product) {
+    return <FourOhFour />
   }
 
   return (
