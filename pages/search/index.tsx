@@ -1,17 +1,14 @@
-import { Box, Display, Layout, MaxWidth, Sans, Spacer } from "components"
+import { Box, Display, Layout, Sans } from "components"
 import { Col, Grid, Row } from "components/Grid"
 import { BrandHit } from "components/Search/BrandHit"
 import { ProductHit } from "components/Search/ProductHit"
 import { SearchProvider } from "components/Search/SearchProvider"
 import { initializeApollo } from "lib/apollo"
 import { useRouter, withRouter } from "next/router"
-import { Navigation_Query } from "queries/navigationQueries"
 import React from "react"
 import { connectSearchBox, Hits, Index } from "react-instantsearch-dom"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
-
-import { useQuery } from "@apollo/client"
 
 const VirtualSearchBox = connectSearchBox(() => null)
 
@@ -37,7 +34,6 @@ const Search: React.FC = screenTrack(({ router }) => {
 })(() => {
   const router = useRouter()
   const query = router.query?.q as string
-  const { data: navigationData } = useQuery(Navigation_Query)
 
   if (!query) {
     return <></>
@@ -79,10 +75,6 @@ const Search: React.FC = screenTrack(({ router }) => {
 
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo()
-
-  await apolloClient.query({
-    query: Navigation_Query,
-  })
 
   return {
     props: {

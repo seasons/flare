@@ -24,10 +24,6 @@ const About = screenTrack(() => ({
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
-  await apolloClient.query({
-    query: Navigation_Query,
-  })
-
   return {
     props: {
       initialApolloState: apolloClient.cache.extract(),
