@@ -106,6 +106,13 @@ const SignUpPage = screenTrack(() => ({
   }, [customerStatus, hasSetMeasurements, hasBagItems])
 
   useEffect(() => {
+    tracking.trackEvent({
+      actionName: currentStepState,
+      actionType: Schema.ActionTypes.ViewedPageStep,
+    })
+  }, [currentStepState])
+
+  useEffect(() => {
     setShowReferrerSplash(!!router.query.referrer_id)
   }, [router.query?.referrer_id])
 

@@ -13,7 +13,8 @@
     "upload-assets": "node scripts/uploadAssetsToS3.js",
     "heroku-prebuild": "echo \"//registry.npmjs.org/:_authToken=\\${NPM_TOKEN}\" >> .npmrc",
     "heroku-cleanup": "yarn upload-assets",
-    "prettier": "prettier --write 'pages/**/*.{js,ts,tsx,md,graphql}' '*.{js,ts,tsx,md,graphql}' --ignore-path ./.prettierignore"
+    "prettier": "prettier --write 'pages/**/*.{js,ts,tsx,md,graphql}' '*.{js,ts,tsx,md,graphql}' --ignore-path ./.prettierignore",
+    "apollo": "apollo service:push && rm -rf __generated__ && apollo codegen:generate --excludes=node_modules/* --target typescript --tagName gql --outputFlat __generated__"
   },
   "engines": {
     "node": "12"

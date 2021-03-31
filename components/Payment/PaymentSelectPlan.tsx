@@ -1,5 +1,5 @@
 import clsx from "classnames"
-import { Flex, Sans } from "components"
+import { Box, Sans } from "components"
 import React from "react"
 import styled from "styled-components"
 import { colors } from "theme/colors"
@@ -39,8 +39,9 @@ const Button = ({ active, children, ...rest }) => {
   )
 }
 
-const ButtonGroup = styled(Flex)`
+const ButtonGroup = styled(Box)`
   flex-direction: row;
+  display: flex;
   overflow: hidden;
 `
 

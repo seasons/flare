@@ -1,11 +1,18 @@
 import React, { useEffect } from "react"
 import FadeIn from "react-fade-in"
 import styled from "styled-components"
+import { gql } from "@apollo/client"
+
+export const PayPalFragment_PaymentPlan = gql`
+  fragment PayPalFragment_PaymentPlan on PaymentPlan {
+    id
+    estimate
+  }
+`
 
 export const PaypalButton = ({ plan }) => {
   useEffect(() => {
     const el = document.getElementsByClassName("paypal-button-container")?.[0]
-
     if (plan && el?.childNodes?.length === 0) {
       ;(window as any).paypal
         ?.Buttons({

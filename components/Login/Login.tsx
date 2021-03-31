@@ -1,6 +1,6 @@
 import { Button, Display, Sans, Spacer, Text } from "components"
 import { Link } from "components/Link"
-import { PAYMENT_PLANS } from "components/SignUp/ChoosePlanStep"
+import { ChoosePlanStep_Query } from "components/SignUp/ChoosePlanStep"
 import { Field, Form, Formik } from "formik"
 import { TextField } from "formik-material-ui"
 import gql from "graphql-tag"
@@ -65,7 +65,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
       }
     },
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: PAYMENT_PLANS }],
+    refetchQueries: [{ query: ChoosePlanStep_Query }],
   })
 
   const [setImpactId] = useMutation(SET_IMPACT_ID)
