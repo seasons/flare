@@ -1,11 +1,10 @@
 import { gql } from "@apollo/client"
 
-export const Brand_Query = gql`
-  query Brand_Query($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
+export const Designer_Query = gql`
+  query Designer_Query($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
     brand(where: { slug: $slug }) {
       id
       name
-      logo
       since
       description
       websiteUrl
@@ -49,8 +48,8 @@ export const Brand_Query = gql`
   }
 `
 
-export const GET_BRANDS = gql`
-  query GetBrands {
+export const DesignerBrands_Query = gql`
+  query DesignerBrands_Query {
     brands(where: { products_some: { id_not: null }, name_not: null, published: true }) {
       id
       slug

@@ -12,7 +12,7 @@ import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { Brand_Query } from "queries/designerQueries"
+import { Designer_Query, DesignerBrands_Query } from "queries/designerQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
@@ -29,9 +29,11 @@ const Designer = screenTrack(({ router }) => {
   const [productCount, setProductCount] = useState(8)
   const slug = router.query.Designer || ""
 
+  console.log("slug", slug)
+
   const imageContainer = useRef(null)
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(Brand_Query, {
+  const { previousData, data = previousData, fetchMore, loading } = useQuery(Designer_Query, {
     variables: {
       slug,
       first: productCount,
@@ -265,7 +267,7 @@ export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
   const response = await apolloClient.query({
-    query: Brand_Query,
+    query: DesignerBrands_Query,
   })
 
   const paths = []
@@ -288,7 +290,7 @@ export async function getStaticProps({ params }) {
   const filter = params?.Designer
 
   await apolloClient.query({
-    query: Brand_Query,
+    query: Designer_Query,
     variables: {
       slug: filter,
       first: 8,
