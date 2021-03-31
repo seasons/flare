@@ -186,8 +186,9 @@ const MobileButtonContainer = styled.div`
   background-color: ${color("white100")};
 `
 
-export const BrandsNavItem: React.FC<Props> = ({ brandItems }) => {
+export const BrandsNavItem: React.FC<Props> = ({ brandItems = [] }) => {
   const resortedBrands = [...brandItems, { name: "View All", slug: "all" }]
+
   return (
     <>
       <Media greaterThanOrEqual="md">
