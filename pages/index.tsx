@@ -12,7 +12,7 @@ import {
 } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 import { Layout } from "components/Layout"
@@ -32,7 +32,7 @@ const Home = screenTrack(() => ({
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const isUserSignedIn = authState?.isSignedIn
-  const [userSignedIn, setUserSignedIn] = useState(isUserSignedIn)
+  const userSignedIn = useRef(isUserSignedIn)
 
   useEffect(() => {
     if (!!data?.me?.customer) {
@@ -42,9 +42,10 @@ const Home = screenTrack(() => ({
 
   useEffect(() => {
     // Keep track of when a user signs in and refresh the page if they do
-    if (isUserSignedIn !== userSignedIn) {
+    if (isUserSignedIn !== userSignedIn.current) {
       refetch()
-      setUserSignedIn(isUserSignedIn)
+      userSignedIn.current = isUserSignedIn
+      console.log("userSignedIn.current", userSignedIn.current)
     }
   }, [isUserSignedIn])
 
