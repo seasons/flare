@@ -22,7 +22,6 @@ import { identify, Schema, screenTrack } from "utils/analytics"
 import { filter } from "graphql-anywhere"
 import { useQuery } from "@apollo/client"
 import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
-import { FourOhFour } from "components/FourOhFour/FourOhFour"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -51,8 +50,6 @@ const Product = screenTrack(({ router }) => {
       }
     }
   }, [data])
-
-  console.log("data", data)
 
   const isFromTryWithSeasons = query["try-with-seasons"] === "true"
 
