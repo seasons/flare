@@ -1,7 +1,18 @@
 import { Flex, Layout, Link, Sans, Spacer } from "components"
+import { NextPage } from "next"
 import React from "react"
+import { Schema, screenTrack } from "utils/analytics"
 
-export const FourOhFour = () => {
+interface ErrorProps {
+  statusCode: number
+}
+
+const ErrorPage: NextPage<ErrorProps> = screenTrack(({ router }) => {
+  return {
+    page: Schema.PageNames.ErrorPage,
+    path: "/error",
+  }
+})(() => {
   return (
     <Layout>
       <Flex
@@ -27,4 +38,6 @@ export const FourOhFour = () => {
       </Flex>
     </Layout>
   )
-}
+})
+
+export default ErrorPage

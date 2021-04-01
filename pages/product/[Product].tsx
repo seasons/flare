@@ -83,10 +83,6 @@ const Product = screenTrack(({ router }) => {
     window.location.href = href
   }
 
-  if (data && !data.product) {
-    return <FourOhFour />
-  }
-
   return (
     <Layout includeDefaultHead={false}>
       <Head>

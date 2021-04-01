@@ -2,7 +2,7 @@ import { gql } from "@apollo/client"
 
 export const Designer_Query = gql`
   query Designer_Query($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
-    brand(where: { slug: $slug }) {
+    brand(where: { slug: $slug }, published: true) {
       id
       name
       since

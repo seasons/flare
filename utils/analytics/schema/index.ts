@@ -71,6 +71,7 @@ export enum PageNames {
   PrivacyPolicy = "PrivacyPolicy",
   TermsOfService = "TermsOfService",
   App = "App",
+  ErrorPage = "ErrorPage",
 }
 
 export enum EntityTypes {
