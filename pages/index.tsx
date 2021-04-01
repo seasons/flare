@@ -20,6 +20,10 @@ import { ProductsRail } from "@seasons/eclipse"
 import { useRouter } from "next/router"
 import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
 import { Home_Query } from "queries/homeQueries"
+import { PartnerModal } from "components/Partner/PartnerModal"
+
+// TODO: Make this read from env vars
+const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
@@ -33,6 +37,8 @@ const Home = screenTrack(() => ({
   const communityPosts = data?.blogPosts?.slice(1, 3)
   const isUserSignedIn = authState?.isSignedIn
   const userSignedIn = useRef(isUserSignedIn)
+
+  const showPartnerModal = SHOW_PARTNER_MODAL_CAMPAIGNS.includes(router.query["utm_campaign"] as string)
 
   useEffect(() => {
     if (!!data?.me?.customer) {
@@ -144,10 +150,29 @@ const Home = screenTrack(() => ({
       <Spacer mb="112px" />
       <TheApp />
       <Spacer mb={10} />
+      <PartnerModal
+        open={showPartnerModal}
+        imageURL={"https://seasons-images.s3.amazonaws.com/email-images/MarcelPlaceholder.jpg"}
+        partnerName={getPartnerNameFromUTMCampaign(router.query["utm_campaign"])}
+      />
     </Layout>
   )
 })
 
+const getPartnerNameFromUTMCampaign = (utm_campaign) => {
+  let name
+  switch (utm_campaign) {
+    case "threadability":
+      name = "Threadability"
+      break
+    case "onedapperstreet":
+      name = "One Dapper Street"
+      break
+    default:
+      break
+  }
+  return name
+}
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
   await Promise.all([
