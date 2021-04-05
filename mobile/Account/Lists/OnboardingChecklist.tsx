@@ -21,6 +21,7 @@ export enum CustomerStatus {
   Suspended = "Suspended",
   Paused = "Paused",
   Deactivated = "Deactivated",
+  PaymentFailed = "PaymentFailed",
 }
 
 interface OnboardingChecklistProps {

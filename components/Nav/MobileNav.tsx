@@ -14,14 +14,28 @@ import { Sans } from "../Typography"
 import { Burger } from "./Burger"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
+import { NotificationBar, useNotificationBarContext } from "@seasons/eclipse"
 
 export const MENU_HEIGHT = "59px"
 
-export const MobileNav: React.FC<NavProps> = ({ links }) => {
+export const MobileNav: React.FC<NavProps> = ({ links, onClickNotificationBar }) => {
   const [isOpen, toggleOpen] = useState(false)
   const router = useRouter()
   const tracking = useTracking()
   const [isLoginOpen, toggleLogin] = useState(false)
+  const {
+    authState: { isSignedIn },
+  } = useAuthContext()
+
+  const {
+    notificationBarState: { show: showNotificationBar },
+  } = useNotificationBarContext()
+
+  // Delay rendering of notif bar by 1 second so simultaneous renders of
+  // notif bar in DesktopNav and MobileNav do not create a race condition
+  // on the backend that ends up creating multiple receipts for a given notif.
+  const [oneSecondHasPassed, setOneSecondHasPassed] = useState(false)
+  setTimeout(() => setOneSecondHasPassed(true), 1000)
 
   useEffect(() => {
     toggleOpen(false)
@@ -61,6 +75,9 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
             toggleLogin(false)
           }}
         />
+        {oneSecondHasPassed && showNotificationBar && (
+          <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isSignedIn} />
+        )}
       </HeaderContainer>
     </>
   )
