@@ -75,6 +75,7 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
     <ReviewOrderBase
       onBackPressed={handleBackPressed}
       onOrderItemPressed={handleOrderItemPressed}
+      onNavigateToBrand={() => {}}
       onOrderSubmitted={handleOrderSubmitted}
       order={order}
       windowWidth={getDrawerWidth()}
