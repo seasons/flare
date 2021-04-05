@@ -165,7 +165,7 @@ const HeaderContainer = styled.div`
   z-index: 100;
   width: 100%;
   height: 58.5px;
-  align-items: center;
+  align-items: flex-start;
 `
 
 const Link = styled.a<{ active?: boolean }>`
