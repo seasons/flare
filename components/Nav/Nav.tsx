@@ -62,10 +62,6 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
   }
 
   const {
-    notificationBarState: { show: showNotificationBar },
-  } = useNotificationBarContext()
-
-  const {
     authState: { isSignedIn },
   } = useAuthContext()
 
@@ -73,15 +69,11 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
     <>
       <Media greaterThanOrEqual="md">
         <DesktopNav links={links} />
-        {/* {showNotificationBar && <Box height="70px" style={{ border: "1px solid black" }} />} */}
       </Media>
       <Media lessThan="md">
         <MobileNav links={links} />
-        {/* {showNotificationBar && <Box height="70px" style={{ border: "1px solid black" }} />} */}
       </Media>
-      {/* <Box px={[0, 0, 0, 2]}> */}
       <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isSignedIn} />
-      {/* </Box> */}
     </>
   )
 }

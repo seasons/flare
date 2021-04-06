@@ -15,15 +15,10 @@ import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
-// import { NotificationBar, useNotificationBarContext } from "@seasons/eclipse"
 
 export const DesktopNav = (props: NavProps) => {
   const { links } = props
   const router = useRouter()
-
-  // const {
-  //   notificationBarState: { show: showNotificationBar },
-  // } = useNotificationBarContext()
 
   const tracking = useTracking()
   const { authState, toggleLoginModal, loginModalOpen } = useAuthContext()
