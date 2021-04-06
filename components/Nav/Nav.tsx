@@ -7,7 +7,10 @@ import { NavProps } from "./Types"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
 import gql from "graphql-tag"
-import { Box, useNotificationBarContext } from "@seasons/eclipse"
+import { Box, NotificationBar, GET_NOTIFICATION_BAR, useNotificationBarContext } from "@seasons/eclipse"
+// import { , useNotificationBarContext } from "@seasons/eclipse"
+import { useQuery } from "@apollo/client"
+import { useAuthContext } from "lib/auth/AuthContext"
 
 type Props = Omit<NavProps, "onClickNotificationBar"> & {
   brandItems: { name: string; slug: string }[]
@@ -62,16 +65,23 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
     notificationBarState: { show: showNotificationBar },
   } = useNotificationBarContext()
 
+  const {
+    authState: { isSignedIn },
+  } = useAuthContext()
+
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopNav links={links} onClickNotificationBar={onClickNotificationBar} />
-        {showNotificationBar && <Box height="50px" />}
+        <DesktopNav links={links} />
+        {/* {showNotificationBar && <Box height="70px" style={{ border: "1px solid black" }} />} */}
       </Media>
       <Media lessThan="md">
-        <MobileNav links={links} onClickNotificationBar={onClickNotificationBar} />
-        {showNotificationBar && <Box height="50px" />}
+        <MobileNav links={links} />
+        {/* {showNotificationBar && <Box height="70px" style={{ border: "1px solid black" }} />} */}
       </Media>
+      {/* <Box px={[0, 0, 0, 2]}> */}
+      <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isSignedIn} />
+      {/* </Box> */}
     </>
   )
 }
