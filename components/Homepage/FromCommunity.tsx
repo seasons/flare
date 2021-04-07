@@ -4,16 +4,19 @@ import { Sans, Spacer, Box, Flex } from "../"
 import { Display } from "../Typography"
 import styled from "styled-components"
 import { Media } from "../Responsive"
+import { imageResize } from "utils/imageResize"
 
 export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
   if (!blogPosts) {
     return null
   }
   const BlogPost = ({ post }) => {
+    const imageSRC = imageResize(post?.image.url ?? "", "large")
+
     return (
       <StyledAnchor href={post.url}>
         <Box>
-          <img src={post.imageURL} alt={post.name} />
+          <img src={imageSRC} alt={post.image?.alt} />
           <Spacer mb={2} />
           <Sans size="7">{post.name}</Sans>
           {post.author && (
