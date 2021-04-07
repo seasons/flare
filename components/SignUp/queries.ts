@@ -32,6 +32,12 @@ export const GET_SIGNUP_USER = gql`
           authorizationsCount
           authorizationWindowClosesAt
         }
+        coupon {
+          id
+          amount
+          type
+          percentage
+        }
       }
     }
   }

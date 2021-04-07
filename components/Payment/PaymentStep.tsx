@@ -33,6 +33,7 @@ interface PaymentStepProps {
   onSuccess?: (data: any) => void
   onError?: (data: any) => void
   onBack?: () => void
+  initialCoupon: { id: string; type: "FixedAmount" | "Percentage"; amount: number; percentage: number }
 }
 
 const PaymentStep_Query = gql`
@@ -77,6 +78,12 @@ const PaymentStep_Query = gql`
           authorizationsCount
           authorizationWindowClosesAt
         }
+        coupon {
+          id
+          amount
+          percentage
+          type
+        }
       }
     }
   }
@@ -90,7 +97,7 @@ const SUBMIT_PAYMENT = gql`
   }
 `
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, onBack }) => {
+export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, onBack, initialCoupon }) => {
   const elements = useElements()
   const stripe = useStripe()
   const [submitPayment] = useMutation(SUBMIT_PAYMENT, {
@@ -113,9 +120,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
   })
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [coupon, setCoupon] = useState(null)
+  const initialCouponWithCode = !!initialCoupon ? { ...initialCoupon, code: initialCoupon.id } : null
+  const [coupon, setCoupon] = useState(initialCouponWithCode)
   const [plan, setPlan] = useState(null)
-  const { previousData, data = previousData, loading } = useQuery(PaymentStep_Query, {
+  const { previousData, data = previousData, loading, refetch } = useQuery(PaymentStep_Query, {
     fetchPolicy: "network-only",
     variables: {
       couponID: !!coupon ? coupon.code : null,
@@ -136,6 +144,17 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       const bagCount = data?.me?.bag.length || 3
       const paymentPlanIndex = bagCount - 1 < data?.paymentPlans?.length ? bagCount - 1 : 0
       setPlan(data?.paymentPlans?.[paymentPlanIndex])
+
+      // If they came straight to checkout and therefore did not get
+      // an initialCoupon, query it and update accordingly.
+      const couponId = data?.me?.customer?.coupon?.id
+      if (!!couponId && !coupon) {
+        setCoupon({
+          ...data?.me?.customer?.coupon,
+          code: couponId,
+        })
+        refetch()
+      }
     }
   }, [data, loading])
 
