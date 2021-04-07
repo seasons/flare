@@ -63,6 +63,7 @@ export const Home_Query = gql`
       image {
         id
         url
+        alt
       }
     }
     paymentPlans(where: { status: "active" }) {
