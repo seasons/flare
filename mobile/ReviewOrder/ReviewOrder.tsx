@@ -71,14 +71,18 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
     })
   }
 
+  const handleNavigateToBrand = (href: string) => {
+    window.location.href = href
+  }
+
   return (
     <ReviewOrderBase
       onBackPressed={handleBackPressed}
       onOrderItemPressed={handleOrderItemPressed}
-      onNavigateToBrand={() => {}}
       onOrderSubmitted={handleOrderSubmitted}
       order={order}
       windowWidth={getDrawerWidth()}
+      onNavigateToBrand={handleNavigateToBrand}
     />
   )
 }
