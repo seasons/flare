@@ -17,7 +17,7 @@ interface PartnerModalProps {
   renderPartnerComponent?: () => React.ReactElement
   partnerName?: string
   detail?: string
-  secondaryCTA: "learnMore" | "browseItems"
+  secondaryCTA?: "learnMore" | "browseItems"
 }
 
 export const PartnerModal: React.FC<PartnerModalProps> = (props) => {
