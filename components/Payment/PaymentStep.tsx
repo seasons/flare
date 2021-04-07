@@ -271,10 +271,11 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                     <PaymentCouponField
                       onApplyPromoCode={(amount, percentage, type, code) => {
                         setCoupon({
-                          amount,
-                          percentage,
-                          type,
-                          code,
+                          amount: amount as number,
+                          percentage: percentage as number,
+                          type: type as "FixedAmount" | "Percentage",
+                          code: code as string,
+                          id: code,
                         })
                       }}
                     />
