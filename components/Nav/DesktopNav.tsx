@@ -15,15 +15,10 @@ import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
-import { NotificationBar, useNotificationBarContext } from "@seasons/eclipse"
 
 export const DesktopNav = (props: NavProps) => {
-  const { links, onClickNotificationBar } = props
+  const { links } = props
   const router = useRouter()
-
-  const {
-    notificationBarState: { show: showNotificationBar },
-  } = useNotificationBarContext()
 
   const tracking = useTracking()
   const { authState, toggleLoginModal, loginModalOpen } = useAuthContext()
@@ -135,11 +130,6 @@ export const DesktopNav = (props: NavProps) => {
                 {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
               </Flex>
             </Flex>
-            {showNotificationBar && (
-              <Box px={[0, 0, 0, 2]}>
-                <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isLoggedIn} />
-              </Box>
-            )}
           </Box>
         </MaxWidth>
         <LoginModal

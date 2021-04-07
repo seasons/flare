@@ -12,7 +12,7 @@ import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
 import { Nav, NavFragment_Query } from "./Nav/Nav"
 import { PopUp } from "./PopUp"
-import { NotificationBar, NotificationBarProvider } from "@seasons/eclipse"
+
 import { useMutation, useQuery } from "@apollo/client"
 import { ModalProvider } from "./Modal/ModalProvider"
 import { Modal } from "./Modal"
@@ -89,21 +89,19 @@ export const Layout = ({
       <ModalProvider>
         <PopUpProvider>
           <DrawerProvider>
-            <NotificationBarProvider>
-              <Theme>
-                {showIntercom && <Intercom />}
-                <Nav brandItems={brandItems} />
-                <MaxWidth height="100%">
-                  <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-                    {children}
-                    {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
-                  </Box>
-                </MaxWidth>
-                <Drawer />
-                <PopUp />
-                <Modal />
-              </Theme>
-            </NotificationBarProvider>
+            <Theme>
+              {showIntercom && <Intercom />}
+              <Nav brandItems={brandItems} />
+              <MaxWidth height="100%">
+                <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+                  {children}
+                  {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
+                </Box>
+              </MaxWidth>
+              <Drawer />
+              <PopUp />
+              <Modal />
+            </Theme>
           </DrawerProvider>
         </PopUpProvider>
       </ModalProvider>
