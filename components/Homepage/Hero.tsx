@@ -13,6 +13,7 @@ import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
 import { Countdown } from "@seasons/eclipse"
 import { Display } from "../Typography"
+import { imageResize } from "utils/imageResize"
 
 interface HeroComponentProps {
   version: "mobile" | "desktop"
@@ -38,13 +39,15 @@ const DesktopTextContent = () => {
 }
 
 const DesktopHero = ({ post }) => {
+  const imageSRC = imageResize(post?.image.url ?? "", "large")
+
   return (
     <MaxWidth>
       <Box width="100%" px={[2, 2, 2, 2, 2]} pb={2}>
         <Flex flexDirection="row" justifyContent="space-between">
           <DesktopTextContent />
           <StyledAnchor href={post?.url}>
-            <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})`, position: "relative" }}>
+            <BackgroundImage style={{ backgroundImage: `url(${imageSRC})`, position: "relative" }}>
               <Box
                 style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
                 pl={0.5}
@@ -61,6 +64,8 @@ const DesktopHero = ({ post }) => {
 }
 
 const MobileHero = ({ post }) => {
+  const imageSRC = imageResize(post?.image.url ?? "", "medium")
+
   return (
     <Grid>
       <Row>
@@ -78,7 +83,7 @@ const MobileHero = ({ post }) => {
               <Spacer mb={4} />
               <MobileImageWrapper>
                 <StyledAnchor href={post?.url}>
-                  <BackgroundImage style={{ backgroundImage: `url(${post?.imageURL})` }}>
+                  <BackgroundImage style={{ backgroundImage: `url(${imageSRC})` }}>
                     <Box
                       style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
                       pl={0.5}
@@ -109,7 +114,6 @@ const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
       bottomDetailText = (
         <>
           {"Have a question about membership? "}
-          {/* TODO: Add a mailto link here */}
           <a
             href="mailto:membership@seasons.nyc?subject=Hello"
             style={{ textDecoration: "underline", color: color("black100") }}

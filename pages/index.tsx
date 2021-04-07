@@ -12,7 +12,7 @@ import {
 } from "components/Homepage"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 import { Layout } from "components/Layout"
