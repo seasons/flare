@@ -14,7 +14,6 @@ import { Sans } from "../Typography"
 import { Burger } from "./Burger"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
-// import { NotificationBar, useNotificationBarContext } from "@seasons/eclipse"
 
 export const MENU_HEIGHT = "59px"
 

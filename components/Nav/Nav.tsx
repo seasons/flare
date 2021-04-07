@@ -7,9 +7,7 @@ import { NavProps } from "./Types"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
 import gql from "graphql-tag"
-import { Box, NotificationBar, GET_NOTIFICATION_BAR, useNotificationBarContext } from "@seasons/eclipse"
-// import { , useNotificationBarContext } from "@seasons/eclipse"
-import { useQuery } from "@apollo/client"
+import { NotificationBar } from "@seasons/eclipse"
 import { useAuthContext } from "lib/auth/AuthContext"
 
 type Props = Omit<NavProps, "onClickNotificationBar"> & {
