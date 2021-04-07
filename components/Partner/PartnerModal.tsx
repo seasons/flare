@@ -16,17 +16,20 @@ interface PartnerModalProps {
   onClose?: () => void
   renderPartnerComponent?: () => React.ReactElement
   partnerName?: string
+  detail?: string
 }
 
 export const PartnerModal: React.FC<PartnerModalProps> = (props) => {
   const [isOpen, setOpen] = useState(false)
   const router = useRouter()
-  const { imageURL, open, onClose, renderPartnerComponent, partnerName } = props
+  const { imageURL, open, onClose, renderPartnerComponent, partnerName, detail: _detail } = props
   const descriptionLines = [
     "Free shipping, returns & dry cleaning.",
     "Purchase items you love directly from the app.",
     "No commitment. Pause or cancel anytime.",
   ]
+  const detail =
+    _detail || "As a member, try on styles at home for 30-days for as low as $65 per month. Get started below."
 
   const Content = ({ size }) => (
     <Container>
@@ -39,16 +42,17 @@ export const PartnerModal: React.FC<PartnerModalProps> = (props) => {
       </CloseButton>
       <Flex flexDirection={size === "small" ? "column" : "row"}>
         <Flex width={size === "small" ? "100%" : "450px"} height="100%">
-          {/* <Picture src={imageURL || ""} /> */}
-          <img src={imageURL || ""} />
+          <Picture src={imageURL || ""} />
         </Flex>
         <Flex flexDirection="column" flex={1} py={size === "small" ? 2 : 4} px={3}>
           <Box mb={2} mt={size === "small" ? 2 : 6}>
-            <Sans size="7">Seasons + {!!renderPartnerComponent ? renderPartnerComponent() : partnerName}</Sans>
+            <Sans size="7">
+              Seasons + {!!renderPartnerComponent ? renderPartnerComponent() : <Underline>{partnerName}</Underline>}
+            </Sans>
           </Box>
           <Box mb={3}>
             <Sans size="4" color="black50">
-              As a member, try on styles at home for 30-days for as low as $65 per month. Get started below.
+              {detail}
             </Sans>
           </Box>
           <Flex flexDirection="column">
@@ -122,7 +126,6 @@ const Underline = styled.a`
 `
 
 const Container = styled(Box)`
-  border: 1px solid #000;
   background: white;
 
   margin: 0 auto;
