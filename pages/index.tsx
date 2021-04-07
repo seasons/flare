@@ -162,14 +162,16 @@ const getPartnerDataFromUTMCampaign = (utm_campaign) => {
   switch (utm_campaign) {
     case "threadability":
       data["partnerName"] = "Threadability"
-      data["detail"] = "Subscribe today to get 25% off your first month's membership fees."
+      data["detail"] = "Subscribe today to get 25% off your first month's membership dues."
+      data["secondaryCTA"] = "browseItems"
       // TODO: Add image url
       break
     case "onedapperstreet":
       data["partnerName"] = "One Dapper Street"
-      data["detail"] = "Subscribe today to get 25% off your first month's membership fees."
+      data["detail"] = "Subscribe today to get 25% off your first month's membership dues."
       // TODO: Replace with real image later
       data["imageURL"] = imageResize("https://seasons-images.s3.amazonaws.com/MarcelPlaceholder.jpg", "medium")
+      data["secondaryCTA"] = "browseItems"
       break
     default:
       break
