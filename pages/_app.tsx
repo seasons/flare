@@ -13,6 +13,7 @@ import { BaseCSS } from "styled-bootstrap-grid"
 import { ApolloProvider } from "@apollo/client"
 import * as Sentry from "@sentry/react"
 import { Integrations } from "@sentry/tracing"
+import { NotificationBar, NotificationBarProvider } from "@seasons/eclipse"
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -29,27 +30,29 @@ function App({ Component, pageProps }) {
   return (
     <AuthProvider apolloClient={apolloClient}>
       <ApolloProvider client={apolloClient}>
-        <FontStyles />
-        <BaseCSS />
-        <RouterProgress />
-        <style type="text/css">{createMediaStyle()}</style>
+        <NotificationBarProvider>
+          <FontStyles />
+          <BaseCSS />
+          <RouterProgress />
+          <style type="text/css">{createMediaStyle()}</style>
 
-        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
-        <link href="/css/app.css" rel="stylesheet" type="text/css" />
-        <link href="/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
-        <link href="/images/webclip.png" rel="apple-touch-icon" />
+          <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+          <link href="/css/app.css" rel="stylesheet" type="text/css" />
+          <link href="/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
+          <link href="/images/webclip.png" rel="apple-touch-icon" />
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-        <script type="text/javascript" src="/js/intercom.js"></script>
-        <script src="https://js.chargebee.com/v2/chargebee.js" async defer />
-        <script
-          src="https://www.paypal.com/sdk/js?client-id=ARy5d0-3a-eUf8v_5ZaBdJ42ZJ8RDJcH-zCmtXNsX907lWBgkOPYX3n-4HPRtymgjZFrA6srEjZujGVd"
-          async
-          defer
-        ></script>
-        <Theme>
-          <Component {...pageProps} />
-        </Theme>
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+          <script type="text/javascript" src="/js/intercom.js"></script>
+          <script src="https://js.chargebee.com/v2/chargebee.js" async defer />
+          <script
+            src="https://www.paypal.com/sdk/js?client-id=ARy5d0-3a-eUf8v_5ZaBdJ42ZJ8RDJcH-zCmtXNsX907lWBgkOPYX3n-4HPRtymgjZFrA6srEjZujGVd"
+            async
+            defer
+          ></script>
+          <Theme>
+            <Component {...pageProps} />
+          </Theme>
+        </NotificationBarProvider>
       </ApolloProvider>
     </AuthProvider>
   )

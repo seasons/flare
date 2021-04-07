@@ -26,16 +26,25 @@ export interface CreateAccountFormFields {
   tel?: string
   dob?: string
   zipCode?: string
-  device?: string
+  discoveryReference?: string
 }
 
 export interface CustomerDetailCreateInput {
   phoneNumber: string
 }
 
-const deviceOptions = [
-  { label: "iOS", value: "iOS" },
-  { label: "Android", value: "Android" },
+const discoveryReferenceOptions = [
+  { label: "Friend", value: "friend" },
+  { label: "Press article", value: "pressArticle" },
+  { label: "Blog", value: "blog" },
+  { label: "Instagram", value: "instagram" },
+  { label: "Google", value: "google" },
+  { label: "Podcast", value: "podcast" },
+  { label: "Throwing Fits", value: "throwingFits" },
+  { label: "Lean Luxe", value: "leanLuxe" },
+  { label: "Threadability", value: "threadability" },
+  { label: "One Dapper Street", value: "onedapperstreet" },
+  { label: "Other", value: "other" },
 ]
 
 export interface CreateAccountFormProps extends SignupFormProps {
@@ -77,7 +86,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
           details: {
             phoneNumber: values.tel,
             birthday: dateToIso,
-            phoneOS: values.device,
+            discoveryReference: values.discoveryReference,
             shippingAddress: {
               create: { zipCode: values.zipCode },
             },
@@ -125,7 +134,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
         confirmPassword: "",
         password: "",
         zipCode: "",
-        device: "",
+        discoveryReference: "",
         ...initialValues,
       }}
       initialTouched={{ fullName: true }}
@@ -191,10 +200,10 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
             mobileOrder: 7,
           },
           {
-            name: "device",
-            selectOptions: deviceOptions,
+            name: "discoveryReference",
+            selectOptions: discoveryReferenceOptions,
             placeholder: "Select",
-            label: "Device type",
+            label: "How did you hear about us?",
             mobileOrder: 8,
           },
         ]}
