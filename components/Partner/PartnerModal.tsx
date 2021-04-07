@@ -17,12 +17,21 @@ interface PartnerModalProps {
   renderPartnerComponent?: () => React.ReactElement
   partnerName?: string
   detail?: string
+  secondaryCTA: "learnMore" | "browseItems"
 }
 
 export const PartnerModal: React.FC<PartnerModalProps> = (props) => {
   const [isOpen, setOpen] = useState(false)
   const router = useRouter()
-  const { imageURL, open, onClose, renderPartnerComponent, partnerName, detail: _detail } = props
+  const {
+    imageURL,
+    open,
+    onClose,
+    renderPartnerComponent,
+    partnerName,
+    detail: _detail,
+    secondaryCTA = "learnMore",
+  } = props
   const descriptionLines = [
     "Free shipping, returns & dry cleaning.",
     "Purchase items you love directly from the app.",
@@ -31,6 +40,8 @@ export const PartnerModal: React.FC<PartnerModalProps> = (props) => {
   const detail =
     _detail || "As a member, try on styles at home for 30-days for as low as $65 per month. Get started below."
 
+  const secondaryCTACopy = secondaryCTA === "learnMore" ? "Learn more" : "Browse items"
+  const secondaryCTAPath = secondaryCTA === "learnMore" ? "/" : "/browse"
   const Content = ({ size }) => (
     <Container>
       <CloseButton
@@ -85,10 +96,10 @@ export const PartnerModal: React.FC<PartnerModalProps> = (props) => {
               variant="noOutline"
               block
               onClick={() => {
-                router.push("/")
+                router.push(secondaryCTAPath)
               }}
             >
-              Learn more
+              {secondaryCTACopy}
             </Button>
           </Box>
         </Flex>
