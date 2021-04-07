@@ -60,7 +60,11 @@ export const Home_Query = gql`
       url
       name
       author
-      imageURL
+      image {
+        id
+        url
+        alt
+      }
     }
     paymentPlans(where: { status: "active" }) {
       id
