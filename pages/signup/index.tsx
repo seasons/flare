@@ -61,6 +61,7 @@ const SignUpPage = screenTrack(() => ({
   const hasBagItems = data?.me?.bag?.length > 0 || localItems?.localBagItems?.length > 0
   const hasSetMeasurements = !!customer?.detail?.height
   const hasPlan = !!customer?.plan
+  const initialCoupon = data?.me?.customer?.coupon
 
   const hasGift = !!router.query.gift_id
   const [getGift, { data: giftData, loading: giftLoading }] = useLazyQuery(GET_GIFT)
@@ -230,6 +231,7 @@ const SignUpPage = screenTrack(() => ({
       CurrentStep = (
         <PaymentStep
           plan={selectedPlan}
+          initialCoupon={initialCoupon}
           onBack={() => {
             setCurrentStepState(Steps.DiscoverBagStep)
           }}
