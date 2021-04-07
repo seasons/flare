@@ -39,7 +39,7 @@ const DesktopTextContent = () => {
 }
 
 const DesktopHero = ({ post }) => {
-  const imageSRC = imageResize(post?.image.url ?? "", "large")
+  const imageSRC = imageResize(post?.image?.url ?? "", "large")
 
   return (
     <MaxWidth>
@@ -64,7 +64,7 @@ const DesktopHero = ({ post }) => {
 }
 
 const MobileHero = ({ post }) => {
-  const imageSRC = imageResize(post?.image.url ?? "", "medium")
+  const imageSRC = imageResize(post?.image?.url ?? "", "medium")
 
   return (
     <Grid>
