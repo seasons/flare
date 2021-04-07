@@ -13,6 +13,7 @@ import { PaymentForm } from "components/Payment"
 import { Formik } from "formik"
 import { EditPaymentMethod_Query } from "./EditPaymentMethod"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { useNotificationBarContext } from "@seasons/eclipse"
 
 const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
@@ -51,6 +52,7 @@ const UpdatePaymentMethod_Mutation = gql`
 export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
   const elements = useElements()
   const { openDrawer } = useDrawerContext()
+  const { hideNotificationBar } = useNotificationBarContext()
   const stripe = useStripe()
   const [updatePaymentMethod] = useMutation(UpdatePaymentMethod_Mutation, {
     onError: (error) => {
@@ -61,6 +63,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
     onCompleted: () => {
       setErrorMessage(null)
       setIsProcessingPayment(false)
+      hideNotificationBar()
       openDrawer("paymentAndShipping")
     },
     awaitRefetchQueries: true,

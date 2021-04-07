@@ -251,7 +251,7 @@ const Designer = screenTrack(({ router }) => {
                 </Box>
               </Col>
             ))}
-            {loading && (
+            {!!aggregateCount && aggregateCount > products?.length && (
               <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
                 <Spinner />
               </Box>

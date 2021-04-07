@@ -42,6 +42,8 @@ const discoveryReferenceOptions = [
   { label: "Podcast", value: "podcast" },
   { label: "Throwing Fits", value: "throwingFits" },
   { label: "Lean Luxe", value: "leanLuxe" },
+  { label: "Threadability", value: "threadability" },
+  { label: "One Dapper Street", value: "onedapperstreet" },
   { label: "Other", value: "other" },
 ]
 

@@ -222,6 +222,7 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
         ctaData = { text: "Finish your application", link: "/signup", actionName: "FinishYourApplicationTapped" }
         break
       case "Waitlisted":
+      case "Deactivated":
         ctaData = { text: "Request Access", link: "https://szns.co/requestAccess", actionName: "RequestAccessTapped" }
         break
       case "Authorized":
