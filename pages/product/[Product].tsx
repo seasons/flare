@@ -21,8 +21,9 @@ import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack } from "utils/analytics"
 import { filter } from "graphql-anywhere"
 import { useQuery } from "@apollo/client"
-import { Loader } from "mobile/Loader"
-import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
+import { PartnerModal } from "components/Partner/PartnerModal"
+import Link from "next/link"
+import styled from "styled-components"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -169,10 +170,14 @@ const Product = screenTrack(({ router }) => {
         </Grid>
       </Box>
       <Spacer mb={10} />
-      <PartnerBrandModal
+      <PartnerModal
         open={isFromTryWithSeasons}
-        brand={product?.brand}
         imageURL={product?.brand?.images?.[0]?.resized}
+        renderPartnerComponent={() => (
+          <Link href="/designer/[Designer]" as={`/designer/${product?.brand?.slug}`}>
+            <Underline>{product?.brand?.name}</Underline>
+          </Link>
+        )}
       />
     </Layout>
   )
@@ -233,5 +238,9 @@ export async function getStaticProps({ params }) {
     revalidate: 1,
   }
 }
+
+const Underline = styled.a`
+  text-decoration: underline;
+`
 
 export default withRouter(Product)
