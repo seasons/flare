@@ -21,7 +21,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   const thirdImageRef = React.useRef(null)
 
   const image = product?.images?.[0]
-  const thirdImage = product?.images?.[3]
+  const thirdImage = product?.images?.[2]
   const tracking = useTracking()
 
   const name = product?.name
