@@ -21,16 +21,17 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   const brandName = product?.brand?.name
   const brandSlug = product?.brand?.slug
 
-  if (!product || loading) {
+  if (!product || loading || true) {
     return (
       <Box m="2px">
         <ContentLoader viewBox="0 0 100 125">
           <rect x={0} y={0} width="100%" height="100%" />
         </ContentLoader>
-        <Spacer mb="5px" />
+        <Spacer mb="3px" />
         <ContentLoader width="100%" height="42px">
-          <rect x={0} y={0} width="40%" height={12} />
-          <rect x={0} y={19} width={37} height={12} />
+          <rect x={0} y={0} width="40%" height={10} />
+          <rect x={0} y={15} width="53%" height={10} />
+          <rect x={0} y={30} width={60} height={10} />
         </ContentLoader>
       </Box>
     )
