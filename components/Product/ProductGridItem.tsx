@@ -18,8 +18,12 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   const tracking = useTracking()
 
   const name = product?.name
-  const brandName = product?.brand?.name
+  let brandName = product?.brand?.name
   const brandSlug = product?.brand?.slug
+
+  if (brandName === "Vintage") {
+    brandName = "Archive"
+  }
 
   if (!product || loading) {
     return (
