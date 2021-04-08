@@ -21,7 +21,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   const brandName = product?.brand?.name
   const brandSlug = product?.brand?.slug
 
-  if (!product || loading || true) {
+  if (!product || loading) {
     return (
       <Box m="2px">
         <ContentLoader viewBox="0 0 100 125">
