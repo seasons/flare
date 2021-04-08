@@ -307,6 +307,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   )
 })
 
+const timeout = async (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
 export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
@@ -344,6 +346,8 @@ export async function getStaticProps({ params }) {
 
   const queries = filter?.toString().split("+")
   const [category, brand] = queries
+
+  await timeout(500)
 
   await apolloClient.query({
     query: GET_BROWSE_PRODUCTS,
