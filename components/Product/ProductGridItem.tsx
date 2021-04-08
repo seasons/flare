@@ -13,18 +13,13 @@ import { Schema, useTracking } from "utils/analytics"
 export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showName?: boolean }> = ({
   product,
   loading,
-  showName,
 }) => {
   const image = get(product, "images[0]", { url: "" })
   const tracking = useTracking()
-  let showBrand = true
 
+  const name = product?.name
   const brandName = product?.brand?.name
   const brandSlug = product?.brand?.slug
-
-  if (showName || brandName === "Vintage") {
-    showBrand = false
-  }
 
   if (!product || loading) {
     return (
@@ -32,39 +27,14 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
         <ContentLoader viewBox="0 0 100 125">
           <rect x={0} y={0} width="100%" height="100%" />
         </ContentLoader>
-        <Spacer mb="5px" />
+        <Spacer mb="3px" />
         <ContentLoader width="100%" height="42px">
-          <rect x={0} y={0} width="40%" height={12} />
-          <rect x={0} y={19} width={37} height={12} />
+          <rect x={0} y={0} width="40%" height={10} />
+          <rect x={0} y={15} width="53%" height={10} />
+          <rect x={0} y={30} width={60} height={10} />
         </ContentLoader>
       </Box>
     )
-  }
-
-  const Text = () => {
-    if (showBrand && brandName && brandSlug) {
-      return (
-        <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
-          <Sans size="2" mt="0.5">
-            {brandName}
-          </Sans>
-          <VariantSizes variants={product.variants} size="2" />
-        </Link>
-      )
-    } else {
-      return (
-        <>
-          {!!product?.name && (
-            <>
-              <Sans size="2" mt="0.5">
-                {product?.name}
-              </Sans>
-              <VariantSizes variants={product.variants} size="2" />
-            </>
-          )}
-        </>
-      )
-    }
   }
 
   return (
@@ -84,7 +54,15 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
         <a href={`/product/${product.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
           <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
           <Spacer mb={1} />
-          <Text />
+          <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
+            <Sans size="2" mt="0.5">
+              {brandName}
+            </Sans>
+          </Link>
+          <Sans size="2" mt="0.5" color="black50">
+            {name}
+          </Sans>
+          <VariantSizes variants={product.variants} size="2" />
         </a>
       </Link>
     </ProductContainer>
