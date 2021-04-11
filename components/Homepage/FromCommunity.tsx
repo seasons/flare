@@ -10,11 +10,12 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
   if (!blogPosts) {
     return null
   }
+
   const BlogPost = ({ post }) => {
     const imageSRC = imageResize(post?.image?.url ?? "", "large")
 
     return (
-      <StyledAnchor href={post?.image?.url}>
+      <StyledAnchor href={post?.url}>
         <Box>
           <img src={imageSRC} alt={post.image?.alt} />
           <Spacer mb={2} />
@@ -31,6 +32,7 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
       </StyledAnchor>
     )
   }
+
   return (
     <Grid>
       <Box px={[2, 2, 2, 2, 2]}>
