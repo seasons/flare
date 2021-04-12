@@ -32,7 +32,7 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
     if (image && image.complete && !loaded) {
       setLoaded(true)
     }
-  }, [fullImageRef])
+  }, [fullImageRef, setLoaded, loaded])
 
   const initialImage = imageResize(imageUrl, "initial")
   const fullImage = imageResize(imageUrl, size)
@@ -64,12 +64,19 @@ const FullImageWrapper = styled.div<{ loaded: boolean }>`
   top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 1;
   background-color: ${color("white100")};
 `
 
 const InitialImageWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
   img {
     filter: blur(8px);
     transform: scale(1);

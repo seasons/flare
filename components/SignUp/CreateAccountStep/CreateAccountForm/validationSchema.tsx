@@ -26,5 +26,5 @@ export const createAccountValidationSchema = Yup.object().shape({
     .trim()
     .required("Required")
     .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
-  device: Yup.string().required("Required"),
+  discoveryReference: Yup.string(),
 })

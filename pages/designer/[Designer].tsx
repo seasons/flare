@@ -245,11 +245,11 @@ const Designer = screenTrack(({ router }) => {
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>
                 <Box pt={[2, 0]} pb={[2, 5]}>
-                  <ProductGridItem product={product?.node} loading={!data} showName />
+                  <ProductGridItem product={product?.node} loading={!data} />
                 </Box>
               </Col>
             ))}
-            {loading && (
+            {!!aggregateCount && aggregateCount > products?.length && (
               <Box mb={5} style={{ width: "100%", position: "relative", height: "30px" }}>
                 <Spinner />
               </Box>

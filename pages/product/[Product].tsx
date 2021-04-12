@@ -21,7 +21,9 @@ import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack } from "utils/analytics"
 import { filter } from "graphql-anywhere"
 import { useQuery } from "@apollo/client"
-import { PartnerBrandModal } from "components/PartnerBrand/PartnerBrandModal"
+import { PartnerModal } from "components/Partner/PartnerModal"
+import Link from "next/link"
+import styled from "styled-components"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -168,10 +170,14 @@ const Product = screenTrack(({ router }) => {
         </Grid>
       </Box>
       <Spacer mb={10} />
-      <PartnerBrandModal
+      <PartnerModal
         open={isFromTryWithSeasons}
-        brand={product?.brand}
         imageURL={product?.brand?.images?.[0]?.resized}
+        renderPartnerComponent={() => (
+          <Link href="/designer/[Designer]" as={`/designer/${product?.brand?.slug}`}>
+            <Underline>{product?.brand?.name}</Underline>
+          </Link>
+        )}
       />
     </Layout>
   )
@@ -206,6 +212,7 @@ export async function getStaticPaths() {
   }
 }
 
+const timeout = async (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 /*
   If you export an async function called getStaticProps from a page,
   Next.js will pre-render this page at build time using the
@@ -216,6 +223,7 @@ export async function getStaticProps({ params }) {
 
   const filter = params?.Product
 
+  await timeout(500)
   await apolloClient.query({
     query: GET_PRODUCT,
     variables: {
@@ -230,5 +238,9 @@ export async function getStaticProps({ params }) {
     revalidate: 1,
   }
 }
+
+const Underline = styled.a`
+  text-decoration: underline;
+`
 
 export default withRouter(Product)

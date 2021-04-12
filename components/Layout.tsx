@@ -12,6 +12,7 @@ import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
 import { Nav, NavFragment_Query } from "./Nav/Nav"
 import { PopUp } from "./PopUp"
+
 import { useMutation, useQuery } from "@apollo/client"
 import { ModalProvider } from "./Modal/ModalProvider"
 import { Modal } from "./Modal"

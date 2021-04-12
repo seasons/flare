@@ -10,26 +10,38 @@ import styled from "styled-components"
 import { Modal } from "@material-ui/core"
 import { Box, Button, Flex, Sans, Spacer } from "@seasons/eclipse"
 
-interface PartnerBrandModalProps {
-  brand?: {
-    name: string
-    slug: string
-  }
+interface PartnerModalProps {
   imageURL?: string
   open?: boolean
   onClose?: () => void
+  renderPartnerComponent?: () => React.ReactElement
+  partnerName?: string
+  detail?: string
+  secondaryCTA?: "learnMore" | "browseItems"
 }
 
-export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
+export const PartnerModal: React.FC<PartnerModalProps> = (props) => {
   const [isOpen, setOpen] = useState(false)
   const router = useRouter()
-  const { brand, imageURL, open, onClose } = props
+  const {
+    imageURL,
+    open,
+    onClose,
+    renderPartnerComponent,
+    partnerName,
+    detail: _detail,
+    secondaryCTA = "learnMore",
+  } = props
   const descriptionLines = [
     "Free shipping, returns & dry cleaning.",
     "Purchase items you love directly from the app.",
     "No commitment. Pause or cancel anytime.",
   ]
+  const detail =
+    _detail || "As a member, try on styles at home for 30-days for as low as $65 per month. Get started below."
 
+  const secondaryCTACopy = secondaryCTA === "learnMore" ? "Learn more" : "Browse items"
+  const secondaryCTAPath = secondaryCTA === "learnMore" ? "/" : "/browse"
   const Content = ({ size }) => (
     <Container>
       <CloseButton
@@ -46,15 +58,12 @@ export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
         <Flex flexDirection="column" flex={1} py={size === "small" ? 2 : 4} px={3}>
           <Box mb={2} mt={size === "small" ? 2 : 6}>
             <Sans size="7">
-              Seasons +{" "}
-              <Link href="/designer/[Designer]" as={`/designer/${brand.slug}`}>
-                <Underline>{brand.name}</Underline>
-              </Link>
+              Seasons + {!!renderPartnerComponent ? renderPartnerComponent() : <Underline>{partnerName}</Underline>}
             </Sans>
           </Box>
           <Box mb={3}>
             <Sans size="4" color="black50">
-              As a member, try on styles at home for 30-days for as low as $65 per month. Get started below.
+              {detail}
             </Sans>
           </Box>
           <Flex flexDirection="column">
@@ -87,10 +96,10 @@ export const PartnerBrandModal: React.FC<PartnerBrandModalProps> = (props) => {
               variant="noOutline"
               block
               onClick={() => {
-                router.push("/")
+                router.push(secondaryCTAPath)
               }}
             >
-              Learn more
+              {secondaryCTACopy}
             </Button>
           </Box>
         </Flex>
@@ -128,7 +137,6 @@ const Underline = styled.a`
 `
 
 const Container = styled(Box)`
-  border: 1px solid #000;
   background: white;
 
   margin: 0 auto;

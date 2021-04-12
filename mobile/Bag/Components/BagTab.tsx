@@ -50,9 +50,9 @@ export const BagTab: React.FC<{
 
   const paddedItems = assign(fill(new Array(itemCount), { variantID: "", productID: "" }), bagItems) || []
 
-  const handleShowBuyAlert = (bagItem) => {
-    const { name: brandName, websiteUrl: brandHref } = bagItem?.productVariant?.product?.brand
-    const price = bagItem?.productVariant?.price || {
+  const handleShowBuyAlert = ({ bagItem, variantToUse }) => {
+    const { name: brandName, websiteUrl: brandHref, logoImage } = bagItem?.productVariant?.product?.brand
+    const price = variantToUse?.price || {
       buyNewEnabled: false,
       buNewAvailableForSale: false,
       buyUsedEnabled: false,
@@ -60,8 +60,14 @@ export const BagTab: React.FC<{
     }
 
     const newTab = price.buyNewAvailableForSale
-      ? { type: ProductBuyAlertTabType.NEW, price: price.buyNewPrice, brandHref, brandName }
-      : { type: ProductBuyAlertTabType.NEW_UNAVAILABLE, brandHref, brandName }
+      ? {
+          type: ProductBuyAlertTabType.NEW,
+          price: price.buyNewPrice,
+          brandHref,
+          brandName,
+          brandLogoUri: logoImage?.url,
+        }
+      : { type: ProductBuyAlertTabType.NEW_UNAVAILABLE, brandHref, brandName, brandLogoUri: logoImage?.url }
 
     const usedTab = price.buyUsedAvailableForSale
       ? { type: ProductBuyAlertTabType.USED, price: price.buyUsedPrice, brandHref, brandName }

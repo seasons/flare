@@ -78,5 +78,5 @@ const ModalRoot = styled.div`
   bottom 0;
   left: 0;
   right: 0;
-  height: 325px;
+  height: 350px;
 `

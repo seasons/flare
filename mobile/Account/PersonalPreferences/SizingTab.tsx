@@ -138,7 +138,7 @@ export const SizingTab: React.FC<{ navigation: any; rawMeasurements }> = ({ navi
         <Flex p={2} flexDirection="row">
           <Button
             block
-            onPress={() =>
+            onClick={() =>
               navigation.navigate("Modal", {
                 screen: "EditMeasurements",
                 params: { measurements },
