@@ -18,6 +18,7 @@ export const TagView_Query = gql`
           id
           slug
           name
+          retailPrice
           images(size: Thumb) {
             id
             url

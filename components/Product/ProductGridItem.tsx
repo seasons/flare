@@ -11,14 +11,26 @@ import { IMAGE_ASPECT_RATIO } from "../../utils/imageResize"
 import { Spacer } from "../Spacer"
 import { Schema, useTracking } from "utils/analytics"
 import { Picture } from "components"
+import { useAuthContext } from "lib/auth/AuthContext"
 
-export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showName?: boolean }> = ({
-  product,
-  loading,
-}) => {
+type Props = {
+  product: {
+    variants: any
+    name: string
+    slug: string
+    id: string
+    brand?: any
+    retailPrice: string
+    images: { url: string }[]
+  }
+  loading?: boolean
+}
+
+export const ProductGridItem: React.FC<Props> = ({ product, loading }) => {
   const [hover, setHover] = React.useState(false)
   const [loaded, setLoaded] = React.useState(false)
   const thirdImageRef = React.useRef(null)
+  const { authState } = useAuthContext()
 
   const image = product?.images?.[0]
   const thirdImage = product?.images?.[2]
@@ -27,6 +39,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
   const name = product?.name
   let brandName = product?.brand?.name
   const brandSlug = product?.brand?.slug
+  const retailPrice = product?.retailPrice
 
   if (brandName === "Vintage") {
     brandName = "Archive"
@@ -95,12 +108,27 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
           <Sans size="2" mt="0.5" color="black50">
             {name}
           </Sans>
+          {retailPrice && !authState?.isSignedIn && (
+            <>
+              <LineThroughSans mt="0.5" size="2" color="black50" display="inline">
+                ${retailPrice}
+              </LineThroughSans>
+              <Sans mt="0.5" size="2" color="black50" display="inline">
+                {" "}
+                | $65 for 30-days
+              </Sans>
+            </>
+          )}
           <VariantSizes variants={product.variants} size="2" />
         </a>
       </Link>
     </ProductContainer>
   )
 }
+
+const LineThroughSans = styled(Sans)`
+  text-decoration: line-through;
+`
 
 const ThirdImageWrapper = styled(Box)<{ loaded: boolean }>`
   z-index: 3;

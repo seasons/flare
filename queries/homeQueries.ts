@@ -6,6 +6,7 @@ const HomePageProductFragment_Product = gql`
     id
     slug
     name
+    retailPrice
     modelSize {
       id
       display

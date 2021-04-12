@@ -52,7 +52,6 @@ const Home = screenTrack(() => ({
     if (isUserSignedIn !== userSignedIn.current) {
       refetch()
       userSignedIn.current = isUserSignedIn
-      console.log("userSignedIn.current", userSignedIn.current)
     }
   }, [isUserSignedIn])
 
@@ -84,6 +83,7 @@ const Home = screenTrack(() => ({
             }}
             imageIndex={2}
             items={data?.newestBrandProducts}
+            isSignedIn={Boolean(authState?.isSignedIn)}
           />
           <Spacer mb={10} />
         </>
