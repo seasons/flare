@@ -51,7 +51,7 @@ export const ProductBuyCTA = (props: Props) => {
   })
 
   const handleCreateDraftOrder = (orderType: "Used" | "New") => {
-    if (Boolean(authState?.userSession)) {
+    if (Boolean(authState?.isSignedIn)) {
       return createDraftOrder({
         variables: {
           input: {
@@ -70,6 +70,7 @@ export const ProductBuyCTA = (props: Props) => {
           hidePopUp()
         },
       })
+      return Promise.resolve()
     }
   }
 
