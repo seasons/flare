@@ -110,7 +110,7 @@ const Product = screenTrack(({ router }) => {
                     product?.images.map((image) => {
                       return (
                         <Box pl={[2, 2, 0, 0, 0]} pr={[2, 2, 2, 5, 5]} mb={0.5} key={image.url}>
-                          <ProgressiveImage imageUrl={image.url} size="large" alt="product image" />
+                          <ProgressiveImage imageUrl={image.url} size="large" alt={`Image of ${product?.name}`} />
                         </Box>
                       )
                     })
