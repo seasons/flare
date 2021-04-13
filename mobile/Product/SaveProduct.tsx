@@ -83,7 +83,7 @@ export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product,
                 )}
               </Flex>
               <ImageContainer>
-                <ProgressiveImage alt="product image" size="small" imageUrl={images?.[0]?.url || ""} />
+                <ProgressiveImage alt={`Image of ${product?.name}`} size="small" imageUrl={images?.[0]?.url || ""} />
               </ImageContainer>
             </Flex>
             <Spacer mt={2} />
