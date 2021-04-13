@@ -29,8 +29,6 @@ const Designer = screenTrack(({ router }) => {
   const [productCount, setProductCount] = useState(8)
   const slug = router.query.Designer || ""
 
-  console.log("slug", slug)
-
   const imageContainer = useRef(null)
 
   const { previousData, data = previousData, fetchMore, loading } = useQuery(Designer_Query, {
@@ -289,15 +287,21 @@ export async function getStaticProps({ params }) {
 
   const filter = params?.Designer
 
-  await apolloClient.query({
-    query: Designer_Query,
-    variables: {
-      slug: filter,
-      first: 8,
-      skip: 0,
-      orderBy: "publishedAt_DESC",
-    },
-  })
+  try {
+    await apolloClient.query({
+      query: Designer_Query,
+      variables: {
+        slug: filter,
+        first: 8,
+        skip: 0,
+        orderBy: "publishedAt_DESC",
+      },
+    })
+  } catch (e) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {

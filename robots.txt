@@ -1,5 +1,0 @@
-Sitemap: https://www.seasons.nyc/api/sitemap.xml
-User-agent: *
-Allow: /*
-
-Disallow: /api/*

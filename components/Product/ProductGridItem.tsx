@@ -77,7 +77,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
               <Picture
                 src={thirdImage?.url}
                 key={thirdImage?.url}
-                alt="product grid image"
+                alt={`Image of ${product.name}`}
                 imgRef={thirdImageRef}
                 onLoad={() => {
                   setLoaded(true)
@@ -85,7 +85,7 @@ export const ProductGridItem: React.FC<{ product: any; loading?: boolean; showNa
               />
             </ThirdImageWrapper>
           )}
-          <ProgressiveImage imageUrl={image?.url} size="small" alt="product image" />
+          <ProgressiveImage imageUrl={image?.url} size="small" alt={`Image of ${product.name}`} />
           <Spacer mb={1} />
           <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
             <Sans size="2" mt="0.5">
