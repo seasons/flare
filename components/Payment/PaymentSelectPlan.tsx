@@ -20,7 +20,7 @@ export const PaymentSelectPlan: React.FC<PaymentSelectPlanProps> = ({ paymentPla
       {paymentPlans?.map((paymentPlan, index) => {
         const count = paymentPlan?.itemCount
         return (
-          <Button key={index} active={paymentPlan.id === selectedPlan?.id}>
+          <Button key={index} active={paymentPlan.id === selectedPlan?.id} onClick={() => onPlanSelected(paymentPlan)}>
             {count} {count === 1 ? "item" : "items"}
           </Button>
         )

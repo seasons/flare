@@ -99,7 +99,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[] }> = ({ 
       </Row>
       <Spacer mb={[0, 0, 0, "124px", "124px"]} />
       <Flex flexDirection={["column", "row"]} width="100%" justifyContent="space-between" px={[2, 2, 2, 2, 2]}>
-        <Display size="3">© 2020 Seasons. All Rights Reserved.</Display>
+        <Display size="3">© 2021 Seasons. All Rights Reserved.</Display>
         <Display size="3">Made remotely with love ❤️</Display>
       </Flex>
       <Spacer mb={5} />
