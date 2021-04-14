@@ -13,6 +13,7 @@ import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import { TagView_Query } from "queries/collectionQueries"
+import { HEAD_META_TITLE } from "components/LayoutHead"
 
 const TagView = screenTrack(({ router }) => {
   return {
@@ -114,7 +115,7 @@ const TagView = screenTrack(({ router }) => {
   return (
     <Layout includeDefaultHead={false}>
       <Head>
-        <title>{!!tag ? `${tag} Collection - Seasons` : "Seasons"}</title>
+        <title>{!!tag ? `Seasons | ${tag} Collection` : HEAD_META_TITLE}</title>
         <meta content={description} name="description" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />

@@ -9,7 +9,6 @@ import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
-import { Image } from "mobile/Image"
 import { Schema, useTracking } from "utils/analytics"
 import { Check } from "components/SVGs/Check"
 
@@ -232,13 +231,7 @@ export const BagItem: React.FC<BagItemProps> = ({
             <Flex flexDirection="row">
               {isReserved ? <ReservedItemContent /> : <NonReservedItemContent />}
               <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
-                {!!imageURL && (
-                  <ImageContainer
-                    style={{ height: 170 * 1.26, width: 170 }}
-                    resizeMode="contain"
-                    source={{ uri: imageURL }}
-                  />
-                )}
+                {!!imageURL && <ImageContainer src={imageURL} alt={`Image of ${product.name}`} />}
               </Flex>
             </Flex>
           </BagItemContainer>
@@ -266,8 +259,11 @@ const BagItemContainer = styled(Box)<{ isReserved: boolean }>`
   border-style: solid;
 `
 
-const ImageContainer = styled(Image)`
+const ImageContainer = styled.img`
   height: 216px;
+  object-fit: contain;
+  height: 170 * 1.26;
+  width: 170;
 `
 
 const Overlay = styled(Box)`

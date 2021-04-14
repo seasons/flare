@@ -24,6 +24,7 @@ import { useQuery } from "@apollo/client"
 import { PartnerModal } from "components/Partner/PartnerModal"
 import Link from "next/link"
 import styled from "styled-components"
+import { HEAD_META_TITLE } from "components/LayoutHead"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -85,7 +86,7 @@ const Product = screenTrack(({ router }) => {
   return (
     <Layout includeDefaultHead={false}>
       <Head>
-        <title>{title ? `${title} - Seasons` : "Seasons"}</title>
+        <title>{title ? `Seasons | ${title}` : HEAD_META_TITLE}</title>
         <meta content={description} name="description" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
