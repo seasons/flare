@@ -89,7 +89,8 @@ const PaymentStep_Query = gql`
   }
   ${BagItemFragment}
 `
-const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
+const enableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
+const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
 const SUBMIT_PAYMENT = gql`
   mutation SubmitPayment($paymentMethodID: String!, $planID: String!, $couponID: String, $billing: JSON) {
@@ -237,13 +238,15 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
             <Grid>
               <Row>
                 <LeftColumn md={8}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      onBack?.()
-                    }}
-                  >
-                    <Arrow color={colors.black100} />
-                  </TouchableOpacity>
+                  {showDiscoverBag && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        onBack?.()
+                      }}
+                    >
+                      <Arrow color={colors.black100} />
+                    </TouchableOpacity>
+                  )}
                   <Box pt={4} px={[0, 0, 4, 4, 4]} pb={2}>
                     <Box mt={[4, 4, 12]} p={2}>
                       <Sans size="8" weight="medium">
@@ -285,7 +288,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                   </Box>
                   <Box>
                     <Box p={[2, 2, 6]} pt={0}>
-                      {EnableExpressCheckout && (
+                      {enableExpressCheckout && (
                         <Box py={4}>
                           <Sans size="7">Express checkout</Sans>
                           <PaymentExpressButtons

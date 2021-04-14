@@ -81,7 +81,7 @@ export const PaymentCouponField: React.FC<PaymentCouponFieldProps> = ({ onApplyP
         />
 
         <TouchableOpacity onPress={applyPromoCode}>
-          <Sans size={5} style={{ textDecoration: "underline", cursor: "pointer" }}>
+          <Sans size={3} style={{ textDecoration: "underline", cursor: "pointer" }}>
             Apply
           </Sans>
         </TouchableOpacity>
@@ -100,7 +100,7 @@ const Container = styled(Box)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-content: center;
+  align-items: center;
   width: 100%;
   box-sizing: border-box;
   padding: 6px 20px;

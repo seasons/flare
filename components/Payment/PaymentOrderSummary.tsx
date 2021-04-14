@@ -13,7 +13,7 @@ export const PaymentOrderSummary = ({ plan, coupon }) => {
   }
 
   const taxes = plan.estimate?.taxes?.map((a) => a.amount)
-  const totalTax = taxes.reduce((sum, amount) => sum + amount, 0)
+  const totalTax = taxes?.reduce((sum, amount) => sum + amount, 0)
   const discounts = plan?.estimate?.discounts || []
 
   const formatPrice = (price) =>
@@ -52,7 +52,7 @@ export const PaymentOrderSummary = ({ plan, coupon }) => {
           <Spacer mt={1} />
         </>
       )}
-      {taxes.length > 0 && (
+      {taxes?.length > 0 && (
         <>
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Sans size="5" color="black50">

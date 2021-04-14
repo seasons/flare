@@ -40,6 +40,8 @@ enum Steps {
   PaymentStep = "PaymentStep",
 }
 
+const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
+
 const SignUpPage = screenTrack(() => ({
   page: Schema.PageNames.SignUpPage,
   path: "/signup",
@@ -92,10 +94,10 @@ const SignUpPage = screenTrack(() => ({
         case "Invited":
           if (hasPlan) {
             setCurrentStepState(Steps.PaymentStep)
-          } else if (hasBagItems) {
-            setCurrentStepState(Steps.PaymentStep)
-          } else {
+          } else if (!hasBagItems && showDiscoverBag) {
             setCurrentStepState(Steps.DiscoverBagStep)
+          } else {
+            setCurrentStepState(Steps.PaymentStep)
           }
           break
         case "Waitlisted":
@@ -208,10 +210,10 @@ const SignUpPage = screenTrack(() => ({
 
             if (isWaitlisted) {
               setCurrentStepState(Steps.FormConfirmation)
-            } else if (hasBagItems) {
-              setCurrentStepState(Steps.PaymentStep)
-            } else {
+            } else if (!hasBagItems && showDiscoverBag) {
               setCurrentStepState(Steps.DiscoverBagStep)
+            } else {
+              setCurrentStepState(Steps.PaymentStep)
             }
           }}
         />
@@ -233,7 +235,9 @@ const SignUpPage = screenTrack(() => ({
           plan={selectedPlan}
           initialCoupon={initialCoupon}
           onBack={() => {
-            setCurrentStepState(Steps.DiscoverBagStep)
+            if (showDiscoverBag) {
+              setCurrentStepState(Steps.DiscoverBagStep)
+            }
           }}
           onSuccess={() => {
             updateUserSession({ cust: { status: CustomerStatus.Active } })
