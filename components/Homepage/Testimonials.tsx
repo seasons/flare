@@ -12,6 +12,11 @@ export const Testimonials: React.FC = () => {
   const testimonialItems = [
     {
       text:
+        "“I mean this in the best possible way — y’all seriously make me assess the value per wear on each piece I buy from now on” ",
+      author: "- Jeremy L.",
+    },
+    {
+      text:
         "“It’s like test driving a car off the lot. It’s like dating vs being in a relationship. It’s a better way to f*cken dress”",
       author: "- James H.",
     },
@@ -19,11 +24,6 @@ export const Testimonials: React.FC = () => {
       text:
         "“Seasons lets me be a f*ckin sniper with my purchases. I can take my time and get to know the brand before committing.”",
       author: "- Lawrence S.",
-    },
-    {
-      text:
-        "“I mean this in the best possible way — y’all seriously make me assess the value per wear on each piece I buy from now on” ",
-      author: "- Jeremy L.",
     },
     {
       text:

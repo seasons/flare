@@ -19,7 +19,8 @@ module.exports = withSourceMaps(
         ALGOLIA_KEY: process.env.ALGOLIA_KEY,
         STRIPE_API_KEY: process.env.STRIPE_API_KEY,
         ENABLE_EXPRESS_CHECKOUT: process.env.ENABLE_EXPRESS_CHECKOUT,
-        ENABLE_BUY_USED: process.env.ENABLE_BUY_USED
+        ENABLE_BUY_USED: process.env.ENABLE_BUY_USED,
+        SHOW_DISCOVER_BAG_STEP: process.env.SHOW_DISCOVER_BAG_STEP,
       },
       webpack: (config, options) => {
         config.resolve.alias = {

@@ -17,7 +17,7 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
     return (
       <StyledAnchor href={post?.url}>
         <Box>
-          <img src={imageSRC} alt={post.image?.alt} />
+          <img src={imageSRC} alt={post.image?.alt ?? `Image for ${post.name}`} />
           <Spacer mb={2} />
           <Sans size="7">{post.name}</Sans>
           {post.author && (
