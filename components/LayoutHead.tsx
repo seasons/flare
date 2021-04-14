@@ -6,7 +6,7 @@ export const LayoutHead: React.FC<{ title?: string }> = ({ title }) => {
   const description = "Seasons change. Your wardrobe should change with them."
   return (
     <Head>
-      <title>{`Seasons | ${title}` || HEAD_META_TITLE}</title>
+      <title>{title ? `Seasons | ${title}` : HEAD_META_TITLE}</title>
       <meta content={description} name="description" />
       <meta property="og:title" content="Seasons" />
       <meta property="og:description" content={description} />
