@@ -1,9 +1,10 @@
-import { Separator, Spacer, Box } from "components"
-import { Sans } from "components/Typography"
+import { Box, Separator, Spacer } from "components"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
 import { FormFooter } from "components/Forms/FormFooter"
+import { Col, Grid, Row } from "components/Grid"
 import { BackArrowIcon } from "components/Icons"
 import { GET_SIGNUP_USER } from "components/SignUp/queries"
+import { Sans } from "components/Typography"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -11,9 +12,11 @@ import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 import { colors } from "theme/colors"
 import * as Yup from "yup"
+
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { BagItemFragment, REMOVE_FROM_BAG } from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
+
 import { PaymentBagItem } from "./PaymentBagItem"
 import { PaymentBillingAddress } from "./PaymentBillingAddress"
 import { PaymentCouponField } from "./PaymentCouponField"
@@ -21,7 +24,6 @@ import { PaymentExpressButtons } from "./PaymentExpressButtons"
 import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
 import { PaymentSelectPlan } from "./PaymentSelectPlan"
-import { Col, Grid, Row } from "components/Grid"
 
 interface PaymentStepProps {
   plan: {
@@ -247,11 +249,11 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                   <Box pt={4} px={[0, 0, 4, 4, 4]} pb={2}>
                     <Box mt={[4, 4, 12]} p={2}>
                       <Sans size="8" weight="medium">
-                        Finish checking out
+                        You're in! Let's finish choosing your plan
                       </Sans>
                       <Spacer mt={1} />
                       <Sans size="4" color="black50">
-                        You're checking out with a {plan?.itemCount}-item plan. To change plans, update your bag.
+                        You're checking out with a {plan?.itemCount}-item plan. Toggle below to switch plans
                       </Sans>
                     </Box>
                     <Spacer mt={2} />
