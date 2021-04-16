@@ -47,7 +47,7 @@ export const PaymentBillingAddress = () => {
         <PaymentField id="state" name="State" placeholder="NY" />
       </Flex>
       <Flex mt={2}>
-        <PaymentField id="postalCode" type="number" name="Postal Code" placeholder="12345" />
+        <PaymentField id="postalCode" type="text" name="Postal Code" placeholder="12345" />
       </Flex>
     </Box>
   )
