@@ -29,6 +29,7 @@ export const Designer_Query = gql`
               id
               url
             }
+            retailPrice
             variants {
               id
               size
