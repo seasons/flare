@@ -1,4 +1,4 @@
-import { Display, Flex, ProgressiveImage, Sans, Spacer } from "components"
+import { Box, Display, Flex, ProgressiveImage, Sans, Spacer } from "components"
 import React from "react"
 
 export const BlogHero = ({ blogPost }) => {
@@ -8,7 +8,7 @@ export const BlogHero = ({ blogPost }) => {
   const image = node?.image
 
   return (
-    <Flex width="100%" flexDirection="column" style={{ maxWidth: "1100px" }} px={[0, 0, 2, 2, 2]}>
+    <Flex width="100%" flexDirection="column" px={[0, 0, 2, 2, 2]}>
       <Spacer mb={10} />
       <Sans color="black50" size="2" style={{ textTransform: "uppercase" }}>
         {category}
@@ -18,7 +18,9 @@ export const BlogHero = ({ blogPost }) => {
         {name}
       </Display>
       <Spacer mb={5} />
-      <ProgressiveImage imageUrl={image?.url} size="hero" alt={`Image for ${name}`} aspectRatio={0.7} />
+      <Box style={{ maxWidth: "1100px" }}>
+        <ProgressiveImage imageUrl={image?.url} size="hero" alt={`Image for ${name}`} aspectRatio={0.7} />
+      </Box>
     </Flex>
   )
 }
