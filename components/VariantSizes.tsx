@@ -6,7 +6,8 @@ import { SansSize } from "../lib/theme"
 export const VariantSizes: React.FC<{
   variants: any[]
   size: SansSize
-}> = ({ variants, size }) => {
+  lineHeight?: string
+}> = ({ variants, size, lineHeight }) => {
   const availableVariants = variants.filter((a) => !!a?.internalSize?.display)
 
   return (
@@ -15,10 +16,10 @@ export const VariantSizes: React.FC<{
         const reservable = variant.reservable !== null && !!variant.reservable
         return (
           <Box key={variant.id} mr={1} style={{ position: "relative" }}>
-            <Sans size={size} color={reservable ? "black" : "black25"}>
+            <SansWithLineHeight size={size} color={reservable ? "black" : "black25"} lineHeight={lineHeight}>
               {variant?.internalSize?.display}
-            </Sans>
-            {!reservable && <Strikethrough size={size} />}
+            </SansWithLineHeight>
+            {!reservable && <Strikethrough size={size} lineHeight={lineHeight} />}
           </Box>
         )
       })}
@@ -26,11 +27,16 @@ export const VariantSizes: React.FC<{
   )
 }
 
-const Strikethrough = styled.div<{ size: SansSize }>`
+const SansWithLineHeight = styled(Sans)`
+  ${({ lineHeight }) => lineHeight && `line-height: ${lineHeight}`}
+`
+
+const Strikethrough = styled.div<{ size: SansSize; lineHeight?: string }>`
   background-color: ${color("black25")};
   height: 2px;
   width: 100%;
   position: absolute;
   top: ${(p) => (p.size === "3" ? 9 : 7)}px;
   left: 0;
+  ${({ lineHeight }) => lineHeight && `line-height: ${lineHeight}`}
 `

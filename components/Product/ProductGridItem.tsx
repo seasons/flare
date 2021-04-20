@@ -2,7 +2,6 @@ import React from "react"
 import styled from "styled-components"
 import { Box } from "../Box"
 import { Link } from "../Link"
-import { get } from "lodash"
 import { Sans } from "../Typography"
 import { VariantSizes } from "../VariantSizes"
 import ContentLoader from "react-content-loader"
@@ -10,7 +9,7 @@ import { ProgressiveImage } from "../Image"
 import { IMAGE_ASPECT_RATIO } from "../../utils/imageResize"
 import { Spacer } from "../Spacer"
 import { Schema, useTracking } from "utils/analytics"
-import { Picture } from "components"
+import { Picture, Flex } from "components"
 import { useAuthContext } from "lib/auth/AuthContext"
 
 type Props = {
@@ -59,10 +58,11 @@ export const ProductGridItem: React.FC<Props> = ({ product, loading }) => {
           <rect x={0} y={0} width="100%" height="100%" />
         </ContentLoader>
         <Spacer mb="3px" />
-        <ContentLoader width="100%" height="42px">
+        <ContentLoader width="100%" height="57px">
           <rect x={0} y={0} width="40%" height={10} />
           <rect x={0} y={15} width="53%" height={10} />
-          <rect x={0} y={30} width={60} height={10} />
+          <rect x={0} y={30} width="45%" height={10} />
+          <rect x={0} y={45} width={50} height={10} />
         </ContentLoader>
       </Box>
     )
@@ -99,27 +99,32 @@ export const ProductGridItem: React.FC<Props> = ({ product, loading }) => {
             </ThirdImageWrapper>
           )}
           <ProgressiveImage imageUrl={image?.url} size="small" alt={`Image of ${product.name}`} />
-          <Spacer mb={1} />
+          <Spacer mb={0.5} />
           <Link href="/designer/[Designer]" as={`/designer/${brandSlug}`}>
-            <Sans size="2" mt="0.5">
+            <LeadingNoneSans size="2" mt="0.5">
               {brandName}
-            </Sans>
+            </LeadingNoneSans>
           </Link>
-          <Sans size="2" mt="0.5" color="black50">
+          <Spacer mb={0.5} />
+          <LeadingNoneSans size="2" mt="0.5" color="black50">
             {name}
-          </Sans>
+          </LeadingNoneSans>
+          <Spacer mb={0.5} />
           {retailPrice && !authState?.isSignedIn && (
             <>
-              <LineThroughSans mt="0.5" size="2" color="black50" display="inline">
-                ${retailPrice}
-              </LineThroughSans>
-              <Sans mt="0.5" size="2" color="black50" display="inline">
-                {" "}
-                | $65 for 30-days
-              </Sans>
+              <Flex flexDirection="row">
+                <LineThroughSans mt="0.5" size="2" color="black50">
+                  ${retailPrice}
+                </LineThroughSans>
+                <LeadingNoneSans mt="0.5" size="2" color="black50">
+                  {" "}
+                  | $65 for 30-days
+                </LeadingNoneSans>
+              </Flex>
+              <Spacer mb={0.5} />
             </>
           )}
-          <VariantSizes variants={product.variants} size="2" />
+          <VariantSizes variants={product.variants} size="2" lineHeight="1" />
         </a>
       </Link>
     </ProductContainer>
@@ -128,6 +133,12 @@ export const ProductGridItem: React.FC<Props> = ({ product, loading }) => {
 
 const LineThroughSans = styled(Sans)`
   text-decoration: line-through;
+  line-height: 1;
+`
+
+const LeadingNoneSans = styled(Sans)`
+  white-space: pre;
+  line-height: 1;
 `
 
 const ThirdImageWrapper = styled(Box)<{ loaded: boolean }>`
