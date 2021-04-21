@@ -16,9 +16,11 @@ import { Media } from "../../components/Responsive"
 import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { initializeApollo } from "../../lib/apollo"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { filter as filterFragment } from "graphql-anywhere"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { ProductGridItem } from "@seasons/eclipse"
+import { ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -76,6 +78,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     availableOnly: available ?? null,
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
+  const { authState, toggleLoginModal } = useAuthContext()
   const { currentTops, currentBottoms, availableOnly } = params
 
   const skip = (currentPage - 1) * pageSize
@@ -264,7 +267,12 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     return (
                       <Col sm="4" xs="6" key={i}>
                         <Box pt={[0.5, 0.5, 0.5, 0, 0]} pb={[0.5, 0.5, 0.5, 5, 5]}>
-                          <ProductGridItem product={product?.node} loading={loading} />
+                          <ProductGridItem
+                            product={product?.node ? filterFragment(ProductGridItem_Product, product?.node) : null}
+                            loading={loading}
+                            authState={authState}
+                            onShowLoginModal={() => toggleLoginModal(true)}
+                          />
                         </Box>
                       </Col>
                     )
