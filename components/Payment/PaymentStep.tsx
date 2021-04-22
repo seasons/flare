@@ -1,4 +1,4 @@
-import { Box, Separator, Spacer } from "components"
+import { Box, Flex, Separator, Spacer } from "components"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
 import { FormFooter } from "components/Forms/FormFooter"
 import { Col, Grid, Row } from "components/Grid"
@@ -24,6 +24,10 @@ import { PaymentExpressButtons } from "./PaymentExpressButtons"
 import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
 import { PaymentSelectPlan } from "./PaymentSelectPlan"
+import { PaymentShippingAddress } from "./PaymentShippingAddress"
+import { CheckBox } from "components/Checkbox"
+import { InputLabel } from "@material-ui/core"
+import { Collapse } from "components/Collapse"
 
 interface PaymentStepProps {
   plan: {
@@ -95,8 +99,20 @@ const enableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
 const SUBMIT_PAYMENT = gql`
-  mutation SubmitPayment($paymentMethodID: String!, $planID: String!, $couponID: String, $billing: JSON) {
-    processPayment(paymentMethodID: $paymentMethodID, planID: $planID, couponID: $couponID, billing: $billing)
+  mutation SubmitPayment(
+    $paymentMethodID: String!
+    $planID: String!
+    $couponID: String
+    $billing: JSON
+    $shipping: JSON
+  ) {
+    processPayment(
+      paymentMethodID: $paymentMethodID
+      planID: $planID
+      couponID: $couponID
+      billing: $billing
+      shipping: $shipping
+    )
   }
 `
 
@@ -121,6 +137,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       },
     ],
   })
+  const [sameAsShipping, setSameAsShipping] = useState(true)
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const initialCouponWithCode = !!initialCoupon ? { ...initialCoupon, code: initialCoupon.id } : null
@@ -172,18 +189,46 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
     }
   }, [plan])
 
-  const valuesToBillingDetails = (values) => ({
-    name: values.name,
-    address: {
-      line1: values.address1,
-      line2: values.address2,
-      city: values.city,
-      state: values.state,
-      postal_code: values.postalCode,
-      country: "US",
-    },
-    email: data?.me?.customer?.user?.email,
-  })
+  const valuesToAddressDetails = (values): { billingDetails: any; shippingDetails: any } => {
+    const email = data?.me?.customer?.user?.email
+    const shippingDetails = {
+      name: `${values.shippingFirstName} ${values.shippingLastName}`,
+      address: {
+        line1: values.shippingAddress1,
+        line2: values.shippingAddress2,
+        city: values.shippingCity,
+        state: values.shippingState,
+        postal_code: values.shippingPostalCode,
+        country: "US",
+      },
+      email,
+    }
+    let billingDetails
+    if (sameAsShipping) {
+      billingDetails = shippingDetails
+    } else {
+      billingDetails = {
+        name: `${values.firstName} ${values.lastName}`,
+        address: {
+          line1: values.address1,
+          line2: values.address2,
+          city: values.city,
+          state: values.state,
+          postal_code: values.postalCode,
+          country: "US",
+        },
+        email,
+      }
+    }
+    return {
+      billingDetails,
+      shippingDetails: {
+        ...shippingDetails,
+        firstName: values.shippingFirstName,
+        lastName: values.shippingLastName,
+      },
+    }
+  }
 
   const handleSubmit = async (values) => {
     if (!stripe || !elements) {
@@ -193,7 +238,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
     }
 
     const cardElement = elements.getElement(CardNumberElement)
-    const billingDetails = valuesToBillingDetails(values)
+    const { billingDetails, shippingDetails } = valuesToAddressDetails(values)
 
     const payload = await stripe.createPaymentMethod({
       type: "card",
@@ -206,11 +251,11 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       setErrorMessage(payload.error.message)
     } else {
       console.log("[PaymentMethod]", payload.paymentMethod)
-      processPayment(payload.paymentMethod, values, billingDetails)
+      processPayment(payload.paymentMethod, values, billingDetails, shippingDetails)
     }
   }
 
-  const processPayment = async (paymentMethod, values, billingDetails) => {
+  const processPayment = async (paymentMethod, values, billingDetails, shippingDetails) => {
     if (isProcessingPayment) {
       return
     }
@@ -220,6 +265,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
         paymentMethodID: paymentMethod.id,
         planID: plan?.planID,
         couponID: !!coupon ? coupon.code : null,
+        shipping: shippingDetails,
         billing: {
           ...billingDetails,
           user: {
@@ -231,6 +277,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       },
     })
   }
+
+  const validationSchema = sameAsShipping ? sameAsShippingValidation : shippingAndBillingValidation
 
   return (
     <Box width="100%" height="100%" style={{ overflowY: "scroll" }}>
@@ -296,15 +344,37 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                           <PaymentExpressButtons
                             plan={data?.paymentPlan}
                             onPaymentMethodReceived={(paymentMethod) => {
-                              processPayment(paymentMethod, values, valuesToBillingDetails(values))
+                              const { billingDetails, shippingDetails } = valuesToAddressDetails(values)
+                              processPayment(paymentMethod, values, billingDetails, shippingDetails)
                             }}
                           />
                         </Box>
                       )}
                       <Box width="100%" py={[2, 2, 4]}>
+                        <Sans size="7">Shipping address</Sans>
+                        <Spacer mt={2} />
+                        <PaymentShippingAddress />
+                      </Box>
+                      <Box width="100%" py={[2, 2, 4]}>
                         <Sans size="7">Billing address</Sans>
                         <Spacer mt={2} />
-                        <PaymentBillingAddress />
+                        <Flex flexDirection="row" alignItems="center" width="100%" maxWidth="600px">
+                          <Flex flexDirection="row" alignItems="center" justifyContent="space-between" width="50%">
+                            <Label>Same as shipping address</Label>
+                            <Box pr={2}>
+                              <CheckBox
+                                isActive={sameAsShipping}
+                                onClick={() => {
+                                  setSameAsShipping(!sameAsShipping)
+                                }}
+                              />
+                            </Box>
+                          </Flex>
+                        </Flex>
+                        <Collapse open={!sameAsShipping}>
+                          <Spacer mt={2} />
+                          <PaymentBillingAddress />
+                        </Collapse>
                       </Box>
                       <Box width="100%" py={[2, 2, 4]}>
                         <Box>
@@ -386,6 +456,39 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
   )
 }
 
+const sameAsShippingValidation = Yup.object().shape({
+  shippingFirstName: Yup.string().trim().required("Required"),
+  shippingLastName: Yup.string().trim().required("Required"),
+  shippingAddress1: Yup.string().trim().required("Required"),
+  shippingCity: Yup.string().trim().required("Required"),
+  shippingState: Yup.string().trim().required("Required"),
+  shippingPostalCode: Yup.string()
+    .trim()
+    .required("Required")
+    .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
+})
+
+const shippingAndBillingValidation = Yup.object().shape({
+  firstName: Yup.string().trim().required("Required"),
+  lastName: Yup.string().trim().required("Required"),
+  address1: Yup.string().trim().required("Required"),
+  city: Yup.string().trim().required("Required"),
+  state: Yup.string().trim().required("Required"),
+  postalCode: Yup.string()
+    .trim()
+    .required("Required")
+    .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
+  shippingFirstName: Yup.string().trim().required("Required"),
+  shippingLastName: Yup.string().trim().required("Required"),
+  shippingAddress1: Yup.string().trim().required("Required"),
+  shippingCity: Yup.string().trim().required("Required"),
+  shippingState: Yup.string().trim().required("Required"),
+  shippingPostalCode: Yup.string()
+    .trim()
+    .required("Required")
+    .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
+})
+
 const LeftColumn = styled(Col)`
   border-left: 1px solid ${colors.black15};
   border-right: 1px solid ${colors.black15};
@@ -425,14 +528,6 @@ const ErrorResult = styled((props) => <Sans {...props} />)`
   color: red;
 `
 
-const validationSchema = Yup.object().shape({
-  firstName: Yup.string().trim().required("Required"),
-  lastName: Yup.string().trim().required("Required"),
-  address1: Yup.string().trim().required("Required"),
-  city: Yup.string().trim().required("Required"),
-  state: Yup.string().trim().required("Required"),
-  postalCode: Yup.string()
-    .trim()
-    .required("Required")
-    .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
-})
+const Label = styled(InputLabel)`
+  margin: 10px 0 5px 0;
+`
