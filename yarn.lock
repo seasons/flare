@@ -1378,10 +1378,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.6.0.tgz#dd5f19601eb3684c6bcdd3df3d0c04cf44c24cff"
   integrity sha512-emBGKvhJ0h++lLJQ5ejsj+od9G67nEaihjvfSx7/JWvNrQGAhP9U0OZqgb9dkKzor9Ufaj9SGt8RNY97cGzttw==
 
-"@seasons/eclipse@^1.2.21":
-  version "1.2.21"
-  resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.2.21.tgz#09ff6e788c4e043ca44cb891ce35ddb9017159c8"
-  integrity sha512-eEGpMx90jeKkc9pppfhoR2sOAWC5JCCHwiKj70ky267NaPEadTguUuOCrwFZUKWZtqBI18qQ+1YPotmoI5AgkQ==
+"@seasons/eclipse@^1.2.24":
+  version "1.2.24"
+  resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.2.24.tgz#42c13a75a258f9760c9262971a216623bcf3e86a"
+  integrity sha512-VI7qKbUVVU8+K4Ob2Sntab/yAL7Tkw22XPXgQvMgLK0NwLfZnG8+sE7vz4n1Tk2UR4t3jhwSA0u+v2gEgKvmBA==
   dependencies:
     dripsy "^1.4.6"
 
@@ -4771,6 +4771,11 @@ jmespath@0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
   integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
+
+js-sha256@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/js-sha256/-/js-sha256-0.9.0.tgz#0b89ac166583e91ef9123644bd3c5334ce9d0966"
+  integrity sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"

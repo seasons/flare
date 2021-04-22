@@ -1,8 +1,10 @@
 import { setContext } from "apollo-link-context"
 import { onError } from "apollo-link-error"
+import { sha256 } from "js-sha256"
 import { useMemo } from "react"
 
 import { ApolloClient, ApolloLink, HttpLink, Observable } from "@apollo/client"
+import { createPersistedQueryLink } from "@apollo/client/link/persisted-queries"
 import * as Sentry from "@sentry/react"
 
 import { getAccessTokenFromSession, getNewToken, UserSession } from "../auth/auth"
@@ -92,12 +94,14 @@ const httpLink = new HttpLink({
   credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
 }) as any
 
+const persistedQueryLink = createPersistedQueryLink({ useGETForHashedQueries: true, sha256 })
+
 // Take from https://github.com/vercel/next.js/blob/canary/examples/with-apollo/lib/apolloClient.js
 
 export function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: ApolloLink.from([authLink, errorLink, httpLink]) as any,
+    link: ApolloLink.from([persistedQueryLink, authLink, errorLink, httpLink]) as any,
     typeDefs,
     resolvers,
     cache,
