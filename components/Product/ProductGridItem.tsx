@@ -115,7 +115,7 @@ export const ProductGridItem: React.FC<Props> = ({ product, loading }) => {
               </LineThroughSans>
               <Sans mt="0.5" size="2" color="black50" display="inline">
                 {" "}
-                | $65 for 30-days
+                | $30-$65 for 30-days
               </Sans>
             </>
           )}
