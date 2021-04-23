@@ -52,7 +52,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 }))(() => {
   const tracking = useTracking()
   const router = useRouter()
-  const scrollRef = useRef(null)
   const filter = router.query?.Filter || "all+all"
   const _tops = router.query?.tops as string
   const tops = _tops?.split(" ")
@@ -96,7 +95,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   })
 
   useEffect(() => {
-    scrollRef?.current?.scrollTo(0, 0)
+    if (typeof window !== "undefined") {
+      window?.scrollTo(0, 0)
+    }
   }, [currentPage])
 
   if (error) {
@@ -138,7 +139,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         if ((!!paramsString && newParams !== paramsString) || category !== currentCategory || currentBrand !== brand) {
           setCurrentPage(1)
           newURL = `/browse/${currentCategory}+${currentBrand}?page=1${newParams}`
-          scrollRef?.current?.scrollTo(0, 0)
+          if (typeof window !== "undefined") {
+            window?.scrollTo(0, 0)
+          }
         } else {
           newURL = `/browse/${currentCategory}+${currentBrand}?page=${currentPage}${newParams}`
         }
@@ -170,6 +173,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   ])
 
   const aggregateCount = data?.connection?.aggregate?.count
+  // const pageCount = 15
   const pageCount = Math.ceil(aggregateCount / pageSize)
   const products = data?.products?.edges
   const productsOrArray = products || [...Array(pageSize)]
@@ -276,8 +280,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                         nextLabel="next"
                         breakClassName="break-me"
                         pageCount={pageCount}
-                        marginPagesDisplayed={25}
-                        pageRangeDisplayed={2}
+                        marginPagesDisplayed={0}
+                        pageRangeDisplayed={14}
                         forcePage={currentPage - 1}
                         onPageChange={(data) => {
                           const nextPage = data.selected + 1
@@ -380,6 +384,10 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
   .pagination {
     padding: 0;
     text-align: center;
+
+    .break-me {
+      display: none;
+    }
 
     .previous-button,
     .previous {
