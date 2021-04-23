@@ -52,7 +52,6 @@ export const BagItem: React.FC<BagItemProps> = ({
   const isBuyable = variantToUse?.price?.buyNewEnabled || variantToUse?.price?.buyUsedEnabled
   const purchased = variantToUse?.purchased
 
-  const variantSize = get(variantToUse, "internalSize.display")
   const variantId = bagItem.variantID
 
   const [removeFromLocalBag] = useMutation(ADD_OR_REMOVE_FROM_LOCAL_BAG, {
@@ -92,7 +91,7 @@ export const BagItem: React.FC<BagItemProps> = ({
             {product.name}
           </Sans>
           <Sans size="4" color="black50">
-            Size {variantSize}
+            Size {variantToUse?.displayShort}
           </Sans>
         </Box>
         <Box p={2}>
@@ -125,7 +124,7 @@ export const BagItem: React.FC<BagItemProps> = ({
               {product.name}
             </Sans>
             <Sans size="3" color="black50">
-              Size {variantSize}
+              Size {variantToUse?.displayShort}
             </Sans>
             <Spacer mb={3} />
             {authState.isSignedIn && (

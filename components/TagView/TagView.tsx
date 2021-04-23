@@ -1,6 +1,5 @@
 import { Box, Flex, Layout, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "components/Grid"
-import { ProductGridItem } from "components/Product/ProductGridItem"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
@@ -10,10 +9,10 @@ import { withRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
 import { TagView_Query } from "queries/collectionQueries"
 import { HEAD_META_TITLE } from "components/LayoutHead"
+import { ProductGridItem } from "@seasons/eclipse"
 
 const TagView = screenTrack(({ router }) => {
   return {
