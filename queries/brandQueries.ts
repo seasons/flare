@@ -70,9 +70,7 @@ export const GET_BROWSE_PRODUCTS = gql`
           variants {
             id
             size
-            internalSize {
-              display
-            }
+            displayShort
             total
             reservable
             nonReservable

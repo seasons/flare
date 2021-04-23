@@ -67,6 +67,8 @@ export const GET_PRODUCT = gql`
       isSaved
       variants {
         id
+        displayShort
+        displayLong
         total
         reservable
         nonReservable
@@ -77,11 +79,11 @@ export const GET_PRODUCT = gql`
         manufacturerSizes {
           id
           display
+          type
         }
         internalSize {
           id
           productType
-          display
           top {
             id
             letter
@@ -94,7 +96,6 @@ export const GET_PRODUCT = gql`
           bottom {
             id
             type
-            value
           }
         }
         ...ProductBuyCTA_ProductVariantFragment

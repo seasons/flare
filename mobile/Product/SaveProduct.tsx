@@ -96,20 +96,7 @@ export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product,
         )
       case "Sizes":
         const renderSizeRow = (item) => {
-          const {
-            id,
-            internalSize: { bottom, top },
-            isSaved,
-          } = item
-          let sizeName
-          switch (type) {
-            case "Top":
-              sizeName = sizeToName(top?.letter)
-              break
-            case "Bottom":
-              sizeName = bottom?.value
-              break
-          }
+          const { id, isSaved, displayLong } = item
 
           return (
             <TouchableWithoutFeedback onPress={() => onSelectSize(id)}>
@@ -119,7 +106,7 @@ export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product,
                   <Flex flexDirection="row" alignItems="center">
                     <Radio checked={id === selectedVariantID} value={id} onChange={() => onSelectSize(id)} />
                     <Sans color={color("black100")} ml={1} size="3" weight="medium">
-                      {sizeName}
+                      {displayLong}
                     </Sans>
                   </Flex>
                   {isSaved && (

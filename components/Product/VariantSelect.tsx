@@ -1,18 +1,13 @@
 import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
 import { color } from "helpers/color"
 import { find } from "lodash"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import { Schema, useTracking } from "utils/analytics"
-
 import { Popover, Radio } from "@material-ui/core"
 import styled from "styled-components"
 import { SansSize } from "lib/theme"
 import { ChevronIcon } from "components/Icons"
-
-export interface Variant {
-  sizeDisplay?: string
-}
 
 export const sizeToName = (size) => {
   switch (size) {
@@ -29,46 +24,24 @@ export const sizeToName = (size) => {
   }
 }
 
-const sizeDataForVariants = (variants = [], type) => {
-  if (type === "Top") {
-    return variants?.map((variant) => {
-      return { ...variant, sizeDisplay: sizeToName(variant?.internalSize?.display) }
-    })
-  } else if (type === "Bottom") {
-    return variants?.map((variant) => {
-      return { ...variant, sizeDisplay: variant?.internalSize?.bottom?.value }
-    })
-  }
-}
-
 export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelected, product }) => {
   const variants = product?.variants
-  const type = product?.type
-  const [sizeData, setSizeData] = useState([])
   const tracking = useTracking()
 
   useEffect(() => {
-    if (sizeData.length === 0) {
-      updateSizeData()
-    }
-  }, [])
-
-  const updateSizeData = () => {
-    const variantData = sizeDataForVariants(variants, type)
-    setSizeData(variantData)
-
-    // Update size data
-    if (variantData?.length && !selectedVariant) {
+    if (variants?.length && !selectedVariant) {
       const firstAvailableSize =
-        find(variantData, (size) => size.isInBag) ||
-        find(variantData, (size) => size.reservable > 0) ||
-        variantData?.[0]
+        find(variants, (size) => size.isInBag) || find(variants, (size) => size.reservable > 0) || variants?.[0]
       setSelectedVariant(firstAvailableSize)
     }
-  }
+  }, [variants, setSelectedVariant])
 
-  const rows = sizeData.map((size, i) => {
-    const manufacturerSize = (size?.manufacturerSizes?.length > 0 && size?.manufacturerSizes?.[0]?.display) || ""
+  const rows = variants.map((size, i) => {
+    const manufacturerSize = size?.manufacturerSizes?.[0]
+    const manufacturerSizeDisplay =
+      manufacturerSize?.display && manufacturerSize?.type && manufacturerSize?.display !== size.displayShort
+        ? `${manufacturerSize?.type} ${manufacturerSize?.display}`
+        : ""
     return (
       <Box key={size.id || i}>
         <TouchableOpacity
@@ -89,19 +62,17 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
             <Flex flexDirection="row" alignItems="center">
               <Radio checked={!!selectedVariant.id && selectedVariant.id === size.id} />
               <Spacer mr={1} />
-              {size?.sizeDisplay && (
-                <Sans color={size?.reservable > 0 ? color("black100") : color("black50")} size="4">
-                  {size.sizeDisplay}
-                </Sans>
-              )}
+              <Sans color={size?.reservable > 0 ? color("black100") : color("black50")} size="4">
+                {size.displayLong}
+              </Sans>
             </Flex>
             <Spacer mr={5} />
             <Sans color="black50" size="3">
-              {size?.reservable > 0 ? manufacturerSize : "Unavailable"}
+              {size?.reservable > 0 ? manufacturerSizeDisplay : "Unavailable"}
             </Sans>
           </Flex>
         </TouchableOpacity>
-        {i + 1 !== sizeData.length && <Separator color={color("black10")} />}
+        {i + 1 !== variants.length && <Separator color={color("black10")} />}
       </Box>
     )
   })
@@ -145,10 +116,6 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
 
   const open = Boolean(anchorEl)
   const id = open ? "simple-popover" : undefined
-  const text =
-    product?.type === "Top"
-      ? sizeToName(selectedVariant?.internalSize?.display)
-      : selectedVariant?.internalSize?.bottom?.value
 
   return (
     <>
@@ -156,7 +123,7 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
         <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center" flexWrap="nowrap">
           <Flex style={{ position: "relative" }} flexDirection="row" alignItems="center">
             {!variantInStock && <Strikethrough size="4" className="hover-white-background" />}
-            <Sans size="4">{text}</Sans>
+            <Sans size="4">{selectedVariant?.displayLong}</Sans>
           </Flex>
           <Flex ml={1} className="hover-white-path__svg">
             <ChevronIcon rotateDeg="90deg" color={color("black100")} scale={0.7} />
