@@ -1,9 +1,9 @@
-import { Sans, Spacer, Flex, Box } from "../../components"
+import { Sans, Spacer, Flex, Separator, Box } from "../../components"
 import { color } from "../../helpers"
 import styled from "styled-components"
 import React from "react"
+import { X } from "components/SVGs"
 import { SizeFilterParams } from "pages/browse/[Filter]"
-import { Checkbox } from "components/Checkbox"
 
 interface Props {
   setParams: (params: SizeFilterParams) => void
@@ -51,15 +51,16 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
       <Sans size="3">Filter by</Sans>
       <Spacer mb={[0, 2]} />
       <Flex mb={2} alignItems="center" flexDirection="row">
-        <Checkbox
+        <CheckBox
+          mr={1}
+          isActive={availableOnly}
           onClick={() => {
             setParams({ ...params, availableOnly: !availableOnly })
           }}
-          isActive={availableOnly}
-        />
-        <Sans ml={1} size="3">
-          Available now
-        </Sans>
+        >
+          <X />
+        </CheckBox>
+        <Sans size="3">Available now</Sans>
       </Flex>
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>
@@ -88,6 +89,22 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
     </Box>
   )
 }
+
+const CheckBox = styled(Box)<{ isActive: boolean }>`
+  height: 24px;
+  width: 24px;
+  border: 1px solid ${(p) => (p.isActive ? color("black100") : color("black10"))};
+  background-color: ${(p) => (p.isActive ? color("black100") : color("white100"))};
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    border: 1px solid ${color("black100")};
+    background-color: ${color("black100")};
+  }
+`
 
 const SizeButtonContainer = styled.div`
   display: flex;
