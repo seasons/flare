@@ -123,7 +123,7 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
         <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center" flexWrap="nowrap">
           <Flex style={{ position: "relative" }} flexDirection="row" alignItems="center">
             {!variantInStock && <Strikethrough size="4" className="hover-white-background" />}
-            <Sans size="4">{selectedVariant.displayLong}</Sans>
+            <Sans size="4">{selectedVariant?.displayLong}</Sans>
           </Flex>
           <Flex ml={1} className="hover-white-path__svg">
             <ChevronIcon rotateDeg="90deg" color={color("black100")} scale={0.7} />
