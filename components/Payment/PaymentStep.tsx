@@ -25,7 +25,7 @@ import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
 import { PaymentSelectPlan } from "./PaymentSelectPlan"
 import { PaymentShippingAddress } from "./PaymentShippingAddress"
-import { CheckBox } from "components/Checkbox"
+import { Checkbox } from "components/Checkbox"
 import { InputLabel } from "@material-ui/core"
 import { Collapse } from "components/Collapse"
 
@@ -74,9 +74,20 @@ const PaymentStep_Query = gql`
       }
       customer {
         id
+        detail {
+          id
+          shippingAddress {
+            id
+            city
+            state
+            zipCode
+          }
+        }
         user {
           id
           email
+          firstName
+          lastName
         }
         admissions {
           id
@@ -362,7 +373,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                           <Flex flexDirection="row" alignItems="center" justifyContent="space-between" width="50%">
                             <Label>Same as shipping address</Label>
                             <Box pr={2}>
-                              <CheckBox
+                              <Checkbox
                                 isActive={sameAsShipping}
                                 onClick={() => {
                                   setSameAsShipping(!sameAsShipping)

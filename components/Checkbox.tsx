@@ -4,15 +4,15 @@ import { X } from "components/SVGs"
 import { Box } from "components"
 import { color } from "helpers"
 
-export const CheckBox: React.FC<{ isActive: boolean; onClick: () => void }> = ({ isActive, onClick }) => {
+export const Checkbox: React.FC<{ isActive: boolean; onClick: () => void }> = ({ isActive, onClick }) => {
   return (
-    <CheckBoxInput isActive={isActive} onClick={onClick}>
+    <CheckboxInput isActive={isActive} onClick={onClick}>
       <X />
-    </CheckBoxInput>
+    </CheckboxInput>
   )
 }
 
-const CheckBoxInput = styled(Box)<{ isActive: boolean }>`
+const CheckboxInput = styled(Box)<{ isActive: boolean }>`
   height: 24px;
   width: 24px;
   border: 1px solid ${(p) => (p.isActive ? color("black100") : color("black10"))};

@@ -3,7 +3,7 @@ import { color } from "../../helpers"
 import styled from "styled-components"
 import React from "react"
 import { SizeFilterParams } from "pages/browse/[Filter]"
-import { CheckBox } from "components/Checkbox"
+import { Checkbox } from "components/Checkbox"
 
 interface Props {
   setParams: (params: SizeFilterParams) => void
@@ -51,7 +51,7 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
       <Sans size="3">Filter by</Sans>
       <Spacer mb={[0, 2]} />
       <Flex mb={2} alignItems="center" flexDirection="row">
-        <CheckBox
+        <Checkbox
           onClick={() => {
             setParams({ ...params, availableOnly: !availableOnly })
           }}
