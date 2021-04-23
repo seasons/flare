@@ -4,7 +4,6 @@ import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
 import React from "react"
 import { Schema, useTracking } from "utils/analytics"
-
 import { color } from "../../helpers"
 import { ProductInfoItem } from "./ProductInfoItem"
 
