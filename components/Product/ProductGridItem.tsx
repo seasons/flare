@@ -1,17 +1,18 @@
-import React from "react"
-import styled from "styled-components"
-import { Box } from "../Box"
-import { Link } from "../Link"
-import { get } from "lodash"
-import { Sans } from "../Typography"
-import { VariantSizes } from "../VariantSizes"
-import ContentLoader from "react-content-loader"
-import { ProgressiveImage } from "../Image"
-import { IMAGE_ASPECT_RATIO } from "../../utils/imageResize"
-import { Spacer } from "../Spacer"
-import { Schema, useTracking } from "utils/analytics"
 import { Picture } from "components"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { get } from "lodash"
+import React from "react"
+import ContentLoader from "react-content-loader"
+import styled from "styled-components"
+import { Schema, useTracking } from "utils/analytics"
+
+import { IMAGE_ASPECT_RATIO } from "../../utils/imageResize"
+import { Box } from "../Box"
+import { ProgressiveImage } from "../Image"
+import { Link } from "../Link"
+import { Spacer } from "../Spacer"
+import { Sans } from "../Typography"
+import { VariantSizes } from "../VariantSizes"
 
 type Props = {
   product: {
@@ -108,14 +109,11 @@ export const ProductGridItem: React.FC<Props> = ({ product, loading }) => {
           <Sans size="2" mt="0.5" color="black50">
             {name}
           </Sans>
-          {retailPrice && !authState?.isSignedIn && (
+          {retailPrice && (
             <>
-              <LineThroughSans mt="0.5" size="2" color="black50" display="inline">
-                ${retailPrice}
-              </LineThroughSans>
+              <LineThroughSans mt="0.5" size="2" color="black50" display="inline"></LineThroughSans>
               <Sans mt="0.5" size="2" color="black50" display="inline">
-                {" "}
-                | $30-$65 for 30-days
+                {`Retail $${retailPrice}`}
               </Sans>
             </>
           )}

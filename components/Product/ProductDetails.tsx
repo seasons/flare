@@ -1,12 +1,12 @@
+import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
 import React from "react"
+import { Schema, useTracking } from "utils/analytics"
 
-import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { color } from "../../helpers"
 import { VariantSizes } from "../VariantSizes"
 import { ProductInfoItem } from "./ProductInfoItem"
-import { Schema, useTracking } from "utils/analytics"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{
@@ -86,6 +86,7 @@ export const ProductDetails: React.FC<{
       )}
       {product.brand && <ProductInfoItem detailType="Brand" detailValue={product.brand.name} />}
       {product.retailPrice && <ProductInfoItem detailType="Retail price" detailValue={"$" + product.retailPrice} />}
+      <ProductInfoItem detailType="Membership price" detailValue="$65 per month" />
     </Box>
   )
 }
