@@ -3,7 +3,6 @@ import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
 import { Col, Grid, Row } from "components/Grid"
 import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
 import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
-import { ProductGridItem } from "components/Product/ProductGridItem"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
@@ -18,6 +17,7 @@ import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 import { HEAD_META_TITLE } from "components/LayoutHead"
+import { ProductGridItem } from "@seasons/eclipse"
 
 const Designer = screenTrack(({ router }) => {
   return {

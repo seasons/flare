@@ -26,9 +26,7 @@ export const TagView_Query = gql`
           variants {
             id
             size
-            internalSize {
-              display
-            }
+            displayShort
             total
             reservable
             nonReservable

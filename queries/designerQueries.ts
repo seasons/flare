@@ -33,10 +33,7 @@ export const Designer_Query = gql`
             variants {
               id
               size
-              internalSize {
-                id
-                display
-              }
+              displayShort
               total
               reservable
               nonReservable
