@@ -9,15 +9,16 @@ import { debounce } from "lodash"
 
 export const Blog_Query = gql`
   query Blog_Query($first: Int!, $skip: Int!) {
-    connection: blogPostsConnection {
+    connection: blogPostsConnection(where: { published: true }) {
       aggregate {
         count
       }
     }
-    blogPosts: blogPostsConnection(first: $first, skip: $skip) {
+    blogPosts: blogPostsConnection(first: $first, skip: $skip, where: { published: true }) {
       edges {
         node {
           id
+          slug
           url
           name
           author

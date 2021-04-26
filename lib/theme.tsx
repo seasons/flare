@@ -86,6 +86,10 @@ export const themeProps = {
         fontSize: 40,
         lineHeight: 48,
       },
+      "11": {
+        fontSize: 56,
+        lineHeight: 64,
+      },
     },
     /** Unica  */
     sans: {
