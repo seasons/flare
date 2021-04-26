@@ -1,23 +1,14 @@
 import { Box, Display, Flex, Layout, Sans, ProgressiveImage, Spacer } from "components"
-import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
-import { Col, Grid, Row } from "components/Grid"
-import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
-import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
-import { ReadMore } from "components/ReadMore"
-import { Media } from "components/Responsive"
-import { Spinner } from "components/Spinner"
-import { initializeApollo } from "lib/apollo"
-import { debounce } from "lodash"
-import { DateTime } from "luxon"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { Designer_Query, DesignerBrands_Query } from "queries/designerQueries"
-import React, { useEffect, useRef, useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 import { HEAD_META_TITLE } from "components/LayoutHead"
 import { BlogPost_Query } from "queries/blogPostQueries"
+import { initializeApollo } from "lib/apollo"
+import { Blog_Query } from "."
 
 const BlogPost = screenTrack(({ router }) => {
   return {
@@ -28,7 +19,7 @@ const BlogPost = screenTrack(({ router }) => {
 })(({ router }) => {
   const slug = router.query.BlogPost || ""
 
-  const { previousData, data = previousData, fetchMore, loading } = useQuery(BlogPost_Query, {
+  const { previousData, data = previousData } = useQuery(BlogPost_Query, {
     variables: {
       slug,
     },
@@ -145,54 +136,51 @@ const Content = styled("div")`
   }
 `
 
-// export async function getStaticPaths() {
-//   const apolloClient = initializeApollo()
+export async function getStaticPaths() {
+  const apolloClient = initializeApollo()
 
-//   const response = await apolloClient.query({
-//     query: DesignerBrands_Query,
-//   })
+  const response = await apolloClient.query({
+    query: Blog_Query,
+  })
 
-//   const paths = []
+  const paths = []
 
-//   const brands = response?.data?.brands
+  const blogPosts = response?.data?.blogPosts
 
-//   brands?.forEach((brand) => {
-//     paths.push({ params: { Designer: brand.slug } })
-//   })
+  blogPosts?.forEach((blogPost) => {
+    paths.push({ params: { BlogPost: blogPost.slug } })
+  })
 
-//   return {
-//     paths,
-//     fallback: true,
-//   }
-// }
+  return {
+    paths,
+    fallback: true,
+  }
+}
 
-// export async function getStaticProps({ params }) {
-//   const apolloClient = initializeApollo()
+export async function getStaticProps({ params }) {
+  const apolloClient = initializeApollo()
 
-//   const filter = params?.Designer
+  const slug = params?.BlogPost
 
-//   try {
-//     await apolloClient.query({
-//       query: Designer_Query,
-//       variables: {
-//         slug: filter,
-//         first: 8,
-//         skip: 0,
-//         orderBy: "publishedAt_DESC",
-//       },
-//     })
-//   } catch (e) {
-//     return {
-//       notFound: true,
-//     }
-//   }
+  try {
+    await apolloClient.query({
+      query: BlogPost_Query,
+      variables: {
+        slug: slug,
+      },
+    })
+  } catch (e) {
+    return {
+      notFound: true,
+    }
+  }
 
-//   return {
-//     props: {
-//       initialApolloState: apolloClient.cache.extract(),
-//     },
-//     revalidate: 1,
-//   }
-// }
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+    revalidate: 1,
+  }
+}
 
 export default withRouter(BlogPost)
