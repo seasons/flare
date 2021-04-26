@@ -39,7 +39,7 @@ const Blog = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
-  const [first, setFirst] = useState(12)
+  const [first, setFirst] = useState(10)
   const imageContainerRef = useRef(null)
 
   const { previousData, data = previousData, loading, fetchMore } = useQuery(Blog_Query, {

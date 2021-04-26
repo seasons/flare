@@ -141,6 +141,10 @@ export async function getStaticPaths() {
 
   const response = await apolloClient.query({
     query: Blog_Query,
+    variables: {
+      first: 30,
+      skip: 0,
+    },
   })
 
   const paths = []
