@@ -25,7 +25,6 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ bagItem, index
   }
 
   const imageURL = product?.images?.[0]?.url
-  const variantSize = get(variantToUse, "internalSize.display")
 
   return (
     <Box key={product.id}>
@@ -49,9 +48,9 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ bagItem, index
                 <Sans size="3" color="black50">
                   {product.name}
                 </Sans>
-                {!!variantSize && (
+                {!!variantToUse?.displayShort && (
                   <Sans size="3" color="black50">
-                    Size {variantSize}
+                    Size {variantToUse.displayShort}
                   </Sans>
                 )}
               </Box>

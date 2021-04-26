@@ -1,12 +1,11 @@
+import { VariantSizes } from "@seasons/eclipse"
+import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
 import React from "react"
-
-import { Box, Flex, Sans, Separator, Spacer } from "components"
-import { color } from "../../helpers"
-import { VariantSizes } from "../VariantSizes"
-import { ProductInfoItem } from "./ProductInfoItem"
 import { Schema, useTracking } from "utils/analytics"
+import { color } from "../../helpers"
+import { ProductInfoItem } from "./ProductInfoItem"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{
@@ -40,7 +39,7 @@ export const ProductDetails: React.FC<{
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="100%">
           <Flex flexDirection="row" justifyContent="space-between" width="100%">
-            <VariantSizes variants={product.variants} size="3" />
+            <VariantSizes variants={product.variants} size="4" />
             <Box>
               <SaveProductButton product={product} selectedVariant={selectedVariant} showSizeSelector={true} />
             </Box>
@@ -86,6 +85,7 @@ export const ProductDetails: React.FC<{
       )}
       {product.brand && <ProductInfoItem detailType="Brand" detailValue={product.brand.name} />}
       {product.retailPrice && <ProductInfoItem detailType="Retail price" detailValue={"$" + product.retailPrice} />}
+      <ProductInfoItem detailType="Membership price" detailValue="$65 per month" />
     </Box>
   )
 }

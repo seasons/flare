@@ -52,7 +52,6 @@ const Home = screenTrack(() => ({
     if (isUserSignedIn !== userSignedIn.current) {
       refetch()
       userSignedIn.current = isUserSignedIn
-      console.log("userSignedIn.current", userSignedIn.current)
     }
   }, [isUserSignedIn])
 
@@ -84,6 +83,7 @@ const Home = screenTrack(() => ({
             }}
             imageIndex={2}
             items={data?.newestBrandProducts}
+            isSignedIn={Boolean(authState?.isSignedIn)}
           />
           <Spacer mb={10} />
         </>
@@ -170,7 +170,7 @@ const getPartnerDataFromUTMCampaign = (utm_campaign) => {
       data["partnerName"] = "One Dapper Street"
       data["detail"] = "Subscribe today to get 25% off your first month's membership dues."
       // TODO: Replace with real image later
-      data["imageURL"] = imageResize("https://seasons-images.s3.amazonaws.com/MarcelPlaceholder.jpg", "medium")
+      data["imageURL"] = imageResize("https://seasons-images.s3.amazonaws.com/MarcelSplashPage.jpg", "medium")
       data["secondaryCTA"] = "browseItems"
       break
     default:

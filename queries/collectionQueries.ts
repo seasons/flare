@@ -18,6 +18,7 @@ export const TagView_Query = gql`
           id
           slug
           name
+          retailPrice
           images(size: Thumb) {
             id
             url
@@ -25,9 +26,7 @@ export const TagView_Query = gql`
           variants {
             id
             size
-            internalSize {
-              display
-            }
+            displayShort
             total
             reservable
             nonReservable
