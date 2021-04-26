@@ -149,10 +149,10 @@ export async function getStaticPaths() {
 
   const paths = []
 
-  const blogPosts = response?.data?.blogPosts
+  const blogPosts = response?.data?.blogPosts?.edges
 
   blogPosts?.forEach((blogPost) => {
-    paths.push({ params: { BlogPost: blogPost.slug } })
+    paths.push({ params: { BlogPost: blogPost?.node?.slug } })
   })
 
   return {
