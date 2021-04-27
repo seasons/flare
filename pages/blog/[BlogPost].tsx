@@ -92,7 +92,7 @@ const Content = styled("div")`
   max-width: 800px;
 
   p {
-    font-family: "Proxima nova webfont", sans-serif;
+    font-family: "ProximaNova-Medium", sans-serif;
     color: #4d4d4d;
     font-size: 18px;
     font-weight: 500;
@@ -102,7 +102,7 @@ const Content = styled("div")`
   }
 
   a {
-    font-family: "Proxima nova webfont", sans-serif;
+    font-family: "ProximaNova-Medium", sans-serif;
     color: #000;
     font-size: 16px;
     font-weight: 500;
@@ -116,7 +116,7 @@ const Content = styled("div")`
   }
 
   figcaption {
-    font-family: "Proxima nova webfont", sans-serif;
+    font-family: "ProximaNova-Medium", sans-serif;
     margin-top: 5px;
     margin-bottom: 30px;
     color: #666;
