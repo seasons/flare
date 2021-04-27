@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // A Transform for turning a Readable stream of either SitemapItemOptions or url strings into a Sitemap.
     // The readable stream it transforms must be in object mode.
     const smStream = new SitemapStream({
-      hostname: "https://www.seasons.nyc",
+      hostname: "https://www.wearseasons.com",
     })
 
     const pipeline = smStream.pipe(createGzip())

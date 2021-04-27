@@ -42,7 +42,7 @@ const BlogPost = screenTrack(({ router }) => {
         <meta property="twitter:description" content={summary} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Seasons" />
-        <meta property="og:url" content={`https://www.seasons.nyc/desginer/${slug}`} />
+        <meta property="og:url" content={`https://www.wearseasons.com/blog/${slug}`} />
         <meta
           property="og:image"
           content={
