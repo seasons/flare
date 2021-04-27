@@ -1,27 +1,21 @@
 import { Box, Separator, Spacer } from "components"
 import {
-  HowItWorks,
-  Hero,
-  FeaturedIn,
-  TheApp,
-  BrowseAllWithImage,
-  HomepageFitPics,
-  FromCommunity,
-  Testimonials,
-  Plans,
+  BrowseAllWithImage, FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans,
+  Testimonials, TheApp
 } from "components/Homepage"
+import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
+import { Layout } from "components/Layout"
+import { PartnerModal } from "components/Partner/PartnerModal"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { useRouter } from "next/router"
+import { Home_Query } from "queries/homeQueries"
 import React, { useEffect, useRef } from "react"
 import { Schema, screenTrack } from "utils/analytics"
-import { useQuery } from "@apollo/client"
-import { Layout } from "components/Layout"
-import { ProductsRail } from "@seasons/eclipse"
-import { useRouter } from "next/router"
-import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
-import { Home_Query } from "queries/homeQueries"
-import { PartnerModal } from "components/Partner/PartnerModal"
 import { imageResize } from "utils/imageResize"
+
+import { useQuery } from "@apollo/client"
+import { ProductsRail } from "@seasons/eclipse"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -164,6 +158,7 @@ const getPartnerDataFromUTMCampaign = (utm_campaign) => {
       data["partnerName"] = "Threadability"
       data["detail"] = "Subscribe today to get 25% off your first month's membership dues."
       data["secondaryCTA"] = "browseItems"
+      data["imageURL"] = imageResize("https://seasons-images.s3.amazonaws.com/DavidSplashPage.jpg", "medium")
       // TODO: Add image url
       break
     case "onedapperstreet":
