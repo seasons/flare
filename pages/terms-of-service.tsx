@@ -400,7 +400,7 @@ export const TermsOfService = screenTrack(() => ({
                 <br />‍
               </strong>
               You can rent or purchase Products at the prices set forth on our <a href="/">Membership</a> page. You may
-              choose to rent or purchase Products through the www.seasons.nyc website or our mobile applications.
+              choose to rent or purchase Products through the www.wearseasons.com website or our mobile applications.
               Seasons may limit or cancel quantities of Products rented or purchased, and it reserves the right to
               refuse any order. In the event Seasons needs to make a change to an order, it will attempt to notify you
               by contacting the email address, billing address, and/or phone number provided at the time the order was
