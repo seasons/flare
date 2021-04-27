@@ -4,8 +4,10 @@ import { Display } from "../Typography"
 import { head } from "lodash"
 import { ProductGridItem } from "@seasons/eclipse"
 import { imageResize } from "utils/imageResize"
+import { useAuthContext } from "lib/auth/AuthContext"
 
 export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections }) => {
+  const { authState, toggleLoginModal } = useAuthContext()
   const collection = head(collections)
   if (!collection) {
     return null
@@ -42,7 +44,7 @@ export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections
                 {products?.map((product, index) => {
                   return (
                     <Box key={index} width="33.33%">
-                      <ProductGridItem product={product} />
+                      <ProductGridItem product={product} authState={authState} onShowLoginModal={() => toggleLoginModal(true)} />
                     </Box>
                   )
                 })}
