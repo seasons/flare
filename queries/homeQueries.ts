@@ -103,10 +103,11 @@ export const Home_Query = gql`
         }
       }
     }
-    newArchival: products(
+    newBottoms: products(
       first: 3
+      category: "bottoms"
       orderBy: publishedAt_DESC
-      where: { AND: [{ tags_some: { name: "Vintage" } }, { status: Available }] }
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
     ) {
       ...HomePageProductFragment_Product
     }

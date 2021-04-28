@@ -1,7 +1,14 @@
 import { Box, Separator, Spacer } from "components"
 import {
-  BrowseAllWithImage, FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans,
-  Testimonials, TheApp
+  BrowseAllWithImage,
+  FeaturedIn,
+  FromCommunity,
+  Hero,
+  HomepageFitPics,
+  HowItWorks,
+  Plans,
+  Testimonials,
+  TheApp,
 } from "components/Homepage"
 import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
 import { Layout } from "components/Layout"
@@ -99,14 +106,14 @@ const Home = screenTrack(() => ({
       <SeparatorWithPadding />
       <Spacer mb={10} />
 
-      {data?.newArchival.length > 0 && (
+      {data?.newBottoms.length > 0 && (
         <>
           <ProductsRail
-            title="New to the archive"
+            title="Just added bottoms"
             underlineTitleOnClick={() => {
               router.push(`/browse}`)
             }}
-            items={data?.newArchival}
+            items={data?.newBottoms}
           />
           <Spacer mb={10} />
         </>
