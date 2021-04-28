@@ -1,4 +1,4 @@
-import { Box, Display, Flex, Layout, Sans, ProgressiveImage, Spacer } from "components"
+import { Box, Display, Flex, Layout, Sans, ProgressiveImage, Spacer, Media } from "components"
 import Head from "next/head"
 import { withRouter } from "next/router"
 import React from "react"
@@ -32,6 +32,43 @@ const BlogPost = screenTrack(({ router }) => {
   const category = blogPost?.category
   const author = blogPost?.author
 
+  const Content: React.FC<{ breakpoint: "mobile" | "desktop" }> = ({ breakpoint }) => {
+    const isDesktop = breakpoint === "desktop"
+
+    return (
+      <>
+        <Flex flexDirection="row" justifyContent="center" width="100%">
+          <ContentWrapper>
+            <Box style={{ maxWidth: "800px" }}>
+              <Display size={["4", "7"]} style={{ textTransform: "capitalize" }}>
+                {category}
+              </Display>
+              <Spacer mb={[2, 3]} />
+              <Display size={["7", "11"]} color="black100">
+                {name}
+              </Display>
+              <Spacer mb={[2, 3]} />
+              <Sans size="4" color="black50">
+                {author}
+              </Sans>
+            </Box>
+          </ContentWrapper>
+        </Flex>
+        <Spacer mb={[1, 4]} />
+
+        <ProgressiveImage
+          imageUrl={blogPost?.image?.url}
+          size={isDesktop ? "hero" : "medium"}
+          alt={`Image for ${name}`}
+          aspectRatio={0.7}
+        />
+        <ContentWrapper>
+          <BlogContent dangerouslySetInnerHTML={{ __html: content }} />
+        </ContentWrapper>
+      </>
+    )
+  }
+
   return (
     <Layout includeDefaultHead={false}>
       <Head>
@@ -53,28 +90,13 @@ const BlogPost = screenTrack(({ router }) => {
         <meta property="twitter:card" content="summary" />
       </Head>
       <Box pt={[1, 5]} px={[2, 2, 2, 2, 2]}>
-        <Spacer mt={10} />
-        <Flex flexDirection="row" justifyContent="center" width="100%">
-          <Box style={{ width: "80%", maxWidth: "770px" }}>
-            <Display size="7" style={{ textTransform: "capitalize" }}>
-              {category}
-            </Display>
-            <Spacer mb={3} />
-            <Display size="11" color="black100">
-              {name}
-            </Display>
-            <Spacer mb={3} />
-            <Sans size="4" color="black50">
-              {author}
-            </Sans>
-          </Box>
-        </Flex>
-        <Spacer mb={10} />
-
-        <ProgressiveImage imageUrl={blogPost?.image?.url} size="hero" alt={`Image for ${name}`} aspectRatio={0.7} />
-        <ContentWrapper>
-          <Content dangerouslySetInnerHTML={{ __html: content }} />
-        </ContentWrapper>
+        <Spacer mt={2} />
+        <Media greaterThan="sm">
+          <Content breakpoint="desktop" />
+        </Media>
+        <Media lessThan="md">
+          <Content breakpoint="mobile" />
+        </Media>
       </Box>
     </Layout>
   )
@@ -85,9 +107,13 @@ const ContentWrapper = styled("div")`
   padding: 60px 30px;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 767px) {
+    padding: 32px 0px;
+  }
 `
 
-const Content = styled("div")`
+const BlogContent = styled("div")`
   display: block;
   max-width: 800px;
 
