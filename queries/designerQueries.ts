@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { ProductGridItem_Product } from "@seasons/eclipse"
 
 export const Designer_Query = gql`
   query Designer_Query($slug: String!, $first: Int!, $skip: Int!, $orderBy: ProductOrderByInput!) {
@@ -39,11 +40,13 @@ export const Designer_Query = gql`
               nonReservable
               reserved
             }
+            ...ProductGridItem_Product
           }
         }
       }
     }
   }
+  ${ProductGridItem_Product}
 `
 
 export const DesignerBrands_Query = gql`

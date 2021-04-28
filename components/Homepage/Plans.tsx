@@ -10,7 +10,7 @@ import { imageResize } from "utils/imageResize"
 import { Box, Display, Flex, Media, Picture, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
 
-const image = require("../../public/images/homepage/OutfitGrid-1.jpg")
+const image = require("../../public/images/homepage/choosebag.jpg")
 
 export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   const plansGroupedByTier = groupByPlanTier(plans)

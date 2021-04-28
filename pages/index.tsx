@@ -1,7 +1,14 @@
 import { Box, Separator, Spacer } from "components"
 import {
-  BrowseAllWithImage, FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans,
-  Testimonials, TheApp
+  BrowseAllWithImage,
+  FeaturedIn,
+  FromCommunity,
+  Hero,
+  HomepageFitPics,
+  HowItWorks,
+  Plans,
+  Testimonials,
+  TheApp,
 } from "components/Homepage"
 import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
 import { Layout } from "components/Layout"
@@ -16,6 +23,7 @@ import { imageResize } from "utils/imageResize"
 
 import { useQuery } from "@apollo/client"
 import { ProductsRail } from "@seasons/eclipse"
+import { CarbonFootprint } from "components/Homepage/CarbonFootprint"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -25,7 +33,7 @@ const Home = screenTrack(() => ({
   path: "/",
 }))(() => {
   const { previousData, data = previousData, refetch } = useQuery(Home_Query)
-  const { updateUserSession, authState } = useAuthContext()
+  const { updateUserSession, authState, toggleLoginModal } = useAuthContext()
   const router = useRouter()
 
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
@@ -77,7 +85,8 @@ const Home = screenTrack(() => ({
             }}
             imageIndex={2}
             items={data?.newestBrandProducts}
-            isSignedIn={Boolean(authState?.isSignedIn)}
+            authState={authState}
+            onShowLoginModal={() => toggleLoginModal(true)}
           />
           <Spacer mb={10} />
         </>
@@ -99,14 +108,16 @@ const Home = screenTrack(() => ({
       <SeparatorWithPadding />
       <Spacer mb={10} />
 
-      {data?.newArchival.length > 0 && (
+      {data?.newBottoms.length > 0 && (
         <>
           <ProductsRail
-            title="New to the archive"
+            title="Just added bottoms"
             underlineTitleOnClick={() => {
               router.push(`/browse}`)
             }}
-            items={data?.newArchival}
+            items={data?.newBottoms}
+            authState={authState}
+            onShowLoginModal={() => toggleLoginModal(true)}
           />
           <Spacer mb={10} />
         </>
@@ -146,6 +157,8 @@ const Home = screenTrack(() => ({
       <Spacer mb="112px" />
       <TheApp />
       <Spacer mb={10} />
+      <CarbonFootprint />
+      <Spacer mb={2} />
       <PartnerModal open={showPartnerModal} {...partnerData} />
     </Layout>
   )

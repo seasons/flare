@@ -13,7 +13,7 @@ export const LayoutHead: React.FC<{ title?: string }> = ({ title }) => {
       <meta property="twitter:description" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="Seasons" />
-      <meta property="og:url" content="https://www.seasons.nyc" />
+      <meta property="og:url" content="https://www.wearseasons.com" />
       <meta property="og:image" content="https://flare-web.s3.amazonaws.com/assets/og-image.jpg" />
       <meta property="twitter:card" content="summary" />
       <meta httpEquiv="content-language" content="en-us" />

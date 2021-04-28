@@ -37,6 +37,10 @@ export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   const initialImage = imageResize(imageUrl, "initial")
   const fullImage = imageResize(imageUrl, size)
 
+  if (!imageUrl) {
+    return null
+  }
+
   return (
     <ImageWrapper aspectRatio={aspectRatio} style={style}>
       <FullImageWrapper loaded={loaded}>

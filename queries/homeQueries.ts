@@ -1,5 +1,6 @@
 import gql from "graphql-tag"
 import { LaunchCalendarFragment_Query } from "components/Homepage/LaunchCalendar"
+import { ProductGridItem_Product } from "@seasons/eclipse"
 
 const HomePageProductFragment_Product = gql`
   fragment HomePageProductFragment_Product on Product {
@@ -7,6 +8,7 @@ const HomePageProductFragment_Product = gql`
     slug
     name
     retailPrice
+    type
     modelSize {
       id
       display
@@ -25,7 +27,9 @@ const HomePageProductFragment_Product = gql`
       reservable
       displayShort
     }
+    ...ProductGridItem_Product
   }
+  ${ProductGridItem_Product}
 `
 
 export const Home_Query = gql`
@@ -103,10 +107,11 @@ export const Home_Query = gql`
         }
       }
     }
-    newArchival: products(
+    newBottoms: products(
       first: 3
+      category: "bottoms"
       orderBy: publishedAt_DESC
-      where: { AND: [{ tags_some: { name: "Vintage" } }, { status: Available }] }
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
     ) {
       ...HomePageProductFragment_Product
     }
