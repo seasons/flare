@@ -10,7 +10,7 @@ export const BlogHero: React.FC<{ blogPost: any; breakpoint: "desktop" | "mobile
   const name = node?.name
   const image = node?.image
   const slug = node?.slug
-  const loading = !blogPost || true
+  const loading = !blogPost
 
   const TextContent = () => {
     return (
