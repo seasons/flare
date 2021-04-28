@@ -13,15 +13,15 @@ export const BlogHero = ({ blogPost }) => {
 
   const TextContent = () => {
     return (
-      <>
+      <Box px={[2, 2, 0, 0, 0]}>
         <Sans color="black50" size="2" style={{ textTransform: "uppercase" }}>
           {category}
         </Sans>
         <Spacer mb={0.5} />
-        <Display size="10" style={{ maxWidth: "800px" }}>
+        <Display size={["7", "10"]} style={{ maxWidth: "800px" }}>
           {name}
         </Display>
-      </>
+      </Box>
     )
   }
 
@@ -52,7 +52,7 @@ export const BlogHero = ({ blogPost }) => {
       <Spacer mb={10} />
       <Link href="/blog/[BlogPost]" as={`/blog/${slug}`}>
         {loading ? <TextLoader /> : <TextContent />}
-        <Spacer mb={5} />
+        <Spacer pb={5} />
         <Box style={{ maxWidth: "1100px", position: "relative" }}>
           {loading ? (
             <ImageLoader />

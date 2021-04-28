@@ -80,7 +80,7 @@ const Blog = screenTrack(({ router }) => {
   return (
     <Layout>
       <BlogHero blogPost={blogPosts?.[0]} />
-      <Spacer mb={10} />
+      <Spacer mb={[6, 10]} />
       <LatestPosts
         blogPosts={blogPosts?.slice(1)}
         imageContainerRef={imageContainerRef}
