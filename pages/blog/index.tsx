@@ -1,4 +1,4 @@
-import { Layout, Spacer } from "components"
+import { Layout, Media, Spacer } from "components"
 import { withRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
@@ -77,16 +77,29 @@ const Blog = screenTrack(({ router }) => {
     return () => window.removeEventListener("scroll", onScroll)
   }, [onScroll])
 
+  const Content: React.FC<{ breakpoint: "desktop" | "mobile" }> = ({ breakpoint }) => {
+    return (
+      <>
+        <BlogHero blogPost={blogPosts?.[0]} breakpoint={breakpoint} />
+        <Spacer mb={[6, 10]} />
+        <LatestPosts
+          blogPosts={blogPosts?.slice(1)}
+          imageContainerRef={imageContainerRef}
+          aggregateCount={aggregateCount}
+        />
+        <Spacer mb={6} />
+      </>
+    )
+  }
+
   return (
     <Layout>
-      <BlogHero blogPost={blogPosts?.[0]} />
-      <Spacer mb={[6, 10]} />
-      <LatestPosts
-        blogPosts={blogPosts?.slice(1)}
-        imageContainerRef={imageContainerRef}
-        aggregateCount={aggregateCount}
-      />
-      <Spacer mb={6} />
+      <Media greaterThan="sm">
+        <Content breakpoint="desktop" />
+      </Media>
+      <Media lessThan="md">
+        <Content breakpoint="mobile" />
+      </Media>
     </Layout>
   )
 })
