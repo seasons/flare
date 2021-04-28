@@ -13,7 +13,7 @@ import { BaseCSS } from "styled-bootstrap-grid"
 import { ApolloProvider } from "@apollo/client"
 import * as Sentry from "@sentry/react"
 import { Integrations } from "@sentry/tracing"
-import { NotificationBar, NotificationBarProvider } from "@seasons/eclipse"
+import { NotificationBarProvider } from "@seasons/eclipse"
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,

@@ -7,7 +7,7 @@ import { NavProps } from "./Types"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
 import gql from "graphql-tag"
-import { NotificationBar } from "@seasons/eclipse"
+import { NotificationBar, BrowseProductsNotificationBar } from "@seasons/eclipse"
 import { useAuthContext } from "lib/auth/AuthContext"
 
 type Props = Omit<NavProps, "onClickNotificationBar"> & {
@@ -49,6 +49,7 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
       renderNavItem: () => <BrandsNavItem key="designers" brandItems={brandItems} />,
     },
   ]
+  const isBrowse = router.pathname.startsWith("/browse")
 
   const onClickNotificationBar = (route) => {
     if (!!route.drawerView) {
@@ -72,6 +73,7 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
         <MobileNav links={links} />
       </Media>
       <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isSignedIn} />
+      <BrowseProductsNotificationBar isLoggedIn={isSignedIn} isBrowse={isBrowse} />
     </>
   )
 }
