@@ -32,7 +32,7 @@ const Home = screenTrack(() => ({
   path: "/",
 }))(() => {
   const { previousData, data = previousData, refetch } = useQuery(Home_Query)
-  const { updateUserSession, authState } = useAuthContext()
+  const { updateUserSession, authState, toggleLoginModal } = useAuthContext()
   const router = useRouter()
 
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
@@ -84,7 +84,8 @@ const Home = screenTrack(() => ({
             }}
             imageIndex={2}
             items={data?.newestBrandProducts}
-            isSignedIn={Boolean(authState?.isSignedIn)}
+            authState={authState}
+            onShowLoginModal={() => toggleLoginModal(true)}
           />
           <Spacer mb={10} />
         </>
@@ -114,6 +115,8 @@ const Home = screenTrack(() => ({
               router.push(`/browse}`)
             }}
             items={data?.newBottoms}
+            authState={authState}
+            onShowLoginModal={() => toggleLoginModal(true)}
           />
           <Spacer mb={10} />
         </>

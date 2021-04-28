@@ -1,5 +1,6 @@
 import gql from "graphql-tag"
 import { LaunchCalendarFragment_Query } from "components/Homepage/LaunchCalendar"
+import { ProductGridItem_Product } from "@seasons/eclipse"
 
 const HomePageProductFragment_Product = gql`
   fragment HomePageProductFragment_Product on Product {
@@ -7,6 +8,7 @@ const HomePageProductFragment_Product = gql`
     slug
     name
     retailPrice
+    type
     modelSize {
       id
       display
@@ -25,7 +27,9 @@ const HomePageProductFragment_Product = gql`
       reservable
       displayShort
     }
+    ...ProductGridItem_Product
   }
+  ${ProductGridItem_Product}
 `
 
 export const Home_Query = gql`

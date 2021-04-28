@@ -6,7 +6,9 @@ import React from "react"
 export const LatestPosts = ({ blogPosts, imageContainerRef, aggregateCount }) => {
   return (
     <Grid width="100%" px={[0, 0, 2, 2, 2]}>
-      <Display size="8">Latest posts</Display>
+      <Box px={[2, 2, 0, 0, 0]}>
+        <Display size={["7", "8"]}>Latest posts</Display>
+      </Box>
       <Spacer mb={3} />
       <Row ref={imageContainerRef}>
         {blogPosts?.map((post, i) => {

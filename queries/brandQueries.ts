@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { ProductGridItem_Product } from "@seasons/eclipse"
 
 export const GET_CATEGORIES = gql`
   query GetCategories {
@@ -76,8 +77,10 @@ export const GET_BROWSE_PRODUCTS = gql`
             nonReservable
             reserved
           }
+          ...ProductGridItem_Product
         }
       }
     }
   }
+  ${ProductGridItem_Product}
 `
