@@ -39,7 +39,7 @@ export const LatestPosts = ({ blogPosts, imageContainerRef, aggregateCount }) =>
             </Col>
           )
         })}
-        {!!aggregateCount && aggregateCount > blogPosts?.length && (
+        {!!aggregateCount && aggregateCount > blogPosts?.length + 1 && (
           <Box
             mb={5}
             style={{
