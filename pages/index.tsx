@@ -23,6 +23,7 @@ import { imageResize } from "utils/imageResize"
 
 import { useQuery } from "@apollo/client"
 import { ProductsRail } from "@seasons/eclipse"
+import { CarbonFootprint } from "components/Homepage/CarbonFootprint"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -156,6 +157,8 @@ const Home = screenTrack(() => ({
       <Spacer mb="112px" />
       <TheApp />
       <Spacer mb={10} />
+      <CarbonFootprint />
+      <Spacer mb={2} />
       <PartnerModal open={showPartnerModal} {...partnerData} />
     </Layout>
   )
