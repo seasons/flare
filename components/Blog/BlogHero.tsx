@@ -14,7 +14,7 @@ export const BlogHero: React.FC<{ blogPost: any; breakpoint: "desktop" | "mobile
 
   const TextContent = () => {
     return (
-      <Box px={[2, 2, 0, 0, 0]}>
+      <>
         <Sans color="black50" size="2" style={{ textTransform: "uppercase" }}>
           {category}
         </Sans>
@@ -22,7 +22,7 @@ export const BlogHero: React.FC<{ blogPost: any; breakpoint: "desktop" | "mobile
         <Display size={["7", "10"]} style={{ maxWidth: "800px" }}>
           {name}
         </Display>
-      </Box>
+      </>
     )
   }
 
