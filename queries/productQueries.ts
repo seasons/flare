@@ -1,30 +1,11 @@
 import gql from "graphql-tag"
-import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
+
+import {
+  ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment
+} from "@seasons/eclipse"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
-    me {
-      customer {
-        id
-        status
-        user {
-          id
-        }
-        membership {
-          id
-          plan {
-            id
-            itemCount
-          }
-        }
-      }
-      bag {
-        id
-      }
-      savedItems {
-        id
-      }
-    }
     product(where: { slug: $slug }) {
       id
       slug

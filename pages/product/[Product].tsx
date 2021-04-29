@@ -3,28 +3,31 @@ import { AddToBagButton } from "components/AddToBagButton"
 import { Carousel } from "components/Carousel"
 import { Col, Grid, Row } from "components/Grid"
 import { ProgressiveImage } from "components/Image"
+import { HEAD_META_TITLE } from "components/LayoutHead"
+import { PartnerModal } from "components/Partner/PartnerModal"
 import { BreadCrumbs } from "components/Product/BreadCrumbs"
-import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
+import { ProductBuyCTA } from "components/Product/ProductBuyCTA"
 import { ProductDetails } from "components/Product/ProductDetails"
+import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
 import { ProductMeasurements } from "components/Product/ProductMeasurements"
 import { VariantSelect } from "components/Product/VariantSelect"
-import { ProductBuyCTA } from "components/Product/ProductBuyCTA"
 import { Media } from "components/Responsive"
+import { filter } from "graphql-anywhere"
 import { initializeApollo } from "lib/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Head from "next/head"
-import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
-import { useRouter, withRouter } from "next/router"
-import { ProductBuyCTA_ProductVariantFragment, ProductBuyCTA_ProductFragment } from "@seasons/eclipse"
-import React, { useEffect, useState } from "react"
-import { identify, Schema, screenTrack } from "utils/analytics"
-import { filter } from "graphql-anywhere"
-import { useQuery } from "@apollo/client"
-import { PartnerModal } from "components/Partner/PartnerModal"
 import Link from "next/link"
+import { useRouter, withRouter } from "next/router"
+import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { HEAD_META_TITLE } from "components/LayoutHead"
+import { identify, Schema, screenTrack } from "utils/analytics"
+
+import { useQuery } from "@apollo/client"
+import {
+  ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment
+} from "@seasons/eclipse"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -42,17 +45,6 @@ const Product = screenTrack(({ router }) => {
   })
 
   const { query } = useRouter()
-
-  useEffect(() => {
-    if (data?.me) {
-      const bagItems = data?.me?.bag?.length + data?.me?.savedItems?.length
-      if (bagItems) {
-        identify(data?.me?.customer?.user?.id, {
-          bagItems,
-        })
-      }
-    }
-  }, [data])
 
   const isFromTryWithSeasons = query["try-with-seasons"] === "true"
 
