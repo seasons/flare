@@ -9,8 +9,9 @@ import { TouchableWithoutFeedback } from "react-native"
 import { Image } from "mobile/Image"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-
+import gql from "graphql-tag"
 import { useMutation } from "@apollo/client"
+import { SavedTab_Query } from "queries/bagQueries"
 
 interface BagItemProps {
   bagIsFull: boolean
@@ -18,6 +19,32 @@ interface BagItemProps {
   bagItem: any
   removeItemFromBag?: Function
 }
+
+export const SavedItemFragment_BagItem = gql`
+  fragment SavedItemFragment_BagItem on BagItem {
+    id
+    saved
+    productVariant {
+      id
+      reservable
+      displayLong
+      hasRestockNotification
+      product {
+        id
+        slug
+        name
+        brand {
+          id
+          name
+        }
+        images(size: Thumb) {
+          id
+          url
+        }
+      }
+    }
+  }
+`
 
 export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeItemFromBag, hasActiveReservation }) => {
   const [isMutating, setIsMutating] = useState(false)
@@ -27,26 +54,22 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
   if (!bagItem) {
     return null
   }
-  const variantToUse = head(
-    (get(bagItem, "productVariant.product.variants") || []).filter((a) => a.id === bagItem.productVariant.id)
-  )
-  const product = get(bagItem, "productVariant.product")
-  if (!product) {
-    return null
-  }
+  const variant = bagItem?.productVariant
+  const product = variant?.product
 
   const imageURL = product?.images?.[0]?.url || ""
-  const variantSize = variantToUse?.internalSize?.display
-  const reservable = variantToUse?.reservable
+  const variantSize = variant?.internalSize?.display
+  const reservable = variant?.reservable
 
   const [addToBag] = useMutation(ADD_TO_BAG, {
     variables: {
-      id: variantToUse.id,
+      id: variant.id,
     },
     refetchQueries: [
       {
         query: GET_BAG,
       },
+      { query: SavedTab_Query },
     ],
     onCompleted: () => {
       setIsMutating(false)
@@ -119,7 +142,7 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
                                   actionType: Schema.ActionTypes.Tap,
                                   productSlug: product.slug,
                                   productId: product.id,
-                                  variantId: variantToUse.id,
+                                  variantId: variant.id,
                                 })
                               }
                             }}
@@ -149,11 +172,11 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
                       actionType: Schema.ActionTypes.Tap,
                       productSlug: product.slug,
                       productId: product.id,
-                      variantId: variantToUse.id,
+                      variantId: variant.id,
                     })
                     removeItemFromBag({
                       variables: {
-                        id: variantToUse.id,
+                        id: variant.id,
                         saved: true,
                       },
                       refetchQueries: [
