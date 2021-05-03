@@ -34,6 +34,11 @@ export const ProductDetails: React.FC<{
     }
   }
 
+  const internalSize = selectedVariant?.internalSize
+  const displayShort = selectedVariant?.displayShort
+  const waistByLengthDisplay =
+    displayShort !== internalSize?.display && internalSize?.type === "WxL" && internalSize?.display
+
   return (
     <Box mb={3}>
       <Flex flexDirection="row" justifyContent="space-between">
@@ -73,6 +78,7 @@ export const ProductDetails: React.FC<{
       </Sans>
       <Spacer mb={3} />
       <Separator color={color("black15")} />
+      {!!waistByLengthDisplay && <ProductInfoItem detailType="Waist by length" detailValue={waistByLengthDisplay} />}
       {product.color && <ProductInfoItem detailType="Color" detailValue={product.color.name} />}
       {!!product.modelSize && !!product.modelHeight && (
         <ProductInfoItem
