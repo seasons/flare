@@ -34,6 +34,9 @@ export const ProductDetails: React.FC<{
     }
   }
 
+  const modelDetailValue = `Model is ${modelHeightDisplay(product.modelHeight)} in a ${
+    product.modelSize.type === "WxL" ? "WxL " : ""
+  }${product.modelSize.display}`
   return (
     <Box mb={3}>
       <Flex flexDirection="row" justifyContent="space-between">
@@ -75,10 +78,7 @@ export const ProductDetails: React.FC<{
       <Separator color={color("black15")} />
       {product.color && <ProductInfoItem detailType="Color" detailValue={product.color.name} />}
       {!!product.modelSize && !!product.modelHeight && (
-        <ProductInfoItem
-          detailType="Fit"
-          detailValue={`Model is ${modelHeightDisplay(product.modelHeight)} in a ${product.modelSize.display}`}
-        />
+        <ProductInfoItem detailType="Fit" detailValue={modelDetailValue} />
       )}
       {product.outerMaterials && (
         <ProductInfoItem detailType="Materials" detailValue={product.outerMaterials.join(", ")} />

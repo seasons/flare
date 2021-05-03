@@ -1,8 +1,6 @@
 import gql from "graphql-tag"
 
-import {
-  ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment
-} from "@seasons/eclipse"
+import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
@@ -17,6 +15,7 @@ export const GET_PRODUCT = gql`
       type
       modelSize {
         display
+        type
       }
       modelHeight
       color {
