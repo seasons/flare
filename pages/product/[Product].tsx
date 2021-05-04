@@ -22,12 +22,14 @@ import { useRouter, withRouter } from "next/router"
 import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { identify, Schema, screenTrack } from "utils/analytics"
+import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import {
   ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment
 } from "@seasons/eclipse"
+
+const isProduction = process.env.ENVIRONMENT === "production"
 
 const Product = screenTrack(({ router }) => {
   return {
@@ -186,18 +188,22 @@ pre-render all the paths specified by getStaticPaths.
 */
 export async function getStaticPaths() {
   const apolloClient = initializeApollo()
-
-  const response = await apolloClient.query({
-    query: GET_STATIC_PRODUCTS,
-  })
-
   const paths = []
 
-  const products = response?.data?.products
+  if (isProduction) {
+    const response = await apolloClient.query({
+      query: GET_STATIC_PRODUCTS,
+      variables: {
+        pageSize: 40,
+      },
+    })
 
-  products?.forEach((product) => {
-    paths.push({ params: { Product: product.slug } })
-  })
+    const products = response?.data?.products
+
+    products?.forEach((product) => {
+      paths.push({ params: { Product: product.slug } })
+    })
+  }
 
   return {
     paths,
