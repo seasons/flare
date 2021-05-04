@@ -247,10 +247,8 @@ export const Bag = screenTrack()((props) => {
               actionType: Schema.ActionTypes.Tap,
             })
             if (page === BagView.Saved && !savedTabData) {
-              console.log("get")
               getSavedTab()
-            }
-            if (page === BagView.History && !reservationTabData) {
+            } else if (page === BagView.History && !reservationTabData) {
               getReservationTab()
             }
             setCurrentView(page)
