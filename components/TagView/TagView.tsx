@@ -9,6 +9,7 @@ import { withRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { useQuery } from "@apollo/client"
 import { TagView_Query } from "queries/collectionQueries"
 import { HEAD_META_TITLE } from "components/LayoutHead"
@@ -23,6 +24,7 @@ const TagView = screenTrack(({ router }) => {
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
   const [productCount, setProductCount] = useState(8)
+  const { authState, toggleLoginModal } = useAuthContext()
   const tag = decodeURI(router.query.Tag) || ""
 
   let title = ""
@@ -121,7 +123,7 @@ const TagView = screenTrack(({ router }) => {
         <meta property="twitter:description" content={description} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Seasons" />
-        <meta property="og:url" content={`https://www.seasons.nyc/collection/${tag}`} />
+        <meta property="og:url" content={`https://www.wearseasons.com/collection/${tag}`} />
         <meta property="og:image" content="https://flare-web.s3.amazonaws.com/assets/og-image.jpg" />
         <meta property="twitter:card" content="summary" />
       </Head>
@@ -158,7 +160,12 @@ const TagView = screenTrack(({ router }) => {
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>
                 <Box pt={[2, 0]} pb={[2, 5]}>
-                  <ProductGridItem product={product?.node} loading={!data} />
+                  <ProductGridItem
+                    product={product?.node}
+                    loading={!data}
+                    authState={authState}
+                    onShowLoginModal={() => toggleLoginModal(true)}
+                  />
                 </Box>
               </Col>
             ))}

@@ -72,6 +72,8 @@ export enum PageNames {
   TermsOfService = "TermsOfService",
   App = "App",
   ErrorPage = "ErrorPage",
+  BlogPage = "BlogPage",
+  BlogPostPage = "BlogPostPage",
 }
 
 export enum EntityTypes {

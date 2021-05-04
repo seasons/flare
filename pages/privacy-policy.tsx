@@ -389,7 +389,7 @@ const PrivacyPolicy = screenTrack(() => ({
               (929) 274-0132
               <br />
               <br />
-              www.seasons.nyc
+              www.wearseasons.com
               <br />
               <br />
               membership@seasons.nyc

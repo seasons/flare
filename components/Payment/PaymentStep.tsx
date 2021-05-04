@@ -280,8 +280,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
         billing: {
           ...billingDetails,
           user: {
-            firstName: values.firstName,
-            lastName: values.lastName,
+            firstName: sameAsShipping ? values.shippingFirstName : values.firstName,
+            lastName: sameAsShipping ? values.shippingLastName : values.lastName,
             email: billingDetails.email,
           },
         },

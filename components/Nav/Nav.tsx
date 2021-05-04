@@ -33,8 +33,8 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
     },
     {
       text: "Blog",
-      url: "https://blog.seasons.nyc",
-      match: /blog.seasons.nyc/,
+      url: "/blog",
+      match: /^\/blog/,
       external: true,
     },
     {

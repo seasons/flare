@@ -1,5 +1,7 @@
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
+import { filter as filterFragment } from "graphql-anywhere"
 import { sans as sansSize } from "helpers/typeSizes"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import React, { useEffect, useMemo, useState } from "react"
@@ -8,7 +10,7 @@ import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
 
 import { gql, useQuery } from "@apollo/client"
-import { ProductGridItem } from "@seasons/eclipse"
+import { ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
 
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
@@ -80,6 +82,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     availableOnly: available ?? null,
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
+  const { authState, toggleLoginModal } = useAuthContext()
   const { currentTops, currentBottoms, availableOnly } = params
 
   const skip = (currentPage - 1) * pageSize
@@ -268,7 +271,12 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     return (
                       <Col sm="4" xs="6" key={i}>
                         <Box pt={[0.5, 0.5, 0.5, 0, 0]} pb={[0.5, 0.5, 0.5, 5, 5]}>
-                          <ProductGridItem product={product?.node} loading={loading} />
+                          <ProductGridItem
+                            product={product?.node ? filterFragment(ProductGridItem_Product, product?.node) : null}
+                            loading={loading}
+                            authState={authState}
+                            onShowLoginModal={() => toggleLoginModal(true)}
+                          />
                         </Box>
                       </Col>
                     )

@@ -1,7 +1,14 @@
 import { Box, Separator, Spacer } from "components"
 import {
-  BrowseAllWithImage, FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans,
-  Testimonials, TheApp
+  BrowseAllWithImage,
+  FeaturedIn,
+  FromCommunity,
+  Hero,
+  HomepageFitPics,
+  HowItWorks,
+  Plans,
+  Testimonials,
+  TheApp,
 } from "components/Homepage"
 import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
 import { Layout } from "components/Layout"
@@ -9,13 +16,14 @@ import { PartnerModal } from "components/Partner/PartnerModal"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
-import { Home_Query } from "queries/homeQueries"
+import { HomeMe_Query, Home_Query } from "queries/homeQueries"
 import React, { useEffect, useRef } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
 
 import { useQuery } from "@apollo/client"
 import { ProductsRail } from "@seasons/eclipse"
+import { CarbonFootprint } from "components/Homepage/CarbonFootprint"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -24,8 +32,9 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { previousData, data = previousData, refetch } = useQuery(Home_Query)
-  const { updateUserSession, authState } = useAuthContext()
+  const { previousData, data = previousData } = useQuery(Home_Query)
+  const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
+  const { updateUserSession, authState, toggleLoginModal } = useAuthContext()
   const router = useRouter()
 
   const newestBrand = data?.newestBrandProducts?.[0]?.brand
@@ -36,15 +45,15 @@ const Home = screenTrack(() => ({
   const showPartnerModal = SHOW_PARTNER_MODAL_CAMPAIGNS.includes(router.query["utm_campaign"] as string)
 
   useEffect(() => {
-    if (!!data?.me?.customer) {
-      updateUserSession({ cust: data?.me?.customer })
+    if (!!meData?.me?.customer) {
+      updateUserSession({ cust: meData?.me?.customer })
     }
-  }, [data])
+  }, [meData])
 
   useEffect(() => {
     // Keep track of when a user signs in and refresh the page if they do
     if (isUserSignedIn !== userSignedIn.current) {
-      refetch()
+      meRefetch()
       userSignedIn.current = isUserSignedIn
     }
   }, [isUserSignedIn])
@@ -77,7 +86,8 @@ const Home = screenTrack(() => ({
             }}
             imageIndex={2}
             items={data?.newestBrandProducts}
-            isSignedIn={Boolean(authState?.isSignedIn)}
+            authState={authState}
+            onShowLoginModal={() => toggleLoginModal(true)}
           />
           <Spacer mb={10} />
         </>
@@ -99,14 +109,16 @@ const Home = screenTrack(() => ({
       <SeparatorWithPadding />
       <Spacer mb={10} />
 
-      {data?.newArchival.length > 0 && (
+      {data?.newBottoms.length > 0 && (
         <>
           <ProductsRail
-            title="New to the archive"
+            title="Just added bottoms"
             underlineTitleOnClick={() => {
               router.push(`/browse}`)
             }}
-            items={data?.newArchival}
+            items={data?.newBottoms}
+            authState={authState}
+            onShowLoginModal={() => toggleLoginModal(true)}
           />
           <Spacer mb={10} />
         </>
@@ -146,6 +158,8 @@ const Home = screenTrack(() => ({
       <Spacer mb="112px" />
       <TheApp />
       <Spacer mb={10} />
+      <CarbonFootprint />
+      <Spacer mb={2} />
       <PartnerModal open={showPartnerModal} {...partnerData} />
     </Layout>
   )

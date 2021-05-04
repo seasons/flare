@@ -8,6 +8,7 @@ import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
 import { initializeApollo } from "lib/apollo"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
@@ -31,6 +32,7 @@ const Designer = screenTrack(({ router }) => {
 })(({ router }) => {
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
   const [productCount, setProductCount] = useState(8)
+  const { authState, toggleLoginModal } = useAuthContext()
   const slug = router.query.Designer || ""
 
   const imageContainer = useRef(null)
@@ -201,7 +203,7 @@ const Designer = screenTrack(({ router }) => {
         <meta property="twitter:description" content={description} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Seasons" />
-        <meta property="og:url" content={`https://www.seasons.nyc/desginer/${slug}`} />
+        <meta property="og:url" content={`https://www.wearseasons.com/desginer/${slug}`} />
         <meta
           property="og:image"
           content={
@@ -249,7 +251,12 @@ const Designer = screenTrack(({ router }) => {
             {products?.map((product, i) => (
               <Col col sm="3" xs="6" key={i}>
                 <Box pt={[2, 0]} pb={[2, 5]}>
-                  <ProductGridItem product={product?.node} loading={!data} />
+                  <ProductGridItem
+                    product={product?.node}
+                    loading={!data}
+                    authState={authState}
+                    onShowLoginModal={() => toggleLoginModal(true)}
+                  />
                 </Box>
               </Col>
             ))}
