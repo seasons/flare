@@ -190,18 +190,20 @@ export async function getStaticPaths() {
   const apolloClient = initializeApollo()
   const paths = []
 
-  const response = await apolloClient.query({
-    query: GET_STATIC_PRODUCTS,
-    variables: {
-      pageSize: isProduction ? 40 : 3,
-    },
-  })
+  if (isProduction) {
+    const response = await apolloClient.query({
+      query: GET_STATIC_PRODUCTS,
+      variables: {
+        pageSize: 40,
+      },
+    })
 
-  const products = response?.data?.products
+    const products = response?.data?.products
 
-  products?.forEach((product) => {
-    paths.push({ params: { Product: product.slug } })
-  })
+    products?.forEach((product) => {
+      paths.push({ params: { Product: product.slug } })
+    })
+  }
 
   return {
     paths,
