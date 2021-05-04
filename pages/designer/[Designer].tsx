@@ -3,6 +3,7 @@ import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
 import { Col, Grid, Row } from "components/Grid"
 import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
 import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
+import { HEAD_META_TITLE } from "components/LayoutHead"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
@@ -15,9 +16,11 @@ import { Designer_Query, DesignerBrands_Query } from "queries/designerQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
+
 import { useQuery } from "@apollo/client"
-import { HEAD_META_TITLE } from "components/LayoutHead"
 import { ProductGridItem } from "@seasons/eclipse"
+
+const isProduction = process.env.ENVIRONMENT === "production"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -264,18 +267,19 @@ const Designer = screenTrack(({ router }) => {
 
 export async function getStaticPaths() {
   const apolloClient = initializeApollo()
-
-  const response = await apolloClient.query({
-    query: DesignerBrands_Query,
-  })
-
   const paths = []
 
-  const brands = response?.data?.brands
+  if (isProduction) {
+    const response = await apolloClient.query({
+      query: DesignerBrands_Query,
+    })
 
-  brands?.forEach((brand) => {
-    paths.push({ params: { Designer: brand.slug } })
-  })
+    const brands = response?.data?.brands
+
+    brands?.forEach((brand) => {
+      paths.push({ params: { Designer: brand.slug } })
+    })
+  }
 
   return {
     paths,

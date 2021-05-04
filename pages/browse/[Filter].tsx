@@ -6,7 +6,10 @@ import React, { useEffect, useMemo, useState } from "react"
 import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
+
 import { gql, useQuery } from "@apollo/client"
+import { ProductGridItem } from "@seasons/eclipse"
+
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"
@@ -18,7 +21,8 @@ import { color } from "../../helpers"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { ProductGridItem } from "@seasons/eclipse"
+
+const isProduction = process.env.ENVIRONMENT === "production"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -316,26 +320,28 @@ const timeout = async (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 export async function getStaticPaths() {
   const apolloClient = initializeApollo()
 
-  const response = await apolloClient.query({
-    query: Browse_Query,
-  })
-
   const paths = [{ params: { Filter: `all+all` } }]
 
-  const categories = response?.data?.categories
-  const brands = response?.data?.brands
+  if (isProduction) {
+    const response = await apolloClient.query({
+      query: Browse_Query,
+    })
 
-  categories?.forEach((cat) => {
-    paths.push({ params: { Filter: `${cat.slug}+all` } })
+    const categories = response?.data?.categories
+    const brands = response?.data?.brands
+
+    categories?.forEach((cat) => {
+      paths.push({ params: { Filter: `${cat.slug}+all` } })
+
+      brands.forEach((brand) => {
+        paths.push({ params: { Filter: `${cat.slug}+${brand.slug}` } })
+      })
+    })
 
     brands.forEach((brand) => {
-      paths.push({ params: { Filter: `${cat.slug}+${brand.slug}` } })
+      paths.push({ params: { Filter: `all+${brand.slug}` } })
     })
-  })
-
-  brands.forEach((brand) => {
-    paths.push({ params: { Filter: `all+${brand.slug}` } })
-  })
+  }
 
   return {
     paths,
