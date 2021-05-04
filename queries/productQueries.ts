@@ -29,7 +29,6 @@ export const GET_PRODUCT = gql`
         id
         slug
         name
-        logo
         since
         images {
           id

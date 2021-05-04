@@ -5,12 +5,11 @@ import styled from "styled-components"
 import { GET_PRODUCT } from "queries/productQueries"
 import { Box, Button, ProgressiveImage, Flex, Sans, Separator, Spacer, FixedBackArrow } from "components"
 import Radio from "@material-ui/core/Radio"
-import { sizeToName } from "components/Product/VariantSelect"
 import { Loader } from "mobile/Loader"
-import { GET_BAG } from "@seasons/eclipse"
 import { color, space } from "helpers"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { SAVE_ITEM } from "./SaveProductButton"
+import { SavedTab_Query } from "queries/bagQueries"
 
 interface SaveProductProps {
   onDismiss: () => void
@@ -29,7 +28,7 @@ export const SaveProduct: React.FC<SaveProductProps> = screenTrack()(({ product,
         },
       },
       {
-        query: GET_BAG,
+        query: SavedTab_Query,
       },
     ],
   })
