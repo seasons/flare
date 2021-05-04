@@ -63,6 +63,8 @@ export const GET_PRODUCT = gql`
         }
         internalSize {
           id
+          display
+          type
           productType
           top {
             id
