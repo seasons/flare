@@ -1,4 +1,4 @@
-import { Sans, Box, Flex, Spacer, Separator } from "components"
+import { Sans, Box, Flex, Spacer, Separator, Media } from "components"
 import { color } from "../../helpers"
 import { Link } from "../Link"
 import { Grid, Row, Col } from "../Grid"
@@ -22,7 +22,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
         <Spacer mb={5} />
       </Box>
       <Row px={[2, 2, 2, 2, 2]}>
-        <Col lg="2" xs="12">
+        <Col lg="2" xs="6">
           <Sans size="3" color="black50">
             Membership
           </Sans>
@@ -51,7 +51,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
             </Sans>
           </a>
         </Col>
-        <Col lg="2" xs="12">
+        <Col lg="2" xs="6">
           <Sans size="3" color="black50">
             Seasons
           </Sans>
@@ -81,6 +81,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
           </a>
         </Col>
         <Col lg="2" xs="12">
+          <Spacer mb={[5, 5, 5, 0, 0]} />
           <Sans color="black50" size="3">
             Contact
           </Sans>
@@ -108,44 +109,64 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               Email
             </Sans>
           </a>
-          <Spacer mb={[5, 5, 5, 0, 0]} />
         </Col>
         <Col lg="6" xs="12">
+          <Spacer mb={[5, 5, 5, 0, 0]} />
           <Sans size="3" color={color("black50")} pr="3">
             Designers
           </Sans>
           <Spacer mb={1} />
-          <DesktopBrandsContainer>
-            {resortedBrands?.map(({ name, slug }, index) => {
-              return (
-                <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index}>
-                  <Sans size={3} style={{ textDecoration: "underline", cursor: "pointer" }}>
-                    {name}
-                  </Sans>
-                  <Spacer mb={1} />
-                </Link>
-              )
-            })}
-          </DesktopBrandsContainer>
+          <Media greaterThanOrEqual="md">
+            <DesktopBrandsContainer>
+              {resortedBrands?.map(({ name, slug }, index) => {
+                return (
+                  <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index}>
+                    <Sans size={3} style={{ textDecoration: "underline", cursor: "pointer" }}>
+                      {name}
+                    </Sans>
+                    <Spacer mb={1} />
+                  </Link>
+                )
+              })}
+            </DesktopBrandsContainer>
+          </Media>
+          <Media lessThan="md">
+            <MobileBrandsContainer>
+              {resortedBrands?.map(({ name, slug }, index) => {
+                return (
+                  <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index}>
+                    <Box mr={4}>
+                      <Sans size={3} style={{ textDecoration: "underline", cursor: "pointer" }}>
+                        {name}
+                      </Sans>
+                    </Box>
+                    <Spacer mb={1} />
+                  </Link>
+                )
+              })}
+            </MobileBrandsContainer>
+          </Media>
         </Col>
       </Row>
-      <Spacer mb={[0, 0, 0, "132px", "132px"]} />
+      <Spacer mb={[5, 5, 5, "132px", "132px"]} />
       <Flex
         flexDirection={["column", "row"]}
         width="100%"
         justifyContent="flex-start"
-        alignItems="center"
+        alignItems={["flex-start", "center"]}
         px={[2, 2, 2, 2, 2]}
       >
         <Sans size="3">© 2021 Seasons. All Rights Reserved.</Sans>
         <Spacer mr={5} />
         <Link href="/privacy-policy">
+          <Spacer mt={[1, 1, 1, 0, 0]} />
           <Sans size="3" style={{ textDecoration: "underline", cursor: "pointer" }}>
             Privacy Policy
           </Sans>
         </Link>
         <Spacer mr={5} />
         <Link href="/terms-of-service">
+          <Spacer mt={[1, 1, 1, 0, 0]} />
           <Sans size="3" pr="3" style={{ textDecoration: "underline", cursor: "pointer" }}>
             Terms of Service
           </Sans>
@@ -159,4 +180,9 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
 const DesktopBrandsContainer = styled(Box)`
   column-count: 4;
   column-gap: 48px;
+`
+
+const MobileBrandsContainer = styled(Box)`
+  column-count: 2;
+  column-gap: 0px;
 `
