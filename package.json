@@ -31,7 +31,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/styles": "^4.10.0",
-    "@seasons/eclipse": "^1.2.35",
+    "@seasons/eclipse": "^1.2.36",
     "@seasons/try-with-seasons": "^1.0.7",
     "@segment/snippet": "^4.12.0",
     "@sentry/react": "^5.27.4",
