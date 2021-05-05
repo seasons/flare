@@ -95,7 +95,7 @@ export const Layout = ({
               <MaxWidth height="100%">
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {children}
-                  {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} />}
+                  {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} brandItems={brandItems} />}
                 </Box>
               </MaxWidth>
               <Drawer />
