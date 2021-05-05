@@ -15,6 +15,7 @@ export const GET_PRODUCT = gql`
       type
       modelSize {
         display
+        type
       }
       modelHeight
       color {
