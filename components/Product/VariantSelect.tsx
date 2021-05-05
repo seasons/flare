@@ -52,10 +52,8 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
               size: size?.internalSize?.display,
               variantID: size?.id,
             })
-            if (size.reservable > 0) {
-              setSelectedVariant(size)
-              onSizeSelected(size)
-            }
+            setSelectedVariant(size)
+            onSizeSelected(size)
           }}
         >
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between" flexWrap="nowrap" mr={2}>
