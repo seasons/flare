@@ -5,6 +5,8 @@ import { head } from "lodash"
 import { ProductGridItem } from "@seasons/eclipse"
 import { imageResize } from "utils/imageResize"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { SavedTab_Query } from "queries/bagQueries"
+import { GET_PRODUCT } from "queries/productQueries"
 
 export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections }) => {
   const { authState, toggleLoginModal } = useAuthContext()
@@ -44,7 +46,15 @@ export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections
                 {products?.map((product, index) => {
                   return (
                     <Box key={index} width="33.33%">
-                      <ProductGridItem product={product} authState={authState} onShowLoginModal={() => toggleLoginModal(true)} />
+                      <ProductGridItem
+                        product={product}
+                        authState={authState}
+                        onShowLoginModal={() => toggleLoginModal(true)}
+                        saveProductButtonRefetchQueries={[
+                          { query: SavedTab_Query },
+                          { query: GET_PRODUCT, variables: { slug: product?.slug } },
+                        ]}
+                      />
                     </Box>
                   )
                 })}

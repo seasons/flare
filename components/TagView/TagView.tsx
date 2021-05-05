@@ -14,6 +14,8 @@ import { useQuery } from "@apollo/client"
 import { TagView_Query } from "queries/collectionQueries"
 import { HEAD_META_TITLE } from "components/LayoutHead"
 import { ProductGridItem } from "@seasons/eclipse"
+import { SavedTab_Query } from "queries/bagQueries"
+import { GET_PRODUCT } from "queries/productQueries"
 
 const TagView = screenTrack(({ router }) => {
   return {
@@ -165,6 +167,10 @@ const TagView = screenTrack(({ router }) => {
                     loading={!data}
                     authState={authState}
                     onShowLoginModal={() => toggleLoginModal(true)}
+                    saveProductButtonRefetchQueries={[
+                      { query: SavedTab_Query },
+                      { query: GET_PRODUCT, variables: { slug: product?.node?.slug } },
+                    ]}
                   />
                 </Box>
               </Col>
