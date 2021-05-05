@@ -9,6 +9,8 @@ import styled from "styled-components"
 import { screenTrack, identify } from "utils/analytics"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_PAYMENT_DATA } from "./PaymentAndShipping"
+import { LogoutIcon } from "components/Icons"
+import { PopUpData } from "components/PopUp/PopUpProvider"
 
 export const GET_CURRENT_PLAN = gql`
   query GetCurrentPlan {
@@ -81,9 +83,50 @@ export const EditShipping: React.FC<{
         note: "Make sure your shipping address and phone number are valid.",
         title: "Something went wrong!",
         onClose: () => hidePopUp(),
+      } as PopUpData
+      if (error.message === "Invalid City/State/Zip Combo") {
+        const suggestedAddress = error.graphQLErrors?.[0]?.extensions?.suggestedAddress
+        if (!!suggestedAddress) {
+          popUpData = {
+            buttonText: "Use address",
+            note: (
+              <>
+                <br />
+                {suggestedAddress.street1}
+                <br />
+                {!!suggestedAddress.street2 ? (
+                  <>
+                    {suggestedAddress.street2}
+                    <br />
+                  </>
+                ) : null}
+                {suggestedAddress.city}, {suggestedAddress.state} {suggestedAddress.zip.split("-")?.[0]}
+                <br />
+                <br />
+                The address you entered is not recognized by UPS. Please use the suggested address above or enter a
+                different one.
+              </>
+            ),
+            title: "Suggested Address",
+            secondaryButtonText: "Close",
+            secondaryButtonOnPress: () => hidePopUp(),
+            onClose: () => {
+              const newAddress = {
+                address1: suggestedAddress.street1,
+                address2: suggestedAddress.street2,
+                city: suggestedAddress.city,
+                state: suggestedAddress.state,
+                zipCode: suggestedAddress.zip,
+              }
+              setShippingAddress(newAddress)
+              handleSaveBtnPressed({ shippingAddressOveride: newAddress })
+              hidePopUp()
+            },
+          }
+        }
       }
-
       showPopUp(popUpData)
+
       console.log("Error EditView.tsx: ", error)
     },
     onCompleted: () => {
@@ -99,17 +142,16 @@ export const EditShipping: React.FC<{
     zipCode: shippingZipCode,
   } = shippingAddress
 
-  const handleSaveBtnPressed = async () => {
+  const handleSaveBtnPressed = async ({ shippingAddressOveride = undefined }) => {
     setIsMutating(true)
+    let variables = { phoneNumber }
+    if (!!shippingAddressOveride) {
+      variables = { ...variables, ...shippingAddressOveride }
+    } else {
+      variables = { ...variables, ...shippingAddress }
+    }
     const result = await updatePaymentAndShipping({
-      variables: {
-        city: shippingCity,
-        zipCode: shippingZipCode,
-        state: shippingState,
-        address1: shippingAddress1,
-        address2: shippingAddress2,
-        phoneNumber,
-      },
+      variables,
       refetchQueries: [
         {
           query: GET_PAYMENT_DATA,

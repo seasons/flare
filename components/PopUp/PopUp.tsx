@@ -6,7 +6,7 @@ import styled from "styled-components"
 
 import { Paper, Slide } from "@material-ui/core"
 
-const twoButtonWidth = 150 - (space(2) + space(0.5))
+const twoButtonWidth = 160 - (space(2) + space(0.5))
 
 export const PopUp: React.FC = () => {
   const { popUpState, hidePopUp } = usePopUpContext()
@@ -86,7 +86,7 @@ export const PopUp: React.FC = () => {
 
 const Container = styled(Box)`
   position: fixed;
-  width: 300px;
+  width: 320px;
   bottom: 20px;
   left: 20px;
   z-index: 1400;

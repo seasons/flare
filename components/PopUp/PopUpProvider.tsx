@@ -5,7 +5,7 @@ import PopUpContext from "./PopUpContext"
 export interface PopUpData {
   title?: string
   icon?: JSX.Element
-  note?: string
+  note?: string | JSX.Element
   buttonText?: string
   onClose: any
   theme?: "light" | "dark"
