@@ -1,11 +1,10 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "@seasons/eclipse"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
-
+import { GET_BAG, ADD_TO_BAG, GET_LOCAL_BAG_ITEMS, ADD_OR_REMOVE_FROM_LOCAL_BAG } from "queries/bagQueries"
 import { useMutation, useQuery } from "@apollo/client"
 
 import { useDrawerContext } from "./Drawer/DrawerContext"
@@ -38,7 +37,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     }
   }, [props])
 
-  const { data: localItems } = useQuery(GET_LOCAL_BAG)
+  const { data: localItems } = useQuery(GET_LOCAL_BAG_ITEMS)
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
     variables: {
       id: selectedVariant.id,

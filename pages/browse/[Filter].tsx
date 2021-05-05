@@ -23,6 +23,8 @@ import { color } from "../../helpers"
 import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
+import { SavedTab_Query } from "queries/bagQueries"
+import { GET_PRODUCT } from "queries/productQueries"
 
 const isProduction = process.env.ENVIRONMENT === "production"
 
@@ -276,6 +278,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                             loading={loading}
                             authState={authState}
                             onShowLoginModal={() => toggleLoginModal(true)}
+                            saveProductButtonRefetchQueries={[
+                              { query: SavedTab_Query },
+                              { query: GET_PRODUCT, variables: { slug: product?.node?.slug } },
+                            ]}
                           />
                         </Box>
                       </Col>

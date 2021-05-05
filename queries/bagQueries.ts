@@ -38,6 +38,15 @@ export const BagItemFragment = gql`
   ${ProductBuyCTA_ProductFragment}
 `
 
+export const ADD_OR_REMOVE_FROM_LOCAL_BAG = gql`
+  mutation AddOrRemoveFromLocalBag($productID: ID!, $variantID: ID!) {
+    addOrRemoveFromLocalBag(productID: $productID, variantID: $variantID) @client {
+      productID
+      variantID
+    }
+  }
+`
+
 export const CHECK_ITEMS = gql`
   mutation CheckItemsAvailability($items: [ID!]!) {
     checkItemsAvailability(items: $items)

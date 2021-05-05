@@ -20,6 +20,8 @@ import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import { ProductGridItem } from "@seasons/eclipse"
+import { GET_PRODUCT } from "queries/productQueries"
+import { SavedTab_Query } from "queries/bagQueries"
 
 const isProduction = process.env.ENVIRONMENT === "production"
 
@@ -256,6 +258,10 @@ const Designer = screenTrack(({ router }) => {
                     loading={!data}
                     authState={authState}
                     onShowLoginModal={() => toggleLoginModal(true)}
+                    saveProductButtonRefetchQueries={[
+                      { query: SavedTab_Query },
+                      { query: GET_PRODUCT, variables: { slug: product?.node?.slug } },
+                    ]}
                   />
                 </Box>
               </Col>
