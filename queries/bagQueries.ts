@@ -1,4 +1,4 @@
-import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
+import { ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant } from "@seasons/eclipse"
 import gql from "graphql-tag"
 import { ReservationHistoryTabFragment_Customer } from "mobile/Bag/Components/ReservationHistoryTab"
 import { SavedItemFragment_BagItem } from "mobile/Bag/Components/SavedItem"
@@ -29,13 +29,13 @@ export const BagItemFragment = gql`
         reservable
         displayShort
         displayLong
-        ...ProductBuyCTA_ProductVariantFragment
+        ...ProductBuyCTAFragment_ProductVariant
       }
-      ...ProductBuyCTA_ProductFragment
+      ...ProductBuyCTAFragment_Product
     }
   }
-  ${ProductBuyCTA_ProductVariantFragment}
-  ${ProductBuyCTA_ProductFragment}
+  ${ProductBuyCTAFragment_ProductVariant}
+  ${ProductBuyCTAFragment_Product}
 `
 
 export const ADD_OR_REMOVE_FROM_LOCAL_BAG = gql`
