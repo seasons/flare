@@ -3,9 +3,7 @@ import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
-import { GET_LOCAL_BAG_ITEMS } from "@seasons/eclipse"
 import React, { useEffect, useState } from "react"
-import { useTracking } from "utils/analytics"
 import { useLazyQuery } from "@apollo/client"
 import { ProductBuyAlertTabType } from "@seasons/eclipse"
 import { BagItem } from "./BagItem"
@@ -13,6 +11,7 @@ import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
 import { ProductBuyAlert } from "./ProductBuyAlert"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { GET_LOCAL_BAG_ITEMS } from "queries/bagQueries"
 
 const DEFAULT_ITEM_COUNT = 3
 
