@@ -13,12 +13,10 @@ import { Loader } from "mobile/Loader"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
-
 import { useLazyQuery, useQuery } from "@apollo/client"
-import { GET_LOCAL_BAG } from "@seasons/eclipse"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
-
+import { GET_LOCAL_BAG_ITEMS } from "queries/bagQueries"
 import { GET_GIFT, GET_SIGNUP_USER } from "../../components/SignUp/queries"
 
 const stripePromise = loadStripe(process.env.STRIPE_API_KEY)
@@ -49,7 +47,7 @@ const SignUpPage = screenTrack(() => ({
   const tracking = useTracking()
   const router = useRouter()
   const { previousData, data = previousData, refetch: refetchGetSignupUser } = useQuery(GET_SIGNUP_USER)
-  const { data: localItems } = useQuery(GET_LOCAL_BAG)
+  const { data: localItems } = useQuery(GET_LOCAL_BAG_ITEMS)
   const { updateUserSession } = useAuthContext()
 
   const [currentStepState, setCurrentStepState] = useState<Steps>(Steps.CreateAccountStep)
