@@ -251,7 +251,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     />
                     <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
-                    <Spacer mb={5} />
+                    <Spacer mb={2} />
                     <ColorFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
                     <BrowseFilters
