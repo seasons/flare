@@ -99,6 +99,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     notifyOnNetworkStatusChange: true,
     variables: {
       tops: currentTops,
+      colors: currentColors,
       bottoms: currentBottoms,
       available: availableOnly,
       brandName: currentBrand,
@@ -191,7 +192,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   ])
 
   const aggregateCount = data?.connection?.aggregate?.count
-  // const pageCount = 15
   const pageCount = Math.ceil(aggregateCount / pageSize)
   const products = data?.products?.edges
   const productsOrArray = products || [...Array(pageSize)]

@@ -59,7 +59,7 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
 
 const ColorButton = styled.div<{ isActive: boolean; activeColor: string }>`
   border: 1px solid ${(p) => (p.isActive ? themeColor("black100") : themeColor("black10"))};
-  background-color: ${(p) => (p.isActive ? p.activeColor : themeColor("white100"))};
+  background-color: ${(p) => (p.isActive ? themeColor("black100") : themeColor("white100"))};
   height: 33px;
   width: 64px;
   display: flex;
@@ -69,7 +69,7 @@ const ColorButton = styled.div<{ isActive: boolean; activeColor: string }>`
   cursor: pointer;
 
   &:hover {
-    border: 1px solid ${themeColor("black100")};
+    border: 1px solid ${(p) => p.activeColor};
     background-color: ${(p) => p.activeColor};
 
     p {
@@ -78,6 +78,7 @@ const ColorButton = styled.div<{ isActive: boolean; activeColor: string }>`
   }
 
   &.color-button-white:hover {
+    border: 1px solid ${themeColor("black10")};
     p {
       color: ${themeColor("black100")} !important;
     }
