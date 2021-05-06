@@ -1,7 +1,6 @@
 import { Sans, Spacer, Flex } from "../../components"
 import { SpacerProps } from "components/Spacer"
 import { CategoryLoader } from "../../components/Browse/BrowseLoader"
-import Link from "next/link"
 import { color } from "../../helpers"
 import styled from "styled-components"
 
