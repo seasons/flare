@@ -67,7 +67,7 @@ export const Home_Query = gql`
     }
     blogPosts(count: 3) {
       id
-      url
+      slug
       name
       author
       image {
