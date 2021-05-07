@@ -25,6 +25,8 @@ import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 import { SavedTab_Query } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
+import { ColorFilters } from "components/Browse/ColorFilters"
+import { colors } from "@material-ui/core"
 
 const isProduction = process.env.ENVIRONMENT === "production"
 
@@ -52,6 +54,7 @@ export interface SizeFilterParams {
   currentTops: string[]
   currentBottoms: string[]
   availableOnly: boolean
+  currentColors: string[]
 }
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
@@ -65,6 +68,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const tops = _tops?.split(" ")
   const _bottoms = router.query?.bottoms as string
   const bottoms = _bottoms?.split(" ")
+  const _colors = router.query?.colors as string
+  const colors = _colors?.split(" ")
   const available = (router.query?.available && router.query?.available === "available") ?? null
   const page = router.query?.page || 1
 
@@ -82,10 +87,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     currentTops: tops ?? null,
     currentBottoms: bottoms ?? null,
     availableOnly: available ?? null,
+    currentColors: colors ?? null,
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { authState, toggleLoginModal } = useAuthContext()
-  const { currentTops, currentBottoms, availableOnly } = params
+  const { currentTops, currentBottoms, availableOnly, currentColors } = params
 
   const skip = (currentPage - 1) * pageSize
 
@@ -93,6 +99,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     notifyOnNetworkStatusChange: true,
     variables: {
       tops: currentTops,
+      colors: currentColors,
       bottoms: currentBottoms,
       available: availableOnly,
       brandName: currentBrand,
@@ -121,8 +128,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     const paramToURL = () => {
       const bottomsParam = currentBottoms?.length ? "&bottoms=" + currentBottoms.join("+") : ""
       const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
+      const colorsParam = currentColors?.length ? "&colors=" + currentColors.join("+") : ""
       const availableParam = availableOnly ? "&available=true" : ""
-      return `${bottomsParam}${topsParam}${availableParam}`
+      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}`
     }
     const newParams = paramToURL()
 
@@ -141,6 +149,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           availableOnly: !!available && available !== availableOnly ? available : null,
           currentBottoms: !!bottoms?.length && !currentBottoms?.length ? bottoms : [],
           currentTops: tops?.length && !currentTops?.length ? tops : [],
+          currentColors: !!colors?.length && !currentColors?.length ? colors : [],
         })
         setInitialPageLoad(true)
       } else {
@@ -170,6 +179,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     currentPage,
     setCurrentPage,
     currentBrand,
+    currentColors,
     currentCategory,
     currentTops,
     currentBottoms,
@@ -182,7 +192,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   ])
 
   const aggregateCount = data?.connection?.aggregate?.count
-  // const pageCount = 15
   const pageCount = Math.ceil(aggregateCount / pageSize)
   const products = data?.products?.edges
   const productsOrArray = products || [...Array(pageSize)]
@@ -242,6 +251,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     />
                     <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
+                    <Spacer mb={2} />
+                    <ColorFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
                     <BrowseFilters
                       title="Designers"
