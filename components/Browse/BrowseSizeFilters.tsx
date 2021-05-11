@@ -57,9 +57,8 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
           }}
           isActive={availableOnly}
         />
-        <Sans ml={1} size="3">
-          Available now
-        </Sans>
+        <Spacer ml={1} />
+        <Sans size="3">Available now</Sans>
       </Flex>
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>

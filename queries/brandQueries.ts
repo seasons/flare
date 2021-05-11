@@ -19,6 +19,7 @@ export const GET_BROWSE_PRODUCTS = gql`
     $orderBy: ProductOrderByInput!
     $tops: [String]
     $bottoms: [String]
+    $colors: [String]
     $available: Boolean
   ) {
     connection: productsConnection(
@@ -26,6 +27,7 @@ export const GET_BROWSE_PRODUCTS = gql`
       bottoms: $bottoms
       availableOnly: $available
       category: $categoryName
+      colors: $colors
       brand: $brandName
       where: { status: Available }
     ) {
@@ -39,6 +41,7 @@ export const GET_BROWSE_PRODUCTS = gql`
       bottoms: $bottoms
       availableOnly: $available
       brand: $brandName
+      colors: $colors
       orderBy: $orderBy
       first: $first
       skip: $skip
