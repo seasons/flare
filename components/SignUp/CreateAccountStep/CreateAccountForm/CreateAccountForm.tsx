@@ -1,7 +1,7 @@
 import { ExternalLink } from "components"
 import { TelephoneMaskField } from "components/Fields/TelephoneMaskField"
 import { FormTemplate } from "components/Forms/FormTemplate"
-import { GET_SIGNUP_USER } from "components/SignUp/queries"
+import { GET_DISCOVERY_REFERENCE_VIEW, GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Formik } from "formik"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
@@ -10,7 +10,7 @@ import { SignupFormProps } from "pages/signup"
 import React from "react"
 import { Schema, useTracking } from "utils/analytics"
 
-import { useMutation } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 
 import { SIGN_UP_USER } from "./queries"
 import { createAccountValidationSchema } from "./validationSchema"
@@ -33,7 +33,7 @@ export interface CustomerDetailCreateInput {
   phoneNumber: string
 }
 
-const discoveryReferenceOptions = [
+const discoveryReferenceBackupOptions = [
   { label: "Friend", value: "friend" },
   { label: "Press article", value: "pressArticle" },
   { label: "Blog", value: "blog" },
@@ -64,10 +64,13 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
   const router = useRouter()
   const tracking = useTracking()
   const { signIn } = useAuthContext()
+  const { data } = useQuery(GET_DISCOVERY_REFERENCE_VIEW)
   const [signUpUser] = useMutation(SIGN_UP_USER, {
     refetchQueries: [{ query: GET_SIGNUP_USER }],
     awaitRefetchQueries: true,
   })
+
+  const howDidYouFindOutAboutUsView = data?.howDidYouFindOutAboutUs
 
   const onSubmit = async (values, actions) => {
     try {
@@ -201,9 +204,9 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
           },
           {
             name: "discoveryReference",
-            selectOptions: discoveryReferenceOptions,
+            selectOptions: howDidYouFindOutAboutUsView?.properties?.options || discoveryReferenceBackupOptions,
             placeholder: "Select",
-            label: "How did you hear about us?",
+            label: howDidYouFindOutAboutUsView?.title || "How did you hear about us?",
             mobileOrder: 8,
           },
         ]}
