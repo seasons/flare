@@ -7,7 +7,7 @@ import { NavProps } from "./Types"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
 import gql from "graphql-tag"
-import { NotificationBar, BrowseProductsNotificationBar } from "@seasons/eclipse"
+import { NotificationBar, BrowseProductsNotificationBar, PressType } from "@seasons/eclipse"
 import { useAuthContext } from "lib/auth/AuthContext"
 
 type Props = Omit<NavProps, "onClickNotificationBar"> & {
@@ -60,6 +60,12 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
     }
   }
 
+  const onClickBrowseProductsNotificationBar = (route, type) => {
+    if (type === PressType.PRIMARY && route.url) {
+      router.push(route.url)
+    }
+  }
+
   const {
     authState: { isSignedIn },
   } = useAuthContext()
@@ -73,7 +79,11 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
         <MobileNav links={links} />
       </Media>
       <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isSignedIn} />
-      <BrowseProductsNotificationBar isLoggedIn={isSignedIn} isBrowse={isBrowse} />
+      <BrowseProductsNotificationBar
+        isLoggedIn={isSignedIn}
+        isBrowse={isBrowse}
+        onClick={onClickBrowseProductsNotificationBar}
+      />
     </>
   )
 }
