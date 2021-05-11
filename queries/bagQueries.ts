@@ -53,6 +53,15 @@ export const CHECK_ITEMS = gql`
   }
 `
 
+export const GET_LOCAL_BAG = gql`
+  query GetLocalBag {
+    localBagItems @client {
+      productID
+      variantID
+    }
+  }
+`
+
 export const GET_LOCAL_BAG_ITEMS = gql`
   query GetLocalBagItems($ids: [ID!]) {
     products(where: { id_in: $ids }) {

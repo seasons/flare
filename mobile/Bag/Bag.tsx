@@ -7,13 +7,7 @@ import { PauseButtons } from "mobile/Account/Components/Pause"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
-import {
-  CHECK_ITEMS,
-  GET_BAG,
-  GET_LOCAL_BAG_ITEMS,
-  REMOVE_FROM_BAG,
-  REMOVE_FROM_BAG_AND_SAVE_ITEM,
-} from "queries/bagQueries"
+import { CHECK_ITEMS, GET_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
@@ -22,7 +16,6 @@ import { SavedItemsTab } from "./Components/SavedItemsTab"
 import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
 import { BagTab } from "./Components/BagTab"
 import { ReservationHistoryTab_Query, SavedTab_Query } from "queries/bagQueries"
-import styled from "styled-components"
 
 export enum BagView {
   Bag = 0,
@@ -45,7 +38,6 @@ export const Bag = screenTrack()((props) => {
   const [currentView, setCurrentView] = useState<BagView>(BagView.Bag)
 
   const { previousData, data = previousData, refetch } = useQuery(GET_BAG)
-  const { data: localItems } = useQuery(GET_LOCAL_BAG_ITEMS)
 
   const me = data?.me
   const customerStatus = me?.customer?.status
@@ -84,15 +76,12 @@ export const Bag = screenTrack()((props) => {
     setRefreshing(false)
   }
 
-  console.log("savedTabData", savedTabData)
-
-  const items = !authState.isSignedIn
-    ? localItems?.localBagItems || []
-    : me?.bag?.map((item) => ({
-        ...item,
-        variantID: item.productVariant.id,
-        productID: item.productVariant.product.id,
-      })) || []
+  const items =
+    me?.bag?.map((item) => ({
+      ...item,
+      variantID: item.productVariant.id,
+      productID: item.productVariant.product.id,
+    })) || []
 
   const savedItems = savedTabData?.me?.savedItems
 
