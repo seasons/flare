@@ -36,8 +36,6 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       setAdded(props.isInBag)
     }
   }, [props])
-
-  const { data: localItems } = useQuery(GET_LOCAL_BAG_ITEMS)
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
     variables: {
       id: selectedVariant.id,
@@ -97,13 +95,10 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     }
   }
 
-  const isInBag = isUserSignedIn
-    ? added
-    : !!localItems?.localBagItems?.find((item) => item.variantID === selectedVariant.id) || false
-  const disabled = !!props.disabled || isInBag || !variantInStock || isMutating
+  const disabled = !!props.disabled || added || !variantInStock || isMutating
 
   let text = "Add to bag"
-  if (isInBag) {
+  if (added) {
     text = "Added"
   }
 
