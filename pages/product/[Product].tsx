@@ -25,9 +25,7 @@ import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
-import {
-  ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment
-} from "@seasons/eclipse"
+import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
 
 const isProduction = process.env.ENVIRONMENT === "production"
 
@@ -69,7 +67,10 @@ const Product = screenTrack(({ router }) => {
   const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
   const isInBag = updatedVariant?.isInBag || false
 
-  const title = `${product?.name} by ${product?.brand?.name}`
+  let metaTitle = HEAD_META_TITLE
+  if (product?.name && product?.brand?.name) {
+    metaTitle = `Seasons | ${product?.name} by ${product?.brand?.name}`
+  }
   const description = product && product.description
   const variantInStock = selectedVariant?.reservable > 0
 
@@ -80,9 +81,9 @@ const Product = screenTrack(({ router }) => {
   return (
     <Layout includeDefaultHead={false}>
       <Head>
-        <title>{title ? `Seasons | ${title}` : HEAD_META_TITLE}</title>
+        <title>{metaTitle}</title>
         <meta content={description} name="description" />
-        <meta property="og:title" content={title} />
+        <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={description} />
         <meta property="twitter:description" content={description} />
         <meta property="og:type" content="website" />
