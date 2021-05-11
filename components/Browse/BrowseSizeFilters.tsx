@@ -71,21 +71,7 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
       <Spacer mb={2} />
       <Sans size="3">Bottoms</Sans>
       <SizeButtonContainer>
-        {waistSizes.map((size) => {
-          return (
-            <SizeButton
-              key={size}
-              size={size}
-              items={currentBottoms}
-              params={params}
-              setParams={setParams}
-              type="bottoms"
-            />
-          )
-        })}
-      </SizeButtonContainer>
-      <SizeButtonContainer>
-        {letterSizes.map((size) => {
+        {[...letterSizes, ...waistSizes].map((size) => {
           return (
             <SizeButton
               key={size}
