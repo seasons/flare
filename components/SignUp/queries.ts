@@ -43,6 +43,18 @@ export const GET_SIGNUP_USER = gql`
   }
 `
 
+export const GET_DISCOVERY_REFERENCE_VIEW = gql`
+  {
+    howDidYouFindOutAboutUs: view(viewID: "HowDidYouFindOutAboutUs") {
+      id
+      title
+      caption
+      type
+      properties
+    }
+  }
+`
+
 export const GET_GIFT = gql`
   query GetGift($giftID: String!) {
     gift(id: $giftID) {
