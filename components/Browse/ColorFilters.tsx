@@ -27,6 +27,7 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
   return (
     <>
       <Sans size="3">Colors</Sans>
+      <Spacer mb={0.5} />
       <Flex width="100%" flexWrap="wrap">
         {colors.map((color, index) => {
           let isActive = params?.currentColors?.includes(color.name)
