@@ -41,8 +41,8 @@ const SizeButton: React.FC<SizeButtonProps> = ({ size, items, setParams, params,
 }
 
 export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
-  const topChoices = ["XS", "S", "M", "L", "XL", "XXL"]
-  const bottomChoices = ["28", "29", "30", "31", "32", "33", "34", "35", "36", "37"]
+  const letterSizes = ["XS", "S", "M", "L", "XL", "XXL"]
+  const waistSizes = ["28", "29", "30", "31", "32", "33", "34", "35", "36", "37"]
 
   const { currentTops, currentBottoms, availableOnly } = params
 
@@ -63,7 +63,7 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
       </Flex>
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>
-        {topChoices.map((size) => {
+        {letterSizes.map((size) => {
           return (
             <SizeButton key={size} size={size} items={currentTops} params={params} setParams={setParams} type="tops" />
           )
@@ -72,7 +72,21 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
       <Spacer mb={2} />
       <Sans size="3">Bottoms</Sans>
       <SizeButtonContainer>
-        {bottomChoices.map((size) => {
+        {waistSizes.map((size) => {
+          return (
+            <SizeButton
+              key={size}
+              size={size}
+              items={currentBottoms}
+              params={params}
+              setParams={setParams}
+              type="bottoms"
+            />
+          )
+        })}
+      </SizeButtonContainer>
+      <SizeButtonContainer>
+        {letterSizes.map((size) => {
           return (
             <SizeButton
               key={size}

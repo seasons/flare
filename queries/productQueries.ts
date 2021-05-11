@@ -1,8 +1,6 @@
 import gql from "graphql-tag"
 
-import {
-  ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment
-} from "@seasons/eclipse"
+import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
@@ -17,6 +15,7 @@ export const GET_PRODUCT = gql`
       type
       modelSize {
         display
+        type
       }
       modelHeight
       color {
@@ -31,7 +30,6 @@ export const GET_PRODUCT = gql`
         id
         slug
         name
-        logo
         since
         images {
           id
@@ -64,6 +62,8 @@ export const GET_PRODUCT = gql`
         }
         internalSize {
           id
+          display
+          type
           productType
           top {
             id
@@ -89,8 +89,8 @@ export const GET_PRODUCT = gql`
 `
 
 export const GET_STATIC_PRODUCTS = gql`
-  query GetStaticProducts {
-    products(where: { status: Available }, first: 100, orderBy: publishedAt_DESC) {
+  query GetStaticProducts($pageSize: Int) {
+    products(where: { status: Available }, first: $pageSize, orderBy: publishedAt_DESC) {
       id
       slug
     }

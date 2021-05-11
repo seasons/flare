@@ -14,7 +14,6 @@ import { colors } from "theme/colors"
 import * as Yup from "yup"
 
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { BagItemFragment, REMOVE_FROM_BAG } from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 import { PaymentBagItem } from "./PaymentBagItem"
@@ -28,6 +27,7 @@ import { PaymentShippingAddress } from "./PaymentShippingAddress"
 import { Checkbox } from "components/Checkbox"
 import { InputLabel } from "@material-ui/core"
 import { Collapse } from "components/Collapse"
+import { BagItemFragment, REMOVE_FROM_BAG } from "queries/bagQueries"
 
 interface PaymentStepProps {
   plan: {

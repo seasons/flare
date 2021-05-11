@@ -1,6 +1,6 @@
 import React from "react"
 import { Grid } from "../Grid"
-import { Sans, Spacer, Box, Flex } from "../"
+import { Sans, Spacer, Box, Flex, Link } from "../"
 import { Display } from "../Typography"
 import styled from "styled-components"
 import { Media } from "../Responsive"
@@ -15,7 +15,7 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
     const imageSRC = imageResize(post?.image?.url ?? "", "large")
 
     return (
-      <StyledAnchor href={post?.url}>
+      <Link href={`/blog/${post.slug}`}>
         <Box>
           <img src={imageSRC} alt={post.image?.alt ?? `Image for ${post.name}`} />
           <Spacer mb={2} />
@@ -29,7 +29,7 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
             </>
           )}
         </Box>
-      </StyledAnchor>
+      </Link>
     )
   }
 

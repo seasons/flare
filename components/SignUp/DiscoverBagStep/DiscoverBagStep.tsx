@@ -1,12 +1,10 @@
 import { Media } from "components"
 import React, { useState } from "react"
 import styled from "styled-components"
-
 import { useMutation, useQuery } from "@apollo/client"
-import { ADD_TO_BAG, REMOVE_FROM_BAG } from "@seasons/eclipse"
-
 import { DiscoverBagContent } from "./DiscoverBagContent"
 import { GET_DISCOVERY_BAG, GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
+import { ADD_TO_BAG, REMOVE_FROM_BAG } from "queries/bagQueries"
 
 const PAGE_LENGTH = 16
 

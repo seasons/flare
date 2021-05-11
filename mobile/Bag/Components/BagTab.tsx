@@ -3,10 +3,7 @@ import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
-import { GET_LOCAL_BAG_ITEMS } from "@seasons/eclipse"
-import React, { useEffect, useState } from "react"
-import { useTracking } from "utils/analytics"
-import { useLazyQuery } from "@apollo/client"
+import React, { useState } from "react"
 import { ProductBuyAlertTabType } from "@seasons/eclipse"
 import { BagItem } from "./BagItem"
 import { DeliveryStatus } from "./DeliveryStatus"
@@ -25,28 +22,15 @@ export const BagTab: React.FC<{
 }> = ({ pauseStatus, items, deleteBagItem, removeFromBagAndSaveItem, data }) => {
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
-  const tracking = useTracking()
   const { openDrawer } = useDrawerContext()
   const me = data?.me
-  const paymentPlans = data?.paymentPlans
   const activeReservation = me?.activeReservation
   const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
   const hasActiveReservation = !!activeReservation
 
   const [productBuyAlertTabs, setProductBuyAlertTabs] = useState(null)
-  const [getLocalBag, { data: localItems }] = useLazyQuery(GET_LOCAL_BAG_ITEMS, {
-    variables: {
-      ids: items?.map((i) => i.productID),
-    },
-  })
 
-  const bagItems = !authState.isSignedIn
-    ? localItems?.products.map((item, i) => ({
-        ...items?.[i],
-        productVariant: item.variants[0],
-        status: "Added",
-      }))
-    : items
+  const bagItems = items
 
   const paddedItems = assign(fill(new Array(itemCount), { variantID: "", productID: "" }), bagItems) || []
 
@@ -79,12 +63,6 @@ export const BagTab: React.FC<{
       productVariantId: bagItem?.productVariant?.id,
     })
   }
-
-  useEffect(() => {
-    if (!authState.isSignedIn) {
-      getLocalBag()
-    }
-  }, [items])
 
   let returnReminder
   if (hasActiveReservation && me?.customer?.plan === "Essential" && !!me?.activeReservation?.returnAt) {

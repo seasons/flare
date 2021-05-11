@@ -42,6 +42,14 @@ const GET_CUSTOMER_RESERVATION_CONFIRMATION = gql`
         reservations(where: { id: $reservationID }) {
           id
           reservationNumber
+          shippingOption {
+            id
+            externalCost
+            shippingMethod {
+              id
+              displayText
+            }
+          }
           products {
             id
             productVariant {
@@ -115,6 +123,11 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const formatedAddress1 =
     !!address?.address1 && `${address?.address1}${address?.address2 ? " " + address?.address2 : ""},`
   const formatedAddress2 = !!address?.city && `${address?.city}, ${address?.state} ${address?.zipCode}`
+  const shippingOption = reservation?.shippingOption
+  const shippingDisplayText = shippingOption?.shippingMethod?.displayText
+  const externalCost = shippingOption?.externalCost
+
+  console.log(shippingDisplayText, externalCost)
 
   return (
     <Container>
@@ -168,14 +181,32 @@ export const ReservationConfirmation = screenTrack()((props) => {
             <SectionHeader
               title="Delivery"
               content={
-                <Sans size="3" color="black100" ml="auto" textAlign="right">
-                  {`UPS Ground\n2 day shipping`}
-                </Sans>
+                <>
+                  {!!shippingDisplayText && (
+                    <Sans size="3" color="black100" ml="auto" textAlign="right">
+                      {shippingDisplayText}
+                    </Sans>
+                  )}
+                </>
               }
-              hideSeparator
+              hideSeparator={!externalCost}
               bottomSpacing={4}
             />
           </Box>
+          {!!externalCost && externalCost !== 0 && (
+            <Box pt={1}>
+              <SectionHeader
+                title="Order total"
+                content={
+                  <Sans size="3" color="black100" ml="auto" textAlign="right">
+                    ${externalCost / 100}
+                  </Sans>
+                }
+                hideSeparator
+                bottomSpacing={4}
+              />
+            </Box>
+          )}
           <Box mb={5}>
             <SectionHeader title="Items" />
             <Box mt={1} mb={4}>

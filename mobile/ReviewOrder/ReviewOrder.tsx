@@ -1,6 +1,7 @@
 import React from "react"
 import { useMutation, ApolloError } from "@apollo/client"
-import { ReviewOrder as ReviewOrderBase, GET_BAG } from "@seasons/eclipse"
+import { ReviewOrder as ReviewOrderBase } from "@seasons/eclipse"
+import { GET_BAG } from "queries/bagQueries"
 import { SUBMIT_ORDER } from "queries/orderQueries"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { getDrawerWidth } from "components/Drawer/Drawer"

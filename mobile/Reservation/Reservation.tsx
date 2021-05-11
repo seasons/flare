@@ -4,7 +4,7 @@ import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
-import { BagItemFragment, GET_BAG } from "@seasons/eclipse"
+import { BagItemFragment, GET_BAG } from "queries/bagQueries"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components"
@@ -13,10 +13,11 @@ import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { useMutation, useQuery } from "@apollo/client"
 
 import { ReservationItem } from "./Components/ReservationItem"
+import { ShippingOption } from "./Components/ShippingOption"
 
 const RESERVE_ITEMS = gql`
-  mutation ReserveItems($items: [ID!]!, $options: ReserveItemsOptions) {
-    reserveItems(items: $items, options: $options) {
+  mutation ReserveItems($items: [ID!]!, $options: ReserveItemsOptions, $shippingCode: ShippingCode) {
+    reserveItems(items: $items, options: $options, shippingCode: $shippingCode) {
       id
     }
   }
@@ -47,6 +48,10 @@ const GET_CUSTOMER = gql`
             itemCount
           }
         }
+        admissions {
+          id
+          allAccessEnabled
+        }
         detail {
           id
           phoneNumber
@@ -58,6 +63,16 @@ const GET_CUSTOMER = gql`
             city
             state
             zipCode
+            shippingOptions {
+              id
+              externalCost
+              averageDuration
+              shippingMethod {
+                id
+                code
+                displayText
+              }
+            }
           }
         }
         billingInfo {
@@ -91,6 +106,7 @@ const SectionHeader: React.FC<{ title: string; onEdit?: () => void }> = ({ title
 
 export const Reservation = screenTrack()((props) => {
   const [isMutating, setIsMutating] = useState(false)
+  const [shippingOptionIndex, setShippingOptionIndex] = useState(0)
   const tracking = useTracking()
   const { previousData, data = previousData } = useQuery(GET_CUSTOMER)
   const { showPopUp, hidePopUp } = usePopUpContext()
@@ -128,6 +144,8 @@ export const Reservation = screenTrack()((props) => {
 
   const customer = data?.me?.customer
   const address = data?.me?.customer?.detail?.shippingAddress
+  const shippingOptions = address?.shippingOptions
+  const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled && false
 
   const phoneNumber = customer?.detail?.phoneNumber
   const items = data?.me?.bag
@@ -193,6 +211,29 @@ export const Reservation = screenTrack()((props) => {
                 </Sans>
               </Box>
             )}
+            {shippingOptions?.length > 0 && !allAccessEnabled && (
+              <Box mb={4}>
+                <SectionHeader title="Select shipping" />
+                {shippingOptions.map((option, index) => {
+                  return (
+                    <Box key={option?.id || index}>
+                      <ShippingOption
+                        option={option}
+                        index={index}
+                        setShippingOptionIndex={setShippingOptionIndex}
+                        shippingOptionIndex={shippingOptionIndex}
+                      />
+                      <Separator />
+                    </Box>
+                  )
+                })}
+                <Spacer mb={2} />
+                <Sans size="3" color="black50">
+                  UPS Ground shipping averages 1-2 days in the NY metro area, 3-4 days for the Midwest + Southeast, and
+                  5-7 days on the West coast.
+                </Sans>
+              </Box>
+            )}
             {!!phoneNumber && (
               <Box mb={4}>
                 <SectionHeader title="Phone number" />
@@ -237,6 +278,7 @@ export const Reservation = screenTrack()((props) => {
                 variables: {
                   planItemCount,
                   items: itemIDs,
+                  shippingCode: shippingOptions?.[shippingOptionIndex]?.shippingMethod?.code,
                 },
               })
               if (data?.reserveItems) {

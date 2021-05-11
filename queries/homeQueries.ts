@@ -32,8 +32,8 @@ const HomePageProductFragment_Product = gql`
   ${ProductGridItem_Product}
 `
 
-export const Home_Query = gql`
-  query Home_Query {
+export const HomeMe_Query = gql`
+  query HomeMe_Query {
     me {
       id
       customer {
@@ -47,6 +47,11 @@ export const Home_Query = gql`
         }
       }
     }
+  }
+`
+
+export const Home_Query = gql`
+  query Home_Query {
     collections(orderBy: updatedAt_DESC, first: 1, where: { published: true }) {
       id
       slug
@@ -62,7 +67,7 @@ export const Home_Query = gql`
     }
     blogPosts(count: 3) {
       id
-      url
+      slug
       name
       author
       image {
