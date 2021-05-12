@@ -12,6 +12,7 @@ import { useAuthContext } from "lib/auth/AuthContext"
 
 type Props = Omit<NavProps, "onClickNotificationBar"> & {
   brandItems: { name: string; slug: string }[]
+  PageNotificationBar?: () => React.ReactElement
 }
 
 export const NavFragment_Query = gql`
@@ -21,7 +22,7 @@ export const NavFragment_Query = gql`
   ${BrandsNavItemFragment_Query}
 `
 
-export const Nav: React.FC<Props> = ({ brandItems }) => {
+export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar }) => {
   const { openDrawer } = useDrawerContext()
   const router = useRouter()
   const links = [
@@ -72,8 +73,8 @@ export const Nav: React.FC<Props> = ({ brandItems }) => {
       <Media lessThan="md">
         <MobileNav links={links} />
       </Media>
-      <NotificationBar onClick={onClickNotificationBar} isLoggedIn={isSignedIn} />
-      <BrowseProductsNotificationBar isLoggedIn={isSignedIn} isBrowse={isBrowse} />
+      <NotificationBar onClickBanner={onClickNotificationBar} isLoggedIn={isSignedIn} />
+      {PageNotificationBar?.()}
     </>
   )
 }
