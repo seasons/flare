@@ -1,4 +1,4 @@
-import { Flex, Sans, Spacer } from "components"
+import { Box, Flex, Sans, Spacer } from "components"
 import { SizeFilterParams } from "pages/browse/[Filter]"
 import React from "react"
 import styled from "styled-components"
@@ -25,7 +25,7 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
   ]
 
   return (
-    <>
+    <Box style={{ maxWidth: "148px" }}>
       <Sans size="3">Colors</Sans>
       <Spacer mb={0.5} />
       <Flex width="100%" flexWrap="wrap">
@@ -37,7 +37,7 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
             <ColorButton
               isActive={isActive}
               activeColor={color.hex}
-              key={index}
+              key={color.name}
               className={`color-button-${color.name}`}
               onClick={() => {
                 const newColors: string[] = isActive
@@ -53,7 +53,7 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
           )
         })}
       </Flex>
-    </>
+    </Box>
   )
 }
 
@@ -61,12 +61,14 @@ const ColorButton = styled.div<{ isActive: boolean; activeColor: string }>`
   border: 1px solid ${(p) => (p.isActive ? themeColor("black100") : themeColor("black10"))};
   background-color: ${(p) => (p.isActive ? themeColor("black100") : themeColor("white100"))};
   height: 33px;
-  width: 64px;
+  width: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 2px;
   cursor: pointer;
+  left: -2px;
+  position: relative;
 
   &:hover {
     border: 1px solid ${(p) => p.activeColor};
