@@ -1,79 +1,12 @@
-import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
 import gql from "graphql-tag"
 import { ReservationHistoryTabFragment_Customer } from "mobile/Bag/Components/ReservationHistoryTab"
-import { SavedItemFragment_BagItem } from "mobile/Bag/Components/SavedItem"
-import { SavedItemsTabFragment_Me } from "mobile/Bag/Components/SavedItemsTab"
-
-export const BagItemFragment = gql`
-  fragment BagItemProductVariant on ProductVariant {
-    product {
-      id
-      slug
-      name
-      modelSize {
-        id
-        display
-      }
-      brand {
-        id
-        name
-        websiteUrl
-      }
-      images(size: Thumb) {
-        id
-        url
-      }
-      variants {
-        id
-        hasRestockNotification
-        reservable
-        displayShort
-        displayLong
-        ...ProductBuyCTA_ProductVariantFragment
-      }
-      ...ProductBuyCTA_ProductFragment
-    }
-  }
-  ${ProductBuyCTA_ProductVariantFragment}
-  ${ProductBuyCTA_ProductFragment}
-`
-
-export const ADD_OR_REMOVE_FROM_LOCAL_BAG = gql`
-  mutation AddOrRemoveFromLocalBag($productID: ID!, $variantID: ID!) {
-    addOrRemoveFromLocalBag(productID: $productID, variantID: $variantID) @client {
-      productID
-      variantID
-    }
-  }
-`
+export { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_LOCAL_BAG, GET_LOCAL_BAG_ITEMS } from "./clientQueries"
+import { BagItemFragment } from "./bagItemQueries"
 
 export const CHECK_ITEMS = gql`
   mutation CheckItemsAvailability($items: [ID!]!) {
     checkItemsAvailability(items: $items)
   }
-`
-
-export const GET_LOCAL_BAG = gql`
-  query GetLocalBag {
-    localBagItems @client {
-      productID
-      variantID
-    }
-  }
-`
-
-export const GET_LOCAL_BAG_ITEMS = gql`
-  query GetLocalBagItems($ids: [ID!]) {
-    products(where: { id_in: $ids }) {
-      id
-
-      variants {
-        id
-        ...BagItemProductVariant
-      }
-    }
-  }
-  ${BagItemFragment}
 `
 
 export const SavedTab_Query = gql`

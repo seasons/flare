@@ -1,7 +1,7 @@
 import { Box, ExternalLink } from "components"
 import { GET_SIGNUP_USER } from "components/SignUp/queries"
+import { ADD_MEASUREMENTS } from "queries/customerQueries"
 import { Formik } from "formik"
-import gql from "graphql-tag"
 import { SignupFormProps } from "pages/signup"
 import React from "react"
 import { Schema } from "utils/analytics"
@@ -28,22 +28,6 @@ export const customerMeasurementsValidationSchema = Yup.object().shape({
   topSizes: Yup.string().required("Required"),
   waistSizes: Yup.string().required("Required"),
 })
-
-const ADD_MEASUREMENTS = gql`
-  mutation addMeasurements(
-    $height: Int
-    $weight: CustomerDetailCreateweightInput
-    $topSizes: CustomerDetailCreatetopSizesInput
-    $waistSizes: CustomerDetailCreatewaistSizesInput
-  ) {
-    addCustomerDetails(
-      details: { height: $height, weight: $weight, topSizes: $topSizes, waistSizes: $waistSizes }
-      event: CompletedWaitlistForm
-    ) {
-      id
-    }
-  }
-`
 
 const initialValues = {
   weight: "",

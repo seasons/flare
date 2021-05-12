@@ -4,7 +4,7 @@ import React from "react"
 import { BagView } from "../Bag"
 import { BagEmptyState } from "./BagEmptyState"
 import { ReservationHistoryItem, ReservationHistoryItemFragment_Reservation } from "./ReservationHistoryItem"
-import { gql } from "@apollo/client"
+import gql from "graphql-tag"
 import { Loader } from "@seasons/eclipse"
 
 export const ReservationHistoryTabFragment_Customer = gql`

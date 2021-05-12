@@ -27,7 +27,8 @@ import { PaymentShippingAddress } from "./PaymentShippingAddress"
 import { Checkbox } from "components/Checkbox"
 import { InputLabel } from "@material-ui/core"
 import { Collapse } from "components/Collapse"
-import { BagItemFragment, REMOVE_FROM_BAG } from "queries/bagQueries"
+import { REMOVE_FROM_BAG } from "queries/bagQueries"
+import { BagItemFragment } from "queries/bagItemQueries"
 
 interface PaymentStepProps {
   plan: {
