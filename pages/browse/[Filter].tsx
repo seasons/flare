@@ -149,7 +149,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         setInitialPageLoad(true)
       } else {
         // After the initial page load handle the URL and params through state
-        if ((!!paramsString && newParams !== paramsString) || category !== currentCategory || currentBrand !== brand) {
+        if ((!!newParams && newParams !== paramsString) || category !== currentCategory || currentBrand !== brand) {
           setCurrentPage(1)
           newURL = `/browse/${currentCategory}+${currentBrand}?page=1${newParams}`
           if (typeof window !== "undefined") {
@@ -171,6 +171,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     filter,
     setCurrentBrand,
     setCurrentCategory,
+    setParamsString,
+    paramsString,
     currentPage,
     setCurrentPage,
     currentBrand,
