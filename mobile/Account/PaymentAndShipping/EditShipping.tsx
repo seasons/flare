@@ -30,7 +30,7 @@ export const GET_CURRENT_PLAN = gql`
 `
 
 const UPDATE_PAYMENT_AND_SHIPPING = gql`
-  mutation updateShippingAddress(
+  mutation updatePaymentAndShippingAddress(
     $city: String!
     $zipCode: String!
     $state: String!

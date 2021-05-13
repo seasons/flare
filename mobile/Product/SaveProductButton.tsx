@@ -12,7 +12,7 @@ import { SaveProduct } from "./SaveProduct"
 import { Modal } from "@material-ui/core"
 
 export const SAVE_ITEM = gql`
-  mutation SaveItem($item: ID!, $save: Boolean!) {
+  mutation SaveProductButton_SaveItem($item: ID!, $save: Boolean!) {
     saveProduct(item: $item, save: $save) {
       id
       productVariant {
