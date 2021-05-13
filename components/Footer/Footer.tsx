@@ -22,7 +22,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
         <Spacer mb={5} />
       </Box>
       <Row px={[2, 2, 2, 2, 2]}>
-        <Col lg="2" xs="6">
+        <Col lg="2" md="4" sm="6">
           <Sans size="3" color="black50">
             Membership
           </Sans>
@@ -50,8 +50,9 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               Ask a question
             </Sans>
           </a>
+          <Spacer mb={[5, 5, 5, 0, 0]} />
         </Col>
-        <Col lg="2" xs="6">
+        <Col lg="2" md="4" sm="6">
           <Sans size="3" color="black50">
             Seasons
           </Sans>
@@ -79,9 +80,9 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               Wholesale
             </Sans>
           </a>
-        </Col>
-        <Col lg="2" xs="12">
           <Spacer mb={[5, 5, 5, 0, 0]} />
+        </Col>
+        <Col lg="2" md="4" xs="12">
           <Sans color="black50" size="3">
             Contact
           </Sans>
@@ -109,9 +110,9 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               Email
             </Sans>
           </a>
+          <Spacer mb={[5, 5, 5, 0, 0]} />
         </Col>
         <Col lg="6" xs="12">
-          <Spacer mb={[5, 5, 5, 0, 0]} />
           <Sans size="3" color={color("black50")} pr="3">
             Designers
           </Sans>
