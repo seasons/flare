@@ -8,10 +8,8 @@ import React, { useEffect, useMemo, useState } from "react"
 import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
-
 import { gql, useQuery } from "@apollo/client"
-import { ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
-
+import { BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"
@@ -20,15 +18,11 @@ import { Col, Grid, Row } from "../../components/Grid"
 import { Media } from "../../components/Responsive"
 import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
-import { initializeApollo } from "../../lib/apollo"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 import { SavedTab_Query } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import { ColorFilters } from "components/Browse/ColorFilters"
-import { colors } from "@material-ui/core"
-
-const isProduction = process.env.ENVIRONMENT === "production"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -61,6 +55,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   page: Schema.PageNames.BrowsePage,
   path: "/browse",
 }))(() => {
+  const {
+    authState: { isSignedIn },
+  } = useAuthContext()
   const tracking = useTracking()
   const router = useRouter()
   const filter = router.query?.Filter || "all+all"
@@ -72,9 +69,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const colors = _colors?.split(" ")
   const available = (router.query?.available && router.query?.available === "available") ?? null
   const page = router.query?.page || 1
-
   const baseFilters = filter?.toString().split("+")
-
   const [category, brand] = baseFilters
   const [mounted, setMounted] = useState(false)
   const [currentCategory, setCurrentCategory] = useState(category)
@@ -154,7 +149,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         setInitialPageLoad(true)
       } else {
         // After the initial page load handle the URL and params through state
-        if ((!!paramsString && newParams !== paramsString) || category !== currentCategory || currentBrand !== brand) {
+        if ((!!newParams && newParams !== paramsString) || category !== currentCategory || currentBrand !== brand) {
           setCurrentPage(1)
           newURL = `/browse/${currentCategory}+${currentBrand}?page=1${newParams}`
           if (typeof window !== "undefined") {
@@ -176,6 +171,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     filter,
     setCurrentBrand,
     setCurrentCategory,
+    setParamsString,
+    paramsString,
     currentPage,
     setCurrentPage,
     currentBrand,
@@ -202,7 +199,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   return (
     <>
-      <Layout footerBottomPadding={["59px", "0px"]}>
+      <Layout
+        footerBottomPadding={["59px", "0px"]}
+        PageNotificationBar={() => <BrowseProductsNotificationBar isLoggedIn={isSignedIn} />}
+      >
         <Media lessThan="md">
           <MobileFilters
             BrandsListComponent={
