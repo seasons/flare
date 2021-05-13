@@ -1,4 +1,4 @@
-import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
+import { ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant } from "@seasons/eclipse"
 import gql from "graphql-tag"
 
 export const BagItemFragment = gql`
@@ -26,12 +26,12 @@ export const BagItemFragment = gql`
         reservable
         displayShort
         displayLong
-        ...ProductBuyCTA_ProductVariantFragment
+        ...ProductBuyCTAFragment_ProductVariant
       }
-      ...ProductBuyCTA_ProductFragment
+      ...ProductBuyCTAFragment_Product
     }
   }
-  ${ProductBuyCTA_ProductVariantFragment}
-  ${ProductBuyCTA_ProductFragment}
+  ${ProductBuyCTAFragment_ProductVariant}
+  ${ProductBuyCTAFragment_Product}
 `
 
