@@ -1,5 +1,9 @@
 import gql from "graphql-tag"
-import { ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant } from "@seasons/eclipse"
+import {
+  ProductBuyCTAFragment_Product,
+  ProductBuyCTAFragment_ProductVariant,
+  ProductConditionSectionFragment_PhysicalProductQualityReport,
+} from "@seasons/eclipse"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
@@ -78,6 +82,15 @@ export const GET_PRODUCT = gql`
             type
           }
         }
+        nextReservablePhysicalProduct {
+          id
+          reports {
+            id
+            published
+            createdAt
+            ...ProductConditionSectionFragment_PhysicalProductQualityReport
+          }
+        }
         ...ProductBuyCTAFragment_ProductVariant
       }
       ...ProductBuyCTAFragment_Product
@@ -85,6 +98,7 @@ export const GET_PRODUCT = gql`
   }
   ${ProductBuyCTAFragment_Product}
   ${ProductBuyCTAFragment_ProductVariant}
+  ${ProductConditionSectionFragment_PhysicalProductQualityReport}
 `
 
 export const GET_STATIC_PRODUCTS = gql`
