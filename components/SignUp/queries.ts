@@ -44,7 +44,7 @@ export const GET_SIGNUP_USER = gql`
 `
 
 export const GET_DISCOVERY_REFERENCE_VIEW = gql`
-  {
+  query HowDidYouFindOutAboutUs {
     howDidYouFindOutAboutUs: view(viewID: "HowDidYouFindOutAboutUs") {
       id
       title
