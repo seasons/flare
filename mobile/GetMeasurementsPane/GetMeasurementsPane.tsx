@@ -1,31 +1,15 @@
 import { Box, Button, CloseButton, Container, Flex, Sans, Spacer } from "components"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
-import gql from "graphql-tag"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { Schema, useTracking } from "utils/analytics"
+import { ADD_MEASUREMENTS } from "queries/customerQueries"
 
 import { useMutation } from "@apollo/client"
 
 import Item from "./Item"
 import Measurements from "./Measurements"
 import { MultiSelectionTable } from "./MultiSelectionTable"
-
-const ADD_MEASUREMENTS = gql`
-  mutation addMeasurements(
-    $height: Int
-    $weight: CustomerDetailCreateweightInput
-    $topSizes: CustomerDetailCreatetopSizesInput
-    $waistSizes: CustomerDetailCreatewaistSizesInput
-  ) {
-    addCustomerDetails(
-      details: { height: $height, weight: $weight, topSizes: $topSizes, waistSizes: $waistSizes }
-      event: CompletedWaitlistForm
-    ) {
-      id
-    }
-  }
-`
 
 interface GetMeasurementsPaneProps {
   initialMeasurements?: {

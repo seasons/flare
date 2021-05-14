@@ -40,6 +40,7 @@ interface LayoutProps {
   footerBottomPadding?: string | string[]
   includeDefaultHead?: boolean
   showIntercom?: boolean
+  PageNotificationBar?: () => React.ReactElement
 }
 
 export const Layout = ({
@@ -48,6 +49,7 @@ export const Layout = ({
   footerBottomPadding,
   includeDefaultHead = true,
   showIntercom = false,
+  PageNotificationBar,
 }: LayoutProps) => {
   const { authState } = useAuthContext()
   const [setImpactId] = useMutation(SET_IMPACT_ID)
@@ -91,7 +93,7 @@ export const Layout = ({
           <DrawerProvider>
             <Theme>
               {showIntercom && <Intercom />}
-              <Nav brandItems={brandItems} />
+              <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} />
               <MaxWidth height="100%">
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {children}

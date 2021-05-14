@@ -2,6 +2,7 @@ import { ProductBuyCTA as ProductBuyCTABase } from "@seasons/eclipse"
 import React from "react"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { FlexProps } from "components/Flex"
 import { CREATE_DRAFT_ORDER_MUTATION } from "queries/orderQueries"
 import { useMutation } from "@apollo/client"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -9,7 +10,8 @@ import { useAuthContext } from "lib/auth/AuthContext"
 type Props = Omit<
   JSX.LibraryManagedAttributes<typeof ProductBuyCTABase, React.ComponentProps<typeof ProductBuyCTABase>>,
   "onBuyNew" | "onBuyUsed" | "buyButtonMutating"
->
+> &
+  FlexProps
 
 export enum OrderType {
   BUY_USED = "Used",

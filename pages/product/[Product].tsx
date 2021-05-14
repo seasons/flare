@@ -23,10 +23,12 @@ import { GET_PRODUCT, GET_STATIC_PRODUCTS } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
 import {
-  ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment
+  ProductBuyCTAFragment_Product,
+  ProductBuyCTAFragment_ProductVariant,
+  ProductConditionSectionFragment_PhysicalProductQualityReport,
+  ProductConditionSection,
 } from "@seasons/eclipse"
 
 const isProduction = process.env.ENVIRONMENT === "production"
@@ -69,9 +71,21 @@ const Product = screenTrack(({ router }) => {
   const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
   const isInBag = updatedVariant?.isInBag || false
 
-  const title = `${product?.name} by ${product?.brand?.name}`
+  let metaTitle = HEAD_META_TITLE
+  if (product?.name && product?.brand?.name) {
+    metaTitle = `Seasons | ${product?.name} by ${product?.brand?.name}`
+  }
   const description = product && product.description
   const variantInStock = selectedVariant?.reservable > 0
+  const physicalProductQualityReport = (selectedVariant?.nextReservablePhysicalProduct?.reports || []).reduce(
+    (agg, report) => {
+      if (!agg) {
+        return report
+      }
+      return report.published && report.createdAt > agg.createdAt ? report : agg
+    },
+    null
+  )
 
   const handleNavigateToBrand = (href: string) => {
     window.location.href = href
@@ -80,9 +94,9 @@ const Product = screenTrack(({ router }) => {
   return (
     <Layout includeDefaultHead={false}>
       <Head>
-        <title>{title ? `Seasons | ${title}` : HEAD_META_TITLE}</title>
+        <title>{metaTitle}</title>
         <meta content={description} name="description" />
-        <meta property="og:title" content={title} />
+        <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={description} />
         <meta property="twitter:description" content={description} />
         <meta property="og:type" content="website" />
@@ -148,12 +162,27 @@ const Product = screenTrack(({ router }) => {
                   </Flex>
                 </Flex>
                 {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
+                {product ? (
+                  <ProductConditionSection
+                    mt={8}
+                    physicalProductQualityReport={
+                      physicalProductQualityReport
+                        ? filter(
+                            ProductConditionSectionFragment_PhysicalProductQualityReport,
+                            physicalProductQualityReport
+                          )
+                        : null
+                    }
+                  />
+                ) : (
+                  <ProductTextLoader />
+                )}
                 {process.env.ENABLE_BUY_USED && product && (
                   <>
-                    <Spacer mb={8} />
                     <ProductBuyCTA
-                      product={filter(ProductBuyCTA_ProductFragment, product)}
-                      selectedVariant={filter(ProductBuyCTA_ProductVariantFragment, selectedVariant)}
+                      mt={8}
+                      product={filter(ProductBuyCTAFragment_Product, product)}
+                      selectedVariant={filter(ProductBuyCTAFragment_ProductVariant, selectedVariant)}
                       onNavigateToBrand={handleNavigateToBrand}
                     />
                   </>

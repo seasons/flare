@@ -39,6 +39,7 @@ const DesktopTextContent = () => {
 }
 
 const DesktopHero = ({ post }) => {
+  
   const imageSRC = imageResize(post?.image?.url ?? "", "large")
 
   return (

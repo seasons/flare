@@ -16,7 +16,7 @@
     "heroku-prebuild": "echo \"//registry.npmjs.org/:_authToken=\\${NPM_TOKEN}\" >> .npmrc",
     "heroku-cleanup": "yarn upload-assets",
     "prettier": "prettier --write 'pages/**/*.{js,ts,tsx,md,graphql}' '*.{js,ts,tsx,md,graphql}' --ignore-path ./.prettierignore",
-    "apollo": "apollo service:push && rm -rf __generated__ && apollo codegen:generate --excludes=node_modules/* --target typescript --tagName gql --outputFlat __generated__"
+    "apollo:codegen": "rm -rf __generated__ && apollo client:codegen --endpoint=http://localhost:4000 --target typescript --tagName gql --outputFlat __generated__ --config=./apollo.config.js"
   },
   "engines": {
     "node": "12"
@@ -31,7 +31,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/styles": "^4.10.0",
-    "@seasons/eclipse": "^1.2.36",
+    "@seasons/eclipse": "^1.2.41",
     "@seasons/try-with-seasons": "^1.0.7",
     "@segment/snippet": "^4.12.0",
     "@sentry/react": "^5.27.4",

@@ -57,9 +57,8 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
           }}
           isActive={availableOnly}
         />
-        <Sans ml={1} size="3">
-          Available now
-        </Sans>
+        <Spacer ml={1} />
+        <Sans size="3">Available now</Sans>
       </Flex>
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>
@@ -72,21 +71,7 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
       <Spacer mb={2} />
       <Sans size="3">Bottoms</Sans>
       <SizeButtonContainer>
-        {waistSizes.map((size) => {
-          return (
-            <SizeButton
-              key={size}
-              size={size}
-              items={currentBottoms}
-              params={params}
-              setParams={setParams}
-              type="bottoms"
-            />
-          )
-        })}
-      </SizeButtonContainer>
-      <SizeButtonContainer>
-        {letterSizes.map((size) => {
+        {[...letterSizes, ...waistSizes].map((size) => {
           return (
             <SizeButton
               key={size}
