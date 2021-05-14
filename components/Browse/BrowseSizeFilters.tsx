@@ -71,18 +71,20 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
       <Spacer mb={2} />
       <Sans size="3">Bottoms</Sans>
       <SizeButtonContainer>
-        {[...letterSizes, ...waistSizes].map((size) => {
-          return (
-            <SizeButton
-              key={size}
-              size={size}
-              items={currentBottoms}
-              params={params}
-              setParams={setParams}
-              type="bottoms"
-            />
-          )
-        })}
+        {[...letterSizes, ...waistSizes]
+          .filter((i) => i !== "XXL")
+          .map((size) => {
+            return (
+              <SizeButton
+                key={size}
+                size={size}
+                items={currentBottoms}
+                params={params}
+                setParams={setParams}
+                type="bottoms"
+              />
+            )
+          })}
       </SizeButtonContainer>
     </Box>
   )
@@ -93,6 +95,7 @@ const SizeButtonContainer = styled.div`
   flex-wrap: wrap;
   left: -2px;
   position: relative;
+  max-width: 148px;
 `
 
 const SizeButtonWrapper = styled.div<{ isActive: boolean }>`
