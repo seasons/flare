@@ -117,7 +117,7 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
   return (
     <>
       <Wrapper pl={2} pb={2} pt={0.5} onClick={handleSaveButton}>
-        <SaveIcon width={width ? width : 16} height={height ? height : 22} enabled={!!enabled} />
+        <SaveIcon width={width ? width : 16} height={height ? height : 22} enabled={enabled} />
       </Wrapper>
       <Modal open={isPopUpVisible} onClose={handlePopUpDismiss}>
         <ModalRoot>

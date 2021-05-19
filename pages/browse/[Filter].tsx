@@ -137,8 +137,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         !initialPageLoad &&
         ((!!available && available !== availableOnly) ||
           (bottoms?.length && !currentBottoms?.length) ||
-          (tops?.length && !currentTops?.length) ||
-          (colors?.length && !currentColors?.length))
+          (tops?.length && !currentTops?.length))
       ) {
         // These are the initial params set on page load which happen after the page mounts since it's SSG
         setParams({
@@ -182,7 +181,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     currentTops,
     currentBottoms,
     availableOnly,
-    colors,
     tops,
     bottoms,
     available,

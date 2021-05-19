@@ -13,6 +13,7 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
   const colors = [
     { name: "white", hex: "#fff" },
     { name: "brown", hex: "#964B00" },
+    { name: "grey", hex: "#808080" },
     { name: "green", hex: "#22a82d" },
     { name: "black", hex: "#000000" },
     { name: "purple", hex: "#4f36a7" },
