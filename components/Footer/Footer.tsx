@@ -121,7 +121,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
             <DesktopBrandsContainer>
               {resortedBrands?.map(({ name, slug }, index) => {
                 return (
-                  <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index} prefetch={false}>
+                  <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index}>
                     <Sans size={3} style={{ textDecoration: "underline", cursor: "pointer" }}>
                       {name}
                     </Sans>
