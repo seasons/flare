@@ -32,8 +32,9 @@ const Designer = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
+  const paginationCount = 8
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
-  const [productCount, setProductCount] = useState(8)
+  const [productCount, setProductCount] = useState(paginationCount)
   const { authState, toggleLoginModal } = useAuthContext()
   const slug = router.query.Designer || ""
 
@@ -63,8 +64,8 @@ const Designer = screenTrack(({ router }) => {
         variables: {
           skip: products?.length,
         },
-      }).then((fetchMoreResult: any) => {
-        setProductCount(products.length + fetchMoreResult?.data?.brand?.products?.edges?.length)
+      }).then(() => {
+        setProductCount(paginationCount + products?.length)
       })
     }
   }, 100)
