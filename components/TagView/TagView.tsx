@@ -24,9 +24,9 @@ const TagView = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
-  const paginationCount = 8
+  const PAGE_LENGTH = 8
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
-  const [productCount, setProductCount] = useState(paginationCount)
+  const [productCount, setProductCount] = useState(PAGE_LENGTH)
   const { authState, toggleLoginModal } = useAuthContext()
   const tag = decodeURI(router.query.Tag) || ""
 
@@ -66,7 +66,7 @@ const TagView = screenTrack(({ router }) => {
           skip: products?.length,
         },
       }).then(() => {
-        setProductCount(products.length + paginationCount)
+        setProductCount(products.length + PAGE_LENGTH)
       })
     }
   }, 100)

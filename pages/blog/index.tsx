@@ -38,8 +38,8 @@ const Blog = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
-  const paginationCount = 10
-  const [first, setFirst] = useState(paginationCount)
+  const PAGE_LENGTH = 10
+  const [first, setFirst] = useState(PAGE_LENGTH)
   const imageContainerRef = useRef(null)
   const imageContainerRefMobile = useRef(null)
 
@@ -70,7 +70,7 @@ const Blog = screenTrack(({ router }) => {
           skip: blogPosts?.length,
         },
       }).then(() => {
-        setFirst(paginationCount + blogPosts?.length)
+        setFirst(PAGE_LENGTH + blogPosts?.length)
       })
     }
   }, 300)
