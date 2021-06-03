@@ -1,5 +1,4 @@
 import { Sans, Spacer } from "../../components"
-import { Flex } from "components/Flex"
 import { Box } from "components/Box"
 import { color } from "../../helpers"
 import styled from "styled-components"
@@ -46,7 +45,7 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
   const letterSizes = ["XS", "S", "M", "L", "XL", "XXL"]
   const waistSizes = ["28", "29", "30", "31", "32", "33", "34", "35", "36", "37"]
 
-  const { currentTops, currentBottoms, availableOnly } = params
+  const { currentTops, currentBottoms, availableOnly, forSaleOnly } = params
 
   return (
     <Box style={{ maxWidth: "148px" }}>
@@ -61,6 +60,17 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
         />
         <Spacer ml={1} />
         <Sans size="3">Available now</Sans>
+      </FlexWrapper>
+      <Spacer mb={[0, 2]} />
+      <FlexWrapper mb={2}>
+        <Checkbox
+          onClick={() => {
+            setParams({ ...params, forSaleOnly: !forSaleOnly })
+          }}
+          isActive={forSaleOnly}
+        />
+        <Spacer ml={1} />
+        <Sans size="3">For sale</Sans>
       </FlexWrapper>
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>

@@ -1,6 +1,5 @@
-import { GET_LOCAL_BAG } from "@seasons/eclipse"
-
 import { ApolloCache, gql, Resolvers } from "@apollo/client"
+import { GET_LOCAL_BAG } from "queries/clientQueries"
 
 export const typeDefs = gql`
   type LocalProduct {

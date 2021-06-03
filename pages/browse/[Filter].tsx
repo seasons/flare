@@ -23,6 +23,7 @@ import { Schema, screenTrack, useTracking } from "../../utils/analytics"
 import { SavedTab_Query } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import { ColorFilters } from "components/Browse/ColorFilters"
+import { FixedFilters } from "components/Browse/FixedFilters"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -48,6 +49,7 @@ export interface SizeFilterParams {
   currentTops: string[]
   currentBottoms: string[]
   availableOnly: boolean
+  forSaleOnly: boolean
   currentColors: string[]
 }
 
@@ -67,7 +69,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const bottoms = _bottoms?.split(" ")
   const _colors = router.query?.colors as string
   const colors = _colors?.split(" ")
-  const available = (router.query?.available && router.query?.available === "available") ?? null
+  const availableRouterQuery = (router.query?.available && router.query?.available === "available") ?? null
+  const forSaleRouterQuery = (router.query?.forSale && router.query?.forSale === "forSale") ?? null
   const page = router.query?.page || 1
   const baseFilters = filter?.toString().split("+")
   const [category, brand] = baseFilters
@@ -81,12 +84,13 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [params, setParams] = useState<SizeFilterParams>({
     currentTops: tops ?? null,
     currentBottoms: bottoms ?? null,
-    availableOnly: available ?? null,
+    availableOnly: availableRouterQuery ?? null,
+    forSaleOnly: forSaleRouterQuery ?? null,
     currentColors: colors ?? null,
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { authState, toggleLoginModal } = useAuthContext()
-  const { currentTops, currentBottoms, availableOnly, currentColors } = params
+  const { currentTops, currentBottoms, availableOnly, currentColors, forSaleOnly } = params
 
   const skip = (currentPage - 1) * pageSize
 
@@ -97,6 +101,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       colors: currentColors,
       bottoms: currentBottoms,
       available: availableOnly,
+      forSaleOnly,
       brandName: currentBrand,
       categoryName: currentCategory,
       first: pageSize,
@@ -125,7 +130,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
       const colorsParam = currentColors?.length ? "&colors=" + currentColors.join("+") : ""
       const availableParam = availableOnly ? "&available=true" : ""
-      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}`
+      const forSaleParam = forSaleOnly ? "&forSale=true" : ""
+      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}`
     }
     const newParams = paramToURL()
 
@@ -135,14 +141,15 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       let newURL
       if (
         !initialPageLoad &&
-        ((!!available && available !== availableOnly) ||
+        ((!!availableRouterQuery && availableRouterQuery !== availableOnly) ||
           (bottoms?.length && !currentBottoms?.length) ||
           (tops?.length && !currentTops?.length) ||
           (colors?.length && !currentColors?.length))
       ) {
         // These are the initial params set on page load which happen after the page mounts since it's SSG
         setParams({
-          availableOnly: !!available && available !== availableOnly ? available : null,
+          availableOnly: !!availableRouterQuery && availableRouterQuery !== availableOnly ? availableRouterQuery : null,
+          forSaleOnly: !!forSaleRouterQuery && forSaleRouterQuery !== forSaleOnly ? forSaleRouterQuery : null,
           currentBottoms: !!bottoms?.length && !currentBottoms?.length ? bottoms : [],
           currentTops: tops?.length && !currentTops?.length ? tops : [],
           currentColors: !!colors?.length && !currentColors?.length ? colors : [],
@@ -182,10 +189,12 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     currentTops,
     currentBottoms,
     availableOnly,
+    forSaleOnly,
     colors,
     tops,
     bottoms,
-    available,
+    availableRouterQuery,
+    forSaleRouterQuery,
     mounted,
     initialPageLoad,
   ])
@@ -206,6 +215,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         PageNotificationBar={() => <BrowseProductsNotificationBar isLoggedIn={isSignedIn} />}
       >
         <Media lessThan="md">
+          <FixedFilters params={params} setParams={setParams} />
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
@@ -233,6 +243,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 listItems={categories}
                 hideTitle
                 currentBrand={currentBrand}
+                listItemStyle={{
+                  textDecoration: "underline",
+                  fontSize: `${sansSize("7").fontSize}px`,
+                  lineHeight: `${sansSize("7").lineHeight}px`,
+                  color: color("black100"),
+                  opacity: 1,
+                }}
+                listItemSpacing="12px"
               />
             }
           />
@@ -269,7 +287,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
               </Media>
             </Col>
             <Media lessThan="md">
-              <Box px={2} pt={2}>
+              <Box px={2} pt={[1, 2]}>
                 <Sans size="4">Browse</Sans>
               </Box>
             </Media>
