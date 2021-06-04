@@ -28,20 +28,13 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
   const variants = product?.variants
   const tracking = useTracking()
 
-  useEffect(() => {
-    if (variants?.length && !selectedVariant) {
-      const firstAvailableSize =
-        find(variants, (size) => size.isInBag) || find(variants, (size) => size.reservable > 0) || variants?.[0]
-      setSelectedVariant(firstAvailableSize)
-    }
-  }, [variants, setSelectedVariant])
-
   const rows = variants.map((size, i) => {
     const manufacturerSize = size?.manufacturerSizes?.[0]
     const manufacturerSizeDisplay =
       manufacturerSize?.display && manufacturerSize?.type && manufacturerSize?.display !== size.displayShort
         ? `${manufacturerSize?.type} ${manufacturerSize?.display}`
         : ""
+
     return (
       <Box key={size.id || i}>
         <TouchableOpacity
@@ -49,7 +42,7 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
             tracking.trackEvent({
               actionName: Schema.ActionNames.ProductVariantSelected,
               actionType: Schema.ActionTypes.Tap,
-              size: size?.internalSize?.display,
+              size: size?.displayShort,
               variantID: size?.id,
             })
             setSelectedVariant(size)
@@ -83,6 +76,7 @@ const getElementWidth = (el: HTMLElement) => (el ? el.clientWidth : "auto")
 export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelected, product, variantInStock }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [popoverWidth, setPopoverWidth] = React.useState(getElementWidth(anchorEl))
+  const variants = product?.variants
 
   React.useEffect(() => {
     let listener: EventListenerOrEventListenerObject
@@ -101,6 +95,14 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
       listener = null
     }
   }, [])
+
+  useEffect(() => {
+    if (variants?.length > 0 && !selectedVariant?.id) {
+      const firstAvailableSize =
+        find(variants, (size) => size.isInBag) || find(variants, (size) => size.reservable > 0) || variants?.[0]
+      setSelectedVariant(firstAvailableSize)
+    }
+  }, [variants, setSelectedVariant])
 
   const handleClick = (event) => {
     const anchorEl = event.currentTarget
@@ -170,6 +172,6 @@ const Strikethrough = styled.div<{ size: SansSize }>`
   height: 2px;
   width: 100%;
   position: absolute;
-  top: ${(p) => (p.size === "2" ? 7 : 14)}px;
+  top: ${(p) => (p.size === "2" ? 7 : 12)}px;
   left: 0;
 `

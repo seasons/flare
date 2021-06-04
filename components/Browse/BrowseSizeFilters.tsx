@@ -1,4 +1,5 @@
-import { Sans, Spacer, Flex, Box } from "../../components"
+import { Sans, Spacer } from "../../components"
+import { Box } from "components/Box"
 import { color } from "../../helpers"
 import styled from "styled-components"
 import React from "react"
@@ -44,13 +45,13 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
   const letterSizes = ["XS", "S", "M", "L", "XL", "XXL"]
   const waistSizes = ["28", "29", "30", "31", "32", "33", "34", "35", "36", "37"]
 
-  const { currentTops, currentBottoms, availableOnly } = params
+  const { currentTops, currentBottoms, availableOnly, forSaleOnly } = params
 
   return (
     <Box style={{ maxWidth: "148px" }}>
       <Sans size="3">Filter by</Sans>
       <Spacer mb={[0, 2]} />
-      <Flex mb={2} alignItems="center" flexDirection="row">
+      <FlexWrapper mb={2}>
         <Checkbox
           onClick={() => {
             setParams({ ...params, availableOnly: !availableOnly })
@@ -59,7 +60,18 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
         />
         <Spacer ml={1} />
         <Sans size="3">Available now</Sans>
-      </Flex>
+      </FlexWrapper>
+      <Spacer mb={[0, 2]} />
+      <FlexWrapper mb={2}>
+        <Checkbox
+          onClick={() => {
+            setParams({ ...params, forSaleOnly: !forSaleOnly })
+          }}
+          isActive={forSaleOnly}
+        />
+        <Spacer ml={1} />
+        <Sans size="3">For sale</Sans>
+      </FlexWrapper>
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>
         {letterSizes.map((size) => {
@@ -71,28 +83,37 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
       <Spacer mb={2} />
       <Sans size="3">Bottoms</Sans>
       <SizeButtonContainer>
-        {[...letterSizes, ...waistSizes].map((size) => {
-          return (
-            <SizeButton
-              key={size}
-              size={size}
-              items={currentBottoms}
-              params={params}
-              setParams={setParams}
-              type="bottoms"
-            />
-          )
-        })}
+        {[...letterSizes, ...waistSizes]
+          .filter((i) => i !== "XXL")
+          .map((size) => {
+            return (
+              <SizeButton
+                key={size}
+                size={size}
+                items={currentBottoms}
+                params={params}
+                setParams={setParams}
+                type="bottoms"
+              />
+            )
+          })}
       </SizeButtonContainer>
     </Box>
   )
 }
+
+const FlexWrapper = styled(Box)`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+`
 
 const SizeButtonContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   left: -2px;
   position: relative;
+  max-width: 148px;
 `
 
 const SizeButtonWrapper = styled.div<{ isActive: boolean }>`
