@@ -13,7 +13,7 @@ export const Blog_Query = gql`
         count
       }
     }
-    blogPosts: blogPostsConnection(first: $first, skip: $skip, where: { published: true }) {
+    blogPosts: blogPostsConnection(first: $first, skip: $skip, where: { published: true }, orderBy: createdAt_DESC) {
       edges {
         node {
           id
