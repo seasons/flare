@@ -172,6 +172,6 @@ const Strikethrough = styled.div<{ size: SansSize }>`
   height: 2px;
   width: 100%;
   position: absolute;
-  top: ${(p) => (p.size === "2" ? 7 : 14)}px;
+  top: ${(p) => (p.size === "2" ? 7 : 12)}px;
   left: 0;
 `
