@@ -48,6 +48,7 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
     <>
       <DesktopMedia greaterThanOrEqual="md">
         <DiscoverBagContent
+          PAGE_LENGTH={PAGE_LENGTH}
           platform="desktop"
           data={data}
           bagData={bagData}
@@ -66,6 +67,7 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
         <DiscoverBagContent
           platform="mobile"
           data={data}
+          PAGE_LENGTH={PAGE_LENGTH}
           bagData={bagData}
           addToBag={addToBag}
           removeFromBag={removeFromBag}

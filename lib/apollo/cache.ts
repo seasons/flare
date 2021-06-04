@@ -35,6 +35,17 @@ export const cache = new InMemoryCache({
             return { ...existing, ...incoming, edges: mergedEdges }
           },
         },
+        blogPostsConnection: {
+          merge(existing = {}, incoming = {}, { args: { skip = 0 } }) {
+            let mergedEdges = !isEmpty(existing) ? existing?.edges?.slice(0) : []
+            if (incoming?.edges?.length > 0) {
+              for (let i = 0; i < incoming?.edges?.length; ++i) {
+                mergedEdges[skip + i] = incoming?.edges?.[i]
+              }
+            }
+            return { ...existing, ...incoming, edges: mergedEdges?.filter(Boolean) }
+          },
+        },
       },
     },
   },
