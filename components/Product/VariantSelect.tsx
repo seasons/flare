@@ -42,7 +42,7 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
             tracking.trackEvent({
               actionName: Schema.ActionNames.ProductVariantSelected,
               actionType: Schema.ActionTypes.Tap,
-              size: size?.internalSize?.display,
+              size: size?.displayShort,
               variantID: size?.id,
             })
             setSelectedVariant(size)
