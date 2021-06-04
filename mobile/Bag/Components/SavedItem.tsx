@@ -58,7 +58,7 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
   const product = variant?.product
 
   const imageURL = product?.images?.[0]?.url || ""
-  const variantSize = variant?.internalSize?.display
+  const variantSize = variant?.displayLong
   const reservable = variant?.reservable
 
   const [addToBag] = useMutation(ADD_TO_BAG, {

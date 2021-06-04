@@ -173,7 +173,9 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
     userSession: authState.userSession,
     loginModalOpen: authState.loginModalOpen,
     updateUserSession: ({ cust, user }) => {
-      dispatch({ type: "UPDATE_USER_SESSION", cust, user })
+      if (cust || user) {
+        dispatch({ type: "UPDATE_USER_SESSION", cust, user })
+      }
     },
   }
 
