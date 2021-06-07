@@ -60,7 +60,6 @@ const Product = screenTrack(({ router }) => {
       size: "",
       stock: 0,
       isInBag: false,
-      isWanted: false,
     }
   )
 
