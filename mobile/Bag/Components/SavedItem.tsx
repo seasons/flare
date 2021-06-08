@@ -181,7 +181,7 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagIsFull, bagItem, removeIt
                       },
                       refetchQueries: [
                         {
-                          query: GET_BAG,
+                          query: SavedTab_Query,
                         },
                       ],
                     })
