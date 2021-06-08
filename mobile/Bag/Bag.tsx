@@ -62,7 +62,7 @@ export const Bag = screenTrack()((props) => {
     { previousData: previousSavedTabData, data: savedTabData = previousSavedTabData, loading: loadingSavedTab },
   ] = useLazyQuery(SavedTab_Query)
 
-  const [deleteBagItem] = useMutation(REMOVE_FROM_BAG)
+  const [deleteBagItem] = useMutation(REMOVE_FROM_BAG, { awaitRefetchQueries: true })
   const [removeFromBagAndSaveItem] = useMutation(REMOVE_FROM_BAG_AND_SAVE_ITEM)
   const [checkItemsAvailability] = useMutation(CHECK_ITEMS)
 
