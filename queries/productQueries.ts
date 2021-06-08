@@ -57,7 +57,6 @@ export const GET_PRODUCT = gql`
         reserved
         isInBag
         isSaved
-        isWanted
         manufacturerSizes {
           id
           display
