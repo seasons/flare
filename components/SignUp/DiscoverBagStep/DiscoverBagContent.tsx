@@ -22,6 +22,7 @@ interface Props {
   isMutating: boolean
   setIsMutating: (isMutating: boolean) => void
   fetchMore: any
+  PAGE_LENGTH: number
   setProductCount: (count: number) => void
   productCount: number
   loading: boolean
@@ -34,6 +35,7 @@ export const DiscoverBagContent: React.FC<Props> = ({
   bagData,
   addToBag,
   removeFromBag,
+  PAGE_LENGTH,
   isMutating,
   setIsMutating,
   fetchMore,
@@ -208,8 +210,8 @@ export const DiscoverBagContent: React.FC<Props> = ({
                     variables: {
                       skip: products?.length,
                     },
-                  }).then((fetchMoreResult: any) => {
-                    setProductCount(products.length + fetchMoreResult?.data?.products?.edges?.length)
+                  }).then(() => {
+                    setProductCount(PAGE_LENGTH + products?.length)
                   })
                 }
               }}

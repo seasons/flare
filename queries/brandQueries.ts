@@ -21,11 +21,13 @@ export const GET_BROWSE_PRODUCTS = gql`
     $bottoms: [String]
     $colors: [String]
     $available: Boolean
+    $forSaleOnly: Boolean
   ) {
     connection: productsConnection(
       tops: $tops
       bottoms: $bottoms
       availableOnly: $available
+      forSaleOnly: $forSaleOnly
       category: $categoryName
       colors: $colors
       brand: $brandName
@@ -40,6 +42,7 @@ export const GET_BROWSE_PRODUCTS = gql`
       tops: $tops
       bottoms: $bottoms
       availableOnly: $available
+      forSaleOnly: $forSaleOnly
       brand: $brandName
       colors: $colors
       orderBy: $orderBy

@@ -17,6 +17,7 @@ export const ReservationHistoryItemFragment_Reservation = gql`
       productVariant {
         id
         displayShort
+        displayLong
         product {
           id
           slug
@@ -65,7 +66,7 @@ export const ReservationHistoryItem = ({ item }) => {
       <Flex flexDirection="row" flexWrap="nowrap" px={0.5}>
         {items?.map((physicalProduct) => {
           const variant = physicalProduct?.productVariant
-          const variantSizeDisplay = variant?.internalSize?.display
+          const variantSizeDisplay = variant?.displayLong
           const product = variant?.product
           const brandName = product?.brand?.name
           const image = product?.images?.[0]
