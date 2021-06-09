@@ -1,12 +1,13 @@
-import { Sans, Box, Flex, Spacer, Separator, Media } from "components"
-import { color } from "../../helpers"
-import { Link } from "../Link"
-import { Grid, Row, Col } from "../Grid"
+import { Box, Flex, Media, Sans, Separator, Spacer } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { SeasonsLogoIcon } from "components/Icons/SeasonsLogoIcon"
+import { SeasonsLogo } from "components/Nav/SeasonsLogo"
 import React from "react"
 import styled from "styled-components"
-import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { SeasonsLogo } from "components/Nav/SeasonsLogo"
-import { SeasonsLogoIcon } from "components/Icons/SeasonsLogoIcon"
+
+import { color } from "../../helpers"
+import { Col, Grid, Row } from "../Grid"
+import { Link } from "../Link"
 
 export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandItems: any }> = ({
   footerBottomPadding,
@@ -50,6 +51,12 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               Ask a question
             </Sans>
           </a>
+          <Spacer mb={1} />
+          <Link href="/gift">
+            <Sans size="3" color="black100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              Gift a membership
+            </Sans>
+          </Link>
           <Spacer mb={[5, 5, 5, 0, 0]} />
         </Col>
         <Col lg="2" md="4" sm="6">
