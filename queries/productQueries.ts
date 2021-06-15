@@ -67,6 +67,12 @@ export const GET_PRODUCT = gql`
           display
           type
           productType
+          accessory {
+            id
+            bridge
+            length
+            width
+          }
           top {
             id
             letter
@@ -79,6 +85,10 @@ export const GET_PRODUCT = gql`
           bottom {
             id
             type
+            waist
+            rise
+            hem
+            inseam
           }
         }
         nextReservablePhysicalProduct {
