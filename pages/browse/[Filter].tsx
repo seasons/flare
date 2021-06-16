@@ -75,7 +75,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   } else if (router.query?.available && router.query?.available === "false") {
     availableRouterQuery = null
   } else if (isSignedIn !== null) {
-    availableRouterQuery = !!isSignedIn
+    availableRouterQuery = isSignedIn
   }
   const forSaleRouterQuery = (router.query?.forSale && router.query?.forSale === "forSale") ?? null
   const page = router.query?.page || 1
