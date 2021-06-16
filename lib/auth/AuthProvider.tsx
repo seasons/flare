@@ -71,7 +71,7 @@ export const AuthProvider = React.forwardRef<AuthProviderRef, AuthProviderProps>
     },
     {
       authInitializing: true,
-      isSignedIn: false,
+      isSignedIn: null,
       loginModalOpen: false,
       userSession: null,
     }

@@ -69,7 +69,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const bottoms = _bottoms?.split(" ")
   const _colors = router.query?.colors as string
   const colors = _colors?.split(" ")
-  const availableRouterQuery = (router.query?.available && router.query?.available === "available") ?? null
+  let availableRouterQuery
+  if (router.query?.available && router.query?.available === "true") {
+    availableRouterQuery = true
+  } else if (router.query?.available && router.query?.available === "false") {
+    availableRouterQuery = null
+  } else if (isSignedIn !== null) {
+    availableRouterQuery = isSignedIn
+  }
   const forSaleRouterQuery = (router.query?.forSale && router.query?.forSale === "forSale") ?? null
   const page = router.query?.page || 1
   const baseFilters = filter?.toString().split("+")
@@ -90,7 +97,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { authState, toggleLoginModal } = useAuthContext()
-  const { currentTops, currentBottoms, availableOnly, currentColors, forSaleOnly } = params
+  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly } = params
 
   const skip = (currentPage - 1) * pageSize
 
@@ -129,7 +136,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       const bottomsParam = currentBottoms?.length ? "&bottoms=" + currentBottoms.join("+") : ""
       const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
       const colorsParam = currentColors?.length ? "&colors=" + currentColors.join("+") : ""
-      const availableParam = availableOnly ? "&available=true" : ""
+      const availableParam = availableOnly ? "&available=true" : "&available=false"
       const forSaleParam = forSaleOnly ? "&forSale=true" : ""
       return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}`
     }
