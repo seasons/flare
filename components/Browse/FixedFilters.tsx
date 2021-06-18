@@ -3,6 +3,8 @@ import { Checkbox } from "components/Checkbox"
 import styled from "styled-components"
 import { SizeFilterParams } from "pages/browse/[Filter]"
 import { color } from "helpers/color"
+import { useNotificationBarContext } from "@seasons/eclipse"
+import React, { useEffect } from "react"
 
 interface Props {
   setParams: (params: SizeFilterParams) => void
@@ -14,6 +16,17 @@ const POSITION_TOP = 59
 export const FixedFilters: React.FC<Props> = ({ setParams, params }) => {
   const availableOnly = params?.availableOnly
   const forSaleOnly = params?.forSaleOnly
+  const { setOffsetTop } = useNotificationBarContext()
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 768) {
+        setOffsetTop(42)
+      }
+    }
+    return () => setOffsetTop(0)
+  }, [])
+
   return (
     <>
       <Spacer mb={46} />
@@ -55,6 +68,6 @@ const FixedWrapper = styled(Box)`
   top: ${POSITION_TOP}px;
   left: 0;
   width: 100%;
-  z-index: 3000;
+  z-index: 100;
   background-color: ${color("white100")};
 `
