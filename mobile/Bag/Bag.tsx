@@ -16,6 +16,7 @@ import { SavedItemsTab } from "./Components/SavedItemsTab"
 import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
 import { BagTab } from "./Components/BagTab"
 import { ReservationHistoryTab_Query, SavedTab_Query } from "queries/bagQueries"
+import { DateTime } from "luxon"
 
 export enum BagView {
   Bag = 0,
@@ -119,7 +120,24 @@ export const Bag = screenTrack()((props) => {
           },
         })
         if (hasShippingAddress) {
-          openDrawer("reservation")
+          if (swapNotAvailable) {
+            showPopUp({
+              title: "Heads up this will be extra",
+              note: `You’ve already placed an order this month. Get an extra shipment now for $30 or wait until ${DateTime.fromISO(
+                nextFreeSwapDate
+              ).toFormat("LLLL d")}.`,
+              secondaryButtonText: "Got it",
+              secondaryButtonOnPress: () => hidePopUp(),
+              onClose: () => {
+                openDrawer("reservation")
+                hidePopUp()
+              },
+              buttonText: "Continue",
+            })
+            return
+          } else {
+            openDrawer("reservation")
+          }
         } else {
           openDrawer("reservationShippingAddress", { shippingAddress })
         }
@@ -161,6 +179,8 @@ export const Bag = screenTrack()((props) => {
   const reservationItems = reservationTabData?.me?.customer?.reservations
   const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
   const pausePending = pauseRequest?.pausePending
+  const nextFreeSwapDate = me?.nextFreeSwapDate
+  const swapNotAvailable = nextFreeSwapDate?.length > 0 && DateTime.fromISO(nextFreeSwapDate) > DateTime.local()
   let pauseStatus = "active"
 
   if (customerStatus === "Paused") {

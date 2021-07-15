@@ -63,6 +63,7 @@ export const GET_BAG = gql`
     }
     me {
       id
+      nextFreeSwapDate
       customer {
         id
         status

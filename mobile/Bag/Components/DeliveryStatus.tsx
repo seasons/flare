@@ -6,16 +6,17 @@ import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
 
 export const DeliveryStatus: React.FC<{
-  activeReservation: any
-}> = ({ activeReservation }) => {
+  me
+  atHome: boolean
+}> = ({ me, atHome }) => {
+  const activeReservation = me?.activeReservation
   const status = activeReservation?.status
   const updatedMoreThan24HoursAgo = DateTime.fromISO(activeReservation?.updatedAt).diffNow("days")?.values?.days <= -1
-  const hideComponent = status === "Delivered" && updatedMoreThan24HoursAgo
 
   const sentPackageTrackingURL = activeReservation?.sentPackage?.shippingLabel?.trackingURL
   const returnedPackageTrackingURL = activeReservation?.returnedPackage?.shippingLabel?.trackingURL
 
-  if (hideComponent) {
+  if (atHome) {
     return null
   }
 
@@ -49,8 +50,8 @@ export const DeliveryStatus: React.FC<{
     } else if (status === "Shipped") {
       statusText = "Shipped"
       step = 2
-    } else if (status === "Packed") {
-      statusText = "Order being prepared"
+    } else if (status === "Packed" || status === "Picked") {
+      statusText = "Order received"
       step = 1
     } else if (status === "Queued") {
       statusText = "Order received"
