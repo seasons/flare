@@ -6,15 +6,16 @@ import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import { GET_BAG } from "queries/bagQueries"
 import { BagItemFragment } from "queries/bagItemQueries"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-
+import { DateTime } from "luxon"
 import { useMutation, useQuery } from "@apollo/client"
 
 import { ReservationItem } from "./Components/ReservationItem"
 import { ShippingOption } from "./Components/ShippingOption"
+import { ReservationLineItems } from "./ReservationLineItems"
 
 const RESERVE_ITEMS = gql`
   mutation ReserveItems($items: [ID!]!, $options: ReserveItemsOptions, $shippingCode: ShippingCode) {
@@ -24,9 +25,22 @@ const RESERVE_ITEMS = gql`
   }
 `
 
+const DrafReservationLineItems = gql`
+  mutation DraftReservationLineItems($hasFreeSwap: Boolean) {
+    draftReservationLineItems(hasFreeSwap: $hasFreeSwap) {
+      id
+      name
+      price
+      taxPrice
+    }
+  }
+`
+
 const GET_CUSTOMER = gql`
   query GetCustomer {
     me {
+      id
+      nextFreeSwapDate
       user {
         id
         firstName
@@ -110,8 +124,11 @@ export const Reservation = screenTrack()((props) => {
   const [shippingOptionIndex, setShippingOptionIndex] = useState(0)
   const tracking = useTracking()
   const { previousData, data = previousData } = useQuery(GET_CUSTOMER)
+
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
+  const [lineItems, setLineItems] = useState([])
+  const [getReservationLineItems] = useMutation(DrafReservationLineItems)
   const [reserveItems] = useMutation(RESERVE_ITEMS, {
     refetchQueries: [
       {
@@ -143,9 +160,49 @@ export const Reservation = screenTrack()((props) => {
     },
   })
 
+  const me = data?.me
+  const nextFreeSwapDate = me?.nextFreeSwapDate
+  const swapNotAvailable = nextFreeSwapDate?.length > 0 && DateTime.fromISO(nextFreeSwapDate) > DateTime.local()
+
+  useEffect(() => {
+    const getLineItems = async () => {
+      const { data: resData } = await getReservationLineItems({
+        variables: {
+          hasFreeSwap: false,
+        },
+      })
+      if (resData?.draftReservationLineItems?.length > 0) {
+        setLineItems([...lineItems, ...resData?.draftReservationLineItems])
+      }
+    }
+    if (swapNotAvailable === true && lineItems?.length === 0) {
+      getLineItems()
+    }
+  }, [swapNotAvailable])
+
   const customer = data?.me?.customer
   const address = data?.me?.customer?.detail?.shippingAddress
   const shippingOptions = address?.shippingOptions
+
+  useEffect(() => {
+    if (shippingOptions?.length > 0) {
+      const selectedShippingOption = shippingOptions[shippingOptionIndex]
+      if (selectedShippingOption?.externalCost > 0) {
+        setLineItems([
+          ...lineItems,
+          {
+            name: "Shipping",
+            price: selectedShippingOption?.externalCost,
+            taxPrice: 0,
+          },
+        ])
+      } else {
+        setLineItems(lineItems.filter((item) => item.name !== "Shipping"))
+      }
+    }
+  }, [shippingOptionIndex, setLineItems, shippingOptions])
+
+  // Leaving this on for now for all users
   const allAccessEnabled = data?.me?.customer?.admissions?.allAccessEnabled && false
 
   const phoneNumber = customer?.detail?.phoneNumber
@@ -189,6 +246,7 @@ export const Reservation = screenTrack()((props) => {
             </Box>
             <Box mb={4}>
               <SectionHeader title="Delivery Time" />
+              <Spacer mb={1} />
               <Sans size="3" color="black50" mt={1}>
                 2-day Shipping
               </Sans>
@@ -204,6 +262,7 @@ export const Reservation = screenTrack()((props) => {
                     })
                   }
                 />
+                <Spacer mb={1} />
                 <Sans size="3" color="black50" mt={1}>
                   {`${address.address1}${address.address2 ? " " + address.address2 : ""},`}
                 </Sans>
@@ -212,9 +271,11 @@ export const Reservation = screenTrack()((props) => {
                 </Sans>
               </Box>
             )}
+            {lineItems?.length > 0 && <ReservationLineItems lineItems={lineItems} />}
             {shippingOptions?.length > 0 && !allAccessEnabled && (
               <Box mb={4}>
                 <SectionHeader title="Select shipping" />
+                <Spacer mb={1} />
                 {shippingOptions.map((option, index) => {
                   return (
                     <Box key={option?.id || index}>
@@ -238,6 +299,7 @@ export const Reservation = screenTrack()((props) => {
             {!!phoneNumber && (
               <Box mb={4}>
                 <SectionHeader title="Phone number" />
+                <Spacer mb={2} />
                 <Sans size="3" color="black50" mt={1}>
                   {phoneNumber}
                 </Sans>
