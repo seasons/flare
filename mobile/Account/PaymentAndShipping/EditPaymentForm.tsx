@@ -30,9 +30,6 @@ export const EditPaymentFormFragment_Query = gql`
             planID
           }
         }
-        paymentPlan {
-          ...PaymentExpressButtonsFragment_PaymentPlan
-        }
         user {
           id
           email
@@ -40,7 +37,6 @@ export const EditPaymentFormFragment_Query = gql`
       }
     }
   }
-  ${PaymentExpressButtonsFragment_PaymentPlan}
 `
 
 const UpdatePaymentMethod_Mutation = gql`
@@ -77,7 +73,6 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
 
   const planID = data?.me?.customer?.membership?.plan?.planID
-  const paymentPlan = data?.me?.customer?.paymentPlan
 
   console.log("data", data)
 
@@ -151,7 +146,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
               <Sans size="6">Edit payment and billing</Sans>
             </Box>
             <Box p={[2, 2, 2]}>
-              {EnableExpressCheckout && (
+              {/* {EnableExpressCheckout && (
                 <Box py={4}>
                   <Sans size="4">Express checkout</Sans>
                   <PaymentExpressButtons
@@ -161,7 +156,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
                     }}
                   />
                 </Box>
-              )}
+              )} */}
               <Box width="100%" py={[2, 2, 4]}>
                 <Sans size="4">Billing address</Sans>
                 <Spacer mt={2} />

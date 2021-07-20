@@ -18,12 +18,6 @@ export const GET_CURRENT_PLAN = gql`
         user {
           id
         }
-        paymentPlan {
-          id
-          planID
-          price
-          name
-        }
       }
     }
   }
