@@ -1,6 +1,5 @@
-import { Box, Flex, Sans, Separator, Spacer } from "components"
+import { Box, Sans, Separator, Spacer } from "components"
 import { color } from "helpers"
-import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
 import React, { useState } from "react"
@@ -9,7 +8,7 @@ import { BagItem } from "./BagItem"
 import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
 import { ProductBuyAlert } from "./ProductBuyAlert"
-import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { BagTabHeader } from "./BagTabHeader"
 
 const DEFAULT_ITEM_COUNT = 3
 
@@ -21,8 +20,6 @@ export const BagTab: React.FC<{
   removeFromBagAndSaveItem
 }> = ({ pauseStatus, items, deleteBagItem, removeFromBagAndSaveItem, data }) => {
   const [isMutating, setIsMutating] = useState(false)
-  const { authState } = useAuthContext()
-  const { openDrawer } = useDrawerContext()
   const me = data?.me
   const activeReservation = me?.activeReservation
   const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
@@ -72,29 +69,17 @@ export const BagTab: React.FC<{
   const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
   const showPendingMessage = pauseStatus === "pending" && !!pauseRequest?.pauseDate
 
-  let subTitle
-  if (hasActiveReservation && !!returnReminder) {
-    subTitle = returnReminder
-  } else if (!hasActiveReservation) {
-    subTitle = "Reserve your order below"
-  }
+  const pauseType = pauseRequest?.pauseType
+  const isPaused = pauseStatus === "paused"
+  const pausedWithoutItems = isPaused && pauseType === "WithoutItems"
+
+  const updatedMoreThan24HoursAgo =
+    activeReservation?.updatedAt && DateTime.fromISO(activeReservation?.updatedAt).diffNow("days")?.values?.days <= -1
+  const atHome = status && status === "Delivered" && updatedMoreThan24HoursAgo
 
   return (
     <Box>
-      <Box px={2} pt={4}>
-        <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap">
-          <Sans size="5">{hasActiveReservation ? "Current rotation" : "My bag"}</Sans>
-          <Sans size="5" style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => openDrawer("faq")}>
-            View FAQ
-          </Sans>
-        </Flex>
-        {!!subTitle && (
-          <Sans size="3" color="black50">
-            {subTitle}
-          </Sans>
-        )}
-        <Spacer mb={3} />
-      </Box>
+      <BagTabHeader atHome={atHome} me={me} pausedWithoutItems={pausedWithoutItems} />
       {showPendingMessage && (
         <>
           <Box px={2}>
@@ -125,7 +110,6 @@ export const BagTab: React.FC<{
       )}
       <Separator />
       <Spacer mb={3} />
-      {hasActiveReservation && <DeliveryStatus activeReservation={activeReservation} />}
       {paddedItems?.map((bagItem, index) => {
         return bagItem?.productID?.length > 0 ? (
           <Box key={bagItem.productID} px={2} pt={hasActiveReservation ? 0 : 2}>
