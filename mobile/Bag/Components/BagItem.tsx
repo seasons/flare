@@ -72,6 +72,9 @@ export const BagItem: React.FC<BagItemProps> = ({
     onShowBuyAlert({ variantToUse, bagItem })
   }
 
+  const maxCharForName = 40
+  const name = product?.name?.length > maxCharForName ? `${product?.name?.slice(0, maxCharForName)}...` : product?.name
+
   const ReservedItemContent = () => {
     return (
       <Flex
@@ -84,13 +87,13 @@ export const BagItem: React.FC<BagItemProps> = ({
         justifyContent="space-between"
       >
         <Box style={{ width: "100%" }} p={2}>
-          <Sans size="4">{`${index + 1}.`}</Sans>
+          <Sans size="3">{`${index + 1}.`}</Sans>
           <Spacer mb={1} />
-          <Sans size="4">{product?.brand?.name}</Sans>
-          <Sans size="4" color="black50">
-            {product.name}
+          <Sans size="3">{product?.brand?.name}</Sans>
+          <Sans size="3" color="black50">
+            {name}
           </Sans>
-          <Sans size="4" color="black50">
+          <Sans size="3" color="black50">
             Size {variantToUse?.displayShort}
           </Sans>
         </Box>
@@ -249,7 +252,6 @@ export const BagItem: React.FC<BagItemProps> = ({
 }
 
 const BagItemContainer = styled(Box)<{ isReserved: boolean }>`
-  height: 216px;
   overflow: hidden;
   background-color: ${color("white100")};
   border-color: ${color("black10")};
@@ -259,9 +261,8 @@ const BagItemContainer = styled(Box)<{ isReserved: boolean }>`
 `
 
 const ImageContainer = styled.img`
-  height: 216px;
-  object-fit: contain;
-  height: 170 * 1.26;
+  object-fit: cover;
+  height: 100%;
   width: 170;
 `
 
