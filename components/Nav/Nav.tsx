@@ -50,10 +50,9 @@ export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar }) => {
       renderNavItem: () => <BrandsNavItem key="designers" brandItems={brandItems} />,
     },
   ]
-  const isBrowse = router.pathname.startsWith("/browse")
 
   const onClickNotificationBar = (route) => {
-    if (!!route.drawerView) {
+    if (!!route?.drawerView) {
       openDrawer(route.drawerView)
     }
     if (!!route.url) {
