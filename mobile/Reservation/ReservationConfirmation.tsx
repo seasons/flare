@@ -121,7 +121,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
           {content && <Box ml="auto">{content}</Box>}
         </Flex>
         <Spacer mb={bottomSpacing} />
-        {!hideSeparator && <Separator color={color("black04")} />}
+        {!hideSeparator && <Separator />}
       </>
     )
   }
@@ -131,7 +131,6 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const formatedAddress2 = !!address?.city && `${address?.city}, ${address?.state} ${address?.zipCode}`
   const shippingOption = reservation?.shippingOption
   const shippingDisplayText = shippingOption?.shippingMethod?.displayText
-  const externalCost = shippingOption?.externalCost
 
   return (
     <Container>
