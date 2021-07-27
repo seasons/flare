@@ -104,7 +104,7 @@ const Product = screenTrack(({ router }) => {
         <meta property="og:image" content={product?.images?.[0]?.url.replace("fm=webp", "fm=jpg")} />
         <meta property="twitter:card" content="summary" />
       </Head>
-      <Box pt={[1, 5]} px={[0, 0, 2, 5, 5]}>
+      <Box pt={[1, 5]} px={[0, 0, 2, 2, 2]}>
         <BreadCrumbs product={product} />
         <Spacer mb={2} />
         <Grid>

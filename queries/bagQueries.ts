@@ -109,6 +109,9 @@ export const GET_BAG = gql`
         status
         phase
         updatedAt
+        products {
+          id
+        }
         returnedPackage {
           id
           shippingLabel {

@@ -86,8 +86,9 @@ export const Bag = screenTrack()((props) => {
 
   const savedItems = savedTabData?.me?.savedItems
 
-  const itemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
-  const bagItems = (itemCount && assign(fill(new Array(itemCount), { variantID: "", productID: "" }), items)) || []
+  const planItemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
+  const bagItems =
+    (planItemCount && assign(fill(new Array(planItemCount), { variantID: "", productID: "" }), items)) || []
   const hasActiveReservation = !!me?.activeReservation
 
   const shippingAddress = data?.me?.customer?.detail?.shippingAddress
@@ -175,7 +176,7 @@ export const Bag = screenTrack()((props) => {
   const isBagView = BagView.Bag == currentView
   const isSavedView = BagView.Saved == currentView
   const bagCount = items.length
-  const bagIsFull = itemCount && bagCount === itemCount
+  const bagIsFull = planItemCount && bagCount === planItemCount
   const reservationItems = reservationTabData?.me?.customer?.reservations
   const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
   const pausePending = pauseRequest?.pausePending
@@ -239,7 +240,15 @@ export const Bag = screenTrack()((props) => {
   } else {
     sections = [{ data: reservationItems }]
   }
+
   const footerMarginBottom = currentView === BagView.Bag ? 96 : 2
+  const hasActiveReservationAndBagRoom =
+    hasActiveReservation &&
+    planItemCount > me?.activeReservation?.products?.length &&
+    ["Queued", "Picked", "Packed", "Delivered", "Received", "Shipped"].includes(me?.activeReservation?.status)
+
+  const showReserveButton =
+    isBagView && pauseStatus !== "paused" && (hasActiveReservationAndBagRoom || !hasActiveReservation)
 
   return (
     <Container insetsBottom={false}>
@@ -280,7 +289,7 @@ export const Bag = screenTrack()((props) => {
         }}
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
-      {isBagView && pauseStatus !== "paused" && !hasActiveReservation && (
+      {showReserveButton && (
         <Box px={2}>
           <Button
             block
