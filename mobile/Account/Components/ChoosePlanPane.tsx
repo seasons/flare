@@ -10,6 +10,7 @@ import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { getChargebeeCheckout, initChargebee } from "lib/chargebee"
 import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
+import { GET_BAG } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
@@ -18,7 +19,6 @@ import { Coupon } from "utils/calcFinalPrice"
 import { useMutation, useQuery } from "@apollo/client"
 
 import { PlanButton } from "./PlanButton"
-import { GET_BAG } from "queries/bagQueries"
 
 export const GET_PLANS = gql`
   query GetPlans($where: PaymentPlanWhereInput) {

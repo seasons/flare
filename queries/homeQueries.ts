@@ -1,5 +1,6 @@
-import gql from "graphql-tag"
 import { LaunchCalendarFragment_Query } from "components/Homepage/LaunchCalendar"
+import gql from "graphql-tag"
+
 import { ProductGridItem_Product } from "@seasons/eclipse"
 
 const HomePageProductFragment_Product = gql`
@@ -65,7 +66,7 @@ export const Home_Query = gql`
         ...HomePageProductFragment_Product
       }
     }
-    blogPosts(count: 3) {
+    blogPosts(count: 3, where: {AND: [{NOT: { category: "email-newsletter"}}]}) {
       id
       slug
       name
