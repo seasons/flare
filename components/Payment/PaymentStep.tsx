@@ -110,7 +110,7 @@ const PaymentStep_Query = gql`
 const enableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
-const SUBMIT_PAYMENT = gql`
+const SubmitPayment_Mutation = gql`
   mutation SubmitPayment(
     $paymentMethodID: String!
     $planID: String!
@@ -128,10 +128,29 @@ const SUBMIT_PAYMENT = gql`
   }
 `
 
+const ConfirmPayment_Mutation = gql`
+  mutation ConfirmPayment(
+    $paymentIntentID: String!
+    $planID: String!
+    $couponID: String
+    $billing: JSON
+    $shipping: JSON
+  ) {
+    confirmPayment(
+      paymentIntentID: $paymentIntentID
+      planID: $planID
+      couponID: $couponID
+      billing: $billing
+      shipping: $shipping
+    )
+  }
+`
+
 export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, onBack, initialCoupon }) => {
   const elements = useElements()
   const stripe = useStripe()
-  const [submitPayment] = useMutation(SUBMIT_PAYMENT, {
+  const [submitPayment] = useMutation(SubmitPayment_Mutation)
+  const [confirmPayment] = useMutation(ConfirmPayment_Mutation, {
     onError: (error) => {
       console.error(error)
       setErrorMessage(error?.message)
@@ -272,20 +291,33 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       return
     }
     setIsProcessingPayment(true)
-    await submitPayment({
+    const billing = {
+      ...billingDetails,
+      user: {
+        firstName: sameAsShipping ? values.shippingFirstName : values.firstName,
+        lastName: sameAsShipping ? values.shippingLastName : values.lastName,
+        email: billingDetails.email,
+      },
+    }
+
+    const response = await submitPayment({
       variables: {
         paymentMethodID: paymentMethod.id,
         planID: plan?.planID,
+        billing,
+      },
+    })
+
+    const paymentIntent = response.data.processPayment
+    const result = await stripe.handleCardAction(paymentIntent.client_secret)
+
+    await confirmPayment({
+      variables: {
+        paymentIntentID: paymentIntent.id,
+        planID: plan?.planID,
         couponID: !!coupon ? coupon.code : null,
         shipping: shippingDetails,
-        billing: {
-          ...billingDetails,
-          user: {
-            firstName: sameAsShipping ? values.shippingFirstName : values.firstName,
-            lastName: sameAsShipping ? values.shippingLastName : values.lastName,
-            email: billingDetails.email,
-          },
-        },
+        billing,
       },
     })
   }
