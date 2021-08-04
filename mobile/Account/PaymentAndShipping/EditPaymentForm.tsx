@@ -119,10 +119,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
     })
 
     const paymentIntent = response.data.updatePaymentMethod
-    console.log(paymentIntent)
-
     const result = await stripe.handleCardAction(paymentIntent.client_secret)
-    console.log(result)
 
     await confirmPaymentMethodUpdate({
       variables: {
