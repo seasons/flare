@@ -66,7 +66,7 @@ export const Home_Query = gql`
         ...HomePageProductFragment_Product
       }
     }
-    blogPosts(count: 3, where: {AND: [{NOT: { category: "email-newsletter"}}]}) {
+    blogPosts(count: 3) {
       id
       slug
       name
