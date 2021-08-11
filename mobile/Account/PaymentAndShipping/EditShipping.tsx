@@ -78,7 +78,7 @@ export const EditShipping: React.FC<{
         title: "Something went wrong!",
         onClose: () => hidePopUp(),
       } as PopUpData
-      if (error.message === "Invalid City/State/Zip Combo") {
+      if (error.message === "Need to Suggest Address") {
         const suggestedAddress = error.graphQLErrors?.[0]?.extensions?.suggestedAddress
         if (!!suggestedAddress) {
           popUpData = {
@@ -101,7 +101,7 @@ export const EditShipping: React.FC<{
                 different one.
               </>
             ),
-            title: "Suggested Address",
+            title: "We suggest using this Address",
             secondaryButtonText: "Close",
             secondaryButtonOnPress: () => hidePopUp(),
             onClose: () => {
