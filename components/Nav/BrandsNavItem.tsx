@@ -187,7 +187,7 @@ const MobileButtonContainer = styled.div`
 `
 
 export const BrandsNavItem: React.FC<Props> = ({ brandItems = [] }) => {
-  const resortedBrands = [...brandItems, { name: "View All", slug: "all" }]
+  const resortedBrands = [...brandItems, { name: "View all", slug: "all" }]
 
   return (
     <>

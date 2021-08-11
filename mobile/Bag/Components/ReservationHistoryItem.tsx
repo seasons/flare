@@ -3,11 +3,42 @@ import { color, space } from "helpers"
 import { DateTime } from "luxon"
 import React from "react"
 import { Image } from "mobile/Image"
+import { gql } from "@apollo/client"
+import { PRODUCT_ASPECT_RATIO } from "@seasons/eclipse"
+
+export const ReservationHistoryItemFragment_Reservation = gql`
+  fragment ReservationHistoryItemFragment_Reservation on Reservation {
+    id
+    status
+    reservationNumber
+    createdAt
+    products {
+      id
+      productVariant {
+        id
+        displayShort
+        displayLong
+        product {
+          id
+          slug
+          name
+          images(size: Thumb) {
+            id
+            url
+          }
+          brand {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`
 
 export const ReservationHistoryItem = ({ item }) => {
   const date = item?.createdAt && DateTime.fromISO(item?.createdAt).toUTC().toFormat("MM/dd")
   const imageWidth = 100
-  const aspectRatio = 1.25
 
   const items = [...item.products]
   if (items.length === 1) {
@@ -35,7 +66,7 @@ export const ReservationHistoryItem = ({ item }) => {
       <Flex flexDirection="row" flexWrap="nowrap" px={0.5}>
         {items?.map((physicalProduct) => {
           const variant = physicalProduct?.productVariant
-          const variantSizeDisplay = variant?.internalSize?.display
+          const variantSizeDisplay = variant?.displayLong
           const product = variant?.product
           const brandName = product?.brand?.name
           const image = product?.images?.[0]
@@ -46,7 +77,11 @@ export const ReservationHistoryItem = ({ item }) => {
                 {!!imageURL && (
                   <Image
                     source={{ uri: imageURL }}
-                    style={{ backgroundColor: color("black04"), height: imageWidth * aspectRatio, width: imageWidth }}
+                    style={{
+                      backgroundColor: color("black04"),
+                      height: imageWidth * PRODUCT_ASPECT_RATIO,
+                      width: imageWidth,
+                    }}
                   />
                 )}
                 <Spacer mb={0.5} />

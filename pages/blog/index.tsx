@@ -1,11 +1,11 @@
-import { Layout, Media, Spacer } from "components"
+import { Layout, Media } from "components"
+import { BlogContent } from "components/Blog/BlogContent"
+import { debounce } from "lodash"
 import { withRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
+
 import { gql, useQuery } from "@apollo/client"
-import { BlogHero } from "components/Blog/BlogHero"
-import { LatestPosts } from "components/Blog/LatestPosts"
-import { debounce } from "lodash"
 
 export const Blog_Query = gql`
   query Blog_Query($first: Int!, $skip: Int!) {
@@ -14,7 +14,7 @@ export const Blog_Query = gql`
         count
       }
     }
-    blogPosts: blogPostsConnection(first: $first, skip: $skip, where: { published: true }) {
+    blogPosts: blogPostsConnection(first: $first, skip: $skip, where: { published: true }, orderBy: createdAt_DESC) {
       edges {
         node {
           id
@@ -39,8 +39,10 @@ const Blog = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
-  const [first, setFirst] = useState(10)
+  const PAGE_LENGTH = 10
+  const [first, setFirst] = useState(PAGE_LENGTH)
   const imageContainerRef = useRef(null)
+  const imageContainerRefMobile = useRef(null)
 
   const { previousData, data = previousData, loading, fetchMore } = useQuery(Blog_Query, {
     variables: {
@@ -53,22 +55,26 @@ const Blog = screenTrack(({ router }) => {
   const aggregateCount = data?.connection?.aggregate?.count
 
   const onScroll = debounce(() => {
+    const desktopContainerBottom = imageContainerRef?.current?.getBoundingClientRect().bottom
+    const mobileContainerBottom = imageContainerRefMobile?.current?.getBoundingClientRect().bottom
     const shouldLoadMore =
       !loading &&
       !!aggregateCount &&
       aggregateCount > blogPosts?.length &&
-      window.innerHeight >= imageContainerRef?.current?.getBoundingClientRect().bottom - 200
+      ((window.innerHeight >= desktopContainerBottom - 200 && desktopContainerBottom > 0) ||
+        (window.innerHeight >= imageContainerRef?.current?.getBoundingClientRect().bottom - 200 &&
+          mobileContainerBottom > 0))
 
     if (shouldLoadMore) {
       fetchMore({
         variables: {
           skip: blogPosts?.length,
         },
-      }).then((fetchMoreResult: any) => {
-        setFirst(blogPosts.length + fetchMoreResult?.data?.blogPosts?.edges?.length)
+      }).then(() => {
+        setFirst(PAGE_LENGTH + blogPosts?.length)
       })
     }
-  }, 100)
+  }, 300)
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -77,28 +83,23 @@ const Blog = screenTrack(({ router }) => {
     return () => window.removeEventListener("scroll", onScroll)
   }, [onScroll])
 
-  const Content: React.FC<{ breakpoint: "desktop" | "mobile" }> = ({ breakpoint }) => {
-    return (
-      <>
-        <BlogHero blogPost={blogPosts?.[0]} breakpoint={breakpoint} />
-        <Spacer mb={[6, 10]} />
-        <LatestPosts
-          blogPosts={blogPosts?.slice(1)}
-          imageContainerRef={imageContainerRef}
-          aggregateCount={aggregateCount}
-        />
-        <Spacer mb={6} />
-      </>
-    )
-  }
-
   return (
     <Layout>
       <Media greaterThan="sm">
-        <Content breakpoint="desktop" />
+        <BlogContent
+          breakpoint="desktop"
+          blogPosts={blogPosts}
+          aggregateCount={aggregateCount}
+          imageContainerRef={imageContainerRef}
+        />
       </Media>
       <Media lessThan="md">
-        <Content breakpoint="mobile" />
+        <BlogContent
+          breakpoint="mobile"
+          blogPosts={blogPosts}
+          aggregateCount={aggregateCount}
+          imageContainerRef={imageContainerRefMobile}
+        />
       </Media>
     </Layout>
   )

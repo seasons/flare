@@ -9,10 +9,9 @@ import React from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
-
 import { ReservationItem } from "./Components/ReservationItem"
+import { ReservationLineItems } from "./ReservationLineItems"
 
 const GET_CUSTOMER_RESERVATION_CONFIRMATION = gql`
   query GetCustomerReservationConfirmation($reservationID: ID!) {
@@ -49,6 +48,12 @@ const GET_CUSTOMER_RESERVATION_CONFIRMATION = gql`
               id
               displayText
             }
+          }
+          lineItems {
+            id
+            name
+            price
+            taxPrice
           }
           products {
             id
@@ -104,6 +109,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const address = customer?.detail?.shippingAddress
   const reservation = customer?.reservations?.[0]
   const items = reservation?.products
+  const lineItems = reservation?.lineItems
 
   const SectionHeader = ({ title, content = null, bottomSpacing = 1, hideSeparator = false }) => {
     return (
@@ -115,7 +121,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
           {content && <Box ml="auto">{content}</Box>}
         </Flex>
         <Spacer mb={bottomSpacing} />
-        {!hideSeparator && <Separator color={color("black04")} />}
+        {!hideSeparator && <Separator />}
       </>
     )
   }
@@ -125,9 +131,6 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const formatedAddress2 = !!address?.city && `${address?.city}, ${address?.state} ${address?.zipCode}`
   const shippingOption = reservation?.shippingOption
   const shippingDisplayText = shippingOption?.shippingMethod?.displayText
-  const externalCost = shippingOption?.externalCost
-
-  console.log(shippingDisplayText, externalCost)
 
   return (
     <Container>
@@ -143,6 +146,13 @@ export const ReservationConfirmation = screenTrack()((props) => {
               We've emailed you a confirmation and we'll notify you when its out for delivery.
             </Sans>
           </Box>
+          {lineItems?.length > 0 && (
+            <>
+              <Spacer pb={4} />
+              <ReservationLineItems lineItems={lineItems} />
+              <Spacer mb={2} />
+            </>
+          )}
           <Box>
             <SectionHeader
               title="Order number"
@@ -189,24 +199,10 @@ export const ReservationConfirmation = screenTrack()((props) => {
                   )}
                 </>
               }
-              hideSeparator={!externalCost}
+              hideSeparator
               bottomSpacing={4}
             />
           </Box>
-          {!!externalCost && externalCost !== 0 && (
-            <Box pt={1}>
-              <SectionHeader
-                title="Order total"
-                content={
-                  <Sans size="3" color="black100" ml="auto" textAlign="right">
-                    ${externalCost / 100}
-                  </Sans>
-                }
-                hideSeparator
-                bottomSpacing={4}
-              />
-            </Box>
-          )}
           <Box mb={5}>
             <SectionHeader title="Items" />
             <Box mt={1} mb={4}>

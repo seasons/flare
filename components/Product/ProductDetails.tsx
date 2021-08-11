@@ -39,6 +39,13 @@ export const ProductDetails: React.FC<{
   const waistByLengthDisplay =
     displayShort !== internalSize?.display && internalSize?.type === "WxL" && internalSize?.display
 
+  const modelDetailValue =
+    !!product.modelSize &&
+    !!product.modelHeight &&
+    `Model is ${modelHeightDisplay(product.modelHeight)} in a ${
+      product.modelSize.type === "Letter" ? "" : `${product.modelSize.type} `
+    }${product.modelSize.display}`
+    
   return (
     <Box mb={3}>
       <Flex flexDirection="row" justifyContent="space-between">
@@ -81,16 +88,13 @@ export const ProductDetails: React.FC<{
       {!!waistByLengthDisplay && <ProductInfoItem detailType="Waist by length" detailValue={waistByLengthDisplay} />}
       {product.color && <ProductInfoItem detailType="Color" detailValue={product.color.name} />}
       {!!product.modelSize && !!product.modelHeight && (
-        <ProductInfoItem
-          detailType="Fit"
-          detailValue={`Model is ${modelHeightDisplay(product.modelHeight)} in a ${product.modelSize.display}`}
-        />
+        <ProductInfoItem detailType="Fit" detailValue={modelDetailValue} />
       )}
       {product.outerMaterials && (
         <ProductInfoItem detailType="Materials" detailValue={product.outerMaterials.join(", ")} />
       )}
       {product.brand && <ProductInfoItem detailType="Brand" detailValue={product.brand.name} />}
-      {product.retailPrice && <ProductInfoItem detailType="Retail price" detailValue={"$" + product.retailPrice} />}
+      {!!product.retailPrice && product.retailPrice !== 0 && <ProductInfoItem detailType="Retail price" detailValue={"$" + product.retailPrice} />}
       <ProductInfoItem detailType="Membership price" detailValue="$65 per month" />
     </Box>
   )

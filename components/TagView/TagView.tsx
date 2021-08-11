@@ -14,6 +14,8 @@ import { useQuery } from "@apollo/client"
 import { TagView_Query } from "queries/collectionQueries"
 import { HEAD_META_TITLE } from "components/LayoutHead"
 import { ProductGridItem } from "@seasons/eclipse"
+import { SavedTab_Query } from "queries/bagQueries"
+import { GET_PRODUCT } from "queries/productQueries"
 
 const TagView = screenTrack(({ router }) => {
   return {
@@ -22,8 +24,9 @@ const TagView = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
+  const PAGE_LENGTH = 8
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
-  const [productCount, setProductCount] = useState(8)
+  const [productCount, setProductCount] = useState(PAGE_LENGTH)
   const { authState, toggleLoginModal } = useAuthContext()
   const tag = decodeURI(router.query.Tag) || ""
 
@@ -62,8 +65,8 @@ const TagView = screenTrack(({ router }) => {
         variables: {
           skip: products?.length,
         },
-      }).then((fetchMoreResult: any) => {
-        setProductCount(products.length + fetchMoreResult?.data?.products?.edges?.length)
+      }).then(() => {
+        setProductCount(products.length + PAGE_LENGTH)
       })
     }
   }, 100)
@@ -165,6 +168,10 @@ const TagView = screenTrack(({ router }) => {
                     loading={!data}
                     authState={authState}
                     onShowLoginModal={() => toggleLoginModal(true)}
+                    saveProductButtonRefetchQueries={[
+                      { query: SavedTab_Query },
+                      { query: GET_PRODUCT, variables: { slug: product?.node?.slug } },
+                    ]}
                   />
                 </Box>
               </Col>

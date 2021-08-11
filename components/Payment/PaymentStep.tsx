@@ -1,11 +1,15 @@
 import { Box, Flex, Separator, Spacer } from "components"
+import { Checkbox } from "components/Checkbox"
 import { CollapsableFAQ } from "components/CollapsableFAQ"
+import { Collapse } from "components/Collapse"
 import { FormFooter } from "components/Forms/FormFooter"
 import { Col, Grid, Row } from "components/Grid"
 import { BackArrowIcon } from "components/Icons"
 import { GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Sans } from "components/Typography"
 import { Formik } from "formik"
+import { BagItemFragment } from "queries/bagItemQueries"
+import { REMOVE_FROM_BAG } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { media } from "styled-bootstrap-grid"
@@ -14,7 +18,7 @@ import { colors } from "theme/colors"
 import * as Yup from "yup"
 
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { BagItemFragment, REMOVE_FROM_BAG } from "@seasons/eclipse"
+import { InputLabel } from "@material-ui/core"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 import { PaymentBagItem } from "./PaymentBagItem"
@@ -25,9 +29,6 @@ import { PaymentForm } from "./PaymentForm"
 import { PaymentOrderSummary } from "./PaymentOrderSummary"
 import { PaymentSelectPlan } from "./PaymentSelectPlan"
 import { PaymentShippingAddress } from "./PaymentShippingAddress"
-import { Checkbox } from "components/Checkbox"
-import { InputLabel } from "@material-ui/core"
-import { Collapse } from "components/Collapse"
 
 interface PaymentStepProps {
   plan: {
@@ -109,7 +110,7 @@ const PaymentStep_Query = gql`
 const enableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
-const SUBMIT_PAYMENT = gql`
+const SubmitPayment_Mutation = gql`
   mutation SubmitPayment(
     $paymentMethodID: String!
     $planID: String!
@@ -127,10 +128,29 @@ const SUBMIT_PAYMENT = gql`
   }
 `
 
+const ConfirmPayment_Mutation = gql`
+  mutation ConfirmPayment(
+    $paymentIntentID: String!
+    $planID: String!
+    $couponID: String
+    $billing: JSON
+    $shipping: JSON
+  ) {
+    confirmPayment(
+      paymentIntentID: $paymentIntentID
+      planID: $planID
+      couponID: $couponID
+      billing: $billing
+      shipping: $shipping
+    )
+  }
+`
+
 export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, onBack, initialCoupon }) => {
   const elements = useElements()
   const stripe = useStripe()
-  const [submitPayment] = useMutation(SUBMIT_PAYMENT, {
+  const [submitPayment] = useMutation(SubmitPayment_Mutation)
+  const [confirmPayment] = useMutation(ConfirmPayment_Mutation, {
     onError: (error) => {
       console.error(error)
       setErrorMessage(error?.message)
@@ -271,20 +291,33 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       return
     }
     setIsProcessingPayment(true)
-    await submitPayment({
+    const billing = {
+      ...billingDetails,
+      user: {
+        firstName: sameAsShipping ? values.shippingFirstName : values.firstName,
+        lastName: sameAsShipping ? values.shippingLastName : values.lastName,
+        email: billingDetails.email,
+      },
+    }
+
+    const response = await submitPayment({
       variables: {
         paymentMethodID: paymentMethod.id,
         planID: plan?.planID,
+        billing,
+      },
+    })
+
+    const paymentIntent = response.data.processPayment
+    const result = await stripe.handleCardAction(paymentIntent.client_secret)
+
+    await confirmPayment({
+      variables: {
+        paymentIntentID: paymentIntent.id,
+        planID: plan?.planID,
         couponID: !!coupon ? coupon.code : null,
         shipping: shippingDetails,
-        billing: {
-          ...billingDetails,
-          user: {
-            firstName: sameAsShipping ? values.shippingFirstName : values.firstName,
-            lastName: sameAsShipping ? values.shippingLastName : values.lastName,
-            email: billingDetails.email,
-          },
-        },
+        billing,
       },
     })
   }

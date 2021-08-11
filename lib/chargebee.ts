@@ -33,7 +33,7 @@ const GET_CHARGEBEE_CHECKOUT = gql`
 `
 
 const GET_GIFT_CHARGEBEE_CHECKOUT = gql`
-  query GetChargebeeCheckout($planID: String!) {
+  query GetGiftChargebeeCheckout($planID: String!) {
     chargebeeGiftCheckout(planID: $planID) {
       id
       type

@@ -39,6 +39,7 @@ const DesktopTextContent = () => {
 }
 
 const DesktopHero = ({ post }) => {
+  
   const imageSRC = imageResize(post?.image?.url ?? "", "large")
 
   return (
@@ -46,17 +47,19 @@ const DesktopHero = ({ post }) => {
       <Box width="100%" px={[2, 2, 2, 2, 2]} pb={2}>
         <Flex flexDirection="row" justifyContent="space-between">
           <DesktopTextContent />
-          <StyledAnchor href={post?.url}>
-            <BackgroundImage style={{ backgroundImage: `url(${imageSRC})`, position: "relative" }}>
-              <Box
-                style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
-                pl={0.5}
-                py={0.5}
-              >
-                <Sans size="4">{post?.name}</Sans>
-              </Box>
-            </BackgroundImage>
-          </StyledAnchor>
+          <Link href={`/blog/${post.slug}`}>
+            <ImageWrapper>
+              <BackgroundImage style={{ backgroundImage: `url(${imageSRC})`, position: "relative" }}>
+                <Box
+                  style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
+                  pl={0.5}
+                  py={0.5}
+                >
+                  <Sans size="4">{post?.name}</Sans>
+                </Box>
+              </BackgroundImage>
+            </ImageWrapper>
+          </Link>
         </Flex>
       </Box>
     </MaxWidth>
@@ -82,7 +85,7 @@ const MobileHero = ({ post }) => {
               <HeroBottomDetailText version="mobile" />
               <Spacer mb={4} />
               <MobileImageWrapper>
-                <StyledAnchor href={post?.url}>
+                <Link href={`/blog/${post.slug}`}>
                   <BackgroundImage style={{ backgroundImage: `url(${imageSRC})` }}>
                     <Box
                       style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
@@ -92,7 +95,7 @@ const MobileHero = ({ post }) => {
                       <Sans size="4">{post?.name}</Sans>
                     </Box>
                   </BackgroundImage>
-                </StyledAnchor>
+                </Link>
               </MobileImageWrapper>
             </Flex>
           </Flex>
@@ -303,10 +306,8 @@ const MobileImageWrapper = styled(Box)`
   }
 `
 
-const StyledAnchor = styled.a`
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
+const ImageWrapper = styled.div`
   width: 50%;
+  cursor: pointer;
   max-width: 800px;
 `

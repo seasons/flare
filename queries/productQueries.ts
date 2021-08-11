@@ -1,6 +1,9 @@
 import gql from "graphql-tag"
-
-import { ProductBuyCTA_ProductFragment, ProductBuyCTA_ProductVariantFragment } from "@seasons/eclipse"
+import {
+  ProductBuyCTAFragment_Product,
+  ProductBuyCTAFragment_ProductVariant,
+  ProductConditionSectionFragment_PhysicalProductQualityReport,
+} from "@seasons/eclipse"
 
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
@@ -15,6 +18,7 @@ export const GET_PRODUCT = gql`
       type
       modelSize {
         display
+        type
       }
       modelHeight
       color {
@@ -29,7 +33,6 @@ export const GET_PRODUCT = gql`
         id
         slug
         name
-        logo
         since
         images {
           id
@@ -54,7 +57,6 @@ export const GET_PRODUCT = gql`
         reserved
         isInBag
         isSaved
-        isWanted
         manufacturerSizes {
           id
           display
@@ -65,6 +67,12 @@ export const GET_PRODUCT = gql`
           display
           type
           productType
+          accessory {
+            id
+            bridge
+            length
+            width
+          }
           top {
             id
             letter
@@ -77,20 +85,34 @@ export const GET_PRODUCT = gql`
           bottom {
             id
             type
+            waist
+            rise
+            hem
+            inseam
           }
         }
-        ...ProductBuyCTA_ProductVariantFragment
+        nextReservablePhysicalProduct {
+          id
+          reports {
+            id
+            published
+            createdAt
+            ...ProductConditionSectionFragment_PhysicalProductQualityReport
+          }
+        }
+        ...ProductBuyCTAFragment_ProductVariant
       }
-      ...ProductBuyCTA_ProductFragment
+      ...ProductBuyCTAFragment_Product
     }
   }
-  ${ProductBuyCTA_ProductFragment}
-  ${ProductBuyCTA_ProductVariantFragment}
+  ${ProductBuyCTAFragment_Product}
+  ${ProductBuyCTAFragment_ProductVariant}
+  ${ProductConditionSectionFragment_PhysicalProductQualityReport}
 `
 
 export const GET_STATIC_PRODUCTS = gql`
-  query GetStaticProducts {
-    products(where: { status: Available }, first: 100, orderBy: publishedAt_DESC) {
+  query GetStaticProducts($pageSize: Int) {
+    products(where: { status: Available }, first: $pageSize, orderBy: publishedAt_DESC) {
       id
       slug
     }

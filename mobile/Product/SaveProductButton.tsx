@@ -6,13 +6,13 @@ import { useMutation } from "@apollo/client"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useTracking, Schema } from "utils/analytics"
 import { GET_PRODUCT } from "queries/productQueries"
-import { GET_BAG } from "@seasons/eclipse"
+import { GET_BAG } from "queries/bagQueries"
 import styled from "styled-components"
 import { SaveProduct } from "./SaveProduct"
 import { Modal } from "@material-ui/core"
 
 export const SAVE_ITEM = gql`
-  mutation SaveItem($item: ID!, $save: Boolean!) {
+  mutation SaveProductButton_SaveItem($item: ID!, $save: Boolean!) {
     saveProduct(item: $item, save: $save) {
       id
       productVariant {
@@ -117,7 +117,7 @@ export const SaveProductButton: React.FC<SaveProductButtonProps> = ({
   return (
     <>
       <Wrapper pl={2} pb={2} pt={0.5} onClick={handleSaveButton}>
-        <SaveIcon width={width ? width : 16} height={height ? height : 22} enabled={enabled} />
+        <SaveIcon width={width ? width : 16} height={height ? height : 22} enabled={!!enabled} />
       </Wrapper>
       <Modal open={isPopUpVisible} onClose={handlePopUpDismiss}>
         <ModalRoot>

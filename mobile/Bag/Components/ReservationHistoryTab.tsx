@@ -1,14 +1,34 @@
 import { Box, Flex, Separator } from "components"
 import { color } from "helpers"
 import React from "react"
-
 import { BagView } from "../Bag"
 import { BagEmptyState } from "./BagEmptyState"
-import { ReservationHistoryItem } from "./ReservationHistoryItem"
+import { ReservationHistoryItem, ReservationHistoryItemFragment_Reservation } from "./ReservationHistoryItem"
+import gql from "graphql-tag"
+import { Loader } from "@seasons/eclipse"
 
-export const ReservationHistoryTab: React.FC<{ items }> = ({ items }) => {
+export const ReservationHistoryTabFragment_Customer = gql`
+  fragment ReservationHistoryTabFragment_Customer on Customer {
+    id
+    reservations(orderBy: createdAt_DESC) {
+      ...ReservationHistoryItemFragment_Reservation
+    }
+  }
+  ${ReservationHistoryItemFragment_Reservation}
+`
+
+export const ReservationHistoryTab: React.FC<{ items; loading: boolean }> = ({ items, loading }) => {
+  const wrapperHeight = "calc(100vh - 136px)"
+  if (loading) {
+    return (
+      <Flex height={wrapperHeight} width="100%" justifyContent="center" alignItems="center" flexDirection="column">
+        <Loader />
+      </Flex>
+    )
+  }
+
   return (
-    <Box style={{ height: "100%" }}>
+    <Box style={{ height: wrapperHeight }}>
       {items?.length ? (
         items?.map((bagItem, index) => {
           return (
@@ -19,7 +39,7 @@ export const ReservationHistoryTab: React.FC<{ items }> = ({ items }) => {
           )
         })
       ) : (
-        <BagEmptyState currentView={BagView.History} />
+        <BagEmptyState currentView={BagView.History} wrapperHeight={400} />
       )}
     </Box>
   )

@@ -3,6 +3,7 @@ import { DesignerTextSkeleton } from "components/Designer/DesignerTextSkeleton"
 import { Col, Grid, Row } from "components/Grid"
 import { HomepageCarousel } from "components/Homepage/HomepageCarousel"
 import { ProgressiveImageProps } from "components/Image/ProgressiveImage"
+import { HEAD_META_TITLE } from "components/LayoutHead"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
@@ -16,9 +17,13 @@ import { Designer_Query, DesignerBrands_Query } from "queries/designerQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
+
 import { useQuery } from "@apollo/client"
-import { HEAD_META_TITLE } from "components/LayoutHead"
 import { ProductGridItem } from "@seasons/eclipse"
+import { GET_PRODUCT } from "queries/productQueries"
+import { SavedTab_Query } from "queries/bagQueries"
+
+const isProduction = process.env.ENVIRONMENT === "production"
 
 const Designer = screenTrack(({ router }) => {
   return {
@@ -27,8 +32,9 @@ const Designer = screenTrack(({ router }) => {
     path: router?.asPath,
   }
 })(({ router }) => {
+  const PAGE_LENGTH = 8
   const [readMoreExpanded, setReadMoreExpanded] = useState(false)
-  const [productCount, setProductCount] = useState(8)
+  const [productCount, setProductCount] = useState(PAGE_LENGTH)
   const { authState, toggleLoginModal } = useAuthContext()
   const slug = router.query.Designer || ""
 
@@ -58,8 +64,8 @@ const Designer = screenTrack(({ router }) => {
         variables: {
           skip: products?.length,
         },
-      }).then((fetchMoreResult: any) => {
-        setProductCount(products.length + fetchMoreResult?.data?.brand?.products?.edges?.length)
+      }).then(() => {
+        setProductCount(PAGE_LENGTH + products?.length)
       })
     }
   }, 100)
@@ -253,6 +259,10 @@ const Designer = screenTrack(({ router }) => {
                     loading={!data}
                     authState={authState}
                     onShowLoginModal={() => toggleLoginModal(true)}
+                    saveProductButtonRefetchQueries={[
+                      { query: SavedTab_Query },
+                      { query: GET_PRODUCT, variables: { slug: product?.node?.slug } },
+                    ]}
                   />
                 </Box>
               </Col>
@@ -271,18 +281,19 @@ const Designer = screenTrack(({ router }) => {
 
 export async function getStaticPaths() {
   const apolloClient = initializeApollo()
-
-  const response = await apolloClient.query({
-    query: DesignerBrands_Query,
-  })
-
   const paths = []
 
-  const brands = response?.data?.brands
+  if (isProduction) {
+    const response = await apolloClient.query({
+      query: DesignerBrands_Query,
+    })
 
-  brands?.forEach((brand) => {
-    paths.push({ params: { Designer: brand.slug } })
-  })
+    const brands = response?.data?.brands
+
+    brands?.forEach((brand) => {
+      paths.push({ params: { Designer: brand.slug } })
+    })
+  }
 
   return {
     paths,

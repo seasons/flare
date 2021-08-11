@@ -1,12 +1,11 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG, GET_LOCAL_BAG } from "@seasons/eclipse"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
-
-import { useMutation, useQuery } from "@apollo/client"
+import { GET_BAG, ADD_TO_BAG, ADD_OR_REMOVE_FROM_LOCAL_BAG } from "queries/bagQueries"
+import { useMutation } from "@apollo/client"
 
 import { useDrawerContext } from "./Drawer/DrawerContext"
 import { CheckWithBackground } from "./SVGs"
@@ -37,8 +36,6 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       setAdded(props.isInBag)
     }
   }, [props])
-
-  const { data: localItems } = useQuery(GET_LOCAL_BAG)
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
     variables: {
       id: selectedVariant.id,
@@ -98,13 +95,10 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     }
   }
 
-  const isInBag = isUserSignedIn
-    ? added
-    : !!localItems?.localBagItems?.find((item) => item.variantID === selectedVariant.id) || false
-  const disabled = !!props.disabled || isInBag || !variantInStock || isMutating
+  const disabled = !!props.disabled || added || !variantInStock || isMutating
 
   let text = "Add to bag"
-  if (isInBag) {
+  if (added) {
     text = "Added"
   }
 

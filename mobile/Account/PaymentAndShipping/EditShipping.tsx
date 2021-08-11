@@ -20,19 +20,13 @@ export const GET_CURRENT_PLAN = gql`
         user {
           id
         }
-        paymentPlan {
-          id
-          planID
-          price
-          name
-        }
       }
     }
   }
 `
 
 const UPDATE_PAYMENT_AND_SHIPPING = gql`
-  mutation updateShippingAddress(
+  mutation updatePaymentAndShippingAddress(
     $city: String!
     $zipCode: String!
     $state: String!

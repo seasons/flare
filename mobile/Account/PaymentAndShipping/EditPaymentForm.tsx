@@ -1,19 +1,20 @@
 import { Box, Button, Sans, Spacer } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { PaymentForm } from "components/Payment"
+import { PaymentBillingAddress } from "components/Payment/PaymentBillingAddress"
+import {
+  PaymentExpressButtons, PaymentExpressButtonsFragment_PaymentPlan
+} from "components/Payment/PaymentExpressButtons"
+import { Formik } from "formik"
 import React, { useState } from "react"
 import styled from "styled-components"
 import * as Yup from "yup"
-import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
+
 import { gql, useMutation } from "@apollo/client"
-import {
-  PaymentExpressButtons,
-  PaymentExpressButtonsFragment_PaymentPlan,
-} from "components/Payment/PaymentExpressButtons"
-import { PaymentBillingAddress } from "components/Payment/PaymentBillingAddress"
-import { PaymentForm } from "components/Payment"
-import { Formik } from "formik"
-import { EditPaymentMethod_Query } from "./EditPaymentMethod"
-import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useNotificationBarContext } from "@seasons/eclipse"
+import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
+
+import { EditPaymentMethod_Query } from "./EditPaymentMethod"
 
 const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
@@ -30,9 +31,6 @@ export const EditPaymentFormFragment_Query = gql`
             planID
           }
         }
-        paymentPlan {
-          ...PaymentExpressButtonsFragment_PaymentPlan
-        }
         user {
           id
           email
@@ -40,7 +38,6 @@ export const EditPaymentFormFragment_Query = gql`
       }
     }
   }
-  ${PaymentExpressButtonsFragment_PaymentPlan}
 `
 
 const UpdatePaymentMethod_Mutation = gql`
@@ -49,12 +46,19 @@ const UpdatePaymentMethod_Mutation = gql`
   }
 `
 
+const ConfirmPaymentMethodUpdate_Mutation = gql`
+  mutation ConfirmPaymentMethodUpdate_Mutation($paymentIntentID: String!, $billing: JSON) {
+    confirmPaymentMethodUpdate(paymentIntentID: $paymentIntentID, billing: $billing)
+  }
+`
+
 export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
   const elements = useElements()
   const { openDrawer } = useDrawerContext()
   const { hideNotificationBar } = useNotificationBarContext()
   const stripe = useStripe()
-  const [updatePaymentMethod] = useMutation(UpdatePaymentMethod_Mutation, {
+  const [updatePaymentMethod] = useMutation(UpdatePaymentMethod_Mutation)
+  const [confirmPaymentMethodUpdate] = useMutation(ConfirmPaymentMethodUpdate_Mutation, {
     onError: (error) => {
       console.error(error)
       setErrorMessage(error?.message)
@@ -73,13 +77,11 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
       },
     ],
   })
+
   const [errorMessage, setErrorMessage] = useState(null)
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
 
   const planID = data?.me?.customer?.membership?.plan?.planID
-  const paymentPlan = data?.me?.customer?.paymentPlan
-
-  console.log("data", data)
 
   const valuesToBillingDetails = (values) => ({
     name: values.name,
@@ -99,18 +101,30 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
       return
     }
     setIsProcessingPayment(true)
-    await updatePaymentMethod({
+    const billing = {
+      ...billingDetails,
+      user: {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: billingDetails.email,
+      },
+    }
+
+    const response = await updatePaymentMethod({
       variables: {
         paymentMethodID: paymentMethod.id,
         planID,
-        billing: {
-          ...billingDetails,
-          user: {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: billingDetails.email,
-          },
-        },
+        billing,
+      },
+    })
+
+    const paymentIntent = response.data.updatePaymentMethod
+    const result = await stripe.handleCardAction(paymentIntent.client_secret)
+
+    await confirmPaymentMethodUpdate({
+      variables: {
+        paymentIntentID: paymentIntent.id,
+        billing,
       },
     })
   }
@@ -151,7 +165,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
               <Sans size="6">Edit payment and billing</Sans>
             </Box>
             <Box p={[2, 2, 2]}>
-              {EnableExpressCheckout && (
+              {/* {EnableExpressCheckout && (
                 <Box py={4}>
                   <Sans size="4">Express checkout</Sans>
                   <PaymentExpressButtons
@@ -161,7 +175,7 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
                     }}
                   />
                 </Box>
-              )}
+              )} */}
               <Box width="100%" py={[2, 2, 4]}>
                 <Sans size="4">Billing address</Sans>
                 <Spacer mt={2} />
