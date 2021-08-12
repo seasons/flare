@@ -1,4 +1,14 @@
-import { Box, Button, Container, FixedBackArrow, Flex, Sans, Spacer, TextInput } from "components"
+import {
+  SuggestedAddressPopupNote,
+  Box,
+  Button,
+  Container,
+  FixedBackArrow,
+  Flex,
+  Sans,
+  Spacer,
+  TextInput,
+} from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
@@ -9,7 +19,6 @@ import styled from "styled-components"
 import { screenTrack, identify } from "utils/analytics"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_PAYMENT_DATA } from "./PaymentAndShipping"
-import { LogoutIcon } from "components/Icons"
 import { PopUpData } from "components/PopUp/PopUpProvider"
 
 export const GET_CURRENT_PLAN = gql`
@@ -25,7 +34,7 @@ export const GET_CURRENT_PLAN = gql`
   }
 `
 
-const UPDATE_PAYMENT_AND_SHIPPING = gql`
+export const UPDATE_PAYMENT_AND_SHIPPING = gql`
   mutation updatePaymentAndShippingAddress(
     $city: String!
     $zipCode: String!
@@ -83,24 +92,7 @@ export const EditShipping: React.FC<{
         if (!!suggestedAddress) {
           popUpData = {
             buttonText: "Use address",
-            note: (
-              <>
-                <br />
-                {suggestedAddress.street1}
-                <br />
-                {!!suggestedAddress.street2 ? (
-                  <>
-                    {suggestedAddress.street2}
-                    <br />
-                  </>
-                ) : null}
-                {suggestedAddress.city}, {suggestedAddress.state} {suggestedAddress.zip.split("-")?.[0]}
-                <br />
-                <br />
-                The address you entered is not recognized by UPS. Please use the suggested address above or enter a
-                different one.
-              </>
-            ),
+            note: <SuggestedAddressPopupNote suggestedAddress={suggestedAddress} type="Shipping" />,
             title: "We suggest using this Address",
             secondaryButtonText: "Close",
             secondaryButtonOnPress: () => hidePopUp(),
