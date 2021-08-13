@@ -22,7 +22,7 @@ export const SuggestedAddressPopupNote = ({
           <br />
         </>
       ) : null}
-      {suggestedAddress.city}, {suggestedAddress.state} {suggestedAddress.zip.split("-")?.[0]}
+      {suggestedAddress.city}, {suggestedAddress.state} {suggestedAddress.zip}
       <br />
       <br />
       {type === "Shipping" ? editShippingDetailText : reservationDetailText}
