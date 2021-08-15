@@ -31,7 +31,7 @@ export const MembershipCard: React.FC<MembershipCardProps> = ({ memberName, plan
       <Box px={3}>
         <Spacer mt={3} />
         <Flex flexDirection="column" justifyContent="space-between" pt={3}>
-          <SeasonsLogoIcon width={"28px"} height={"28px"} />
+          <SeasonsLogoIcon width="35px" height="35px" fill={color("black100")}/>
           <Spacer mt={"104px"} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Text style={{ letterSpacing: 2 }}>
