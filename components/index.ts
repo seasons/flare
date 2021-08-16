@@ -17,6 +17,7 @@ export { Theme } from "lib/theme"
 export { Toggle } from "./Toggle"
 export { TextInput } from "./TextInput"
 export { ProgressiveImage } from "./Image"
+export { SuggestedAddressPopupNote } from "./SuggestedAddressPopupNote"
 
 export * from "./Typography"
 export * from "./Responsive"

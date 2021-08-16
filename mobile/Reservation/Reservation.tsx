@@ -1,4 +1,4 @@
-import { Box, Button, FixedBackArrow, Flex, Sans, Separator, Spacer } from "components"
+import { SuggestedAddressPopupNote, Box, Button, FixedBackArrow, Flex, Sans, Separator, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import gql from "graphql-tag"
@@ -16,6 +16,8 @@ import { useMutation, useQuery } from "@apollo/client"
 import { ReservationItem } from "./Components/ReservationItem"
 import { ShippingOption } from "./Components/ShippingOption"
 import { ReservationLineItems } from "./ReservationLineItems"
+import { UPDATE_PAYMENT_AND_SHIPPING } from "mobile/Account/PaymentAndShipping/EditShipping"
+import { PopUpData } from "components/PopUp/PopUpProvider"
 
 const RESERVE_ITEMS = gql`
   mutation ReserveItems($items: [ID!]!, $options: ReserveItemsOptions, $shippingCode: ShippingCode) {
@@ -129,6 +131,18 @@ export const Reservation = screenTrack()((props) => {
   const { openDrawer } = useDrawerContext()
   const [lineItems, setLineItems] = useState([])
   const [getReservationLineItems] = useMutation(DrafReservationLineItems)
+  const [updatePaymentAndShipping] = useMutation(UPDATE_PAYMENT_AND_SHIPPING, {
+    onError: (error) => {
+      let popUpData = {
+        buttonText: "Got it",
+        note: "If this error persists, please contact us.",
+        title: "Something went wrong!",
+        onClose: () => hidePopUp(),
+      }
+      showPopUp(popUpData)
+      console.log("Error Reservation.tsx", error)
+    },
+  })
   const [reserveItems] = useMutation(RESERVE_ITEMS, {
     refetchQueries: [
       {
@@ -138,24 +152,41 @@ export const Reservation = screenTrack()((props) => {
     onCompleted: () => {
       setIsMutating(false)
     },
-    onError: (err) => {
-      if (err.graphQLErrors?.[0]?.message.includes("Address Validation Error")) {
-        showPopUp({
-          title: "Sorry!",
-          note:
-            "UPS could not validate your shipping address, please double check your shipping address is valid in your account details.",
-          buttonText: "Close",
-          onClose: () => hidePopUp(),
-        })
-      } else {
-        showPopUp({
-          title: "Sorry!",
-          note: "We couldn't process your order because of an unexpected error, please try again later",
-          buttonText: "Close",
-          onClose: () => hidePopUp(),
-        })
+    onError: (error) => {
+      let popUpData = {
+        title: "Sorry!",
+        note: "We couldn't process your order because of an unexpected error, please try again later",
+        buttonText: "Close",
+        onClose: () => hidePopUp(),
+      } as PopUpData
+      if (error.message === "Need to Suggest Address") {
+        const suggestedAddress = error.graphQLErrors?.[0]?.extensions?.suggestedAddress
+        if (!!suggestedAddress) {
+          popUpData = {
+            buttonText: "Use address",
+            note: <SuggestedAddressPopupNote suggestedAddress={suggestedAddress} type="Reservation" />,
+            title: "We suggest using this Address",
+            secondaryButtonText: "Close",
+            secondaryButtonOnPress: () => hidePopUp(),
+            onClose: () => {
+              updatePaymentAndShipping({
+                variables: {
+                  phoneNumber,
+                  address1: suggestedAddress.street1,
+                  address2: suggestedAddress.street2,
+                  city: suggestedAddress.city,
+                  state: suggestedAddress.state,
+                  zipCode: suggestedAddress.zip,
+                },
+                refetchQueries: [{ query: GET_CUSTOMER }],
+              })
+              hidePopUp()
+            },
+          }
+        }
       }
-      console.log("Error reservation.tsx: ", err)
+      showPopUp(popUpData)
+      console.log("Error reservation.tsx: ", error)
       setIsMutating(false)
     },
   })
@@ -336,16 +367,16 @@ export const Reservation = screenTrack()((props) => {
             })
             setIsMutating(true)
             const itemIDs = items?.map((item) => item?.productVariant?.id)
-            const { data } = await reserveItems({
+            const result = await reserveItems({
               variables: {
                 planItemCount,
                 items: itemIDs,
                 shippingCode: shippingOptions?.[shippingOptionIndex]?.shippingMethod?.code,
               },
             })
-            if (data?.reserveItems) {
+            if (result?.data?.reserveItems) {
               openDrawer("reservationConfirmation", {
-                reservationID: data.reserveItems.id,
+                reservationID: result.data.reserveItems.id,
               })
             }
           }}

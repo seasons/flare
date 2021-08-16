@@ -7,7 +7,7 @@
     ".next/cache"
   ],
   "scripts": {
-    "dev": "next dev -p $PORT",
+    "dev": "next dev",
     "stop-dev": "bash killDevIfAlive.sh",
     "watch-dev": "watch 'yarn stop-dev && yarn dev 3000' --wait=5 ./node_modules",
     "build": "next build",
@@ -16,7 +16,9 @@
     "heroku-prebuild": "echo \"//registry.npmjs.org/:_authToken=\\${NPM_TOKEN}\" >> .npmrc",
     "heroku-cleanup": "yarn upload-assets",
     "prettier": "prettier --write 'pages/**/*.{js,ts,tsx,md,graphql}' '*.{js,ts,tsx,md,graphql}' --ignore-path ./.prettierignore",
-    "apollo:codegen": "rm -rf __generated__ && apollo client:codegen --endpoint=http://localhost:4000 --target typescript --tagName gql --outputFlat __generated__ --config=./apollo.config.js"
+    "apollo:codegen": "rm -rf __generated__ && apollo client:codegen --endpoint=http://localhost:4000 --target typescript --tagName gql --outputFlat __generated__ --config=./apollo.config.js",
+    "generate-queries-json": "persistgraphql ./queries data/complete.queryMap.json --js --extension=tsx",
+    "update-monsoon": "node -r dotenv/config scripts/update-monsoon.js"
   },
   "engines": {
     "node": "12"
@@ -61,6 +63,7 @@
     "nextjs-sitemap-generator": "^0.5.0",
     "node-fetch": "^2.6.0",
     "nprogress": "^0.2.0",
+    "persistgraphql": "https://github.com/seasons/persistgraphql.git",
     "query-string": "^6.13.7",
     "react": "16.12.0",
     "react-autosuggest": "^10.1.0",
@@ -98,6 +101,7 @@
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
+    "@octokit/rest": "^18.7.2",
     "@types/googlemaps": "^3.39.8",
     "@types/node": "^13.7.2",
     "@types/react": "^16.9.20",
@@ -109,6 +113,7 @@
     "babel-plugin-react-native-web": "^0.14.1",
     "babel-plugin-root-import": "^6.4.1",
     "babel-plugin-styled-components": "^1.10.7",
+    "dotenv": "^10.0.0",
     "eslint": "^6.8.0",
     "eslint-config-standard-jsx": "^10.0.0",
     "eslint-plugin-react": "^7.19.0",

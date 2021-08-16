@@ -1,10 +1,11 @@
 import { Layout, Media } from "components"
+import { BlogContent } from "components/Blog/BlogContent"
+import { debounce } from "lodash"
 import { withRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
+
 import { gql, useQuery } from "@apollo/client"
-import { BlogContent } from "components/Blog/BlogContent"
-import { debounce } from "lodash"
 
 export const Blog_Query = gql`
   query Blog_Query($first: Int!, $skip: Int!) {
