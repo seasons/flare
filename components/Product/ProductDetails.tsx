@@ -1,17 +1,21 @@
 import { VariantSizes } from "@seasons/eclipse"
 import { Box, Flex, Sans, Separator, Spacer } from "components"
+import { AddToBagButton } from "components/AddToBagButton"
 import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
 import React from "react"
 import { Schema, useTracking } from "utils/analytics"
 import { color } from "../../helpers"
 import { ProductInfoItem } from "./ProductInfoItem"
+import { VariantSelect } from "./VariantSelect"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{
   product: any
   selectedVariant: any
-}> = ({ product, selectedVariant }) => {
+  setSelectedVariant: any
+  data: any
+}> = ({ product, selectedVariant, setSelectedVariant, data }) => {
   const tracking = useTracking()
   if (!product || !product.variants) {
     return <></>
@@ -34,8 +38,14 @@ export const ProductDetails: React.FC<{
     }
   }
 
+  const productType = product?.category?.productType
+  const retailPrice = product?.retailPrice
+  const rentalPrice = product?.rentalPrice
   const internalSize = selectedVariant?.internalSize
   const displayShort = selectedVariant?.displayShort
+  const variantInStock = selectedVariant?.reservable > 0
+  const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
+  const isInBag = updatedVariant?.isInBag || false
   const waistByLengthDisplay =
     displayShort !== internalSize?.display && internalSize?.type === "WxL" && internalSize?.display
 
@@ -45,7 +55,7 @@ export const ProductDetails: React.FC<{
     `Model is ${modelHeightDisplay(product.modelHeight)} in a ${
       product.modelSize.type === "Letter" ? "" : `${product.modelSize.type} `
     }${product.modelSize.display}`
-    
+
   return (
     <Box mb={3}>
       <Flex flexDirection="row" justifyContent="space-between">
@@ -83,6 +93,53 @@ export const ProductDetails: React.FC<{
       <Sans size="4" color="gray" lineHeight={1.6}>
         {description}
       </Sans>
+
+      <Flex flexDirection="row" width="100%" pb={2} pt={3}>
+        <Flex flexDirection="column" padding="1px" width="100%">
+          <Sans size={3}>Member Price</Sans>
+          <Separator mb={1} width="100%" />
+          <Flex flexDirection="row">
+            <Sans size={7}>${rentalPrice ? rentalPrice : 40}</Sans>
+            <Flex paddingTop="10px" paddingLeft="5px">
+              <Sans size={2} color={color("black50")}>
+                {" "}
+                / month
+              </Sans>
+            </Flex>
+          </Flex>
+        </Flex>
+        <Flex flexDirection="column" padding="1px" width="100%">
+          <Sans size={3}>Retail</Sans>
+          <Separator mb={1} width="100%" />
+          <Sans size={7}>${retailPrice}</Sans>
+        </Flex>
+      </Flex>
+      <Flex padding="1px" paddingTop={2} pb={2}>
+        <Sans size={3}>Select a size</Sans>
+      </Flex>
+      {productType !== "Accessory" && (
+        <Flex flex={1} pb={2}>
+          <VariantSelect
+            product={product}
+            variantInStock={variantInStock}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+            onSizeSelected={(size) => {
+              console.log(size)
+            }}
+          />
+        </Flex>
+      )}
+
+      <Spacer mr={2} />
+      <Flex flex={1}>
+        <AddToBagButton
+          selectedVariant={selectedVariant}
+          data={data}
+          variantInStock={variantInStock}
+          isInBag={isInBag}
+        />
+      </Flex>
       <Spacer mb={3} />
       <Separator color={color("black15")} />
       {!!waistByLengthDisplay && <ProductInfoItem detailType="Waist by length" detailValue={waistByLengthDisplay} />}
@@ -94,8 +151,6 @@ export const ProductDetails: React.FC<{
         <ProductInfoItem detailType="Materials" detailValue={product.outerMaterials.join(", ")} />
       )}
       {product.brand && <ProductInfoItem detailType="Brand" detailValue={product.brand.name} />}
-      {!!product.retailPrice && product.retailPrice !== 0 && <ProductInfoItem detailType="Retail price" detailValue={"$" + product.retailPrice} />}
-      <ProductInfoItem detailType="Membership price" detailValue="$65 per month" />
     </Box>
   )
 }

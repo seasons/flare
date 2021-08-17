@@ -16,6 +16,12 @@ export const GET_PRODUCT = gql`
       description
       retailPrice
       type
+      retailPrice
+      category{
+        id 
+        name
+        productType
+      }
       modelSize {
         display
         type

@@ -1,13 +1,11 @@
-import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
+import { Box, Button, Flex, Sans } from "components"
 import { color } from "helpers/color"
 import { find } from "lodash"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { Schema, useTracking } from "utils/analytics"
-import { Popover, Radio } from "@material-ui/core"
 import styled from "styled-components"
-import { SansSize } from "lib/theme"
-import { ChevronIcon } from "components/Icons"
+import { backgroundSize } from "styled-system"
 
 export const sizeToName = (size) => {
   switch (size) {
@@ -27,16 +25,32 @@ export const sizeToName = (size) => {
 export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelected, product }) => {
   const variants = product?.variants
   const tracking = useTracking()
-
   const rows = variants.map((size, i) => {
-    const manufacturerSize = size?.manufacturerSizes?.[0]
-    const manufacturerSizeDisplay =
-      manufacturerSize?.display && manufacturerSize?.type && manufacturerSize?.display !== size.displayShort
-        ? `${manufacturerSize?.type} ${manufacturerSize?.display}`
-        : ""
-
+    const SizeButton = styled(Box)`
+      ${() => {
+        if (size.displayShort === selectedVariant.displayShort) {
+          return `background-color: ${color("black100")}`
+        } else {
+          return `background-color: ${size?.reservable > 0 ? color("white100") : color("black10")}`
+        }
+      }};
+      padding: 10px;
+      border-radius: 7px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: ${color("black10")};
+    `
+    const SizeButtonText = styled(Sans)`
+      ${() => {
+        if (size.displayShort === selectedVariant.displayShort) {
+          return `color: ${size?.reservable > 0 ? color("white100") : color("black25")}`
+        } else {
+          return `color: ${size?.reservable > 0 ? color("black100") : color("black50")}`
+        }
+      }};
+    `
     return (
-      <Box key={size.id || i}>
+      <Box key={size.id || i} width="155px" pb={1}>
         <TouchableOpacity
           onPress={() => {
             tracking.trackEvent({
@@ -49,129 +63,36 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
             onSizeSelected(size)
           }}
         >
-          <Flex flexDirection="row" alignItems="center" justifyContent="space-between" flexWrap="nowrap" mr={2}>
-            <Flex flexDirection="row" alignItems="center">
-              <Radio checked={!!selectedVariant.id && selectedVariant.id === size.id} />
-              <Spacer mr={1} />
-              <Sans color={size?.reservable > 0 ? color("black100") : color("black50")} size="4">
-                {size.displayLong}
-              </Sans>
+          <SizeButton>
+            <Flex justifyContent="center">
+              <SizeButtonText size="4">{size.displayLong}</SizeButtonText>
             </Flex>
-            <Spacer mr={5} />
-            <Sans color="black50" size="3">
-              {size?.reservable > 0 ? manufacturerSizeDisplay : "Unavailable"}
-            </Sans>
-          </Flex>
+          </SizeButton>
         </TouchableOpacity>
-        {i + 1 !== variants.length && <Separator color={color("black10")} />}
       </Box>
     )
   })
 
-  return <Box>{rows}</Box>
-}
-
-const getElementWidth = (el: HTMLElement) => (el ? el.clientWidth : "auto")
-
-export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelected, product, variantInStock }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const [popoverWidth, setPopoverWidth] = React.useState(getElementWidth(anchorEl))
-  const variants = product?.variants
-
-  React.useEffect(() => {
-    let listener: EventListenerOrEventListenerObject
-    if (typeof window !== undefined) {
-      listener = () => {
-        requestAnimationFrame(() => {
-          setPopoverWidth(getElementWidth(anchorEl))
-        })
-      }
-      window.addEventListener("resize", listener)
-    }
-    return () => {
-      if (listener) {
-        window.removeEventListener("resize", listener)
-      }
-      listener = null
-    }
-  }, [])
-
-  useEffect(() => {
-    if (variants?.length > 0 && !selectedVariant?.id) {
-      const firstAvailableSize =
-        find(variants, (size) => size.isInBag) || find(variants, (size) => size.reservable > 0) || variants?.[0]
-      setSelectedVariant(firstAvailableSize)
-    }
-  }, [variants, setSelectedVariant])
-
-  const handleClick = (event) => {
-    const anchorEl = event.currentTarget
-    setPopoverWidth(getElementWidth(anchorEl))
-    setAnchorEl(anchorEl)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
-  const open = Boolean(anchorEl)
-  const id = open ? "simple-popover" : undefined
-
   return (
-    <>
-      <Button variant="primaryWhite" onClick={handleClick} aria-describedby={id} block>
-        <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center" flexWrap="nowrap">
-          <Flex style={{ position: "relative" }} flexDirection="row" alignItems="center">
-            {!variantInStock && <Strikethrough size="4" className="hover-white-background" />}
-            <Sans size="4">{selectedVariant?.displayLong}</Sans>
-          </Flex>
-          <Flex ml={1} className="hover-white-path__svg">
-            <ChevronIcon rotateDeg="90deg" color={color("black100")} scale={0.7} />
-          </Flex>
-        </Flex>
-      </Button>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        PaperProps={{
-          elevation: 0,
-          style: {
-            border: "1px solid #000",
-            marginTop: "5px",
-            width: popoverWidth,
-            boxSizing: "content-box",
-          },
-        }}
-      >
-        <VariantList
-          selectedVariant={selectedVariant}
-          setSelectedVariant={setSelectedVariant}
-          onSizeSelected={() => {
-            handleClose()
-            onSizeSelected()
-          }}
-          product={product}
-        />
-      </Popover>
-    </>
+    <Flex width="100%" justifyContent="space-between" flexWrap="wrap" flexDirection="row">
+      {rows}
+    </Flex>
   )
 }
 
-const Strikethrough = styled.div<{ size: SansSize }>`
-  background-color: ${color("black100")};
-  height: 2px;
-  width: 100%;
-  position: absolute;
-  top: ${(p) => (p.size === "2" ? 7 : 12)}px;
-  left: 0;
-`
+export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelected, product, variantInStock }) => {
+  const [select, setSelect] = useState(false)
+
+  return (
+    <>
+      <VariantList
+        selectedVariant={selectedVariant}
+        setSelectedVariant={setSelectedVariant}
+        onSizeSelected={() => {
+          onSizeSelected()
+        }}
+        product={product}
+      />
+    </>
+  )
+}
