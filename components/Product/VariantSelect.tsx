@@ -29,28 +29,24 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
     const SizeButton = styled(Box)`
       ${() => {
         if (size.displayShort === selectedVariant.displayShort) {
-          return `background-color: ${color("black100")}`
+          return `border-color: ${color("black100")};
+          box-shadow: 2px 2px 4px ${color("black50")};
+          `
         } else {
-          return `background-color: ${size?.reservable > 0 ? color("white100") : color("black10")}`
+          return `border-color: ${color("black10")}`
         }
       }};
+      background-color:${size?.reservable > 0 ? color("white100") : color("black10")};
       padding: 10px;
       border-radius: 7px;
       border-style: solid;
       border-width: 1px;
-      border-color: ${color("black10")};
     `
     const SizeButtonText = styled(Sans)`
-      ${() => {
-        if (size.displayShort === selectedVariant.displayShort) {
-          return `color: ${size?.reservable > 0 ? color("white100") : color("black25")}`
-        } else {
-          return `color: ${size?.reservable > 0 ? color("black100") : color("black50")}`
-        }
-      }};
+          color: ${size?.reservable > 0 ? color("black100") : color("black50")};
     `
     return (
-      <Box key={size.id || i} width="155px" pb={1}>
+      <Box key={size.id || i} width="155px" pb={1} pr={1}>
         <TouchableOpacity
           onPress={() => {
             tracking.trackEvent({
@@ -74,7 +70,7 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
   })
 
   return (
-    <Flex width="100%" justifyContent="space-between" flexWrap="wrap" flexDirection="row">
+    <Flex width="100%" justifyContent="flex-start" flexWrap="wrap" flexDirection="row" >
       {rows}
     </Flex>
   )
