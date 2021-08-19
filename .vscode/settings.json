@@ -1,13 +1,12 @@
 {
   "git.ignoreLimitWarning": true,
-  "eslint.enable": true,
   "search.exclude": {
     "**/node_modules": true,
     ".vscode/.react/*": true
   },
   "cSpell.ignoreWords": ["Semibold"],
   "cSpell.diagnosticLevel": "Hint",
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "editor.codeActionsOnSave": {},
   "autoimport.autoComplete": true,
   "debug.node.autoAttach": "on",
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
