@@ -132,7 +132,7 @@ const RadioButton = styled(Box)<RadioToggleProps>`
   ${borders};
   ${styledSpace};
   display: flex;
-  border: 1px solid ${(p) => (p.selected ? color("black100") : color("black50"))};
+  border: 1px solid ${(p) => (p.selected ? color("black100") : color("black25"))};
   width: 24px;
   height: 24px;
   min-width: 24px;

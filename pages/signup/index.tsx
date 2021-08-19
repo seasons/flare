@@ -147,99 +147,99 @@ const SignUpPage = screenTrack(() => ({
     )
   }
 
-  let CurrentStep
-  switch (currentStepState) {
-    case Steps.CreateAccountStep:
-      CurrentStep = (
-        <CreateAccountStep
-          form={{
-            initialValues: customerDataFromGift(),
-            gift: giftData?.gift,
-            onError: () => setShowSnackBar(true),
-            onCompleted: () => setCurrentStepState(Steps.CustomerMeasurementsStep),
-          }}
-        />
-      )
-      break
-    case Steps.CustomerMeasurementsStep:
-      CurrentStep = (
-        <CustomerMeasurementsStep
-          form={{
-            onCompleted: () => {
-              refetchGetSignupUser()
-              setCurrentStepState(Steps.DiscoverStyleStep)
-            },
-          }}
-        />
-      )
-      break
-    case Steps.DiscoverStyleStep:
-      CurrentStep = (
-        <DiscoverStyleStep
-          onCompleted={() => {
-            setStartTriage(true)
-            setCurrentStepState(Steps.TriageStep)
-          }}
-        />
-      )
-      break
-    case Steps.TriageStep:
-      CurrentStep = (
-        <TriageStep
-          check={startTriage}
-          onTriageComplete={(isWaitlisted) => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames.AccountTriaged,
-              actionType: Schema.ActionTypes.Success,
-              isWaitlisted,
-            })
+  // let CurrentStep
+  // switch (currentStepState) {
+  //   case Steps.CreateAccountStep:
+  //     CurrentStep = (
+  //       <CreateAccountStep
+  //         form={{
+  //           initialValues: customerDataFromGift(),
+  //           gift: giftData?.gift,
+  //           onError: () => setShowSnackBar(true),
+  //           onCompleted: () => setCurrentStepState(Steps.CustomerMeasurementsStep),
+  //         }}
+  //       />
+  //     )
+  //     break
+  //   case Steps.CustomerMeasurementsStep:
+  //     CurrentStep = (
+  //       <CustomerMeasurementsStep
+  //         form={{
+  //           onCompleted: () => {
+  //             refetchGetSignupUser()
+  //             setCurrentStepState(Steps.DiscoverStyleStep)
+  //           },
+  //         }}
+  //       />
+  //     )
+  //     break
+  //   case Steps.DiscoverStyleStep:
+  //     CurrentStep = (
+  //       <DiscoverStyleStep
+  //         onCompleted={() => {
+  //           setStartTriage(true)
+  //           setCurrentStepState(Steps.TriageStep)
+  //         }}
+  //       />
+  //     )
+  //     break
+  //   case Steps.TriageStep:
+  //     CurrentStep = (
+  //       <TriageStep
+  //         check={startTriage}
+  //         onTriageComplete={(isWaitlisted) => {
+  //           tracking.trackEvent({
+  //             actionName: Schema.ActionNames.AccountTriaged,
+  //             actionType: Schema.ActionTypes.Success,
+  //             isWaitlisted,
+  //           })
 
-            setStartTriage(false)
-            refetchGetSignupUser()
+  //           setStartTriage(false)
+  //           refetchGetSignupUser()
 
-            if (isWaitlisted) {
-              setCurrentStepState(Steps.FormConfirmation)
-            } else {
-              setCurrentStepState(Steps.PaymentStep)
-            }
-          }}
-        />
-      )
-      break
-    case Steps.DiscoverBagStep:
-      CurrentStep = (
-        <DiscoverBagStep
-          onCompleted={() => {
-            refetchGetSignupUser()
-            setCurrentStepState(Steps.PaymentStep)
-          }}
-        />
-      )
-      break
-    case Steps.PaymentStep:
-      CurrentStep = (
-        <PaymentStep
-          plan={selectedPlan}
-          initialCoupon={initialCoupon}
-          onBack={() => {
-            if (showDiscoverBag) {
-              setCurrentStepState(Steps.DiscoverBagStep)
-            }
-          }}
-          onSuccess={() => {
-            updateUserSession({ cust: { status: CustomerStatus.Active } })
-            localStorage.setItem("paymentProcessed", "true")
-            identify(data?.me?.customer?.user?.id, { status: "Active" })
-            setCurrentStepState(Steps.FormConfirmation)
-          }}
-          onError={() => {}}
-        />
-      )
-      break
-    case Steps.FormConfirmation:
-      CurrentStep = <FormConfirmation status={customerStatus === "Active" ? "accountAccepted" : "waitlisted"} />
-      break
-  }
+  //           if (isWaitlisted) {
+  //             setCurrentStepState(Steps.FormConfirmation)
+  //           } else {
+  //             setCurrentStepState(Steps.PaymentStep)
+  //           }
+  //         }}
+  //       />
+  //     )
+  //     break
+  //   case Steps.DiscoverBagStep:
+  //     CurrentStep = (
+  //       <DiscoverBagStep
+  //         onCompleted={() => {
+  //           refetchGetSignupUser()
+  //           setCurrentStepState(Steps.PaymentStep)
+  //         }}
+  //       />
+  //     )
+  //     break
+  // case Steps.PaymentStep:
+  const CurrentStep = (
+    <PaymentStep
+      plan={selectedPlan}
+      initialCoupon={initialCoupon}
+      onBack={() => {
+        if (showDiscoverBag) {
+          setCurrentStepState(Steps.DiscoverBagStep)
+        }
+      }}
+      onSuccess={() => {
+        updateUserSession({ cust: { status: CustomerStatus.Active } })
+        localStorage.setItem("paymentProcessed", "true")
+        identify(data?.me?.customer?.user?.id, { status: "Active" })
+        setCurrentStepState(Steps.FormConfirmation)
+      }}
+      onError={() => {}}
+    />
+  )
+  //   break
+  // case Steps.FormConfirmation:
+  //   CurrentStep = <FormConfirmation status={customerStatus === "Active" ? "accountAccepted" : "waitlisted"} />
+  //   break
+  // }
 
   return (
     <Elements stripe={stripePromise}>
