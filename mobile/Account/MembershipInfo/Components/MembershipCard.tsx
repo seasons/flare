@@ -33,7 +33,8 @@ export const MembershipCard: React.FC<MembershipCardProps> = ({ memberName }) =>
 const Card = styled(Box)`
   background-color: ${color("black100")};
   height: 200px;
-  width: 345px;
+  max-width: 345px;
+  width: 100%;
   border-radius: 8px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   shadow-color: ${color("black100")};

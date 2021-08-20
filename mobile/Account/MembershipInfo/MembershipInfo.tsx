@@ -6,9 +6,7 @@ import { Loader } from "mobile/Loader"
 import React from "react"
 import { ScrollView } from "react-native"
 import { Schema, screenTrack } from "utils/analytics"
-
 import { useQuery } from "@apollo/client"
-
 import { PauseButtons } from "../Components/Pause"
 import { MembershipCard } from "./Components"
 import { PlanFeatures } from "components/Payment/PlanFeatures"

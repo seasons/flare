@@ -57,7 +57,6 @@ const StyledFlex = styled(Box)<{ selected: boolean }>`
   align-items: center;
   justify-content: space-between;
   display: flex;
-  z-index: 10;
   border: 1px solid ${(p) => (p.selected ? color("black100") : color("black25"))};
   position: relative;
   box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.1);
