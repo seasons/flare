@@ -99,9 +99,9 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           {!!plan?.price && (
             <>
               <Sans size="4">What you pay</Sans>
-              <Spacer mb={1} />
+              <Spacer mb={2} />
               <Separator />
-              <Spacer mb={1} />
+              <Spacer mb={2} />
               <Sans size="4" color={color("black50")}>
                 {`$${plan.price / 100}`} / per month
               </Sans>
@@ -110,10 +110,10 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           {!!plan?.features && (
             <>
               <Spacer mb={4} />
-              <Sans size="4">Whats included</Sans>
-              <Spacer mb={1} />
+              <Sans size="4">What's included</Sans>
+              <Spacer mb={2} />
               <Separator />
-              <Spacer mb={1} />
+              <Spacer mb={2} />
               <PlanFeatures features={plan?.features} />
             </>
           )}
