@@ -11,6 +11,7 @@ import { useQuery } from "@apollo/client"
 
 import { PauseButtons } from "../Components/Pause"
 import { MembershipCard } from "./Components"
+import { PlanFeatures } from "components/Payment/PlanFeatures"
 
 export const GET_MEMBERSHIP_INFO = gql`
   query GetMembershipInfo {
@@ -36,8 +37,9 @@ export const GET_MEMBERSHIP_INFO = gql`
           }
           plan {
             id
+            planID
             price
-            description
+            features
             tier
           }
         }
@@ -74,7 +76,9 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
     )
   }
 
-  const whatsIncluded = plan?.description?.split("\n")
+  // For now since we don't support downgrading on Access plans
+  // only show change plan if they can upgrade only or change to Access
+  const canChangePlan = plan.planID !== "access-yearly"
 
   return (
     <Container insetsBottom={false}>
@@ -90,12 +94,12 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           <Spacer mb={80} />
           <Sans size="6">Membership info</Sans>
           <Spacer mb={3} />
-          <MembershipCard memberName={`${firstName} ${lastName}`} planTier={plan?.tier} />
+          <MembershipCard memberName={`${firstName} ${lastName}`} />
           <Spacer mb={4} />
           {!!plan?.price && (
             <>
               <Sans size="4">What you pay</Sans>
-              <Spacer mb={2} />
+              <Spacer mb={1} />
               <Separator />
               <Spacer mb={1} />
               <Sans size="4" color={color("black50")}>
@@ -103,29 +107,27 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
               </Sans>
             </>
           )}
-          {!!whatsIncluded && (
+          {!!plan?.features && (
             <>
               <Spacer mb={4} />
               <Sans size="4">Whats included</Sans>
-              <Spacer mb={2} />
+              <Spacer mb={1} />
               <Separator />
-              {whatsIncluded.map((text) => (
-                <Box key={text}>
-                  <Spacer mb={1} />
-                  <Sans size="4" color={color("black50")}>
-                    {text.trim()}
-                  </Sans>
-                </Box>
-              ))}
+              <Spacer mb={1} />
+              <PlanFeatures features={plan?.features} />
             </>
           )}
           <Spacer mb={4} />
-          <Sans size="4">Change your plan</Sans>
-          <Spacer mb={2} />
-          <Button variant="secondaryOutline" block onClick={() => openDrawer("choosePlan", { source: "Update" })}>
-            View membership options
-          </Button>
-          <Spacer mb={4} />
+          {canChangePlan && (
+            <>
+              <Sans size="4">Change your plan</Sans>
+              <Spacer mb={2} />
+              <Button variant="secondaryOutline" block onClick={() => openDrawer("choosePlan", { source: "Update" })}>
+                View membership options
+              </Button>
+              <Spacer mb={4} />
+            </>
+          )}
           <Sans size="4">Pause or cancel</Sans>
           <Spacer mb={2} />
           <PauseButtons customer={customer} />

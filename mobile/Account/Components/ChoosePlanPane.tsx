@@ -247,9 +247,9 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
             <Sans color="black50" size="3">
               Here's what's included in your selected plan:
             </Sans>
-            <Spacer mb={1} />
+            <Spacer mb={2} />
+            <PlanFeatures features={selectedPlan?.features} />
           </Box>
-          <PlanFeatures features={selectedPlan?.features} />
           <Spacer mb={2} />
           {[...(plans ?? [])]
             ?.sort((a, b) => b.price - a.price)
