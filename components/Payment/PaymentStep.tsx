@@ -358,8 +358,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
               </Row>
             </Grid>
             <FormFooter
-              footerText={<>You can upgrade or change your plan at any time from your account settings.</>}
-              buttonText="Checkout"
+              footerText={<>As a reminder, membership auto-renews every month or year unless canceled.</>}
+              buttonText="Sign up"
               isSubmitting={isProcessingPayment}
               disabled={!isValid || isProcessingPayment || planError}
               handleSubmit={() => {
