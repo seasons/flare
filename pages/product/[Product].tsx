@@ -1,4 +1,4 @@
-import { Box, Flex, Layout, Spacer } from "components"
+import { Box, Flex, Layout, Sans, Spacer } from "components"
 import { AddToBagButton } from "components/AddToBagButton"
 import { Carousel } from "components/Carousel"
 import { Col, Grid, Row } from "components/Grid"
@@ -67,15 +67,11 @@ const Product = screenTrack(({ router }) => {
     refetch()
   }, [authState.isSignedIn])
 
-  const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
-  const isInBag = updatedVariant?.isInBag || false
-
   let metaTitle = HEAD_META_TITLE
   if (product?.name && product?.brand?.name) {
     metaTitle = `Seasons | ${product?.name} by ${product?.brand?.name}`
   }
   const description = product && product.description
-  const variantInStock = selectedVariant?.reservable > 0
   const physicalProductQualityReport = (selectedVariant?.nextReservablePhysicalProduct?.reports || []).reduce(
     (agg, report) => {
       if (!agg) {
@@ -134,32 +130,16 @@ const Product = screenTrack(({ router }) => {
             <Col md="5" sm="12">
               <Box style={{ maxWidth: "480px" }} px={[2, 2, 0, 0, 0]}>
                 {product ? (
-                  <ProductDetails selectedVariant={selectedVariant} product={product} />
+                  <ProductDetails
+                    selectedVariant={selectedVariant}
+                    setSelectedVariant={setSelectedVariant}
+                    data={data}
+                    product={product}
+                  />
                 ) : (
                   <ProductTextLoader />
                 )}
-                <Flex flex-direction="row">
-                  <Flex flex={1}>
-                    <VariantSelect
-                      product={product}
-                      variantInStock={variantInStock}
-                      selectedVariant={selectedVariant}
-                      setSelectedVariant={setSelectedVariant}
-                      onSizeSelected={(size) => {
-                        console.log(size)
-                      }}
-                    />
-                  </Flex>
-                  <Spacer mr={2} />
-                  <Flex flex={1}>
-                    <AddToBagButton
-                      selectedVariant={selectedVariant}
-                      data={data}
-                      variantInStock={variantInStock}
-                      isInBag={isInBag}
-                    />
-                  </Flex>
-                </Flex>
+
                 {product ? <ProductMeasurements selectedVariant={selectedVariant} /> : <ProductTextLoader />}
                 {product ? (
                   <ProductConditionSection
