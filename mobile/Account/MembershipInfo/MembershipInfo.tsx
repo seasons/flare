@@ -76,7 +76,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
 
   // For now since we don't support downgrading on Access plans
   // only show change plan if they can upgrade only or change to Access
-  const canChangePlan = plan.planID !== "access-yearly"
+  const onMonthlyPlan = plan.planID !== "access-yearly"
 
   return (
     <Container insetsBottom={false}>
@@ -101,7 +101,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
               <Separator />
               <Spacer mb={2} />
               <Sans size="4" color={color("black50")}>
-                {`$${plan.price / 100}`} / per month
+                {`$${plan.price / 100} / per ${onMonthlyPlan ? "month" : "year"}`}
               </Sans>
             </>
           )}
@@ -116,7 +116,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
             </>
           )}
           <Spacer mb={4} />
-          {canChangePlan && (
+          {onMonthlyPlan && (
             <>
               <Sans size="4">Change your plan</Sans>
               <Spacer mb={2} />
@@ -126,7 +126,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
               <Spacer mb={4} />
             </>
           )}
-          <Sans size="4">Pause or cancel</Sans>
+          <Sans size="4">Update your plan</Sans>
           <Spacer mb={2} />
           <PauseButtons customer={customer} />
         </Box>
