@@ -61,8 +61,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const {
     authState: { isSignedIn },
   } = useAuthContext()
-  const [showApprovedModal, setShowApprovedModal] = useState(true)
-  const [showWaitlistedModal, setShowWaitlistedModal] = useState(false)
+  const [showApprovedModal, setShowApprovedModal] = useState(false)
+  const [showWaitlistedModal, setShowWaitlistedModal] = useState(true)
   const tracking = useTracking()
   const router = useRouter()
   const filter = router.query?.Filter || "all+all"

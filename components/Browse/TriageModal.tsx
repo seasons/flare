@@ -25,7 +25,7 @@ export const TriageModal: React.FC<{ onClose: () => void; show: boolean; type: "
   const isApprovedView = type === "approved"
 
   const welcomeImage = require("../../public/images/signup/WelcomeImage.jpg")
-  const waitlistImage = require("../../public/images/signup/WelcomeImage.jpg")
+  const waitlistImage = require("../../public/images/signup/WaitlistImage.jpg")
 
   if (isApprovedView) {
     headerText = "Welcome to Seasons"
@@ -104,31 +104,47 @@ export const TriageModal: React.FC<{ onClose: () => void; show: boolean; type: "
             <Spacer mb={3} />
             <Flex flexDirection="row" alignItems="center">
               <SeparatorLine mr={2} />
-              <Sans size="4" style={{ width: "152px", flexShrink: 0 }}>
-                Join the conversation
+              <Sans size="4" style={{ flexShrink: 0 }}>
+                {breakText}
               </Sans>
               <SeparatorLine ml={2} />
             </Flex>
             <Spacer mb={3} />
-            <Button
-              block
-              variant="secondaryOutline"
-              onClick={() => {
-                tracking.trackEvent({
-                  actionName: Schema.ActionNames.InstagramButtonTapped,
-                  actionType: Schema.ActionTypes.Tap,
-                })
-                window.open("https://discord.gg/Ck3utJPnyS", "_blank")
-              }}
-            >
-              <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
-                <Box top="2px" style={{ position: "relative" }}>
-                  <DisordSVG width="24px" height="18px" />
-                </Box>
-                <Spacer mr={1} />
-                <Sans size="4">Discord</Sans>
-              </Flex>
-            </Button>
+            {isApprovedView ? (
+              <Button
+                block
+                variant="secondaryOutline"
+                onClick={() => {
+                  tracking.trackEvent({
+                    actionName: Schema.ActionNames.InstagramButtonTapped,
+                    actionType: Schema.ActionTypes.Tap,
+                  })
+                  window.open("https://discord.gg/Ck3utJPnyS", "_blank")
+                }}
+              >
+                <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
+                  <Box top="2px" style={{ position: "relative" }}>
+                    <DisordSVG width="24px" height="18px" />
+                  </Box>
+                  <Spacer mr={1} />
+                  <Sans size="4">Discord</Sans>
+                </Flex>
+              </Button>
+            ) : (
+              <Button
+                block
+                variant="secondaryOutline"
+                onClick={() => {
+                  tracking.trackEvent({
+                    actionName: Schema.ActionNames.InstagramButtonTapped,
+                    actionType: Schema.ActionTypes.Tap,
+                  })
+                  window.open("mailto:membership@seasons.nyc?subject=Support", "_blank")
+                }}
+              >
+                Contact us
+              </Button>
+            )}
             <Spacer mb={3} />
             <Sans size="4" style={{ width: "100%", textAlign: "center" }}>
               Have a question?{" "}
