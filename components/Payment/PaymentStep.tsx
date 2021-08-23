@@ -169,15 +169,6 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       couponID: !!coupon ? coupon.code : null,
     },
   })
-  const [planError, setPlanError] = useState(null)
-  const [removeFromBag] = useMutation(REMOVE_FROM_BAG, {
-    refetchQueries: [
-      {
-        query: PaymentStep_Query,
-      },
-    ],
-    awaitRefetchQueries: true,
-  })
 
   const features = plan?.features
   const validationSchema = sameAsShipping ? sameAsShippingValidation : shippingAndBillingValidation
@@ -306,7 +297,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
   const user = data?.me?.customer?.user
 
   return (
-    <Box width="100%" height="100%" style={{ overflowY: "scroll" }}>
+    <Box width="100%" height="100%">
       <Formik onSubmit={handleSubmit} initialValues={{}} validationSchema={validationSchema}>
         {({ handleSubmit, isValid, values }) => (
           <form onSubmit={handleSubmit}>
@@ -361,7 +352,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
               footerText={<>As a reminder, membership auto-renews every month or year unless canceled.</>}
               buttonText="Sign up"
               isSubmitting={isProcessingPayment}
-              disabled={!isValid || isProcessingPayment || planError}
+              disabled={!isValid || isProcessingPayment}
               handleSubmit={() => {
                 // onCompleted?.()
               }}
