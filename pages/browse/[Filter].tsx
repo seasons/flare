@@ -62,7 +62,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     authState: { isSignedIn },
   } = useAuthContext()
   const [showApprovedModal, setShowApprovedModal] = useState(false)
-  const [showWaitlistedModal, setShowWaitlistedModal] = useState(true)
+  const [showWaitlistedModal, setShowWaitlistedModal] = useState(false)
   const tracking = useTracking()
   const router = useRouter()
   const filter = router.query?.Filter || "all+all"
@@ -150,7 +150,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       const colorsParam = currentColors?.length ? "&colors=" + currentColors.join("+") : ""
       const availableParam = availableOnly ? "&available=true" : "&available=false"
       const forSaleParam = forSaleOnly ? "&forSale=true" : ""
-      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}`
+      const triageParam =
+        showWaitlistedModal || showApprovedModal ? `&triage=${showWaitlistedModal ? "waitlisted" : "approved"}` : ""
+      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}`
     }
     const newParams = paramToURL()
 

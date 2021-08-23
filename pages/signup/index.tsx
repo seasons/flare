@@ -37,6 +37,8 @@ enum Steps {
   PaymentStep = "PaymentStep",
 }
 
+const browseURL = "/browse/all+all?page=1&tops=M&available=true"
+
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
 const SignUpPage = screenTrack(() => ({
@@ -198,7 +200,7 @@ const SignUpPage = screenTrack(() => ({
             refetchGetSignupUser()
 
             if (isWaitlisted) {
-              setCurrentStepState(Steps.FormConfirmation)
+              router.push(`${browseURL}&triage=waitlisted`)
             } else {
               setCurrentStepState(Steps.PaymentStep)
             }
@@ -230,7 +232,7 @@ const SignUpPage = screenTrack(() => ({
             updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")
             identify(data?.me?.customer?.user?.id, { status: "Active" })
-            setCurrentStepState(Steps.FormConfirmation)
+            router.push(`${browseURL}&triage=approved`)
           }}
           onError={() => {}}
         />
