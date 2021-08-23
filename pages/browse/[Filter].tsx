@@ -24,6 +24,7 @@ import { SavedTab_Query } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import { ColorFilters } from "components/Browse/ColorFilters"
 import { FixedFilters } from "components/Browse/FixedFilters"
+import { TriageModal } from "components/Browse/TriageModal"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -60,6 +61,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const {
     authState: { isSignedIn },
   } = useAuthContext()
+  const [showApprovedModal, setShowApprovedModal] = useState(true)
+  const [showWaitlistedModal, setShowWaitlistedModal] = useState(false)
   const tracking = useTracking()
   const router = useRouter()
   const filter = router.query?.Filter || "all+all"
@@ -70,6 +73,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const _colors = router.query?.colors as string
   const colors = _colors?.split(" ")
   let availableRouterQuery
+  const triage = router.query.triage
   if (router.query?.available && router.query?.available === "true") {
     availableRouterQuery = true
   } else if (router.query?.available && router.query?.available === "false") {
@@ -116,6 +120,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       skip,
     },
   })
+
+  useEffect(() => {
+    if (triage && triage === "waitlisted") {
+      setShowWaitlistedModal(true)
+    } else if (triage && triage === "approved") {
+      setShowApprovedModal(true)
+    }
+  }, [triage])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -362,6 +374,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           </Row>
         </Grid>
         <Spacer mb={[0, 5]} />
+        <TriageModal
+          onClose={() => {
+            setShowApprovedModal(false)
+            setShowWaitlistedModal(false)
+          }}
+          show={showWaitlistedModal || showApprovedModal}
+          type={showWaitlistedModal ? "waitlisted" : "approved"}
+        />
       </Layout>
     </>
   )

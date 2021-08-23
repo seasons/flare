@@ -160,7 +160,7 @@ export const Account = screenTrack()(({ navigation }) => {
   const middleList = [
     {
       title: "Follow us on Instagram",
-      icon: <InstagramSVG />,
+      icon: <InstagramSVG opaque />,
       onPress: () => window.open("https://www.instagram.com/seasons.ny", "_blank"),
       tracking: Schema.ActionNames.InstagramFollowTapped,
     },

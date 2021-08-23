@@ -11,7 +11,7 @@ import { FormFooter } from "./FormFooter"
 import HeaderText from "./HeaderText"
 
 interface FormConfirmationProps {
-  status: "waitlisted" | "accountAccepted" | "giftPurchased"
+  status: "giftPurchased"
   showCTAs?: boolean
 }
 
@@ -21,21 +21,11 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status, show
   let bodyText
   let imageURL
 
-  if (status === "waitlisted") {
-    imageURL = require("../../public/images/waitlisted/waitlistImage.png")
-    icon = <CheckWithBackground backgroundColor={"#000"} />
-    headerText = "You're Waitlisted"
-    bodyText = "We’ll let you know when your account is ready and you’re able to choose your plan."
-  } else if (status === "giftPurchased") {
+  if (status === "giftPurchased") {
     imageURL = require("../../public/images/gift.jpg")
     icon = <CheckWithBackground backgroundColor={"#000"} />
     headerText = "Your gift was sent!"
     bodyText = "We’ll send a receipt for your purchase to your email."
-  } else {
-    imageURL = require("../../public/images/welcome/WelcomeImage.png")
-    icon = <CheckWithBackground />
-    headerText = "Welcome to Seasons"
-    bodyText = "Your membership is active and you’re ready to start reserving. Tap below to start browsing."
   }
 
   const footerText = (

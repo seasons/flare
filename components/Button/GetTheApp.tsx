@@ -4,18 +4,29 @@ import { color } from "../../helpers"
 import { AppleSVG } from "../SVGs"
 import { Button } from "./Button"
 import { Schema, useTracking } from "utils/analytics"
+import { ButtonVariant } from "./Button.shared"
 
 interface Props {
   block?: boolean
+  width?: string
+  variant?: ButtonVariant
 }
 
-export const GetTheAppButton: React.FC<Props> = ({ block }) => {
+export const GetTheAppButton: React.FC<Props> = ({ block, width, variant }) => {
   const tracking = useTracking()
+  let _width
+  if (width) {
+    _width = width
+  } else if (block) {
+    _width = "100%"
+  } else {
+    _width = "auto"
+  }
   return (
     <GetAppWrapper block={block}>
       <Button
-        variant="primaryWhite"
-        width={block ? "100%" : "auto"}
+        variant={variant ? variant : "primaryWhite"}
+        width={_width}
         onClick={() => {
           tracking.trackEvent({
             actionName: Schema.ActionNames.GetTheIOSAppTapped,
