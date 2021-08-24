@@ -96,8 +96,8 @@ export const ProductDetails: React.FC<{
 
       <Flex flexDirection="row" width="100%" pb={2} pt={3}>
         <Flex flexDirection="column" padding="1px" width="100%">
-          <Sans size={3}>Member Price</Sans>
-          <Separator mb={1} width="100%" />
+          <Sans size={3}>Member price</Sans>
+          <Separator mb={1} width="95%" />
           <Flex flexDirection="row">
             <Sans size={7}>${rentalPrice ? rentalPrice : 40}</Sans>
             <Flex paddingTop="10px" paddingLeft="5px">
@@ -109,9 +109,9 @@ export const ProductDetails: React.FC<{
           </Flex>
         </Flex>
         <Flex flexDirection="column" padding="1px" width="100%">
-          <Sans size={3}>Retail</Sans>
+          <Sans size={3}>Retail value</Sans>
           <Separator mb={1} width="100%" />
-          <Sans size={7}>${retailPrice}</Sans>
+          <Sans size={7} color={color("black35")}>${retailPrice}</Sans>
         </Flex>
       </Flex>
       <Flex padding="1px" paddingTop={2} pb={2}>
