@@ -110,29 +110,35 @@ export const BagTab: React.FC<{
       )}
       <Separator />
       <Spacer mb={3} />
-      {paddedItems?.map((bagItem, index) => {
-        return bagItem?.productID?.length > 0 ? (
-          <Box key={bagItem.productID} px={2} pt={hasActiveReservation ? 0 : 2}>
-            <BagItem
-              removeItemFromBag={deleteBagItem}
-              removeFromBagAndSaveItem={removeFromBagAndSaveItem}
-              onShowBuyAlert={handleShowBuyAlert}
-              index={index}
-              bagItem={bagItem}
-            />
-            {!hasActiveReservation && index !== items.length - 1 && (
-              <Box pt={1}>
-                <Separator color={color("black10")} />
-              </Box>
-            )}
-          </Box>
-        ) : (
-          <Box key={index} px={2}>
-            <EmptyBagItem index={index} />
-            {!hasActiveReservation && index !== items.length - 1 && <Separator color={color("black10")} />}
-          </Box>
-        )
-      })}
+      {paddedItems
+        ?.sort((a, b) => {
+          const aWeight = a.status === "Reserved" ? 1 : 0
+          const bWeight = b.status === "Reserved" ? 1 : 0
+          return aWeight - bWeight
+        })
+        ?.map((bagItem, index) => {
+          return bagItem?.productID?.length > 0 ? (
+            <Box key={bagItem.productID} px={2} pt={hasActiveReservation ? 0 : 2}>
+              <BagItem
+                removeItemFromBag={deleteBagItem}
+                removeFromBagAndSaveItem={removeFromBagAndSaveItem}
+                onShowBuyAlert={handleShowBuyAlert}
+                index={index}
+                bagItem={bagItem}
+              />
+              {!hasActiveReservation && index !== items.length - 1 && (
+                <Box pt={1}>
+                  <Separator color={color("black10")} />
+                </Box>
+              )}
+            </Box>
+          ) : (
+            <Box key={index} px={2}>
+              <EmptyBagItem index={index} />
+              {!hasActiveReservation && index !== items.length - 1 && <Separator color={color("black10")} />}
+            </Box>
+          )
+        })}
       {hasActiveReservation && (
         <Box px={2}>
           <Spacer mb={3} />
