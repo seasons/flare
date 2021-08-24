@@ -7,6 +7,7 @@ import { Schema as TrackSchema, useTracking } from "utils/analytics"
 import { useMutation } from "@apollo/client"
 import { Input } from "@material-ui/core"
 import { Box, Sans, Spacer } from "components"
+import { color } from "helpers"
 
 const CHECK_COUPON = gql`
   mutation CheckCoupon($couponID: String!) {
@@ -77,14 +78,14 @@ export const PaymentCouponField: React.FC<PaymentCouponFieldProps> = ({ onApplyP
             onPromoCodeChange(e.target.value)
           }}
           disableUnderline
-          style={{ flex: 1 }}
+          style={{ flex: 1, fontSize: "16px" }}
         />
 
-        <TouchableOpacity onPress={applyPromoCode}>
-          <Sans size={3} style={{ textDecoration: "underline", cursor: "pointer" }}>
+        <Box onClick={applyPromoCode}>
+          <Sans size="4" style={{ textDecoration: "underline", cursor: "pointer" }}>
             Apply
           </Sans>
-        </TouchableOpacity>
+        </Box>
       </Container>
       {error && (
         <>
@@ -105,8 +106,9 @@ const Container = styled(Box)`
   box-sizing: border-box;
   padding: 6px 20px;
   font-family: ProximaNova-Medium, sans-serif;
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${color("black25")};
   transition: all 0.25s;
+  border-radius: 8px;
 `
 
 const ErrorResult = styled((props) => <Sans {...props} />)`

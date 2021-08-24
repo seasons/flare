@@ -1,12 +1,8 @@
-import { Box, Flex, Separator, Spacer } from "components"
-import { Checkbox } from "components/Checkbox"
-import { CollapsableFAQ } from "components/CollapsableFAQ"
-import { Collapse } from "components/Collapse"
+import { Box, Separator } from "components"
 import { FormFooter } from "components/Forms/FormFooter"
 import { Col, Grid, Row } from "components/Grid"
 import { BackArrowIcon } from "components/Icons"
 import { GET_SIGNUP_USER } from "components/SignUp/queries"
-import { Sans } from "components/Typography"
 import { Formik } from "formik"
 import { BagItemFragment } from "queries/bagItemQueries"
 import { REMOVE_FROM_BAG } from "queries/bagQueries"
@@ -16,19 +12,11 @@ import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 import { colors } from "theme/colors"
 import * as Yup from "yup"
-
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { InputLabel } from "@material-ui/core"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
-
-import { PaymentBagItem } from "./PaymentBagItem"
-import { PaymentBillingAddress } from "./PaymentBillingAddress"
-import { PaymentCouponField } from "./PaymentCouponField"
-import { PaymentExpressButtons } from "./PaymentExpressButtons"
-import { PaymentForm } from "./PaymentForm"
-import { PaymentOrderSummary } from "./PaymentOrderSummary"
-import { PaymentSelectPlan } from "./PaymentSelectPlan"
-import { PaymentShippingAddress } from "./PaymentShippingAddress"
+import { PaymentStepPlanSelection } from "./PaymentStepComponents/PaymentStepPlanSelection"
+import { PaymentStepCheckoutSection } from "./PaymentStepComponents/PaymentStepCheckoutSection"
+import { PaymentStepOrderSummarySection } from "./PaymentStepComponents/PaymentStepOrderSummarySection"
 
 interface PaymentStepProps {
   plan: {
@@ -61,6 +49,8 @@ const PaymentStep_Query = gql`
       planID
       itemCount
       estimate(couponID: $couponID)
+      features
+      caption
     }
     me {
       bag {
@@ -107,7 +97,6 @@ const PaymentStep_Query = gql`
   }
   ${BagItemFragment}
 `
-const enableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
 const SubmitPayment_Mutation = gql`
@@ -180,22 +169,16 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
       couponID: !!coupon ? coupon.code : null,
     },
   })
-  const [planError, setPlanError] = useState(null)
-  const [removeFromBag] = useMutation(REMOVE_FROM_BAG, {
-    refetchQueries: [
-      {
-        query: PaymentStep_Query,
-      },
-    ],
-    awaitRefetchQueries: true,
-  })
+
+  const features = plan?.features
+  const validationSchema = sameAsShipping ? sameAsShippingValidation : shippingAndBillingValidation
+  const sortedPlans = data?.paymentPlans?.slice()?.sort((a, b) => b.price - a.price)
 
   useEffect(() => {
     if (data && !loading) {
-      const bagCount = data?.me?.bag.length || 3
-      const paymentPlanIndex = bagCount - 1 < data?.paymentPlans?.length ? bagCount - 1 : 0
-      setPlan(data?.paymentPlans?.[paymentPlanIndex])
-
+      if (sortedPlans && !plan) {
+        setPlan(sortedPlans[0])
+      }
       // If they came straight to checkout and therefore did not get
       // an initialCoupon, query it and update accordingly.
       const couponId = data?.me?.customer?.coupon?.id
@@ -207,18 +190,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
         refetch()
       }
     }
-  }, [data, loading])
-
-  useEffect(() => {
-    if (plan) {
-      if (plan.itemCount < data?.me?.bag.length) {
-        // TODO: set error
-        setPlanError(data?.me?.bag.length - plan.itemCount)
-      } else {
-        setPlanError(null)
-      }
-    }
-  }, [plan])
+  }, [sortedPlans, loading, setPlan, plan])
 
   const valuesToAddressDetails = (values): { billingDetails: any; shippingDetails: any } => {
     const email = data?.me?.customer?.user?.email
@@ -309,7 +281,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
     })
 
     const paymentIntent = response.data.processPayment
-    const result = await stripe.handleCardAction(paymentIntent.client_secret)
+    await stripe.handleCardAction(paymentIntent.client_secret)
 
     await confirmPayment({
       variables: {
@@ -322,10 +294,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
     })
   }
 
-  const validationSchema = sameAsShipping ? sameAsShippingValidation : shippingAndBillingValidation
+  const user = data?.me?.customer?.user
 
   return (
-    <Box width="100%" height="100%" style={{ overflowY: "scroll" }}>
+    <Box width="100%" height="100%">
       <Formik onSubmit={handleSubmit} initialValues={{}} validationSchema={validationSchema}>
         {({ handleSubmit, isValid, values }) => (
           <form onSubmit={handleSubmit}>
@@ -341,154 +313,46 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                       <Arrow color={colors.black100} />
                     </TouchableOpacity>
                   )}
-                  <Box pt={4} px={[0, 0, 4, 4, 4]} pb={2}>
-                    <Box mt={[4, 4, 12]} p={2}>
-                      <Sans size="8" weight="medium">
-                        You're in! Let's finish choosing your plan
-                      </Sans>
-                      <Spacer mt={1} />
-                      <Sans size="4" color="black50">
-                        You're checking out with a {plan?.itemCount}-item plan. Toggle below to switch plans
-                      </Sans>
-                    </Box>
-                    <Spacer mt={2} />
-                    <PaymentSelectPlan
-                      paymentPlans={data?.paymentPlans}
+                  <Box px={[2, 2, 5, 5, 5]} pb={2} mt={[4, 4, 12]}>
+                    <PaymentStepPlanSelection
+                      plans={sortedPlans}
+                      features={features}
                       selectedPlan={plan}
-                      onPlanSelected={(selectedPlan) => setPlan(selectedPlan)}
+                      setPlan={setPlan}
                     />
                   </Box>
                   <Box my={2}>
                     <Separator />
                   </Box>
-                  <Box px={[2, 2, 6]} py={4}>
-                    <PaymentOrderSummary plan={plan} coupon={coupon} />
-                  </Box>
-                  <Box mx={[2, 2, 6]} mb={6}>
-                    <PaymentCouponField
-                      onApplyPromoCode={(amount, percentage, type, code) => {
-                        setCoupon({
-                          amount: amount as number,
-                          percentage: percentage as number,
-                          type: type as "FixedAmount" | "Percentage",
-                          code: code as string,
-                          id: code,
-                        })
-                      }}
-                    />
-                  </Box>
-                  <Box my={2}>
-                    <Separator />
-                  </Box>
-                  <Box>
-                    <Box p={[2, 2, 6]} pt={0}>
-                      {enableExpressCheckout && (
-                        <Box py={4}>
-                          <Sans size="7">Express checkout</Sans>
-                          <PaymentExpressButtons
-                            plan={data?.paymentPlan}
-                            onPaymentMethodReceived={(paymentMethod) => {
-                              const { billingDetails, shippingDetails } = valuesToAddressDetails(values)
-                              processPayment(paymentMethod, values, billingDetails, shippingDetails)
-                            }}
-                          />
-                        </Box>
-                      )}
-                      <Box width="100%" py={[2, 2, 4]}>
-                        <Sans size="7">Shipping address</Sans>
-                        <Spacer mt={2} />
-                        <PaymentShippingAddress />
-                      </Box>
-                      <Box width="100%" py={[2, 2, 4]}>
-                        <Sans size="7">Billing address</Sans>
-                        <Spacer mt={2} />
-                        <Flex flexDirection="row" alignItems="center" width="100%" maxWidth="600px">
-                          <Flex flexDirection="row" alignItems="center" justifyContent="space-between" width="50%">
-                            <Label>Same as shipping address</Label>
-                            <Box pr={2}>
-                              <Checkbox
-                                isActive={sameAsShipping}
-                                onClick={() => {
-                                  setSameAsShipping(!sameAsShipping)
-                                }}
-                              />
-                            </Box>
-                          </Flex>
-                        </Flex>
-                        <Collapse open={!sameAsShipping}>
-                          <Spacer mt={2} />
-                          <PaymentBillingAddress />
-                        </Collapse>
-                      </Box>
-                      <Box width="100%" py={[2, 2, 4]}>
-                        <Box>
-                          {errorMessage && (
-                            <>
-                              <ErrorResult size="3">{errorMessage}</ErrorResult>
-                              <Spacer mt={2} />
-                            </>
-                          )}
-                        </Box>
-                        <Sans size="7">Payment details</Sans>
-                        <Spacer mt={2} />
-                        <PaymentForm />
-                      </Box>
-                      <Spacer mt={4} />
-                    </Box>
-                  </Box>
+                  <PaymentStepCheckoutSection
+                    values={values}
+                    errorMessage={errorMessage}
+                    valuesToAddressDetails={valuesToAddressDetails}
+                    processPayment={processPayment}
+                    sameAsShipping={sameAsShipping}
+                    setSameAsShipping={setSameAsShipping}
+                    selectedPlan={plan}
+                  />
                 </LeftColumn>
                 <RightColumn md={4}>
                   <Box style={{ height: "100%", minHeight: "100vh" }}>
-                    <Box px={[0, 0, 2, 2]} pt={[50, 50, 150]}>
-                      {data?.me?.bag.length > 0 && (
-                        <Box mb={4}>
-                          <Sans size="8" color="black100">
-                            Your bag
-                          </Sans>
-                          <Spacer mb={1} />
-                          <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
-                            Finish checking out to reserve these today
-                          </Sans>
-                          <Spacer mb={3} />
-                          {planError && (
-                            <>
-                              <ErrorResult size="3">Please remove {planError} item(s) in your bag</ErrorResult>
-                              <Spacer mt={2} />
-                            </>
-                          )}
-
-                          {data?.me?.bag?.map((bagItem, index) => {
-                            return (
-                              <Box pb={1}>
-                                <PaymentBagItem index={index} bagItem={bagItem} removeFromBag={removeFromBag} />
-                              </Box>
-                            )
-                          })}
-                        </Box>
-                      )}
-
-                      <FAQWrapper>
-                        <Sans size="8" color="black100">
-                          FAQ
-                        </Sans>
-                        <Spacer mb={1} />
-                        <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
-                          What to know about membership
-                        </Sans>
-                        <Spacer mb={5} />
-                        <CollapsableFAQ faqSections={data?.faq?.sections} />
-                        <Spacer pb={10} />
-                      </FAQWrapper>
+                    <Box px={[0, 0, 2, 2]} mt={[4, 4, 12]}>
+                      <PaymentStepOrderSummarySection
+                        setCoupon={setCoupon}
+                        selectedPlan={plan}
+                        user={user}
+                        coupon={coupon}
+                      />
                     </Box>
                   </Box>
                 </RightColumn>
               </Row>
             </Grid>
             <FormFooter
-              footerText={<>You can upgrade or change your plan at any time from your account settings.</>}
-              buttonText="Checkout"
+              footerText={<>As a reminder, membership auto-renews every month or year unless canceled.</>}
+              buttonText="Sign up"
               isSubmitting={isProcessingPayment}
-              disabled={!isValid || isProcessingPayment || planError}
+              disabled={!isValid || isProcessingPayment}
               handleSubmit={() => {
                 // onCompleted?.()
               }}
@@ -561,17 +425,4 @@ const Arrow = styled(BackArrowIcon)`
     left: 16px;
     top: 30px;
   `}
-`
-
-const FAQWrapper = styled(Box)`
-  width: 100%;
-  height: 100%;
-`
-
-const ErrorResult = styled((props) => <Sans {...props} />)`
-  color: red;
-`
-
-const Label = styled(InputLabel)`
-  margin: 10px 0 5px 0;
 `
