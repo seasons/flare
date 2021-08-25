@@ -22,7 +22,7 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status, show
   let imageURL
 
   if (status === "waitlisted") {
-    imageURL = require("../../public/images/waitlisted/waitlistImage.png")
+    imageURL = require("../../public/images/signup/waitlistImage2.png")
     icon = <CheckWithBackground backgroundColor={"#000"} />
     headerText = "You're Waitlisted"
     bodyText = "We’ll let you know when your account is ready and you’re able to choose your plan."
@@ -32,7 +32,7 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status, show
     headerText = "Your gift was sent!"
     bodyText = "We’ll send a receipt for your purchase to your email."
   } else {
-    imageURL = require("../../public/images/welcome/WelcomeImage.png")
+    imageURL = require("../../public/images/signup/WelcomeImage2.png")
     icon = <CheckWithBackground />
     headerText = "Welcome to Seasons"
     bodyText = "Your membership is active and you’re ready to start reserving. Tap below to start browsing."
