@@ -24,7 +24,7 @@ export const ProductCarousel: React.FC<{
   const reachedEnd = lastVisible >= products.length
 
   return (
-    <Box>
+    <Box px={[2, 2, 2, 2, 2]}>
       <CarouselWrapper>
         {firstVisible !== 0 && (
           <LeftArrowWrapper

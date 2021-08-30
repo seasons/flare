@@ -41,6 +41,7 @@ interface LayoutProps {
   includeDefaultHead?: boolean
   showIntercom?: boolean
   PageNotificationBar?: () => React.ReactElement
+  disableMaxWidth?: boolean
 }
 
 export const Layout = ({
@@ -49,6 +50,7 @@ export const Layout = ({
   footerBottomPadding,
   includeDefaultHead = true,
   showIntercom = false,
+  disableMaxWidth = false,
   PageNotificationBar,
 }: LayoutProps) => {
   const { authState } = useAuthContext()
@@ -94,7 +96,7 @@ export const Layout = ({
             <Theme>
               {showIntercom && <Intercom />}
               <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} />
-              <MaxWidth height="100%">
+              <MaxWidth height="100%" disableMaxWidth={disableMaxWidth}>
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {children}
                   {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} brandItems={brandItems} />}

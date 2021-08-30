@@ -1,4 +1,3 @@
-import { LaunchCalendarFragment_Query } from "components/Homepage/LaunchCalendar"
 import gql from "graphql-tag"
 
 import { ProductGridItem_Product } from "@seasons/eclipse"
@@ -80,15 +79,10 @@ export const Home_Query = gql`
     paymentPlans(where: { status: "active" }) {
       id
       name
-      description
-      tagline
+      features
+      caption
       price
       planID
-      tier
-      itemCount
-    }
-    newestBrandProducts(first: 3) {
-      ...HomePageProductFragment_Product
     }
     fitPics(first: 5, orderBy: createdAt_DESC, where: { status: Published }) {
       id
@@ -113,18 +107,14 @@ export const Home_Query = gql`
         }
       }
     }
-    newBottoms: products(
-      first: 3
-      category: "bottoms"
+    newArrivals: products(
+      first: 10
       orderBy: publishedAt_DESC
       where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
     ) {
       ...HomePageProductFragment_Product
     }
-
-    ...LaunchCalendarFragment_Query
   }
 
-  ${LaunchCalendarFragment_Query}
   ${HomePageProductFragment_Product}
 `

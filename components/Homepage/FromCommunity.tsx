@@ -6,20 +6,18 @@ import styled from "styled-components"
 import { Media } from "../Responsive"
 import { imageResize } from "utils/imageResize"
 
-export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
-  if (!blogPosts) {
-    return null
-  }
+const BlogPost = ({ post }) => {
+  const imageSRC = imageResize(post?.image?.url ?? "", "large")
 
-  const BlogPost = ({ post }) => {
-    const imageSRC = imageResize(post?.image?.url ?? "", "large")
-
-    return (
-      <Link href={`/blog/${post.slug}`}>
-        <Box>
-          <img src={imageSRC} alt={post.image?.alt ?? `Image for ${post.name}`} />
-          <Spacer mb={2} />
-          <Sans size="7">{post.name}</Sans>
+  return (
+    <Link href={`/blog/${post.slug}`}>
+      <Flex flexDirection="row">
+        <img
+          src={imageSRC}
+          alt={post.image?.alt ?? `Image for ${post.name}`}
+          style={{ width: "40%", borderRadius: "8px" }}
+        />
+        <Flex flexDirection="column" p={2} justifyContent="center">
           {post.author && (
             <>
               <Spacer mb={1} />
@@ -28,9 +26,16 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
               </Sans>
             </>
           )}
-        </Box>
-      </Link>
-    )
+          <Sans size="4">{post.name}</Sans>
+        </Flex>
+      </Flex>
+    </Link>
+  )
+}
+
+export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
+  if (!blogPosts) {
+    return null
   }
 
   return (
@@ -65,9 +70,3 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
     </Grid>
   )
 }
-
-const StyledAnchor = styled.a`
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-`
