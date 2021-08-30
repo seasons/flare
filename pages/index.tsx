@@ -71,37 +71,31 @@ const Home = screenTrack(() => ({
 
           <Spacer mb="128px" />
           <HowItWorks />
-        </Box>
-      </MaxWidth>
-      <Spacer mb={10} />
-
-      <Plans plans={data?.paymentPlans} />
-
-      <Spacer mb={10} />
-      <MaxWidth>
-        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+          <Spacer mb={10} />
           {data?.newArrivals.length > 0 && (
             <>
               <ProductCarousel title="New arrivals" products={data?.newArrivals} saveProductRefetchQueries={[]} />
               <Spacer mb={10} />
             </>
           )}
+        </Box>
+      </MaxWidth>
+      <Spacer mb={10} />
 
-          <SeparatorWithPadding />
-          <Spacer mb={10} />
+      <Plans plans={data?.paymentPlans} />
 
+      <Spacer mb={160} />
+
+      <MaxWidth>
+        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
           {data?.fitPics?.length > 0 && (
             <>
               <HomepageFitPics fitPics={data.fitPics} />
               <Spacer mb={10} />
-              <Box px={[2, 2, 2, 2, 2]}>
-                <Separator />
-              </Box>
-              <Spacer mb={10} />
             </>
           )}
 
-          <Spacer mb={10} />
+          <Spacer mb={160} />
           <TheApp />
           <Spacer mb={10} />
 

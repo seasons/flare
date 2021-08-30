@@ -45,11 +45,11 @@ export const HomepageFitPics: React.FC<{ fitPics: any }> = ({ fitPics }) => {
         <Flex flexDirection="column" flexWrap="nowrap" justifyContent="space-between" px={[0, 0, 2, 2, 2]} width="100%">
           <Flex flexDirection="column" alignItems="center" justifyContent="center" width="100%">
             <Display size="8" style={{ textAlign: "center" }} px={2}>
-              How they wear Seasons
+              What members are wearing
             </Display>
             <Spacer mb={1} />
             <Sans size="4" color="black50" style={{ textAlign: "center" }}>
-              Members who make this what it is
+              From Brooklyn to LA, to SF to Chicago
             </Sans>
             <Spacer mb={6} />
           </Flex>
@@ -81,4 +81,5 @@ const BackgroundImage = styled.div<{ image: string }>`
   height: 0;
   width: 100%;
   padding-bottom: calc(100% * 1.25);
+  border-radius: 8px;
 `
