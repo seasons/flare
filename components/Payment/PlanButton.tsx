@@ -27,7 +27,7 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ lowestPlanPrice, shouldS
     <StyledFlex width="100%" height={72} mb={1} px={2} selected={selected} onClick={() => shouldSelect(plan)}>
       {showYearlyDiscount && (
         <PlanDiscount px={0.5}>
-          <Sans size="3" color="white100">
+          <Sans size="3" color="black100">
             {planDiscount}% Off
           </Sans>
         </PlanDiscount>
@@ -68,5 +68,5 @@ const PlanDiscount = styled(Box)`
   top: -10px;
   right: 20px;
   border-radius: 4px;
-  background-color: ${color("black100")};
+  background-color: ${color("peach")};
 `
