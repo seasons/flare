@@ -2,6 +2,7 @@ import React from "react"
 import { Box, Display, Flex, Sans, Spacer, Button } from "components"
 import styled from "styled-components"
 import { color } from "helpers"
+import { PlanFeatures } from "components/Payment/PlanFeatures"
 
 export const PlanCard = ({ plan }) => {
   return (
@@ -19,7 +20,7 @@ export const PlanCard = ({ plan }) => {
         {plan.caption}
       </Sans>
       <Spacer mb={5} />
-
+      <PlanFeatures features={plan?.features} />
       <Spacer mb={5} />
       <Button block>Apply for membership</Button>
     </Wrapper>

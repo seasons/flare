@@ -23,8 +23,8 @@ export const HOW_IT_WORKS_TEXT = [
   },
   {
     icon: <BillingIcon />,
-    title: "Buy styles you love",
-    text: "Enjoy exclusive access to our archive sale & own your favorites.",
+    title: "Simple & clear billing",
+    text: "You’re only billed for what you use at the end of the month. Like a hotel tab.",
   },
   {
     icon: <HeartIcon />,

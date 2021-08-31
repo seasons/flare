@@ -11,6 +11,7 @@ import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
 import { useQuery } from "@apollo/client"
 import { ProductCarousel } from "components/ProductCarousel"
+import { Discover } from "components/Homepage/Discover"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -78,9 +79,12 @@ const Home = screenTrack(() => ({
               <Spacer mb={10} />
             </>
           )}
+
+          <Spacer mb={10} />
+          <Discover />
         </Box>
       </MaxWidth>
-      <Spacer mb={10} />
+      <Spacer mb={160} />
 
       <Plans plans={data?.paymentPlans} />
 
