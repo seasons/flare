@@ -20,7 +20,7 @@ export const PlanCard = ({ plan }) => {
         {plan.caption}
       </Sans>
       <Spacer mb={5} />
-      <PlanFeatures features={plan?.features} />
+      <PlanFeatures features={plan?.features} hideStrikeThroughFeatures />
       <Spacer mb={5} />
       <Button block>Apply for membership</Button>
     </Wrapper>

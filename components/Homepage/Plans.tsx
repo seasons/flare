@@ -74,7 +74,7 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
         </Flex>
         <Row>
           {plans.map((plan, index) => (
-            <Col md="6" xs="12" key={index}>
+            <Col md="6" xs="12" key={index} p={1}>
               <PlanCard plan={plan} />
             </Col>
           ))}
