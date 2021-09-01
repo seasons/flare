@@ -22,7 +22,7 @@ export const DesktopNav = (props: NavProps) => {
   const { links, navStyles } = props
   const backgroundColor = navStyles?.backgroundColor ? navStyles?.backgroundColor : color("white100")
   const textColor = navStyles?.textColor ? navStyles?.textColor : color("black100")
-  const logoScale = navStyles.logoScale ? navStyles.logoScale : 1
+  const logoScale = navStyles?.logoScale ? navStyles.logoScale : 1
 
   const router = useRouter()
 
@@ -90,7 +90,7 @@ export const DesktopNav = (props: NavProps) => {
     <>
       <Spacer ml={3} />
       <Button
-        variant={navStyles.buttonVariant ? navStyles.buttonVariant : "primaryWhite"}
+        variant={navStyles?.buttonVariant ? navStyles.buttonVariant : "primaryWhite"}
         onClick={() => {
           toggleLoginModal(true)
         }}
