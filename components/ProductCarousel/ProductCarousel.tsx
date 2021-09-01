@@ -36,7 +36,7 @@ export const ProductCarousel: React.FC<{
         </Flex>
       </MaxWidthWrapper>
       <Spacer mb={2} />
-      <Flex width="100%" justifyContent="center">
+      <Flex width="100%" justifyContent="flex-start">
         <CarouselWrapper px={[2, 2, 2, 2, 2]}>
           <ArrowWrapper
             justifyContent="flex-start"
@@ -132,6 +132,8 @@ const PagerWrapper = styled(Flex)`
 
 const CarouselWrapper = styled(Flex)`
   position: relative;
+  width: 100%;
+  margin: 0 auto;
   max-width: ${(props) => `${props.theme.grid.container.maxWidth.xl + 100}px`};
   overflow: hidden;
   flex-direction: row;
@@ -143,14 +145,4 @@ const Pager = styled.div<{ active: boolean }>`
   height: 6px;
   width: 100%;
   background-color: ${(p) => (p.active ? color("black25") : color("black10"))};
-`
-
-const ImageWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
 `
