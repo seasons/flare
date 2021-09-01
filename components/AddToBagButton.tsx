@@ -119,7 +119,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
           toggleLoginModal(true)
         }
       }}
-      borderRadius={7}
+      borderRadius={8}
     >
       {text}
     </Button>
