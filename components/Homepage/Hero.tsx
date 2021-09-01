@@ -1,19 +1,15 @@
-import { Box, Flex, MaxWidth, Sans, Separator, Spacer, Header } from "components"
+import { Box, Flex, MaxWidth, Sans, Spacer, Header } from "components"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { DateTime } from "luxon"
 import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 import { useDrawerContext } from "../../components/Drawer/DrawerContext"
 import { Button } from "../Button"
-import { GetTheAppButton } from "../Button/GetTheApp"
+import { seasonAndYear } from "utils/seasonAndYear"
 import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
-import { Countdown } from "@seasons/eclipse"
-import { Display } from "../Typography"
-import { imageResize } from "utils/imageResize"
 
 const staticNoise = require("../../public/images/homepage/static-noise.gif")
 
@@ -141,8 +137,8 @@ const DesktopHero = () => {
         <Flex width="100%" px={[2, 2, 2, 2, 2]} py={5} justifyContent="flex-end" flexDirection="column" height="700px">
           <Flex flexDirection="row" justifyContent="space-between" alignItems="flex-end">
             <Header color="white100" size="11" style={{ maxWidth: "852px" }}>
-              Seasons is a creative community exploring the shared access of fashion. Fall 2021 memberships are now
-              open.
+              Seasons is a private rental service exploring the shared access of fashion.{" "}
+              <span style={{ textDecoration: "underline" }}>{seasonAndYear()}</span> memberships are now open.
             </Header>
             <Spacer mr={50} />
             <MainCTA version="desktop" />
@@ -169,7 +165,7 @@ export const Hero: React.FC = () => {
 const Background = styled.div`
   width: 100%;
   position: relative;
-  background: linear-gradient(180deg, rgba(253, 166, 137, 1) 47%, rgba(255, 203, 146, 1) 100%);
+  background: linear-gradient(180deg, rgba(253, 166, 137, 1) 20%, rgba(255, 203, 146, 1) 100%);
 `
 
 const Static = styled.div`
