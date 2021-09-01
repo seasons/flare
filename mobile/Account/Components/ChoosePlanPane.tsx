@@ -23,7 +23,10 @@ export const GET_PLANS = gql`
     paymentPlans(where: $where) {
       id
       name
-      features
+      features {
+        included
+        excluded
+      }
       tagline
       caption
       price

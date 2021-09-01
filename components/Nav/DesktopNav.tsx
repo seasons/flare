@@ -10,14 +10,20 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
-import { Box, MaxWidth } from "components"
+import { Box, Button, MaxWidth, Spacer } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
-import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
+import { SeasonsLogoIcon } from "components/Icons/SeasonsLogoIcon"
+
+export const DESKTOP_NAV_HEIGHT = 92
 
 export const DesktopNav = (props: NavProps) => {
-  const { links } = props
+  const { links, navStyles } = props
+  const backgroundColor = navStyles?.backgroundColor ? navStyles?.backgroundColor : color("white100")
+  const textColor = navStyles?.textColor ? navStyles?.textColor : color("black100")
+  const logoScale = navStyles.logoScale ? navStyles.logoScale : 1
+
   const router = useRouter()
 
   const tracking = useTracking()
@@ -59,7 +65,7 @@ export const DesktopNav = (props: NavProps) => {
           active={!!router.pathname.match(link.match)}
           onClick={() => trackClick(link.url)}
         >
-          <NavItem link={link} />
+          <NavItem link={link} color={textColor} />
         </Link>
       )
     } else if (link.url) {
@@ -71,7 +77,7 @@ export const DesktopNav = (props: NavProps) => {
             active={!!router.pathname.match(link.match)}
             onClick={() => trackClick(link.url)}
           >
-            <NavItem link={link} />
+            <NavItem link={link} color={textColor} />
           </Link>
         </NextLink>
       )
@@ -82,16 +88,15 @@ export const DesktopNav = (props: NavProps) => {
 
   const renderLoggedOutNavLinks = () => (
     <>
-      <Link href="/signup" active={!!router.pathname.match("/signup")}>
-        <NavItem link={{ text: "Sign Up" }} />
-      </Link>
-      <Link
+      <Spacer ml={3} />
+      <Button
+        variant={navStyles.buttonVariant ? navStyles.buttonVariant : "primaryWhite"}
         onClick={() => {
           toggleLoginModal(true)
         }}
       >
-        <NavItem link={{ text: "Log In" }} />
-      </Link>
+        Sign in
+      </Button>
     </>
   )
 
@@ -102,28 +107,32 @@ export const DesktopNav = (props: NavProps) => {
           openDrawer("bag")
         }}
       >
-        <NavItem link={{ text: "Bag" }} />
+        <NavItem link={{ text: "Bag" }} color={textColor} />
       </Link>
       <Link
         onClick={() => {
           openDrawer("profile")
         }}
       >
-        <NavItem link={{ text: "Account" }} />
+        <NavItem link={{ text: "Account" }} color={textColor} />
       </Link>
     </>
   )
 
   return (
     <>
-      <Box style={{ width: "100%" }} height={["60px", "74px", "58px", "58px", "58px"]} />
-      <HeaderContainer style={specialStyles}>
+      <HeaderContainer style={specialStyles} backgroundColor={backgroundColor}>
         <MaxWidth>
           <Box width="100%">
             <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
-              <SeasonsLogo />
+              <SeasonsLogoIcon
+                width="72px"
+                height="72px"
+                fill={textColor}
+                style={{ transform: `scale(${logoScale})`, transition: "transform 0.25s" }}
+              />
               <Box px={4}>
-                <SearchBar />
+                <SearchBar color={textColor} />
               </Box>
               <Flex ml="auto" flexDirection="row" alignItems="center">
                 {links.map(renderLink)}
@@ -143,18 +152,20 @@ export const DesktopNav = (props: NavProps) => {
   )
 }
 
-const HeaderContainer = styled.div`
-  background-color: ${color("white100")};
+const HeaderContainer = styled.div<{ backgroundColor: string }>`
+  background-color: ${(p) => p.backgroundColor};
+  transition: background-color 0.5s ease-in-out;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   display: flex;
+  padding-top: 16px;
   flex-direction: row;
   box-sizing: border-box;
   z-index: 100;
   width: 100%;
-  height: 58.5px;
+  height: ${DESKTOP_NAV_HEIGHT}px;
   align-items: flex-start;
 `
 

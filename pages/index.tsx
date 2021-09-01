@@ -6,24 +6,57 @@ import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import { HomeMe_Query, Home_Query } from "queries/homeQueries"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
 import { useQuery } from "@apollo/client"
 import { ProductCarousel } from "components/ProductCarousel"
 import { Discover } from "components/Homepage/Discover"
+import { color } from "helpers"
+import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
+
+export const DESKTOP_HERO_HEIGHT = 700
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
+  const defaultNavStyles = {
+    backgroundColor: "transparent",
+    textColor: color("white100"),
+    buttonVariant: "transparentOutlineWhite",
+    logoScale: 1,
+  }
   const { previousData, data = previousData, error } = useQuery(Home_Query)
   const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
   const { updateUserSession, authState, toggleLoginModal } = useAuthContext()
+  const [navStyles, setNavStyles] = useState(defaultNavStyles)
   const router = useRouter()
+
+  const onScroll = () => {
+    if (typeof window !== undefined) {
+      if (window.pageYOffset >= DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT) {
+        setNavStyles({
+          backgroundColor: color("white100"),
+          textColor: color("black100"),
+          buttonVariant: "primaryWhite",
+          logoScale: 0.8,
+        })
+      } else {
+        setNavStyles(defaultNavStyles)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", onScroll)
+    }
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [onScroll])
 
   const isUserSignedIn = authState?.isSignedIn
   const userSignedIn = useRef(isUserSignedIn)
@@ -54,7 +87,7 @@ const Home = screenTrack(() => ({
 
   const partnerData = getPartnerDataFromUTMCampaign(router.query["utm_campaign"])
   return (
-    <Layout showIntercom disableMaxWidth>
+    <Layout showIntercom disableMaxWidth navStyles={navStyles}>
       <Hero />
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>

@@ -9,10 +9,12 @@ import { useRouter } from "next/router"
 import gql from "graphql-tag"
 import { NotificationBar } from "@seasons/eclipse"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { NavStyles } from "components/Layout"
 
 type Props = Omit<NavProps, "onClickNotificationBar"> & {
   brandItems: { name: string; slug: string }[]
   PageNotificationBar?: () => React.ReactElement
+  navStyles: NavStyles
 }
 
 export const NavFragment_Query = gql`
@@ -22,7 +24,7 @@ export const NavFragment_Query = gql`
   ${BrandsNavItemFragment_Query}
 `
 
-export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar }) => {
+export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar, navStyles }) => {
   const { openDrawer } = useDrawerContext()
   const router = useRouter()
   const links = [
@@ -47,7 +49,7 @@ export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar }) => {
     {
       text: "Designers",
       external: false,
-      renderNavItem: () => <BrandsNavItem key="designers" brandItems={brandItems} />,
+      renderNavItem: () => <BrandsNavItem key="designers" brandItems={brandItems} textColor={navStyles?.textColor} />,
     },
   ]
 
@@ -67,7 +69,7 @@ export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar }) => {
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopNav links={links} />
+        <DesktopNav links={links} navStyles={navStyles} />
       </Media>
       <Media lessThan="md">
         <MobileNav links={links} />

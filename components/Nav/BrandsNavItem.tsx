@@ -11,6 +11,7 @@ import { Schema, useTracking } from "utils/analytics"
 
 type Props = {
   brandItems: Array<{ slug: string; name: string }>
+  textColor?: string
 }
 
 export const BrandsNavItemFragment_Query = gql`
@@ -25,14 +26,15 @@ export const BrandsNavItemFragment_Query = gql`
   }
 `
 
-const DesktopNavItem = ({ brands }) => {
+const DesktopNavItem = ({ brands, textColor = color("black100") }) => {
   const tracking = useTracking()
   const anchorRef = React.useRef(null)
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
+  console.log("t", textColor)
   return (
     <>
       <DesktopNavItemContainer ref={anchorRef} onClick={() => setIsOpen(true)}>
-        <NavItem link={{ text: "Designers" }} active={isOpen} />
+        <NavItem link={{ text: "Designers" }} active={isOpen} color={textColor} />
       </DesktopNavItemContainer>
       <Popper open={isOpen} anchorEl={anchorRef.current} transition disablePortal placement="bottom-end">
         {({ TransitionProps }) => (
@@ -186,13 +188,13 @@ const MobileButtonContainer = styled.div`
   background-color: ${color("white100")};
 `
 
-export const BrandsNavItem: React.FC<Props> = ({ brandItems = [] }) => {
+export const BrandsNavItem: React.FC<Props> = ({ brandItems = [], textColor }) => {
   const resortedBrands = [...brandItems, { name: "View all", slug: "all" }]
 
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopNavItem brands={resortedBrands} />
+        <DesktopNavItem brands={resortedBrands} textColor={textColor} />
       </Media>
       <Media lessThan="md">
         <MobileNavItem brands={resortedBrands} />

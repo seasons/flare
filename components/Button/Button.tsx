@@ -171,6 +171,25 @@ export class Button extends Component<WebButtonProps> {
               `
           }};
         `
+      case "transparentOutlineWhite":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+            return `
+                background-color:  transparent;
+                border-color: ${colors.white100};
+                color: ${colors.white100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color:  transparent;
+                    border-color: ${colors.black100};
+                    color: ${colors.black100};
+                  }
+                }
+              `
+          }};
+        `
       case "noOutline":
         return css`
           ${(props) => {

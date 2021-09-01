@@ -162,25 +162,7 @@ export const Hero: React.FC = () => {
   )
 }
 
-const BackgroundImage = styled(Box)`
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  padding-bottom: 100%;
-  width: 100%;
-  height: 0;
-`
-
-const MobileImageWrapper = styled(Box)`
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  img {
-    width: 100%;
-  }
-`
-
 const Background = styled.div`
   width: 100%;
-  background-color: ${color("peach")};
+  background: linear-gradient(180deg, rgba(253, 166, 137, 1) 47%, rgba(255, 203, 146, 1) 100%);
 `

@@ -17,6 +17,7 @@ import { useMutation, useQuery } from "@apollo/client"
 import { ModalProvider } from "./Modal/ModalProvider"
 import { Modal } from "./Modal"
 import { gql } from "@apollo/client"
+import { ButtonVariant } from "./Button/Button.shared"
 
 export const SET_IMPACT_ID = gql`
   mutation SetImpactID($impactId: String) {
@@ -33,6 +34,13 @@ export const Layout_Query = gql`
   ${NavFragment_Query}
 `
 
+export interface NavStyles {
+  backgroundColor?: string
+  textColor?: string
+  buttonVariant?: ButtonVariant
+  logoScale: number
+}
+
 interface LayoutProps {
   fixedNav?: boolean
   hideFooter?: boolean
@@ -42,6 +50,7 @@ interface LayoutProps {
   showIntercom?: boolean
   PageNotificationBar?: () => React.ReactElement
   disableMaxWidth?: boolean
+  navStyles?: NavStyles
 }
 
 export const Layout = ({
@@ -52,6 +61,7 @@ export const Layout = ({
   showIntercom = false,
   disableMaxWidth = false,
   PageNotificationBar,
+  navStyles,
 }: LayoutProps) => {
   const { authState } = useAuthContext()
   const [setImpactId] = useMutation(SET_IMPACT_ID)
@@ -95,7 +105,7 @@ export const Layout = ({
           <DrawerProvider>
             <Theme>
               {showIntercom && <Intercom />}
-              <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} />
+              <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} navStyles={navStyles} />
               <MaxWidth height="100%" disableMaxWidth={disableMaxWidth}>
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {children}

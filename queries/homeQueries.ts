@@ -79,7 +79,9 @@ export const Home_Query = gql`
     paymentPlans(where: { status: "active" }) {
       id
       name
-      features
+      features {
+        included
+      }
       caption
       price
       planID
