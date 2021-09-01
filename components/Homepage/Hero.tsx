@@ -19,56 +19,7 @@ interface HeroComponentProps {
   version: "mobile" | "desktop"
 }
 
-const DesktopTextContent = () => {
-  return (
-    <Flex style={{ position: "relative", width: "50%" }} flexDirection="column" justifyContent="center">
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        <Flex flexDirection="column" justifyContent="center" alignContent="center" px={3}>
-          <Spacer mb={[10, 0, 0, 0, 0]} />
-          <HeroHeaderText version="desktop" />
-          <Spacer mb="12px" />
-          <HeroCaptionText version="desktop" />
-          <Spacer mb={4} />
-          <HeroCTAs version="desktop" />
-          <Spacer mb={4} />
-          <HeroBottomDetailText version="desktop" />
-        </Flex>
-      </Flex>
-    </Flex>
-  )
-}
-
-const DesktopHero = ({ post }) => {
-  
-  const imageSRC = imageResize(post?.image?.url ?? "", "large")
-
-  return (
-    <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 2, 2]} pb={2}>
-        <Flex flexDirection="row" justifyContent="space-between">
-          <DesktopTextContent />
-          <Link href={`/blog/${post.slug}`}>
-            <ImageWrapper>
-              <BackgroundImage style={{ backgroundImage: `url(${imageSRC})`, position: "relative" }}>
-                <Box
-                  style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
-                  pl={0.5}
-                  py={0.5}
-                >
-                  <Sans size="4">{post?.name}</Sans>
-                </Box>
-              </BackgroundImage>
-            </ImageWrapper>
-          </Link>
-        </Flex>
-      </Box>
-    </MaxWidth>
-  )
-}
-
-const MobileHero = ({ post }) => {
-  const imageSRC = imageResize(post?.image?.url ?? "", "medium")
-
+const MobileHero = () => {
   return (
     <Grid>
       <Row>
@@ -76,27 +27,10 @@ const MobileHero = ({ post }) => {
           <Flex flexDirection="column">
             <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
               <Spacer pb={6} />
-              <HeroHeaderText version="mobile" />
-              <Spacer mb={1} />
-              <HeroCaptionText version="mobile" />
               <Spacer mb={4} />
-              <HeroCTAs version="mobile" />
               <Spacer mb={4} />
               <HeroBottomDetailText version="mobile" />
               <Spacer mb={4} />
-              <MobileImageWrapper>
-                <Link href={`/blog/${post.slug}`}>
-                  <BackgroundImage style={{ backgroundImage: `url(${imageSRC})` }}>
-                    <Box
-                      style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
-                      pl={0.5}
-                      py={0.5}
-                    >
-                      <Sans size="4">{post?.name}</Sans>
-                    </Box>
-                  </BackgroundImage>
-                </Link>
-              </MobileImageWrapper>
             </Flex>
           </Flex>
         </Col>
@@ -137,82 +71,7 @@ const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
   )
 }
 
-const HeroHeaderText = ({ version }: HeroComponentProps) => {
-  const { userSession } = useAuthContext()
-  const [targetDate, setTargetDate] = useState(null)
-  const isMobile = version === "mobile"
-
-  useEffect(() => {
-    if (!!userSession) {
-      setTargetDate(DateTime.fromISO(userSession?.customer?.admissions?.authorizationWindowClosesAt))
-    }
-  }, [userSession])
-
-  let headerText = "Wear.Swap.Repeat." as any
-  let firstName = userSession?.user?.firstName || ""
-  const youreStart = firstName !== "" ? "Hi " + firstName + ", you're" : "You're"
-  const yourStart = firstName !== "" ? "Hi " + firstName + ", your" : "Your"
-  switch (userSession?.customer?.status) {
-    case "Authorized":
-      if (!!targetDate) {
-        headerText = (
-          <>
-            {`${youreStart} in. You have`} <Countdown underline display="inline" targetDate={targetDate} />{" "}
-            {"to choose your plan."}
-          </>
-        )
-      } else {
-        headerText = `${youreStart} in.`
-      }
-      break
-    case "Waitlisted":
-      if (userSession?.customer?.admissions?.authorizationsCount > 0) {
-        headerText = `${yourStart} sign-up window has closed.`
-      }
-      break
-  }
-
-  return (
-    <Display
-      size="8"
-      color="black100"
-      style={{ letterSpacing: "-2px", maxWidth: "600px", textAlign: isMobile ? "left" : "center" }}
-    >
-      {headerText}
-    </Display>
-  )
-}
-
-const HeroCaptionText = ({ version }) => {
-  const { userSession } = useAuthContext()
-  const isMobile = version === "mobile"
-
-  let caption = "A members-only rental service for designer menswear."
-  switch (userSession?.customer?.status) {
-    case "Authorized":
-      caption = "Finish setting up your account and choose your plan"
-      break
-    case "Waitlisted":
-      if (userSession?.customer?.admissions?.authorizationsCount > 0) {
-        caption = "We've had to pass along your invite and you're back on the waitlist."
-      }
-      break
-  }
-
-  return (
-    <Flex width="100%" flexDirection="row" justifyContent="center">
-      <Sans
-        size={isMobile ? "6" : "4"}
-        color="black50"
-        style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
-      >
-        {caption}
-      </Sans>
-    </Flex>
-  )
-}
-
-const HeroCTAs = ({ version }: HeroComponentProps) => {
+const MainCTA = ({ version }: HeroComponentProps) => {
   const { authState, userSession } = useAuthContext()
   const tracking = useTracking()
   const isUserSignedIn = authState?.isSignedIn
@@ -250,39 +109,54 @@ const HeroCTAs = ({ version }: HeroComponentProps) => {
   }
 
   return (
-    <Flex width="100%" flexDirection="row" justifyContent="center">
-      <Flex flexDirection="column" style={{ maxWidth: "400px", width: "100%" }}>
-        <Link href={ctaData.link}>
-          <Button
-            onClick={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames[ctaData.actionName],
-                actionType: Schema.ActionTypes.Tap,
-              })
-              ctaData.onClick?.()
-            }}
-          >
-            {ctaData.text}
-          </Button>
-        </Link>
-        <Spacer mb={1} />
-        <GetTheAppButton block />
-      </Flex>
+    <Flex flexDirection="row" justifyContent="flex-end">
+      <Link href={ctaData.link}>
+        <Button
+          size="large"
+          width="343px"
+          variant="primaryWhiteNoBorder"
+          onClick={() => {
+            tracking.trackEvent({
+              actionName: Schema.ActionNames[ctaData.actionName],
+              actionType: Schema.ActionTypes.Tap,
+            })
+            ctaData.onClick?.()
+          }}
+        >
+          {ctaData.text}
+        </Button>
+      </Link>
     </Flex>
   )
 }
 
-export const Hero: React.FC<{ post: any }> = ({ post }) => {
+const DesktopHero = () => {
+  return (
+    <Background>
+      <MaxWidth>
+        <Flex width="100%" px={[2, 2, 2, 2, 2]} py={5} justifyContent="flex-end" flexDirection="column" height="700px">
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="flex-end">
+            <Sans color="white100" size="11" style={{ maxWidth: "852px" }}>
+              Seasons is a creative community exploring the shared access of fashion. Fall 2021 memberships are now
+              open.
+            </Sans>
+            <Spacer mr={50} />
+            <MainCTA version="desktop" />
+          </Flex>
+        </Flex>
+      </MaxWidth>
+    </Background>
+  )
+}
+
+export const Hero: React.FC = () => {
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopHero post={post} />
-        <Box px={[2, 2, 2, 2, 2]}>
-          <Separator />
-        </Box>
+        <DesktopHero />
       </Media>
       <Media lessThan="md">
-        <MobileHero post={post} />
+        <MobileHero />
       </Media>
     </>
   )
@@ -306,8 +180,7 @@ const MobileImageWrapper = styled(Box)`
   }
 `
 
-const ImageWrapper = styled.div`
-  width: 50%;
-  cursor: pointer;
-  max-width: 800px;
+const Background = styled.div`
+  width: 100%;
+  background-color: ${color("peach")};
 `

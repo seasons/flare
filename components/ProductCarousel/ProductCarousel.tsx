@@ -1,6 +1,6 @@
 import { ProductGridItem } from "@seasons/eclipse"
-import { Box, Flex, Spacer } from "components"
-import { ChevronIcon } from "components/Icons"
+import { Box, Display, Flex, Link, Spacer } from "components"
+import { ThinChevron } from "components/SVGs/ThinChevron"
 import { color, space } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useRef } from "react"
@@ -21,25 +21,33 @@ export const ProductCarousel: React.FC<{
   const firstVisible = visibleElements[0]
   const goToSnapItem = useScroll({ ref: snapList })
 
-  const reachedEnd = lastVisible >= products.length
+  const reachedEnd = lastVisible >= products.length - 1
 
   return (
     <Box px={[2, 2, 2, 2, 2]}>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Display size="7">{title}</Display>
+        <Link href="/browse">
+          <Display size="7" style={{ textDecoration: "underline" }}>
+            See all
+          </Display>
+        </Link>
+      </Flex>
+      <Spacer mb={2} />
       <CarouselWrapper>
-        {firstVisible !== 0 && (
-          <LeftArrowWrapper
-            justifyContent="flex-start"
-            p={[2, 2]}
-            onClick={() => {
-              if (firstVisible > 0) {
-                const previousIndex = firstVisible - 1
-                goToSnapItem(previousIndex)
-              }
-            }}
-          >
-            <ChevronIcon color={color("black100")} rotateDeg="180deg" scale={2} />
-          </LeftArrowWrapper>
-        )}
+        <ArrowWrapper
+          justifyContent="flex-start"
+          py={2}
+          pr={3}
+          onClick={() => {
+            if (firstVisible > 0) {
+              const previousIndex = firstVisible - 1
+              goToSnapItem(previousIndex)
+            }
+          }}
+        >
+          <ThinChevron color={firstVisible !== 0 ? color("black100") : color("black10")} rotateDeg="180deg" />
+        </ArrowWrapper>
         <SnapList direction="horizontal" width="100%" ref={snapList}>
           {products?.map((product, index) => {
             return (
@@ -51,6 +59,7 @@ export const ProductCarousel: React.FC<{
               >
                 <Box width="100%">
                   <ProductGridItem
+                    imageIndex={2}
                     product={product}
                     authState={authState}
                     onShowLoginModal={() => toggleLoginModal(true)}
@@ -61,19 +70,20 @@ export const ProductCarousel: React.FC<{
             )
           })}
         </SnapList>
-        <RightArrowWrapper
+        <ArrowWrapper
           justifyContent="flex-end"
-          p={[2, 2]}
+          py={2}
+          pl={3}
           onClick={() => {
             const nextIndex = lastVisible + 1
             goToSnapItem(nextIndex)
           }}
         >
-          <ChevronIcon color={reachedEnd ? color("black04") : color("black100")} scale={2} />
-        </RightArrowWrapper>
+          <ThinChevron color={reachedEnd ? color("black10") : color("black100")} />
+        </ArrowWrapper>
       </CarouselWrapper>
       <Spacer mb={4} />
-      <PagerWrapper>
+      <PagerWrapper px={50}>
         <Flex flexDirection="row" flexWrap="nowrap">
           {products?.map((_image, index) => {
             return (
@@ -95,29 +105,17 @@ export const ProductCarousel: React.FC<{
   )
 }
 
-const RightArrowWrapper = styled(Flex)`
+const ArrowWrapper = styled(Flex)`
   width: 50px;
   height: calc(100% - 58px);
   align-items: center;
   flex-direction: row;
   cursor: pointer;
-  position: absolute;
-  right: 0;
   z-index: 10;
+  margin-top: 198px;
 `
 
-const LeftArrowWrapper = styled(Flex)`
-  width: 50px;
-  height: calc(100% - 58px);
-  position: absolute;
-  left: 0;
-  align-items: center;
-  flex-direction: row;
-  cursor: pointer;
-  z-index: 10;
-`
-
-const PagerWrapper = styled.div`
+const PagerWrapper = styled(Box)`
   width: 100%;
   cursor: pointer;
 `
@@ -128,6 +126,8 @@ const CarouselWrapper = styled.div`
   overflow: hidden;
   cursor: pointer;
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 `
 
 const Pager = styled.div<{ active: boolean }>`

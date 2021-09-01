@@ -40,9 +40,14 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
 
   return (
     <Grid>
-      <Box px={[2, 2, 2, 2, 2]}>
+      <Flex px={[2, 2, 2, 2, 2]} flexDirection="row" justifyContent="space-between">
         <Display size="7">Latest thoughts</Display>
-      </Box>
+        <Link href="/blog">
+          <Display size="7" style={{ textDecoration: "underline" }}>
+            See all
+          </Display>
+        </Link>
+      </Flex>
       <Spacer mb={2} />
       <Media greaterThanOrEqual="md">
         <Box px={[0, 0, 0, 0, 0]}>

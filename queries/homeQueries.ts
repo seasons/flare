@@ -110,8 +110,11 @@ export const Home_Query = gql`
     newArrivals: products(
       first: 10
       orderBy: publishedAt_DESC
-      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }, { tags_none: { name: "Vintage" } }] }
+      where: { AND: [{ variants_some: { id_not: null } }, { status: Available }] }
     ) {
+      ...HomePageProductFragment_Product
+    }
+    upcomingProducts: products(first: 10, orderBy: publishedAt_DESC, where: { status: Upcoming }) {
       ...HomePageProductFragment_Product
     }
   }

@@ -80,10 +80,12 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
           ))}
         </Row>
         <Spacer mb={5} />
-        <Sans size="4" color="black50" style={{ textAlign: "center" }} width="100%">
-          Cancel for any reason within your first 24 hours to receive a full refund. Free shipping and dry cleaning are
-          only included on one order per month. Questions about membership? Contact membership@seasons.nyc
-        </Sans>
+        <Flex flexDirection="row" justifyContent="center">
+          <Sans size="3" color="black50" style={{ textAlign: "center", maxWidth: "720px" }}>
+            Cancel for any reason within your first 24 hours to receive a full refund. Free shipping and dry cleaning
+            are only included on one order per month. Questions about membership? Contact membership@seasons.nyc
+          </Sans>
+        </Flex>
         <Spacer mb={[10, 15, 15, 15, 15]} />
       </Grid>
     </Background>

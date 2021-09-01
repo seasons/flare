@@ -20,7 +20,7 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { previousData, data = previousData } = useQuery(Home_Query)
+  const { previousData, data = previousData, error } = useQuery(Home_Query)
   const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
   const { updateUserSession, authState, toggleLoginModal } = useAuthContext()
   const router = useRouter()
@@ -55,10 +55,9 @@ const Home = screenTrack(() => ({
   const partnerData = getPartnerDataFromUTMCampaign(router.query["utm_campaign"])
   return (
     <Layout showIntercom disableMaxWidth>
+      <Hero />
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-          <Hero post={data?.blogPosts?.[0]} />
-
           <FeaturedIn />
           <SeparatorWithPadding />
 
@@ -73,9 +72,9 @@ const Home = screenTrack(() => ({
           <Spacer mb="128px" />
           <HowItWorks />
           <Spacer mb={10} />
-          {data?.newArrivals.length > 0 && (
+          {data?.upcomingProducts.length > 0 && (
             <>
-              <ProductCarousel title="New arrivals" products={data?.newArrivals} saveProductRefetchQueries={[]} />
+              <ProductCarousel title="Upcoming" products={data?.upcomingProducts} saveProductRefetchQueries={[]} />
               <Spacer mb={10} />
             </>
           )}

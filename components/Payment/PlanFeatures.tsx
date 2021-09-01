@@ -4,17 +4,17 @@ import { color } from "helpers"
 import React from "react"
 
 interface Features {
-  features: string[]
-  strikeThroughFeatures: string[]
+  included: string[]
+  excluded: string[]
 }
 
-export const PlanFeatures: React.FC<{ features: Features; hideStrikeThroughFeatures: boolean }> = ({
+export const PlanFeatures: React.FC<{ features: Features; hideExcluded: boolean }> = ({
   features,
-  hideStrikeThroughFeatures = false,
+  hideExcluded = false,
 }) => {
   return (
     <>
-      {features?.features?.map((feature, index) => {
+      {features?.included?.map((feature, index) => {
         return (
           <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
             <Box mr={2}>
@@ -26,8 +26,8 @@ export const PlanFeatures: React.FC<{ features: Features; hideStrikeThroughFeatu
           </Flex>
         )
       })}
-      {!hideStrikeThroughFeatures &&
-        features?.strikeThroughFeatures?.map((feature, index) => {
+      {!hideExcluded &&
+        features?.excluded?.map((feature, index) => {
           return (
             <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
               <Box mr={2}>
