@@ -33,6 +33,7 @@ export const PlanCard = ({ plan }) => {
 }
 
 const Wrapper = styled(Box)`
+  max-width: 470px;
   background-color: ${color("white100")};
   border-radius: 8px;
   box-shadow: 0 0 48px 0 rgba(0, 0, 0, 0.12);

@@ -3,11 +3,10 @@ import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import React from "react"
-import { imageResize } from "utils/imageResize"
 import styled from "styled-components"
 import { PlanCard } from "./PlanCard"
-
-import { Box, Header, Flex, Media, Sans, Spacer } from "components"
+import { seasonAndYear } from "utils/seasonAndYear"
+import { Box, Header, Flex, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
 
 const image = require("../../public/images/homepage/PlanBackground-Flare.jpg")
@@ -16,44 +15,6 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   const { authState } = useAuthContext()
   const { openDrawer } = useDrawerContext()
   const router = useRouter()
-
-  console.log("plans", plans)
-
-  const onSelectPlan = (_plan) => {
-    if (authState.isSignedIn) {
-      openDrawer("choosePlan", { source: "Update" })
-    } else {
-      router.push("/signup")
-    }
-  }
-
-  const seasonAndYear = () => {
-    const now = new Date()
-    let season = ""
-    switch (now.getMonth()) {
-      case 12:
-      case 1:
-      case 2:
-        season = "Winter"
-        break
-      case 3:
-      case 4:
-      case 5:
-        season = "Spring"
-        break
-      case 6:
-      case 7:
-      case 8:
-        season = "Summer"
-        break
-      case 9:
-      case 10:
-      case 11:
-        season = "Fall"
-        break
-    }
-    return `${season} ${now.getFullYear()}`
-  }
 
   return (
     <Background>

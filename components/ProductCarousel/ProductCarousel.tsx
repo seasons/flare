@@ -1,5 +1,5 @@
 import { ProductGridItem } from "@seasons/eclipse"
-import { Box, Display, Flex, Link, Spacer, Header } from "components"
+import { Box, Display, Flex, Link, Spacer, Header, MaxWidth } from "components"
 import { ThinChevron } from "components/SVGs/ThinChevron"
 import { color, space } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -24,67 +24,70 @@ export const ProductCarousel: React.FC<{
   const reachedEnd = lastVisible >= products.length - 1
 
   return (
-    <Box px={[2, 2, 2, 2, 2]}>
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Header size="9">{title}</Header>
-        <Link href="/browse">
-          <Header size="9" style={{ textDecoration: "underline" }}>
-            See all
-          </Header>
-        </Link>
-      </Flex>
+    <Box style={{ marge: "0 auto" }}>
+      <MaxWidthWrapper px={[2, 2, 2, 2, 2]}>
+        <Flex flexDirection="row" justifyContent="space-between" width="100%">
+          <Header size="9">{title}</Header>
+          <Link href="/browse">
+            <Header size="9" style={{ textDecoration: "underline" }}>
+              See all
+            </Header>
+          </Link>
+        </Flex>
+      </MaxWidthWrapper>
       <Spacer mb={2} />
-      <CarouselWrapper>
-        <ArrowWrapper
-          justifyContent="flex-start"
-          py={2}
-          pr={3}
-          onClick={() => {
-            if (firstVisible > 0) {
-              const previousIndex = firstVisible - 1
-              goToSnapItem(previousIndex)
-            }
-          }}
-        >
-          <ThinChevron color={firstVisible !== 0 ? color("black100") : color("black10")} rotateDeg="180deg" />
-        </ArrowWrapper>
-        <SnapList direction="horizontal" width="100%" ref={snapList}>
-          {products?.map((product, index) => {
-            return (
-              <SnapItem
-                margin={{ left: index === 0 ? "0px" : space(1) + "px" }}
-                snapAlign="center"
-                key={index}
-                width="384px"
-              >
-                <Box width="100%">
-                  <ProductGridItem
-                    imageIndex={2}
-                    product={product}
-                    authState={authState}
-                    onShowLoginModal={() => toggleLoginModal(true)}
-                    saveProductButtonRefetchQueries={saveProductRefetchQueries}
-                  />
-                </Box>
-              </SnapItem>
-            )
-          })}
-        </SnapList>
-        <ArrowWrapper
-          justifyContent="flex-end"
-          py={2}
-          pl={3}
-          onClick={() => {
-            const nextIndex = lastVisible + 1
-            goToSnapItem(nextIndex)
-          }}
-        >
-          <ThinChevron color={reachedEnd ? color("black10") : color("black100")} />
-        </ArrowWrapper>
-      </CarouselWrapper>
+      <Flex width="100%" justifyContent="center">
+        <CarouselWrapper px={[2, 2, 2, 2, 2]}>
+          <ArrowWrapper
+            justifyContent="flex-start"
+            pr={3}
+            onClick={() => {
+              if (firstVisible > 0) {
+                const previousIndex = firstVisible - 1
+                goToSnapItem(previousIndex)
+              }
+            }}
+          >
+            <ThinChevron color={firstVisible !== 0 ? color("black100") : color("black10")} rotateDeg="180deg" />
+          </ArrowWrapper>
+          <SnapList direction="horizontal" width="100%" ref={snapList}>
+            {products?.map((product, index) => {
+              return (
+                <SnapItem
+                  margin={{ left: index === 0 ? "0px" : space(1) + "px" }}
+                  snapAlign="center"
+                  key={index}
+                  width="384px"
+                >
+                  <Box width="100%">
+                    <ProductGridItem
+                      imageIndex={2}
+                      product={product}
+                      authState={authState}
+                      onShowLoginModal={() => toggleLoginModal(true)}
+                      saveProductButtonRefetchQueries={saveProductRefetchQueries}
+                    />
+                  </Box>
+                </SnapItem>
+              )
+            })}
+          </SnapList>
+
+          <ArrowWrapper
+            justifyContent="flex-end"
+            pl={3}
+            onClick={() => {
+              const nextIndex = lastVisible + 1
+              goToSnapItem(nextIndex)
+            }}
+          >
+            <ThinChevron color={reachedEnd ? color("black10") : color("black100")} />
+          </ArrowWrapper>
+        </CarouselWrapper>
+      </Flex>
       <Spacer mb={4} />
-      <PagerWrapper px={50}>
-        <Flex flexDirection="row" flexWrap="nowrap">
+      <MaxWidthWrapper px={[2, 2, 2, 2, 2]}>
+        <PagerWrapper flexDirection="row" flexWrap="nowrap">
           {products?.map((_image, index) => {
             return (
               <Box
@@ -99,34 +102,40 @@ export const ProductCarousel: React.FC<{
               </Box>
             )
           })}
-        </Flex>
-      </PagerWrapper>
+        </PagerWrapper>
+      </MaxWidthWrapper>
     </Box>
   )
 }
 
+const MaxWidthWrapper = styled(Flex)`
+  max-width: ${(props) => `${props.theme.grid.container.maxWidth.xl}px`};
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+`
+
 const ArrowWrapper = styled(Flex)`
   width: 50px;
-  height: calc(100% - 58px);
+  height: 475px;
   align-items: center;
   flex-direction: row;
   cursor: pointer;
   z-index: 10;
-  margin-top: 198px;
 `
 
-const PagerWrapper = styled(Box)`
+const PagerWrapper = styled(Flex)`
   width: 100%;
   cursor: pointer;
 `
 
-const CarouselWrapper = styled.div`
+const CarouselWrapper = styled(Flex)`
   position: relative;
-  width: 100%;
+  max-width: ${(props) => `${props.theme.grid.container.maxWidth.xl + 100}px`};
   overflow: hidden;
-  cursor: pointer;
-  display: flex;
   flex-direction: row;
+  justify-content: center;
   flex-wrap: nowrap;
 `
 

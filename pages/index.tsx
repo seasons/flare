@@ -14,6 +14,7 @@ import { ProductCarousel } from "components/ProductCarousel"
 import { Discover } from "components/Homepage/Discover"
 import { color } from "helpers"
 import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
+import { ButtonVariant } from "components/Button/Button.shared"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -27,7 +28,7 @@ const Home = screenTrack(() => ({
   const defaultNavStyles = {
     backgroundColor: "transparent",
     textColor: color("white100"),
-    buttonVariant: "transparentOutlineWhite",
+    buttonVariant: "transparentOutlineWhite" as ButtonVariant,
     logoScale: 1,
   }
   const { previousData, data = previousData, error } = useQuery(Home_Query)
@@ -42,7 +43,7 @@ const Home = screenTrack(() => ({
         setNavStyles({
           backgroundColor: color("white100"),
           textColor: color("black100"),
-          buttonVariant: "primaryWhite",
+          buttonVariant: "primaryWhite" as ButtonVariant,
           logoScale: 0.8,
         })
       } else {
@@ -93,37 +94,41 @@ const Home = screenTrack(() => ({
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
           <FeaturedIn />
           <SeparatorWithPadding />
+        </Box>
+      </MaxWidth>
 
-          {!!data?.newArrivals?.length && (
-            <>
-              <Spacer mb={10} />
-              <ProductCarousel title="New arrivals" products={data?.newArrivals} saveProductRefetchQueries={[]} />
-              <Spacer mb={10} />
-            </>
-          )}
+      {!!data?.newArrivals?.length && (
+        <>
+          <Spacer mb={10} />
+          <ProductCarousel title="New arrivals" products={data?.newArrivals} saveProductRefetchQueries={[]} />
+          <Spacer mb={10} />
+        </>
+      )}
 
+      <MaxWidth>
+        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
           <Spacer mb="128px" />
           <HowItWorks />
           <Spacer mb={10} />
-          {data?.upcomingProducts.length > 0 && (
-            <>
-              <ProductCarousel
-                title="Upcoming releases"
-                products={data?.upcomingProducts}
-                saveProductRefetchQueries={[]}
-              />
-              <Spacer mb={10} />
-            </>
-          )}
+        </Box>
+      </MaxWidth>
 
+      {data?.upcomingProducts.length > 0 && (
+        <>
+          <ProductCarousel title="Upcoming releases" products={data?.upcomingProducts} saveProductRefetchQueries={[]} />
+          <Spacer mb={10} />
+        </>
+      )}
+
+      <MaxWidth>
+        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
           <Spacer mb={10} />
           <Discover />
         </Box>
       </MaxWidth>
+
       <Spacer mb={160} />
-
       <Plans plans={data?.paymentPlans} />
-
       <Spacer mb={160} />
 
       <MaxWidth>
