@@ -3,14 +3,14 @@ import { ListCheck } from "components/SVGs/ListCheck"
 import React from "react"
 
 interface PlanFeaturesList {
-  includedFeatures: string[]
-  excludedFeatures: string[]
+  included: string[]
+  excluded: string[]
 }
 
 export const PlanFeatures: React.FC<{ features: PlanFeaturesList }> = ({ features }) => {
   return (
     <>
-      {features?.includedFeatures?.map((feature, index) => {
+      {features?.included?.map((feature, index) => {
         return (
           <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
             <Box mr={2}>
@@ -22,7 +22,7 @@ export const PlanFeatures: React.FC<{ features: PlanFeaturesList }> = ({ feature
           </Flex>
         )
       })}
-      {features?.excludedFeatures?.map((feature, index) => {
+      {features?.excluded?.map((feature, index) => {
         return (
           <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
             <Box mr={2}>

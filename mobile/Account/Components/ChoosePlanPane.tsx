@@ -2,6 +2,8 @@ import { Box, Button, Container, FixedBackArrow, Flex, Sans, Separator, Spacer }
 import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { ChevronIcon } from "components/Icons/ChevronIcon"
+import { PlanButton } from "components/Payment/PlanButton"
+import { PlanFeatures } from "components/Payment/PlanFeatures"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
@@ -14,16 +16,18 @@ import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
 import { Schema as TrackSchema, useTracking } from "utils/analytics"
 import { Coupon } from "utils/calcFinalPrice"
+
 import { useMutation, useQuery } from "@apollo/client"
-import { PlanButton } from "components/Payment/PlanButton"
-import { PlanFeatures } from "components/Payment/PlanFeatures"
 
 export const GET_PLANS = gql`
   query GetPlans($where: PaymentPlanWhereInput) {
     paymentPlans(where: $where) {
       id
       name
-      features
+      features {
+        included
+        excluded
+      }
       tagline
       caption
       price
