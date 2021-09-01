@@ -51,6 +51,9 @@ export interface FontFamilyProps {
   display: {
     regular: FontValue
   }
+  header: {
+    regular: FontValue
+  }
 }
 
 /**
@@ -68,6 +71,9 @@ export const fontFamily: FontFamilyProps = {
   },
   display: {
     regular: "'Apercu-Mono', sans-serif",
+  },
+  header: {
+    regular: "'NBAK Regular', sans-serif",
   },
 }
 
@@ -264,6 +270,15 @@ export const Sans = createStyledText<SansProps>("sans", (weight, italic) => {
  * <Display color="black10" size="3t">Hi</Display>
  */
 export const Display = createStyledText<DisplayProps>("display")
+
+/**
+ * This is our Apercu font used mainly for headers
+ *
+ * @example
+ *
+ * <Display color="black10" size="3t">Hi</Display>
+ */
+export const Header = createStyledText<DisplayProps>("header")
 
 /**
  * @example

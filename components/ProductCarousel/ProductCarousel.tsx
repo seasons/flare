@@ -1,5 +1,5 @@
 import { ProductGridItem } from "@seasons/eclipse"
-import { Box, Display, Flex, Link, Spacer } from "components"
+import { Box, Display, Flex, Link, Spacer, Header } from "components"
 import { ThinChevron } from "components/SVGs/ThinChevron"
 import { color, space } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -26,11 +26,11 @@ export const ProductCarousel: React.FC<{
   return (
     <Box px={[2, 2, 2, 2, 2]}>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Display size="7">{title}</Display>
+        <Header size="9">{title}</Header>
         <Link href="/browse">
-          <Display size="7" style={{ textDecoration: "underline" }}>
+          <Header size="9" style={{ textDecoration: "underline" }}>
             See all
-          </Display>
+          </Header>
         </Link>
       </Flex>
       <Spacer mb={2} />

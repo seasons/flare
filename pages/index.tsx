@@ -107,7 +107,11 @@ const Home = screenTrack(() => ({
           <Spacer mb={10} />
           {data?.upcomingProducts.length > 0 && (
             <>
-              <ProductCarousel title="Upcoming" products={data?.upcomingProducts} saveProductRefetchQueries={[]} />
+              <ProductCarousel
+                title="Upcoming releases"
+                products={data?.upcomingProducts}
+                saveProductRefetchQueries={[]}
+              />
               <Spacer mb={10} />
             </>
           )}

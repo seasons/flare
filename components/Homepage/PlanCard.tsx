@@ -1,10 +1,13 @@
 import React from "react"
-import { Box, Display, Flex, Sans, Spacer, Button } from "components"
+import { Box, Sans, Spacer, Button } from "components"
 import styled from "styled-components"
 import { color } from "helpers"
+import { useRouter } from "next/router"
 import { PlanFeatures } from "components/Payment/PlanFeatures"
 
 export const PlanCard = ({ plan }) => {
+  const router = useRouter()
+
   return (
     <Wrapper px={3} pt={5} pb={3}>
       <Sans size="7">{plan.name}</Sans>
@@ -22,7 +25,9 @@ export const PlanCard = ({ plan }) => {
       <Spacer mb={5} />
       <PlanFeatures features={plan?.features} />
       <Spacer mb={5} />
-      <Button block>Apply for membership</Button>
+      <Button block onClick={() => router.push("/signup")}>
+        Apply for membership
+      </Button>
     </Wrapper>
   )
 }

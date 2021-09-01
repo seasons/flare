@@ -1,7 +1,7 @@
 import React from "react"
 import { Sans, Spacer, Flex, MaxWidth } from "components"
 import { Media } from "../Responsive"
-import { Display } from "../Typography"
+import { Header } from "../Typography"
 import { imageResize } from "utils/imageResize"
 import styled from "styled-components"
 import { ListCheck } from "components/SVGs/ListCheck"
@@ -29,7 +29,7 @@ const listItems = [
 const TextContent = () => {
   return (
     <Flex flexDirection="column" justifyContent="center" style={{ maxWidth: "464px" }} pr={3}>
-      <Display size="8">{title}</Display>
+      <Header size="9">{title}</Header>
       <Spacer mb={1} />
       <Sans size="4" color="black50">
         {subtitle}

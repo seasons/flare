@@ -1,6 +1,6 @@
 import React from "react"
 import { Sans, Spacer, Flex, MaxWidth, Media } from "components"
-import { Display } from "../Typography"
+import { Header } from "../Typography"
 import styled from "styled-components"
 import { space } from "helpers"
 
@@ -44,9 +44,9 @@ export const HomepageFitPics: React.FC<{ fitPics: any }> = ({ fitPics }) => {
       <MaxWidth>
         <Flex flexDirection="column" flexWrap="nowrap" justifyContent="space-between" px={[0, 0, 2, 2, 2]} width="100%">
           <Flex flexDirection="column" alignItems="center" justifyContent="center" width="100%">
-            <Display size="8" style={{ textAlign: "center" }} px={2}>
+            <Header size="9" style={{ textAlign: "center" }} px={2}>
               What members are wearing
-            </Display>
+            </Header>
             <Spacer mb={1} />
             <Sans size="4" color="black50" style={{ textAlign: "center" }}>
               From Brooklyn to LA, to SF to Chicago

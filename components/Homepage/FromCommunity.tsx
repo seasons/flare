@@ -1,7 +1,7 @@
 import React from "react"
 import { Grid } from "../Grid"
 import { Sans, Spacer, Box, Flex, Link } from "../"
-import { Display } from "../Typography"
+import { Header } from "../Typography"
 import styled from "styled-components"
 import { Media } from "../Responsive"
 import { imageResize } from "utils/imageResize"
@@ -41,11 +41,11 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
   return (
     <Grid>
       <Flex px={[2, 2, 2, 2, 2]} flexDirection="row" justifyContent="space-between">
-        <Display size="7">Latest thoughts</Display>
+        <Header size="9">Latest thoughts</Header>
         <Link href="/blog">
-          <Display size="7" style={{ textDecoration: "underline" }}>
+          <Header size="9" style={{ textDecoration: "underline" }}>
             See all
-          </Display>
+          </Header>
         </Link>
       </Flex>
       <Spacer mb={2} />

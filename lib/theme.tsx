@@ -62,6 +62,81 @@ export const themeProps = {
   },
 
   typeSizes: {
+    header: {
+      /** Equivalent to 8px size / 8px line-height  */
+      "0": {
+        fontSize: 8,
+        lineHeight: 8,
+      },
+      /** Equivalent to 10px size / 14px line-height  */
+      "1": {
+        fontSize: 10,
+        lineHeight: 14,
+      },
+      /** Equivalent to 12px size / 16px line-height  */
+      "2": {
+        fontSize: 12,
+        lineHeight: 16,
+      },
+      /** Equivalent to 14px size / 24px line-height  */
+      "3": {
+        fontSize: 14,
+        lineHeight: 20,
+      },
+      /** Equivalent to 16px size / 26px line-height  */
+      "4": {
+        fontSize: 16,
+        lineHeight: 24,
+      },
+      /** Equivalent to 18px size / 30px line-height  */
+      "5": {
+        fontSize: 18,
+        lineHeight: 26,
+      },
+      /** Equivalent to 22px size / 30px line-height  */
+      "6": {
+        fontSize: 20,
+        lineHeight: 30,
+      },
+      /** Equivalent to 22px size / 30px line-height  */
+      "7": {
+        fontSize: 24,
+        lineHeight: 32,
+      },
+      /** Equivalent to 28px size / 36px line-height  */
+      "8": {
+        fontSize: 28,
+        lineHeight: 36,
+      },
+      "9": {
+        fontSize: 32,
+        lineHeight: 40,
+      },
+      /** Equivalent to 42px size / 50px line-height  */
+      "10": {
+        fontSize: 42,
+        lineHeight: 56,
+      },
+      "11": {
+        fontSize: 48,
+        lineHeight: 56,
+      },
+      /** Equivalent to 60px size / 66px line-height  */
+      "12": {
+        fontSize: 60,
+        lineHeight: 66,
+      },
+      /** Equivalent to 80px size / 84px line-height  */
+      "14": {
+        fontSize: 80,
+        lineHeight: 84,
+      },
+      /** Equivalent to 100px size / 104px line-height  */
+      "16": {
+        fontSize: 100,
+        lineHeight: 104,
+      },
+    },
     display: {
       "3": {
         fontSize: 14,

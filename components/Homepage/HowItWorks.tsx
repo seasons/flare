@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Flex, Sans, Spacer } from "components"
+import { Box, Flex, Sans, Spacer, Header } from "components"
 import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import { Media } from "../Responsive"
@@ -59,9 +59,9 @@ export const HowItWorks: React.FC = () => {
   return (
     <Grid>
       <Box px={[2, 2, 2, 2, 2]} pb={6}>
-        <Display size="9" style={{ textAlign: "center" }}>
+        <Header size="9" style={{ textAlign: "center" }}>
           How membership works
-        </Display>
+        </Header>
         <Spacer mb={1} />
         <Sans size="4" color="black50" style={{ textAlign: "center" }}>
           Access an exclusive rental library of over 1,000+ styles

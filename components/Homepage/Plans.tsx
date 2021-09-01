@@ -7,7 +7,7 @@ import { imageResize } from "utils/imageResize"
 import styled from "styled-components"
 import { PlanCard } from "./PlanCard"
 
-import { Box, Display, Flex, Media, Sans, Spacer } from "components"
+import { Box, Header, Flex, Media, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
 
 const image = require("../../public/images/homepage/PlanBackground-Flare.jpg")
@@ -60,7 +60,7 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
       <Grid px={[2, 158, 158, 158, 158]} pt={[10, 15, 15, 15, 15]}>
         <Flex width="100%" alignItems="center" justifyContent="center" flexDirection="row" pb={5}>
           <Flex flexDirection="column" justifyContent="center" alignItems="center">
-            <Display size="9">{`${seasonAndYear()} Membership`}</Display>
+            <Header size="9">{`${seasonAndYear()} Membership`}</Header>
             <Sans size="4" color="black50">
               Have a question not covered here? Check out our{" "}
               <span
