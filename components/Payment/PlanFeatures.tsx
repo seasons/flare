@@ -1,17 +1,16 @@
 import { Box, Flex, Sans } from "components"
 import { ListCheck } from "components/SVGs/ListCheck"
-import { color } from "helpers"
 import React from "react"
 
-interface Feature {
-  caption: string
-  title: string
+interface PlanFeaturesList {
+  includedFeatures: string[]
+  excludedFeatures: string[]
 }
 
-export const PlanFeatures: React.FC<{ features: Feature[] }> = ({ features }) => {
+export const PlanFeatures: React.FC<{ features: PlanFeaturesList }> = ({ features }) => {
   return (
     <>
-      {features?.features?.map((feature, index) => {
+      {features?.includedFeatures?.map((feature, index) => {
         return (
           <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
             <Box mr={2}>
@@ -23,7 +22,7 @@ export const PlanFeatures: React.FC<{ features: Feature[] }> = ({ features }) =>
           </Flex>
         )
       })}
-      {features?.strikeThroughFeatures?.map((feature, index) => {
+      {features?.excludedFeatures?.map((feature, index) => {
         return (
           <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
             <Box mr={2}>
