@@ -1,15 +1,17 @@
 import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { PlanFeatures } from "components/Payment/PlanFeatures"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
 import { Loader } from "mobile/Loader"
 import React from "react"
 import { ScrollView } from "react-native"
 import { Schema, screenTrack } from "utils/analytics"
+
 import { useQuery } from "@apollo/client"
+
 import { PauseButtons } from "../Components/Pause"
 import { MembershipCard } from "./Components"
-import { PlanFeatures } from "components/Payment/PlanFeatures"
 
 export const GET_MEMBERSHIP_INFO = gql`
   query GetMembershipInfo {
@@ -37,7 +39,10 @@ export const GET_MEMBERSHIP_INFO = gql`
             id
             planID
             price
-            features
+            features {
+              included
+              excluded
+            }
             tier
           }
         }

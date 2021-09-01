@@ -49,7 +49,10 @@ const PaymentStep_Query = gql`
       planID
       itemCount
       estimate(couponID: $couponID)
-      features
+      features {
+        included
+        excluded
+      }
       caption
     }
     me {

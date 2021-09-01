@@ -1,6 +1,5 @@
 import { Box, Flex, Sans } from "components"
 import { ListCheck } from "components/SVGs/ListCheck"
-import { color } from "helpers"
 import React from "react"
 
 interface Features {
