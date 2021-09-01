@@ -29,7 +29,6 @@ const Home = screenTrack(() => ({
     backgroundColor: "transparent",
     textColor: color("white100"),
     buttonVariant: "transparentOutlineWhite" as ButtonVariant,
-    logoScale: 1,
   }
   const { previousData, data = previousData, error } = useQuery(Home_Query)
   const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
@@ -44,7 +43,6 @@ const Home = screenTrack(() => ({
           backgroundColor: color("white100"),
           textColor: color("black100"),
           buttonVariant: "primaryWhite" as ButtonVariant,
-          logoScale: 0.8,
         })
       } else {
         setNavStyles(defaultNavStyles)

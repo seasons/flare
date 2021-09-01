@@ -8,6 +8,7 @@ import { useMutation } from "@apollo/client"
 import { Input } from "@material-ui/core"
 import { Box, Sans, Spacer } from "components"
 import { color } from "helpers"
+import { GLOBAL_TRANSITION } from "lib/theme"
 
 const CHECK_COUPON = gql`
   mutation CheckCoupon($couponID: String!) {
@@ -107,7 +108,7 @@ const Container = styled(Box)`
   padding: 6px 20px;
   font-family: ProximaNova-Medium, sans-serif;
   border: 1px solid ${color("black25")};
-  transition: all 0.25s;
+  transition: all ${GLOBAL_TRANSITION};
   border-radius: 8px;
 `
 

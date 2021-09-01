@@ -4,6 +4,7 @@ import styled from "styled-components"
 
 import { color as styledColor, display, position, space } from "styled-system"
 import { color } from "../helpers/color"
+import { GLOBAL_TRANSITION } from "lib/theme"
 
 interface LinkProps extends NextLinkProps {}
 
@@ -21,7 +22,7 @@ export const Link: React.FC<LinkProps> = (props) => {
  */
 export const Anchor = styled.a`
   color: ${color("black100")};
-  transition: color 0.25s;
+  transition: color ${GLOBAL_TRANSITION};
   text-decoration: none;
   cursor: pointer;
   &:hover {

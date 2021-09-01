@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Color } from "../../lib/theme"
+import { Color, GLOBAL_TRANSITION } from "../../lib/theme"
 
 import { Box, Sans } from "components"
 
@@ -46,6 +46,6 @@ const Underline = styled.div<{ color: string }>`
   left: 0;
   bottom: 14px;
   width: 100%;
-  transition: color 0.25s ease;
+  transition: color ${GLOBAL_TRANSITION};
   background-color: ${(p) => p.color};
 `

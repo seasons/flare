@@ -17,7 +17,7 @@ import {
   TextAlignProps,
 } from "styled-system"
 
-import { DisplaySize, SansSize, themeProps, TypeSizes } from "../../lib/theme"
+import { DisplaySize, GLOBAL_TRANSITION, SansSize, themeProps, TypeSizes } from "../../lib/theme"
 import { determineFontSizes } from "./determineFontSizes"
 
 /**
@@ -216,7 +216,10 @@ function createStyledText<P extends StyledTextProps>(
     if (fontFamilyType === null) {
       throw new Error("Did not expect `fontType` to be `null`.")
     }
-    const styles = fontType === "display" ? { letterSpacing: "-1px", ...textProps.style } : textProps.style
+    const styles =
+      fontType === "display"
+        ? { letterSpacing: "-1px", transition: `color ${GLOBAL_TRANSITION}`, ...textProps.style }
+        : { transition: `color ${GLOBAL_TRANSITION}`, ...textProps.style }
     return (
       <Text
         fontFamily={fontFamilyType && fontFamily[fontType][fontFamilyType]}

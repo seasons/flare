@@ -6,6 +6,8 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core"
 
 import { fontFamily } from "../components/Typography/Typography"
 
+export const GLOBAL_TRANSITION = "0.5s ease"
+
 export const breakpoints = {
   xl: 1200,
   lg: 1025,

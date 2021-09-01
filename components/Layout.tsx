@@ -38,7 +38,6 @@ export interface NavStyles {
   backgroundColor?: string
   textColor?: string
   buttonVariant?: ButtonVariant
-  logoScale: number
 }
 
 interface LayoutProps {

@@ -6,6 +6,7 @@ import { color as colorHelper } from "helpers/color"
 
 import { Autocomplete } from "./Autocomplete"
 import { SearchProvider } from "./SearchProvider"
+import { GLOBAL_TRANSITION } from "lib/theme"
 
 interface SearchBarProps {
   handleSearch?: () => void
@@ -34,11 +35,13 @@ const SearchWrapper = styled.div<{ color: string }>`
     color: ${(p) => p.color};
     padding-left: 16px;
     padding-right: 16px;
+    transition: border ${GLOBAL_TRANSITION}, color ${GLOBAL_TRANSITION};
 
     &::placeholder {
       /* Chrome, Firefox, Opera, Safari 10.1+ */
       color: ${(p) => p.color};
       opacity: 1; /* Firefox */
+      transition: color ${GLOBAL_TRANSITION};
     }
 
     &:-ms-input-placeholder {

@@ -15,6 +15,7 @@ import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
 import { SeasonsLogoIcon } from "components/Icons/SeasonsLogoIcon"
+import { GLOBAL_TRANSITION } from "lib/theme"
 
 export const DESKTOP_NAV_HEIGHT = 92
 
@@ -22,7 +23,6 @@ export const DesktopNav = (props: NavProps) => {
   const { links, navStyles } = props
   const backgroundColor = navStyles?.backgroundColor ? navStyles?.backgroundColor : color("white100")
   const textColor = navStyles?.textColor ? navStyles?.textColor : color("black100")
-  const logoScale = navStyles?.logoScale ? navStyles.logoScale : 1
 
   const router = useRouter()
 
@@ -125,12 +125,7 @@ export const DesktopNav = (props: NavProps) => {
         <MaxWidth>
           <Box width="100%">
             <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
-              <SeasonsLogoIcon
-                width="72px"
-                height="72px"
-                fill={textColor}
-                style={{ transform: `scale(${logoScale})`, transition: "transform 0.25s" }}
-              />
+              <SeasonsLogoIcon width="58px" height="58px" fill={textColor} />
               <Box px={4}>
                 <SearchBar color={textColor} />
               </Box>
@@ -154,7 +149,7 @@ export const DesktopNav = (props: NavProps) => {
 
 const HeaderContainer = styled.div<{ backgroundColor: string }>`
   background-color: ${(p) => p.backgroundColor};
-  transition: background-color 0.5s ease-in-out;
+  transition: background-color ${GLOBAL_TRANSITION};
   position: fixed;
   top: 0;
   left: 0;

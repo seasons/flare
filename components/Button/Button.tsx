@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import styled, { css } from "styled-components"
 import { borderRadius, borders, height, space, textAlign, width } from "styled-system"
 
-import { themeProps } from "../../lib/theme"
+import { GLOBAL_TRANSITION, themeProps } from "../../lib/theme"
 import { Spinner } from "../Spinner"
 import { Sans, SansProps } from "../Typography"
 import { ButtonBaseProps, ButtonProps, defaultSize, defaultVariant } from "./Button.shared"
@@ -292,7 +292,7 @@ const Container = styled.button<ButtonBaseProps>`
   ${(props) => {
     if (!props.loading) {
       return `
-        transition: 0.25s ease;
+        transition: background-color ${GLOBAL_TRANSITION}, border ${GLOBAL_TRANSITION};
       `
     }
   }};
