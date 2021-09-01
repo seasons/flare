@@ -1,4 +1,4 @@
-import { Box, Flex, MaxWidth, Sans, Separator, Spacer } from "components"
+import { Box, Flex, MaxWidth, Sans, Separator, Spacer, Header } from "components"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { DateTime } from "luxon"
@@ -14,6 +14,8 @@ import { Media } from "../Responsive"
 import { Countdown } from "@seasons/eclipse"
 import { Display } from "../Typography"
 import { imageResize } from "utils/imageResize"
+
+const staticNoise = require("../../public/images/homepage/static-noise.gif")
 
 interface HeroComponentProps {
   version: "mobile" | "desktop"
@@ -133,13 +135,15 @@ const MainCTA = ({ version }: HeroComponentProps) => {
 const DesktopHero = () => {
   return (
     <Background>
+      <Static />
+      <Overlay />
       <MaxWidth>
         <Flex width="100%" px={[2, 2, 2, 2, 2]} py={5} justifyContent="flex-end" flexDirection="column" height="700px">
           <Flex flexDirection="row" justifyContent="space-between" alignItems="flex-end">
-            <Sans color="white100" size="11" style={{ maxWidth: "852px" }}>
+            <Header color="white100" size="11" style={{ maxWidth: "852px" }}>
               Seasons is a creative community exploring the shared access of fashion. Fall 2021 memberships are now
               open.
-            </Sans>
+            </Header>
             <Spacer mr={50} />
             <MainCTA version="desktop" />
           </Flex>
@@ -164,5 +168,22 @@ export const Hero: React.FC = () => {
 
 const Background = styled.div`
   width: 100%;
+  position: relative;
   background: linear-gradient(180deg, rgba(253, 166, 137, 1) 47%, rgba(255, 203, 146, 1) 100%);
+`
+
+const Static = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0.2;
+  background: url(${staticNoise}) repeat center center;
+`
+
+const Overlay = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: ${color("black100")};
+  opacity: 0.1;
 `
