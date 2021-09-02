@@ -41,7 +41,7 @@ export const GetTheAppButton: React.FC<Props> = ({ block, width, variant, size =
       >
         <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center">
           <Box top="1px" style={{ position: "relative" }}>
-            <AppleSVG width="17px" height="20px" />
+            <AppleSVG width="14px" height="16px" />
           </Box>
           <Spacer mr={1} />
           <Sans size="4">Get the app</Sans>

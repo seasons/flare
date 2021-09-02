@@ -1,15 +1,15 @@
-import { Box, Flex, MaxWidth, Sans, Spacer, Header } from "components"
+import { Flex, MaxWidth, Spacer, Header } from "components"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Link from "next/link"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 import { useDrawerContext } from "../../components/Drawer/DrawerContext"
 import { Button } from "../Button"
 import { seasonAndYear } from "utils/seasonAndYear"
-import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
+import { GetTheAppButton } from "components/Button/GetTheApp"
 
 const staticNoise = require("../../public/images/homepage/static-noise.gif")
 
@@ -91,6 +91,12 @@ const Content: React.FC<{ version: "mobile" | "desktop" }> = ({ version }) => {
             </Header>
             <Spacer mr={50} mt={5} />
             <MainCTA version={version} />
+            {!isDesktop && (
+              <>
+                <Spacer mb={2} />
+                <GetTheAppButton block size="large" variant="blur" />
+              </>
+            )}
           </Flex>
         </Flex>
       </MaxWidth>

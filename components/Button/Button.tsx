@@ -201,6 +201,18 @@ export class Button extends Component<WebButtonProps> {
               `
           }};
         `
+      case "blur":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+            return `
+                background-color: rgba(255, 255, 255, 0.4);
+                border-color: transparent;
+                backdrop-filter: blur(50px);
+                color: ${colors.black100};
+              `
+          }};
+        `
       default:
     }
   }
