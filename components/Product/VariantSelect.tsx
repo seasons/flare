@@ -27,16 +27,15 @@ export const VariantList = ({ setSelectedVariant, selectedVariant, onSizeSelecte
   const tracking = useTracking()
   const rows = variants.map((size, i) => {
     const SizeButton = styled(Box)`
+      border-color: ${size.reservable > 0 ? color("black10") : color("black04")};
       ${() => {
         if (size.displayShort === selectedVariant.displayShort) {
-          return `border-color: ${color("black100")};
-          box-shadow: 2px 2px 4px ${color("black50")};
+          return `border: solid ${color("black100")};
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
           `
-        } else {
-          return `border-color: ${color("black10")}`
-        }
+        }  
       }};
-      background-color:${size?.reservable > 0 ? color("white100") : color("black10")};
+      background-color:${size?.reservable > 0 ? color("white100") : color("black04")};
       padding: 10px;
       border-radius: 7px;
       border-style: solid;
