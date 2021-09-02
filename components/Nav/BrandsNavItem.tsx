@@ -30,7 +30,7 @@ const DesktopNavItem = ({ brands, textColor = color("black100") }) => {
   const tracking = useTracking()
   const anchorRef = React.useRef(null)
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
-  console.log("t", textColor)
+
   return (
     <>
       <DesktopNavItemContainer ref={anchorRef} onClick={() => setIsOpen(true)}>
