@@ -16,6 +16,7 @@ import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
 import { SeasonsLogoIcon } from "components/Icons/SeasonsLogoIcon"
 import { GLOBAL_TRANSITION } from "lib/theme"
+import { GetTheAppButton } from "components/Button/GetTheApp"
 
 export const DESKTOP_NAV_HEIGHT = 92
 
@@ -97,6 +98,8 @@ export const DesktopNav = (props: NavProps) => {
       >
         Sign in
       </Button>
+      <Spacer ml={1} />
+      <GetTheAppButton variant="primaryWhiteNoBorder" />
     </>
   )
 
@@ -149,7 +152,7 @@ export const DesktopNav = (props: NavProps) => {
 
 const HeaderContainer = styled.div<{ backgroundColor: string }>`
   background-color: ${(p) => p.backgroundColor};
-  transition: background-color ${GLOBAL_TRANSITION};
+  transition: background-color 1000ms ease-in-out;
   position: fixed;
   top: 0;
   left: 0;

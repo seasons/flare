@@ -26,7 +26,7 @@ const Home = screenTrack(() => ({
   path: "/",
 }))(() => {
   const defaultNavStyles = {
-    backgroundColor: "transparent",
+    backgroundColor: "rgba(255, 255, 255, 0)",
     textColor: color("white100"),
     buttonVariant: "transparentOutlineWhite" as ButtonVariant,
   }
@@ -38,13 +38,20 @@ const Home = screenTrack(() => ({
 
   const onScroll = () => {
     if (typeof window !== undefined) {
-      if (window.pageYOffset >= DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT) {
+      const offset = window.pageYOffset
+      if (
+        offset >= DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT &&
+        navStyles.backgroundColor === "rgba(255, 255, 255, 0)"
+      ) {
         setNavStyles({
-          backgroundColor: color("white100"),
+          backgroundColor: "rgba(255, 255, 255, 1)",
           textColor: color("black100"),
           buttonVariant: "primaryWhite" as ButtonVariant,
         })
-      } else {
+      } else if (
+        offset < DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT &&
+        navStyles.backgroundColor !== "rgba(255, 255, 255, 0)"
+      ) {
         setNavStyles(defaultNavStyles)
       }
     }
