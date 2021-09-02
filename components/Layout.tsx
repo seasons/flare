@@ -38,6 +38,7 @@ export interface NavStyles {
   backgroundColor?: string
   textColor?: string
   buttonVariant?: ButtonVariant
+  getTheAppVariant?: ButtonVariant
 }
 
 interface LayoutProps {

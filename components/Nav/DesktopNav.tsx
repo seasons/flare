@@ -99,7 +99,7 @@ export const DesktopNav = (props: NavProps) => {
         Sign in
       </Button>
       <Spacer ml={1} />
-      <GetTheAppButton variant="primaryWhiteNoBorder" />
+      <GetTheAppButton variant={navStyles?.getTheAppVariant ? navStyles.getTheAppVariant : "primaryWhiteNoBorder"} />
     </>
   )
 

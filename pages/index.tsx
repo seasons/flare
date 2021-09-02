@@ -29,6 +29,7 @@ const Home = screenTrack(() => ({
     backgroundColor: "rgba(255, 255, 255, 0)",
     textColor: color("white100"),
     buttonVariant: "transparentOutlineWhite" as ButtonVariant,
+    getTheAppVariant: "primaryWhiteNoBorder" as ButtonVariant,
   }
   const { previousData, data = previousData, error } = useQuery(Home_Query)
   const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
@@ -47,6 +48,7 @@ const Home = screenTrack(() => ({
           backgroundColor: "rgba(255, 255, 255, 1)",
           textColor: color("black100"),
           buttonVariant: "primaryWhite" as ButtonVariant,
+          getTheAppVariant: "primaryWhite" as ButtonVariant,
         })
       } else if (
         offset < DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT &&
