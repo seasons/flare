@@ -58,7 +58,7 @@ const Content: React.FC<{
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Header size={["7", "9"]}>{title}</Header>
           <Link href="/browse">
-            <Header size={["7", "9"]} style={{ textDecoration: "underline" }}>
+            <Header size={["7", "9"]} underline pointer>
               See all
             </Header>
           </Link>

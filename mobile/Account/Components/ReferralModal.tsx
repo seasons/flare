@@ -33,7 +33,7 @@ export const ReferralModal: React.FC<{ referralLink: string; referralData: Refer
         <Spacer mb={4} />
         <Flex flexDirection="row" alignItems="center" width="100%" justifyContent="space-between">
           <Sans size="6">{referralLink}</Sans>
-          <Sans size="3" style={{ textDecoration: "underline", cursor: "pointer" }} onClick={onCopy}>
+          <Sans size="3" underline pointer onClick={onCopy}>
             Copy link
           </Sans>
         </Flex>

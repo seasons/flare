@@ -137,7 +137,7 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
                       </Box>
                     )}
                     <Box mt={3} onClick={() => setShowResetPassword(true)}>
-                      <Sans size="3" color="black100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+                      <Sans size="3" color="black100" underline pointer>
                         Forgot your password?
                       </Sans>
                     </Box>

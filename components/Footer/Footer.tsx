@@ -26,31 +26,31 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
             </Sans>
             <Spacer mb={1} />
             <Link href="/signup">
-              <Sans size="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" color="white100" underline pointer>
                 Choose a plan
               </Sans>
             </Link>
             <Spacer mb={1} />
             <Link href="/browse/all+all">
-              <Sans size="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" color="white100" underline pointer>
                 Browse
               </Sans>
             </Link>
             <Spacer mb={1} />
             <div onClick={() => openDrawer("faq")}>
-              <Sans size="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" color="white100" underline pointer>
                 FAQ
               </Sans>
             </div>
             <Spacer mb={1} />
             <a href="mailto:membership@seasons.nyc?subject=Question" target="_blank" style={{ textDecoration: "none" }}>
-              <Sans size="3" pr="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" pr="3" color="white100" underline pointer>
                 Ask a question
               </Sans>
             </a>
             <Spacer mb={1} />
             <Link href="/gift">
-              <Sans size="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" color="white100" underline pointer>
                 Gift a membership
               </Sans>
             </Link>
@@ -62,19 +62,19 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
             </Sans>
             <Spacer mb={1} />
             <Link href="/about">
-              <Sans size="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" color="white100" underline pointer>
                 About us
               </Sans>
             </Link>
             <Spacer mb={1} />
             <Link href="/blog">
-              <Sans size="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" color="white100" underline pointer>
                 Blog
               </Sans>
             </Link>
             <Spacer mb={1} />
             <a href="mailto:membership@seasons.nyc?subject=Careers" target="_blank" style={{ textDecoration: "none" }}>
-              <Sans size="3" pr="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" pr="3" color="white100" underline pointer>
                 Careers
               </Sans>
             </a>
@@ -84,7 +84,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               target="_blank"
               style={{ textDecoration: "none" }}
             >
-              <Sans size="3" pr="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" pr="3" color="white100" underline pointer>
                 Wholesale
               </Sans>
             </a>
@@ -96,25 +96,25 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
             </Sans>
             <Spacer mb={1} />
             <a href="https://www.instagram.com/seasons.ny/" target="_blank" style={{ textDecoration: "none" }}>
-              <Sans size="3" pr="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" pr="3" color="white100" underline pointer>
                 Instagram
               </Sans>
             </a>
             <Spacer mb={1} />
             <a href="https://www.instagram.com/seasons.ny/" target="_blank" style={{ textDecoration: "none" }}>
-              <Sans size="3" pr="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" pr="3" color="white100" underline pointer>
                 Twitter
               </Sans>
             </a>
             <Spacer mb={1} />
             <a href="https://www.tiktok.com/@seasons.ny" target="_blank" style={{ textDecoration: "none" }}>
-              <Sans size="3" pr="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" pr="3" color="white100" underline pointer>
                 TikTok
               </Sans>
             </a>
             <Spacer mb={1} />
             <a href="mailto:membership@seasons.nyc?subject=Hello" target="_blank" style={{ textDecoration: "none" }}>
-              <Sans size="3" pr="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+              <Sans size="3" pr="3" color="white100" underline pointer>
                 Email
               </Sans>
             </a>
@@ -130,7 +130,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
                 {resortedBrands?.map(({ name, slug }, index) => {
                   return (
                     <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index} prefetch={false}>
-                      <Sans color="white100" size={3} style={{ textDecoration: "underline", cursor: "pointer" }}>
+                      <Sans color="white100" size={3} underline pointer>
                         {name}
                       </Sans>
                       <Spacer mb={1} />
@@ -145,7 +145,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
                   return (
                     <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index}>
                       <Box mr={4}>
-                        <Sans size={3} color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+                        <Sans size={3} color="white100" underline pointer>
                           {name}
                         </Sans>
                       </Box>
@@ -174,14 +174,14 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
           <Spacer mr={5} />
           <Link href="/privacy-policy">
             <Spacer mt={[1, 1, 1, 0, 0]} />
-            <Sans size="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+            <Sans size="3" color="white100" underline pointer>
               Privacy Policy
             </Sans>
           </Link>
           <Spacer mr={5} />
           <Link href="/terms-of-service">
             <Spacer mt={[1, 1, 1, 0, 0]} />
-            <Sans size="3" pr="3" color="white100" style={{ textDecoration: "underline", cursor: "pointer" }}>
+            <Sans size="3" pr="3" color="white100" underline pointer>
               Terms of Service
             </Sans>
           </Link>

@@ -180,6 +180,8 @@ interface StyledTextProps extends Partial<TextProps> {
   size: string | string[]
   weight?: null | FontWeights
   italic?: boolean
+  underline?: boolean
+  pointer?: boolean
 }
 
 export interface DisplayProps extends Partial<TextProps> {
@@ -210,16 +212,20 @@ function createStyledText<P extends StyledTextProps>(
   selectFontFamilyType: typeof _selectFontFamilyType = _selectFontFamilyType
 ): StyledComponent<any, any, any, any> {
   // @ts-ignore
-  return styled<P>(({ size, weight, italic, element, ...textProps }: StyledTextProps) => {
+  return styled<P>(({ size, weight, italic, underline, element, pointer, ...textProps }: StyledTextProps) => {
     const fontFamilyType = selectFontFamilyType(_fontWeight(weight), italic)
     // This is mostly to narrow the type of `fontFamilyType` to remove `null`.
     if (fontFamilyType === null) {
       throw new Error("Did not expect `fontType` to be `null`.")
     }
-    const styles =
-      fontType === "display"
-        ? { letterSpacing: "-1px", transition: `color ${GLOBAL_TRANSITION}`, ...textProps.style }
-        : { transition: `color ${GLOBAL_TRANSITION}`, ...textProps.style }
+    const styles = {
+      transition: `color ${GLOBAL_TRANSITION}`,
+      ...(underline ? { textDecoration: "underline" } : {}),
+      ...(pointer ? { cursor: "pointer" } : {}),
+      ...(fontType === "display" ? { letterSpacing: "-1px" } : {}),
+      ...textProps.style,
+    }
+
     return (
       <Text
         fontFamily={fontFamilyType && fontFamily[fontType][fontFamilyType]}

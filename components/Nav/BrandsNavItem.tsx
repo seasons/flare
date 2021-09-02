@@ -57,7 +57,7 @@ const DesktopNavItem = ({ brands, textColor = color("black100") }) => {
                       mb={1}
                     >
                       <NextLink href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`}>
-                        <Sans size={7} style={{ textDecoration: "underline", cursor: "pointer" }}>
+                        <Sans size={7} underline pointer>
                           {name}
                         </Sans>
                       </NextLink>
@@ -125,7 +125,7 @@ const MobileNavItem = ({ brands }) => {
                 mb={2}
               >
                 <NextLink href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`}>
-                  <Sans size={7} style={{ textDecoration: "underline", cursor: "pointer" }}>
+                  <Sans size={7} underline pointer>
                     {name}
                   </Sans>
                 </NextLink>
