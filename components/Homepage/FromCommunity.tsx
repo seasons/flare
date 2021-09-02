@@ -41,9 +41,9 @@ export const FromCommunity: React.FC<{ blogPosts: any }> = ({ blogPosts }) => {
   return (
     <Grid>
       <Flex px={[2, 2, 2, 2, 2]} flexDirection="row" justifyContent="space-between">
-        <Header size="9">Latest thoughts</Header>
+        <Header size={["7", "9"]}>Latest thoughts</Header>
         <Link href="/blog">
-          <Header size="9" style={{ textDecoration: "underline" }}>
+          <Header size={["7", "9"]} style={{ textDecoration: "underline" }}>
             See all
           </Header>
         </Link>

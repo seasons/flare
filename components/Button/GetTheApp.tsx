@@ -4,15 +4,17 @@ import { color } from "../../helpers"
 import { AppleSVG } from "../SVGs"
 import { Button } from "./Button"
 import { Schema, useTracking } from "utils/analytics"
-import { ButtonVariant } from "./Button.shared"
+import { ButtonSize, ButtonVariant } from "./Button.shared"
+import { GLOBAL_TRANSITION } from "lib/theme"
 
 interface Props {
   block?: boolean
   width?: string
   variant?: ButtonVariant
+  size?: ButtonSize
 }
 
-export const GetTheAppButton: React.FC<Props> = ({ block, width, variant }) => {
+export const GetTheAppButton: React.FC<Props> = ({ block, width, variant, size = "medium" }) => {
   const tracking = useTracking()
   let _width
   if (width) {
@@ -22,11 +24,13 @@ export const GetTheAppButton: React.FC<Props> = ({ block, width, variant }) => {
   } else {
     _width = "auto"
   }
+
   return (
     <GetAppWrapper block={block}>
       <Button
         variant={variant ? variant : "primaryWhite"}
         width={_width}
+        size={size}
         onClick={() => {
           tracking.trackEvent({
             actionName: Schema.ActionNames.GetTheIOSAppTapped,
@@ -35,8 +39,8 @@ export const GetTheAppButton: React.FC<Props> = ({ block, width, variant }) => {
           window.open("https://szns.co/app", "_blank")
         }}
       >
-        <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
-          <Box top="2px" style={{ position: "relative" }}>
+        <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center">
+          <Box top="1px" style={{ position: "relative" }}>
             <AppleSVG width="17px" height="20px" />
           </Box>
           <Spacer mr={1} />
@@ -49,6 +53,11 @@ export const GetTheAppButton: React.FC<Props> = ({ block, width, variant }) => {
 
 const GetAppWrapper = styled("div")<{ block: boolean }>`
   width: ${(p) => (p.block ? "100%" : "auto")};
+  svg {
+    path {
+      transition: fill ${GLOBAL_TRANSITION};
+    }
+  }
   &:hover {
     svg {
       .apple-fill {

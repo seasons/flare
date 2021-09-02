@@ -131,9 +131,9 @@ const Home = screenTrack(() => ({
         </Box>
       </MaxWidth>
 
-      <Spacer mb={160} />
+      <Spacer mb={[0, 0, 160, 160, 160]} />
       <Plans plans={data?.paymentPlans} />
-      <Spacer mb={160} />
+      <Spacer mb={[10, 10, 160, 160, 160]} />
 
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
@@ -144,7 +144,6 @@ const Home = screenTrack(() => ({
             </>
           )}
 
-          <Spacer mb={160} />
           <TheApp />
           <Spacer mb={10} />
 

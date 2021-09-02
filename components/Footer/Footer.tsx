@@ -165,8 +165,9 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
           alignItems={["flex-start", "flex-end"]}
           px={[2, 2, 2, 2, 2]}
         >
-          <SeasonsLogoIcon width="64px" height="64px" fill={color("white100")} />
+          <SeasonsLogoIcon width="58px" height="58px" fill={color("white100")} />
           <Spacer mr={5} />
+          <Spacer mt={[3, 3, 3, 0, 0]} />
           <Sans size="3" color="white100">
             © 2021 Seasons. All Rights Reserved.
           </Sans>
