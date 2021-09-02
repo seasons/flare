@@ -16,7 +16,7 @@ export const PlanFeatures: React.FC<{ features: Features }> = ({ features }) => 
             <Box mr={2}>
               <ListCheck feature={true} />
             </Box>
-            <Sans size="4" color="black100">
+            <Sans size={["3", "4"]} color="black100">
               {feature}
             </Sans>
           </Flex>
@@ -28,7 +28,7 @@ export const PlanFeatures: React.FC<{ features: Features }> = ({ features }) => 
             <Box mr={2}>
               <ListCheck feature={false} />
             </Box>
-            <Sans size="4" color="black50" style={{ textDecorationLine: "line-through" }}>
+            <Sans size={["3", "4"]} color="black50" style={{ textDecorationLine: "line-through" }}>
               {feature}
             </Sans>
           </Flex>

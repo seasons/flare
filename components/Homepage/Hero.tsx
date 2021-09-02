@@ -17,58 +17,6 @@ interface HeroComponentProps {
   version: "mobile" | "desktop"
 }
 
-const MobileHero = () => {
-  return (
-    <Grid>
-      <Row>
-        <Col xs="12" px={2}>
-          <Flex flexDirection="column">
-            <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer pb={6} />
-              <Spacer mb={4} />
-              <Spacer mb={4} />
-              <HeroBottomDetailText version="mobile" />
-              <Spacer mb={4} />
-            </Flex>
-          </Flex>
-        </Col>
-      </Row>
-    </Grid>
-  )
-}
-
-const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
-  const isMobile = version === "mobile"
-  const { userSession } = useAuthContext()
-
-  let bottomDetailText
-  switch (userSession?.customer?.status) {
-    case "Waitlisted":
-    case "Authorized":
-    case "Active":
-      bottomDetailText = (
-        <>
-          {"Have a question about membership? "}
-          <a
-            href="mailto:membership@seasons.nyc?subject=Hello"
-            style={{ textDecoration: "underline", color: color("black100") }}
-          >
-            Contact Us
-          </a>
-        </>
-      )
-      break
-    default:
-      bottomDetailText = "— Over +1000 styles right in your pocket"
-  }
-
-  return (
-    <Sans size={isMobile ? "3" : "4"} color="black50" style={{ textAlign: isMobile ? "left" : "center" }}>
-      {bottomDetailText}
-    </Sans>
-  )
-}
-
 const MainCTA = ({ version }: HeroComponentProps) => {
   const { authState, userSession } = useAuthContext()
   const tracking = useTracking()
@@ -128,20 +76,21 @@ const MainCTA = ({ version }: HeroComponentProps) => {
   )
 }
 
-const DesktopHero = () => {
+const Content: React.FC<{ version: "mobile" | "desktop" }> = ({ version }) => {
+  const isDesktop = version === "desktop"
   return (
     <Background>
       <Static />
       <Overlay />
       <MaxWidth>
         <Flex width="100%" px={[2, 2, 2, 2, 2]} py={5} justifyContent="flex-end" flexDirection="column" height="700px">
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="flex-end">
-            <Header color="white100" size="11" style={{ maxWidth: "852px" }}>
+          <Flex flexDirection={isDesktop ? "row" : "column"} justifyContent="space-between" alignItems="flex-end">
+            <Header color="white100" size={["8", "8", "11", "11", "11"]} style={{ maxWidth: "852px" }}>
               Seasons is a private rental service exploring the shared access of fashion.{" "}
               <span style={{ textDecoration: "underline" }}>{seasonAndYear()}</span> memberships are now open.
             </Header>
-            <Spacer mr={50} />
-            <MainCTA version="desktop" />
+            <Spacer mr={50} mt={5} />
+            <MainCTA version={version} />
           </Flex>
         </Flex>
       </MaxWidth>
@@ -153,10 +102,10 @@ export const Hero: React.FC = () => {
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopHero />
+        <Content version="desktop" />
       </Media>
       <Media lessThan="md">
-        <MobileHero />
+        <Content version="mobile" />
       </Media>
     </>
   )

@@ -21,8 +21,8 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
       <Grid px={[2, 158, 158, 158, 158]} pt={[10, 15, 15, 15, 15]}>
         <Flex width="100%" alignItems="center" justifyContent="center" flexDirection="row" pb={5}>
           <Flex flexDirection="column" justifyContent="center" alignItems="center">
-            <Header size="9">{`${seasonAndYear()} Membership`}</Header>
-            <Sans size="4" color="black50">
+            <Header size={["7", "9"]}>{`${seasonAndYear()} Membership`}</Header>
+            <Sans size={["3", "4"]} color="black50">
               Have a question not covered here? Check out our{" "}
               <span
                 style={{ textDecoration: "underline", cursor: "pointer", color: color("black100") }}
@@ -35,14 +35,13 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
         </Flex>
         <Row>
           {plans.map((plan, index) => (
-            <Col md="6" xs="12" key={index} p={1}>
+            <Col md="6" xs="12" key={index} px={[0, 0, 1, 1, 1]} pb={5}>
               <Flex flexDirection="row" justifyContent={index % 2 === 0 ? "flex-end" : "flex-start"}>
                 <PlanCard plan={plan} />
               </Flex>
             </Col>
           ))}
         </Row>
-        <Spacer mb={5} />
         <Flex flexDirection="row" justifyContent="center">
           <Sans size="3" color="black50" style={{ textAlign: "center", maxWidth: "720px" }}>
             Cancel for any reason within your first 24 hours to receive a full refund. Free shipping and dry cleaning

@@ -1,5 +1,5 @@
 import { ProductGridItem } from "@seasons/eclipse"
-import { Box, Display, Flex, Link, Spacer, Header, MaxWidth } from "components"
+import { Box, Display, Flex, Link, Spacer, Header, MaxWidth, Media } from "components"
 import { ThinChevron } from "components/SVGs/ThinChevron"
 import { color, space } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -12,8 +12,37 @@ export const ProductCarousel: React.FC<{
   title?: string
   saveProductRefetchQueries: any[]
 }> = ({ title, products, saveProductRefetchQueries = [] }) => {
+  return (
+    <>
+      <Media greaterThanOrEqual="md">
+        <Content
+          version="desktop"
+          products={products}
+          title={title}
+          saveProductRefetchQueries={saveProductRefetchQueries}
+        />
+      </Media>
+      <Media lessThan="md">
+        <Content
+          version="mobile"
+          products={products}
+          title={title}
+          saveProductRefetchQueries={saveProductRefetchQueries}
+        />
+      </Media>
+    </>
+  )
+}
+
+const Content: React.FC<{
+  products: any[]
+  title?: string
+  saveProductRefetchQueries: any[]
+  version: "mobile" | "desktop"
+}> = ({ title, products, saveProductRefetchQueries = [], version }) => {
   const { authState, toggleLoginModal } = useAuthContext()
   const snapList = useRef(null)
+  const isMobile = version === "mobile"
   const visibleElements = useVisibleElements({ debounce: 50, ref: snapList }, (elements) => {
     return elements
   }) as any[]
@@ -27,9 +56,9 @@ export const ProductCarousel: React.FC<{
     <Box style={{ marge: "0 auto" }}>
       <MaxWidthWrapper px={[2, 2, 2, 2, 2]}>
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
-          <Header size="9">{title}</Header>
+          <Header size={["7", "9"]}>{title}</Header>
           <Link href="/browse">
-            <Header size="9" style={{ textDecoration: "underline" }}>
+            <Header size={["7", "9"]} style={{ textDecoration: "underline" }}>
               See all
             </Header>
           </Link>
@@ -38,18 +67,20 @@ export const ProductCarousel: React.FC<{
       <Spacer mb={2} />
       <Flex width="100%" justifyContent="flex-start">
         <CarouselWrapper px={[2, 2, 2, 2, 2]}>
-          <ArrowWrapper
-            justifyContent="flex-start"
-            pr={3}
-            onClick={() => {
-              if (firstVisible > 0) {
-                const previousIndex = firstVisible - 1
-                goToSnapItem(previousIndex)
-              }
-            }}
-          >
-            <ThinChevron color={firstVisible !== 0 ? color("black100") : color("black10")} rotateDeg="180deg" />
-          </ArrowWrapper>
+          {!isMobile && (
+            <ArrowWrapper
+              justifyContent="flex-start"
+              pr={3}
+              onClick={() => {
+                if (firstVisible > 0) {
+                  const previousIndex = firstVisible - 1
+                  goToSnapItem(previousIndex)
+                }
+              }}
+            >
+              <ThinChevron color={firstVisible !== 0 ? color("black100") : color("black10")} rotateDeg="180deg" />
+            </ArrowWrapper>
+          )}
           <SnapList direction="horizontal" width="100%" ref={snapList}>
             {products?.map((product, index) => {
               return (
@@ -57,7 +88,7 @@ export const ProductCarousel: React.FC<{
                   margin={{ left: index === 0 ? "0px" : space(1) + "px" }}
                   snapAlign="center"
                   key={index}
-                  width="384px"
+                  width={isMobile ? "90%" : "384px"}
                 >
                   <Box width="100%">
                     <ProductGridItem
@@ -72,17 +103,18 @@ export const ProductCarousel: React.FC<{
               )
             })}
           </SnapList>
-
-          <ArrowWrapper
-            justifyContent="flex-end"
-            pl={3}
-            onClick={() => {
-              const nextIndex = lastVisible + 1
-              goToSnapItem(nextIndex)
-            }}
-          >
-            <ThinChevron color={reachedEnd ? color("black10") : color("black100")} />
-          </ArrowWrapper>
+          {!isMobile && (
+            <ArrowWrapper
+              justifyContent="flex-end"
+              pl={3}
+              onClick={() => {
+                const nextIndex = lastVisible + 1
+                goToSnapItem(nextIndex)
+              }}
+            >
+              <ThinChevron color={reachedEnd ? color("black10") : color("black100")} />
+            </ArrowWrapper>
+          )}
         </CarouselWrapper>
       </Flex>
       <Spacer mb={4} />

@@ -27,13 +27,13 @@ export const PlanCard = ({ plan }) => {
           / {isYearlyPlan ? "year" : "month"}
         </Sans>
       </Sans>
-      <Sans size="4" color="black50">
+      <Sans size={["3", "4"]} color="black50">
         {plan.caption}
       </Sans>
       <Spacer mb={5} />
       <PlanFeatures features={plan?.features} />
       <Spacer mb={5} />
-      <Button block onClick={() => router.push("/signup")}>
+      <Button size="large" block onClick={() => router.push("/signup")}>
         Apply for membership
       </Button>
     </Wrapper>

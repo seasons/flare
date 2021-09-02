@@ -1,4 +1,4 @@
-import { Box, MaxWidth, Separator, Spacer } from "components"
+import { Box, MaxWidth, Media, Separator, Spacer } from "components"
 import { FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans, TheApp } from "components/Homepage"
 import { Layout } from "components/Layout"
 import { PartnerModal } from "components/Partner/PartnerModal"
@@ -103,13 +103,15 @@ const Home = screenTrack(() => ({
         </>
       )}
 
-      <MaxWidth>
-        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-          <Spacer mb="128px" />
-          <HowItWorks />
-          <Spacer mb={10} />
-        </Box>
-      </MaxWidth>
+      <Media greaterThanOrEqual="md">
+        <MaxWidth>
+          <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+            <Spacer mb="128px" />
+            <HowItWorks />
+            <Spacer mb={10} />
+          </Box>
+        </MaxWidth>
+      </Media>
 
       {data?.upcomingProducts.length > 0 && (
         <>
@@ -120,8 +122,12 @@ const Home = screenTrack(() => ({
 
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-          <Spacer mb={10} />
           <Discover />
+          <Media lessThan="md">
+            <Spacer mb={10} />
+            <HowItWorks />
+            <Spacer mb={10} />
+          </Media>
         </Box>
       </MaxWidth>
 
