@@ -1,8 +1,11 @@
-import React from "react"
+import React, { useRef } from "react"
 import { Col, Grid, Row } from "../Grid"
-import { Sans, Spacer, Box, Flex, Link } from "../"
+import { Sans, Spacer, Box, Flex, Link, Media } from "../"
 import { Header } from "../Typography"
 import styled from "styled-components"
+import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplist-carousel"
+import { space } from "helpers"
+import { chunk } from "lodash"
 
 const categories = [
   {
@@ -43,7 +46,7 @@ const categories = [
   },
 ]
 
-export const Discover = () => {
+const DesktopContent = () => {
   return (
     <Grid>
       <Flex px={[2, 2, 2, 2, 2]} flexDirection="row" justifyContent="space-between">
@@ -60,7 +63,7 @@ export const Discover = () => {
           return (
             <Col md="3" xs="6" key={index} p={0.5}>
               <Link href={category.link}>
-                <CategoryWrapper p={2} image={category.image}>
+                <CategoryWrapper p={2} image={category.image} height="246px">
                   <TextWrapper p={2}>
                     <Sans size="4">{category.name}</Sans>
                   </TextWrapper>
@@ -74,13 +77,72 @@ export const Discover = () => {
   )
 }
 
+const MobileContent = () => {
+  const snapList = useRef(null)
+  // const selected = useVisibleElements({ debounce: 10, ref: snapList }, ([element]) => element)
+  // const goToSnapItem = useScroll({ ref: snapList })
+
+  const chunkedCategories = chunk(categories, 2)
+
+  return (
+    <Box px={2}>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Header size="7">Discover</Header>
+        <Link href="/browse">
+          <Header size="7" style={{ textDecoration: "underline" }}>
+            See all
+          </Header>
+        </Link>
+      </Flex>
+      <Spacer mb={2} />
+      <SnapList direction="horizontal" width="100%" ref={snapList}>
+        {chunkedCategories.map((categories, index) => {
+          return (
+            <SnapItem
+              margin={{ left: index === 0 ? "0px" : space(0.5) + "px" }}
+              snapAlign="center"
+              key={index}
+              width="75%"
+            >
+              <Flex flexDirection="column" width="100%">
+                {categories.map((category, index) => (
+                  <Link href={category.link} key={index}>
+                    <CategoryWrapper p={2} mb={0.5} image={category.image} height="185px">
+                      <TextWrapper p={2}>
+                        <Sans size="4">{category.name}</Sans>
+                      </TextWrapper>
+                    </CategoryWrapper>
+                  </Link>
+                ))}
+              </Flex>
+            </SnapItem>
+          )
+        })}
+      </SnapList>
+    </Box>
+  )
+}
+
+export const Discover: React.FC = () => {
+  return (
+    <>
+      <Media greaterThanOrEqual="md">
+        <DesktopContent />
+      </Media>
+      <Media lessThan="md">
+        <MobileContent />
+      </Media>
+    </>
+  )
+}
+
 const TextWrapper = styled(Box)`
   position: absolute;
   bottom: 0;
   left: 0;
 `
 
-const CategoryWrapper = styled(Box)<{ image: string }>`
+const CategoryWrapper = styled(Box)<{ image: string; height: string }>`
   border-radius: 8px;
   position: relative;
   background: url(${(p) => p.image}) no-repeat center center;
@@ -88,5 +150,5 @@ const CategoryWrapper = styled(Box)<{ image: string }>`
   background-size: cover;
   background-position: center center;
   width: 100%;
-  height: 246px;
+  height: ${(p) => p.height};
 `

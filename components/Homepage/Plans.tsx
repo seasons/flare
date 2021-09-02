@@ -12,9 +12,7 @@ import { Col, Grid, Row } from "../Grid"
 const image = require("../../public/images/homepage/PlanBackground-Flare.jpg")
 
 export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
-  const { authState } = useAuthContext()
   const { openDrawer } = useDrawerContext()
-  const router = useRouter()
 
   return (
     <Background>
