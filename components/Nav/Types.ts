@@ -1,3 +1,5 @@
+import { NavStyles } from "components/Layout"
+
 export type Link = {
   text: string
   url?: string
@@ -9,4 +11,5 @@ export type Link = {
 export interface NavProps {
   fixed?: boolean
   links?: Link[]
+  navStyles?: NavStyles
 }

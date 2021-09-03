@@ -1,7 +1,7 @@
 import React from "react"
 import { Sans, Spacer, Flex, MaxWidth } from "components"
 import { Media } from "../Responsive"
-import { Display } from "../Typography"
+import { Header } from "../Typography"
 import { imageResize } from "utils/imageResize"
 import styled from "styled-components"
 import { ListCheck } from "components/SVGs/ListCheck"
@@ -9,7 +9,7 @@ import { GetTheAppButton } from "components/Button/GetTheApp"
 import { space } from "helpers"
 
 const title = "Download the Seasons app"
-const subtitle = "Manage membership, browse releases & reserve your order."
+const subtitle = "Manage membership & reserve your order."
 
 const imageSRC = require("../../public/images/homepage/web-devices.png")
 const image = imageResize(imageSRC, "large")
@@ -28,10 +28,10 @@ const listItems = [
 
 const TextContent = () => {
   return (
-    <Flex flexDirection="column" justifyContent="center" style={{ maxWidth: "464px" }} pr={3}>
-      <Display size="8">{title}</Display>
+    <Flex flexDirection="column" justifyContent="center" style={{ maxWidth: "464px" }} pr={[0, 0, 3, 3, 3]}>
+      <Header size={["7", "9"]}>{title}</Header>
       <Spacer mb={1} />
-      <Sans size="4" color="black50">
+      <Sans size={["3", "4"]} color="black50">
         {subtitle}
       </Sans>
       <Spacer mb={3} />
@@ -42,16 +42,14 @@ const TextContent = () => {
       {listItems?.map((item, index) => {
         return (
           <Flex flexDirection="row" alignItems="center" mb={2} key={index}>
-            <ListCheck />
+            <ListCheck feature />
             <Spacer mr={2} />
-            <Sans size="4" color="black50" style={{ textDecoration: "underline" }}>
-              {item.text}
-            </Sans>
+            <Sans size={["3", "4"]}>{item.text}</Sans>
           </Flex>
         )
       })}
       <Spacer mb={2} />
-      <GetTheAppButton block />
+      <GetTheAppButton block size="large" />
     </Flex>
   )
 }

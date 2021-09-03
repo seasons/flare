@@ -29,5 +29,11 @@ export const FontStyles = createGlobalStyle`
             url('/fonts/proxima_nova_bold-webfont.woff') format('woff');
         font-weight: normal;
         font-style: normal;
+    }    
+    @font-face {
+        font-family: 'NBAK-Regular';
+        src: url('/fonts/NBAK-Regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
     }
 `

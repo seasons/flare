@@ -25,3 +25,9 @@
   font-weight: bold;
   font-style: normal;
 }
+@font-face {
+  font-family: "NBAK Regular";
+  src: url("/fonts/NBAK-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

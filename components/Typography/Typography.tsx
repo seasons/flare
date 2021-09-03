@@ -17,7 +17,7 @@ import {
   TextAlignProps,
 } from "styled-system"
 
-import { DisplaySize, SansSize, themeProps, TypeSizes } from "../../lib/theme"
+import { DisplaySize, GLOBAL_TRANSITION, SansSize, themeProps, TypeSizes } from "../../lib/theme"
 import { determineFontSizes } from "./determineFontSizes"
 
 /**
@@ -51,6 +51,9 @@ export interface FontFamilyProps {
   display: {
     regular: FontValue
   }
+  header: {
+    regular: FontValue
+  }
 }
 
 /**
@@ -68,6 +71,9 @@ export const fontFamily: FontFamilyProps = {
   },
   display: {
     regular: "'Apercu-Mono', sans-serif",
+  },
+  header: {
+    regular: "'NBAK Regular', sans-serif",
   },
 }
 
@@ -174,6 +180,8 @@ interface StyledTextProps extends Partial<TextProps> {
   size: string | string[]
   weight?: null | FontWeights
   italic?: boolean
+  underline?: boolean
+  pointer?: boolean
 }
 
 export interface DisplayProps extends Partial<TextProps> {
@@ -204,13 +212,20 @@ function createStyledText<P extends StyledTextProps>(
   selectFontFamilyType: typeof _selectFontFamilyType = _selectFontFamilyType
 ): StyledComponent<any, any, any, any> {
   // @ts-ignore
-  return styled<P>(({ size, weight, italic, element, ...textProps }: StyledTextProps) => {
+  return styled<P>(({ size, weight, italic, underline, element, pointer, ...textProps }: StyledTextProps) => {
     const fontFamilyType = selectFontFamilyType(_fontWeight(weight), italic)
     // This is mostly to narrow the type of `fontFamilyType` to remove `null`.
     if (fontFamilyType === null) {
       throw new Error("Did not expect `fontType` to be `null`.")
     }
-    const styles = fontType === "display" ? { letterSpacing: "-1px", ...textProps.style } : textProps.style
+    const styles = {
+      transition: `color ${GLOBAL_TRANSITION}`,
+      ...(underline ? { textDecoration: "underline" } : {}),
+      ...(pointer ? { cursor: "pointer" } : {}),
+      ...(fontType === "display" ? { letterSpacing: "-1px" } : {}),
+      ...textProps.style,
+    }
+
     return (
       <Text
         fontFamily={fontFamilyType && fontFamily[fontType][fontFamilyType]}
@@ -264,6 +279,15 @@ export const Sans = createStyledText<SansProps>("sans", (weight, italic) => {
  * <Display color="black10" size="3t">Hi</Display>
  */
 export const Display = createStyledText<DisplayProps>("display")
+
+/**
+ * This is our Apercu font used mainly for headers
+ *
+ * @example
+ *
+ * <Display color="black10" size="3t">Hi</Display>
+ */
+export const Header = createStyledText<DisplayProps>("header")
 
 /**
  * @example

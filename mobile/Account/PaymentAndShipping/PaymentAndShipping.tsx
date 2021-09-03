@@ -98,7 +98,7 @@ const AccountSection: React.FC<{ title: string; value: string | [string]; onClic
     <Box key={title} px={2}>
       <Flex justifyContent="space-between">
         <Sans size="4">{title}</Sans>
-        <Sans size="4" style={{ textDecoration: "underline", cursor: "pointer" }} onClick={onClick}>
+        <Sans size="4" underline pointer onClick={onClick}>
           Edit
         </Sans>
       </Flex>

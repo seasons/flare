@@ -1,44 +1,71 @@
-import { Box, Separator, Spacer } from "components"
-import {
-  BrowseAllWithImage,
-  FeaturedIn,
-  FromCommunity,
-  Hero,
-  HomepageFitPics,
-  HowItWorks,
-  Plans,
-  Testimonials,
-  TheApp,
-} from "components/Homepage"
-import { LaunchCalendar } from "components/Homepage/LaunchCalendar"
+import { Box, MaxWidth, Media, Separator, Spacer } from "components"
+import { FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans, TheApp } from "components/Homepage"
 import { Layout } from "components/Layout"
 import { PartnerModal } from "components/Partner/PartnerModal"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
 import { HomeMe_Query, Home_Query } from "queries/homeQueries"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
-
 import { useQuery } from "@apollo/client"
-import { ProductsRail } from "@seasons/eclipse"
-import { CarbonFootprint } from "components/Homepage/CarbonFootprint"
+import { ProductCarousel } from "components/ProductCarousel"
+import { Discover } from "components/Homepage/Discover"
+import { color } from "helpers"
+import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
+import { ButtonVariant } from "components/Button/Button.shared"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
+
+export const DESKTOP_HERO_HEIGHT = 700
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const { previousData, data = previousData } = useQuery(Home_Query)
+  const defaultNavStyles = {
+    backgroundColor: "rgba(255, 255, 255, 0)",
+    textColor: color("white100"),
+    buttonVariant: "transparentOutlineWhite" as ButtonVariant,
+    getTheAppVariant: "primaryWhiteNoBorder" as ButtonVariant,
+  }
+  const { previousData, data = previousData, error } = useQuery(Home_Query)
   const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
   const { updateUserSession, authState, toggleLoginModal } = useAuthContext()
+  const [navStyles, setNavStyles] = useState(defaultNavStyles)
   const router = useRouter()
 
-  const newestBrand = data?.newestBrandProducts?.[0]?.brand
-  const communityPosts = data?.blogPosts?.slice(1, 3)
+  const onScroll = () => {
+    if (typeof window !== undefined) {
+      const offset = window.pageYOffset
+      if (
+        offset >= DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT &&
+        navStyles.backgroundColor === "rgba(255, 255, 255, 0)"
+      ) {
+        setNavStyles({
+          backgroundColor: "rgba(255, 255, 255, 1)",
+          textColor: color("black100"),
+          buttonVariant: "primaryWhite" as ButtonVariant,
+          getTheAppVariant: "primaryWhite" as ButtonVariant,
+        })
+      } else if (
+        offset < DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT &&
+        navStyles.backgroundColor !== "rgba(255, 255, 255, 0)"
+      ) {
+        setNavStyles(defaultNavStyles)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", onScroll)
+    }
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [onScroll])
+
   const isUserSignedIn = authState?.isSignedIn
   const userSignedIn = useRef(isUserSignedIn)
 
@@ -68,99 +95,73 @@ const Home = screenTrack(() => ({
 
   const partnerData = getPartnerDataFromUTMCampaign(router.query["utm_campaign"])
   return (
-    <Layout showIntercom>
-      <Hero post={data?.blogPosts?.[0]} />
+    <Layout showIntercom disableMaxWidth navStyles={navStyles}>
+      <Hero />
+      <MaxWidth>
+        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+          <FeaturedIn />
+          <SeparatorWithPadding />
+        </Box>
+      </MaxWidth>
 
-      <FeaturedIn />
-      <SeparatorWithPadding />
-
-      {!!data?.newestBrandProducts?.length && newestBrand && (
+      {!!data?.newArrivals?.length && (
         <>
           <Spacer mb={10} />
-          <ProductsRail
-            title="New arrivals from"
-            underlineTitleText={newestBrand?.name}
-            showProductName
-            underlineTitleOnClick={() => {
-              router.push(`/designer/${newestBrand?.slug}`)
-            }}
-            imageIndex={2}
-            items={data?.newestBrandProducts}
-            authState={authState}
-            onShowLoginModal={() => toggleLoginModal(true)}
-          />
+          <ProductCarousel title="New arrivals" products={data?.newArrivals} saveProductRefetchQueries={[]} />
           <Spacer mb={10} />
         </>
       )}
 
-      <Spacer mb="128px" />
-      <HowItWorks />
-      <Spacer mb="135px" />
-
-      <BrowseAllWithImage />
-
-      <Spacer mb={10} />
-      <SeparatorWithPadding />
-      <Spacer mb={3} />
-
-      <Plans plans={data?.paymentPlans} />
-      <Spacer mb={3} />
-
-      <SeparatorWithPadding />
-      <Spacer mb={10} />
-
-      {data?.newBottoms.length > 0 && (
-        <>
-          <ProductsRail
-            title="Just added bottoms"
-            underlineTitleOnClick={() => {
-              router.push(`/browse}`)
-            }}
-            items={data?.newBottoms}
-            authState={authState}
-            onShowLoginModal={() => toggleLoginModal(true)}
-          />
-          <Spacer mb={10} />
-        </>
-      )}
-
-      <SeparatorWithPadding />
-      <Spacer mb={10} />
-
-      {data?.fitPics?.length > 0 && (
-        <>
-          <HomepageFitPics fitPics={data.fitPics} />
-          <Spacer mb={10} />
-          <Box px={[2, 2, 2, 2, 2]}>
-            <Separator />
+      <Media greaterThanOrEqual="md">
+        <MaxWidth>
+          <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+            <Spacer mb="128px" />
+            <HowItWorks />
+            <Spacer mb={10} />
           </Box>
+        </MaxWidth>
+      </Media>
+
+      {data?.upcomingProducts.length > 0 && (
+        <>
+          <ProductCarousel title="Upcoming releases" products={data?.upcomingProducts} saveProductRefetchQueries={[]} />
           <Spacer mb={10} />
         </>
       )}
 
-      <Testimonials />
-      <Spacer mb={10} />
+      <MaxWidth>
+        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+          <Discover />
+          <Media lessThan="md">
+            <Spacer mb={10} />
+            <HowItWorks />
+            <Spacer mb={10} />
+          </Media>
+        </Box>
+      </MaxWidth>
 
-      <SeparatorWithPadding />
+      <Spacer mb={[0, 0, 160, 160, 160]} />
+      <Plans plans={data?.paymentPlans} />
+      <Spacer mb={[10, 10, 160, 160, 160]} />
 
-      <Spacer mb={10} />
+      <MaxWidth>
+        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+          {data?.fitPics?.length > 0 && (
+            <>
+              <HomepageFitPics fitPics={data.fitPics} />
+              <Spacer mb={10} />
+            </>
+          )}
 
-      <FromCommunity blogPosts={communityPosts} />
+          <TheApp />
+          <Spacer mb={10} />
 
-      <Spacer mb={10} />
+          <FromCommunity blogPosts={data?.blogPosts} />
 
-      <SeparatorWithPadding />
-
-      <Spacer mb={10} />
-
-      <LaunchCalendar launches={data?.launches} />
-
-      <Spacer mb="112px" />
-      <TheApp />
-      <Spacer mb={10} />
-      <CarbonFootprint />
-      <Spacer mb={2} />
-      <PartnerModal open={showPartnerModal} {...partnerData} />
+          <Spacer mb={6} />
+          <PartnerModal open={showPartnerModal} {...partnerData} />
+        </Box>
+      </MaxWidth>
     </Layout>
   )
 })

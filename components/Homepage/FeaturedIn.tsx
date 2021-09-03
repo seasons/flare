@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Box, Sans, Flex, MaxWidth, Media } from "components"
+import { Box, Sans, Flex, MaxWidth, Media, Spacer } from "components"
 
 const bi = require("../../public/images/homepage/BusinessInsider.png")
 const nyt = require("../../public/images/homepage/NYT.png")
@@ -17,6 +17,16 @@ export const FeaturedIn: React.FC = () => {
     { logo: nyt, link: "https://www.nytimes.com/2020/01/08/style/men-rent-rental-clothing.html" },
     { logo: vogue, link: "https://www.vogue.com/article/seasons-menswear-fashion-rental-expansion" },
     { logo: wsj, link: "https://www.wsj.com/articles/can-a-rent-the-runway-model-work-for-men-11601912046" },
+    {
+      logo: wwd,
+      link:
+        "https://wwd.com/menswear-news/mens-retail-business/what-to-watch-mens-rental-services-begin-to-emerge-1203409178/",
+    },
+  ]
+
+  const mobileItems = [
+    { logo: vogue, link: "https://www.vogue.com/article/seasons-menswear-fashion-rental-expansion" },
+    { logo: nyt, link: "https://www.nytimes.com/2020/01/08/style/men-rent-rental-clothing.html" },
     {
       logo: wwd,
       link:
@@ -58,7 +68,7 @@ export const FeaturedIn: React.FC = () => {
   const Mobile = () => {
     return (
       <MaxWidth>
-        <Box width="100%" px={[2, 2, 2, 2, 2]} py={2}>
+        <Box width="100%" px={[2, 2, 2, 2, 2]} py={4}>
           <Flex
             style={{ width: "100%" }}
             flexDirection="row"
@@ -66,17 +76,21 @@ export const FeaturedIn: React.FC = () => {
             flexWrap="wrap"
             justifyContent="space-between"
           >
-            <Flex flexDirection="row" justifyContent="space-between" alignItems="center" flexWrap="wrap">
-              <Sans size="4" color="black50">
-                Featured in
-              </Sans>
-              {items.map((item, index) => {
-                const isRight = index % 2 === 0
+            <Sans size="4" color="black50" textAlign="center" style={{ width: "100%" }}>
+              Featured in
+            </Sans>
+            <Flex
+              mt={3}
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center"
+              flexWrap="nowrap"
+              width="100%"
+            >
+              {mobileItems.map((item, index) => {
                 return (
                   <StyledAnchor href={item.link} target="_blank" key={item.link}>
-                    <Box py={2} pr={isRight ? 0 : 5} pl={isRight ? 5 : 0}>
-                      <MobileImage src={item.logo} />
-                    </Box>
+                    <MobileImage src={item.logo} />
                   </StyledAnchor>
                 )
               })}
