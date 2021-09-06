@@ -19,6 +19,8 @@ import { Modal } from "./Modal"
 import { gql } from "@apollo/client"
 import { ButtonVariant } from "./Button/Button.shared"
 
+const DESKTOP_NAV_HEIGHT = 93
+
 export const SET_IMPACT_ID = gql`
   mutation SetImpactID($impactId: String) {
     addCustomerDetails(details: { impactId: $impactId }) {
@@ -51,6 +53,7 @@ interface LayoutProps {
   PageNotificationBar?: () => React.ReactElement
   disableMaxWidth?: boolean
   navStyles?: NavStyles
+  hideNavPadding?: boolean
 }
 
 export const Layout = ({
@@ -60,6 +63,7 @@ export const Layout = ({
   includeDefaultHead = true,
   showIntercom = false,
   disableMaxWidth = false,
+  hideNavPadding = false,
   PageNotificationBar,
   navStyles,
 }: LayoutProps) => {
@@ -106,6 +110,7 @@ export const Layout = ({
             <Theme>
               {showIntercom && <Intercom />}
               <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} navStyles={navStyles} />
+              {!hideNavPadding && <Box pt={DESKTOP_NAV_HEIGHT} />}
               <MaxWidth height="100%" disableMaxWidth={disableMaxWidth}>
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {children}
