@@ -25,6 +25,7 @@ import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
 import { AuthorizedCTA, WaitlistedCTA } from "@seasons/eclipse"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
 import { ReferAFriend } from "./Components/ReferAFriend"
+import { CreditBalance, CreditBalanceFragment_Customer } from "./Components/CreditBalance"
 
 export enum UserState {
   Undetermined,
@@ -76,9 +77,11 @@ export const GET_USER = gql`
           authorizationsCount
           authorizationWindowClosesAt
         }
+        ...CreditBalanceFragment_Customer
       }
     }
   }
+  ${CreditBalanceFragment_Customer}
 `
 
 export const Account = screenTrack()(({ navigation }) => {
@@ -290,6 +293,7 @@ export const Account = screenTrack()(({ navigation }) => {
             </Box>
           )}
         </Box>
+        <CreditBalance membership={customer?.membership} />
         <InsetSeparator />
         <Box px={2} py={4}>
           {!!data ? renderBody() : <ListSkeleton />}
