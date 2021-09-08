@@ -127,7 +127,7 @@ export const DesktopNav = (props: NavProps) => {
 
   return (
     <>
-      <HeaderContainer style={specialStyles} backgroundColor={backgroundColor} isSignedIn={isLoggedIn}>
+      <HeaderContainer style={specialStyles} backgroundColor={backgroundColor}>
         <MaxWidth>
           <Box width="100%">
             <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
