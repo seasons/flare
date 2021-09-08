@@ -1,22 +1,29 @@
 import { Box, Button, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { BottomFade } from "components/SVGs/BottomFade"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { assign, fill } from "lodash"
+import { DateTime } from "luxon"
 import { PauseButtons } from "mobile/Account/Components/Pause"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
-import { CHECK_ITEMS, GET_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
+import {
+  CHECK_ITEMS, GET_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM, ReservationHistoryTab_Query,
+  SavedTab_Query
+} from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
+
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client"
-import { SavedItemsTab } from "./Components/SavedItemsTab"
-import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
+import { BagBottomBar, Flex } from "@seasons/eclipse"
+
 import { BagTab } from "./Components/BagTab"
-import { ReservationHistoryTab_Query, SavedTab_Query } from "queries/bagQueries"
-import { DateTime } from "luxon"
+import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
+import { SavedItemsTab } from "./Components/SavedItemsTab"
+import { useBag } from "./useBag"
 
 export enum BagView {
   Bag = 0,
@@ -31,17 +38,18 @@ export const Bag = screenTrack()((props) => {
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
   const [isMutating, setMutating] = useState(false)
-
   const [isLoading, setIsLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const tracking = useTracking()
 
   const [currentView, setCurrentView] = useState<BagView>(BagView.Bag)
 
-  const { previousData, data = previousData, refetch } = useQuery(GET_BAG)
+  const { data, bagItems, refetch } = useBag()
 
   const me = data?.me
   const customerStatus = me?.customer?.status
+  const markedAsReturned = !!me?.activeReservation?.returnedAt
+
   useEffect(() => {
     if (data) {
       setIsLoading(false)
@@ -77,19 +85,18 @@ export const Bag = screenTrack()((props) => {
     setRefreshing(false)
   }
 
-  const items =
-    me?.bag?.map((item) => ({
-      ...item,
-      variantID: item.productVariant.id,
-      productID: item.productVariant.product.id,
-    })) || []
-
   const savedItems = savedTabData?.me?.savedItems
 
   const planItemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
-  const bagItems =
-    (planItemCount && assign(fill(new Array(planItemCount), { variantID: "", productID: "" }), items)) || []
+  const bagItemsWithEmptyItems =
+    (planItemCount && assign(fill(new Array(planItemCount), { variantID: "", productID: "" }), bagItems)) || []
   const hasActiveReservation = !!me?.activeReservation
+
+  const hasActiveReservationAndBagRoom =
+    hasActiveReservation &&
+    planItemCount > me?.activeReservation?.products?.length &&
+    bagItems.some((a) => a.status === "Added") &&
+    ["Queued", "Picked", "Packed", "Delivered", "Received", "Shipped"].includes(me?.activeReservation?.status)
 
   const shippingAddress = data?.me?.customer?.detail?.shippingAddress
   const handleReserve = async () => {
@@ -109,7 +116,7 @@ export const Bag = screenTrack()((props) => {
           !!shippingAddress.address1 && !!shippingAddress.city && !!shippingAddress.state && !!shippingAddress.zipCode
         const { data } = await checkItemsAvailability({
           variables: {
-            items: items.map((item) => item.variantID),
+            items: bagItems.map((item) => item.variantID),
           },
           refetchQueries: [
             {
@@ -175,7 +182,7 @@ export const Bag = screenTrack()((props) => {
 
   const isBagView = BagView.Bag == currentView
   const isSavedView = BagView.Saved == currentView
-  const bagCount = items.length
+  const bagCount = bagItems.length
   const bagIsFull = planItemCount && bagCount === planItemCount
   const reservationItems = reservationTabData?.me?.customer?.reservations
   const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
@@ -234,18 +241,93 @@ export const Bag = screenTrack()((props) => {
 
   let sections
   if (isBagView) {
-    sections = [{ data: bagItems }]
+    sections = [{ data: bagItemsWithEmptyItems }]
   } else if (isSavedView) {
     sections = [{ data: savedItems }]
   } else {
     sections = [{ data: reservationItems }]
   }
 
+  const PrimaryCTA = () => {
+    if (!isBagView && pauseStatus !== "paused") {
+      return null
+    }
+
+    let button = null
+
+    let handlePress = () => {
+      tracking.trackEvent({
+        actionName: Schema.ActionNames.ReserveButtonTapped,
+        actionType: Schema.ActionTypes.Tap,
+        bagIsFull,
+      })
+      if (!hasActiveReservation || hasActiveReservationAndBagRoom) {
+        handleReserve()
+      } else {
+        // navigation.navigate(
+        //   markedAsReturned
+        //     ? NavigationSchema.PageNames.ReturnYourBagConfirmation
+        //     : NavigationSchema.PageNames.ReturnYourBag
+        // )
+      }
+    }
+
+    if (hasActiveReservationAndBagRoom) {
+      button = <BagBottomBar bagItems={bagItems} onReserve={handlePress} />
+    } else if (hasActiveReservation) {
+      if (me?.activeReservation?.status === "Delivered") {
+        if (markedAsReturned) {
+          const returnLabelUrl = me?.activeReservation?.returnedPackage?.shippingLabel?.trackingURL
+          button = (
+            <Flex flexDirection="row" justifyContent="space-between" mx={2}>
+              {returnLabelUrl && (
+                <Button
+                  style={{ flex: 1 }}
+                  onPress={() => window.open(returnLabelUrl, "_blank")}
+                  disabled={isMutating}
+                  loading={isMutating}
+                  variant="primaryWhite"
+                >
+                  Return label
+                </Button>
+              )}
+              <Button
+                style={{ flex: 1 }}
+                onPress={handlePress}
+                disabled={isMutating}
+                loading={isMutating}
+                variant="primaryBlack"
+              >
+                How to return
+              </Button>
+            </Flex>
+          )
+        } else {
+          button = (
+            <Box mx={2}>
+              <Button block onPress={handlePress} disabled={isMutating} loading={isMutating} variant="primaryWhite">
+                Return bag
+              </Button>
+            </Box>
+          )
+        }
+      }
+    } else {
+      button = <BagBottomBar bagItems={bagItems} onReserve={handlePress} />
+    }
+
+    return (
+      button && (
+        <BottomFade width="100%" style={{ position: "absolute", bottom: 0 }}>
+          <Spacer mb={2} />
+          <Box>{button}</Box>
+          <Spacer mb={2} />
+        </BottomFade>
+      )
+    )
+  }
+
   const footerMarginBottom = currentView === BagView.Bag ? 96 : 2
-  const hasActiveReservationAndBagRoom =
-    hasActiveReservation &&
-    planItemCount > me?.activeReservation?.products?.length &&
-    ["Queued", "Picked", "Packed", "Delivered", "Received", "Shipped"].includes(me?.activeReservation?.status)
 
   const showReserveButton =
     isBagView && pauseStatus !== "paused" && (hasActiveReservationAndBagRoom || !hasActiveReservation)
@@ -289,28 +371,7 @@ export const Bag = screenTrack()((props) => {
         }}
         ListFooterComponent={() => <Spacer mb={footerMarginBottom} />}
       />
-      {showReserveButton && (
-        <Box px={2}>
-          <Button
-            block
-            onClick={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames.ReserveButtonTapped,
-                actionType: Schema.ActionTypes.Tap,
-                bagIsFull,
-              })
-              handleReserve()
-            }}
-            disabled={!bagIsFull || isMutating}
-            loading={isMutating}
-            style={{
-              width: "100%",
-            }}
-          >
-            Reserve
-          </Button>
-        </Box>
-      )}
+      <PrimaryCTA />
     </Container>
   )
 })
