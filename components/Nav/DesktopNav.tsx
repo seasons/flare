@@ -153,11 +153,11 @@ export const DesktopNav = (props: NavProps) => {
   )
 }
 
-const HeaderContainer = styled.div<{ backgroundColor: string; isSignedIn: boolean }>`
+const HeaderContainer = styled.div<{ backgroundColor: string }>`
   background-color: ${(p) => p.backgroundColor};
   transition: background-color 1000ms ease-in-out;
   position: fixed;
-  top: ${(p) => (p.isSignedIn ? 0 : "24px")};
+  top: 0;
   left: 0;
   right: 0;
   display: flex;

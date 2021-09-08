@@ -12,14 +12,11 @@ import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
 import { Nav, NavFragment_Query } from "./Nav/Nav"
 import { PopUp } from "./PopUp"
-import Marquee from "react-fast-marquee"
 import { useMutation, useQuery } from "@apollo/client"
 import { ModalProvider } from "./Modal/ModalProvider"
 import { Modal } from "./Modal"
 import { gql } from "@apollo/client"
 import { ButtonVariant } from "./Button/Button.shared"
-import { Sans } from "components"
-import { color } from "../helpers/color"
 
 const DESKTOP_NAV_HEIGHT = 93
 
@@ -112,25 +109,6 @@ export const Layout = ({
           <DrawerProvider>
             <Theme>
               {showIntercom && <Intercom />}
-              {!isSignedIn && (
-                <Marquee
-                  style={{ backgroundColor: color("black100"), paddingTop: "12px", paddingBottom: "12px" }}
-                  gradient={false}
-                >
-                  <Sans size="3" color="white100">
-                    Fall 2021 memberships are now open. 250 spots available | Fall 2021 memberships are now open. 250
-                    spots available | Fall 2021 memberships are now open. 250 spots available | Fall 2021 memberships
-                    are now open. 250 spots available | Fall 2021 memberships are now open. 250 spots available | Fall
-                    2021 memberships are now open. 250 spots available | Fall 2021 memberships are now open. 250 spots
-                    available | Fall 2021 memberships are now open. 250 spots available | Fall 2021 memberships are now
-                    open. 250 spots available | Fall 2021 memberships are now open. 250 spots available | Fall 2021
-                    memberships are now open. 250 spots available | Fall 2021 memberships are now open. 250 spots
-                    available | Fall 2021 memberships are now open. 250 spots available | Fall 2021 memberships are now
-                    open. 250 spots available | Fall 2021 memberships are now open. 250 spots available | Fall 2021
-                    memberships are now open. 250 spots available |{" "}
-                  </Sans>
-                </Marquee>
-              )}
               <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} navStyles={navStyles} />
               {!hideNavPadding && <Box pt={DESKTOP_NAV_HEIGHT} />}
               <MaxWidth height="100%" disableMaxWidth={disableMaxWidth}>
