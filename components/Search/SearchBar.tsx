@@ -41,16 +41,19 @@ const SearchWrapper = styled.div<{ color: string }>`
       /* Chrome, Firefox, Opera, Safari 10.1+ */
       color: ${(p) => p.color};
       opacity: 1; /* Firefox */
+      font-size: 14px;
       transition: color ${GLOBAL_TRANSITION};
     }
 
     &:-ms-input-placeholder {
       /* Internet Explorer 10-11 */
+      font-size: 14px;
       color: ${(p) => p.color};
     }
 
     &::-ms-input-placeholder {
       /* Microsoft Edge */
+      font-size: 14px;
       color: ${(p) => p.color};
     }
   }

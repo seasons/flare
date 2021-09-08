@@ -12,7 +12,6 @@ import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
 import { Nav, NavFragment_Query } from "./Nav/Nav"
 import { PopUp } from "./PopUp"
-
 import { useMutation, useQuery } from "@apollo/client"
 import { ModalProvider } from "./Modal/ModalProvider"
 import { Modal } from "./Modal"
@@ -69,6 +68,7 @@ export const Layout = ({
 }: LayoutProps) => {
   const { authState } = useAuthContext()
   const [setImpactId] = useMutation(SET_IMPACT_ID)
+  const isSignedIn = authState?.isSignedIn
 
   const { previousData, data = previousData } = useQuery(Layout_Query)
 
@@ -91,7 +91,7 @@ export const Layout = ({
     if (!!router.query?.irclickid) {
       localStorage?.setItem("impactId", router.query.irclickid as string)
       // If we're logged in already, add this to the customer record
-      if (authState?.isSignedIn) {
+      if (isSignedIn) {
         setImpactId({
           variables: {
             impactId: router.query.irclickid,

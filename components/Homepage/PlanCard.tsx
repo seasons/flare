@@ -41,7 +41,7 @@ export const PlanCard = ({ plan }) => {
 }
 
 const Wrapper = styled(Box)`
-  max-width: 470px;
+  max-width: 400px;
   width: 100%;
   position: relative;
   background-color: ${color("white100")};

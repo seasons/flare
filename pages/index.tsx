@@ -19,7 +19,7 @@ import { ButtonVariant } from "components/Button/Button.shared"
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
 
-export const DESKTOP_HERO_HEIGHT = 700
+export const HERO_HEIGHT = 760
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
@@ -27,8 +27,8 @@ const Home = screenTrack(() => ({
 }))(() => {
   const defaultNavStyles = {
     backgroundColor: "rgba(255, 255, 255, 0)",
-    textColor: color("white100"),
-    buttonVariant: "transparentOutlineWhite" as ButtonVariant,
+    textColor: color("black100"),
+    buttonVariant: "transparentBlackOutline" as ButtonVariant,
     getTheAppVariant: "primaryWhiteNoBorder" as ButtonVariant,
   }
   const { previousData, data = previousData, error } = useQuery(Home_Query)
@@ -40,20 +40,14 @@ const Home = screenTrack(() => ({
   const onScroll = () => {
     if (typeof window !== undefined) {
       const offset = window.pageYOffset
-      if (
-        offset >= DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT &&
-        navStyles.backgroundColor === "rgba(255, 255, 255, 0)"
-      ) {
+      if (offset >= HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.backgroundColor === "rgba(255, 255, 255, 0)") {
         setNavStyles({
           backgroundColor: "rgba(255, 255, 255, 1)",
           textColor: color("black100"),
           buttonVariant: "primaryWhite" as ButtonVariant,
           getTheAppVariant: "primaryWhite" as ButtonVariant,
         })
-      } else if (
-        offset < DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT &&
-        navStyles.backgroundColor !== "rgba(255, 255, 255, 0)"
-      ) {
+      } else if (offset < HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.backgroundColor !== "rgba(255, 255, 255, 0)") {
         setNavStyles(defaultNavStyles)
       }
     }

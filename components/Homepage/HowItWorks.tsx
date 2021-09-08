@@ -59,9 +59,9 @@ export const HowItWorks: React.FC = () => {
   return (
     <Grid>
       <Box px={[2, 2, 2, 2, 2]} pb={6}>
-        <Header size={["7", "9"]} style={{ textAlign: "center" }}>
+        <Display size={["7", "9"]} style={{ textAlign: "center" }}>
           How membership works
-        </Header>
+        </Display>
         <Spacer mb={1} />
         <Sans size={["3", "4"]} color="black50" style={{ textAlign: "center" }}>
           Access an exclusive rental library of over 1,000+ styles

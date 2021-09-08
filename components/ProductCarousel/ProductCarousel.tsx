@@ -56,11 +56,11 @@ const Content: React.FC<{
     <Box style={{ marge: "0 auto" }}>
       <MaxWidthWrapper px={[2, 2, 2, 2, 2]}>
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
-          <Header size={["7", "9"]}>{title}</Header>
+          <Display size={["7", "9"]}>{title}</Display>
           <Link href="/browse">
-            <Header size={["7", "9"]} underline pointer>
+            <Display size={["7", "9"]} underline pointer>
               See all
-            </Header>
+            </Display>
           </Link>
         </Flex>
       </MaxWidthWrapper>
@@ -85,10 +85,10 @@ const Content: React.FC<{
             {products?.map((product, index) => {
               return (
                 <SnapItem
-                  margin={{ left: index === 0 ? "0px" : space(1) + "px" }}
+                  margin={{ left: index === 0 ? "0px" : space(0.5) + "px" }}
                   snapAlign="center"
                   key={index}
-                  width={isMobile ? "90%" : "384px"}
+                  width={isMobile ? "90%" : "450px"}
                 >
                   <Box width="100%">
                     <ProductGridItem

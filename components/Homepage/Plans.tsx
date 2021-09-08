@@ -6,7 +6,7 @@ import React from "react"
 import styled from "styled-components"
 import { PlanCard } from "./PlanCard"
 import { seasonAndYear } from "utils/seasonAndYear"
-import { Box, Header, Flex, Sans, Spacer } from "components"
+import { Box, Display, Flex, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
 
 const image = require("../../public/images/homepage/PlanBackground-Flare.jpg")
@@ -19,7 +19,7 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
       <Grid px={[2, 158, 158, 158, 158]} pt={[10, 15, 15, 15, 15]}>
         <Flex width="100%" alignItems="center" justifyContent="center" flexDirection="row" pb={5}>
           <Flex flexDirection="column" justifyContent="center" alignItems="center">
-            <Header size={["7", "9"]}>{`${seasonAndYear()} Membership`}</Header>
+            <Display size={["7", "9"]}>{`${seasonAndYear()} Membership`}</Display>
             <Sans size={["3", "4"]} color="black50">
               Have a question not covered here? Check out our{" "}
               <span

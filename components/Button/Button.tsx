@@ -32,9 +32,9 @@ export class Button extends Component<WebButtonProps> {
         }
       case "medium-x":
         return {
-          height: inline ? "21px" : "40px",
+          height: inline ? "21px" : "48px",
           size: "3",
-          px: inline ? 0 : 3,
+          px: inline ? 0 : 2,
         }
       case "medium":
         return {
@@ -44,7 +44,7 @@ export class Button extends Component<WebButtonProps> {
         }
       case "large":
         return {
-          height: inline ? "21px" : "56px",
+          height: inline ? "21px" : "64px",
           size: "4",
           px: inline ? 0 : 5,
         }
@@ -171,20 +171,20 @@ export class Button extends Component<WebButtonProps> {
               `
           }};
         `
-      case "transparentOutlineWhite":
+      case "transparentBlackOutline":
         return css`
           ${(props) => {
             const { colors } = props.theme
             return `
                 background-color:  transparent;
-                border-color: ${colors.white100};
-                color: ${colors.white100};
+                border-color: ${colors.black100};
+                color: ${colors.black100};
 
                 @media ${themeProps.mediaQueries.hover} {
                   &:hover {
                     background-color:  transparent;
-                    border-color: ${colors.black100};
-                    color: ${colors.black100};
+                    border-color: ${colors.white100};
+                    color: ${colors.white100};
                   }
                 }
               `
