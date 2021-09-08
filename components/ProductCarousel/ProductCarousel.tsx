@@ -1,5 +1,5 @@
 import { ProductGridItem } from "@seasons/eclipse"
-import { Box, Display, Flex, Link, Spacer, Header, MaxWidth, Media } from "components"
+import { Box, Display, Flex, Link, Spacer, MaxWidth, Media } from "components"
 import { ThinChevron } from "components/SVGs/ThinChevron"
 import { color, space } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
