@@ -3,7 +3,7 @@ import { LoginModal } from "components/Login/LoginModal"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { animated, useSpring } from "react-spring"
 import styled from "styled-components"
 

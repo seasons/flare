@@ -1,4 +1,4 @@
-import { Flex, MaxWidth, Spacer, Header } from "components"
+import { Display, Flex, MaxWidth, Spacer } from "components"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import Link from "next/link"
@@ -10,12 +10,16 @@ import { Button } from "../Button"
 import { seasonAndYear } from "utils/seasonAndYear"
 import { Media } from "../Responsive"
 import { GetTheAppButton } from "components/Button/GetTheApp"
+import { HERO_HEIGHT } from "pages"
 
 const staticNoise = require("../../public/images/homepage/static-noise.gif")
 
 interface HeroComponentProps {
   version: "mobile" | "desktop"
 }
+
+const backgroundImage =
+  "https://seasons-s3.imgix.net/flare/Hero-image-1.jpg?w=2000&fit=clip&retina=true&fm=webp&cs=srgb"
 
 const MainCTA = ({ version }: HeroComponentProps) => {
   const { authState, userSession } = useAuthContext()
@@ -81,14 +85,20 @@ const Content: React.FC<{ version: "mobile" | "desktop" }> = ({ version }) => {
   return (
     <Background>
       <Static />
-      <Overlay />
       <MaxWidth>
-        <Flex width="100%" px={[2, 2, 2, 2, 2]} py={5} justifyContent="flex-end" flexDirection="column" height="700px">
+        <Flex
+          width="100%"
+          px={[2, 2, 2, 2, 2]}
+          py={5}
+          justifyContent="flex-end"
+          flexDirection="column"
+          height={HERO_HEIGHT + "px"}
+        >
           <Flex flexDirection={isDesktop ? "row" : "column"} justifyContent="space-between" alignItems="flex-end">
-            <Header color="white100" size={["8", "8", "11", "11", "11"]} style={{ maxWidth: "852px" }}>
+            <Display color="white100" size={["8", "8", "11", "11", "11"]} style={{ maxWidth: "852px" }}>
               Seasons is a private rental service exploring the shared access of fashion.{" "}
               <span style={{ textDecoration: "underline" }}>{seasonAndYear()}</span> memberships are now open.
-            </Header>
+            </Display>
             <Spacer mr={50} mt={5} />
             <MainCTA version={version} />
             {!isDesktop && (
@@ -120,7 +130,8 @@ export const Hero: React.FC = () => {
 const Background = styled.div`
   width: 100%;
   position: relative;
-  background: linear-gradient(180deg, rgba(253, 166, 137, 1) 20%, rgba(255, 203, 146, 1) 100%);
+  background: url(${backgroundImage}) no-repeat center center;
+  background-size: cover;
 `
 
 const Static = styled.div`
@@ -129,12 +140,5 @@ const Static = styled.div`
   position: absolute;
   opacity: 0.2;
   background: url(${staticNoise}) repeat center center;
-`
-
-const Overlay = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: ${color("black100")};
-  opacity: 0.1;
+  background-size: 90px;
 `

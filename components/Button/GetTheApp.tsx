@@ -25,6 +25,19 @@ export const GetTheAppButton: React.FC<Props> = ({ block, width, variant, size =
     _width = "auto"
   }
 
+  const getSizeFontSize = () => {
+    switch (size) {
+      case "small":
+        return 3
+      case "medium-x":
+        return 3
+      case "medium":
+        return 4
+      case "large":
+        return 4
+    }
+  }
+
   return (
     <GetAppWrapper block={block}>
       <Button
@@ -44,7 +57,7 @@ export const GetTheAppButton: React.FC<Props> = ({ block, width, variant, size =
             <AppleSVG width="14px" height="16px" />
           </Box>
           <Spacer mr={1} />
-          <Sans size="4">Get the app</Sans>
+          <Sans size={getSizeFontSize()}>Get the app</Sans>
         </Flex>
       </Button>
     </GetAppWrapper>

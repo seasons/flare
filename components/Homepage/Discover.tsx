@@ -1,7 +1,6 @@
 import React, { useRef } from "react"
 import { Col, Grid, Row } from "../Grid"
-import { Sans, Spacer, Box, Flex, Link, Media } from "../"
-import { Header } from "../Typography"
+import { Sans, Spacer, Box, Flex, Link, Media, Display } from "../"
 import styled from "styled-components"
 import { SnapList, SnapItem, useVisibleElements, useScroll } from "react-snaplist-carousel"
 import { space } from "helpers"
@@ -40,7 +39,7 @@ const categories = [
     image: require("../../public/images/homepage/Category-Knits.jpg"),
   },
   {
-    name: "Hoodies & Sweatshirts",
+    name: "Hoodies &\nSweatshirts",
     link: "/browse/hoodies-and-sweatshirts+all?page=1",
     image: require("../../public/images/homepage/Category-Hoodies.jpg"),
   },
@@ -50,11 +49,11 @@ const DesktopContent = () => {
   return (
     <Grid>
       <Flex px={[2, 2, 2, 2, 2]} flexDirection="row" justifyContent="space-between">
-        <Header size="9">Discover</Header>
+        <Display size="9">Discover</Display>
         <Link href="/browse">
-          <Header size="9" style={{ textDecoration: "underline" }}>
+          <Display size="9" style={{ textDecoration: "underline" }}>
             See all
-          </Header>
+          </Display>
         </Link>
       </Flex>
       <Spacer mb={2} />
@@ -65,7 +64,9 @@ const DesktopContent = () => {
               <Link href={category.link}>
                 <CategoryWrapper p={2} image={category.image} height="246px">
                   <TextWrapper p={2}>
-                    <Sans size="4">{category.name}</Sans>
+                    <Sans size="4" style={{ whiteSpace: "pre" }}>
+                      {category.name}
+                    </Sans>
                   </TextWrapper>
                 </CategoryWrapper>
               </Link>
@@ -87,11 +88,11 @@ const MobileContent = () => {
   return (
     <Box px={2}>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Header size="7">Discover</Header>
+        <Display size="7">Discover</Display>
         <Link href="/browse">
-          <Header size="7" style={{ textDecoration: "underline" }}>
+          <Display size="7" style={{ textDecoration: "underline" }}>
             See all
-          </Header>
+          </Display>
         </Link>
       </Flex>
       <Spacer mb={2} />

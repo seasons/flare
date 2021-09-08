@@ -12,12 +12,14 @@ import { LayoutHead } from "./LayoutHead"
 import { MaxWidth } from "./MaxWidth"
 import { Nav, NavFragment_Query } from "./Nav/Nav"
 import { PopUp } from "./PopUp"
-
+import Marquee from "react-fast-marquee"
 import { useMutation, useQuery } from "@apollo/client"
 import { ModalProvider } from "./Modal/ModalProvider"
 import { Modal } from "./Modal"
 import { gql } from "@apollo/client"
 import { ButtonVariant } from "./Button/Button.shared"
+import { Sans } from "components"
+import { color } from "../helpers/color"
 
 const DESKTOP_NAV_HEIGHT = 93
 
@@ -69,6 +71,7 @@ export const Layout = ({
 }: LayoutProps) => {
   const { authState } = useAuthContext()
   const [setImpactId] = useMutation(SET_IMPACT_ID)
+  const isSignedIn = authState?.isSignedIn
 
   const { previousData, data = previousData } = useQuery(Layout_Query)
 
@@ -91,7 +94,7 @@ export const Layout = ({
     if (!!router.query?.irclickid) {
       localStorage?.setItem("impactId", router.query.irclickid as string)
       // If we're logged in already, add this to the customer record
-      if (authState?.isSignedIn) {
+      if (isSignedIn) {
         setImpactId({
           variables: {
             impactId: router.query.irclickid,
@@ -109,6 +112,25 @@ export const Layout = ({
           <DrawerProvider>
             <Theme>
               {showIntercom && <Intercom />}
+              {!isSignedIn && (
+                <Marquee
+                  style={{ backgroundColor: color("black100"), paddingTop: "12px", paddingBottom: "12px" }}
+                  gradient={false}
+                >
+                  <Sans size="3" color="white100">
+                    Fall 2021 memberships are now open. 250 spots available | Fall 2021 memberships are now open. 250
+                    spots available | Fall 2021 memberships are now open. 250 spots available | Fall 2021 memberships
+                    are now open. 250 spots available | Fall 2021 memberships are now open. 250 spots available | Fall
+                    2021 memberships are now open. 250 spots available | Fall 2021 memberships are now open. 250 spots
+                    available | Fall 2021 memberships are now open. 250 spots available | Fall 2021 memberships are now
+                    open. 250 spots available | Fall 2021 memberships are now open. 250 spots available | Fall 2021
+                    memberships are now open. 250 spots available | Fall 2021 memberships are now open. 250 spots
+                    available | Fall 2021 memberships are now open. 250 spots available | Fall 2021 memberships are now
+                    open. 250 spots available | Fall 2021 memberships are now open. 250 spots available | Fall 2021
+                    memberships are now open. 250 spots available |{" "}
+                  </Sans>
+                </Marquee>
+              )}
               <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} navStyles={navStyles} />
               {!hideNavPadding && <Box pt={DESKTOP_NAV_HEIGHT} />}
               <MaxWidth height="100%" disableMaxWidth={disableMaxWidth}>
