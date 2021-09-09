@@ -3,33 +3,30 @@ import { color } from "helpers"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
 import React, { useState } from "react"
+
 import { ProductBuyAlertTabType } from "@seasons/eclipse"
+
 import { BagItem } from "./BagItem"
-import { DeliveryStatus } from "./DeliveryStatus"
+import { BagTabHeader } from "./BagTabHeader"
 import { EmptyBagItem } from "./EmptyBagItem"
 import { ProductBuyAlert } from "./ProductBuyAlert"
-import { BagTabHeader } from "./BagTabHeader"
 
 const DEFAULT_ITEM_COUNT = 3
 
 export const BagTab: React.FC<{
-  pauseStatus: any
-  data: any
-  items
+  me
+  bagItems
   deleteBagItem
   removeFromBagAndSaveItem
-}> = ({ pauseStatus, items, deleteBagItem, removeFromBagAndSaveItem, data }) => {
-  const [isMutating, setIsMutating] = useState(false)
-  const me = data?.me
+}> = ({ bagItems, deleteBagItem, removeFromBagAndSaveItem, me }) => {
   const activeReservation = me?.activeReservation
   const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
   const hasActiveReservation = !!activeReservation
 
   const [productBuyAlertTabs, setProductBuyAlertTabs] = useState(null)
 
-  const bagItems = items
-
-  const paddedItems = assign(fill(new Array(itemCount), { variantID: "", productID: "" }), bagItems) || []
+  const paddedItems =
+    assign(fill(new Array(Math.min(itemCount, bagItems.length + 1)), { variantID: "", productID: "" }), bagItems) || []
 
   const handleShowBuyAlert = ({ bagItem, variantToUse }) => {
     const { name: brandName, websiteUrl: brandHref, logoImage } = bagItem?.productVariant?.product?.brand
@@ -66,12 +63,6 @@ export const BagTab: React.FC<{
     const luxonDate = DateTime.fromISO(me?.activeReservation?.returnAt)
     returnReminder = `Return by ${luxonDate.weekdayLong}, ${luxonDate.monthLong} ${luxonDate.day}`
   }
-  const pauseRequest = me?.customer?.membership?.pauseRequests?.[0]
-  const showPendingMessage = pauseStatus === "pending" && !!pauseRequest?.pauseDate
-
-  const pauseType = pauseRequest?.pauseType
-  const isPaused = pauseStatus === "paused"
-  const pausedWithoutItems = isPaused && pauseType === "WithoutItems"
 
   const updatedMoreThan24HoursAgo =
     activeReservation?.updatedAt && DateTime.fromISO(activeReservation?.updatedAt).diffNow("days")?.values?.days <= -1
@@ -79,66 +70,33 @@ export const BagTab: React.FC<{
 
   return (
     <Box>
-      <BagTabHeader atHome={atHome} me={me} pausedWithoutItems={pausedWithoutItems} />
-      {showPendingMessage && (
-        <>
-          <Box px={2}>
-            <Separator color={color("black10")} />
-          </Box>
-          <Box px={2} py={2}>
-            <Sans size="3" color="black50">
-              {`Your membership is scheduled to be paused on ${DateTime.fromISO(pauseRequest.pauseDate).toFormat(
-                "EEEE LLLL dd"
-              )}. To continue it tap `}
-              <Sans
-                size="3"
-                style={{ textDecorationLine: "underline", cursor: "pointer" }}
-                onPress={async () => {
-                  if (isMutating) {
-                    return
-                  }
-                  setIsMutating(true)
-                  const subscriptionId = me?.customer?.invoices?.[0]?.subscriptionId || ""
-                }}
-              >
-                here
-              </Sans>
-              .
-            </Sans>
-          </Box>
-        </>
-      )}
+      <BagTabHeader atHome={atHome} me={me} />
       <Separator />
       <Spacer mb={3} />
-      {paddedItems
-        ?.sort((a, b) => {
-          const aWeight = a.status === "Reserved" ? 1 : 0
-          const bWeight = b.status === "Reserved" ? 1 : 0
-          return aWeight - bWeight
-        })
-        ?.map((bagItem, index) => {
-          return bagItem?.productID?.length > 0 ? (
+      {paddedItems?.map((bagItem, index) => {
+        return (
+          <>
             <Box key={bagItem.productID} px={2} pt={hasActiveReservation ? 0 : 2}>
-              <BagItem
-                removeItemFromBag={deleteBagItem}
-                removeFromBagAndSaveItem={removeFromBagAndSaveItem}
-                onShowBuyAlert={handleShowBuyAlert}
-                index={index}
-                bagItem={bagItem}
-              />
-              {!hasActiveReservation && index !== items.length - 1 && (
-                <Box pt={1}>
-                  <Separator color={color("black10")} />
-                </Box>
+              {bagItem?.productID?.length > 0 ? (
+                <BagItem
+                  removeItemFromBag={deleteBagItem}
+                  removeFromBagAndSaveItem={removeFromBagAndSaveItem}
+                  onShowBuyAlert={handleShowBuyAlert}
+                  index={index}
+                  bagItem={bagItem}
+                />
+              ) : (
+                <EmptyBagItem index={index} />
               )}
             </Box>
-          ) : (
-            <Box key={index} px={2}>
-              <EmptyBagItem index={index} />
-              {!hasActiveReservation && index !== items.length - 1 && <Separator color={color("black10")} />}
-            </Box>
-          )
-        })}
+            {!hasActiveReservation && index !== paddedItems.length - 1 && (
+              <Box pt={1}>
+                <Separator color={color("black10")} />
+              </Box>
+            )}
+          </>
+        )
+      })}
       {hasActiveReservation && (
         <Box px={2}>
           <Spacer mb={3} />

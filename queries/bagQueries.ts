@@ -1,55 +1,13 @@
 import gql from "graphql-tag"
 import { ReservationHistoryTabFragment_Customer } from "mobile/Bag/Components/ReservationHistoryTab"
-export { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_LOCAL_BAG, GET_LOCAL_BAG_ITEMS } from "./clientQueries"
+
 import { BagItemFragment } from "./bagItemQueries"
 
+export { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_LOCAL_BAG, GET_LOCAL_BAG_ITEMS } from "./clientQueries"
 export const CHECK_ITEMS = gql`
   mutation CheckItemsAvailability($items: [ID!]!) {
     checkItemsAvailability(items: $items)
   }
-`
-
-export const SavedTab_Query = gql`
-  query SavedTab_Query {
-    me {
-      id
-      savedItems {
-        id
-        saved
-        productVariant {
-          id
-          reservable
-          displayLong
-          hasRestockNotification
-          product {
-            id
-            slug
-            name
-            brand {
-              id
-              name
-            }
-            images(size: Thumb) {
-              id
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-`
-
-export const ReservationHistoryTab_Query = gql`
-  query ReservationHistoryTab_Query {
-    me {
-      id
-      customer {
-        ...ReservationHistoryTabFragment_Customer
-      }
-    }
-  }
-  ${ReservationHistoryTabFragment_Customer}
 `
 
 export const GET_BAG = gql`

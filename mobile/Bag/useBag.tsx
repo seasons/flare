@@ -8,7 +8,7 @@ export const useLocalBag = () => {
   const { data: getLocalBagData } = useQuery(GET_LOCAL_BAG_ITEMS)
   const ids = getLocalBagData?.localBagItems
 
-  const [getLocalBag, { data, refetch }] = useLazyQuery(GET_LOCAL_BAG_ITEMS, {
+  const [getLocalBag, { data, refetch, loading }] = useLazyQuery(GET_LOCAL_BAG_ITEMS, {
     variables: {
       ids: ids?.map((i) => i.productID),
     },
@@ -27,16 +27,20 @@ export const useLocalBag = () => {
         status: "Added",
       })) || [],
     refetch,
+    loading,
   }
 }
 
 export const useRemoteBag = () => {
-  const { previousData, data = previousData, refetch } = useQuery(GET_BAG)
+  const { previousData, data = previousData, refetch, loading } = useQuery(GET_BAG)
+
+  console.log("data: ", data)
 
   if (!data) {
     return {
       data: null,
       bagItems: [],
+      loading: false,
     }
   }
 
@@ -52,6 +56,7 @@ export const useRemoteBag = () => {
     data,
     bagItems,
     refetch,
+    loading,
   }
 }
 
@@ -59,8 +64,8 @@ export const useBag = () => {
   const { authState } = useAuthContext()
 
   const isSignedIn = authState.isSignedIn
-  const { bagItems: localItems } = useLocalBag()
-  const { bagItems: remoteItems, data, refetch } = useRemoteBag()
+  const { bagItems: localItems, loading: localLoading } = useLocalBag()
+  const { bagItems: remoteItems, data, refetch, loading } = useRemoteBag()
 
   const bagItems = !isSignedIn ? localItems : remoteItems
 
@@ -68,5 +73,6 @@ export const useBag = () => {
     data,
     refetch,
     bagItems,
+    loading: !isSignedIn ? localLoading : loading,
   }
 }

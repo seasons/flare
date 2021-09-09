@@ -1,15 +1,24 @@
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
+import { ColorFilters } from "components/Browse/ColorFilters"
+import { FixedFilters } from "components/Browse/FixedFilters"
+import { TriageModal } from "components/Browse/TriageModal"
 import { filter as filterFragment } from "graphql-anywhere"
 import { sans as sansSize } from "helpers/typeSizes"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { SavedTab_Query } from "mobile/Bag/Components/SavedItemsTab"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
+import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useMemo, useState } from "react"
 import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
+
 import { gql, useQuery } from "@apollo/client"
-import { BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
+import {
+  BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product
+} from "@seasons/eclipse"
+
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"
@@ -20,11 +29,6 @@ import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { SavedTab_Query } from "queries/bagQueries"
-import { GET_PRODUCT } from "queries/productQueries"
-import { ColorFilters } from "components/Browse/ColorFilters"
-import { FixedFilters } from "components/Browse/FixedFilters"
-import { TriageModal } from "components/Browse/TriageModal"
 
 export const Browse_Query = gql`
   query Browse_Query {

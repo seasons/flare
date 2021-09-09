@@ -1,16 +1,18 @@
-import React, { useState } from "react"
-import { DateTime } from "luxon"
-import gql from "graphql-tag"
-import { DeliveryStatus } from "./DeliveryStatus"
-import { useMutation } from "@apollo/client"
 import { ReservationPhase } from "__generated__/globalTypes"
 import { Box } from "components/Box"
-import { Flex } from "components/Flex"
-import { Sans } from "components/Typography"
-import { Spinner } from "components/Spinner"
-import { Spacer } from "components/Spacer"
-import { GET_BAG } from "queries/bagQueries"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { Flex } from "components/Flex"
+import { Spacer } from "components/Spacer"
+import { Spinner } from "components/Spinner"
+import { Sans } from "components/Typography"
+import gql from "graphql-tag"
+import { DateTime } from "luxon"
+import { GET_BAG } from "queries/bagQueries"
+import React, { useState } from "react"
+
+import { useMutation } from "@apollo/client"
+
+import { DeliveryStatus } from "./DeliveryStatus"
 
 export const BagTabHeaderFragment_Query = gql`
   fragment BagTabHeaderFragment_Query on Query {
@@ -94,8 +96,7 @@ const CANCEL_RETURN = gql`
 export const BagTabHeader: React.FC<{
   me
   atHome: boolean
-  pausedWithoutItems: boolean
-}> = ({ me, atHome, pausedWithoutItems }) => {
+}> = ({ me, atHome }) => {
   const { openDrawer } = useDrawerContext()
   const [cancelingReturn, setCancelingReturn] = useState(false)
   const [cancelReturn] = useMutation(CANCEL_RETURN, {
