@@ -10,7 +10,7 @@ const categories = [
   {
     name: "Shirts",
     link: "/browse/shirts+all?page=1",
-    image: require("../../public/images/homepage/Category-Shirts.jpg"),
+    image: require("../../public/images/homepage/Category-Shirts-1.jpg"),
   },
   {
     name: "Pants",
