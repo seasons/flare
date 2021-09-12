@@ -52,7 +52,7 @@ const Content: React.FC<{
               </Display>
             </Box>
             <Spacer mr={50} mt={5} />
-            <Box width="100%">
+            <Box width={version === "desktop" ? "343px" : "100%"}>
               <HeroCTA version={version} userSession={userSession} authState={authState} />
               {!isDesktop && (
                 <>

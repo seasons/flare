@@ -50,7 +50,7 @@ export const HeroCTA: React.FC<{ version: "mobile" | "desktop"; userSession: any
       <Link href={ctaData.link}>
         <Button
           size="large"
-          width={version === "desktop" ? "343px" : "100%"}
+          block
           variant="primaryWhiteNoBorder"
           onClick={() => {
             tracking.trackEvent({
