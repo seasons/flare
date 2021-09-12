@@ -9,8 +9,7 @@ import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
 import { ProductBuyAlert } from "./ProductBuyAlert"
 import { BagTabHeader } from "./BagTabHeader"
-
-const DEFAULT_ITEM_COUNT = 3
+import { MAXIMUM_ITEM_COUNT } from "../Bag"
 
 export const BagTab: React.FC<{
   pauseStatus: any
@@ -22,7 +21,7 @@ export const BagTab: React.FC<{
   const [isMutating, setIsMutating] = useState(false)
   const me = data?.me
   const activeReservation = me?.activeReservation
-  const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
+  const itemCount = me?.customer?.membership?.plan?.itemCount || MAXIMUM_ITEM_COUNT
   const hasActiveReservation = !!activeReservation
 
   const [productBuyAlertTabs, setProductBuyAlertTabs] = useState(null)

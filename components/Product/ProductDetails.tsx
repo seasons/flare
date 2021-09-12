@@ -94,29 +94,31 @@ export const ProductDetails: React.FC<{
         {description}
       </Sans>
 
-      <Flex flexDirection="row" width="100%" pb={2} pt={3}>
-        <Flex flexDirection="column" padding="1px" width="100%">
+      <Flex flexDirection="row" width="100%" pt={5}>
+        <Flex flexDirection="column" width="100%">
           <Sans size={3}>Member price</Sans>
           <Box pr={2}>
             <Separator mb={1} width="100%" />
           </Box>
-          <Flex flexDirection="row">
-            <Sans size={7}>${rentalPrice ? rentalPrice : 40}</Sans>
-            <Flex paddingTop="10px" paddingLeft="5px">
-              <Sans size={2} color={color("black50")}>
+          <Flex flexDirection="row" alignItems="flex-end">
+            <Sans size={9}>${rentalPrice ? rentalPrice : 40}</Sans>
+            <Flex pb="6px" pl="5px">
+              <Sans size={3} color="black50">
                 {" "}
                 / month
               </Sans>
             </Flex>
           </Flex>
         </Flex>
-        <Flex flexDirection="column" padding="1px" width="100%">
+        <Flex flexDirection="column" width="100%">
           <Sans size={3}>Retail value</Sans>
           <Separator mb={1} width="100%" />
-          <Sans size={7} color={color("black25")}>${retailPrice}</Sans>
+          <Sans size={9} color="black25">
+            ${retailPrice}
+          </Sans>
         </Flex>
       </Flex>
-      <Flex padding="1px" paddingTop={2} pb={2}>
+      <Flex paddingTop={5} pb={2}>
         <Sans size={3}>Select a size</Sans>
       </Flex>
       {productType !== "Accessory" && (
@@ -140,9 +142,13 @@ export const ProductDetails: React.FC<{
           data={data}
           variantInStock={variantInStock}
           isInBag={isInBag}
+          size="large"
         />
       </Flex>
-      <Spacer mb={3} />
+
+      <Spacer mb={10} />
+
+      <ProductInfoItem detailType="Product details" detailValue="" />
       <Separator color={color("black15")} />
       {!!waistByLengthDisplay && <ProductInfoItem detailType="Waist by length" detailValue={waistByLengthDisplay} />}
       {product.color && <ProductInfoItem detailType="Color" detailValue={product.color.name} />}

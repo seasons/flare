@@ -66,11 +66,12 @@ const Content: React.FC<{
       </MaxWidthWrapper>
       <Spacer mb={2} />
       <Flex width="100%" justifyContent="flex-start">
-        <CarouselWrapper px={[2, 2, 2, 2, 2]}>
+        <CarouselWrapper>
           {!isMobile && (
             <ArrowWrapper
               justifyContent="flex-start"
-              pr={3}
+              p={2}
+              style={{ left: "16px" }}
               onClick={() => {
                 if (firstVisible > 0) {
                   const previousIndex = firstVisible - 1
@@ -81,32 +82,35 @@ const Content: React.FC<{
               <ThinChevron color={firstVisible !== 0 ? color("black100") : color("black10")} rotateDeg="180deg" />
             </ArrowWrapper>
           )}
-          <SnapList direction="horizontal" width="100%" ref={snapList}>
-            {products?.map((product, index) => {
-              return (
-                <SnapItem
-                  margin={{ left: index === 0 ? "0px" : space(0.5) + "px" }}
-                  snapAlign="center"
-                  key={index}
-                  width={isMobile ? "90%" : "450px"}
-                >
-                  <Box width="100%">
-                    <ProductGridItem
-                      imageIndex={2}
-                      product={product}
-                      authState={authState}
-                      onShowLoginModal={() => toggleLoginModal(true)}
-                      saveProductButtonRefetchQueries={saveProductRefetchQueries}
-                    />
-                  </Box>
-                </SnapItem>
-              )
-            })}
-          </SnapList>
+          <MaxWidthWrapper px={[2, 2, 2, 2, 2]}>
+            <SnapList direction="horizontal" width="100%" ref={snapList}>
+              {products?.map((product, index) => {
+                return (
+                  <SnapItem
+                    margin={{ left: index === 0 ? "0px" : space(0.5) + "px" }}
+                    snapAlign="center"
+                    key={index}
+                    width={isMobile ? "90%" : "450px"}
+                  >
+                    <Box width="100%">
+                      <ProductGridItem
+                        imageIndex={2}
+                        product={product}
+                        authState={authState}
+                        onShowLoginModal={() => toggleLoginModal(true)}
+                        saveProductButtonRefetchQueries={saveProductRefetchQueries}
+                      />
+                    </Box>
+                  </SnapItem>
+                )
+              })}
+            </SnapList>
+          </MaxWidthWrapper>
           {!isMobile && (
             <ArrowWrapper
+              style={{ right: "16px" }}
               justifyContent="flex-end"
-              pl={3}
+              p={2}
               onClick={() => {
                 const nextIndex = lastVisible + 1
                 goToSnapItem(nextIndex)
@@ -150,11 +154,12 @@ const MaxWidthWrapper = styled(Flex)`
 
 const ArrowWrapper = styled(Flex)`
   width: 50px;
-  height: 475px;
+  height: 560px;
   align-items: center;
   flex-direction: row;
   cursor: pointer;
-  z-index: 10;
+  z-index: 20;
+  position: absolute;
 `
 
 const PagerWrapper = styled(Flex)`
@@ -166,7 +171,7 @@ const CarouselWrapper = styled(Flex)`
   position: relative;
   width: 100%;
   margin: 0 auto;
-  max-width: ${(props) => `${props.theme.grid.container.maxWidth.xl + 100}px`};
+  max-width: ${(props) => `${props.theme.grid.container.maxWidth.xl + 96}px`};
   overflow: hidden;
   flex-direction: row;
   justify-content: center;

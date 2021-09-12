@@ -118,7 +118,12 @@ export const LoginView: React.FunctionComponent<LoginViewProps> = (props) => {
                       <Sans size="3" color="black50">
                         Don't have an account?{" "}
                         <Link href="/signup">
-                          <span style={{ textDecoration: "underline", cursor: "pointer" }}>Sign up</span>
+                          <span
+                            style={{ textDecoration: "underline", cursor: "pointer" }}
+                            onClick={() => toggleLoginModal(false)}
+                          >
+                            Sign up
+                          </span>
                         </Link>
                       </Sans>
                     </Box>

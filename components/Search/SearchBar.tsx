@@ -1,4 +1,3 @@
-import { Flex } from "components"
 import React from "react"
 import { Configure, Index } from "react-instantsearch-dom"
 import styled from "styled-components"
@@ -10,7 +9,7 @@ import { GLOBAL_TRANSITION } from "lib/theme"
 
 interface SearchBarProps {
   handleSearch?: () => void
-  color: string
+  color?: string
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({ handleSearch, color = colorHelper("black100") }) => {
@@ -28,14 +27,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({ handleSearch, color = colo
 
 const SearchWrapper = styled.div<{ color: string }>`
   input {
-    height: 48px;
-    background-color: transparent;
-    border: 1px solid ${(p) => p.color};
+    height: 40px;
+    background-color: ${colorHelper("black10")};
     border-radius: 8px;
     color: ${(p) => p.color};
     padding-left: 16px;
     padding-right: 16px;
-    transition: border ${GLOBAL_TRANSITION}, color ${GLOBAL_TRANSITION};
+    transition: color ${GLOBAL_TRANSITION};
 
     &::placeholder {
       /* Chrome, Firefox, Opera, Safari 10.1+ */

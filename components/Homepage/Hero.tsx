@@ -1,87 +1,28 @@
-import { Display, Flex, MaxWidth, Spacer } from "components"
-import { color } from "helpers"
+import { Box, Display, Flex, MaxWidth, Sans, Spacer } from "components"
 import { useAuthContext } from "lib/auth/AuthContext"
-import Link from "next/link"
 import React from "react"
 import styled from "styled-components"
-import { Schema, useTracking } from "utils/analytics"
-import { useDrawerContext } from "../../components/Drawer/DrawerContext"
-import { Button } from "../Button"
 import { seasonAndYear } from "utils/seasonAndYear"
 import { Media } from "../Responsive"
 import { GetTheAppButton } from "components/Button/GetTheApp"
 import { HERO_HEIGHT } from "pages"
+import { HeroCTA } from "./HeroCTA"
+import { color } from "helpers/color"
 
 const staticNoise = require("../../public/images/homepage/static-noise.gif")
-
-interface HeroComponentProps {
-  version: "mobile" | "desktop"
-}
 
 const backgroundImage =
   "https://seasons-s3.imgix.net/flare/Hero-image-1.jpg?w=2000&fit=clip&retina=true&fm=webp&cs=srgb"
 
-const MainCTA = ({ version }: HeroComponentProps) => {
-  const { authState, userSession } = useAuthContext()
-  const tracking = useTracking()
+const Content: React.FC<{
+  version: "mobile" | "desktop"
+  authState: any
+  userSession: any
+  toggleLoginModal: (toggle: boolean) => void
+}> = ({ version, authState, userSession, toggleLoginModal }) => {
+  const isDesktop = version === "desktop"
   const isUserSignedIn = authState?.isSignedIn
 
-  const { openDrawer } = useDrawerContext()
-
-  const browseData = { text: "Browse the collection", link: "/browse", actionName: "BrowseTheCollectionTapped" }
-  const applyData = { text: "Apply for membership", link: "/signup", actionName: "ApplyForMembershipTapped" }
-
-  let ctaData = browseData as any
-  if (isUserSignedIn) {
-    switch (userSession?.customer?.status) {
-      case "Created":
-        ctaData = { text: "Finish your application", link: "/signup", actionName: "FinishYourApplicationTapped" }
-        break
-      case "Waitlisted":
-      case "Deactivated":
-        ctaData = { text: "Request Access", link: "https://szns.co/requestAccess", actionName: "RequestAccessTapped" }
-        break
-      case "Authorized":
-      case "Invited":
-        ctaData = { text: "Choose your plan", link: "/signup", actionName: "ChoosePlanTapped" }
-        break
-      case "Paused":
-        ctaData = {
-          text: "Resume Membership",
-          link: "/",
-          actionName: "ResumeMembershipTapped",
-          onClick: () => openDrawer("membershipInfo"),
-        }
-        break
-    }
-  } else {
-    ctaData = applyData
-  }
-
-  return (
-    <Flex flexDirection="row" justifyContent="flex-end">
-      <Link href={ctaData.link}>
-        <Button
-          size="large"
-          width="343px"
-          variant="primaryWhiteNoBorder"
-          onClick={() => {
-            tracking.trackEvent({
-              actionName: Schema.ActionNames[ctaData.actionName],
-              actionType: Schema.ActionTypes.Tap,
-            })
-            ctaData.onClick?.()
-          }}
-        >
-          {ctaData.text}
-        </Button>
-      </Link>
-    </Flex>
-  )
-}
-
-const Content: React.FC<{ version: "mobile" | "desktop" }> = ({ version }) => {
-  const isDesktop = version === "desktop"
   return (
     <Background>
       <Static />
@@ -94,19 +35,46 @@ const Content: React.FC<{ version: "mobile" | "desktop" }> = ({ version }) => {
           flexDirection="column"
           height={HERO_HEIGHT + "px"}
         >
-          <Flex flexDirection={isDesktop ? "row" : "column"} justifyContent="space-between" alignItems="flex-end">
-            <Display color="white100" size={["8", "8", "11", "11", "11"]} style={{ maxWidth: "852px" }}>
-              Seasons is a private rental service exploring the shared access of fashion.{" "}
-              <span style={{ textDecoration: "underline" }}>{seasonAndYear()}</span> memberships are now open.
-            </Display>
+          <Flex
+            flexDirection={isDesktop ? "row" : "column"}
+            justifyContent="space-between"
+            alignItems={isDesktop ? "flex-end" : "flex-start"}
+          >
+            <Box>
+              <Display color="white100" size={["8", "8", "10", "10", "10"]}>
+                Wear. Swap. Repeat.
+              </Display>
+              <Spacer mb={2} />
+              <Display color="black10" size={["8", "8", "7", "7", "7"]} style={{ maxWidth: "668px" }}>
+                Seasons is a private rental service exploring the shared access of fashion.{" "}
+                <span style={{ textDecoration: "underline", color: color("white100") }}>{seasonAndYear()}</span>{" "}
+                memberships are now open.
+              </Display>
+            </Box>
             <Spacer mr={50} mt={5} />
-            <MainCTA version={version} />
-            {!isDesktop && (
-              <>
-                <Spacer mb={2} />
-                <GetTheAppButton block size="large" variant="blur" />
-              </>
-            )}
+            <Box width={version === "desktop" ? "343px" : "100%"}>
+              <HeroCTA version={version} userSession={userSession} authState={authState} />
+              {!isDesktop && (
+                <>
+                  <Spacer mb={2} />
+                  <GetTheAppButton block size="large" variant="blur" />
+                </>
+              )}
+              {!isUserSignedIn && (
+                <>
+                  <Spacer mb={2} />
+                  <Sans size="4" color="white100" textAlign="center">
+                    Already a member?{" "}
+                    <span
+                      style={{ textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => toggleLoginModal(true)}
+                    >
+                      Sign in here
+                    </span>
+                  </Sans>
+                </>
+              )}
+            </Box>
           </Flex>
         </Flex>
       </MaxWidth>
@@ -115,13 +83,20 @@ const Content: React.FC<{ version: "mobile" | "desktop" }> = ({ version }) => {
 }
 
 export const Hero: React.FC = () => {
+  const { authState, userSession, toggleLoginModal } = useAuthContext()
+
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <Content version="desktop" />
+        <Content
+          version="desktop"
+          authState={authState}
+          userSession={userSession}
+          toggleLoginModal={toggleLoginModal}
+        />
       </Media>
       <Media lessThan="md">
-        <Content version="mobile" />
+        <Content version="mobile" authState={authState} userSession={userSession} toggleLoginModal={toggleLoginModal} />
       </Media>
     </>
   )

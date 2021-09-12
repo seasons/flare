@@ -36,11 +36,12 @@ export interface ButtonProps extends ButtonBaseProps {
   variant?: ButtonVariant
   /** React Native only, Callback on press, use instead of onClick */
   onPress?: (e) => void
-
   style?: any
 }
 
 export interface ButtonBaseProps extends BoxProps {
+  /** Add an optional box shadow */
+  boxShadow?: boolean
   /** Size of the button */
   buttonSize?: ButtonSize
   /** Displays a loader in the button */
