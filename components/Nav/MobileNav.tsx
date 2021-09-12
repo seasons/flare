@@ -29,7 +29,7 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
 
   return (
     <>
-      <Box style={{ width: "100%" }} height={["60px", "74px", "58px", "58px", "58px"]} />
+      <Box style={{ width: "100%" }} height={["58px", "58px", "58px", "58px", "58px"]} />
       <HeaderContainer>
         <Header>
           <Box px={2}>

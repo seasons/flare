@@ -9,6 +9,8 @@ import { useMutation } from "@apollo/client"
 
 import { useDrawerContext } from "./Drawer/DrawerContext"
 import { CheckWithBackground } from "./SVGs"
+import { ButtonSize } from "./Button/Button.shared"
+import { MAXIMUM_ITEM_COUNT } from "mobile/Bag/Bag"
 
 interface Props {
   disabled?: boolean
@@ -16,15 +18,14 @@ interface Props {
   selectedVariant: any
   isInBag: boolean
   data: any
+  size?: ButtonSize
   onAdded?: (added: boolean) => void
 }
-
-const DEFAULT_ITEM_COUNT = 3
 
 export const AddToBagButton: React.FC<Props> = (props) => {
   const [isMutating, setIsMutating] = useState(false)
   const [added, setAdded] = useState(false)
-  const { variantInStock, selectedVariant, data, onAdded } = props
+  const { variantInStock, selectedVariant, data, onAdded, size } = props
   const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { authState, toggleLoginModal } = useAuthContext()
@@ -56,7 +57,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       setIsMutating(false)
       setAdded(true)
       onAdded?.(true)
-      const itemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
+      const itemCount = data?.me?.customer?.membership?.plan?.itemCount || MAXIMUM_ITEM_COUNT
       const bagItemCount = authState?.isSignedIn ? data?.me?.bag?.length : res.addOrRemoveFromLocalBag.length
       if (itemCount && bagItemCount && bagItemCount >= itemCount) {
         showPopUp({
@@ -106,6 +107,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     <Button
       loading={isMutating}
       disabled={disabled}
+      size={size}
       variant="primaryBlack"
       block
       onClick={() => {

@@ -243,7 +243,7 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
   }
 
   render() {
-    const { block, children, loading, disabled, color, size, weight, onClick, ...rest } = this.props
+    const { block, children, loading, disabled, color, size, weight, boxShadow, onClick, ...rest } = this.props
 
     const loadingClass = loading ? "loading" : ""
     const disabledClass = disabled ? "disabled" : ""
@@ -254,6 +254,7 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
         className={[blockClass, loadingClass, disabledClass].join(" ")}
         onClick={this.onClick}
         disabled={disabled}
+        boxShadow={boxShadow}
       >
         {loading && <Spinner size={this.props.buttonSize} />}
         {typeof children === "string" ? (
@@ -282,6 +283,8 @@ const Container = styled.button<ButtonBaseProps>`
   ${textAlign};
   ${width};
   ${height};
+
+  ${(props) => (props.boxShadow ? "box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);" : "box-shadow: none")};
 
   border-style: solid;
 
@@ -328,9 +331,9 @@ const Container = styled.button<ButtonBaseProps>`
       const { colors } = props.theme
 
       return `
-        background-color: ${colors.black50};
-        border-color: ${colors.black50};
-        color: ${colors.white100};
+        background-color: ${colors.black04};
+        border-color: ${colors.black04};
+        color: ${colors.black50};
         pointer-events: none;
       `
     }};

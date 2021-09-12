@@ -16,7 +16,6 @@ import { SavedItemsTab } from "./Components/SavedItemsTab"
 import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
 import { BagTab } from "./Components/BagTab"
 import { ReservationHistoryTab_Query, SavedTab_Query } from "queries/bagQueries"
-import { DateTime } from "luxon"
 
 export enum BagView {
   Bag = 0,
@@ -24,7 +23,7 @@ export enum BagView {
   History = 2,
 }
 
-const DEFAULT_ITEM_COUNT = 3
+export const MAXIMUM_ITEM_COUNT = 6
 
 export const Bag = screenTrack()((props) => {
   const { authState } = useAuthContext()

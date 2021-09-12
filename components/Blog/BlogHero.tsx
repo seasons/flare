@@ -29,7 +29,7 @@ export const BlogHero: React.FC<{ blogPost: any; breakpoint: "desktop" | "mobile
   const TextLoader = () => {
     return (
       <>
-        <ContentLoader width="100%" height={isDesktop ? "98px" : "74px"} style={{ maxWidth: "100%" }}>
+        <ContentLoader width="100%" height={isDesktop ? "98px" : "60px"} style={{ maxWidth: "100%" }}>
           <rect x={0} y={0} width="50" height={12} />
           <rect x={0} y={isDesktop ? 24 : 24} width={isDesktop ? "600" : "250"} height={isDesktop ? 32 : 23} />
           <rect x={0} y={isDesktop ? 68 : 54} width="200" height={isDesktop ? 32 : 23} />

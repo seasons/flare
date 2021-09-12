@@ -128,7 +128,7 @@ const Product = screenTrack(({ router }) => {
               </Media>
             </Col>
             <Col md="5" sm="12">
-              <Box style={{ maxWidth: "480px" }} px={[2, 2, 0, 0, 0]}>
+              <Box style={{ maxWidth: "384px" }} px={[2, 2, 0, 0, 0]}>
                 {product ? (
                   <ProductDetails
                     selectedVariant={selectedVariant}
