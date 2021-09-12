@@ -27,7 +27,7 @@ const Home = screenTrack(() => ({
 }))(() => {
   const defaultNavStyles = {
     backgroundColor: "rgba(255, 255, 255, 0)",
-    textColor: color("black100"),
+    textColor: color("white100"),
     buttonVariant: "transparentBlackOutline" as ButtonVariant,
     getTheAppVariant: "primaryWhiteNoBorder" as ButtonVariant,
   }

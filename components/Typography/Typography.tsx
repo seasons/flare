@@ -67,7 +67,7 @@ export const fontFamily: FontFamilyProps = {
     medium: "",
   },
   display: {
-    regular: "'NBAK Regular', sans-serif",
+    regular: "'NBAkademieProRegular', sans-serif",
   },
 }
 

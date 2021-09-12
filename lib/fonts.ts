@@ -31,7 +31,7 @@ export const FontStyles = createGlobalStyle`
         font-style: normal;
     }    
     @font-face {
-        font-family: 'NBAK-Regular';
+        font-family: 'NBAkademieProRegular';
         src: url('/fonts/NBAK-Regular.woff') format('woff');
         font-weight: normal;
         font-style: normal;

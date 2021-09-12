@@ -9,12 +9,10 @@ import queryString from "query-string"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-
-import { Box, Button, MaxWidth, Spacer } from "components"
+import { Box, Display, MaxWidth, Spacer } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
-import { SeasonsLogoIcon } from "components/Icons/SeasonsLogoIcon"
 import { GetTheAppButton } from "components/Button/GetTheApp"
 
 export const DESKTOP_NAV_HEIGHT = 92
@@ -89,16 +87,6 @@ export const DesktopNav = (props: NavProps) => {
   const renderLoggedOutNavLinks = () => (
     <>
       <Spacer ml={3} />
-      <Button
-        size="medium-x"
-        variant={navStyles?.buttonVariant ? navStyles.buttonVariant : "primaryWhite"}
-        onClick={() => {
-          toggleLoginModal(true)
-        }}
-      >
-        Sign in
-      </Button>
-      <Spacer ml={1} />
       <GetTheAppButton
         size="medium-x"
         variant={navStyles?.getTheAppVariant ? navStyles.getTheAppVariant : "primaryWhiteNoBorder"}
@@ -131,9 +119,11 @@ export const DesktopNav = (props: NavProps) => {
         <MaxWidth>
           <Box width="100%">
             <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
-              <SeasonsLogoIcon width="58px" height="58px" fill={textColor} />
+              <Display color={textColor} size="7">
+                SEASONS
+              </Display>
               <Box px={4}>
-                <SearchBar color={textColor} />
+                <SearchBar />
               </Box>
               <Flex ml="auto" flexDirection="row" alignItems="center">
                 {links.map(renderLink)}
