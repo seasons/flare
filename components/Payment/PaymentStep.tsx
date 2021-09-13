@@ -1,11 +1,10 @@
-import { Box, Separator } from "components"
+import { Box, FixedBackArrow, Separator } from "components"
 import { FormFooter } from "components/Forms/FormFooter"
 import { Col, Grid, Row } from "components/Grid"
 import { BackArrowIcon } from "components/Icons"
 import { GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Formik } from "formik"
 import { BagItemFragment } from "queries/bagItemQueries"
-import { REMOVE_FROM_BAG } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { media } from "styled-bootstrap-grid"
@@ -17,6 +16,7 @@ import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-
 import { PaymentStepPlanSelection } from "./PaymentStepComponents/PaymentStepPlanSelection"
 import { PaymentStepCheckoutSection } from "./PaymentStepComponents/PaymentStepCheckoutSection"
 import { PaymentStepOrderSummarySection } from "./PaymentStepComponents/PaymentStepOrderSummarySection"
+import { Loader } from "mobile/Loader"
 
 interface PaymentStepProps {
   plan: {
@@ -297,16 +297,31 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
     })
   }
 
-  const user = data?.me?.customer?.user
+  const customer = data?.me?.customer
+  const user = customer?.user
+  const customerShippingAddress = customer?.detail?.shippingAddress
+
+  const initialValues = {
+    shippingFirstName: user?.firstName,
+    shippingLastName: user?.lastName,
+    shippingState: customerShippingAddress?.state,
+    shippingCity: customerShippingAddress?.city,
+    shippingPostalCode: customerShippingAddress?.zipCode,
+  }
+
+  if (!data) {
+    // Wait for data, otherwise initial values wont register
+    return <Loader />
+  }
 
   return (
     <Box width="100%" height="100%">
-      <Formik onSubmit={handleSubmit} initialValues={{}} validationSchema={validationSchema}>
+      <Formik onSubmit={handleSubmit} initialValues={initialValues} validationSchema={validationSchema}>
         {({ handleSubmit, isValid, values }) => (
           <form onSubmit={handleSubmit}>
             <Grid>
               <Row>
-                <LeftColumn md={8}>
+                <LeftColumn md={6} mdOffset={1}>
                   {showDiscoverBag && (
                     <TouchableOpacity
                       onPress={() => {
@@ -337,8 +352,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                     selectedPlan={plan}
                   />
                 </LeftColumn>
-                <RightColumn md={4}>
-                  <Box style={{ height: "100%", minHeight: "100vh" }}>
+                <RightColumn md={5}>
+                  <Box style={{ height: "100%", minHeight: "100vh", maxWidth: "345px" }}>
                     <Box px={[0, 0, 2, 2]} mt={[4, 4, 12]}>
                       <PaymentStepOrderSummarySection
                         setCoupon={setCoupon}
