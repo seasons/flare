@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Box, Sans, Flex, MaxWidth, Media, Spacer } from "components"
+import Image from "next/image"
 
 const bi = require("../../public/images/homepage/BusinessInsider.png")
 const nyt = require("../../public/images/homepage/NYT.png")
@@ -53,9 +54,9 @@ export const FeaturedIn: React.FC = () => {
             {items.map((item, index) => {
               return (
                 <StyledAnchor href={item.link} target="_blank" key={item.link}>
-                  <Box pr={2} py={3}>
-                    <Image src={item.logo} />
-                  </Box>
+                  <ImageWrapper mr={2} my={3}>
+                    <Image src={item.logo} layout="intrinsic" />
+                  </ImageWrapper>
                 </StyledAnchor>
               )
             })}
@@ -90,7 +91,9 @@ export const FeaturedIn: React.FC = () => {
               {mobileItems.map((item, index) => {
                 return (
                   <StyledAnchor href={item.link} target="_blank" key={item.link}>
-                    <MobileImage src={item.logo} />
+                    <MobileImageWrapper>
+                      <Image layout="responsive" src={item.logo} />
+                    </MobileImageWrapper>
                   </StyledAnchor>
                 )
               })}
@@ -117,10 +120,14 @@ const StyledAnchor = styled.a`
   text-decoration: none;
 `
 
-const Image = styled.img`
-  height: 22px;
+const ImageWrapper = styled(Box)`
+  height: 32px;
+  width: 200px;
+  position: relative;
 `
 
-const MobileImage = styled.img`
+const MobileImageWrapper = styled(Box)`
+  position: relative;
   height: 20px;
+  width: 300px;
 `
