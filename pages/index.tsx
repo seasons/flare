@@ -88,6 +88,7 @@ const Home = screenTrack(() => ({
   }
 
   const partnerData = getPartnerDataFromUTMCampaign(router.query["utm_campaign"])
+
   return (
     <Layout showIntercom disableMaxWidth navStyles={navStyles} hideNavPadding>
       <Hero />

@@ -17,8 +17,7 @@ import { ModalProvider } from "./Modal/ModalProvider"
 import { Modal } from "./Modal"
 import { gql } from "@apollo/client"
 import { ButtonVariant } from "./Button/Button.shared"
-
-const DESKTOP_NAV_HEIGHT = 93
+import { DESKTOP_NAV_HEIGHT } from "./Nav/DesktopNav"
 
 export const SET_IMPACT_ID = gql`
   mutation SetImpactID($impactId: String) {
