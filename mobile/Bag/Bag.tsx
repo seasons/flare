@@ -85,7 +85,7 @@ export const Bag = screenTrack()((props) => {
 
   const savedItems = savedTabData?.me?.savedItems
 
-  const planItemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
+  const planItemCount = data?.me?.customer?.membership?.plan?.itemCount || MAXIMUM_ITEM_COUNT
   const bagItems =
     (planItemCount && assign(fill(new Array(planItemCount), { variantID: "", productID: "" }), items)) || []
   const hasActiveReservation = !!me?.activeReservation
