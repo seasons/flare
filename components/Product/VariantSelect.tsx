@@ -1,9 +1,7 @@
-import { Box, Button, Flex, Sans } from "components"
-import { color } from "helpers/color"
-import React, { useState } from "react"
-import { TouchableOpacity } from "react-native"
+import { Button } from "components"
+import React from "react"
 import { Schema, useTracking } from "utils/analytics"
-import styled from "styled-components"
+import { Col, Grid, Row } from "components/Grid"
 
 export const sizeToName = (size) => {
   switch (size) {
@@ -24,36 +22,36 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
   const variants = product?.variants
   const tracking = useTracking()
 
-  console.log("selectedVariant?.id", selectedVariant?.id)
-
   return (
-    <Flex width="100%" justifyContent="flex-start" flexWrap="wrap" flexDirection="row">
-      {variants?.map((size, i) => {
-        const isSelected = selectedVariant?.id === size.id
+    <Grid width="100%">
+      <Row>
+        {variants?.map((size, i) => {
+          const isSelected = selectedVariant?.id === size.id
 
-        return (
-          <Flex key={i} px={0.5} flex={3} pb={1}>
-            <Button
-              disabled={size.reservable === 0}
-              boxShadow={isSelected}
-              block
-              variant={isSelected ? "primaryBlack" : "secondaryOutline"}
-              onClick={() => {
-                tracking.trackEvent({
-                  actionName: Schema.ActionNames.ProductVariantSelected,
-                  actionType: Schema.ActionTypes.Tap,
-                  size: size?.displayShort,
-                  variantID: size?.id,
-                })
-                setSelectedVariant(size)
-                onSizeSelected(size)
-              }}
-            >
-              {size.displayLong}
-            </Button>
-          </Flex>
-        )
-      })}
-    </Flex>
+          return (
+            <Col md="4" xs="6" key={i} px={0.5} pb={1}>
+              <Button
+                disabled={size.reservable === 0}
+                boxShadow={isSelected && size.reservable !== 0}
+                block
+                variant={isSelected ? "primaryBlack" : "secondaryOutline"}
+                onClick={() => {
+                  tracking.trackEvent({
+                    actionName: Schema.ActionNames.ProductVariantSelected,
+                    actionType: Schema.ActionTypes.Tap,
+                    size: size?.displayShort,
+                    variantID: size?.id,
+                  })
+                  setSelectedVariant(size)
+                  onSizeSelected(size)
+                }}
+              >
+                {size.displayLong}
+              </Button>
+            </Col>
+          )
+        })}
+      </Row>
+    </Grid>
   )
 }

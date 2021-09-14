@@ -11,7 +11,9 @@ export const ProductCarousel: React.FC<{
   products: any[]
   title?: string
   saveProductRefetchQueries: any[]
-}> = ({ title, products, saveProductRefetchQueries = [] }) => {
+  hideViewAll?: boolean
+  disableClickThrough?: boolean
+}> = ({ title, products, saveProductRefetchQueries = [], hideViewAll = false, disableClickThrough = false }) => {
   return (
     <>
       <Media greaterThanOrEqual="md">
@@ -19,7 +21,9 @@ export const ProductCarousel: React.FC<{
           version="desktop"
           products={products}
           title={title}
+          hideViewAll={hideViewAll}
           saveProductRefetchQueries={saveProductRefetchQueries}
+          disableClickThrough={disableClickThrough}
         />
       </Media>
       <Media lessThan="md">
@@ -27,6 +31,8 @@ export const ProductCarousel: React.FC<{
           version="mobile"
           products={products}
           title={title}
+          hideViewAll={hideViewAll}
+          disableClickThrough={disableClickThrough}
           saveProductRefetchQueries={saveProductRefetchQueries}
         />
       </Media>
@@ -39,7 +45,9 @@ const Content: React.FC<{
   title?: string
   saveProductRefetchQueries: any[]
   version: "mobile" | "desktop"
-}> = ({ title, products, saveProductRefetchQueries = [], version }) => {
+  hideViewAll?: boolean
+  disableClickThrough?: boolean
+}> = ({ title, products, saveProductRefetchQueries = [], version, hideViewAll, disableClickThrough }) => {
   const { authState, toggleLoginModal } = useAuthContext()
   const snapList = useRef(null)
   const isMobile = version === "mobile"
@@ -55,13 +63,17 @@ const Content: React.FC<{
   return (
     <Box style={{ marge: "0 auto" }}>
       <MaxWidthWrapper px={[2, 2, 2, 2, 2]}>
-        <Flex flexDirection="row" justifyContent="space-between" width="100%">
+        <Flex flexDirection="row" justifyContent="space-between" width="100%" alignItems="center">
           <Display size={["7", "9"]}>{title}</Display>
-          <Link href="/browse">
-            <Display size={["7", "9"]} underline pointer>
-              See all
-            </Display>
-          </Link>
+          <Box>
+            {!hideViewAll && (
+              <Link href="/browse">
+                <Display size={["7", "9"]} underline pointer>
+                  See all
+                </Display>
+              </Link>
+            )}
+          </Box>
         </Flex>
       </MaxWidthWrapper>
       <Spacer mb={2} />
@@ -92,7 +104,7 @@ const Content: React.FC<{
                     key={index}
                     width={isMobile ? "90%" : "450px"}
                   >
-                    <Box width="100%">
+                    <Box width="100%" style={{ pointerEvents: disableClickThrough ? "none" : "auto" }}>
                       <ProductGridItem
                         imageIndex={2}
                         product={product}

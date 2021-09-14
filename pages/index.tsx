@@ -13,7 +13,6 @@ import { useQuery } from "@apollo/client"
 import { ProductCarousel } from "components/ProductCarousel"
 import { Discover } from "components/Homepage/Discover"
 import { color } from "helpers"
-import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
 import { ButtonVariant } from "components/Button/Button.shared"
 
 // TODO: Make this not hardcoded later
@@ -25,11 +24,12 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
+  // FIXME: Add back the transparent background once we fix the notification bar
   const defaultNavStyles = {
-    backgroundColor: "rgba(255, 255, 255, 0)",
-    textColor: color("white100"),
-    buttonVariant: "transparentBlackOutline" as ButtonVariant,
-    getTheAppVariant: "primaryWhiteNoBorder" as ButtonVariant,
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    textColor: color("black100"),
+    buttonVariant: "primaryWhite" as ButtonVariant,
+    getTheAppVariant: "primaryWhite" as ButtonVariant,
   }
   const { previousData, data = previousData, error } = useQuery(Home_Query)
   const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
@@ -37,28 +37,29 @@ const Home = screenTrack(() => ({
   const [navStyles, setNavStyles] = useState(defaultNavStyles)
   const router = useRouter()
 
-  const onScroll = () => {
-    if (typeof window !== undefined) {
-      const offset = window.pageYOffset
-      if (offset >= HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.backgroundColor === "rgba(255, 255, 255, 0)") {
-        setNavStyles({
-          backgroundColor: "rgba(255, 255, 255, 1)",
-          textColor: color("black100"),
-          buttonVariant: "primaryWhite" as ButtonVariant,
-          getTheAppVariant: "primaryWhite" as ButtonVariant,
-        })
-      } else if (offset < HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.backgroundColor !== "rgba(255, 255, 255, 0)") {
-        setNavStyles(defaultNavStyles)
-      }
-    }
-  }
+  // FIXME: Add back the onScroll once we fix the notification bar for transparent background
+  // const onScroll = () => {
+  //   if (typeof window !== undefined) {
+  //     const offset = window.pageYOffset
+  //     if (offset >= HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.backgroundColor === "rgba(255, 255, 255, 0)") {
+  //       setNavStyles({
+  //         backgroundColor: "rgba(255, 255, 255, 1)",
+  //         textColor: color("black100"),
+  //         buttonVariant: "primaryWhite" as ButtonVariant,
+  //         getTheAppVariant: "primaryWhite" as ButtonVariant,
+  //       })
+  //     } else if (offset < HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.backgroundColor !== "rgba(255, 255, 255, 0)") {
+  //       setNavStyles(defaultNavStyles)
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", onScroll)
-    }
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [onScroll])
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     window.addEventListener("scroll", onScroll)
+  //   }
+  //   return () => window.removeEventListener("scroll", onScroll)
+  // }, [onScroll])
 
   const isUserSignedIn = authState?.isSignedIn
   const userSignedIn = useRef(isUserSignedIn)
@@ -119,7 +120,13 @@ const Home = screenTrack(() => ({
 
       {data?.upcomingProducts.length > 0 && (
         <>
-          <ProductCarousel title="Upcoming releases" products={data?.upcomingProducts} saveProductRefetchQueries={[]} />
+          <ProductCarousel
+            hideViewAll
+            disableClickThrough
+            title="Upcoming releases"
+            products={data?.upcomingProducts}
+            saveProductRefetchQueries={[]}
+          />
           <Spacer mb={10} />
         </>
       )}
@@ -144,7 +151,7 @@ const Home = screenTrack(() => ({
           {data?.fitPics?.length > 0 && (
             <>
               <HomepageFitPics fitPics={data.fitPics} />
-              <Spacer mb={10} />
+              <Spacer mb={120} />
             </>
           )}
 

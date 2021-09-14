@@ -14,11 +14,11 @@ export const GET_PRODUCT = gql`
       createdAt
       updatedAt
       description
-      retailPrice
+      rentalPrice
       type
       retailPrice
-      category{
-        id 
+      category {
+        id
         name
         productType
       }

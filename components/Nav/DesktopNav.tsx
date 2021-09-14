@@ -14,6 +14,7 @@ import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
 import { GetTheAppButton } from "components/Button/GetTheApp"
+import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
 
 export const DESKTOP_NAV_HEIGHT = 72
 
@@ -118,9 +119,9 @@ export const DesktopNav = (props: NavProps) => {
       <MaxWidth>
         <Box width="100%">
           <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
-            <Display color={textColor} size="7">
-              SEASONS
-            </Display>
+            <Box onClick={() => router.push("/")}>
+              <SeasonsLogoTextIcon />
+            </Box>
             <Box px={4}>
               <SearchBar />
             </Box>

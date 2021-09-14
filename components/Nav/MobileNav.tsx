@@ -15,7 +15,7 @@ import { Burger } from "./Burger"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
-export const MENU_HEIGHT = "59px"
+export const MENU_HEIGHT = "72px"
 
 export const MobileNav: React.FC<NavProps> = ({ links }) => {
   const [isOpen, toggleOpen] = useState(false)
