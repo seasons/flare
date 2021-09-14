@@ -163,8 +163,6 @@ export const Bag = screenTrack()((props) => {
   const pausePending = pauseRequest?.pausePending
   let pauseStatus = "active"
 
-  console.log("bagIsFull", bagIsFull)
-
   if (customerStatus === "Paused") {
     pauseStatus = "paused"
   } else if (pausePending) {
