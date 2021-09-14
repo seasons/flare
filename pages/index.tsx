@@ -14,6 +14,7 @@ import { ProductCarousel } from "components/ProductCarousel"
 import { Discover } from "components/Homepage/Discover"
 import { color } from "helpers"
 import { ButtonVariant } from "components/Button/Button.shared"
+import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -30,6 +31,7 @@ const Home = screenTrack(() => ({
     textColor: color("black100"),
     buttonVariant: "primaryWhite" as ButtonVariant,
     getTheAppVariant: "primaryWhite" as ButtonVariant,
+    hideSignIn: true,
   }
   const { previousData, data = previousData, error } = useQuery(Home_Query)
   const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
@@ -37,29 +39,29 @@ const Home = screenTrack(() => ({
   const [navStyles, setNavStyles] = useState(defaultNavStyles)
   const router = useRouter()
 
-  // FIXME: Add back the onScroll once we fix the notification bar for transparent background
-  // const onScroll = () => {
-  //   if (typeof window !== undefined) {
-  //     const offset = window.pageYOffset
-  //     if (offset >= HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.backgroundColor === "rgba(255, 255, 255, 0)") {
-  //       setNavStyles({
-  //         backgroundColor: "rgba(255, 255, 255, 1)",
-  //         textColor: color("black100"),
-  //         buttonVariant: "primaryWhite" as ButtonVariant,
-  //         getTheAppVariant: "primaryWhite" as ButtonVariant,
-  //       })
-  //     } else if (offset < HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.backgroundColor !== "rgba(255, 255, 255, 0)") {
-  //       setNavStyles(defaultNavStyles)
-  //     }
-  //   }
-  // }
+  const onScroll = () => {
+    if (typeof window !== undefined) {
+      const offset = window.pageYOffset
+      if (offset >= HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.hideSignIn) {
+        setNavStyles({
+          backgroundColor: "rgba(255, 255, 255, 1)",
+          textColor: color("black100"),
+          buttonVariant: "primaryWhite" as ButtonVariant,
+          getTheAppVariant: "primaryWhite" as ButtonVariant,
+          hideSignIn: false,
+        })
+      } else if (offset < HERO_HEIGHT - DESKTOP_NAV_HEIGHT && !navStyles.hideSignIn) {
+        setNavStyles(defaultNavStyles)
+      }
+    }
+  }
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     window.addEventListener("scroll", onScroll)
-  //   }
-  //   return () => window.removeEventListener("scroll", onScroll)
-  // }, [onScroll])
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", onScroll)
+    }
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [onScroll])
 
   const isUserSignedIn = authState?.isSignedIn
   const userSignedIn = useRef(isUserSignedIn)

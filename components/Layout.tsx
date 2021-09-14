@@ -39,6 +39,7 @@ export interface NavStyles {
   textColor?: string
   buttonVariant?: ButtonVariant
   getTheAppVariant?: ButtonVariant
+  hideSignIn?: boolean
 }
 
 interface LayoutProps {
