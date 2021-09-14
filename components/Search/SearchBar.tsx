@@ -28,12 +28,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({ handleSearch, color = colo
 const SearchWrapper = styled.div<{ color: string }>`
   input {
     height: 40px;
-    background-color: ${colorHelper("black10")};
+    background-color: ${colorHelper("black04")};
     border-radius: 8px;
     color: ${(p) => p.color};
     padding-left: 16px;
     padding-right: 16px;
     transition: color ${GLOBAL_TRANSITION};
+    border: none !important;
 
     &::placeholder {
       /* Chrome, Firefox, Opera, Safari 10.1+ */

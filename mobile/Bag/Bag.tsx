@@ -86,8 +86,7 @@ export const Bag = screenTrack()((props) => {
   const savedItems = savedTabData?.me?.savedItems
 
   const planItemCount = data?.me?.customer?.membership?.plan?.itemCount || MAXIMUM_ITEM_COUNT
-  const bagItems =
-    (planItemCount && assign(fill(new Array(planItemCount), { variantID: "", productID: "" }), items)) || []
+
   const hasActiveReservation = !!me?.activeReservation
 
   const shippingAddress = data?.me?.customer?.detail?.shippingAddress
@@ -214,7 +213,7 @@ export const Bag = screenTrack()((props) => {
 
   let sections
   if (isBagView) {
-    sections = [{ data: bagItems }]
+    sections = [{ data: items }]
   } else if (isSavedView) {
     sections = [{ data: savedItems }]
   } else {
@@ -222,13 +221,9 @@ export const Bag = screenTrack()((props) => {
   }
 
   const footerMarginBottom = currentView === BagView.Bag ? 96 : 2
-  const hasActiveReservationAndBagRoom =
-    hasActiveReservation &&
-    planItemCount > me?.activeReservation?.products?.length &&
-    ["Queued", "Picked", "Packed", "Delivered", "Received", "Shipped"].includes(me?.activeReservation?.status)
+  const fullReservation = me?.activeReservation?.products?.length >= planItemCount
 
-  const showReserveButton =
-    isBagView && pauseStatus !== "paused" && (hasActiveReservationAndBagRoom || !hasActiveReservation)
+  const showReserveButton = isBagView && pauseStatus !== "paused" && !fullReservation
 
   return (
     <Container insetsBottom={false}>
@@ -281,7 +276,7 @@ export const Bag = screenTrack()((props) => {
               })
               handleReserve()
             }}
-            disabled={!bagIsFull || isMutating}
+            disabled={isMutating}
             loading={isMutating}
             style={{
               width: "100%",

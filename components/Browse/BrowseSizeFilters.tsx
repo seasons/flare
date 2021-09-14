@@ -62,7 +62,7 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
         <Sans size="3">Available now</Sans>
       </FlexWrapper>
       <Spacer mb={[0, 2]} />
-      <FlexWrapper mb={2}>
+      <FlexWrapper mb={5}>
         <Checkbox
           onClick={() => {
             setParams({ ...params, forSaleOnly: !forSaleOnly })

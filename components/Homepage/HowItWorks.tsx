@@ -3,11 +3,11 @@ import { Box, Flex, Sans, Spacer } from "components"
 import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import { Media } from "../Responsive"
-import { HeartIcon, SwapIcon, CalendarIcon, ReserveIcon, BillingIcon, DiscordIcon } from "components/Icons"
+import { HeartIcon, SwapIcon, CalendarIcon, MembershipCardIcon, BillingIcon, DiscordIcon } from "components/Icons"
 
 export const HOW_IT_WORKS_TEXT = [
   {
-    icon: <ReserveIcon />,
+    icon: <MembershipCardIcon />,
     title: "Flexible membership",
     text: "Subscribe & get exclusive rental access to over 1,000 different styles.",
   },

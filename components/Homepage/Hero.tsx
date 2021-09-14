@@ -44,7 +44,7 @@ const Content: React.FC<{
               <Display color="white100" size={["8", "8", "10", "10", "10"]}>
                 Wear. Swap. Repeat.
               </Display>
-              <Spacer mb={2} />
+              <Spacer mb={1} />
               <Display color="black10" size={["8", "8", "7", "7", "7"]} style={{ maxWidth: "668px" }}>
                 Seasons is a private rental service exploring the shared access of fashion.{" "}
                 <span style={{ textDecoration: "underline", color: color("white100") }}>{seasonAndYear()}</span>{" "}

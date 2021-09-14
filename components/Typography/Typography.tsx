@@ -216,7 +216,6 @@ function createStyledText<P extends StyledTextProps>(
       transition: `color ${GLOBAL_TRANSITION}`,
       ...(underline ? { textDecoration: "underline" } : {}),
       ...(pointer ? { cursor: "pointer" } : {}),
-      ...(fontType === "display" ? { letterSpacing: "-1px" } : {}),
       ...textProps.style,
     }
 

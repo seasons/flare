@@ -9,19 +9,19 @@ export const ProductHowItWorks = () => {
         How it works
       </Sans>
 
-      <Spacer mb={5} />
+      <Spacer mb={2} />
 
       {HOW_IT_WORKS_TEXT?.map((item, index) => {
         return (
           <Box key={index}>
             <Separator />
-            <Spacer mb={5} />
+            <Spacer mb={3} />
             <Sans size="4">{item.title}</Sans>
             <Spacer mb={1} />
             <Sans size="3" color="black50">
               {item.text}
             </Sans>
-            <Spacer mb={5} />
+            <Spacer mb={3} />
           </Box>
         )
       })}

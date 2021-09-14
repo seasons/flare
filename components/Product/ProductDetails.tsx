@@ -94,14 +94,14 @@ export const ProductDetails: React.FC<{
         {description}
       </Sans>
 
-      <Flex flexDirection="row" width="100%" pt={5}>
+      <Flex flexDirection="row" width="100%" pt={6}>
         <Flex flexDirection="column" width="100%">
           <Sans size={3}>Member price</Sans>
           <Box pr={2}>
-            <Separator mb={1} width="100%" />
+            <Separator mb={2} width="100%" />
           </Box>
           <Flex flexDirection="row" alignItems="flex-end">
-            <Sans size={9}>${rentalPrice ? rentalPrice : 40}</Sans>
+            <Sans size={9}>${rentalPrice}</Sans>
             <Flex pb="6px" pl="5px">
               <Sans size={3} color="black50">
                 {" "}
@@ -112,17 +112,17 @@ export const ProductDetails: React.FC<{
         </Flex>
         <Flex flexDirection="column" width="100%">
           <Sans size={3}>Retail value</Sans>
-          <Separator mb={1} width="100%" />
+          <Separator mb={2} width="100%" />
           <Sans size={9} color="black25">
             ${retailPrice}
           </Sans>
         </Flex>
       </Flex>
-      <Flex paddingTop={5} pb={2}>
+      <Flex paddingTop={6} pb={2}>
         <Sans size={3}>Select a size</Sans>
       </Flex>
       {productType !== "Accessory" && (
-        <Flex flex={1} pb={2}>
+        <Flex flex={1} pb={1}>
           <VariantSelect
             product={product}
             variantInStock={variantInStock}
@@ -146,10 +146,9 @@ export const ProductDetails: React.FC<{
         />
       </Flex>
 
-      <Spacer mb={10} />
+      <Spacer mb={6} />
 
       <ProductInfoItem detailType="Product details" detailValue="" />
-      <Separator color={color("black15")} />
       {!!waistByLengthDisplay && <ProductInfoItem detailType="Waist by length" detailValue={waistByLengthDisplay} />}
       {product.color && <ProductInfoItem detailType="Color" detailValue={product.color.name} />}
       {!!product.modelSize && !!product.modelHeight && (
