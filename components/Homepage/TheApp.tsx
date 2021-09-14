@@ -5,7 +5,7 @@ import { imageResize } from "utils/imageResize"
 import styled from "styled-components"
 import { ListCheck } from "components/SVGs/ListCheck"
 import { GetTheAppButton } from "components/Button/GetTheApp"
-import { space } from "helpers"
+import { color, space } from "helpers"
 
 const title = "Download the Seasons app"
 const subtitle = "Manage membership & reserve your order."
@@ -41,7 +41,7 @@ const TextContent = () => {
       {listItems?.map((item, index) => {
         return (
           <Flex flexDirection="row" alignItems="center" mb={2} key={index}>
-            <ListCheck feature />
+            <ListCheck color={color("black100")} />
             <Spacer mr={2} />
             <Sans size={["3", "4"]}>{item.text}</Sans>
           </Flex>

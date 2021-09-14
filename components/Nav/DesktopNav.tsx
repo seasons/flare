@@ -119,7 +119,7 @@ export const DesktopNav = (props: NavProps) => {
       <MaxWidth>
         <Box width="100%">
           <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
-            <Box onClick={() => router.push("/")}>
+            <Box style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
               <SeasonsLogoTextIcon />
             </Box>
             <Box px={4}>
