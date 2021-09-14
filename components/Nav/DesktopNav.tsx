@@ -9,7 +9,7 @@ import queryString from "query-string"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-import { Box, Display, MaxWidth, Spacer } from "components"
+import { Box, Button, Display, MaxWidth, Spacer } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
@@ -87,11 +87,25 @@ export const DesktopNav = (props: NavProps) => {
 
   const renderLoggedOutNavLinks = () => (
     <>
+      <HiddenSignInLink hide={navStyles?.hideSignIn}>
+        <Link
+          onClick={() => {
+            toggleLoginModal(true)
+          }}
+        >
+          <NavItem link={{ text: "Sign in" }} color={textColor} />
+        </Link>
+      </HiddenSignInLink>
       <Spacer ml={3} />
       <GetTheAppButton
         size="medium-x"
         variant={navStyles?.getTheAppVariant ? navStyles.getTheAppVariant : "primaryWhite"}
       />
+      <HiddenApplyNowWrapper hide={navStyles?.hideSignIn}>
+        <Button size="medium-x" onClick={() => router.push("/signup")}>
+          Apply now
+        </Button>
+      </HiddenApplyNowWrapper>
     </>
   )
 
@@ -141,6 +155,23 @@ export const DesktopNav = (props: NavProps) => {
     </HeaderContainer>
   )
 }
+
+const HiddenApplyNowWrapper = styled(Box)<{ hide: boolean }>`
+  opacity: ${(p) => (p.hide ? 0 : 1)};
+  width: ${(p) => (p.hide ? "0px" : "108px")};
+  transition: width 250ms ease, opacity 250ms ease;
+  overflow: hidden;
+  height: 40px;
+  padding-left: 8px;
+`
+
+const HiddenSignInLink = styled(Box)<{ hide: boolean }>`
+  opacity: ${(p) => (p.hide ? 0 : 1)};
+  width: ${(p) => (p.hide ? "0px" : "67px")};
+  transition: width 250ms ease, opacity 250ms ease;
+  overflow: hidden;
+  height: 58px;
+`
 
 const HeaderContainer = styled.div<{ backgroundColor: string }>`
   background-color: ${(p) => p.backgroundColor};
