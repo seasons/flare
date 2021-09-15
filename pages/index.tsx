@@ -124,7 +124,10 @@ const Home = screenTrack(() => ({
         <>
           <ProductCarousel
             hideViewAll
-            disableClickThrough
+            disableTap
+            hidePrice
+            hideSaveButton
+            hideSizes
             title="Upcoming releases"
             products={data?.upcomingProducts}
             saveProductRefetchQueries={[]}

@@ -1,5 +1,5 @@
 import { ProductGridItem } from "@seasons/eclipse"
-import { Box, Display, Flex, Link, Spacer, MaxWidth, Media } from "components"
+import { Box, Display, Flex, Link, Spacer, Media } from "components"
 import { ThinChevron } from "components/SVGs/ThinChevron"
 import { color, space } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -12,8 +12,20 @@ export const ProductCarousel: React.FC<{
   title?: string
   saveProductRefetchQueries: any[]
   hideViewAll?: boolean
-  disableClickThrough?: boolean
-}> = ({ title, products, saveProductRefetchQueries = [], hideViewAll = false, disableClickThrough = false }) => {
+  disableTap?: boolean
+  hidePrice?: boolean
+  hideSaveButton?: boolean
+  hideSizes?: boolean
+}> = ({
+  title,
+  products,
+  saveProductRefetchQueries = [],
+  hideViewAll,
+  disableTap,
+  hidePrice,
+  hideSaveButton,
+  hideSizes,
+}) => {
   return (
     <>
       <Media greaterThanOrEqual="md">
@@ -23,7 +35,10 @@ export const ProductCarousel: React.FC<{
           title={title}
           hideViewAll={hideViewAll}
           saveProductRefetchQueries={saveProductRefetchQueries}
-          disableClickThrough={disableClickThrough}
+          disableTap={disableTap}
+          hidePrice={hidePrice}
+          hideSaveButton={hideSaveButton}
+          hideSizes={hideSizes}
         />
       </Media>
       <Media lessThan="md">
@@ -32,7 +47,10 @@ export const ProductCarousel: React.FC<{
           products={products}
           title={title}
           hideViewAll={hideViewAll}
-          disableClickThrough={disableClickThrough}
+          disableTap={disableTap}
+          hidePrice={hidePrice}
+          hideSaveButton={hideSaveButton}
+          hideSizes={hideSizes}
           saveProductRefetchQueries={saveProductRefetchQueries}
         />
       </Media>
@@ -46,8 +64,21 @@ const Content: React.FC<{
   saveProductRefetchQueries: any[]
   version: "mobile" | "desktop"
   hideViewAll?: boolean
-  disableClickThrough?: boolean
-}> = ({ title, products, saveProductRefetchQueries = [], version, hideViewAll, disableClickThrough }) => {
+  disableTap?: boolean
+  hidePrice?: boolean
+  hideSizes?: boolean
+  hideSaveButton?: boolean
+}> = ({
+  title,
+  products,
+  saveProductRefetchQueries = [],
+  version,
+  hideViewAll,
+  disableTap,
+  hidePrice,
+  hideSaveButton,
+  hideSizes,
+}) => {
   const { authState, toggleLoginModal } = useAuthContext()
   const snapList = useRef(null)
   const isMobile = version === "mobile"
@@ -104,13 +135,16 @@ const Content: React.FC<{
                     key={index}
                     width={isMobile ? "90%" : "450px"}
                   >
-                    <Box width="100%" style={{ pointerEvents: disableClickThrough ? "none" : "auto" }}>
+                    <Box width="100%" style={{ pointerEvents: disableTap ? "none" : "auto" }}>
                       <ProductGridItem
                         imageIndex={2}
                         product={product}
                         authState={authState}
                         onShowLoginModal={() => toggleLoginModal(true)}
                         saveProductButtonRefetchQueries={saveProductRefetchQueries}
+                        hidePrice={hidePrice}
+                        hideSaveButton={hideSaveButton}
+                        hideSizes={hideSizes}
                       />
                     </Box>
                   </SnapItem>
