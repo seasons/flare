@@ -105,7 +105,15 @@ const Home = screenTrack(() => ({
       {!!data?.newArrivals?.length && (
         <>
           <Spacer mb={10} />
-          <ProductCarousel title="New arrivals" products={data?.newArrivals} saveProductRefetchQueries={[]} />
+          <ProductCarousel
+            title="New arrivals"
+            products={data?.newArrivals}
+            saveProductRefetchQueries={[
+              {
+                query: Home_Query,
+              },
+            ]}
+          />
           <Spacer mb={10} />
         </>
       )}
@@ -127,10 +135,15 @@ const Home = screenTrack(() => ({
             disableTap
             hidePrice
             hideSaveButton
+            imageIndex={0}
             hideSizes
             title="Upcoming releases"
             products={data?.upcomingProducts}
-            saveProductRefetchQueries={[]}
+            saveProductRefetchQueries={[
+              {
+                query: Home_Query,
+              },
+            ]}
           />
           <Spacer mb={10} />
         </>

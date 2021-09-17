@@ -16,6 +16,7 @@ export const ProductCarousel: React.FC<{
   hidePrice?: boolean
   hideSaveButton?: boolean
   hideSizes?: boolean
+  imageIndex?: number
 }> = ({
   title,
   products,
@@ -25,6 +26,7 @@ export const ProductCarousel: React.FC<{
   hidePrice,
   hideSaveButton,
   hideSizes,
+  imageIndex,
 }) => {
   return (
     <>
@@ -39,10 +41,12 @@ export const ProductCarousel: React.FC<{
           hidePrice={hidePrice}
           hideSaveButton={hideSaveButton}
           hideSizes={hideSizes}
+          imageIndex={imageIndex}
         />
       </Media>
       <Media lessThan="md">
         <Content
+          imageIndex={imageIndex}
           version="mobile"
           products={products}
           title={title}
@@ -68,6 +72,7 @@ const Content: React.FC<{
   hidePrice?: boolean
   hideSizes?: boolean
   hideSaveButton?: boolean
+  imageIndex?: number
 }> = ({
   title,
   products,
@@ -78,6 +83,7 @@ const Content: React.FC<{
   hidePrice,
   hideSaveButton,
   hideSizes,
+  imageIndex = 2,
 }) => {
   const { authState, toggleLoginModal } = useAuthContext()
   const snapList = useRef(null)
@@ -137,7 +143,7 @@ const Content: React.FC<{
                   >
                     <Box width="100%" style={{ pointerEvents: disableTap ? "none" : "auto" }}>
                       <ProductGridItem
-                        imageIndex={2}
+                        imageIndex={imageIndex}
                         product={product}
                         authState={authState}
                         onShowLoginModal={() => toggleLoginModal(true)}
