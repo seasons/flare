@@ -7,6 +7,7 @@ import styled from "styled-components"
 import { color } from "../../helpers"
 import { Col, Grid, Row } from "../Grid"
 import { Link } from "../Link"
+import { EmailCollection } from "./EmailCollection"
 
 export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandItems: any }> = ({
   footerBottomPadding,
@@ -17,8 +18,9 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
 
   return (
     <Box style={{ backgroundColor: color("black100") }}>
+      <Spacer pb={5} />
+      <EmailCollection />
       <Grid pb={footerBottomPadding ? footerBottomPadding : 0}>
-        <Spacer mb={5} />
         <Row px={[2, 2, 2, 2, 2]}>
           <Col lg="2" md="4" sm="6">
             <Sans size="3" color="black50">
