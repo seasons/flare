@@ -197,7 +197,7 @@ const Designer = screenTrack(({ router }) => {
   )
 
   return (
-    <Layout includeDefaultHead={false} disableMaxWidth>
+    <Layout includeDefaultHead={false}>
       <Head>
         <title>{!!title ? `Seasons | ${title}` : HEAD_META_TITLE}</title>
         <meta content={description} name="description" />

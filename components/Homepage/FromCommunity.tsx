@@ -9,13 +9,15 @@ const BlogPost = ({ post }) => {
 
   return (
     <Link href={`/blog/${post.slug}`}>
-      <Flex flexDirection="row">
-        <img
-          src={imageSRC}
-          alt={post.image?.alt ?? `Image for ${post.name}`}
-          style={{ width: "40%", borderRadius: "8px" }}
-        />
-        <Flex flexDirection="column" p={2} justifyContent="center">
+      <Flex flexDirection="row" alignItems="center">
+        <Box style={{ width: "40%", height: "112px", borderRadius: "8px", overflow: "hidden" }}>
+          <img
+            src={imageSRC}
+            alt={post.image?.alt ?? `Image for ${post.name}`}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </Box>
+        <Flex flexDirection="column" px={2} justifyContent="center" width="60%">
           {post.author && (
             <>
               <Spacer mb={1} />
