@@ -10,11 +10,14 @@ import { GLOBAL_TRANSITION } from "lib/theme"
 interface SearchBarProps {
   handleSearch?: () => void
   color?: string
+  breakPoint?: string
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ handleSearch, color = colorHelper("black100") }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ breakPoint, handleSearch, color = colorHelper("black100") }) => {
+  const isLarge = breakPoint === "large"
+
   return (
-    <SearchWrapper color={color}>
+    <SearchWrapper color={color} isLarge={isLarge}>
       <SearchProvider>
         <Configure hitsPerPage={3} />
         <Autocomplete />
@@ -25,8 +28,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({ handleSearch, color = colo
   )
 }
 
-const SearchWrapper = styled.div<{ color: string }>`
+const SearchWrapper = styled.div<{ color: string; isLarge: boolean }>`
+  width: ${(p) => (p.isLarge ? "300px" : "210px")};
   input {
+    width: ${(p) => (p.isLarge ? "300px" : "210px")};
     height: 40px;
     background-color: ${colorHelper("black04")};
     border-radius: 8px;
