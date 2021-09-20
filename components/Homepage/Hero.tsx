@@ -15,7 +15,7 @@ const backgroundImageDesktop =
 const fade = require("../../public/images/homepage/Hero-Fade.png")
 
 export const DESKTOP_HERO_HEIGHT = 760
-export const MOBILE_HERO_HEIGHT = 540
+export const MOBILE_HERO_HEIGHT = 556
 
 const Content: React.FC<{
   version: "mobile" | "desktop"
@@ -60,7 +60,7 @@ const Content: React.FC<{
               <HeroCTA version={version} userSession={userSession} authState={authState} />
               {!isDesktop && (
                 <>
-                  <Spacer mb={2} />
+                  <Spacer mb={1} />
                   <GetTheAppButton block size="large" variant="blur" />
                 </>
               )}
