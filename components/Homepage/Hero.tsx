@@ -10,8 +10,7 @@ import { color } from "helpers/color"
 
 const staticNoise = require("../../public/images/homepage/static-noise.gif")
 const backgroundImageMobile = require("../../public/images/homepage/Flare-mobile-background.jpg")
-const backgroundImageDesktop =
-  "https://seasons-s3.imgix.net/flare/Hero-image-1.jpg?w=2000&fit=clip&retina=true&fm=webp&cs=srgb"
+const backgroundImageDesktop = require("../../public/images/homepage/Website-hero-2.jpg")
 const fade = require("../../public/images/homepage/Hero-Fade.png")
 
 export const DESKTOP_HERO_HEIGHT = 760
@@ -117,7 +116,7 @@ const Static = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  opacity: 0.2;
+  opacity: 0.1;
   background: url(${staticNoise}) repeat center center;
   background-size: 90px;
 `
