@@ -28,7 +28,7 @@ const Content: React.FC<{
   return (
     <Background backgroundImage={isDesktop ? backgroundImageDesktop : backgroundImageMobile}>
       <Static />
-      {isDesktop && <FadeBackground />}
+      <FadeBackground />
       <MaxWidth>
         <Flex
           width="100%"

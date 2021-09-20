@@ -1,4 +1,4 @@
-import { Flex, Layout, Sans, SnackBar } from "components"
+import { Box, Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { PaymentStep } from "components/Payment"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
@@ -245,19 +245,23 @@ const SignUpPage = screenTrack(() => ({
   return (
     <Elements stripe={stripePromise}>
       <Layout hideFooter showIntercom={false}>
-        <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-        <Flex
-          height="100%"
-          width="100%"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-          px={[0, 0, 2, 2, 2]}
-        >
-          <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
-            {CurrentStep}
-          </Flex>
-        </Flex>
+        <MaxWidth height="100%">
+          <Box style={{ flexGrow: 1, position: "relative", width: "100%", height: "100%" }}>
+            <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
+            <Flex
+              height="100%"
+              width="100%"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+              px={[0, 0, 2, 2, 2]}
+            >
+              <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
+                {CurrentStep}
+              </Flex>
+            </Flex>
+          </Box>
+        </MaxWidth>
 
         <SplashScreen
           open={showReferrerSplash}
