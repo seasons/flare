@@ -1,4 +1,4 @@
-import { Flex, Layout, Sans, SnackBar } from "components"
+import { Box, Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { PaymentStep } from "components/Payment"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
@@ -37,6 +37,8 @@ enum Steps {
   PaymentStep = "PaymentStep",
 }
 
+const browseURL = "/browse/all+all?page=1&tops=M&available=true"
+
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
 const SignUpPage = screenTrack(() => ({
@@ -57,7 +59,6 @@ const SignUpPage = screenTrack(() => ({
   const customer = data?.me?.customer
   const customerStatus = customer?.status
   const hasSetMeasurements = !!customer?.detail?.height
-  const hasPlan = !!customer?.plan
   const initialCoupon = data?.me?.customer?.coupon
 
   const hasGift = !!router.query.gift_id
@@ -198,7 +199,7 @@ const SignUpPage = screenTrack(() => ({
             refetchGetSignupUser()
 
             if (isWaitlisted) {
-              setCurrentStepState(Steps.FormConfirmation)
+              router.push(`${browseURL}&triage=waitlisted`)
             } else {
               setCurrentStepState(Steps.PaymentStep)
             }
@@ -230,7 +231,7 @@ const SignUpPage = screenTrack(() => ({
             updateUserSession({ cust: { status: CustomerStatus.Active } })
             localStorage.setItem("paymentProcessed", "true")
             identify(data?.me?.customer?.user?.id, { status: "Active" })
-            setCurrentStepState(Steps.FormConfirmation)
+            router.push(`${browseURL}&triage=approved`)
           }}
           onError={() => {}}
         />
@@ -244,19 +245,23 @@ const SignUpPage = screenTrack(() => ({
   return (
     <Elements stripe={stripePromise}>
       <Layout hideFooter showIntercom={false}>
-        <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
-        <Flex
-          height="100%"
-          width="100%"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-          px={[0, 0, 2, 2, 2]}
-        >
-          <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
-            {CurrentStep}
-          </Flex>
-        </Flex>
+        <MaxWidth height="100%">
+          <Box style={{ flexGrow: 1, position: "relative", width: "100%", height: "100%" }}>
+            <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
+            <Flex
+              height="100%"
+              width="100%"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+              px={[0, 0, 2, 2, 2]}
+            >
+              <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
+                {CurrentStep}
+              </Flex>
+            </Flex>
+          </Box>
+        </MaxWidth>
 
         <SplashScreen
           open={showReferrerSplash}

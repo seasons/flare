@@ -14,8 +14,14 @@ export const GET_PRODUCT = gql`
       createdAt
       updatedAt
       description
-      retailPrice
+      rentalPrice
       type
+      retailPrice
+      category {
+        id
+        name
+        productType
+      }
       modelSize {
         display
         type

@@ -30,7 +30,7 @@ export const DiscoverBagProductItem = ({ edge, index, onRemoveProduct, onAddProd
       <Flex flexDirection="row" justifyContent="space-between">
         <Sans size="3">{product?.brand.name}</Sans>
         <Flex flexDirection="row" pr={2} onClick={handleClick}>
-          <Sans size="3" style={{ textDecoration: "underline", cursor: "pointer" }}>
+          <Sans size="3" underline pointer>
             {added ? "Added" : "Add"}
           </Sans>
         </Flex>

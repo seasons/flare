@@ -5,12 +5,10 @@ import { DateTime } from "luxon"
 import React, { useState } from "react"
 import { ProductBuyAlertTabType } from "@seasons/eclipse"
 import { BagItem } from "./BagItem"
-import { DeliveryStatus } from "./DeliveryStatus"
 import { EmptyBagItem } from "./EmptyBagItem"
 import { ProductBuyAlert } from "./ProductBuyAlert"
 import { BagTabHeader } from "./BagTabHeader"
-
-const DEFAULT_ITEM_COUNT = 3
+import { MAXIMUM_ITEM_COUNT } from "../Bag"
 
 export const BagTab: React.FC<{
   pauseStatus: any
@@ -22,14 +20,13 @@ export const BagTab: React.FC<{
   const [isMutating, setIsMutating] = useState(false)
   const me = data?.me
   const activeReservation = me?.activeReservation
-  const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
+  const itemCount = me?.customer?.membership?.plan?.itemCount || MAXIMUM_ITEM_COUNT
   const hasActiveReservation = !!activeReservation
 
   const [productBuyAlertTabs, setProductBuyAlertTabs] = useState(null)
 
-  const bagItems = items
-
-  const paddedItems = assign(fill(new Array(itemCount), { variantID: "", productID: "" }), bagItems) || []
+  const paddedItems =
+    assign(fill(new Array(Math.min(itemCount, items.length + 1)), { variantID: "", productID: "" }), items) || []
 
   const handleShowBuyAlert = ({ bagItem, variantToUse }) => {
     const { name: brandName, websiteUrl: brandHref, logoImage } = bagItem?.productVariant?.product?.brand
@@ -110,29 +107,36 @@ export const BagTab: React.FC<{
       )}
       <Separator />
       <Spacer mb={3} />
-      {paddedItems?.map((bagItem, index) => {
-        return bagItem?.productID?.length > 0 ? (
-          <Box key={bagItem.productID} px={2} pt={hasActiveReservation ? 0 : 2}>
-            <BagItem
-              removeItemFromBag={deleteBagItem}
-              removeFromBagAndSaveItem={removeFromBagAndSaveItem}
-              onShowBuyAlert={handleShowBuyAlert}
-              index={index}
-              bagItem={bagItem}
-            />
-            {!hasActiveReservation && index !== items.length - 1 && (
-              <Box pt={1}>
-                <Separator color={color("black10")} />
-              </Box>
-            )}
-          </Box>
-        ) : (
-          <Box key={index} px={2}>
-            <EmptyBagItem index={index} />
-            {!hasActiveReservation && index !== items.length - 1 && <Separator color={color("black10")} />}
-          </Box>
-        )
-      })}
+
+      {paddedItems
+        ?.sort((a, b) => {
+          const aWeight = a.status === "Reserved" ? 1 : 0
+          const bWeight = b.status === "Reserved" ? 1 : 0
+          return aWeight - bWeight
+        })
+        ?.map((bagItem, index) => {
+          return bagItem?.productID?.length > 0 ? (
+            <Box key={bagItem.productID} px={2} pt={hasActiveReservation ? 0 : 2}>
+              <BagItem
+                removeItemFromBag={deleteBagItem}
+                removeFromBagAndSaveItem={removeFromBagAndSaveItem}
+                onShowBuyAlert={handleShowBuyAlert}
+                index={index}
+                bagItem={bagItem}
+              />
+              {!hasActiveReservation && index !== items.length - 1 && (
+                <Box pt={1}>
+                  <Separator color={color("black10")} />
+                </Box>
+              )}
+            </Box>
+          ) : (
+            <Box key={index} px={2}>
+              <EmptyBagItem text="Add another item" />
+            </Box>
+          )
+        })}
+
       {hasActiveReservation && (
         <Box px={2}>
           <Spacer mb={3} />

@@ -8,11 +8,8 @@ import { DateTime } from "luxon"
 import { GET_MEMBERSHIP_INFO } from "mobile/Account/MembershipInfo/MembershipInfo"
 import React, { useState } from "react"
 import { Linking } from "react-native"
-
 import { useMutation } from "@apollo/client"
 import { identify, useTracking, Schema } from "utils/analytics"
-
-export type PauseStatus = "active" | "pending" | "paused"
 
 const RESUME_MEMBERSHIP = gql`
   mutation ResumeSubscription($subscriptionID: String!) {
@@ -26,18 +23,6 @@ export const REMOVE_SCHEDULED_PAUSE = gql`
   }
 `
 
-const PAUSE_MEMBERSHIP = gql`
-  mutation PauseSubscription($subscriptionID: String!) {
-    pauseSubscription(subscriptionID: $subscriptionID)
-  }
-`
-
-const UPDATE_RESUME_DATE = gql`
-  mutation UpdateResumeDate($date: DateTime!) {
-    updateResumeDate(date: $date)
-  }
-`
-
 export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = ({ customer, fullScreen }) => {
   const [isMutating, setIsMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
@@ -46,45 +31,17 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
 
   const pauseRequest = customer?.membership?.pauseRequests?.[0]
   const customerStatus = customer?.status
-  const pausePending = pauseRequest?.pausePending
-  const dueDate = pauseRequest?.pauseDate && DateTime.fromISO(pauseRequest?.pauseDate).toFormat("EEEE LLLL d")
+  const isPending = pauseRequest?.pausePending
+  const isPaused = customerStatus === "Paused"
 
   const resumeDate =
     customer?.membership?.pauseRequests?.[0]?.resumeDate &&
     DateTime.fromISO(customer?.membership?.pauseRequests?.[0]?.resumeDate)
 
-  const resumeDatePlusOneMonth = resumeDate && resumeDate.plus({ months: 1 })
-  const pauseExtendDateDisplay = (!!resumeDatePlusOneMonth && resumeDatePlusOneMonth.toFormat("LLLL d")) || ""
-
   const pauseDateCanExtend =
     resumeDate?.diffNow("months")?.values?.months && resumeDate.diffNow("months")?.values?.months < 1
 
   const { openDrawer } = useDrawerContext()
-  const [updateResumeDate] = useMutation(UPDATE_RESUME_DATE, {
-    refetchQueries: [
-      {
-        query: GET_MEMBERSHIP_INFO,
-      },
-    ],
-    onCompleted: () => {
-      setIsMutating(false)
-      // navigation.navigate("Modal", {
-      //   screen: Schema.PageNames.ExtendPauseConfirmation,
-      //   params: { dueDate: pauseExtendDateDisplay },
-      // })
-    },
-    onError: (err) => {
-      const popUpData = {
-        title: "Oops!",
-        note: "There was an error updating your resume date, please contact us.",
-        buttonText: "Close",
-        onClose: () => hidePopUp(),
-      }
-      console.log("err", err)
-      showPopUp(popUpData)
-      setIsMutating(false)
-    },
-  })
 
   const [removeScheduledPause] = useMutation(REMOVE_SCHEDULED_PAUSE, {
     refetchQueries: [
@@ -107,33 +64,6 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       const popUpData = {
         title: "Oops!",
         note: "There was an error canceling the pause on your membership, please contact us.",
-        buttonText: "Close",
-        onClose: () => hidePopUp(),
-      }
-      console.log("err", err)
-      showPopUp(popUpData)
-      setIsMutating(false)
-    },
-  })
-
-  const [pauseSubscription] = useMutation(PAUSE_MEMBERSHIP, {
-    refetchQueries: [
-      {
-        query: GET_MEMBERSHIP_INFO,
-      },
-    ],
-    onCompleted: () => {
-      // navigation.navigate("Modal", {
-      //   screen: Schema.PageNames.PauseConfirmation,
-      //   params: { dueDate },
-      // })
-      identify(customer?.user?.id, { status: "Paused" })
-      setIsMutating(false)
-    },
-    onError: (err) => {
-      const popUpData = {
-        title: "Oops!",
-        note: "There was an error pausing your membership, please contact us.",
         buttonText: "Close",
         onClose: () => hidePopUp(),
       }
@@ -167,20 +97,6 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
     },
   })
 
-  let pauseStatus: PauseStatus = "active"
-  let pauseButtonVariant = "secondaryGray"
-  let pauseButtonText = "Pause membership"
-
-  if (customerStatus === "Paused") {
-    pauseStatus = "paused"
-    pauseButtonText = "Resume membership"
-    pauseButtonVariant = "primaryBlack"
-  } else if (pausePending) {
-    pauseStatus = "pending"
-    pauseButtonText = "Resume membership"
-    pauseButtonVariant = "primaryBlack"
-  }
-
   const subscriptionID = customer?.invoices?.[0]?.subscriptionId || ""
 
   const toggleSubscriptionStatus = async () => {
@@ -194,48 +110,27 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
       },
       awaitRefetchQueries: true,
     }
-    if (pauseStatus === "paused") {
+    if (isPaused) {
       tracking.trackEvent({
         actionName: Schema.ActionNames.ResumeMembershipTapped,
         actionType: Schema.ActionTypes.Tap,
       })
       await resumeSubscription(vars)
-    } else if (pauseStatus === "pending") {
+    } else if (isPending) {
       tracking.trackEvent({
         actionName: Schema.ActionNames.ResumeMembershipTapped,
         actionType: Schema.ActionTypes.Tap,
       })
       await removeScheduledPause(vars)
-    } else {
-      await pauseSubscription(vars)
     }
     setIsMutating(false)
-  }
-
-  const SubText = () => {
-    return pauseStatus === "paused" ? (
-      <Sans size="4" color={color("black50")} style={{ textAlign: "center" }}>
-        Have a question?{" "}
-        <Sans
-          size="4"
-          style={{ textDecorationLine: "underline", display: "inline-block", cursor: "pointer" }}
-          onPress={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership"`)}
-        >
-          Contact us
-        </Sans>
-      </Sans>
-    ) : (
-      <Sans size="3" color={color("black50")}>
-        If you’d like to cancel your membership, contact us using the button above. We’re happy to help with this.
-      </Sans>
-    )
   }
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" style={{ flex: 1 }}>
       <Box>
         {fullScreen && <Spacer mb={100} />}
-        {pauseStatus === "pending" && (
+        {isPending && (
           <>
             <Sans size="1">{`Your membership is scheduled to be paused on ${DateTime.fromISO(
               pauseRequest.pauseDate
@@ -243,7 +138,7 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
             <Spacer mb={2} />
           </>
         )}
-        {pauseStatus === "paused" && (
+        {isPaused && (
           <>
             <Sans size="5">
               Your membership is paused until{" "}
@@ -268,41 +163,31 @@ export const PauseButtons: React.FC<{ customer: any; fullScreen?: boolean }> = (
         )}
       </Box>
       <Box>
-        <Button
-          onClick={toggleSubscriptionStatus}
-          disabled={isMutating}
-          loading={isMutating}
-          block
-          variant={pauseButtonVariant as ButtonVariant}
-        >
-          {pauseButtonText}
-        </Button>
-        <Spacer mb={1} />
-        {pauseStatus === "paused" ? (
-          <Button
-            variant="secondaryOutline"
-            disabled={!pauseDateCanExtend}
-            onClick={() =>
-              updateResumeDate({
-                variables: { date: resumeDatePlusOneMonth?.toISO() },
-                awaitRefetchQueries: true,
-              })
-            }
-            block
-          >
-            {`Pause until ${pauseExtendDateDisplay}`}
-          </Button>
-        ) : (
-          <Button
-            variant="secondaryOutline"
-            onClick={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership"`)}
-            block
-          >
-            Contact us
-          </Button>
+        {(isPending || isPaused) && (
+          <>
+            <Button
+              onClick={toggleSubscriptionStatus}
+              disabled={isMutating}
+              loading={isMutating}
+              block
+              variant="primaryBlack"
+            >
+              Resume membership
+            </Button>
+            <Spacer mb={1} />
+          </>
         )}
+        <Button
+          variant="secondaryOutline"
+          onClick={() => Linking.openURL(`mailto:membership@seasons.nyc?subject="Membership"`)}
+          block
+        >
+          Contact us
+        </Button>
         <Spacer mb={2} />
-        <SubText />
+        <Sans size="3" color={color("black50")}>
+          If you’d like to cancel your membership, contact us using the button above. We’re happy to help with this.
+        </Sans>
         <Spacer mb={8} />
       </Box>
     </Flex>

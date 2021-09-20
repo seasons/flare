@@ -25,55 +25,50 @@ export const PaymentOrderSummary = ({ plan, coupon }) => {
   return (
     <Box>
       <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-        <Sans size="5" color="black50">
+        <Sans size="4" color="black50">
           {plan.name}
         </Sans>
-        <Sans size="5" color="black50">
+        <Sans size="4" color="black50">
           {formatPrice(plan.price)}
         </Sans>
       </Flex>
-      <Spacer mt={1} />
       {discounts.length > 0 && (
         <>
+          <Spacer mt={1} />
           {discounts?.map((discount) => {
             return (
               <>
                 <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-                  <Sans size="5" color="black50">
+                  <Sans size="4" color="black50">
                     {discount.description}
                   </Sans>
-                  <Sans size="5" color="black50">
+                  <Sans size="4" color="black50">
                     -{formatPrice(discount.amount)}
                   </Sans>
                 </Flex>
               </>
             )
           })}
-          <Spacer mt={1} />
         </>
       )}
       {taxes?.length > 0 && (
         <>
+          <Spacer mt={1} />
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Sans size="5" color="black50">
+            <Sans size="4" color="black50">
               Taxes
             </Sans>
-            <Sans size="5" color="black50">
+            <Sans size="4" color="black50">
               {formatPrice(totalTax)}
             </Sans>
           </Flex>
-          <Spacer mt={1} />
         </>
       )}
-      {coupon && <></>}
+      <Spacer mt={2} />
       <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
         <Sans size="6">Total</Sans>
         <Sans size="6">{formatPrice(plan.estimate?.total)}</Sans>
       </Flex>
-      <Spacer mt={4} />
-      <Sans size="3" color="black50">
-        Billed every 30-days. Pause or cancel anytime.
-      </Sans>
     </Box>
   )
 }

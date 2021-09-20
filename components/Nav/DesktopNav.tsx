@@ -9,15 +9,20 @@ import queryString from "query-string"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-
-import { Box, MaxWidth } from "components"
+import { Box, Button, MaxWidth, Media, Spacer } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
-import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
+import { GetTheAppButton } from "components/Button/GetTheApp"
+import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
+
+export const DESKTOP_NAV_HEIGHT = 72
 
 export const DesktopNav = (props: NavProps) => {
-  const { links } = props
+  const { links, navStyles } = props
+  const backgroundColor = navStyles?.backgroundColor ? navStyles?.backgroundColor : color("white100")
+  const textColor = navStyles?.textColor ? navStyles?.textColor : color("black100")
+
   const router = useRouter()
 
   const tracking = useTracking()
@@ -59,7 +64,7 @@ export const DesktopNav = (props: NavProps) => {
           active={!!router.pathname.match(link.match)}
           onClick={() => trackClick(link.url)}
         >
-          <NavItem link={link} />
+          <NavItem link={link} color={textColor} />
         </Link>
       )
     } else if (link.url) {
@@ -71,7 +76,7 @@ export const DesktopNav = (props: NavProps) => {
             active={!!router.pathname.match(link.match)}
             onClick={() => trackClick(link.url)}
           >
-            <NavItem link={link} />
+            <NavItem link={link} color={textColor} />
           </Link>
         </NextLink>
       )
@@ -82,16 +87,25 @@ export const DesktopNav = (props: NavProps) => {
 
   const renderLoggedOutNavLinks = () => (
     <>
-      <Link href="/signup" active={!!router.pathname.match("/signup")}>
-        <NavItem link={{ text: "Sign Up" }} />
-      </Link>
-      <Link
-        onClick={() => {
-          toggleLoginModal(true)
-        }}
-      >
-        <NavItem link={{ text: "Log In" }} />
-      </Link>
+      <HiddenSignInLink hide={navStyles?.hideSignIn}>
+        <Link
+          onClick={() => {
+            toggleLoginModal(true)
+          }}
+        >
+          <NavItem link={{ text: "Sign in" }} color={textColor} />
+        </Link>
+      </HiddenSignInLink>
+      <Spacer ml={3} />
+      <GetTheAppButton
+        size="medium-x"
+        variant={navStyles?.getTheAppVariant ? navStyles.getTheAppVariant : "primaryWhite"}
+      />
+      <HiddenApplyNowWrapper hide={navStyles?.hideSignIn}>
+        <Button size="medium-x" onClick={() => router.push("/signup")}>
+          Apply now
+        </Button>
+      </HiddenApplyNowWrapper>
     </>
   )
 
@@ -102,59 +116,84 @@ export const DesktopNav = (props: NavProps) => {
           openDrawer("bag")
         }}
       >
-        <NavItem link={{ text: "Bag" }} />
+        <NavItem link={{ text: "Bag" }} color={textColor} />
       </Link>
       <Link
         onClick={() => {
           openDrawer("profile")
         }}
       >
-        <NavItem link={{ text: "Account" }} />
+        <NavItem link={{ text: "Account" }} color={textColor} />
       </Link>
     </>
   )
 
   return (
-    <>
-      <Box style={{ width: "100%" }} height={["60px", "74px", "58px", "58px", "58px"]} />
-      <HeaderContainer style={specialStyles}>
-        <MaxWidth>
-          <Box width="100%">
-            <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
-              <SeasonsLogo />
+    <HeaderContainer style={specialStyles} backgroundColor={backgroundColor}>
+      <MaxWidth>
+        <Box width="100%">
+          <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
+            <Box style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
+              <SeasonsLogoTextIcon />
+            </Box>
+            <Media greaterThanOrEqual="lg">
               <Box px={4}>
-                <SearchBar />
+                <SearchBar breakPoint="large" />
               </Box>
-              <Flex ml="auto" flexDirection="row" alignItems="center">
-                {links.map(renderLink)}
-                {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
-              </Flex>
+            </Media>
+            <Media lessThan="lg">
+              <Box px={4}>
+                <SearchBar breakPoint="medium" />
+              </Box>
+            </Media>
+            <Flex ml="auto" flexDirection="row" alignItems="center">
+              {links.map(renderLink)}
+              {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
             </Flex>
-          </Box>
-        </MaxWidth>
-        <LoginModal
-          open={loginModalOpen}
-          onClose={() => {
-            toggleLoginModal(false)
-          }}
-        />
-      </HeaderContainer>
-    </>
+          </Flex>
+        </Box>
+      </MaxWidth>
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => {
+          toggleLoginModal(false)
+        }}
+      />
+    </HeaderContainer>
   )
 }
 
-const HeaderContainer = styled.div`
-  background-color: ${color("white100")};
+const HiddenApplyNowWrapper = styled(Box)<{ hide: boolean }>`
+  opacity: ${(p) => (p.hide ? 0 : 1)};
+  width: ${(p) => (p.hide ? "0px" : "108px")};
+  transition: width 250ms ease, opacity 250ms ease;
+  overflow: hidden;
+  height: 40px;
+  padding-left: 8px;
+`
+
+const HiddenSignInLink = styled(Box)<{ hide: boolean }>`
+  opacity: ${(p) => (p.hide ? 0 : 1)};
+  width: ${(p) => (p.hide ? "0px" : "67px")};
+  transition: width 250ms ease, opacity 250ms ease;
+  overflow: hidden;
+  height: 58px;
+`
+
+const HeaderContainer = styled.div<{ backgroundColor: string }>`
+  background-color: ${(p) => p.backgroundColor};
+  transition: background-color 1000ms ease-in-out;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   display: flex;
+  padding-top: 8px;
   flex-direction: row;
   box-sizing: border-box;
   z-index: 100;
   width: 100%;
-  height: 58.5px;
+  height: ${DESKTOP_NAV_HEIGHT}px;
   align-items: flex-start;
 `
 

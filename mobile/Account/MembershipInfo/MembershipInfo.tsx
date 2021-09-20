@@ -1,5 +1,6 @@
 import { Box, Button, Container, FixedBackArrow, Sans, Separator, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { PlanFeatures } from "components/Payment/PlanFeatures"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
 import { Loader } from "mobile/Loader"
@@ -36,8 +37,12 @@ export const GET_MEMBERSHIP_INFO = gql`
           }
           plan {
             id
+            planID
             price
-            description
+            features {
+              included
+              excluded
+            }
             tier
           }
         }
@@ -74,7 +79,9 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
     )
   }
 
-  const whatsIncluded = plan?.description?.split("\n")
+  // For now since we don't support downgrading on Access plans
+  // only show change plan if they can upgrade only or change to Access
+  const onMonthlyPlan = plan.planID !== "access-yearly"
 
   return (
     <Container insetsBottom={false}>
@@ -90,43 +97,41 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
           <Spacer mb={80} />
           <Sans size="6">Membership info</Sans>
           <Spacer mb={3} />
-          <MembershipCard memberName={`${firstName} ${lastName}`} planTier={plan?.tier} />
+          <MembershipCard memberName={`${firstName} ${lastName}`} />
           <Spacer mb={4} />
           {!!plan?.price && (
             <>
               <Sans size="4">What you pay</Sans>
               <Spacer mb={2} />
               <Separator />
-              <Spacer mb={1} />
+              <Spacer mb={2} />
               <Sans size="4" color={color("black50")}>
-                {`$${plan.price / 100}`} / per month
+                {`$${plan.price / 100} / per ${onMonthlyPlan ? "month" : "year"}`}
               </Sans>
             </>
           )}
-          {!!whatsIncluded && (
+          {!!plan?.features && (
             <>
               <Spacer mb={4} />
-              <Sans size="4">Whats included</Sans>
+              <Sans size="4">What's included</Sans>
               <Spacer mb={2} />
               <Separator />
-              {whatsIncluded.map((text) => (
-                <Box key={text}>
-                  <Spacer mb={1} />
-                  <Sans size="4" color={color("black50")}>
-                    {text.trim()}
-                  </Sans>
-                </Box>
-              ))}
+              <Spacer mb={2} />
+              <PlanFeatures features={plan?.features} />
             </>
           )}
           <Spacer mb={4} />
-          <Sans size="4">Change your plan</Sans>
-          <Spacer mb={2} />
-          <Button variant="secondaryOutline" block onClick={() => openDrawer("choosePlan", { source: "Update" })}>
-            View membership options
-          </Button>
-          <Spacer mb={4} />
-          <Sans size="4">Pause or cancel</Sans>
+          {onMonthlyPlan && (
+            <>
+              <Sans size="4">Change your plan</Sans>
+              <Spacer mb={2} />
+              <Button variant="secondaryOutline" block onClick={() => openDrawer("choosePlan", { source: "Update" })}>
+                View membership options
+              </Button>
+              <Spacer mb={4} />
+            </>
+          )}
+          <Sans size="4">Update your plan</Sans>
           <Spacer mb={2} />
           <PauseButtons customer={customer} />
         </Box>

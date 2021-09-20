@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import styled, { css } from "styled-components"
 import { borderRadius, borders, height, space, textAlign, width } from "styled-system"
 
-import { themeProps } from "../../lib/theme"
+import { GLOBAL_TRANSITION, themeProps } from "../../lib/theme"
 import { Spinner } from "../Spinner"
 import { Sans, SansProps } from "../Typography"
 import { ButtonBaseProps, ButtonProps, defaultSize, defaultVariant } from "./Button.shared"
@@ -34,7 +34,7 @@ export class Button extends Component<WebButtonProps> {
         return {
           height: inline ? "21px" : "40px",
           size: "3",
-          px: inline ? 0 : 3,
+          px: inline ? 0 : 2,
         }
       case "medium":
         return {
@@ -44,7 +44,7 @@ export class Button extends Component<WebButtonProps> {
         }
       case "large":
         return {
-          height: inline ? "21px" : "56px",
+          height: inline ? "21px" : "64px",
           size: "4",
           px: inline ? 0 : 5,
         }
@@ -171,6 +171,25 @@ export class Button extends Component<WebButtonProps> {
               `
           }};
         `
+      case "transparentBlackOutline":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+            return `
+                background-color:  transparent;
+                border-color: ${colors.black100};
+                color: ${colors.black100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color:  transparent;
+                    border-color: ${colors.white100};
+                    color: ${colors.white100};
+                  }
+                }
+              `
+          }};
+        `
       case "noOutline":
         return css`
           ${(props) => {
@@ -178,6 +197,18 @@ export class Button extends Component<WebButtonProps> {
             return `
                 background-color: transparent;
                 border-color: transparent;
+                color: ${colors.black100};
+              `
+          }};
+        `
+      case "blur":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+            return `
+                background-color: rgba(255, 255, 255, 0.4);
+                border-color: transparent;
+                backdrop-filter: blur(50px);
                 color: ${colors.black100};
               `
           }};
@@ -202,7 +233,7 @@ export class Button extends Component<WebButtonProps> {
 export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
   static defaultProps = {
     border: 1,
-    borderRadius: 4,
+    borderRadius: 8,
   }
 
   onClick = (event) => {
@@ -212,7 +243,7 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
   }
 
   render() {
-    const { block, children, loading, disabled, color, size, weight, onClick, ...rest } = this.props
+    const { block, children, loading, disabled, color, size, weight, boxShadow, onClick, ...rest } = this.props
 
     const loadingClass = loading ? "loading" : ""
     const disabledClass = disabled ? "disabled" : ""
@@ -223,6 +254,7 @@ export class ButtonBase extends Component<ButtonBaseProps & SansProps> {
         className={[blockClass, loadingClass, disabledClass].join(" ")}
         onClick={this.onClick}
         disabled={disabled}
+        boxShadow={boxShadow}
       >
         {loading && <Spinner size={this.props.buttonSize} />}
         {typeof children === "string" ? (
@@ -252,6 +284,8 @@ const Container = styled.button<ButtonBaseProps>`
   ${width};
   ${height};
 
+  ${(props) => (props.boxShadow ? "box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);" : "box-shadow: none")};
+
   border-style: solid;
 
   &:hover {
@@ -273,7 +307,7 @@ const Container = styled.button<ButtonBaseProps>`
   ${(props) => {
     if (!props.loading) {
       return `
-        transition: 0.25s ease;
+        transition: background-color ${GLOBAL_TRANSITION}, border ${GLOBAL_TRANSITION};
       `
     }
   }};
@@ -297,9 +331,9 @@ const Container = styled.button<ButtonBaseProps>`
       const { colors } = props.theme
 
       return `
-        background-color: ${colors.black50};
-        border-color: ${colors.black50};
-        color: ${colors.white100};
+        background-color: ${colors.black04};
+        border-color: ${colors.black04};
+        color: ${colors.black50};
         pointer-events: none;
       `
     }};

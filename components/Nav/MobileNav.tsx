@@ -3,7 +3,7 @@ import { LoginModal } from "components/Login/LoginModal"
 import { useAuthContext } from "lib/auth/AuthContext"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { animated, useSpring } from "react-spring"
 import styled from "styled-components"
 
@@ -15,7 +15,7 @@ import { Burger } from "./Burger"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
-export const MENU_HEIGHT = "59px"
+export const MENU_HEIGHT = "58px"
 
 export const MobileNav: React.FC<NavProps> = ({ links }) => {
   const [isOpen, toggleOpen] = useState(false)
@@ -29,7 +29,7 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
 
   return (
     <>
-      <Box style={{ width: "100%" }} height={["60px", "74px", "58px", "58px", "58px"]} />
+      <Box style={{ width: "100%" }} height={["58px", "58px", "58px", "58px", "58px"]} />
       <HeaderContainer>
         <Header>
           <Box px={2}>
@@ -244,6 +244,7 @@ const HeaderContainer = styled.div`
 `
 
 const MenuContainer = styled.div`
+  background-color: ${color("white100")};
   overflow: hidden;
   padding-top: ${MENU_HEIGHT};
   width: 100%;

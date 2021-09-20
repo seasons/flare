@@ -1,313 +1,131 @@
-import { Box, Flex, MaxWidth, Sans, Separator, Spacer } from "components"
-import { color } from "helpers"
+import { Box, Display, Flex, MaxWidth, Sans, Spacer } from "components"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { DateTime } from "luxon"
-import Link from "next/link"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import styled from "styled-components"
-import { Schema, useTracking } from "utils/analytics"
-import { useDrawerContext } from "../../components/Drawer/DrawerContext"
-import { Button } from "../Button"
-import { GetTheAppButton } from "../Button/GetTheApp"
-import { Col, Grid, Row } from "../Grid"
+import { seasonAndYear } from "utils/seasonAndYear"
 import { Media } from "../Responsive"
-import { Countdown } from "@seasons/eclipse"
-import { Display } from "../Typography"
-import { imageResize } from "utils/imageResize"
+import { GetTheAppButton } from "components/Button/GetTheApp"
+import { HeroCTA } from "./HeroCTA"
+import { color } from "helpers/color"
 
-interface HeroComponentProps {
+const staticNoise = require("../../public/images/homepage/static-noise.gif")
+const backgroundImageMobile = require("../../public/images/homepage/Flare-mobile-background.jpg")
+const backgroundImageDesktop = require("../../public/images/homepage/Website-hero-2.jpg")
+const fade = require("../../public/images/homepage/Hero-Fade.png")
+
+export const DESKTOP_HERO_HEIGHT = 760
+export const MOBILE_HERO_HEIGHT = 556
+
+const Content: React.FC<{
   version: "mobile" | "desktop"
-}
-
-const DesktopTextContent = () => {
-  return (
-    <Flex style={{ position: "relative", width: "50%" }} flexDirection="column" justifyContent="center">
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        <Flex flexDirection="column" justifyContent="center" alignContent="center" px={3}>
-          <Spacer mb={[10, 0, 0, 0, 0]} />
-          <HeroHeaderText version="desktop" />
-          <Spacer mb="12px" />
-          <HeroCaptionText version="desktop" />
-          <Spacer mb={4} />
-          <HeroCTAs version="desktop" />
-          <Spacer mb={4} />
-          <HeroBottomDetailText version="desktop" />
-        </Flex>
-      </Flex>
-    </Flex>
-  )
-}
-
-const DesktopHero = ({ post }) => {
-  
-  const imageSRC = imageResize(post?.image?.url ?? "", "large")
-
-  return (
-    <MaxWidth>
-      <Box width="100%" px={[2, 2, 2, 2, 2]} pb={2}>
-        <Flex flexDirection="row" justifyContent="space-between">
-          <DesktopTextContent />
-          <Link href={`/blog/${post.slug}`}>
-            <ImageWrapper>
-              <BackgroundImage style={{ backgroundImage: `url(${imageSRC})`, position: "relative" }}>
-                <Box
-                  style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
-                  pl={0.5}
-                  py={0.5}
-                >
-                  <Sans size="4">{post?.name}</Sans>
-                </Box>
-              </BackgroundImage>
-            </ImageWrapper>
-          </Link>
-        </Flex>
-      </Box>
-    </MaxWidth>
-  )
-}
-
-const MobileHero = ({ post }) => {
-  const imageSRC = imageResize(post?.image?.url ?? "", "medium")
-
-  return (
-    <Grid>
-      <Row>
-        <Col xs="12" px={2}>
-          <Flex flexDirection="column">
-            <Flex style={{ flex: 1 }} flexDirection="column" justifyContent="center">
-              <Spacer pb={6} />
-              <HeroHeaderText version="mobile" />
-              <Spacer mb={1} />
-              <HeroCaptionText version="mobile" />
-              <Spacer mb={4} />
-              <HeroCTAs version="mobile" />
-              <Spacer mb={4} />
-              <HeroBottomDetailText version="mobile" />
-              <Spacer mb={4} />
-              <MobileImageWrapper>
-                <Link href={`/blog/${post.slug}`}>
-                  <BackgroundImage style={{ backgroundImage: `url(${imageSRC})` }}>
-                    <Box
-                      style={{ backgroundColor: color("white100"), position: "absolute", bottom: 0, right: 0 }}
-                      pl={0.5}
-                      py={0.5}
-                    >
-                      <Sans size="4">{post?.name}</Sans>
-                    </Box>
-                  </BackgroundImage>
-                </Link>
-              </MobileImageWrapper>
-            </Flex>
-          </Flex>
-        </Col>
-      </Row>
-    </Grid>
-  )
-}
-
-const HeroBottomDetailText = ({ version }: HeroComponentProps) => {
-  const isMobile = version === "mobile"
-  const { userSession } = useAuthContext()
-
-  let bottomDetailText
-  switch (userSession?.customer?.status) {
-    case "Waitlisted":
-    case "Authorized":
-    case "Active":
-      bottomDetailText = (
-        <>
-          {"Have a question about membership? "}
-          <a
-            href="mailto:membership@seasons.nyc?subject=Hello"
-            style={{ textDecoration: "underline", color: color("black100") }}
-          >
-            Contact Us
-          </a>
-        </>
-      )
-      break
-    default:
-      bottomDetailText = "— Over +1000 styles right in your pocket"
-  }
-
-  return (
-    <Sans size={isMobile ? "3" : "4"} color="black50" style={{ textAlign: isMobile ? "left" : "center" }}>
-      {bottomDetailText}
-    </Sans>
-  )
-}
-
-const HeroHeaderText = ({ version }: HeroComponentProps) => {
-  const { userSession } = useAuthContext()
-  const [targetDate, setTargetDate] = useState(null)
-  const isMobile = version === "mobile"
-
-  useEffect(() => {
-    if (!!userSession) {
-      setTargetDate(DateTime.fromISO(userSession?.customer?.admissions?.authorizationWindowClosesAt))
-    }
-  }, [userSession])
-
-  let headerText = "Wear.Swap.Repeat." as any
-  let firstName = userSession?.user?.firstName || ""
-  const youreStart = firstName !== "" ? "Hi " + firstName + ", you're" : "You're"
-  const yourStart = firstName !== "" ? "Hi " + firstName + ", your" : "Your"
-  switch (userSession?.customer?.status) {
-    case "Authorized":
-      if (!!targetDate) {
-        headerText = (
-          <>
-            {`${youreStart} in. You have`} <Countdown underline display="inline" targetDate={targetDate} />{" "}
-            {"to choose your plan."}
-          </>
-        )
-      } else {
-        headerText = `${youreStart} in.`
-      }
-      break
-    case "Waitlisted":
-      if (userSession?.customer?.admissions?.authorizationsCount > 0) {
-        headerText = `${yourStart} sign-up window has closed.`
-      }
-      break
-  }
-
-  return (
-    <Display
-      size="8"
-      color="black100"
-      style={{ letterSpacing: "-2px", maxWidth: "600px", textAlign: isMobile ? "left" : "center" }}
-    >
-      {headerText}
-    </Display>
-  )
-}
-
-const HeroCaptionText = ({ version }) => {
-  const { userSession } = useAuthContext()
-  const isMobile = version === "mobile"
-
-  let caption = "A members-only rental service for designer menswear."
-  switch (userSession?.customer?.status) {
-    case "Authorized":
-      caption = "Finish setting up your account and choose your plan"
-      break
-    case "Waitlisted":
-      if (userSession?.customer?.admissions?.authorizationsCount > 0) {
-        caption = "We've had to pass along your invite and you're back on the waitlist."
-      }
-      break
-  }
-
-  return (
-    <Flex width="100%" flexDirection="row" justifyContent="center">
-      <Sans
-        size={isMobile ? "6" : "4"}
-        color="black50"
-        style={{ whiteSpace: "pre-line", maxWidth: "400px", textAlign: isMobile ? "left" : "center" }}
-      >
-        {caption}
-      </Sans>
-    </Flex>
-  )
-}
-
-const HeroCTAs = ({ version }: HeroComponentProps) => {
-  const { authState, userSession } = useAuthContext()
-  const tracking = useTracking()
+  authState: any
+  userSession: any
+  toggleLoginModal: (toggle: boolean) => void
+}> = ({ version, authState, userSession, toggleLoginModal }) => {
+  const isDesktop = version === "desktop"
   const isUserSignedIn = authState?.isSignedIn
 
-  const { openDrawer } = useDrawerContext()
-
-  const browseData = { text: "Browse the collection", link: "/browse", actionName: "BrowseTheCollectionTapped" }
-  const applyData = { text: "Apply for membership", link: "/signup", actionName: "ApplyForMembershipTapped" }
-
-  let ctaData = browseData as any
-  if (isUserSignedIn) {
-    switch (userSession?.customer?.status) {
-      case "Created":
-        ctaData = { text: "Finish your application", link: "/signup", actionName: "FinishYourApplicationTapped" }
-        break
-      case "Waitlisted":
-      case "Deactivated":
-        ctaData = { text: "Request Access", link: "https://szns.co/requestAccess", actionName: "RequestAccessTapped" }
-        break
-      case "Authorized":
-      case "Invited":
-        ctaData = { text: "Choose your plan", link: "/signup", actionName: "ChoosePlanTapped" }
-        break
-      case "Paused":
-        ctaData = {
-          text: "Resume Membership",
-          link: "/",
-          actionName: "ResumeMembershipTapped",
-          onClick: () => openDrawer("membershipInfo"),
-        }
-        break
-    }
-  } else {
-    ctaData = applyData
-  }
-
   return (
-    <Flex width="100%" flexDirection="row" justifyContent="center">
-      <Flex flexDirection="column" style={{ maxWidth: "400px", width: "100%" }}>
-        <Link href={ctaData.link}>
-          <Button
-            onClick={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames[ctaData.actionName],
-                actionType: Schema.ActionTypes.Tap,
-              })
-              ctaData.onClick?.()
-            }}
+    <Background backgroundImage={isDesktop ? backgroundImageDesktop : backgroundImageMobile}>
+      <Static />
+      <FadeBackground />
+      <MaxWidth>
+        <Flex
+          width="100%"
+          px={[2, 2, 2, 2, 2]}
+          py={5}
+          justifyContent="flex-end"
+          flexDirection="column"
+          height={isDesktop ? DESKTOP_HERO_HEIGHT + "px" : MOBILE_HERO_HEIGHT + "px"}
+        >
+          <Flex
+            flexDirection={isDesktop ? "row" : "column"}
+            justifyContent="space-between"
+            alignItems={isDesktop ? "flex-end" : "flex-start"}
           >
-            {ctaData.text}
-          </Button>
-        </Link>
-        <Spacer mb={1} />
-        <GetTheAppButton block />
-      </Flex>
-    </Flex>
+            <Box>
+              <Display color="white100" size={["8", "8", "10", "10", "10"]}>
+                Wear. Swap. Repeat.
+              </Display>
+              <Spacer mb={1} />
+              <Display color="black10" size={["6", "6", "7", "7", "7"]} style={{ maxWidth: "668px" }}>
+                Seasons is a private rental service exploring the shared access of fashion.{" "}
+                <span style={{ textDecoration: "underline", color: color("white100") }}>{seasonAndYear()}</span>{" "}
+                memberships are now open.
+              </Display>
+            </Box>
+            <Spacer mr={50} mt={5} />
+            <Box width={isDesktop ? "343px" : "100%"}>
+              <HeroCTA version={version} userSession={userSession} authState={authState} />
+              {!isDesktop && (
+                <>
+                  <Spacer mb={1} />
+                  <GetTheAppButton block size="large" variant="blur" />
+                </>
+              )}
+              {!isUserSignedIn && (
+                <>
+                  <Spacer mb={2} />
+                  <Sans size="4" color="white100" textAlign="center">
+                    Already a member?{" "}
+                    <span
+                      style={{ textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => toggleLoginModal(true)}
+                    >
+                      Sign in here
+                    </span>
+                  </Sans>
+                </>
+              )}
+            </Box>
+          </Flex>
+        </Flex>
+      </MaxWidth>
+    </Background>
   )
 }
 
-export const Hero: React.FC<{ post: any }> = ({ post }) => {
+export const Hero: React.FC = () => {
+  const { authState, userSession, toggleLoginModal } = useAuthContext()
+
   return (
     <>
       <Media greaterThanOrEqual="md">
-        <DesktopHero post={post} />
-        <Box px={[2, 2, 2, 2, 2]}>
-          <Separator />
-        </Box>
+        <Content
+          version="desktop"
+          authState={authState}
+          userSession={userSession}
+          toggleLoginModal={toggleLoginModal}
+        />
       </Media>
       <Media lessThan="md">
-        <MobileHero post={post} />
+        <Content version="mobile" authState={authState} userSession={userSession} toggleLoginModal={toggleLoginModal} />
       </Media>
     </>
   )
 }
 
-const BackgroundImage = styled(Box)`
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  padding-bottom: 100%;
+const Background = styled.div<{ backgroundImage: string }>`
   width: 100%;
-  height: 0;
-`
-
-const MobileImageWrapper = styled(Box)`
   position: relative;
-  overflow: hidden;
-  width: 100%;
-  img {
-    width: 100%;
-  }
+  background: url(${(p) => p.backgroundImage}) no-repeat center center;
+  background-size: cover;
 `
 
-const ImageWrapper = styled.div`
-  width: 50%;
-  cursor: pointer;
-  max-width: 800px;
+const Static = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0.1;
+  background: url(${staticNoise}) repeat center center;
+  background-size: 90px;
+`
+
+const FadeBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url(${fade}) no-repeat center center;
+  background-size: 90px;
+  background-size: cover;
 `

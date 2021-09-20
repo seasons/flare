@@ -83,7 +83,7 @@ export const ChoosePlanStep: React.FC<ChoosePlanStepProps> = ({ onPlanSelected, 
               px={[2, 2, 2, 2, 2]}
             >
               <Sans color="black50" my={2} size={["2", "4"]}>
-                You can upgrade or change your plan at any time from your account settings.
+                As a reminder, membership auto-renews every month or year unless canceled.
               </Sans>
               <Button
                 ml={2}

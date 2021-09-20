@@ -40,8 +40,7 @@ export const ProductBuyAlert = ({ productVariantId, tabs, initialTab, onDismiss,
       if (result.errors) {
         handleError(result.errors)
       }
-
-      openDrawer("reviewOrder", { order: result?.createDraftedOrder })
+      openDrawer("reviewOrder", { order: result?.data?.createDraftedOrder })
     } catch (error) {
       handleError(error)
     }

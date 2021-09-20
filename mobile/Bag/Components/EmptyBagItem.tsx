@@ -1,4 +1,4 @@
-import { Box, Flex, Sans } from "components"
+import { Box, Flex, Sans, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { BagPlus } from "components/SVGs/BagPlus"
 import { useRouter } from "next/router"
@@ -6,39 +6,32 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components"
 
-export const EmptyBagItem: React.FC<{ index: number }> = ({ index }) => {
+export const EmptyBagItem: React.FC<{ text: string }> = ({ text }) => {
   const router = useRouter()
   const { closeDrawer } = useDrawerContext()
 
   return (
-    <Box p={2}>
-      <EmptyBagItemContainer>
-        <Flex py="84px" flexDirection="column" alignItems="center">
-          <Flex flexWrap="nowrap" flexDirection="column" alignItems="center">
-            <TouchableOpacity
-              onPress={() => {
-                router.push("/browse")
-                closeDrawer()
-              }}
-            >
-              <Box>
-                <Box my={1} mx="auto">
-                  <BagPlus />
-                </Box>
-                <Sans size="4" color="black50" textAlign="center">
-                  {`Slot ${index + 1}`}
-                </Sans>
-              </Box>
-            </TouchableOpacity>
+    <EmptyBagItemContainer>
+      <Flex height="100%" flexDirection="row" alignItems="center" justifyContent="center" style={{ flex: 1 }}>
+        <TouchableOpacity
+          onPress={() => {
+            router.push("/browse")
+            closeDrawer()
+          }}
+        >
+          <Flex flexDirection="column" alignItems="center" justifyContent="center">
+            <BagPlus />
+            <Spacer mb={2} />
+            <Sans size="3" color="black50" style={{ textAlign: "center" }}>
+              {text}
+            </Sans>
           </Flex>
-        </Flex>
-      </EmptyBagItemContainer>
-    </Box>
+        </TouchableOpacity>
+      </Flex>
+    </EmptyBagItemContainer>
   )
 }
 
 const EmptyBagItemContainer = styled(Box)`
-  border-radius: 8px;
-  overflow: hidden;
-  height: 270px;
+  height: 248px;
 `

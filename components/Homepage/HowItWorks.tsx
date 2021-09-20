@@ -3,28 +3,38 @@ import { Box, Flex, Sans, Spacer } from "components"
 import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import { Media } from "../Responsive"
-import { BuyIcon, SwapIcon, WearIcon, ReserveIcon } from "components/Icons"
+import { HeartIcon, SwapIcon, CalendarIcon, MembershipCardIcon, BillingIcon, DiscordIcon } from "components/Icons"
 
 export const HOW_IT_WORKS_TEXT = [
   {
-    icon: <ReserveIcon />,
-    title: "Reserve your favorite styles",
-    text: "Reserve up to 3 pieces at a time. Save your favorites for later & build a queue.",
+    icon: <MembershipCardIcon />,
+    title: "Flexible membership",
+    text: "Subscribe & get exclusive rental access to over 1,000 different styles.",
   },
   {
-    icon: <WearIcon />,
-    title: "Wear as long as you want",
-    text: "Try styles you want to buy without the commitment or buyers remorse. ",
+    icon: <CalendarIcon />,
+    title: "Always have something to wear",
+    text: "Rent your favorite styles whenever you want, for as long as you want.",
   },
   {
     icon: <SwapIcon />,
-    title: "Swap & repeat",
-    text: "Ready for something new? Send back your bag & place a new order.",
+    title: "Wear, swap, repeat",
+    text: "Reserve up to 6 items at a time. Want something new? Swap & repeat.",
   },
   {
-    icon: <BuyIcon />,
+    icon: <BillingIcon />,
+    title: "Simple & clear billing",
+    text: "You’re only billed for what you use at the end of the month. Like a hotel tab.",
+  },
+  {
+    icon: <HeartIcon />,
     title: "Buy styles you love",
-    text: "Enjoy exclusive access to our archive sale & own your favorites.",
+    text: "Love something? Save on purchases with a members-only discount.",
+  },
+  {
+    icon: <DiscordIcon />,
+    title: "Discord access",
+    text: "Meet other members, preview collections & vote on new styles.",
   },
 ]
 
@@ -49,18 +59,18 @@ export const HowItWorks: React.FC = () => {
   return (
     <Grid>
       <Box px={[2, 2, 2, 2, 2]} pb={6}>
-        <Display size="9" style={{ textAlign: "center" }}>
-          How it works
+        <Display size={["7", "9"]} style={{ textAlign: "center" }}>
+          How membership works
         </Display>
         <Spacer mb={1} />
-        <Sans size="4" color="black50" style={{ textAlign: "center" }}>
-          No commitment, pause or cancel anytime.
+        <Sans size={["3", "4"]} color="black50" style={{ textAlign: "center" }}>
+          Access an exclusive rental library of over 1,000+ styles
         </Sans>
       </Box>
       <Media greaterThanOrEqual="lg">
         <Row px={[2, 2, 2, 2, 2]}>
           {HOW_IT_WORKS_TEXT?.map((step, index) => (
-            <Col md="3" xs="12" key={index} px={2}>
+            <Col md="4" xs="12" key={index} px={8} py={5}>
               <Item index={index} step={step} />
             </Col>
           ))}

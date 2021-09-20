@@ -2,9 +2,10 @@ import { Box, Button, Container, FixedBackArrow, Flex, Sans, Separator, Spacer }
 import { DrawerBottomButton } from "components/Drawer/DrawerBottomButton"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { ChevronIcon } from "components/Icons/ChevronIcon"
+import { PlanButton } from "components/Payment/PlanButton"
+import { PlanFeatures } from "components/Payment/PlanFeatures"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { CheckWithBackground } from "components/SVGs"
-import { ListCheck } from "components/SVGs/ListCheck"
 import gql from "graphql-tag"
 import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -18,19 +19,19 @@ import { Coupon } from "utils/calcFinalPrice"
 
 import { useMutation, useQuery } from "@apollo/client"
 
-import { PlanButton } from "./PlanButton"
-
 export const GET_PLANS = gql`
   query GetPlans($where: PaymentPlanWhereInput) {
     paymentPlans(where: $where) {
       id
       name
-      description
+      features {
+        included
+        excluded
+      }
       tagline
+      caption
       price
       planID
-      tier
-      itemCount
       status
     }
     me {
@@ -208,8 +209,7 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
     }
   }
 
-  const descriptionLines = selectedPlan?.description?.split("\n") || []
-  const currentColor = "black"
+  const lowestPlanPrice = plans?.map((plan) => plan.price)?.reduce((a, b) => Math.min(a, b))
 
   if (!data) {
     return null
@@ -251,35 +251,22 @@ export const ChoosePlanPane: React.FC<ChoosePlanPaneProps> = ({ headerText, coup
             <Sans color="black50" size="3">
               Here's what's included in your selected plan:
             </Sans>
-            <Spacer mb={1} />
+            <Spacer mb={2} />
+            <PlanFeatures features={selectedPlan?.features} />
           </Box>
-          <Flex flexDirection="column" width="100%">
-            {descriptionLines.map((line) => {
-              return (
-                <Flex flexDirection="row" pb={1} px={1} alignItems="center" key={line} width="100%">
-                  <Box mx={1} mr={2}>
-                    <ListCheck />
-                  </Box>
-                  <Sans color="black50" size="3">
-                    {line}
-                  </Sans>
-                </Flex>
-              )
-            })}
-          </Flex>
           <Spacer mb={2} />
           {[...(plans ?? [])]
-            ?.sort((a, b) => b.itemCount - a.itemCount)
+            ?.sort((a, b) => b.price - a.price)
             ?.map((plan) => {
+              console.log("selectedPlan?.id", selectedPlan?.id)
+              console.log("plan?.id", plan?.id)
               return (
                 <Box key={plan.id} px={2}>
                   <PlanButton
                     plan={plan}
-                    key={plan.id}
+                    lowestPlanPrice={lowestPlanPrice}
                     shouldSelect={setSelectedPlan}
                     selected={selectedPlan?.id === plan.id}
-                    selectedColor={currentColor}
-                    coupon={coupon}
                   />
                 </Box>
               )
