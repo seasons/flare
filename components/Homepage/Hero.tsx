@@ -14,6 +14,8 @@ const staticNoise = require("../../public/images/homepage/static-noise.gif")
 const backgroundImage =
   "https://seasons-s3.imgix.net/flare/Hero-image-1.jpg?w=2000&fit=clip&retina=true&fm=webp&cs=srgb"
 
+const fade = require("../../public/images/homepage/Hero-Fade.png")
+
 const Content: React.FC<{
   version: "mobile" | "desktop"
   authState: any
@@ -26,6 +28,7 @@ const Content: React.FC<{
   return (
     <Background>
       <Static />
+      <FadeBackground />
       <MaxWidth>
         <Flex
           width="100%"
@@ -116,4 +119,13 @@ const Static = styled.div`
   opacity: 0.2;
   background: url(${staticNoise}) repeat center center;
   background-size: 90px;
+`
+
+const FadeBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url(${fade}) no-repeat center center;
+  background-size: 90px;
+  background-size: cover;
 `

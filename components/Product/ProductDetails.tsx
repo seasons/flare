@@ -146,7 +146,7 @@ export const ProductDetails: React.FC<{
         />
       </Flex>
 
-      <Spacer mb={6} />
+      <Spacer mb={10} />
 
       <ProductInfoItem detailType="Product details" detailValue="" />
       {!!waistByLengthDisplay && <ProductInfoItem detailType="Waist by length" detailValue={waistByLengthDisplay} />}

@@ -9,7 +9,7 @@ import { seasonAndYear } from "utils/seasonAndYear"
 import { Box, Display, Flex, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
 
-const image = require("../../public/images/homepage/PlanBackground-Flare.jpg")
+const image = require("../../public/images/homepage/PlanBackground.jpg")
 
 export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   const { openDrawer } = useDrawerContext()
