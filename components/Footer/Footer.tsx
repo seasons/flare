@@ -18,7 +18,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
 
   return (
     <Box style={{ backgroundColor: color("black100") }}>
-      <Spacer pb={5} />
+      <Spacer pb={10} />
       <EmailCollection />
       <Grid pb={footerBottomPadding ? footerBottomPadding : 0}>
         <Row px={[2, 2, 2, 2, 2]}>
@@ -50,12 +50,6 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
                 Ask a question
               </Sans>
             </a>
-            <Spacer mb={1} />
-            <Link href="/gift">
-              <Sans size="3" color="white100" underline pointer>
-                Gift a membership
-              </Sans>
-            </Link>
             <Spacer mb={[5, 5, 5, 0, 0]} />
           </Col>
           <Col lg="2" md="4" sm="6">

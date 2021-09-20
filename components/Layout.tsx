@@ -50,7 +50,6 @@ interface LayoutProps {
   includeDefaultHead?: boolean
   showIntercom?: boolean
   PageNotificationBar?: () => React.ReactElement
-  disableMaxWidth?: boolean
   navStyles?: NavStyles
   hideNavPadding?: boolean
 }
@@ -61,7 +60,6 @@ export const Layout = ({
   footerBottomPadding,
   includeDefaultHead = true,
   showIntercom = false,
-  disableMaxWidth = false,
   hideNavPadding = false,
   PageNotificationBar,
   navStyles,
@@ -111,7 +109,7 @@ export const Layout = ({
               {showIntercom && <Intercom />}
               <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} navStyles={navStyles} />
               {!hideNavPadding && <Box pt={DESKTOP_NAV_HEIGHT} />}
-              <MaxWidth height="100%" disableMaxWidth={disableMaxWidth}>
+              <MaxWidth height="100%" disableMaxWidth>
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {children}
                   {!hideFooter && <Footer footerBottomPadding={footerBottomPadding} brandItems={brandItems} />}

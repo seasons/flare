@@ -9,7 +9,7 @@ import queryString from "query-string"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-import { Box, Button, Display, MaxWidth, Spacer } from "components"
+import { Box, Button, MaxWidth, Media, Spacer } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
@@ -136,9 +136,16 @@ export const DesktopNav = (props: NavProps) => {
             <Box style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
               <SeasonsLogoTextIcon />
             </Box>
-            <Box px={4}>
-              <SearchBar />
-            </Box>
+            <Media greaterThanOrEqual="lg">
+              <Box px={4}>
+                <SearchBar breakPoint="large" />
+              </Box>
+            </Media>
+            <Media lessThan="lg">
+              <Box px={4}>
+                <SearchBar breakPoint="medium" />
+              </Box>
+            </Media>
             <Flex ml="auto" flexDirection="row" alignItems="center">
               {links.map(renderLink)}
               {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}

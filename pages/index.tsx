@@ -92,7 +92,7 @@ const Home = screenTrack(() => ({
   const partnerData = getPartnerDataFromUTMCampaign(router.query["utm_campaign"])
 
   return (
-    <Layout showIntercom disableMaxWidth navStyles={navStyles} hideNavPadding>
+    <Layout showIntercom navStyles={navStyles} hideNavPadding>
       <Hero />
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
