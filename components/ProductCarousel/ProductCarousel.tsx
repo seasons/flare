@@ -94,8 +94,14 @@ const Content: React.FC<{
   const lastVisible = visibleElements[visibleElements?.length - 1]
   const firstVisible = visibleElements[0]
   const goToSnapItem = useScroll({ ref: snapList })
+  let onServer = true
+  if (typeof window !== "undefined") {
+    onServer = false
+  }
 
   const reachedEnd = lastVisible >= products.length - 1
+
+  const productsToUse = onServer ? [products?.[0]] : products
 
   return (
     <Box style={{ marge: "0 auto" }}>
@@ -133,7 +139,7 @@ const Content: React.FC<{
           )}
           <MaxWidthWrapper px={[2, 2, 2, 2, 2]}>
             <SnapList direction="horizontal" width="100%" ref={snapList}>
-              {products?.map((product, index) => {
+              {productsToUse?.map((product, index) => {
                 return (
                   <SnapItem
                     margin={{ left: index === 0 ? "0px" : space(0.5) + "px" }}
