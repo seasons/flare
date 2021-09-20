@@ -71,6 +71,7 @@ const Content = ({ type, validateEmail, emailValid, userCreated, onSubmit, email
 export const EmailCollection = () => {
   const { authState } = useAuthContext()
   const [userCreated, setUserCreated] = useState(false)
+  const [isMutating, setIsMutating] = useState(false)
   const [email, setEmail] = useState("")
   const [emailValid, setEmailValid] = useState(false)
   const [createInterestedUser] = useMutation(CREATE_INTERESTED_USER, {
@@ -78,14 +79,17 @@ export const EmailCollection = () => {
       setUserCreated(true)
       setEmailValid(false)
       setEmail("")
+      setIsMutating(false)
     },
     onError: (error) => {
       console.log("error", error)
+      setIsMutating(false)
     },
   })
 
   const onSubmit = async () => {
-    if (emailValid) {
+    if (emailValid && !isMutating) {
+      setIsMutating(true)
       await createInterestedUser({
         variables: { email: email.toLowerCase() },
       })
