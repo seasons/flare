@@ -5,16 +5,17 @@ import styled from "styled-components"
 import { seasonAndYear } from "utils/seasonAndYear"
 import { Media } from "../Responsive"
 import { GetTheAppButton } from "components/Button/GetTheApp"
-import { HERO_HEIGHT } from "pages"
 import { HeroCTA } from "./HeroCTA"
 import { color } from "helpers/color"
 
 const staticNoise = require("../../public/images/homepage/static-noise.gif")
-
-const backgroundImage =
+const backgroundImageMobile = require("../../public/images/homepage/Flare-mobile-background.jpg")
+const backgroundImageDesktop =
   "https://seasons-s3.imgix.net/flare/Hero-image-1.jpg?w=2000&fit=clip&retina=true&fm=webp&cs=srgb"
-
 const fade = require("../../public/images/homepage/Hero-Fade.png")
+
+export const DESKTOP_HERO_HEIGHT = 760
+export const MOBILE_HERO_HEIGHT = 540
 
 const Content: React.FC<{
   version: "mobile" | "desktop"
@@ -26,9 +27,9 @@ const Content: React.FC<{
   const isUserSignedIn = authState?.isSignedIn
 
   return (
-    <Background>
+    <Background backgroundImage={isDesktop ? backgroundImageDesktop : backgroundImageMobile}>
       <Static />
-      <FadeBackground />
+      {isDesktop && <FadeBackground />}
       <MaxWidth>
         <Flex
           width="100%"
@@ -36,7 +37,7 @@ const Content: React.FC<{
           py={5}
           justifyContent="flex-end"
           flexDirection="column"
-          height={HERO_HEIGHT + "px"}
+          height={isDesktop ? DESKTOP_HERO_HEIGHT + "px" : MOBILE_HERO_HEIGHT + "px"}
         >
           <Flex
             flexDirection={isDesktop ? "row" : "column"}
@@ -48,14 +49,14 @@ const Content: React.FC<{
                 Wear. Swap. Repeat.
               </Display>
               <Spacer mb={1} />
-              <Display color="black10" size={["8", "8", "7", "7", "7"]} style={{ maxWidth: "668px" }}>
+              <Display color="black10" size={["6", "6", "7", "7", "7"]} style={{ maxWidth: "668px" }}>
                 Seasons is a private rental service exploring the shared access of fashion.{" "}
                 <span style={{ textDecoration: "underline", color: color("white100") }}>{seasonAndYear()}</span>{" "}
                 memberships are now open.
               </Display>
             </Box>
             <Spacer mr={50} mt={5} />
-            <Box width={version === "desktop" ? "343px" : "100%"}>
+            <Box width={isDesktop ? "343px" : "100%"}>
               <HeroCTA version={version} userSession={userSession} authState={authState} />
               {!isDesktop && (
                 <>
@@ -105,10 +106,10 @@ export const Hero: React.FC = () => {
   )
 }
 
-const Background = styled.div`
+const Background = styled.div<{ backgroundImage: string }>`
   width: 100%;
   position: relative;
-  background: url(${backgroundImage}) no-repeat center center;
+  background: url(${(p) => p.backgroundImage}) no-repeat center center;
   background-size: cover;
 `
 

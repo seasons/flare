@@ -15,7 +15,7 @@ import { Burger } from "./Burger"
 import { SeasonsLogo } from "./SeasonsLogo"
 import { NavProps } from "./Types"
 
-export const MENU_HEIGHT = "72px"
+export const MENU_HEIGHT = "58px"
 
 export const MobileNav: React.FC<NavProps> = ({ links }) => {
   const [isOpen, toggleOpen] = useState(false)
@@ -244,6 +244,7 @@ const HeaderContainer = styled.div`
 `
 
 const MenuContainer = styled.div`
+  background-color: ${color("white100")};
   overflow: hidden;
   padding-top: ${MENU_HEIGHT};
   width: 100%;

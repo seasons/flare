@@ -148,6 +148,10 @@ export const themeProps = {
         fontSize: 16,
         lineHeight: 28,
       },
+      "6": {
+        fontSize: 20,
+        lineHeight: 30,
+      },
       "7": {
         fontSize: 24,
         lineHeight: 32,

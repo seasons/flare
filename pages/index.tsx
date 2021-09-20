@@ -15,11 +15,10 @@ import { Discover } from "components/Homepage/Discover"
 import { color } from "helpers"
 import { ButtonVariant } from "components/Button/Button.shared"
 import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
+import { DESKTOP_HERO_HEIGHT } from "components/Homepage/Hero"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
-
-export const HERO_HEIGHT = 760
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
@@ -42,7 +41,7 @@ const Home = screenTrack(() => ({
   const onScroll = () => {
     if (typeof window !== undefined) {
       const offset = window.pageYOffset
-      if (offset >= HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.hideSignIn) {
+      if (offset >= DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.hideSignIn) {
         setNavStyles({
           backgroundColor: "rgba(255, 255, 255, 1)",
           textColor: color("black100"),
@@ -50,7 +49,7 @@ const Home = screenTrack(() => ({
           getTheAppVariant: "primaryWhite" as ButtonVariant,
           hideSignIn: false,
         })
-      } else if (offset < HERO_HEIGHT - DESKTOP_NAV_HEIGHT && !navStyles.hideSignIn) {
+      } else if (offset < DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT && !navStyles.hideSignIn) {
         setNavStyles(defaultNavStyles)
       }
     }
