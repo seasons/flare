@@ -56,7 +56,7 @@ export const Bag = screenTrack()(() => {
               removeFromBagAndSaveItem={removeFromBagAndSaveItem}
               deleteBagItem={deleteBagItem}
             />
-            {/* <BagReserveButton data={data} refetch={refetch} /> */}
+            <BagReserveButton data={data} refetch={refetch} />
           </>
         )
       case BagView.Saved:

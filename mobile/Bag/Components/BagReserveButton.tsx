@@ -22,12 +22,10 @@ export const BagReserveButton = ({ data, refetch }) => {
   const [checkItemsAvailability] = useMutation(CHECK_ITEMS)
 
   const me = data?.me
-  const bagItems = data?.bagItems
+  const bagItems = data?.me?.bag
 
   const planItemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
-
   const shippingAddress = data?.me?.customer?.detail?.shippingAddress
-
   const hasActiveReservation = !!me?.activeReservation
 
   const hasActiveReservationAndBagRoom =
