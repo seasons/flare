@@ -12,15 +12,17 @@ export interface Props {
   onTap?: (item: Item, index: number) => void
   selectedItemIndices: number[]
   style?: ViewStyle
-  itemSize?: number
+  itemHeight?: number
+  itemWidth?: number
 }
 
-export const MultiSelectionTable: React.FC<Props> = ({
+export const SelectionTable: React.FC<Props> = ({
   disabled = false,
   items,
   onTap,
   selectedItemIndices,
-  itemSize = 60,
+  itemHeight = 48,
+  itemWidth = 60,
 }) => {
   const itemCornerRadius = 4
 
@@ -32,11 +34,11 @@ export const MultiSelectionTable: React.FC<Props> = ({
   const renderItem = ({ isSelected, item }: { isSelected: boolean; item: Item }, index: number) => {
     return (
       <TouchableOpacity disabled={disabled} onPress={() => onTap?.(item, index)} key={index}>
-        <Flex height={itemSize} width={itemSize} mr={1} justifyContent="center">
+        <Flex height={itemHeight} width={itemWidth} mr={1} justifyContent="center">
           <Flex
             justifyContent="center"
-            height={itemSize + "px"}
-            width={itemSize + "px"}
+            height={itemHeight + "px"}
+            width={itemWidth + "px"}
             style={{
               backgroundColor: color(isSelected ? "black100" : "white100"),
               borderColor: color(isSelected ? "black100" : "black10"),
@@ -51,11 +53,11 @@ export const MultiSelectionTable: React.FC<Props> = ({
             }}
           >
             <Sans
-              size="3"
+              size="4"
               color={isSelected ? "white100" : "black100"}
               style={{
                 textAlign: "center",
-                lineHeight: itemSize + "px",
+                lineHeight: itemHeight + "px",
               }}
             >
               {item.label}
@@ -66,11 +68,11 @@ export const MultiSelectionTable: React.FC<Props> = ({
     )
   }
 
-  return <Container itemSize={itemSize}>{data.map((datum, index) => renderItem(datum, index))}</Container>
+  return <Container itemWidth={itemWidth}>{data.map((datum, index) => renderItem(datum, index))}</Container>
 }
 
-const Container = styled.div<Pick<Props, "itemSize">>`
+const Container = styled.div<Pick<Props, "itemWidth">>`
   display: grid;
   gap: 7px 7px;
-  grid-template-columns: repeat(auto-fit, ${({ itemSize }) => `${itemSize}px`});
+  grid-template-columns: repeat(auto-fit, ${({ itemWidth }) => `${itemWidth}px`});
 `

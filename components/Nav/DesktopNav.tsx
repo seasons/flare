@@ -129,37 +129,40 @@ export const DesktopNav = (props: NavProps) => {
   )
 
   return (
-    <HeaderContainer style={specialStyles} backgroundColor={backgroundColor}>
-      <MaxWidth>
-        <Box width="100%">
-          <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
-            <Box style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
-              <SeasonsLogoTextIcon />
-            </Box>
-            <Media greaterThanOrEqual="lg">
-              <Box px={4}>
-                <SearchBar breakPoint="large" />
+    <>
+      <HeaderContainer style={specialStyles} backgroundColor={backgroundColor}>
+        <MaxWidth>
+          <Box width="100%">
+            <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
+              <Box style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
+                <SeasonsLogoTextIcon />
               </Box>
-            </Media>
-            <Media lessThan="lg">
-              <Box px={4}>
-                <SearchBar breakPoint="medium" />
-              </Box>
-            </Media>
-            <Flex ml="auto" flexDirection="row" alignItems="center">
-              {links.map(renderLink)}
-              {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
+              <Media greaterThanOrEqual="lg">
+                <Box px={4}>
+                  <SearchBar breakPoint="large" />
+                </Box>
+              </Media>
+              <Media lessThan="lg">
+                <Box px={4}>
+                  <SearchBar breakPoint="medium" />
+                </Box>
+              </Media>
+              <Flex ml="auto" flexDirection="row" alignItems="center">
+                {links.map(renderLink)}
+                {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
+              </Flex>
             </Flex>
-          </Flex>
-        </Box>
-      </MaxWidth>
-      <LoginModal
-        open={loginModalOpen}
-        onClose={() => {
-          toggleLoginModal(false)
-        }}
-      />
-    </HeaderContainer>
+          </Box>
+        </MaxWidth>
+        <LoginModal
+          open={loginModalOpen}
+          onClose={() => {
+            toggleLoginModal(false)
+          }}
+        />
+      </HeaderContainer>
+      <Box pt={DESKTOP_NAV_HEIGHT} />
+    </>
   )
 }
 

@@ -1,7 +1,7 @@
 import { Box, Button, Container, Flex, Sans, Spacer } from "components"
 import { color } from "helpers/color"
 import Measurements from "mobile/GetMeasurementsPane/Measurements"
-import { MultiSelectionTable } from "mobile/GetMeasurementsPane/MultiSelectionTable"
+import { SelectionTable } from "mobile/GetMeasurementsPane/SelectionTable"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 
@@ -95,11 +95,7 @@ export const SizingTab: React.FC<{ navigation: any; rawMeasurements }> = ({ navi
               What are your preferred top sizes?
             </Sans>
             <Spacer mb={1} />
-            <MultiSelectionTable
-              disabled
-              items={Measurements.topSizes}
-              selectedItemIndices={measurements.topSizeIndices}
-            />
+            <SelectionTable disabled items={Measurements.topSizes} selectedItemIndices={measurements.topSizeIndices} />
           </>
         )
       case Section.WaistSizes:
@@ -109,7 +105,7 @@ export const SizingTab: React.FC<{ navigation: any; rawMeasurements }> = ({ navi
               Your preferred waist size?
             </Sans>
             <Spacer mb={1} />
-            <MultiSelectionTable
+            <SelectionTable
               disabled
               items={Measurements.waistSizes}
               selectedItemIndices={measurements.waistSizeIndices}

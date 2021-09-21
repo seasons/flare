@@ -108,7 +108,6 @@ export const Layout = ({
             <Theme>
               {showIntercom && <Intercom />}
               <Nav brandItems={brandItems} PageNotificationBar={PageNotificationBar} navStyles={navStyles} />
-              {!hideNavPadding && <Box pt={DESKTOP_NAV_HEIGHT} />}
               <MaxWidth height="100%" disableMaxWidth>
                 <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
                   {children}
