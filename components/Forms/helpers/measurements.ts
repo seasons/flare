@@ -1,13 +1,13 @@
 import SelectItem from "../SelectItem"
 
 const topSizes: SelectItem[] = [
-  { label: "XXS", value: "XS" },
-  { label: "XS", value: "XS" },
-  { label: "S", value: "S" },
-  { label: "M", value: "M" },
-  { label: "L", value: "L" },
-  { label: "XL", value: "XL" },
-  { label: "XXL", value: "XXL" },
+  { label: "XX-Small", value: "XS" },
+  { label: "X-Small", value: "XS" },
+  { label: "Small", value: "S" },
+  { label: "Medium", value: "M" },
+  { label: "Large", value: "L" },
+  { label: "X-Large", value: "XL" },
+  { label: "XX-Large", value: "XXL" },
 ]
 
 const waistSizes: SelectItem[] = (() => {

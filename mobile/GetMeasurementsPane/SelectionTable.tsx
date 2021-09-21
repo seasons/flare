@@ -53,7 +53,7 @@ export const SelectionTable: React.FC<Props> = ({
             }}
           >
             <Sans
-              size="3"
+              size="4"
               color={isSelected ? "white100" : "black100"}
               style={{
                 textAlign: "center",
