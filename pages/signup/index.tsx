@@ -151,17 +151,17 @@ const SignUpPage = screenTrack(() => ({
   let CurrentStep
   switch (currentStepState) {
     case Steps.CreateAccountStep:
-      CurrentStep = (
-        <CreateAccountStep
-          form={{
-            initialValues: customerDataFromGift(),
-            gift: giftData?.gift,
-            onError: () => setShowSnackBar(true),
-            onCompleted: () => setCurrentStepState(Steps.CustomerMeasurementsStep),
-          }}
-        />
-      )
-      break
+    // CurrentStep = (
+    //   <CreateAccountStep
+    //     form={{
+    //       initialValues: customerDataFromGift(),
+    //       gift: giftData?.gift,
+    //       onError: () => setShowSnackBar(true),
+    //       onCompleted: () => setCurrentStepState(Steps.CustomerMeasurementsStep),
+    //     }}
+    //   />
+    // )
+    // break
     case Steps.CustomerMeasurementsStep:
       CurrentStep = (
         <CustomerMeasurementsStep

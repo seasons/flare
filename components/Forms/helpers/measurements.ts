@@ -1,42 +1,37 @@
 import SelectItem from "../SelectItem"
 
-const heights: SelectItem[] = (() => {
-  const totalInches = (feet: number, inches: number) => 12 * feet + inches
-  let items: SelectItem[] = [{ label: "4'11\"", value: totalInches(4, 11) }]
-  new Array(5, 6).forEach((feet) => {
-    items.push({ label: `${feet}\'`, value: totalInches(feet, 0) })
-    for (let inches = 1; inches < 12; inches++) {
-      items.push({ label: `${feet}\'${inches}\"`, value: totalInches(feet, inches) })
-    }
-  })
-  return items
-})()
-
-const weights: SelectItem[] = (() => {
-  const items: SelectItem[] = []
-  for (let weight = 90; weight <= 240; weight += 10) {
-    items.push({ label: `${weight} - ${weight + 10}lbs`, value: [weight, weight + 10] })
-  }
-  return items
-})()
-
 const topSizes: SelectItem[] = [
+  { label: "XXS", value: "XS" },
   { label: "XS", value: "XS" },
   { label: "S", value: "S" },
   { label: "M", value: "M" },
   { label: "L", value: "L" },
   { label: "XL", value: "XL" },
   { label: "XXL", value: "XXL" },
-  { label: "XXXL", value: "XXXL" },
 ]
 
 const waistSizes: SelectItem[] = (() => {
-  const items: SelectItem[] = []
-  for (let waistSize = 28; waistSize <= 40; waistSize++) {
-    items.push({ label: String(waistSize), value: waistSize })
+  const items: SelectItem[] = [{ label: `26"`, value: 26 }]
+  for (let waistSize = 28; waistSize <= 36; waistSize++) {
+    items.push({ label: String(waistSize) + `"`, value: waistSize })
   }
   return items
 })()
+
+const shoeSizes: SelectItem[] = (() => {
+  const items: SelectItem[] = []
+  for (let shoeSize = 7; shoeSize <= 14; shoeSize++) {
+    items.push({ label: `Size ${shoeSize}`, value: shoeSize })
+  }
+  return items
+})()
+
+const pantLengths: SelectItem[] = [
+  { label: `Short 30"`, value: 30 },
+  { label: `Short 32"`, value: 32 },
+  { label: `Short 34"`, value: 34 },
+  { label: `Short 36"`, value: 36 },
+]
 
 const fits: SelectItem[] = [
   { label: "Sometimes too small", value: "Small" },
@@ -45,9 +40,9 @@ const fits: SelectItem[] = [
 ]
 
 export const customerMeasurements = {
-  heights,
-  weights,
   topSizes,
   waistSizes,
   fits,
+  pantLengths,
+  shoeSizes,
 }

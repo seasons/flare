@@ -1,5 +1,4 @@
-import { Flex, MaxWidth } from "components"
-import { SignupFormProps, SIGNUP_FOOTER_HEIGHT } from "pages/signup"
+import { SignupFormProps } from "pages/signup"
 import React from "react"
 
 import { CustomerMeasurementsForm } from "./CustomerMeasurementsForm"

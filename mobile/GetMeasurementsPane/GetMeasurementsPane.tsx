@@ -9,7 +9,7 @@ import { useMutation } from "@apollo/client"
 
 import Item from "./Item"
 import Measurements from "./Measurements"
-import { MultiSelectionTable } from "./MultiSelectionTable"
+import { SelectionTable } from "./SelectionTable"
 
 interface GetMeasurementsPaneProps {
   initialMeasurements?: {
@@ -135,7 +135,7 @@ export const GetMeasurementsPane: React.FC<GetMeasurementsPaneProps> = ({
             What are your preferred top sizes?
           </Sans>
           <Spacer mb={1} />
-          <MultiSelectionTable
+          <SelectionTable
             items={Measurements.topSizes}
             onTap={(_, index) =>
               // Recreate a new array reference so that the component reloads
@@ -154,7 +154,7 @@ export const GetMeasurementsPane: React.FC<GetMeasurementsPaneProps> = ({
             Your preferred waist size?
           </Sans>
           <Spacer mb={1} />
-          <MultiSelectionTable
+          <SelectionTable
             items={Measurements.waistSizes}
             onTap={(_, index) =>
               // Recreate a new array reference so that the component reloads

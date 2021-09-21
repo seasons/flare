@@ -15,7 +15,7 @@ export interface Props {
   itemSize?: number
 }
 
-export const MultiSelectionTable: React.FC<Props> = ({
+export const SelectionTable: React.FC<Props> = ({
   disabled = false,
   items,
   onTap,
