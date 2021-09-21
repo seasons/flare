@@ -124,11 +124,11 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
             fullWidth: true,
           },
           {
-            name: "pantLengths",
+            name: "pantLength",
             customElement: (
               <Box mt={1}>
                 <SelectionTableField
-                  inputName={"pantLengths"}
+                  inputName={"pantLength"}
                   items={customerMeasurements.pantLengths}
                   itemWidth={122}
                 />

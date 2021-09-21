@@ -61,7 +61,7 @@ export const FormTemplate = ({
         <Wrapper clientSide={clientSide} isDesktop={isDesktop}>
           {isDesktop && <Spacer mb={128} />}
           <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
-          <FieldsContainer px={isDesktop ? [2, 2, 2, 4, 4] : 1} pb={isDesktop ? 0 : 150}>
+          <FieldsContainer pl={isDesktop ? [2, 2, 2, 4, 4] : 0} pb={isDesktop ? 0 : 150}>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
               const width = props.fullWidth ? "100%" : isDesktop ? "50%" : mobileWidth
@@ -83,7 +83,7 @@ export const FormTemplate = ({
   }
 
   return (
-    <Flex style={{ minHeight: "100%", width: "100%" }}>
+    <Flex style={{ minHeight: "100%", width: "100%", position: "relative" }}>
       <DesktopMedia greaterThanOrEqual="md">
         <ContentContainer>{Content("desktop")}</ContentContainer>
       </DesktopMedia>
@@ -108,7 +108,7 @@ const Wrapper = styled("div")<{ clientSide: boolean; isDesktop: boolean }>`
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
 `
 
-const FixedImageWrapper = styled.div`
+const FixedImageWrapper = styled(Box)`
   position: fixed;
   width: 560px;
   max-width: 40vw;

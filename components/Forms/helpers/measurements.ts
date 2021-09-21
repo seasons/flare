@@ -1,7 +1,7 @@
 import SelectItem from "../SelectItem"
 
 const topSizes: SelectItem[] = [
-  { label: "XX-Small", value: "XS" },
+  { label: "XX-Small", value: "XXS" },
   { label: "X-Small", value: "XS" },
   { label: "Small", value: "S" },
   { label: "Medium", value: "M" },
@@ -28,9 +28,9 @@ const shoeSizes: SelectItem[] = (() => {
 
 const pantLengths: SelectItem[] = [
   { label: `Short 30"`, value: 30 },
-  { label: `Short 32"`, value: 32 },
-  { label: `Short 34"`, value: 34 },
-  { label: `Short 36"`, value: 36 },
+  { label: `Regular 32"`, value: 32 },
+  { label: `Long 34"`, value: 34 },
+  { label: `Tall 36"`, value: 36 },
 ]
 
 const fits: SelectItem[] = [

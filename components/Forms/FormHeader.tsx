@@ -32,7 +32,7 @@ export const FormHeader: React.FC<FormHeaderProps> = ({ headerText, headerDescri
           </StyledDetailText>
         ) : null}
       </Box>
-      <Spacer height={[5, 40]} />
+      <Spacer mb={5} />
     </Box>
   )
 }

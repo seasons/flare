@@ -40,7 +40,6 @@ export const FormField: React.FC<any> = (props) => {
 
   return (
     <Box>
-      <Spacer mt={4} />
       <Sans size="3">{props.label}</Sans>
       {!!customElement ? (
         customElement
@@ -78,6 +77,7 @@ export const FormField: React.FC<any> = (props) => {
             : null}
         </Field>
       )}
+      <Spacer mb={5} />
     </Box>
   )
 }

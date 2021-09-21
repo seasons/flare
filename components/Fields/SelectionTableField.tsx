@@ -8,11 +8,13 @@ type Props = Pick<SelectionTableProps, "items" | "itemHeight" | "itemWidth"> & {
 }
 
 export const SelectionTableField: React.FC<Props> = ({ inputName, items, itemHeight, itemWidth, multiple }) => {
-  const [{ value }, _, { setValue, setTouched }] = useField<string[]>(inputName)
+  const [{ value }, _, { setValue, setTouched }] = useField<string[] | string>(inputName)
 
   const handleTap = (item: Item, _index: number) => {
     if (multiple) {
+      // @ts-ignore
       const idx = value.findIndex((i) => i === item.value)
+      // @ts-ignore
       const newValue = [...value].filter(Boolean)
       if (idx === -1) {
         newValue.push(item.value)
@@ -21,15 +23,16 @@ export const SelectionTableField: React.FC<Props> = ({ inputName, items, itemHei
       }
       setValue(newValue)
     } else {
-      setValue([item.value])
+      setValue(item.value)
     }
   }
 
   let selectedItemIndices
   if (multiple) {
+    // @ts-ignore
     selectedItemIndices = value.map((item) => items.findIndex((innerItem) => innerItem.value === item))
   } else {
-    selectedItemIndices = [items.findIndex((innerItem) => innerItem.value === value?.[0])]
+    selectedItemIndices = [items.findIndex((innerItem) => innerItem.value === value)]
   }
 
   return (
