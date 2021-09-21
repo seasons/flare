@@ -97,7 +97,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
                   multiple
                   inputName={"topSizes"}
                   items={customerMeasurements.topSizes}
-                  itemSize={64}
+                  itemWidth={122}
                 />
               </Box>
             ),
@@ -114,7 +114,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
                   multiple
                   inputName={"waistSizes"}
                   items={customerMeasurements.waistSizes}
-                  itemSize={64}
+                  itemWidth={122}
                 />
               </Box>
             ),
@@ -127,7 +127,11 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
             name: "pantLengths",
             customElement: (
               <Box mt={1}>
-                <SelectionTableField inputName={"pantLengths"} items={customerMeasurements.pantLengths} itemSize={64} />
+                <SelectionTableField
+                  inputName={"pantLengths"}
+                  items={customerMeasurements.pantLengths}
+                  itemWidth={122}
+                />
               </Box>
             ),
             placeholder: "Select",
@@ -139,7 +143,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
             name: "shoeSize",
             customElement: (
               <Box mt={1}>
-                <SelectionTableField inputName={"shoeSize"} items={customerMeasurements.shoeSizes} itemSize={64} />
+                <SelectionTableField inputName={"shoeSize"} items={customerMeasurements.shoeSizes} itemWidth={122} />
               </Box>
             ),
             placeholder: "Select",

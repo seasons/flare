@@ -2,12 +2,12 @@ import React from "react"
 import { useField } from "formik"
 import { SelectionTable, Props as SelectionTableProps, Item } from "../../mobile/GetMeasurementsPane/SelectionTable"
 
-type Props = Pick<SelectionTableProps, "items" | "itemSize"> & {
+type Props = Pick<SelectionTableProps, "items" | "itemHeight" | "itemWidth"> & {
   inputName: string
   multiple?: boolean
 }
 
-export const SelectionTableField: React.FC<Props> = ({ inputName, items, itemSize, multiple }) => {
+export const SelectionTableField: React.FC<Props> = ({ inputName, items, itemHeight, itemWidth, multiple }) => {
   const [{ value }, _, { setValue, setTouched }] = useField<string[]>(inputName)
 
   const handleTap = (item: Item, _index: number) => {
@@ -25,11 +25,6 @@ export const SelectionTableField: React.FC<Props> = ({ inputName, items, itemSiz
     }
   }
 
-  if (inputName === "pantLengths") {
-    console.log("items", items)
-    console.log("value", value)
-  }
-
   let selectedItemIndices
   if (multiple) {
     selectedItemIndices = value.map((item) => items.findIndex((innerItem) => innerItem.value === item))
@@ -38,6 +33,12 @@ export const SelectionTableField: React.FC<Props> = ({ inputName, items, itemSiz
   }
 
   return (
-    <SelectionTable items={items} onTap={handleTap} selectedItemIndices={selectedItemIndices} itemSize={itemSize} />
+    <SelectionTable
+      items={items}
+      onTap={handleTap}
+      selectedItemIndices={selectedItemIndices}
+      itemHeight={itemHeight}
+      itemWidth={itemWidth}
+    />
   )
 }
