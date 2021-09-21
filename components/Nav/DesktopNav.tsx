@@ -161,6 +161,7 @@ export const DesktopNav = (props: NavProps) => {
           }}
         />
       </HeaderContainer>
+      <Box pt={DESKTOP_NAV_HEIGHT} />
     </>
   )
 }

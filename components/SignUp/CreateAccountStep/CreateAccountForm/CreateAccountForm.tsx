@@ -27,10 +27,7 @@ export interface CreateAccountFormFields {
   dob?: string
   zipCode?: string
   discoveryReference?: string
-}
-
-export interface CustomerDetailCreateInput {
-  phoneNumber: string
+  instagramHandle?: string
 }
 
 const discoveryReferenceBackupOptions = [
@@ -87,6 +84,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
           firstName,
           lastName,
           details: {
+            instagramHandle: values.instagramHandle,
             phoneNumber: values.tel,
             birthday: dateToIso,
             discoveryReference: values.discoveryReference,
@@ -138,6 +136,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
         password: "",
         zipCode: "",
         discoveryReference: "",
+        instagramHandle: "",
         ...initialValues,
       }}
       initialTouched={{ fullName: true }}
@@ -203,11 +202,17 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
             mobileOrder: 7,
           },
           {
+            name: "instagramHandle",
+            placeholder: "@",
+            label: "Instagram handle",
+            mobileOrder: 8,
+          },
+          {
             name: "discoveryReference",
             selectOptions: howDidYouFindOutAboutUsView?.properties?.options || discoveryReferenceBackupOptions,
             placeholder: "Select",
             label: howDidYouFindOutAboutUsView?.title || "How did you hear about us?",
-            mobileOrder: 8,
+            mobileOrder: 9,
           },
         ]}
       />
