@@ -75,6 +75,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
       onSubmit={onSubmit}
     >
       <FormTemplate
+        contentMaxWidth="541px"
         headerText="Let’s get your sizes"
         headerDescription="This helps us accurately recommend you sizes by brand."
         leftImage={imageURL}

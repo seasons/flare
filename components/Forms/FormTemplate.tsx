@@ -21,6 +21,7 @@ export interface FormTemplateProps {
   fields: Field[]
   titleBottomSpacing?: number
   buttonActionName?: string
+  contentMaxWidth?: string
 }
 
 export const FormTemplate = ({
@@ -32,6 +33,7 @@ export const FormTemplate = ({
   leftImage,
   fields,
   buttonActionName,
+  contentMaxWidth,
 }: FormTemplateProps) => {
   const { handleSubmit, isValid: formContextIsValid, isSubmitting, values } = useFormikContext()
 
@@ -58,7 +60,7 @@ export const FormTemplate = ({
             </FixedImageWrapper>
           </ImageContainer>
         )}
-        <Wrapper clientSide={clientSide} isDesktop={isDesktop}>
+        <Wrapper clientSide={clientSide} isDesktop={isDesktop} contentMaxWidth={contentMaxWidth}>
           {isDesktop && <Spacer mb={128} />}
           <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
           <FieldsContainer pl={isDesktop ? [2, 2, 2, 4, 4] : 0} pb={isDesktop ? 0 : 150}>
@@ -100,10 +102,10 @@ export const FormTemplate = ({
   )
 }
 
-const Wrapper = styled("div")<{ clientSide: boolean; isDesktop: boolean }>`
+const Wrapper = styled("div")<{ clientSide: boolean; isDesktop: boolean; contentMaxWidth?: string }>`
   display: flex;
   flex-direction: column;
-  max-width: 541px;
+  max-width: ${(p) => (p.contentMaxWidth ? p.contentMaxWidth : "none")};
   flex: 1;
   height: 100%;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
