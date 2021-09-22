@@ -7,6 +7,7 @@ import { makeStyles, MenuItem } from "@material-ui/core"
 import { Box, Sans, Spacer } from "@seasons/eclipse"
 
 import SelectItem from "./SelectItem"
+import { color } from "helpers/color"
 
 const useStyles = makeStyles({
   root: {
@@ -27,12 +28,13 @@ export interface Field {
   type?: string
   initialValue?: string
   label: string
+  labelSecondaryText?: string
   mobileOrder?: number
   multiple?: boolean
   fullWidth?: boolean
 }
 
-export const FormField: React.FC<any> = (props) => {
+export const FormField: React.FC<Field> = (props) => {
   const { handleBlur, handleChange, setFieldValue, values } = useFormikContext()
   const menuItemStyle = useStyles()
   const { selectOptions, name, placeholder, customElement, type, multiple }: Field = props
@@ -40,7 +42,10 @@ export const FormField: React.FC<any> = (props) => {
 
   return (
     <Box>
-      <Sans size="3">{props.label}</Sans>
+      <Sans size="3">
+        {props.label}
+        {props.labelSecondaryText && <span style={{ color: color("black50") }}> {props.labelSecondaryText}</span>}
+      </Sans>
       {!!customElement ? (
         customElement
       ) : (
