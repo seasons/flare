@@ -1,13 +1,13 @@
 import React from "react"
-import { Box, Flex, Sans, Spacer, Header } from "components"
+import { Box, Flex, Sans, Spacer } from "components"
 import { Display } from "../Typography"
 import { Grid, Row, Col } from "../Grid"
 import { Media } from "../Responsive"
-import { HeartIcon, SwapIcon, CalendarIcon, ReserveIcon, BillingIcon, DiscordIcon } from "components/Icons"
+import { HeartIcon, SwapIcon, CalendarIcon, MembershipCardIcon, BillingIcon, DiscordIcon } from "components/Icons"
 
 export const HOW_IT_WORKS_TEXT = [
   {
-    icon: <ReserveIcon />,
+    icon: <MembershipCardIcon />,
     title: "Flexible membership",
     text: "Subscribe & get exclusive rental access to over 1,000 different styles.",
   },
@@ -59,11 +59,11 @@ export const HowItWorks: React.FC = () => {
   return (
     <Grid>
       <Box px={[2, 2, 2, 2, 2]} pb={6}>
-        <Header size="9" style={{ textAlign: "center" }}>
+        <Display size={["7", "9"]} style={{ textAlign: "center" }}>
           How membership works
-        </Header>
+        </Display>
         <Spacer mb={1} />
-        <Sans size="4" color="black50" style={{ textAlign: "center" }}>
+        <Sans size={["3", "4"]} color="black50" style={{ textAlign: "center" }}>
           Access an exclusive rental library of over 1,000+ styles
         </Sans>
       </Box>

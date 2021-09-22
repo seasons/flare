@@ -49,4 +49,13 @@ export const PaypalButton = ({ plan }) => {
 const Container = styled(FadeIn)`
   width: 176px;
   height: 45px;
+
+  iframe,
+  .component-frame {
+    z-index: 0 !important;
+  }
+
+  .paypal-button {
+    height: 48px !important;
+  }
 `

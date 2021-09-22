@@ -83,7 +83,7 @@ export const PaymentCouponField: React.FC<PaymentCouponFieldProps> = ({ onApplyP
         />
 
         <Box onClick={applyPromoCode}>
-          <Sans size="4" style={{ textDecoration: "underline", cursor: "pointer" }}>
+          <Sans size="4" underline pointer>
             Apply
           </Sans>
         </Box>

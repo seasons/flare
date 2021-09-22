@@ -1,5 +1,6 @@
 import { Box, Flex, Sans } from "components"
 import { ListCheck } from "components/SVGs/ListCheck"
+import { color } from "helpers"
 import React from "react"
 
 interface Features {
@@ -14,9 +15,9 @@ export const PlanFeatures: React.FC<{ features: Features }> = ({ features }) => 
         return (
           <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
             <Box mr={2}>
-              <ListCheck feature={true} />
+              <ListCheck color={color("black100")} />
             </Box>
-            <Sans size="4" color="black100">
+            <Sans size={["3", "4"]} color="black100">
               {feature}
             </Sans>
           </Flex>
@@ -26,9 +27,9 @@ export const PlanFeatures: React.FC<{ features: Features }> = ({ features }) => 
         return (
           <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
             <Box mr={2}>
-              <ListCheck feature={false} />
+              <ListCheck />
             </Box>
-            <Sans size="4" color="black50" style={{ textDecorationLine: "line-through" }}>
+            <Sans size={["3", "4"]} color="black50" style={{ textDecorationLine: "line-through" }}>
               {feature}
             </Sans>
           </Flex>

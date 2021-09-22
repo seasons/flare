@@ -22,8 +22,8 @@ export const themeProps = {
     black85: "#252525",
     black65: "#5A5A5A",
     black50: "#7F7F7F",
-    black15: "#D9D9D9",
     black25: "#BFBFBF",
+    black15: "#D9D9D9",
     black10: "#E5E5E5",
     black04: "#F6F6F6",
     white100: "#fff",
@@ -147,6 +147,10 @@ export const themeProps = {
       "4": {
         fontSize: 16,
         lineHeight: 28,
+      },
+      "6": {
+        fontSize: 20,
+        lineHeight: 30,
       },
       "7": {
         fontSize: 24,

@@ -9,7 +9,7 @@ export const BrandHit = ({ hit }) => {
 
   return (
     <Link href="/designer/[Designer]" as={`/designer/${slugify(name)?.toLowerCase()}`}>
-      <Sans size={7} style={{ textDecoration: "underline", cursor: "pointer" }}>
+      <Sans size={7} underline pointer>
         {name}
       </Sans>
     </Link>

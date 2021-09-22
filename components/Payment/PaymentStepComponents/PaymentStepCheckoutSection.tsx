@@ -36,6 +36,19 @@ export const PaymentStepCheckoutSection = ({
           </Box>
         )}
         <Box width="100%" py={[2, 2, 4]}>
+          <Box>
+            {errorMessage && (
+              <>
+                <ErrorResult size="3">{errorMessage}</ErrorResult>
+                <Spacer mt={2} />
+              </>
+            )}
+          </Box>
+          <Sans size="7">Payment details</Sans>
+          <Spacer mt={2} />
+          <PaymentForm />
+        </Box>
+        <Box width="100%" py={[2, 2, 4]}>
           <Sans size="7">Shipping address</Sans>
           <Spacer mt={2} />
           <PaymentShippingAddress />
@@ -44,9 +57,9 @@ export const PaymentStepCheckoutSection = ({
           <Sans size="7">Billing address</Sans>
           <Spacer mt={2} />
           <Flex flexDirection="row" alignItems="center" width="100%" maxWidth="600px">
-            <Flex flexDirection="row" alignItems="center" justifyContent="space-between" width="50%">
+            <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" width="50%">
               <Label>Same as shipping address</Label>
-              <Box pr={2}>
+              <Box ml={3}>
                 <Checkbox
                   isActive={sameAsShipping}
                   onClick={() => {
@@ -61,20 +74,7 @@ export const PaymentStepCheckoutSection = ({
             <PaymentBillingAddress />
           </Collapse>
         </Box>
-        <Box width="100%" py={[2, 2, 4]}>
-          <Box>
-            {errorMessage && (
-              <>
-                <ErrorResult size="3">{errorMessage}</ErrorResult>
-                <Spacer mt={2} />
-              </>
-            )}
-          </Box>
-          <Sans size="7">Payment details</Sans>
-          <Spacer mt={2} />
-          <PaymentForm />
-        </Box>
-        <Spacer mt={4} />
+        <Spacer mt={8} />
       </Box>
     </Box>
   )

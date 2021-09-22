@@ -1,4 +1,4 @@
-import { Box, MaxWidth, Separator, Spacer } from "components"
+import { Box, MaxWidth, Media, Separator, Spacer } from "components"
 import { FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans, TheApp } from "components/Homepage"
 import { Layout } from "components/Layout"
 import { PartnerModal } from "components/Partner/PartnerModal"
@@ -13,22 +13,24 @@ import { useQuery } from "@apollo/client"
 import { ProductCarousel } from "components/ProductCarousel"
 import { Discover } from "components/Homepage/Discover"
 import { color } from "helpers"
-import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
 import { ButtonVariant } from "components/Button/Button.shared"
+import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
+import { DESKTOP_HERO_HEIGHT } from "components/Homepage/Hero"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
-
-export const DESKTOP_HERO_HEIGHT = 700
 
 const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
+  // FIXME: Add back the transparent background once we fix the notification bar
   const defaultNavStyles = {
-    backgroundColor: "transparent",
-    textColor: color("white100"),
-    buttonVariant: "transparentOutlineWhite" as ButtonVariant,
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    textColor: color("black100"),
+    buttonVariant: "primaryWhite" as ButtonVariant,
+    getTheAppVariant: "primaryWhite" as ButtonVariant,
+    hideSignIn: true,
   }
   const { previousData, data = previousData, error } = useQuery(Home_Query)
   const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
@@ -38,13 +40,16 @@ const Home = screenTrack(() => ({
 
   const onScroll = () => {
     if (typeof window !== undefined) {
-      if (window.pageYOffset >= DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT) {
+      const offset = window.pageYOffset
+      if (offset >= DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT && navStyles.hideSignIn) {
         setNavStyles({
-          backgroundColor: color("white100"),
+          backgroundColor: "rgba(255, 255, 255, 1)",
           textColor: color("black100"),
           buttonVariant: "primaryWhite" as ButtonVariant,
+          getTheAppVariant: "primaryWhite" as ButtonVariant,
+          hideSignIn: false,
         })
-      } else {
+      } else if (offset < DESKTOP_HERO_HEIGHT - DESKTOP_NAV_HEIGHT && !navStyles.hideSignIn) {
         setNavStyles(defaultNavStyles)
       }
     }
@@ -85,8 +90,9 @@ const Home = screenTrack(() => ({
   }
 
   const partnerData = getPartnerDataFromUTMCampaign(router.query["utm_campaign"])
+
   return (
-    <Layout showIntercom disableMaxWidth navStyles={navStyles}>
+    <Layout showIntercom navStyles={navStyles} hideNavPadding>
       <Hero />
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
@@ -98,47 +104,74 @@ const Home = screenTrack(() => ({
       {!!data?.newArrivals?.length && (
         <>
           <Spacer mb={10} />
-          <ProductCarousel title="New arrivals" products={data?.newArrivals} saveProductRefetchQueries={[]} />
+          <ProductCarousel
+            title="New arrivals"
+            products={data?.newArrivals}
+            saveProductRefetchQueries={[
+              {
+                query: Home_Query,
+              },
+            ]}
+          />
           <Spacer mb={10} />
         </>
       )}
 
-      <MaxWidth>
-        <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-          <Spacer mb="128px" />
-          <HowItWorks />
-          <Spacer mb={10} />
-        </Box>
-      </MaxWidth>
+      <Media greaterThanOrEqual="md">
+        <MaxWidth>
+          <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
+            <Spacer mb="128px" />
+            <HowItWorks />
+            <Spacer mb={10} />
+          </Box>
+        </MaxWidth>
+      </Media>
 
       {data?.upcomingProducts.length > 0 && (
         <>
-          <ProductCarousel title="Upcoming releases" products={data?.upcomingProducts} saveProductRefetchQueries={[]} />
+          <ProductCarousel
+            hideViewAll
+            disableTap
+            hidePrice
+            hideSaveButton
+            imageIndex={0}
+            hideSizes
+            title="Upcoming releases"
+            products={data?.upcomingProducts}
+            saveProductRefetchQueries={[
+              {
+                query: Home_Query,
+              },
+            ]}
+          />
           <Spacer mb={10} />
         </>
       )}
 
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-          <Spacer mb={10} />
           <Discover />
+          <Media lessThan="md">
+            <Spacer mb={10} />
+            <HowItWorks />
+            <Spacer mb={10} />
+          </Media>
         </Box>
       </MaxWidth>
 
-      <Spacer mb={160} />
+      <Spacer mb={[0, 0, 160, 160, 160]} />
       <Plans plans={data?.paymentPlans} />
-      <Spacer mb={160} />
+      <Spacer mb={[10, 10, 160, 160, 160]} />
 
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
           {data?.fitPics?.length > 0 && (
             <>
               <HomepageFitPics fitPics={data.fitPics} />
-              <Spacer mb={10} />
+              <Spacer mb={120} />
             </>
           )}
 
-          <Spacer mb={160} />
           <TheApp />
           <Spacer mb={10} />
 

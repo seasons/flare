@@ -33,7 +33,7 @@ export const BagTab: React.FC<{
 
   const me = data?.me
   const activeReservation = me?.activeReservation
-  const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
+  const itemCount = me?.customer?.membership?.plan?.itemCount || MAXIMUM_ITEM_COUNT
   const hasActiveReservation = !!activeReservation
 
   const [productBuyAlertTabs, setProductBuyAlertTabs] = useState(null)

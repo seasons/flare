@@ -9,15 +9,14 @@ import queryString from "query-string"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-
-import { Box, Button, MaxWidth, Spacer } from "components"
+import { Box, Button, MaxWidth, Media, Spacer } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
-import { SeasonsLogoIcon } from "components/Icons/SeasonsLogoIcon"
-import { GLOBAL_TRANSITION } from "lib/theme"
+import { GetTheAppButton } from "components/Button/GetTheApp"
+import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
 
-export const DESKTOP_NAV_HEIGHT = 92
+export const DESKTOP_NAV_HEIGHT = 72
 
 export const DesktopNav = (props: NavProps) => {
   const { links, navStyles } = props
@@ -88,15 +87,25 @@ export const DesktopNav = (props: NavProps) => {
 
   const renderLoggedOutNavLinks = () => (
     <>
+      <HiddenSignInLink hide={navStyles?.hideSignIn}>
+        <Link
+          onClick={() => {
+            toggleLoginModal(true)
+          }}
+        >
+          <NavItem link={{ text: "Sign in" }} color={textColor} />
+        </Link>
+      </HiddenSignInLink>
       <Spacer ml={3} />
-      <Button
-        variant={navStyles?.buttonVariant ? navStyles.buttonVariant : "primaryWhite"}
-        onClick={() => {
-          toggleLoginModal(true)
-        }}
-      >
-        Sign in
-      </Button>
+      <GetTheAppButton
+        size="medium-x"
+        variant={navStyles?.getTheAppVariant ? navStyles.getTheAppVariant : "primaryWhite"}
+      />
+      <HiddenApplyNowWrapper hide={navStyles?.hideSignIn}>
+        <Button size="medium-x" onClick={() => router.push("/signup")}>
+          Apply now
+        </Button>
+      </HiddenApplyNowWrapper>
     </>
   )
 
@@ -125,10 +134,19 @@ export const DesktopNav = (props: NavProps) => {
         <MaxWidth>
           <Box width="100%">
             <Flex ml="auto" flexDirection="row" alignItems="center" width="100%" px={[2, 2, 2, 2, 2]}>
-              <SeasonsLogoIcon width="58px" height="58px" fill={textColor} />
-              <Box px={4}>
-                <SearchBar color={textColor} />
+              <Box style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
+                <SeasonsLogoTextIcon />
               </Box>
+              <Media greaterThanOrEqual="lg">
+                <Box px={4}>
+                  <SearchBar breakPoint="large" />
+                </Box>
+              </Media>
+              <Media lessThan="lg">
+                <Box px={4}>
+                  <SearchBar breakPoint="medium" />
+                </Box>
+              </Media>
               <Flex ml="auto" flexDirection="row" alignItems="center">
                 {links.map(renderLink)}
                 {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
@@ -143,19 +161,37 @@ export const DesktopNav = (props: NavProps) => {
           }}
         />
       </HeaderContainer>
+      <Box pt={DESKTOP_NAV_HEIGHT} />
     </>
   )
 }
 
+const HiddenApplyNowWrapper = styled(Box)<{ hide: boolean }>`
+  opacity: ${(p) => (p.hide ? 0 : 1)};
+  width: ${(p) => (p.hide ? "0px" : "108px")};
+  transition: width 250ms ease, opacity 250ms ease;
+  overflow: hidden;
+  height: 40px;
+  padding-left: 8px;
+`
+
+const HiddenSignInLink = styled(Box)<{ hide: boolean }>`
+  opacity: ${(p) => (p.hide ? 0 : 1)};
+  width: ${(p) => (p.hide ? "0px" : "67px")};
+  transition: width 250ms ease, opacity 250ms ease;
+  overflow: hidden;
+  height: 58px;
+`
+
 const HeaderContainer = styled.div<{ backgroundColor: string }>`
   background-color: ${(p) => p.backgroundColor};
-  transition: background-color ${GLOBAL_TRANSITION};
+  transition: background-color 1000ms ease-in-out;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   display: flex;
-  padding-top: 16px;
+  padding-top: 8px;
   flex-direction: row;
   box-sizing: border-box;
   z-index: 100;

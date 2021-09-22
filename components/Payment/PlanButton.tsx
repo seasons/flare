@@ -16,7 +16,6 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ lowestPlanPrice, shouldS
   const monthlyPrice = plan.price / 12
   const planDiscount = 100 - (monthlyPrice / lowestPlanPrice) * 100
   const showYearlyDiscount = plan.planID === "access-yearly" && selected && planDiscount
-
   const formatPrice = (price) =>
     (price / 100).toLocaleString("en-US", {
       style: "currency",
@@ -25,9 +24,9 @@ export const PlanButton: React.FC<PlanButtonProps> = ({ lowestPlanPrice, shouldS
 
   return (
     <StyledFlex width="100%" height={72} mb={1} px={2} selected={selected} onClick={() => shouldSelect(plan)}>
-      {showYearlyDiscount && (
+      {!!showYearlyDiscount && (
         <PlanDiscount px={0.5}>
-          <Sans size="3" color="black100">
+          <Sans size="3" color="white100">
             {planDiscount}% Off
           </Sans>
         </PlanDiscount>
@@ -68,5 +67,5 @@ const PlanDiscount = styled(Box)`
   top: -10px;
   right: 20px;
   border-radius: 4px;
-  background-color: ${color("peach")};
+  background-color: ${color("black100")};
 `
