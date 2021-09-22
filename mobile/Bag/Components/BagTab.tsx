@@ -2,11 +2,15 @@ import { Box, Sans, Separator, Spacer } from "components"
 import { color } from "helpers"
 import { assign, fill } from "lodash"
 import { DateTime } from "luxon"
-import React, { useState } from "react"
+import { Loader } from "mobile/Loader"
+import React, { useEffect, useState } from "react"
 
 import { ProductBuyAlertTabType } from "@seasons/eclipse"
 
+import { useRemoteBag } from "../useBag"
 import { BagItem } from "./BagItem"
+import { BagReserveButton } from "./BagReserveButton"
+import { BagTabFooter } from "./BagTabFooter"
 import { BagTabHeader } from "./BagTabHeader"
 import { EmptyBagItem } from "./EmptyBagItem"
 import { ProductBuyAlert } from "./ProductBuyAlert"
@@ -14,11 +18,20 @@ import { ProductBuyAlert } from "./ProductBuyAlert"
 const DEFAULT_ITEM_COUNT = 3
 
 export const BagTab: React.FC<{
-  me
-  bagItems
   deleteBagItem
   removeFromBagAndSaveItem
-}> = ({ bagItems, deleteBagItem, removeFromBagAndSaveItem, me }) => {
+}> = ({ deleteBagItem, removeFromBagAndSaveItem }) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const { data, bagItems, loading, refetch } = useRemoteBag()
+
+  useEffect(() => {
+    if (data) {
+      setIsLoading(false)
+      // identify(me?.customer?.user?.id, { bagItems: data?.me?.bag?.length + data?.me?.savedItems?.length })
+    }
+  }, [data])
+
+  const me = data?.me
   const activeReservation = me?.activeReservation
   const itemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
   const hasActiveReservation = !!activeReservation
@@ -68,6 +81,10 @@ export const BagTab: React.FC<{
     activeReservation?.updatedAt && DateTime.fromISO(activeReservation?.updatedAt).diffNow("days")?.values?.days <= -1
   const atHome = status && status === "Delivered" && updatedMoreThan24HoursAgo
 
+  if (isLoading) {
+    return <Loader />
+  }
+
   return (
     <Box>
       <BagTabHeader atHome={atHome} me={me} />
@@ -97,6 +114,8 @@ export const BagTab: React.FC<{
           </>
         )
       })}
+      <BagTabFooter me={me} refetch={refetch} />
+      {/* <BagReserveButton me={me} refetch={refetch} /> */}
       {hasActiveReservation && (
         <Box px={2}>
           <Spacer mb={3} />

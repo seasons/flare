@@ -1,19 +1,16 @@
 import { Box } from "components"
 import { Container } from "mobile/Container"
-import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
-import { REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
+import { GET_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
 
-import { useMutation } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 
-import { BagReserveButton } from "./Components/BagReserveButton"
 import { BagTab } from "./Components/BagTab"
 import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
 import { SavedItemsTab } from "./Components/SavedItemsTab"
-import { useBag } from "./useBag"
 
 export enum BagView {
   Bag = 0,
@@ -22,46 +19,20 @@ export enum BagView {
 }
 
 export const Bag = screenTrack()(() => {
-  const [isLoading, setIsLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const tracking = useTracking()
 
   const [currentView, setCurrentView] = useState<BagView>(BagView.Bag)
-  const { data, bagItems, loading, refetch } = useBag()
-
-  const me = data?.me
-
-  useEffect(() => {
-    if (data) {
-      setIsLoading(false)
-      identify(me?.customer?.user?.id, { bagItems: data?.me?.bag?.length + data?.me?.savedItems?.length })
-    }
-  }, [data, loading])
 
   const [deleteBagItem] = useMutation(REMOVE_FROM_BAG, { awaitRefetchQueries: true })
   const [removeFromBagAndSaveItem] = useMutation(REMOVE_FROM_BAG_AND_SAVE_ITEM)
 
-  if (isLoading) {
-    return <Loader />
-  }
-
   const CurrentTab = () => {
     switch (currentView) {
       case BagView.Bag:
-        return (
-          <>
-            <BagTab
-              me={data.me}
-              bagItems={bagItems}
-              removeFromBagAndSaveItem={removeFromBagAndSaveItem}
-              deleteBagItem={deleteBagItem}
-            />
-            <BagReserveButton data={data} refetch={refetch} />
-          </>
-        )
+        return <BagTab removeFromBagAndSaveItem={removeFromBagAndSaveItem} deleteBagItem={deleteBagItem} />
       case BagView.Saved:
         return <SavedItemsTab deleteBagItem={deleteBagItem} />
-
       case BagView.History:
         return <ReservationHistoryTab />
     }
@@ -98,7 +69,7 @@ export const Bag = screenTrack()(() => {
             refreshing={refreshing}
             onRefresh={() => {
               setRefreshing(true)
-              refetch()
+              // refetch()
               setRefreshing(false)
             }}
           />

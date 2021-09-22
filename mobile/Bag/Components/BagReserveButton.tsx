@@ -14,18 +14,17 @@ import { BagCheckoutBar } from "./BagCheckoutBar"
 
 const DEFAULT_ITEM_COUNT = 3
 
-export const BagReserveButton = ({ data, refetch }) => {
+export const BagReserveButton = ({ me, refetch }) => {
   const { authState } = useAuthContext()
   const { openDrawer } = useDrawerContext()
   const [isMutating, setMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const [checkItemsAvailability] = useMutation(CHECK_ITEMS)
 
-  const me = data?.me
-  const bagItems = data?.me?.bag
+  const bagItems = me?.bag
 
-  const planItemCount = data?.me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
-  const shippingAddress = data?.me?.customer?.detail?.shippingAddress
+  const planItemCount = me?.customer?.membership?.plan?.itemCount || DEFAULT_ITEM_COUNT
+  const shippingAddress = me?.customer?.detail?.shippingAddress
   const hasActiveReservation = !!me?.activeReservation
 
   const hasActiveReservationAndBagRoom =
