@@ -103,6 +103,7 @@ export const FormTemplate = ({
 const Wrapper = styled("div")<{ clientSide: boolean; isDesktop: boolean }>`
   display: flex;
   flex-direction: column;
+  max-width: 541px;
   flex: 1;
   height: 100%;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
