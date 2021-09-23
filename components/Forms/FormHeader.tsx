@@ -13,7 +13,7 @@ interface FormHeaderProps {
 
 export const FormHeader: React.FC<FormHeaderProps> = ({ headerText, headerDescription, headerLabel }) => {
   return (
-    <Box px={[2, 2, 2, 4, 4]}>
+    <Box>
       <Spacer mb={[10, 0]} />
       {headerLabel && (
         <>

@@ -1,4 +1,4 @@
-import { Box, Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
+import { Box, Flex, Layout, MaxWidth, Sans, SnackBar, Spacer } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { PaymentStep } from "components/Payment"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
