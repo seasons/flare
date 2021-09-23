@@ -44,8 +44,6 @@ export const TriageModal: React.FC<{ onClose: () => void; show: boolean; type: "
   const Content = ({ type }) => {
     const isDesktop = type === "desktop"
 
-    console.log("!!imageURL && isDesktop", !!imageURL && isDesktop)
-
     return (
       <Flex flexDirection="row">
         {!!imageURL && isDesktop && <ImageContainer url={imageResize(imageURL, "large")} />}
