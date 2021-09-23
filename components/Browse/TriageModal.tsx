@@ -1,6 +1,6 @@
 import { Modal, Fade, styled as MuiStyled } from "@material-ui/core"
 import React from "react"
-import { Box, Spacer, Sans, Flex, Button } from "components"
+import { Box, Spacer, Sans, Flex, Button, Media } from "components"
 import { Schema, useTracking } from "utils/analytics"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
 import styled from "styled-components"
@@ -41,128 +41,159 @@ export const TriageModal: React.FC<{ onClose: () => void; show: boolean; type: "
     imageURL = waitlistImage
   }
 
+  const Content = ({ type }) => {
+    const isDesktop = type === "desktop"
+
+    console.log("!!imageURL && isDesktop", !!imageURL && isDesktop)
+
+    return (
+      <Flex flexDirection="row">
+        {!!imageURL && isDesktop && <ImageContainer url={imageResize(imageURL, "large")} />}
+        <Flex
+          p={isDesktop ? 5 : 3}
+          pt={7}
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            position: "relative",
+            width: isDesktop ? "480px" : "calc(100vw - 16px)",
+            maxWidth: isDesktop ? "480px" : "calc(100vw - 16px)",
+          }}
+        >
+          <CloseWrapper isDesktop={isDesktop}>
+            <Box onClick={onClose}>
+              <CloseXIcon variant="light" />
+            </Box>
+          </CloseWrapper>
+          <Spacer pb={4} />
+          <Sans size="8">{headerText}</Sans>
+          <Spacer mb={1} />
+          <Sans size="4" color="black50">
+            {subText}
+          </Sans>
+          <Spacer mb={5} />
+          <Flex flexDirection={isDesktop ? "row" : "column"} justifyContent="space-between">
+            <Button
+              width={isDesktop ? "196px" : "100%"}
+              variant="secondaryOutline"
+              onClick={() => {
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.InstagramButtonTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+                window.open("https://www.instagram.com/seasons.ny/", "_blank")
+              }}
+            >
+              <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center">
+                <Box top="2px" style={{ position: "relative" }}>
+                  <InstagramSVG width="24px" height="30px" />
+                </Box>
+                <Spacer mr={1} />
+                <Sans size="4" style={{ position: "relative", top: -2 }}>
+                  Instagram
+                </Sans>
+              </Flex>
+            </Button>
+            {!isDesktop && <Spacer mb={1} />}
+            <Button
+              variant="secondaryOutline"
+              width={isDesktop ? "196px" : "100%"}
+              onClick={() => {
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.GetTheIOSAppTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+                window.open("https://szns.co/app", "_blank")
+              }}
+            >
+              <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
+                <Box top="2px" style={{ position: "relative" }}>
+                  <AppleSVG width="17px" height="20px" />
+                </Box>
+                <Spacer mr={1} />
+                <Sans size="4">Get the app</Sans>
+              </Flex>
+            </Button>
+          </Flex>
+          <Spacer mb={3} />
+          <Flex flexDirection="row" alignItems="center">
+            <SeparatorLine mr={2} />
+            <Sans size="4" style={{ flexShrink: 0 }}>
+              {breakText}
+            </Sans>
+            <SeparatorLine ml={2} />
+          </Flex>
+          <Spacer mb={3} />
+          {isApprovedView ? (
+            <Button
+              block
+              variant="secondaryOutline"
+              onClick={() => {
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.InstagramButtonTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+                window.open("https://discord.gg/Ck3utJPnyS", "_blank")
+              }}
+            >
+              <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
+                <Box top="2px" style={{ position: "relative" }}>
+                  <DisordSVG width="24px" height="18px" />
+                </Box>
+                <Spacer mr={1} />
+                <Sans size="4">Discord</Sans>
+              </Flex>
+            </Button>
+          ) : (
+            <Button
+              block
+              variant="secondaryOutline"
+              onClick={() => {
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.InstagramButtonTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+                window.open("mailto:membership@seasons.nyc?subject=Support", "_blank")
+              }}
+            >
+              Contact us
+            </Button>
+          )}
+          <Spacer mb={3} />
+          <Sans
+            size="4"
+            underline
+            pointer
+            style={{ width: "100%", textAlign: "center" }}
+            onClick={() => openDrawer("faq")}
+          >
+            Visit our FAQ
+          </Sans>
+        </Flex>
+      </Flex>
+    )
+  }
+
   return (
     <Modal open={show} onClose={onClose}>
       <Fade in={show}>
         <Container>
-          {!!imageURL && <ImageContainer url={imageResize(imageURL, "large")} />}
-          <Flex p={5} pt={7} style={{ flex: 1, flexDirection: "column", position: "relative", maxWidth: "480px" }}>
-            <CloseWrapper>
-              <Box onClick={onClose}>
-                <CloseXIcon variant="light" />
-              </Box>
-            </CloseWrapper>
-            <Spacer pb={4} />
-            <Sans size="8">{headerText}</Sans>
-            <Spacer mb={1} />
-            <Sans size="4" color="black50">
-              {subText}
-            </Sans>
-            <Spacer mb={5} />
-            <Flex flexDirection="row" justifyContent="space-between">
-              <Button
-                width="196px"
-                variant="secondaryOutline"
-                onClick={() => {
-                  tracking.trackEvent({
-                    actionName: Schema.ActionNames.InstagramButtonTapped,
-                    actionType: Schema.ActionTypes.Tap,
-                  })
-                  window.open("https://www.instagram.com/seasons.ny/", "_blank")
-                }}
-              >
-                <Flex width="100%" justifyContent="center" flexDirection="row" alignItems="center">
-                  <Box top="2px" style={{ position: "relative" }}>
-                    <InstagramSVG width="24px" height="30px" />
-                  </Box>
-                  <Spacer mr={1} />
-                  <Sans size="4" style={{ position: "relative", top: -2 }}>
-                    Instagram
-                  </Sans>
-                </Flex>
-              </Button>
-              <Button
-                variant="secondaryOutline"
-                width="196px"
-                onClick={() => {
-                  tracking.trackEvent({
-                    actionName: Schema.ActionNames.GetTheIOSAppTapped,
-                    actionType: Schema.ActionTypes.Tap,
-                  })
-                  window.open("https://szns.co/app", "_blank")
-                }}
-              >
-                <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
-                  <Box top="2px" style={{ position: "relative" }}>
-                    <AppleSVG width="17px" height="20px" />
-                  </Box>
-                  <Spacer mr={1} />
-                  <Sans size="4">Get the app</Sans>
-                </Flex>
-              </Button>
-            </Flex>
-            <Spacer mb={3} />
-            <Flex flexDirection="row" alignItems="center">
-              <SeparatorLine mr={2} />
-              <Sans size="4" style={{ flexShrink: 0 }}>
-                {breakText}
-              </Sans>
-              <SeparatorLine ml={2} />
-            </Flex>
-            <Spacer mb={3} />
-            {isApprovedView ? (
-              <Button
-                block
-                variant="secondaryOutline"
-                onClick={() => {
-                  tracking.trackEvent({
-                    actionName: Schema.ActionNames.InstagramButtonTapped,
-                    actionType: Schema.ActionTypes.Tap,
-                  })
-                  window.open("https://discord.gg/Ck3utJPnyS", "_blank")
-                }}
-              >
-                <Flex width="100%" justifyContent="center" flexDirection="row" alignContent="center">
-                  <Box top="2px" style={{ position: "relative" }}>
-                    <DisordSVG width="24px" height="18px" />
-                  </Box>
-                  <Spacer mr={1} />
-                  <Sans size="4">Discord</Sans>
-                </Flex>
-              </Button>
-            ) : (
-              <Button
-                block
-                variant="secondaryOutline"
-                onClick={() => {
-                  tracking.trackEvent({
-                    actionName: Schema.ActionNames.InstagramButtonTapped,
-                    actionType: Schema.ActionTypes.Tap,
-                  })
-                  window.open("mailto:membership@seasons.nyc?subject=Support", "_blank")
-                }}
-              >
-                Contact us
-              </Button>
-            )}
-            <Spacer mb={3} />
-            <Sans size="4" style={{ width: "100%", textAlign: "center" }}>
-              Have a question?{" "}
-              <span style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => openDrawer("faq")}>
-                Visit our FAQ
-              </span>
-            </Sans>
-          </Flex>
+          <Media greaterThan="md">
+            <Content type="desktop" />
+          </Media>
+          <Media lessThan="lg">
+            <Content type="mobile" />
+          </Media>
         </Container>
       </Fade>
     </Modal>
   )
 }
 
-const CloseWrapper = styled(Box)`
+const CloseWrapper = styled(Box)<{ isDesktop: boolean }>`
   position: absolute;
   top: 40px;
-  right: 40px;
+  right: ${(p) => (p.isDesktop ? "40px" : "34px")};
   z-index: 100;
   cursor: pointer;
 `
