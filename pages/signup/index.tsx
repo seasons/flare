@@ -24,7 +24,7 @@ export interface SignupFormProps {
   onCompleted?: () => void
 }
 
-export const SIGNUP_FOOTER_HEIGHT = "68px"
+export const SIGNUP_FOOTER_HEIGHT = "69px"
 
 enum Steps {
   CreateAccountStep = "CreateAccountStep",
@@ -245,22 +245,23 @@ const SignUpPage = screenTrack(() => ({
   return (
     <Elements stripe={stripePromise}>
       <Layout hideFooter showIntercom={false}>
-        <MaxWidth height="100%">
-          <Box style={{ flexGrow: 1, position: "relative", width: "100%", height: "100%" }}>
+        <MaxWidth>
+          <Flex
+            style={{ flex: 1, position: "relative", width: "100%", alignItems: "stretch" }}
+            pb={SIGNUP_FOOTER_HEIGHT}
+          >
             <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
             <Flex
-              height="100%"
               width="100%"
               flexDirection="row"
               alignItems="center"
               justifyContent="center"
               px={[1, 1, 2, 2, 2]}
+              style={{ flex: 1, alignItems: "stretch" }}
             >
-              <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
-                {CurrentStep}
-              </Flex>
+              <Flex style={{ flex: 1, width: "100%", alignItems: "stretch" }}>{CurrentStep}</Flex>
             </Flex>
-          </Box>
+          </Flex>
         </MaxWidth>
 
         <SplashScreen

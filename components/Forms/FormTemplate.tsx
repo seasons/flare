@@ -9,7 +9,7 @@ import { Media } from "../Responsive"
 import { Field, FormField } from "./FormField"
 import { FormFooter } from "./FormFooter"
 import { FormHeader } from "./FormHeader"
-import { Picture } from "components"
+import { Picture, Spacer } from "components"
 
 export interface FormTemplateProps {
   headerText: string
@@ -64,10 +64,15 @@ export const FormTemplate = ({
           isDesktop={isDesktop}
           contentMaxWidth={contentMaxWidth}
           pl={isDesktop ? [2, 2, 2, 6, 6] : 0}
-          py={5}
-          mt={5}
+          mt={isDesktop ? "128px" : 6}
+          mb={isDesktop ? 5 : 6}
         >
-          <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
+          <FormHeader
+            isDesktop={isDesktop}
+            headerText={headerText}
+            headerDescription={headerDescription}
+            headerLabel={headerLabel}
+          />
           <FieldsContainer>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
@@ -83,6 +88,7 @@ export const FormTemplate = ({
               )
             })}
           </FieldsContainer>
+          {!isDesktop && <Spacer mb={6} />}
         </Wrapper>
       </>
     )
@@ -111,8 +117,6 @@ const Wrapper = styled(Box)<{ clientSide: boolean; isDesktop: boolean; contentMa
   flex-direction: column;
   max-width: ${(p) => (p.contentMaxWidth ? p.contentMaxWidth : "none")};
   flex: 1;
-  width: 100%;
-  height: 100%;
   justify-content: center;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
 `
@@ -129,7 +133,7 @@ const DesktopWrapper = styled(Box)`
   flex: 1;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `
 
 const ImageContainer = styled(Box)`
@@ -161,5 +165,5 @@ const FieldsContainer = styled(Box)`
 const DesktopMedia = styled(Media)`
   display: flex;
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
 `
