@@ -15,7 +15,7 @@ import { useMutation, useQuery } from "@apollo/client"
 import { SIGN_UP_USER } from "./queries"
 import { createAccountValidationSchema } from "./validationSchema"
 
-const imageURL = require("../../../../public/images/signup/signup_bg.jpg")
+const imageURL = require("../../../../public/images/signup/CreateAccount.jpg")
 
 export interface CreateAccountFormFields {
   firstName?: string
@@ -31,16 +31,17 @@ export interface CreateAccountFormFields {
 }
 
 const discoveryReferenceBackupOptions = [
-  { label: "Friend", value: "friend" },
-  { label: "Press article", value: "pressArticle" },
   { label: "Blog", value: "blog" },
-  { label: "Instagram", value: "instagram" },
+  { label: "Friend", value: "friend" },
   { label: "Google", value: "google" },
-  { label: "Podcast", value: "podcast" },
-  { label: "Throwing Fits", value: "throwingFits" },
+  { label: "Instagram", value: "instagram" },
   { label: "Lean Luxe", value: "leanLuxe" },
-  { label: "Threadability", value: "threadability" },
   { label: "One Dapper Street", value: "onedapperstreet" },
+  { label: "Podcast", value: "podcast" },
+  { label: "Press article", value: "pressArticle" },
+  { label: "Threadability", value: "threadability" },
+  { label: "Throwing Fits", value: "throwingFits" },
+  { label: "Twitter", value: "twitter" },
   { label: "Other", value: "other" },
 ]
 

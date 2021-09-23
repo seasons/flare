@@ -71,7 +71,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
     }
 
     const title = (
-      <Sans color="black100" size={["8", "10"]}>
+      <Sans color="black100" size="8">
         Let’s discover your style
       </Sans>
     )
@@ -80,7 +80,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
     return (
       <>
         {!isDesktop && (
-          <Box mt={4} mx={2}>
+          <Box mt={6} mx={1}>
             {title}
           </Box>
         )}
@@ -140,7 +140,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
                 </div>
               </ButtonContainer>
               <Spacer mb={4} />
-              <Box mx={isDesktop ? 0 : 2}>
+              <Box mx={isDesktop ? 0 : 2} pr={2}>
                 <Sans size="5" color="black100">
                   Personalize your membership
                 </Sans>
@@ -194,6 +194,7 @@ export const DiscoverStyleStep: React.FC<{ onCompleted: () => void }> = ({ onCom
 
 const MobileMedia = styled(Media)`
   height: 100%;
+  width: 100%;
 `
 
 const Wrapper = styled("div")`
@@ -248,7 +249,7 @@ const CarouselContainer = styled(Box)<{ platform: string }>`
   ${(p) =>
     p.platform === "mobile" &&
     `
-    margin-top: 60px;
+    margin-top: 24px;
     width: 100vw;
     height: 400px;
 

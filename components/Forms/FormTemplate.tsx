@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { imageResize } from "utils/imageResize"
 
-import { Box, Flex, Spacer } from "@seasons/eclipse"
+import { Box, Flex } from "@seasons/eclipse"
 
 import { Media } from "../Responsive"
 import { Field, FormField } from "./FormField"
 import { FormFooter } from "./FormFooter"
 import { FormHeader } from "./FormHeader"
-import { Picture } from "components"
+import { Picture, Spacer } from "components"
 
 export interface FormTemplateProps {
   headerText: string
@@ -53,17 +53,27 @@ export const FormTemplate = ({
     return (
       <>
         {isDesktop && image && (
-          <ImageContainer>
-            <Spacer mb={40} />
+          <ImageContainer py={5}>
             <FixedImageWrapper>
               <Picture src={image} key={image} />
             </FixedImageWrapper>
           </ImageContainer>
         )}
-        <Wrapper clientSide={clientSide} isDesktop={isDesktop} contentMaxWidth={contentMaxWidth}>
-          {isDesktop && <Spacer mb={128} />}
-          <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
-          <FieldsContainer pl={isDesktop ? [2, 2, 2, 4, 4] : 0} pb={isDesktop ? 0 : 150}>
+        <Wrapper
+          clientSide={clientSide}
+          isDesktop={isDesktop}
+          contentMaxWidth={contentMaxWidth}
+          pl={isDesktop ? [2, 2, 2, 6, 6] : 0}
+          mt={isDesktop ? "128px" : 6}
+          mb={isDesktop ? 5 : 6}
+        >
+          <FormHeader
+            isDesktop={isDesktop}
+            headerText={headerText}
+            headerDescription={headerDescription}
+            headerLabel={headerLabel}
+          />
+          <FieldsContainer>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
               const width = props.fullWidth ? "100%" : isDesktop ? "50%" : mobileWidth
@@ -78,7 +88,7 @@ export const FormTemplate = ({
               )
             })}
           </FieldsContainer>
-          {isDesktop && <Spacer pb={150} />}
+          {!isDesktop && <Spacer mb={6} />}
         </Wrapper>
       </>
     )
@@ -87,7 +97,7 @@ export const FormTemplate = ({
   return (
     <Flex style={{ minHeight: "100%", width: "100%", position: "relative" }}>
       <DesktopMedia greaterThanOrEqual="md">
-        <ContentContainer>{Content("desktop")}</ContentContainer>
+        <DesktopWrapper>{Content("desktop")}</DesktopWrapper>
       </DesktopMedia>
       <Media lessThan="md">{Content("mobile")}</Media>
       <FormFooter
@@ -102,35 +112,34 @@ export const FormTemplate = ({
   )
 }
 
-const Wrapper = styled("div")<{ clientSide: boolean; isDesktop: boolean; contentMaxWidth?: string }>`
+const Wrapper = styled(Box)<{ clientSide: boolean; isDesktop: boolean; contentMaxWidth?: string }>`
   display: flex;
   flex-direction: column;
   max-width: ${(p) => (p.contentMaxWidth ? p.contentMaxWidth : "none")};
   flex: 1;
-  height: 100%;
+  justify-content: center;
   opacity: ${(p) => (p.clientSide ? "1" : "0")};
 `
 
 const FixedImageWrapper = styled(Box)`
-  position: fixed;
-  width: 560px;
-  max-width: 40vw;
+  width: 100%;
+  max-width: 500px;
   border-radius: 8px;
   overflow: hidden;
 `
 
-const ContentContainer = styled(Box)`
+const DesktopWrapper = styled(Box)`
   display: flex;
-  height: 100%;
-  width: 100%;
+  flex: 1;
   flex-direction: row;
+  justify-content: center;
   align-items: flex-start;
 `
 
 const ImageContainer = styled(Box)`
-  width: 560px;
-  height: 100%;
-  max-width: 40vw;
+  width: 40%;
+  max-width: 500px;
+  position: relative;
 `
 
 const FieldsContainer = styled(Box)`
@@ -154,5 +163,7 @@ const FieldsContainer = styled(Box)`
 `
 
 const DesktopMedia = styled(Media)`
-  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
 `

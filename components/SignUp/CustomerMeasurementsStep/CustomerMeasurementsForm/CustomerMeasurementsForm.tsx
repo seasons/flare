@@ -13,7 +13,7 @@ import { FormTemplate } from "../../../Forms/FormTemplate"
 import { customerMeasurements } from "../../../Forms/helpers/measurements"
 import { SelectionTableField } from "components/Fields/SelectionTableField"
 
-const imageURL = require("../../../../public/images/signup/measurements_bg.jpg")
+const imageURL = require("../../../../public/images/signup/SizesImage.jpg")
 
 export interface CustomerMeasurementsFormFields {
   pantLength: string
@@ -75,7 +75,7 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
       onSubmit={onSubmit}
     >
       <FormTemplate
-        contentMaxWidth="541px"
+        contentMaxWidth="557px"
         headerText="Let’s get your sizes"
         headerDescription="This helps us accurately recommend you sizes by brand."
         leftImage={imageURL}
