@@ -8,7 +8,7 @@ import { PlanFeatures } from "components/Payment/PlanFeatures"
 export const PlanCard = ({ plan }) => {
   const router = useRouter()
 
-  const discount = "20% Off"
+  const discount = "18.75% Off"
   const isYearlyPlan = plan?.planID === "access-yearly"
 
   return (
