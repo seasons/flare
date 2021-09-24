@@ -22,6 +22,7 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
+import { find, head } from "lodash"
 import {
   ProductBuyCTAFragment_Product,
   ProductBuyCTAFragment_ProductVariant,
@@ -51,19 +52,29 @@ const Product = screenTrack(({ router }) => {
   const isFromTryWithSeasons = query["try-with-seasons"] === "true"
 
   const product = data && data?.product
-  const [selectedVariant, setSelectedVariant] = useState(
-    product?.variants?.[0] || {
-      id: "",
-      reservable: 0,
-      size: "",
-      stock: 0,
-      isInBag: false,
-    }
-  )
+  const [selectedVariant, setSelectedVariant] = useState({
+    id: "",
+    reservable: 0,
+    size: "",
+    stock: 0,
+    isInBag: false,
+    nextReservablePhysicalProduct: null,
+  })
 
   useEffect(() => {
     refetch()
   }, [authState.isSignedIn])
+
+  useEffect(() => {
+    if (!selectedVariant?.id && data) {
+      const variants = data?.product?.variants
+      const firstAvailableSize =
+        find(variants, (size) => size.isInBag) || find(variants, (size) => size.reservable > 0) || head(variants)
+      if (firstAvailableSize) {
+        setSelectedVariant(firstAvailableSize)
+      }
+    }
+  })
 
   let metaTitle = HEAD_META_TITLE
   if (product?.name && product?.brand?.name) {
@@ -154,7 +165,7 @@ const Product = screenTrack(({ router }) => {
                 ) : (
                   <ProductTextLoader />
                 )}
-                {process.env.ENABLE_BUY_USED && product && (
+                {product && (
                   <>
                     <ProductBuyCTA
                       mt={8}
