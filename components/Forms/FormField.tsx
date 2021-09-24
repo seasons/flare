@@ -32,6 +32,7 @@ export interface Field {
   mobileOrder?: number
   multiple?: boolean
   fullWidth?: boolean
+  selected?: boolean
 }
 
 export const FormField: React.FC<Field> = (props) => {
