@@ -16,13 +16,11 @@ import { SignupStyles } from "./SignupStyles"
 const personalDetailsStepValidationSchema = Yup.object().shape({
   ageRange: Yup.string().required("Required"),
   averageSpend: Yup.string().required("Required"),
-  signupReasons: Yup.string().required("Required"),
 })
 
 const initialValues = {
   ageRange: "",
   averageSpend: "",
-  signupReasons: [""],
 }
 
 const imageURL = require("../../../public/images/signup/TellUsImage.jpg")
@@ -45,7 +43,6 @@ export const PersonalDetailsStep = ({ onCompleted, onError }: SignupFormProps) =
         variables: {
           ageRange,
           averageSpend,
-          signupReasons: { set: filteredSignupReasons },
           signupLikedProducts: {
             connect: selectedProductsIDs.map((id) => {
               return { id }
@@ -116,24 +113,6 @@ export const PersonalDetailsStep = ({ onCompleted, onError }: SignupFormProps) =
             label: "Average monthly budget",
             labelSecondaryText: "(how much do you usually spend?)",
             mobileOrder: 2,
-            fullWidth: true,
-          },
-          {
-            name: "signupReasons",
-            customElement: (
-              <Box mt={1}>
-                <SelectionTableField
-                  multiple
-                  inputName={"signupReasons"}
-                  items={personalDetailsFormData.signupReasons}
-                  itemWidth={514}
-                />
-              </Box>
-            ),
-            placeholder: "Select",
-            label: "What made you want to try Seasons?",
-            labelSecondaryText: "(select all that apply)",
-            mobileOrder: 3,
             fullWidth: true,
           },
           {
