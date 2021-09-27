@@ -54,10 +54,9 @@ export const PersonalDetailsStep = ({ onCompleted, onError }: SignupFormProps) =
         },
       })
       if (response) {
-        console.log("response", response)
         actions.setSubmitting(false)
-        // onCompleted?.()
-        // return true
+        onCompleted?.()
+        return true
       }
     } catch (error) {
       actions.setSubmitting(false)
