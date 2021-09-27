@@ -1,4 +1,4 @@
-import { Box, Picture } from "components"
+import { Box, Picture, Sans, Spacer } from "components"
 import { Grid, Row, Col } from "components/Grid"
 import { color } from "helpers"
 import React from "react"
@@ -17,7 +17,7 @@ export const SignupStyles: React.FC<{
           const id = product.id
           const selected = selectedProductsIDs.includes(product.id)
           return (
-            <Col xs="6" md="4" key={index}>
+            <Col xs="6" md="4" key={index} pb="12px" px="2px">
               <ItemWrapper
                 selected={selected}
                 onClick={() => {
@@ -28,6 +28,8 @@ export const SignupStyles: React.FC<{
               >
                 <Picture src={image} />
               </ItemWrapper>
+              <Spacer mb={0.5} />
+              <Sans size={2}>{product?.brand?.name}</Sans>
             </Col>
           )
         })}
@@ -37,6 +39,5 @@ export const SignupStyles: React.FC<{
 }
 
 const ItemWrapper = styled(Box)<{ selected: boolean }>`
-  border: 4px solid ${(p) => (p.selected ? color("black100") : color("white100"))};
-  background-color: red;
+  border: 1px solid ${(p) => (p.selected ? color("black100") : color("white100"))};
 `

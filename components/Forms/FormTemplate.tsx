@@ -53,7 +53,7 @@ export const FormTemplate = ({
     return (
       <>
         {isDesktop && image && (
-          <ImageContainer py={5}>
+          <ImageContainer py={10}>
             <FixedImageWrapper>
               <Picture src={image} key={image} />
             </FixedImageWrapper>
@@ -63,8 +63,8 @@ export const FormTemplate = ({
           clientSide={clientSide}
           isDesktop={isDesktop}
           contentMaxWidth={contentMaxWidth}
-          pl={isDesktop ? [2, 2, 2, 6, 6] : 0}
-          mt={isDesktop ? "128px" : 6}
+          pl={isDesktop ? 5 : 0}
+          mt={isDesktop ? "120px" : 6}
           mb={isDesktop ? 5 : 6}
         >
           <FormHeader

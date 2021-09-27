@@ -5,7 +5,7 @@ export const ADD_PERSONAL_DETAILS = gql`
   mutation addPersonalDetails(
     $averageSpend: String
     $ageRange: String
-    $signupLikedProducts: CustomerDetailCreatesignupLikedProductsStylesInput
+    $signupLikedProducts: CustomerDetailCreatesignupLikedProductsInput
     $signupReasons: CustomerDetailCreatesignupReasonsInput
   ) {
     addCustomerDetails(
