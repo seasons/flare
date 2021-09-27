@@ -9,12 +9,12 @@ interface FormHeaderProps {
   headerText: string
   headerDescription?: string
   headerLabel?: string
+  isDesktop: boolean
 }
 
-export const FormHeader: React.FC<FormHeaderProps> = ({ headerText, headerDescription, headerLabel }) => {
+export const FormHeader: React.FC<FormHeaderProps> = ({ headerText, headerDescription, headerLabel, isDesktop }) => {
   return (
-    <Box pl={[1, 2, 2, 4, 4]}>
-      <Spacer mb={[10, 0]} />
+    <Box px={isDesktop ? 0 : 1}>
       {headerLabel && (
         <>
           <Sans color="black50" size="4">
@@ -32,7 +32,7 @@ export const FormHeader: React.FC<FormHeaderProps> = ({ headerText, headerDescri
           </StyledDetailText>
         ) : null}
       </Box>
-      <Spacer height={[5, 40]} />
+      <Spacer mb={5} />
     </Box>
   )
 }

@@ -15,7 +15,7 @@ import { useMutation, useQuery } from "@apollo/client"
 import { SIGN_UP_USER } from "./queries"
 import { createAccountValidationSchema } from "./validationSchema"
 
-const imageURL = require("../../../../public/images/signup/signup_bg.jpg")
+const imageURL = require("../../../../public/images/signup/CreateAccount.jpg")
 
 export interface CreateAccountFormFields {
   firstName?: string
@@ -27,23 +27,21 @@ export interface CreateAccountFormFields {
   dob?: string
   zipCode?: string
   discoveryReference?: string
-}
-
-export interface CustomerDetailCreateInput {
-  phoneNumber: string
+  instagramHandle?: string
 }
 
 const discoveryReferenceBackupOptions = [
-  { label: "Friend", value: "friend" },
-  { label: "Press article", value: "pressArticle" },
   { label: "Blog", value: "blog" },
-  { label: "Instagram", value: "instagram" },
+  { label: "Friend", value: "friend" },
   { label: "Google", value: "google" },
-  { label: "Podcast", value: "podcast" },
-  { label: "Throwing Fits", value: "throwingFits" },
+  { label: "Instagram", value: "instagram" },
   { label: "Lean Luxe", value: "leanLuxe" },
-  { label: "Threadability", value: "threadability" },
   { label: "One Dapper Street", value: "onedapperstreet" },
+  { label: "Podcast", value: "podcast" },
+  { label: "Press article", value: "pressArticle" },
+  { label: "Threadability", value: "threadability" },
+  { label: "Throwing Fits", value: "throwingFits" },
+  { label: "Twitter", value: "twitter" },
   { label: "Other", value: "other" },
 ]
 
@@ -87,6 +85,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
           firstName,
           lastName,
           details: {
+            instagramHandle: values.instagramHandle,
             phoneNumber: values.tel,
             birthday: dateToIso,
             discoveryReference: values.discoveryReference,
@@ -138,6 +137,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
         password: "",
         zipCode: "",
         discoveryReference: "",
+        instagramHandle: "",
         ...initialValues,
       }}
       initialTouched={{ fullName: true }}
@@ -203,11 +203,17 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
             mobileOrder: 7,
           },
           {
+            name: "instagramHandle",
+            placeholder: "@",
+            label: "Instagram handle",
+            mobileOrder: 8,
+          },
+          {
             name: "discoveryReference",
             selectOptions: howDidYouFindOutAboutUsView?.properties?.options || discoveryReferenceBackupOptions,
             placeholder: "Select",
             label: howDidYouFindOutAboutUsView?.title || "How did you hear about us?",
-            mobileOrder: 8,
+            mobileOrder: 9,
           },
         ]}
       />

@@ -7,8 +7,6 @@ import { NavProps } from "./Types"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
 import gql from "graphql-tag"
-import { NotificationBar } from "@seasons/eclipse"
-import { useAuthContext } from "lib/auth/AuthContext"
 import { NavStyles } from "components/Layout"
 
 type Props = Omit<NavProps, "onClickNotificationBar"> & {
@@ -25,8 +23,6 @@ export const NavFragment_Query = gql`
 `
 
 export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar, navStyles }) => {
-  const { openDrawer } = useDrawerContext()
-  const router = useRouter()
   const links = [
     {
       text: "Home",
@@ -53,19 +49,6 @@ export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar, navStyle
     },
   ]
 
-  const onClickNotificationBar = (route) => {
-    if (!!route?.drawerView) {
-      openDrawer(route.drawerView)
-    }
-    if (!!route.url) {
-      router.push(route.url)
-    }
-  }
-
-  const {
-    authState: { isSignedIn },
-  } = useAuthContext()
-
   return (
     <>
       <Media greaterThanOrEqual="md">
@@ -74,8 +57,6 @@ export const Nav: React.FC<Props> = ({ brandItems, PageNotificationBar, navStyle
       <Media lessThan="md">
         <MobileNav links={links} />
       </Media>
-      <NotificationBar onClickBanner={onClickNotificationBar} isLoggedIn={isSignedIn} />
-      {PageNotificationBar?.()}
     </>
   )
 }

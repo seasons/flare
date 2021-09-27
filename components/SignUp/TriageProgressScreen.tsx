@@ -65,7 +65,7 @@ export const TriageProgressScreen: React.FC<TriageProgressScreenProps> = ({ star
   }, [stepsComplete])
 
   return (
-    <Flex flexDirection="row" alignItems="center" alignContent="center" height="100%" width="100%">
+    <Flex flexDirection="row" alignItems="center" alignContent="center" width="100%" height="calc(100vh - 141px)">
       <Flex flexDirection="column" alignItems="center" alignContent="center" mx="auto">
         <Box mt={5} mb={1}>
           <Sans size="9" textAlign="center">

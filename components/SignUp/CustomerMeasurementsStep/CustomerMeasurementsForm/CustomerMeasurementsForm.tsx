@@ -9,29 +9,29 @@ import * as Yup from "yup"
 
 import { useMutation } from "@apollo/client"
 
-import { MultiSelectionTableField } from "../../../Fields/MultiSelectionTableField"
 import { FormTemplate } from "../../../Forms/FormTemplate"
 import { customerMeasurements } from "../../../Forms/helpers/measurements"
+import { SelectionTableField } from "components/Fields/SelectionTableField"
 
-const imageURL = require("../../../../public/images/signup/measurements_bg.jpg")
+const imageURL = require("../../../../public/images/signup/SizesImage.jpg")
 
 export interface CustomerMeasurementsFormFields {
-  height: string
-  weight: string
+  pantLength: string
+  shoeSize: string
   topSizes: string
   waistSizes: string
 }
 
 export const customerMeasurementsValidationSchema = Yup.object().shape({
-  height: Yup.string().required("Required"),
-  weight: Yup.string().required("Required"),
+  pantLength: Yup.string().required("Required"),
+  shoeSize: Yup.string().required("Required"),
   topSizes: Yup.string().required("Required"),
   waistSizes: Yup.string().required("Required"),
 })
 
 const initialValues = {
-  weight: "",
-  height: "",
+  pantLength: "",
+  shoeSize: "",
   topSizes: [""],
   waistSizes: [""],
 }
@@ -43,14 +43,15 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
   })
 
   const onSubmit = async (values, actions) => {
-    const { height, weight, topSizes, waistSizes } = values
+    const { shoeSize, pantLength, topSizes, waistSizes } = values
     const filteredWaistSizes = waistSizes.filter((i) => i !== "")
     const filteredTopSizes = topSizes.filter((i) => i !== "")
+
     try {
       const response = await addMeasurements({
         variables: {
-          height,
-          weight: { set: weight },
+          shoeSize,
+          pantLength,
           topSizes: { set: filteredTopSizes },
           waistSizes: { set: filteredWaistSizes },
         },
@@ -74,8 +75,9 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
       onSubmit={onSubmit}
     >
       <FormTemplate
-        headerText="Let’s get your measurements"
-        headerDescription="This helps us accurately recommend you sizes by material, style, and brand."
+        contentMaxWidth="557px"
+        headerText="Let’s get your sizes"
+        headerDescription="This helps us accurately recommend you sizes by brand."
         leftImage={imageURL}
         footerText={
           <>
@@ -89,28 +91,20 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
         buttonActionName={Schema.ActionNames.CustomerMeasurementsSubmitButtonClicked}
         fields={[
           {
-            name: "height",
-            selectOptions: customerMeasurements.heights,
-            placeholder: "Select",
-            label: "Height",
-            mobileOrder: 1,
-          },
-          {
-            name: "weight",
-            selectOptions: customerMeasurements.weights,
-            placeholder: "Select",
-            label: "Weight",
-            mobileOrder: 2,
-          },
-          {
             name: "topSizes",
             customElement: (
               <Box mt={1}>
-                <MultiSelectionTableField inputName={"topSizes"} items={customerMeasurements.topSizes} itemSize={64} />
+                <SelectionTableField
+                  multiple
+                  inputName={"topSizes"}
+                  items={customerMeasurements.topSizes}
+                  itemWidth={122}
+                />
               </Box>
             ),
             placeholder: "Select",
             label: "What are your preferred top sizes?",
+            labelSecondaryText: "(select all that apply)",
             mobileOrder: 3,
             fullWidth: true,
           },
@@ -118,16 +112,46 @@ export const CustomerMeasurementsForm = ({ onCompleted, onError }: SignupFormPro
             name: "waistSizes",
             customElement: (
               <Box mt={1}>
-                <MultiSelectionTableField
+                <SelectionTableField
+                  multiple
                   inputName={"waistSizes"}
                   items={customerMeasurements.waistSizes}
-                  itemSize={64}
+                  itemWidth={122}
                 />
               </Box>
             ),
             placeholder: "Select",
             label: "Preferred waist sizes?",
+            labelSecondaryText: "(select all that apply)",
             mobileOrder: 4,
+            fullWidth: true,
+          },
+          {
+            name: "pantLength",
+            customElement: (
+              <Box mt={1}>
+                <SelectionTableField
+                  inputName={"pantLength"}
+                  items={customerMeasurements.pantLengths}
+                  itemWidth={122}
+                />
+              </Box>
+            ),
+            placeholder: "Select",
+            label: "Preferred panth length?",
+            mobileOrder: 5,
+            fullWidth: true,
+          },
+          {
+            name: "shoeSize",
+            customElement: (
+              <Box mt={1}>
+                <SelectionTableField inputName={"shoeSize"} items={customerMeasurements.shoeSizes} itemWidth={122} />
+              </Box>
+            ),
+            placeholder: "Select",
+            label: "Preferred shoe size?",
+            mobileOrder: 6,
             fullWidth: true,
           },
         ]}

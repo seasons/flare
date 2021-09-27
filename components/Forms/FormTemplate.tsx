@@ -9,6 +9,7 @@ import { Media } from "../Responsive"
 import { Field, FormField } from "./FormField"
 import { FormFooter } from "./FormFooter"
 import { FormHeader } from "./FormHeader"
+import { Picture, Spacer } from "components"
 
 export interface FormTemplateProps {
   headerText: string
@@ -20,6 +21,7 @@ export interface FormTemplateProps {
   fields: Field[]
   titleBottomSpacing?: number
   buttonActionName?: string
+  contentMaxWidth?: string
 }
 
 export const FormTemplate = ({
@@ -31,6 +33,7 @@ export const FormTemplate = ({
   leftImage,
   fields,
   buttonActionName,
+  contentMaxWidth,
 }: FormTemplateProps) => {
   const { handleSubmit, isValid: formContextIsValid, isSubmitting, values } = useFormikContext()
 
@@ -46,13 +49,31 @@ export const FormTemplate = ({
   const Content = (platform) => {
     const isDesktop = platform === "desktop"
     const sortedFields = isDesktop ? fields : fields.sort((a, b) => a.mobileOrder - b.mobileOrder)
-
+    const image = imageResize(leftImage, "large")
     return (
       <>
-        {isDesktop && leftImage && <ImageContainer url={imageResize(leftImage, "large")} />}
-        <Wrapper clientSide={clientSide} isDesktop={isDesktop}>
-          <FormHeader headerText={headerText} headerDescription={headerDescription} headerLabel={headerLabel} />
-          <FieldsContainer pl={isDesktop ? [0, 2, 2, 4, 4] : 0} pb={isDesktop ? 0 : 150}>
+        {isDesktop && image && (
+          <ImageContainer py={5}>
+            <FixedImageWrapper>
+              <Picture src={image} key={image} />
+            </FixedImageWrapper>
+          </ImageContainer>
+        )}
+        <Wrapper
+          clientSide={clientSide}
+          isDesktop={isDesktop}
+          contentMaxWidth={contentMaxWidth}
+          pl={isDesktop ? [2, 2, 2, 6, 6] : 0}
+          mt={isDesktop ? "128px" : 6}
+          mb={isDesktop ? 5 : 6}
+        >
+          <FormHeader
+            isDesktop={isDesktop}
+            headerText={headerText}
+            headerDescription={headerDescription}
+            headerLabel={headerLabel}
+          />
+          <FieldsContainer>
             {sortedFields.map((props, index) => {
               const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
               const width = props.fullWidth ? "100%" : isDesktop ? "50%" : mobileWidth
@@ -67,15 +88,16 @@ export const FormTemplate = ({
               )
             })}
           </FieldsContainer>
+          {!isDesktop && <Spacer mb={6} />}
         </Wrapper>
       </>
     )
   }
 
   return (
-    <Flex style={{ minHeight: "100%", width: "100%" }}>
+    <Flex style={{ minHeight: "100%", width: "100%", position: "relative" }}>
       <DesktopMedia greaterThanOrEqual="md">
-        <ContentContainer>{Content("desktop")}</ContentContainer>
+        <DesktopWrapper>{Content("desktop")}</DesktopWrapper>
       </DesktopMedia>
       <Media lessThan="md">{Content("mobile")}</Media>
       <FormFooter
@@ -90,31 +112,34 @@ export const FormTemplate = ({
   )
 }
 
-const Wrapper = styled("div")<{ clientSide: boolean; isDesktop: boolean }>`
-  align-items: flex-start;
+const Wrapper = styled(Box)<{ clientSide: boolean; isDesktop: boolean; contentMaxWidth?: string }>`
+  display: flex;
   flex-direction: column;
+  max-width: ${(p) => (p.contentMaxWidth ? p.contentMaxWidth : "none")};
+  flex: 1;
   justify-content: center;
+  opacity: ${(p) => (p.clientSide ? "1" : "0")};
+`
+
+const FixedImageWrapper = styled(Box)`
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+`
+
+const DesktopWrapper = styled(Box)`
   display: flex;
   flex: 1;
-  height: 100%;
-  opacity: ${(p) => (p.clientSide ? "1" : "0")};
-  padding-top: ${(p) => (p.isDesktop ? "0px" : "100px")};
-`
-
-const ContentContainer = styled(Box)`
-  display: flex;
-  height: 100%;
-  width: 100%;
   flex-direction: row;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
 `
 
-const ImageContainer = styled(Box)<{ url?: string }>`
-  width: 560px;
-  height: 100%;
-  max-width: 40vw;
-  background: url(${(p) => p.url}) no-repeat center center;
-  background-size: contain;
+const ImageContainer = styled(Box)`
+  width: 40%;
+  max-width: 500px;
+  position: relative;
 `
 
 const FieldsContainer = styled(Box)`
@@ -138,5 +163,7 @@ const FieldsContainer = styled(Box)`
 `
 
 const DesktopMedia = styled(Media)`
-  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
 `
