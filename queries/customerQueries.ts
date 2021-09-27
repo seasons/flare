@@ -9,7 +9,6 @@ export const ADD_MEASUREMENTS = gql`
   ) {
     addCustomerDetails(
       details: { shoeSize: $shoeSize, pantLength: $pantLength, topSizes: $topSizes, waistSizes: $waistSizes }
-      event: CompletedWaitlistForm
     ) {
       id
     }
