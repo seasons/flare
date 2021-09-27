@@ -1,6 +1,5 @@
 import { Box, ExternalLink } from "components"
 import { GET_SIGNUP_USER } from "components/SignUp/queries"
-import { ADD_MEASUREMENTS } from "queries/customerQueries"
 import { Formik } from "formik"
 import { SignupFormProps } from "pages/signup"
 import React, { useState } from "react"
@@ -11,7 +10,7 @@ import { useMutation, useQuery } from "@apollo/client"
 
 import { SelectionTableField } from "components/Fields/SelectionTableField"
 import { FormTemplate } from "components/Forms/FormTemplate"
-import { personalDetailsFormData, PERSONAL_DETAILS_STEP_QUERY } from "./PersonalDetailsFormData"
+import { ADD_PERSONAL_DETAILS, personalDetailsFormData, PERSONAL_DETAILS_STEP_QUERY } from "./PersonalDetailsFormData"
 import { SignupStyles } from "./SignupStyles"
 
 const personalDetailsStepValidationSchema = Yup.object().shape({
@@ -32,7 +31,7 @@ export const PersonalDetailsStep = ({ onCompleted, onError }: SignupFormProps) =
   const { data } = useQuery(PERSONAL_DETAILS_STEP_QUERY)
   const [selectedProductsIDs, setSelectedProductsIDs] = useState([])
 
-  const [addPersonalDetails] = useMutation(ADD_MEASUREMENTS, {
+  const [addPersonalDetails] = useMutation(ADD_PERSONAL_DETAILS, {
     refetchQueries: [{ query: GET_SIGNUP_USER }],
     awaitRefetchQueries: true,
   })
@@ -47,16 +46,22 @@ export const PersonalDetailsStep = ({ onCompleted, onError }: SignupFormProps) =
           ageRange,
           averageSpend,
           signupReasons: { set: filteredSignupReasons },
-          signupLikedStyles: { set: selectedProductsIDs },
+          signupLikedProducts: {
+            connect: selectedProductsIDs.map((id) => {
+              return { id }
+            }),
+          },
         },
       })
       if (response) {
+        console.log("response", response)
         actions.setSubmitting(false)
-        onCompleted?.()
-        return true
+        // onCompleted?.()
+        // return true
       }
     } catch (error) {
       actions.setSubmitting(false)
+      console.log("error", error)
       onError?.()
     }
   }

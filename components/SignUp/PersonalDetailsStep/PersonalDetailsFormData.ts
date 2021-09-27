@@ -5,14 +5,14 @@ export const ADD_PERSONAL_DETAILS = gql`
   mutation addPersonalDetails(
     $averageSpend: String
     $ageRange: String
-    $signupLikedStyles: CustomerDetailCreatesignupLikedStylesInput
+    $signupLikedProducts: CustomerDetailCreatesignupLikedProductsStylesInput
     $signupReasons: CustomerDetailCreatesignupReasonsInput
   ) {
     addCustomerDetails(
       details: {
         averageSpend: $averageSpend
         ageRange: $ageRange
-        signupLikedStyles: $signupLikedStyles
+        signupLikedProducts: $signupLikedProducts
         signupReasons: $signupReasons
       }
       event: CompletedWaitlistForm
@@ -24,7 +24,7 @@ export const ADD_PERSONAL_DETAILS = gql`
 
 export const PERSONAL_DETAILS_STEP_QUERY = gql`
   query PersonalDetailsStepQuery {
-    products: signupStyleProducts {
+    products: signupPersonalDetailsProducts {
       id
       slug
       brand {
@@ -50,10 +50,10 @@ const ageRanges: SelectItem[] = [
 ]
 
 const averageSpend: SelectItem[] = [
-  { label: "$", subLabel: "You spend $100 or less on shirts, shoes, or pants every month", value: 100 },
-  { label: "$$", subLabel: "You spend $250 or more on shirts, shoes, or pants every month", value: 250 },
-  { label: "$$$", subLabel: "You spend $500+ on shirts, shoes, or pants every month", value: 500 },
-  { label: "$$$$", subLabel: "You spend $1,000+ on shirts, shoes, or pants every month", value: 1000 },
+  { label: "$", subLabel: "You spend $100 or less on shirts, shoes, or pants every month", value: "100-" },
+  { label: "$$", subLabel: "You spend $250 or more on shirts, shoes, or pants every month", value: "250+" },
+  { label: "$$$", subLabel: "You spend $500+ on shirts, shoes, or pants every month", value: "500+" },
+  { label: "$$$$", subLabel: "You spend $1,000+ on shirts, shoes, or pants every month", value: "1000+" },
 ]
 
 const signupReasons: SelectItem[] = [

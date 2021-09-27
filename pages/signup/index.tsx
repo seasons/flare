@@ -58,7 +58,7 @@ const SignUpPage = screenTrack(() => ({
 
   const customer = data?.me?.customer
   const customerStatus = customer?.status
-  const hasSetMeasurements = !!customer?.detail?.height
+  const hasSetMeasurements = !!customer?.detail?.pantLength
   const initialCoupon = data?.me?.customer?.coupon
 
   const hasGift = !!router.query.gift_id
