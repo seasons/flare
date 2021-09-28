@@ -27,14 +27,20 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
       <Row>
         {variants?.map((size, i) => {
           const isSelected = selectedVariant?.id === size.id
+          const nonReservable = size.reservable === 0
+          let variant
+          if (nonReservable) {
+            variant = isSelected ? "secondaryGraySelected" : "secondaryGray"
+          } else {
+            variant = isSelected ? "primaryBlack" : "primaryWhite"
+          }
 
           return (
             <Col md="4" xs="6" key={i} px={0.5} pb={1}>
               <Button
-                disabled={size.reservable === 0}
                 boxShadow={isSelected && size.reservable !== 0}
                 block
-                variant={isSelected ? "primaryBlack" : "secondaryOutline"}
+                variant={variant}
                 onClick={() => {
                   tracking.trackEvent({
                     actionName: Schema.ActionNames.ProductVariantSelected,

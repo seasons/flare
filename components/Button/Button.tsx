@@ -119,8 +119,28 @@ export class Button extends Component<WebButtonProps> {
             const { colors } = props.theme
 
             return `
-                background-color: ${colors.black10};
-                border-color: ${colors.black10};
+                background-color: ${colors.black04};
+                border-color: ${colors.black04};
+                color: ${colors.black50};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color: ${colors.black30};
+                    border-color: ${colors.black100};
+                    color: ${colors.black100};
+                  }
+                }
+              `
+          }};
+        `
+      case "secondaryGraySelected":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+
+            return `
+                background-color: ${colors.black04};
+                border-color: ${colors.black100};
                 color: ${colors.black100};
 
                 @media ${themeProps.mediaQueries.hover} {
