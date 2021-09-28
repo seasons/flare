@@ -35,8 +35,7 @@ export const PersonalDetailsStep = ({ onCompleted, onError }: SignupFormProps) =
   })
 
   const onSubmit = async (values, actions) => {
-    const { ageRange, averageSpend, signupReasons } = values
-    const filteredSignupReasons = signupReasons.filter((i) => i !== "")
+    const { ageRange, averageSpend } = values
 
     try {
       const response = await addPersonalDetails({
