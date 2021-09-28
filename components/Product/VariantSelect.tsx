@@ -32,7 +32,7 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
           if (nonReservable) {
             variant = isSelected ? "secondaryGraySelected" : "secondaryGray"
           } else {
-            variant = isSelected ? "primaryBlack" : "primaryWhite"
+            variant = isSelected ? "primaryWhite" : "secondaryOutline"
           }
 
           return (
