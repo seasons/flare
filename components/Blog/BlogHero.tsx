@@ -1,4 +1,4 @@
-import { Box, Display, Flex, Link, ProgressiveImage, Sans, Spacer } from "components"
+import { Box, Display, Flex, Link, MaxWidth, ProgressiveImage, Sans, Spacer } from "components"
 import React from "react"
 import ContentLoader from "react-content-loader"
 import styled from "styled-components"
@@ -49,20 +49,22 @@ export const BlogHero: React.FC<{ blogPost: any; breakpoint: "desktop" | "mobile
   }
 
   return (
-    <Flex width="100%" flexDirection="column" px={[0, 0, 2, 2, 2]}>
-      <Spacer mb={10} />
-      <Link href="/blog/[BlogPost]" as={`/blog/${slug}`}>
-        <Box px={[2, 2, 0, 0, 0]}>{loading ? <TextLoader /> : <TextContent />}</Box>
-        <Spacer pb={5} />
-        <Box style={{ maxWidth: "1100px", position: "relative" }}>
-          {loading ? (
-            <ImageLoader />
-          ) : (
-            <ProgressiveImage imageUrl={image?.url} size="hero" alt={`Image for ${name}`} aspectRatio={0.7} />
-          )}
-        </Box>
-      </Link>
-    </Flex>
+    <MaxWidth>
+      <Flex width="100%" flexDirection="column" px={[0, 0, 2, 2, 2]}>
+        <Spacer mb={10} />
+        <Link href="/blog/[BlogPost]" as={`/blog/${slug}`}>
+          <Box px={[2, 2, 0, 0, 0]}>{loading ? <TextLoader /> : <TextContent />}</Box>
+          <Spacer pb={5} />
+          <Box style={{ maxWidth: "1100px", position: "relative" }}>
+            {loading ? (
+              <ImageLoader />
+            ) : (
+              <ProgressiveImage imageUrl={image?.url} size="hero" alt={`Image for ${name}`} aspectRatio={0.7} />
+            )}
+          </Box>
+        </Link>
+      </Flex>
+    </MaxWidth>
   )
 }
 
