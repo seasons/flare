@@ -85,7 +85,7 @@ export const CreateAccountForm = ({ initialValues, gift, onError, onCompleted }:
           firstName,
           lastName,
           details: {
-            instagramHandle: values.instagramHandle,
+            instagramHandle: values.instagramHandle.replace("@", ""),
             phoneNumber: values.tel,
             birthday: dateToIso,
             discoveryReference: values.discoveryReference,
