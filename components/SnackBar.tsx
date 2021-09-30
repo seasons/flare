@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { MaxWidth } from "./MaxWidth"
+import { DESKTOP_NAV_HEIGHT } from "./Nav/DesktopNav"
 
 export interface SnackBarProps {
   Message: React.ReactElement
@@ -54,7 +55,7 @@ const SnackBarContainer = styled.div`
   display: flex;
   justify-content: center;
   position: fixed;
-  top: 58px;
+  top: ${DESKTOP_NAV_HEIGHT}px;
   left: 0;
   z-index: 2;
   width: 100%;
