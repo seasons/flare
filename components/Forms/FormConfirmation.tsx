@@ -3,7 +3,7 @@ import { space } from "helpers"
 import Link from "next/link"
 import styled from "styled-components"
 import { imageResize } from "utils/imageResize"
-
+import { Grid, Row, Col } from "../Grid"
 import { Box, ExternalLink, Flex, Picture, Sans, Spacer } from "components"
 import { Button } from "../Button/Button"
 import { GetTheAppButton } from "../Button/GetTheApp"
@@ -47,31 +47,49 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status, show
   )
   return (
     <>
-      <Flex flex={1} style={{ height: "100%" }} flexDirection="row" alignItems="center">
-        {!!imageURL && <ImageContainer url={imageResize(imageURL, "large")} />}
-        <Flex flexDirection="column" justifyContent="center" pl={3}>
-          {icon}
-          <Spacer mb={3} />
-          <HeaderText>{headerText}</HeaderText>
-          <Spacer mb={1} />
-          <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
-            {bodyText}
-          </Sans>
-          <Spacer mb={3} />
-          {showCTAs && (
-            <Flex flexDirection="row">
-              <Link href="/browse">
-                <Button variant="primaryBlack">
-                  <Flex flexDirection="row" alignContent="center">
-                    <Sans size="4">Start Browsing</Sans>
+      <Flex py={5} px={1}>
+        <Grid>
+          <Row>
+            <Col md="4" xs="12">
+              {!!imageURL && (
+                <ImageContainer>
+                  <Picture src={imageResize(imageURL, "large")} />
+                </ImageContainer>
+              )}
+            </Col>
+            <Col md="8" xs="12">
+              <Flex
+                flexDirection="column"
+                justifyContent="center"
+                my={[2, 2, 0, 0, 0]}
+                pl={[0, 0, 3, 3, 3]}
+                height="100%"
+              >
+                {icon}
+                <Spacer mb={3} />
+                <HeaderText>{headerText}</HeaderText>
+                <Spacer mb={1} />
+                <Sans size="4" color="black50" style={{ maxWidth: "800px" }}>
+                  {bodyText}
+                </Sans>
+                <Spacer mb={3} />
+                {showCTAs && (
+                  <Flex flexDirection="row">
+                    <Link href="/browse">
+                      <Button variant="primaryBlack">
+                        <Flex flexDirection="row" alignContent="center">
+                          <Sans size="4">Start Browsing</Sans>
+                        </Flex>
+                      </Button>
+                    </Link>
+                    <Spacer mr={1} />
+                    <GetTheAppButton />
                   </Flex>
-                </Button>
-              </Link>
-              <Spacer mr={1} />
-              <GetTheAppButton />
-            </Flex>
-          )}
-        </Flex>
+                )}
+              </Flex>
+            </Col>
+          </Row>
+        </Grid>
       </Flex>
       <FormFooter footerText={footerText} disabled={false} />
     </>
@@ -79,9 +97,7 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({ status, show
 }
 
 const ImageContainer = styled(Box)<{ url?: string }>`
-  width: 560px;
+  width: 100%;
   height: 100%;
-  background: url(${(p) => p.url}) no-repeat center center;
-  background-size: contain;
   margin-right: ${space(3)}px;
 `
