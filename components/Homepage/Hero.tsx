@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { seasonAndYear } from "utils/seasonAndYear"
 import { Media } from "../Responsive"
 import { GetTheAppButton } from "components/Button/GetTheApp"
-import { HeroCTA } from "./HeroCTA"
+import { MembershipCTA } from "./MembershipCTA"
 import { color } from "helpers/color"
 
 const staticNoise = require("../../public/images/homepage/static-noise.gif")
@@ -56,7 +56,7 @@ const Content: React.FC<{
             </Box>
             <Spacer mr={50} mt={5} />
             <Box width={isDesktop ? "343px" : "100%"}>
-              <HeroCTA version={version} userSession={userSession} authState={authState} />
+              <MembershipCTA userSession={userSession} authState={authState} />
               {!isDesktop && (
                 <>
                   <Spacer mb={1} />

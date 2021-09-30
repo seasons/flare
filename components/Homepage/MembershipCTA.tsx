@@ -1,14 +1,15 @@
 import { Flex } from "components"
+import { ButtonVariant } from "components/Button/Button.shared"
 import Link from "next/link"
 import React from "react"
 import { Schema, useTracking } from "utils/analytics"
 import { useDrawerContext } from "../../components/Drawer/DrawerContext"
 import { Button } from "../Button"
 
-export const HeroCTA: React.FC<{ version: "mobile" | "desktop"; userSession: any; authState: any }> = ({
-  version,
+export const MembershipCTA: React.FC<{ variant?: ButtonVariant; userSession: any; authState: any }> = ({
   userSession,
   authState,
+  variant = "primaryWhiteNoBorder",
 }) => {
   const tracking = useTracking()
   const isUserSignedIn = authState?.isSignedIn
@@ -51,7 +52,7 @@ export const HeroCTA: React.FC<{ version: "mobile" | "desktop"; userSession: any
         <Button
           size="large"
           block
-          variant="primaryWhiteNoBorder"
+          variant={variant}
           onClick={() => {
             tracking.trackEvent({
               actionName: Schema.ActionNames[ctaData.actionName],
