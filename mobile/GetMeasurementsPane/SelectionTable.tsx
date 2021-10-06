@@ -1,10 +1,10 @@
-import { Flex, Sans } from "components"
+import { Flex, Sans, Spacer } from "components"
 import { color } from "helpers/color"
 import React from "react"
 import { TouchableOpacity, ViewStyle } from "react-native"
 import styled from "styled-components"
 
-export type Item = { label: string; value: string }
+export type Item = { label: string; value: string; subLabel?: string }
 
 export interface Props {
   disabled?: boolean
@@ -24,7 +24,7 @@ export const SelectionTable: React.FC<Props> = ({
   itemHeight = 48,
   itemWidth = 60,
 }) => {
-  const itemCornerRadius = 4
+  const itemCornerRadius = 8
 
   const data = items.map((item, index) => ({
     isSelected: selectedItemIndices.includes(index),
@@ -36,6 +36,9 @@ export const SelectionTable: React.FC<Props> = ({
       <TouchableOpacity disabled={disabled} onPress={() => onTap?.(item, index)} key={index}>
         <Flex height={itemHeight} width={itemWidth} mr={1} justifyContent="center">
           <Flex
+            flexDirection="column"
+            alignItems="center"
+            px={2}
             justifyContent="center"
             height={itemHeight + "px"}
             width={itemWidth + "px"}
@@ -57,11 +60,24 @@ export const SelectionTable: React.FC<Props> = ({
               color={isSelected ? "white100" : "black100"}
               style={{
                 textAlign: "center",
-                lineHeight: itemHeight + "px",
               }}
             >
               {item.label}
             </Sans>
+            {!!item?.subLabel && (
+              <>
+                <Spacer mb={0.5} />
+                <Sans
+                  size="3"
+                  color="black50"
+                  style={{
+                    textAlign: "center",
+                  }}
+                >
+                  {item.subLabel}
+                </Sans>
+              </>
+            )}
           </Flex>
         </Flex>
       </TouchableOpacity>
