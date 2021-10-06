@@ -4,7 +4,7 @@ import { PaymentStep } from "components/Payment"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
 import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
-import { DiscoverStyleStep } from "components/SignUp/DiscoverStyleStep"
+import { PersonalDetailsStep } from "components/SignUp/PersonalDetailsStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { SplashScreen } from "components/SplashScreen/SplashScreen"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -28,7 +28,7 @@ export const SIGNUP_FOOTER_HEIGHT = "69px"
 
 enum Steps {
   CreateAccountStep = "CreateAccountStep",
-  DiscoverStyleStep = "DiscoverStyleStep",
+  PersonalDetailsStep = "PersonalDetailsStep",
   CustomerMeasurementsStep = "CustomerMeasurementsStep",
   TriageStep = "TriageStep",
   DiscoverBagStep = "DiscoverBagStep",
@@ -58,7 +58,7 @@ const SignUpPage = screenTrack(() => ({
 
   const customer = data?.me?.customer
   const customerStatus = customer?.status
-  const hasSetMeasurements = !!customer?.detail?.height
+  const hasSetMeasurements = !!customer?.detail?.pantLength
   const initialCoupon = data?.me?.customer?.coupon
 
   const hasGift = !!router.query.gift_id
@@ -81,7 +81,7 @@ const SignUpPage = screenTrack(() => ({
           break
         case "Created":
           if (hasSetMeasurements) {
-            setCurrentStepState(Steps.DiscoverStyleStep)
+            setCurrentStepState(Steps.PersonalDetailsStep)
           } else {
             setCurrentStepState(Steps.CustomerMeasurementsStep)
           }
@@ -168,15 +168,15 @@ const SignUpPage = screenTrack(() => ({
           form={{
             onCompleted: () => {
               refetchGetSignupUser()
-              setCurrentStepState(Steps.DiscoverStyleStep)
+              setCurrentStepState(Steps.PersonalDetailsStep)
             },
           }}
         />
       )
       break
-    case Steps.DiscoverStyleStep:
+    case Steps.PersonalDetailsStep:
       CurrentStep = (
-        <DiscoverStyleStep
+        <PersonalDetailsStep
           onCompleted={() => {
             setStartTriage(true)
             setCurrentStepState(Steps.TriageStep)
