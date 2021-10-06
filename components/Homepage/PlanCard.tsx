@@ -2,7 +2,6 @@ import React from "react"
 import { Box, Sans, Spacer } from "components"
 import styled from "styled-components"
 import { color } from "helpers"
-import { useRouter } from "next/router"
 import { PlanFeatures } from "components/Payment/PlanFeatures"
 import { MembershipCTA } from "./MembershipCTA"
 

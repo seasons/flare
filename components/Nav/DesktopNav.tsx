@@ -87,6 +87,13 @@ export const DesktopNav = (props: NavProps) => {
 
   const renderLoggedOutNavLinks = () => (
     <>
+      <Link
+        onClick={() => {
+          openDrawer("faq")
+        }}
+      >
+        <NavItem link={{ text: "FAQ" }} color={textColor} />
+      </Link>
       <HiddenSignInLink hide={navStyles?.hideSignIn}>
         <Link
           onClick={() => {
@@ -117,6 +124,13 @@ export const DesktopNav = (props: NavProps) => {
         }}
       >
         <NavItem link={{ text: "Bag" }} color={textColor} />
+      </Link>
+      <Link
+        onClick={() => {
+          openDrawer("faq")
+        }}
+      >
+        <NavItem link={{ text: "FAQ" }} color={textColor} />
       </Link>
       <Link
         onClick={() => {
