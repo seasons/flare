@@ -1,15 +1,14 @@
 import React from "react"
-import { Box, Sans, Spacer, Button } from "components"
+import { Box, Sans, Spacer } from "components"
 import styled from "styled-components"
 import { color } from "helpers"
-import { useRouter } from "next/router"
 import { PlanFeatures } from "components/Payment/PlanFeatures"
+import { MembershipCTA } from "./MembershipCTA"
 
-export const PlanCard = ({ plan }) => {
-  const router = useRouter()
-
+export const PlanCard = ({ plan, userSession, authState }) => {
   const discount = "18.75% Off"
   const isYearlyPlan = plan?.planID === "access-yearly"
+  const notActive = userSession?.customer?.status !== "Active"
 
   return (
     <Wrapper px={3} pt={5} pb={3}>
@@ -32,10 +31,8 @@ export const PlanCard = ({ plan }) => {
       </Sans>
       <Spacer mb={5} />
       <PlanFeatures features={plan?.features} />
-      <Spacer mb={5} />
-      <Button size="large" block onClick={() => router.push("/signup")}>
-        Apply for membership
-      </Button>
+      <Spacer mb={notActive ? 5 : 3} />
+      {notActive && <MembershipCTA variant="primaryBlack" userSession={userSession} authState={authState} />}
     </Wrapper>
   )
 }

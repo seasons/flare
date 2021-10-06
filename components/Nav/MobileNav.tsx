@@ -140,6 +140,21 @@ const Menu = ({ items, open, onSelect, openLogin }) => {
               return link.renderNavItem()
             }
           })}
+          <MenuItem
+            key="bag"
+            width="100%"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              openDrawer("faq")
+              onSelect()
+            }}
+          >
+            <Box py={2}>
+              <Sans size="3" py={2} color="black">
+                FAQ
+              </Sans>
+            </Box>
+          </MenuItem>
           {isLoggedIn ? (
             <>
               <MenuItem

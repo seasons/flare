@@ -24,6 +24,64 @@ export interface FormTemplateProps {
   contentMaxWidth?: string
 }
 
+const Content = ({
+  platform,
+  fields,
+  clientSide,
+  contentMaxWidth,
+  leftImage,
+  headerText,
+  headerDescription,
+  headerLabel,
+}) => {
+  const isDesktop = platform === "desktop"
+  const sortedFields = isDesktop ? fields : [...fields].sort((a, b) => a.mobileOrder - b.mobileOrder)
+  const image = imageResize(leftImage, "large")
+
+  return (
+    <>
+      {isDesktop && image && (
+        <ImageContainer py={10}>
+          <FixedImageWrapper>
+            <Picture src={image} key={image} />
+          </FixedImageWrapper>
+        </ImageContainer>
+      )}
+      <Wrapper
+        clientSide={clientSide}
+        isDesktop={isDesktop}
+        contentMaxWidth={contentMaxWidth}
+        pl={isDesktop ? 5 : 0}
+        mt={isDesktop ? "120px" : 6}
+        mb={isDesktop ? 5 : 6}
+      >
+        <FormHeader
+          isDesktop={isDesktop}
+          headerText={headerText}
+          headerDescription={headerDescription}
+          headerLabel={headerLabel}
+        />
+        <FieldsContainer>
+          {sortedFields.map((props, index) => {
+            const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
+            const width = props.fullWidth ? "100%" : isDesktop ? "50%" : mobileWidth
+
+            const paddingLeft = isDesktop ? (props.fullWidth ? 0 : index % 2 === 0 ? 0 : 30) : 1
+            const paddingRight = isDesktop ? (props.fullWidth ? 0 : index % 2 === 0 ? 30 : 0) : 1
+
+            return (
+              <Box key={props.label} width={width} pl={paddingLeft} pr={paddingRight}>
+                <FormField {...props} />
+              </Box>
+            )
+          })}
+        </FieldsContainer>
+        {!isDesktop && <Spacer mb={6} />}
+      </Wrapper>
+    </>
+  )
+}
+
 export const FormTemplate = ({
   headerText,
   headerDescription,
@@ -46,60 +104,34 @@ export const FormTemplate = ({
     }
   }, [])
 
-  const Content = (platform) => {
-    const isDesktop = platform === "desktop"
-    const sortedFields = isDesktop ? fields : fields.sort((a, b) => a.mobileOrder - b.mobileOrder)
-    const image = imageResize(leftImage, "large")
-    return (
-      <>
-        {isDesktop && image && (
-          <ImageContainer py={10}>
-            <FixedImageWrapper>
-              <Picture src={image} key={image} />
-            </FixedImageWrapper>
-          </ImageContainer>
-        )}
-        <Wrapper
-          clientSide={clientSide}
-          isDesktop={isDesktop}
-          contentMaxWidth={contentMaxWidth}
-          pl={isDesktop ? 5 : 0}
-          mt={isDesktop ? "120px" : 6}
-          mb={isDesktop ? 5 : 6}
-        >
-          <FormHeader
-            isDesktop={isDesktop}
+  return (
+    <Flex style={{ minHeight: "100%", width: "100%", position: "relative" }}>
+      <DesktopMedia greaterThanOrEqual="md">
+        <DesktopWrapper>
+          <Content
+            platform="desktop"
+            fields={fields}
+            contentMaxWidth={contentMaxWidth}
+            clientSide={clientSide}
+            leftImage={leftImage}
             headerText={headerText}
             headerDescription={headerDescription}
             headerLabel={headerLabel}
           />
-          <FieldsContainer>
-            {sortedFields.map((props, index) => {
-              const mobileWidth = ["Email", "Password", "Confirm password"].includes(props.label) ? "100%" : "50%"
-              const width = props.fullWidth ? "100%" : isDesktop ? "50%" : mobileWidth
-
-              const paddingLeft = isDesktop ? (props.fullWidth ? 0 : index % 2 === 0 ? 0 : 30) : 1
-              const paddingRight = isDesktop ? (props.fullWidth ? 0 : index % 2 === 0 ? 30 : 0) : 1
-
-              return (
-                <Box key={props.label} width={width} pl={paddingLeft} pr={paddingRight}>
-                  <FormField {...props} />
-                </Box>
-              )
-            })}
-          </FieldsContainer>
-          {!isDesktop && <Spacer mb={6} />}
-        </Wrapper>
-      </>
-    )
-  }
-
-  return (
-    <Flex style={{ minHeight: "100%", width: "100%", position: "relative" }}>
-      <DesktopMedia greaterThanOrEqual="md">
-        <DesktopWrapper>{Content("desktop")}</DesktopWrapper>
+        </DesktopWrapper>
       </DesktopMedia>
-      <Media lessThan="md">{Content("mobile")}</Media>
+      <Media lessThan="md">
+        <Content
+          platform="mobile"
+          fields={fields}
+          contentMaxWidth={contentMaxWidth}
+          clientSide={clientSide}
+          leftImage={leftImage}
+          headerText={headerText}
+          headerDescription={headerDescription}
+          headerLabel={headerLabel}
+        />
+      </Media>
       <FormFooter
         buttonActionName={buttonActionName}
         buttonText={buttonText}

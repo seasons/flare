@@ -21,7 +21,7 @@
     "update-monsoon": "node -r dotenv/config scripts/update-monsoon.js"
   },
   "engines": {
-    "node": "12"
+    "node": "14"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
