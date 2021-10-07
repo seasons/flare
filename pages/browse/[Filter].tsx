@@ -25,6 +25,7 @@ import { GET_PRODUCT } from "queries/productQueries"
 import { ColorFilters } from "components/Browse/ColorFilters"
 import { FixedFilters } from "components/Browse/FixedFilters"
 import { TriageModal } from "components/Browse/TriageModal"
+import { OrderByFilters } from "components/Browse/OrderByFilters"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -46,12 +47,19 @@ export const Browse_Query = gql`
 
 const pageSize = 21
 
+export enum OrderBy {
+  computedRentalPrice_ASC = "computedRentalPrice_ASC",
+  computedRentalPrice_DESC = "computedRentalPrice_DESC",
+  publishedAt_DESC = "publishedAt_DESC",
+}
+
 export interface SizeFilterParams {
   currentTops: string[]
   currentBottoms: string[]
   availableOnly: boolean
   forSaleOnly: boolean
   currentColors: string[]
+  orderBy: OrderBy
 }
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
@@ -65,6 +73,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [showWaitlistedModal, setShowWaitlistedModal] = useState(false)
   const tracking = useTracking()
   const router = useRouter()
+  const routerOrderBy = router.query?.orderBy as OrderBy
   const filter = router.query?.Filter || "all+all"
   const _tops = router.query?.tops as string
   const tops = _tops?.split(" ")
@@ -98,10 +107,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     availableOnly: availableRouterQuery ?? null,
     forSaleOnly: forSaleRouterQuery ?? null,
     currentColors: colors ?? null,
+    orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { authState, toggleLoginModal } = useAuthContext()
-  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly } = params
+  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly, orderBy } = params
 
   const skip = (currentPage - 1) * pageSize
 
@@ -116,7 +126,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       brandName: currentBrand,
       categoryName: currentCategory,
       first: pageSize,
-      orderBy: "publishedAt_DESC",
+      orderBy,
       skip,
     },
   })
@@ -145,6 +155,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   useEffect(() => {
     const paramToURL = () => {
+      const orderByParam = routerOrderBy ? `&orderBy=${routerOrderBy}` : ""
       const bottomsParam = currentBottoms?.length ? "&bottoms=" + currentBottoms.join("+") : ""
       const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
       const colorsParam = currentColors?.length ? "&colors=" + currentColors.join("+") : ""
@@ -152,7 +163,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       const forSaleParam = forSaleOnly ? "&forSale=true" : ""
       const triageParam =
         showWaitlistedModal || showApprovedModal ? `&triage=${showWaitlistedModal ? "waitlisted" : "approved"}` : ""
-      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}`
+      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}`
     }
     const newParams = paramToURL()
 
@@ -174,6 +185,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           currentBottoms: !!bottoms?.length && !currentBottoms?.length ? bottoms : [],
           currentTops: tops?.length && !currentTops?.length ? tops : [],
           currentColors: !!colors?.length && !currentColors?.length ? colors : [],
+          orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
         })
         setInitialPageLoad(true)
       } else {
@@ -197,6 +209,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       setParamsString(newParams)
     }
   }, [
+    routerOrderBy,
     filter,
     setCurrentBrand,
     setCurrentCategory,
@@ -237,6 +250,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       >
         <Media lessThan="md">
           <FixedFilters params={params} setParams={setParams} />
+          <OrderByFilters params={params} setParams={setParams} />
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
@@ -290,6 +304,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       listItems={categories}
                       currentBrand={currentBrand}
                     />
+                    <Spacer mb={5} />
+                    <OrderByFilters params={params} setParams={setParams} />
                     <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
