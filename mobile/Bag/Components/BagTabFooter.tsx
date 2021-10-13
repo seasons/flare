@@ -31,7 +31,7 @@ export const BagTabFooter = ({ bagItems, me, refetch }) => {
     onCompleted: (res) => {
       setMutating(false)
       if (res.checkItemsAvailability) {
-        openDrawer("bag")
+        openDrawer("reservation")
       }
     },
     onError: (e) => {
@@ -146,7 +146,7 @@ export const BagTabFooter = ({ bagItems, me, refetch }) => {
   }
 
   if (hasAddedItems) {
-    button = <BagBottwittomBar bagItems={bagItems} onReserve={handlePress} />
+    button = <BagBottomBar bagItems={bagItems} onReserve={handlePress} />
   } else if (hasActiveReservation) {
     if (me?.activeReservation?.status === "Delivered") {
       if (markedAsReturned) {

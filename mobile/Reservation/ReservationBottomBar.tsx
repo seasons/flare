@@ -12,8 +12,12 @@ interface ReservationBottomBarProps {
 }
 
 export const ReservationBottomBar: React.FC<ReservationBottomBarProps> = ({ lineItems, onReserve, buttonProps }) => {
-  const totalLineItems = lineItems.filter((l) => l.recordType === "Total")
-  const totalLineItem = totalLineItems[totalLineItems.length - 1]
+  if (lineItems?.length === 0) {
+    return null
+  }
+
+  const totalLineItems = lineItems?.filter((l) => l.recordType === "Total")
+  const totalLineItem = totalLineItems?.[totalLineItems.length - 1]
   const total = totalLineItem?.price || 0
 
   return (

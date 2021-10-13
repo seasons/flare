@@ -37,7 +37,7 @@ export const BagBottomBar: React.FC<BagBottomBarProps> = ({ bagItems, onReserve 
               </Box>
             </Flex>
           </Box>
-          <Button variant="primaryBlack" onPress={onReserve}>
+          <Button variant="primaryBlack" onClick={onReserve}>
             Reserve
           </Button>
         </Flex>
