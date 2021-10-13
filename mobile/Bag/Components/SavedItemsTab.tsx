@@ -1,5 +1,6 @@
 import { Box, Flex } from "components"
 import gql from "graphql-tag"
+import { SavedTab_Query } from "queries/bagQueries"
 import React from "react"
 
 import { useQuery } from "@apollo/client"
@@ -8,40 +9,6 @@ import { Loader } from "@seasons/eclipse"
 import { BagView } from "../Bag"
 import { BagEmptyState } from "./BagEmptyState"
 import { SavedItem } from "./SavedItem"
-
-export const SavedTab_Query = gql`
-  query SavedTab_Query {
-    me {
-      id
-      activeReservation {
-        id
-      }
-      savedItems {
-        id
-        saved
-        productVariant {
-          id
-          reservable
-          displayLong
-          hasRestockNotification
-          product {
-            id
-            slug
-            name
-            brand {
-              id
-              name
-            }
-            images(size: Thumb) {
-              id
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-`
 
 export const SavedItemsTab: React.FC<{ deleteBagItem }> = ({ deleteBagItem }) => {
   const { previousData, data = previousData, loading } = useQuery(SavedTab_Query)

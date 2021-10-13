@@ -1,10 +1,9 @@
 import { Box } from "components"
 import { Container } from "mobile/Container"
 import { TabBar } from "mobile/TabBar"
-import { GET_BAG, REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
+import { REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
-import { RefreshControl, ScrollView } from "react-native"
-import { identify, Schema, screenTrack, useTracking } from "utils/analytics"
+import { Schema, screenTrack, useTracking } from "utils/analytics"
 
 import { useMutation, useQuery } from "@apollo/client"
 
@@ -18,8 +17,9 @@ export enum BagView {
   History = 2,
 }
 
+export const MAXIMUM_ITEM_COUNT = 6
+
 export const Bag = screenTrack()(() => {
-  const [refreshing, setRefreshing] = useState(false)
   const tracking = useTracking()
 
   const [currentView, setCurrentView] = useState<BagView>(BagView.Bag)
@@ -63,21 +63,8 @@ export const Bag = screenTrack()(() => {
           }}
         />
       </Box>
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => {
-              setRefreshing(true)
-              // refetch()
-              setRefreshing(false)
-            }}
-          />
-        }
-        style={{ height: "100%", width: "100%", position: "relative" }}
-      >
-        <CurrentTab />
-      </ScrollView>
+
+      <CurrentTab />
     </Container>
   )
 })

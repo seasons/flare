@@ -2,8 +2,8 @@ import {
   Box, Button, FixedBackArrow, Flex, ProgressiveImage, Sans, Separator, Spacer
 } from "components"
 import { color, space } from "helpers"
-import { SavedTab_Query } from "mobile/Bag/Components/SavedItemsTab"
 import { Loader } from "mobile/Loader"
+import { SavedTab_Query } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"

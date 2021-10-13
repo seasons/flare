@@ -1,6 +1,8 @@
 import gql from "graphql-tag"
 import { ReservationHistoryTabFragment_Customer } from "mobile/Bag/Components/ReservationHistoryTab"
 
+import { ProductPriceText_Product } from "@seasons/eclipse"
+
 import { BagItemFragment } from "./bagItemQueries"
 
 export { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_LOCAL_BAG, GET_LOCAL_BAG_ITEMS } from "./clientQueries"
@@ -88,6 +90,9 @@ export const GET_BAG = gql`
         productVariant {
           id
           ...BagItemProductVariant
+          product {
+            ...ProductPriceText_Product
+          }
         }
         position
         saved
@@ -96,6 +101,41 @@ export const GET_BAG = gql`
     }
   }
   ${BagItemFragment}
+  ${ProductPriceText_Product}
+`
+
+export const SavedTab_Query = gql`
+  query SavedTab_Query {
+    me {
+      id
+      activeReservation {
+        id
+      }
+      savedItems {
+        id
+        saved
+        productVariant {
+          id
+          reservable
+          displayLong
+          hasRestockNotification
+          product {
+            id
+            slug
+            name
+            brand {
+              id
+              name
+            }
+            images(size: Thumb) {
+              id
+              url
+            }
+          }
+        }
+      }
+    }
+  }
 `
 
 export const ADD_TO_BAG = gql`

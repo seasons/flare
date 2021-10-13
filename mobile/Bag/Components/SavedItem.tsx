@@ -3,17 +3,14 @@ import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { Spinner } from "components/Spinner"
 import gql from "graphql-tag"
 import { color } from "helpers"
-import { get, head } from "lodash"
 import { Image } from "mobile/Image"
-import { ADD_TO_BAG, GET_BAG } from "queries/bagQueries"
+import { ADD_TO_BAG, GET_BAG, SavedTab_Query } from "queries/bagQueries"
 import React, { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
-
-import { SavedTab_Query } from "./SavedItemsTab"
 
 interface BagItemProps {
   bagIsFull: boolean

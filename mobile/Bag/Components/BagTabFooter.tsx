@@ -12,20 +12,19 @@ import { BagBottomBar } from "./BagBottomBar"
 
 const MAXIMUM_ITEM_COUNT = 6
 
-export const BagTabFooter = ({ me, refetch }) => {
+export const BagTabFooter = ({ bagItems, me, refetch }) => {
   const [isMutating, setMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
   const { authState } = useAuthContext()
   const tracking = useTracking()
 
-  const bagItems = me?.bagItems
   const customerStatus = me?.customer?.status
   const hasActiveReservation = !!me?.activeReservation
   const isSignedIn = authState.isSignedIn
   const shippingAddress = me?.customer?.detail?.shippingAddress
-  const hasAddedItems = me?.bagItems?.some((a) => a.status === "Added")
   const markedAsReturned = !!me?.activeReservation?.returnedAt
+  const hasAddedItems = bagItems?.some((a) => a.status === "Added")
   const bagCount = bagItems?.length || 0
 
   const [checkItemsAvailability] = useMutation(CHECK_ITEMS, {
@@ -89,9 +88,6 @@ export const BagTabFooter = ({ me, refetch }) => {
         buttonText: "Got it",
         onClose: () => {
           hidePopUp()
-          //   navigation.navigate("Modal", {
-          //     screen: "CreateAccountModal",
-          //   })
         },
       })
     } else if (customerStatus === "Authorized") {
@@ -121,20 +117,7 @@ export const BagTabFooter = ({ me, refetch }) => {
       const hasShippingAddress =
         !!shippingAddress.address1 && !!shippingAddress.city && !!shippingAddress.state && !!shippingAddress.zipCode
       if (!hasShippingAddress) {
-        showPopUp({
-          title: "Your shipping address is incomplete",
-          note:
-            "Please update your shipping address under Payment & Shipping in your account settings to complete your reservation.",
-          buttonText: "Got it",
-          onClose: () => hidePopUp(),
-          secondaryButtonText: "Go to settings",
-          secondaryButtonOnPress: () => {
-            // navigation.navigate(NavigationSchema.StackNames.AccountStack, {
-            //   screen: NavigationSchema.PageNames.PaymentAndShipping,
-            // })
-            hidePopUp()
-          },
-        })
+        openDrawer("reservationShippingAddress", { shippingAddress })
         setMutating(false)
         return
       }
@@ -163,7 +146,7 @@ export const BagTabFooter = ({ me, refetch }) => {
   }
 
   if (hasAddedItems) {
-    button = <BagBottomBar bagItems={bagItems} onReserve={handlePress} />
+    button = <BagBottwittomBar bagItems={bagItems} onReserve={handlePress} />
   } else if (hasActiveReservation) {
     if (me?.activeReservation?.status === "Delivered") {
       if (markedAsReturned) {
@@ -200,7 +183,7 @@ export const BagTabFooter = ({ me, refetch }) => {
 
   return (
     button && (
-      <Box width="100%" style={{ position: "absolute", bottom: 0 }}>
+      <Box width="100%" style={{ position: "absolute", bottom: 0, zIndex: 999 }}>
         {button}
       </Box>
     )

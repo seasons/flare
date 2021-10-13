@@ -1,16 +1,18 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { MAXIMUM_ITEM_COUNT } from "mobile/Bag/Bag"
+import { useBag } from "mobile/Bag/useBag"
+import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
-import { GET_BAG, ADD_TO_BAG, ADD_OR_REMOVE_FROM_LOCAL_BAG } from "queries/bagQueries"
+
 import { useMutation } from "@apollo/client"
 
+import { ButtonSize } from "./Button/Button.shared"
 import { useDrawerContext } from "./Drawer/DrawerContext"
 import { CheckWithBackground } from "./SVGs"
-import { ButtonSize } from "./Button/Button.shared"
-import { MAXIMUM_ITEM_COUNT } from "mobile/Bag/Bag"
 
 interface Props {
   disabled?: boolean
@@ -25,10 +27,11 @@ interface Props {
 export const AddToBagButton: React.FC<Props> = (props) => {
   const [isMutating, setIsMutating] = useState(false)
   const [added, setAdded] = useState(false)
-  const { variantInStock, selectedVariant, data, onAdded, size } = props
+  const { variantInStock, selectedVariant, onAdded, size } = props
   const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { authState, toggleLoginModal } = useAuthContext()
+  const { data } = useBag()
   const { openDrawer } = useDrawerContext()
   const isUserSignedIn = authState?.isSignedIn
 
