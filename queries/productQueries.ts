@@ -5,6 +5,14 @@ import {
   ProductConditionSectionFragment_PhysicalProductQualityReport,
 } from "@seasons/eclipse"
 
+export const UPSERT_RESTOCK_NOTIF = gql`
+  mutation UpsertRestockNotification($variantID: ID!, $shouldNotify: Boolean!) {
+    upsertRestockNotification(variantID: $variantID, shouldNotify: $shouldNotify) {
+      id
+    }
+  }
+`
+
 export const GET_PRODUCT = gql`
   query GetProduct($slug: String!) {
     product(where: { slug: $slug }) {
@@ -63,6 +71,7 @@ export const GET_PRODUCT = gql`
         reserved
         isInBag
         isSaved
+        hasRestockNotification
         manufacturerSizes {
           id
           display

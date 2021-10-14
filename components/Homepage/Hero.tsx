@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { seasonAndYear } from "utils/seasonAndYear"
 import { Media } from "../Responsive"
 import { GetTheAppButton } from "components/Button/GetTheApp"
-import { HeroCTA } from "./HeroCTA"
+import { MembershipCTA } from "./MembershipCTA"
 import { color } from "helpers/color"
 
 const staticNoise = require("../../public/images/homepage/static-noise.gif")
@@ -28,7 +28,7 @@ const Content: React.FC<{
   return (
     <Background backgroundImage={isDesktop ? backgroundImageDesktop : backgroundImageMobile}>
       <Static />
-      <FadeBackground />
+      <FadeBackground isDesktop={isDesktop} />
       <MaxWidth>
         <Flex
           width="100%"
@@ -56,7 +56,7 @@ const Content: React.FC<{
             </Box>
             <Spacer mr={50} mt={5} />
             <Box width={isDesktop ? "343px" : "100%"}>
-              <HeroCTA version={version} userSession={userSession} authState={authState} />
+              <MembershipCTA userSession={userSession} authState={authState} />
               {!isDesktop && (
                 <>
                   <Spacer mb={1} />
@@ -121,11 +121,12 @@ const Static = styled.div`
   background-size: 90px;
 `
 
-const FadeBackground = styled.div`
+const FadeBackground = styled.div<{ isDesktop: boolean }>`
   width: 100%;
   height: 100%;
   position: absolute;
   background: url(${fade}) no-repeat center center;
   background-size: 90px;
   background-size: cover;
+  opacity: ${(p) => (p.isDesktop ? 1 : 0.2)};
 `

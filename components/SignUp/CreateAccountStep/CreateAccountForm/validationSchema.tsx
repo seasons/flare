@@ -27,5 +27,5 @@ export const createAccountValidationSchema = Yup.object().shape({
     .required("Required")
     .matches(/^[0-9]{5}$/, "Must be exactly 5 digits"),
   discoveryReference: Yup.string(),
-  instagramHandle: Yup.string().matches(/^[a-zA-Z0-9]*$/, "Must not include any spaces"),
+  instagramHandle: Yup.string().matches(/^[a-zA-Z0-9\@]*$/, "Must not include any spaces or special characters"),
 })

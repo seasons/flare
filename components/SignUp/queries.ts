@@ -13,8 +13,7 @@ export const GET_SIGNUP_USER = gql`
         plan
         detail {
           id
-          height
-          styles
+          pantLength
         }
         user {
           id

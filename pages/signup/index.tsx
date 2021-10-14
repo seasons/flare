@@ -1,10 +1,10 @@
-import { Box, Flex, Layout, MaxWidth, Sans, SnackBar } from "components"
+import { Box, Flex, Layout, MaxWidth, Sans, SnackBar, Spacer } from "components"
 import { FormConfirmation } from "components/Forms/FormConfirmation"
 import { PaymentStep } from "components/Payment"
 import { CreateAccountStep } from "components/SignUp/CreateAccountStep/CreateAccountStep"
 import { CustomerMeasurementsStep } from "components/SignUp/CustomerMeasurementsStep"
 import { DiscoverBagStep } from "components/SignUp/DiscoverBagStep"
-import { DiscoverStyleStep } from "components/SignUp/DiscoverStyleStep"
+import { PersonalDetailsStep } from "components/SignUp/PersonalDetailsStep"
 import { TriageStep } from "components/SignUp/TriageStep"
 import { SplashScreen } from "components/SplashScreen/SplashScreen"
 import { useAuthContext } from "lib/auth/AuthContext"
@@ -24,11 +24,11 @@ export interface SignupFormProps {
   onCompleted?: () => void
 }
 
-export const SIGNUP_FOOTER_HEIGHT = "68px"
+export const SIGNUP_FOOTER_HEIGHT = "69px"
 
 enum Steps {
   CreateAccountStep = "CreateAccountStep",
-  DiscoverStyleStep = "DiscoverStyleStep",
+  PersonalDetailsStep = "PersonalDetailsStep",
   CustomerMeasurementsStep = "CustomerMeasurementsStep",
   TriageStep = "TriageStep",
   DiscoverBagStep = "DiscoverBagStep",
@@ -58,7 +58,7 @@ const SignUpPage = screenTrack(() => ({
 
   const customer = data?.me?.customer
   const customerStatus = customer?.status
-  const hasSetMeasurements = !!customer?.detail?.height
+  const hasSetMeasurements = !!customer?.detail?.pantLength
   const initialCoupon = data?.me?.customer?.coupon
 
   const hasGift = !!router.query.gift_id
@@ -81,7 +81,7 @@ const SignUpPage = screenTrack(() => ({
           break
         case "Created":
           if (hasSetMeasurements) {
-            setCurrentStepState(Steps.DiscoverStyleStep)
+            setCurrentStepState(Steps.PersonalDetailsStep)
           } else {
             setCurrentStepState(Steps.CustomerMeasurementsStep)
           }
@@ -168,15 +168,15 @@ const SignUpPage = screenTrack(() => ({
           form={{
             onCompleted: () => {
               refetchGetSignupUser()
-              setCurrentStepState(Steps.DiscoverStyleStep)
+              setCurrentStepState(Steps.PersonalDetailsStep)
             },
           }}
         />
       )
       break
-    case Steps.DiscoverStyleStep:
+    case Steps.PersonalDetailsStep:
       CurrentStep = (
-        <DiscoverStyleStep
+        <PersonalDetailsStep
           onCompleted={() => {
             setStartTriage(true)
             setCurrentStepState(Steps.TriageStep)
@@ -245,22 +245,23 @@ const SignUpPage = screenTrack(() => ({
   return (
     <Elements stripe={stripePromise}>
       <Layout hideFooter showIntercom={false}>
-        <MaxWidth height="100%">
-          <Box style={{ flexGrow: 1, position: "relative", width: "100%", height: "100%" }}>
+        <MaxWidth>
+          <Flex
+            style={{ flex: 1, position: "relative", width: "100%", alignItems: "stretch" }}
+            pb={SIGNUP_FOOTER_HEIGHT}
+          >
             <SnackBar Message={SnackBarMessage} show={showSnackBar} onClose={closeSnackBar} />
             <Flex
-              height="100%"
               width="100%"
               flexDirection="row"
               alignItems="center"
               justifyContent="center"
-              px={[2, 2, 2, 2, 2]}
+              px={[1, 1, 2, 2, 2]}
+              style={{ flex: 1, alignItems: "stretch" }}
             >
-              <Flex style={{ flex: 1, height: "100%", width: "100%", paddingBottom: SIGNUP_FOOTER_HEIGHT }}>
-                {CurrentStep}
-              </Flex>
+              <Flex style={{ flex: 1, width: "100%", alignItems: "stretch" }}>{CurrentStep}</Flex>
             </Flex>
-          </Box>
+          </Flex>
         </MaxWidth>
 
         <SplashScreen

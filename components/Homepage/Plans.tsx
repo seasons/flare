@@ -13,6 +13,7 @@ const image = require("../../public/images/homepage/PlanBackground.jpg")
 
 export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   const { openDrawer } = useDrawerContext()
+  const { authState, userSession } = useAuthContext()
 
   return (
     <Background>
@@ -35,7 +36,7 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
           {plans.map((plan, index) => (
             <Col md="6" xs="12" key={index} px={[0, 0, 1, 1, 1]} pb={5}>
               <Flex flexDirection="row" justifyContent={index % 2 === 0 ? "flex-end" : "flex-start"}>
-                <PlanCard plan={plan} />
+                <PlanCard plan={plan} authState={authState} userSession={userSession} />
               </Flex>
             </Col>
           ))}

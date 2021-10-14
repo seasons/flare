@@ -1,10 +1,10 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { MAXIMUM_ITEM_COUNT } from "mobile/Bag/Bag"
-import { useBag } from "mobile/Bag/useBag"
 import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG } from "queries/bagQueries"
-import { GET_PRODUCT } from "queries/productQueries"
+import { GET_PRODUCT, UPSERT_RESTOCK_NOTIF } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
 
@@ -13,6 +13,7 @@ import { useMutation } from "@apollo/client"
 import { ButtonSize } from "./Button/Button.shared"
 import { useDrawerContext } from "./Drawer/DrawerContext"
 import { CheckWithBackground } from "./SVGs"
+import { ListCheck } from "./SVGs/ListCheck"
 
 interface Props {
   disabled?: boolean
@@ -24,26 +25,56 @@ interface Props {
   onAdded?: (added: boolean) => void
 }
 
-export const AddToBagButton: React.FC<Props> = (props) => {
+export const AddToBagButton: React.FC<Props> = ({
+  disabled,
+  isInBag,
+  variantInStock,
+  selectedVariant,
+  data,
+  onAdded,
+  size,
+}) => {
   const [isMutating, setIsMutating] = useState(false)
   const [added, setAdded] = useState(false)
-  const { variantInStock, selectedVariant, onAdded, size } = props
   const tracking = useTracking()
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { authState, toggleLoginModal } = useAuthContext()
-  const { data } = useBag()
   const { openDrawer } = useDrawerContext()
   const isUserSignedIn = authState?.isSignedIn
+  const hasRestockNotification = selectedVariant?.hasRestockNotification
+  const product = data?.product
 
   useEffect(() => {
-    if (typeof props?.isInBag === "boolean") {
-      setAdded(props.isInBag)
+    if (typeof isInBag === "boolean") {
+      setAdded(isInBag)
     }
-  }, [props])
+  }, [isInBag])
+
+  const [upsertRestockNotification] = useMutation(UPSERT_RESTOCK_NOTIF, {
+    variables: {
+      variantID: selectedVariant.id,
+      shouldNotify: !hasRestockNotification,
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      {
+        query: GET_PRODUCT,
+        variables: { slug: product?.slug },
+      },
+    ],
+    onCompleted: () => {
+      setIsMutating(false)
+    },
+    onError: (e) => {
+      console.log("error", e)
+      setIsMutating(false)
+    },
+  })
+
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
     variables: {
       id: selectedVariant.id,
-      productID: props.data?.product?.id,
+      productID: product?.id,
       variantID: selectedVariant.id,
     },
     awaitRefetchQueries: true,
@@ -53,7 +84,7 @@ export const AddToBagButton: React.FC<Props> = (props) => {
       },
       {
         query: GET_PRODUCT,
-        variables: { slug: props.data?.product?.slug },
+        variables: { slug: product?.slug },
       },
     ],
     onCompleted: (res) => {
@@ -99,17 +130,21 @@ export const AddToBagButton: React.FC<Props> = (props) => {
     }
   }
 
-  const disabled = !!props.disabled || added || !variantInStock || isMutating
+  const _disabled = disabled || added || isMutating
 
   let text = "Add to bag"
   if (added) {
     text = "Added"
+  } else if (hasRestockNotification) {
+    text = "We'll notify you when it's back"
+  } else if (!variantInStock) {
+    text = "Notify me when available"
   }
 
   return (
     <Button
       loading={isMutating}
-      disabled={disabled}
+      disabled={_disabled}
       size={size}
       variant="primaryBlack"
       block
@@ -119,13 +154,22 @@ export const AddToBagButton: React.FC<Props> = (props) => {
           actionType: Schema.ActionTypes.Tap,
         })
         if (authState.isSignedIn) {
-          handleReserve()
+          if (variantInStock) {
+            handleReserve()
+          } else {
+            upsertRestockNotification()
+          }
         } else {
           toggleLoginModal(true)
         }
       }}
       borderRadius={8}
     >
+      {hasRestockNotification && (
+        <>
+          <ListCheck color={color("white100")} />{" "}
+        </>
+      )}
       {text}
     </Button>
   )
