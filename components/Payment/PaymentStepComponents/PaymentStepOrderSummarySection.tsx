@@ -1,21 +1,23 @@
 import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
-import React from "react"
 import { Checkbox } from "components/Checkbox"
 import { Collapse } from "components/Collapse"
-import { PaymentBillingAddress } from "../PaymentBillingAddress"
-import { PaymentShippingAddress } from "../PaymentShippingAddress"
-import { PaymentForm } from "../PaymentForm"
-import { PaymentExpressButtons } from "../PaymentExpressButtons"
-import styled from "styled-components"
-import { InputLabel } from "@material-ui/core"
-import { MembershipCard } from "mobile/Account/MembershipInfo/Components"
-import { PaymentOrderSummary } from "../PaymentOrderSummary"
-import { PaymentCouponField } from "../PaymentCouponField"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { MembershipCard } from "mobile/Account/MembershipInfo/Components"
+import React from "react"
+import styled from "styled-components"
+
+import { InputLabel } from "@material-ui/core"
+
+import { PaymentBillingAddress } from "../PaymentBillingAddress"
+import { PaymentCouponField } from "../PaymentCouponField"
+import { PaymentExpressButtons } from "../PaymentExpressButtons"
+import { PaymentForm } from "../PaymentForm"
+import { PaymentOrderSummary } from "../PaymentOrderSummary"
+import { PaymentShippingAddress } from "../PaymentShippingAddress"
 
 const enableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
-export const PaymentStepOrderSummarySection = ({ setCoupon, selectedPlan, user, coupon }) => {
+export const PaymentStepOrderSummarySection = ({ selectedPlan, user, coupon, onCouponUpdate }) => {
   const { openDrawer } = useDrawerContext()
 
   const customerFirstName = user?.firstName
@@ -31,13 +33,14 @@ export const PaymentStepOrderSummarySection = ({ setCoupon, selectedPlan, user, 
       </Box>
       <PaymentCouponField
         onApplyPromoCode={(amount, percentage, type, code) => {
-          setCoupon({
+          const coupon = {
             amount: amount as number,
             percentage: percentage as number,
             type: type as "FixedAmount" | "Percentage",
             code: code as string,
             id: code,
-          })
+          }
+          onCouponUpdate?.(coupon)
         }}
       />
       <Spacer mt={5} />

@@ -4,6 +4,7 @@ import { Col, Grid, Row } from "components/Grid"
 import { BackArrowIcon } from "components/Icons"
 import { GET_SIGNUP_USER } from "components/SignUp/queries"
 import { Formik } from "formik"
+import { Loader } from "mobile/Loader"
 import { BagItemFragment } from "queries/bagItemQueries"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -11,12 +12,15 @@ import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 import { colors } from "theme/colors"
 import * as Yup from "yup"
+
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
-import { PaymentStepPlanSelection } from "./PaymentStepComponents/PaymentStepPlanSelection"
+
 import { PaymentStepCheckoutSection } from "./PaymentStepComponents/PaymentStepCheckoutSection"
-import { PaymentStepOrderSummarySection } from "./PaymentStepComponents/PaymentStepOrderSummarySection"
-import { Loader } from "mobile/Loader"
+import {
+  PaymentStepOrderSummarySection
+} from "./PaymentStepComponents/PaymentStepOrderSummarySection"
+import { PaymentStepPlanSelection } from "./PaymentStepComponents/PaymentStepPlanSelection"
 
 interface PaymentStepProps {
   plan: {
@@ -170,6 +174,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
     fetchPolicy: "network-only",
     variables: {
       couponID: !!coupon ? coupon.code : null,
+    },
+    onCompleted: (data) => {
+      const selectedPlan = data?.paymentsPlans?.find((p) => p.id === plan?.id)
+      setPlan(selectedPlan)
     },
   })
 
@@ -356,7 +364,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ onSuccess, onError, on
                   <Box style={{ height: "100%", minHeight: "100vh", maxWidth: "345px" }}>
                     <Box px={[0, 0, 2, 2]} mt={[4, 4, 12]}>
                       <PaymentStepOrderSummarySection
-                        setCoupon={setCoupon}
+                        onCouponUpdate={(coupon) => {
+                          setCoupon(coupon)
+                          refetch()
+                        }}
                         selectedPlan={plan}
                         user={user}
                         coupon={coupon}
