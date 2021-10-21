@@ -13,7 +13,7 @@ import { SelectionTable } from "./SelectionTable"
 
 interface GetMeasurementsPaneProps {
   initialMeasurements?: {
-    height?: Item
+    shoeSize?: Item
     weight?: Item
     topSizeIndices?: number[]
     waistSizeIndices?: number[]
@@ -32,7 +32,7 @@ export const GetMeasurementsPane: React.FC<GetMeasurementsPaneProps> = ({
 }) => {
   const tracking = useTracking()
 
-  const [height, setHeight] = useState(initialMeasurements?.height)
+  const [shoeSize, setShoeSize] = useState(initialMeasurements?.shoeSize)
   const [weight, setWeight] = useState(initialMeasurements?.weight)
   const [topSizeIndices, setTopSizeIndices] = useState(initialMeasurements?.topSizeIndices || Array<number>())
   const [waistSizeIndices, setWaistSizeIndices] = useState(initialMeasurements?.waistSizeIndices || Array<number>())
@@ -75,7 +75,7 @@ export const GetMeasurementsPane: React.FC<GetMeasurementsPaneProps> = ({
     setIsMutating(true)
     await addMeasurements({
       variables: {
-        height: height.value,
+        shoeSize: shoeSize.value,
         weight: { set: weight.value },
         topSizes: { set: topSizeIndices.map((i) => Measurements.topSizes[i].value) },
         waistSizes: { set: waistSizeIndices.map((i) => Measurements.waistSizes[i].value) },
@@ -185,7 +185,7 @@ export const GetMeasurementsPane: React.FC<GetMeasurementsPaneProps> = ({
         <Flex flex={1}>
           <Button
             block
-            disabled={!(height && weight && topSizeIndices.length && waistSizeIndices.length)}
+            disabled={!(shoeSize && weight && topSizeIndices.length && waistSizeIndices.length)}
             loading={isMutating}
             onPress={submitMeasurements}
             variant="primaryBlack"
