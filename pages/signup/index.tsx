@@ -38,7 +38,6 @@ enum Steps {
 }
 
 const browseURL = "/browse/all+all?page=1&tops=M&available=true"
-
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
 const SignUpPage = screenTrack(() => ({
@@ -54,7 +53,6 @@ const SignUpPage = screenTrack(() => ({
   const [showSnackBar, setShowSnackBar] = useState(false)
   const [startTriage, setStartTriage] = useState(false)
   const [showReferrerSplash, setShowReferrerSplash] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState(null)
 
   const customer = data?.me?.customer
   const customerStatus = customer?.status
@@ -157,7 +155,10 @@ const SignUpPage = screenTrack(() => ({
             initialValues: customerDataFromGift(),
             gift: giftData?.gift,
             onError: () => setShowSnackBar(true),
-            onCompleted: () => setCurrentStepState(Steps.CustomerMeasurementsStep),
+            onCompleted: () => {
+              setCurrentStepState(Steps.CustomerMeasurementsStep)
+              window.scrollTo(0, 0)
+            },
           }}
         />
       )
@@ -169,6 +170,7 @@ const SignUpPage = screenTrack(() => ({
             onCompleted: () => {
               refetchGetSignupUser()
               setCurrentStepState(Steps.PersonalDetailsStep)
+              window.scrollTo(0, 0)
             },
           }}
         />
@@ -180,6 +182,7 @@ const SignUpPage = screenTrack(() => ({
           onCompleted={() => {
             setStartTriage(true)
             setCurrentStepState(Steps.TriageStep)
+            window.scrollTo(0, 0)
           }}
         />
       )
@@ -220,11 +223,11 @@ const SignUpPage = screenTrack(() => ({
     case Steps.PaymentStep:
       CurrentStep = (
         <PaymentStep
-          plan={selectedPlan}
           initialCoupon={initialCoupon}
           onBack={() => {
             if (showDiscoverBag) {
               setCurrentStepState(Steps.DiscoverBagStep)
+              window.scrollTo(0, 0)
             }
           }}
           onSuccess={() => {
@@ -232,6 +235,7 @@ const SignUpPage = screenTrack(() => ({
             localStorage.setItem("paymentProcessed", "true")
             identify(data?.me?.customer?.user?.id, { status: "Active" })
             router.push(`${browseURL}&triage=approved`)
+            window.scrollTo(0, 0)
           }}
           onError={() => {}}
         />

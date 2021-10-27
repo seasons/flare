@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Separator, Skeleton, Spacer } from "components"
+import { Box, Button, Flex, Sans, Separator, Skeleton, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import {
   ChevronIcon,
@@ -22,7 +22,7 @@ import { useQuery } from "@apollo/client"
 
 import { Container } from "../Container"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
-import { AuthorizedCTA, WaitlistedCTA } from "@seasons/eclipse"
+import { WaitlistedCTA } from "@seasons/eclipse"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
 import { ReferAFriend } from "./Components/ReferAFriend"
 import { CreditBalance, CreditBalanceFragment_Customer } from "./Components/CreditBalance"
@@ -239,26 +239,38 @@ export const Account = screenTrack()(({ navigation }) => {
         return <OnboardingChecklist userState={userState} />
       case CustomerStatus.Authorized:
         return (
-          <AuthorizedCTA
-            authorizedAt={DateTime.fromISO(customer?.authorizedAt)}
-            authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
-            onPressLearnMore={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames.LearnMoreTapped,
-                actionType: Schema.ActionTypes.Tap,
-              })
-              router.push("/signup")
-              closeDrawer()
-            }}
-            onPressChoosePlan={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames.ChoosePlanTapped,
-                actionType: Schema.ActionTypes.Tap,
-              })
-              router.push("/signup")
-              closeDrawer()
-            }}
-          />
+          <Box pb={1}>
+            <Sans size="4">You're in.</Sans>
+            <Spacer mb={3} />
+            <Button
+              block
+              onPress={() => {
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.ChoosePlanTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+                router.push("/signup")
+                closeDrawer()
+              }}
+            >
+              Choose plan
+            </Button>
+            <Spacer mb={1} />
+            <Button
+              block
+              variant="primaryWhite"
+              onPress={() => {
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.LearnMoreTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+                router.push("/signup")
+                closeDrawer()
+              }}
+            >
+              FAQ
+            </Button>
+          </Box>
         )
       case CustomerStatus.Invited:
       case CustomerStatus.Active:
