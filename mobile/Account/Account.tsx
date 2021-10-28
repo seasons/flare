@@ -1,31 +1,25 @@
 import { Box, Button, Flex, Sans, Separator, Skeleton, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import {
-  ChevronIcon,
-  LogoutIcon,
-  MembershipInfoIcon,
-  PaymentShippingIcon,
-  PersonalPreferencesIcon,
-  PrivacyPolicy,
-  QuestionMark,
-  TermsOfService,
+  ChevronIcon, LogoutIcon, MembershipInfoIcon, PaymentShippingIcon, PersonalPreferencesIcon,
+  PrivacyPolicy, QuestionMark, TermsOfService
 } from "components/Icons"
+import { AppleSVG, InstagramSVG } from "components/SVGs"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { DateTime } from "luxon"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import { ScrollView } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-import { DateTime } from "luxon"
 
 import { useQuery } from "@apollo/client"
+import { WaitlistedCTA } from "@seasons/eclipse"
 
 import { Container } from "../Container"
-import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
-import { WaitlistedCTA } from "@seasons/eclipse"
-import { AppleSVG, InstagramSVG } from "components/SVGs"
-import { ReferAFriend } from "./Components/ReferAFriend"
 import { CreditBalance, CreditBalanceFragment_Customer } from "./Components/CreditBalance"
+import { ReferAFriend } from "./Components/ReferAFriend"
+import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
 
 export enum UserState {
   Undetermined,
@@ -244,7 +238,7 @@ export const Account = screenTrack()(({ navigation }) => {
             <Spacer mb={3} />
             <Button
               block
-              onPress={() => {
+              onClick={() => {
                 tracking.trackEvent({
                   actionName: Schema.ActionNames.ChoosePlanTapped,
                   actionType: Schema.ActionTypes.Tap,
@@ -259,7 +253,7 @@ export const Account = screenTrack()(({ navigation }) => {
             <Button
               block
               variant="primaryWhite"
-              onPress={() => {
+              onClick={() => {
                 tracking.trackEvent({
                   actionName: Schema.ActionNames.LearnMoreTapped,
                   actionType: Schema.ActionTypes.Tap,

@@ -1,8 +1,9 @@
-import React from "react"
 import { Box, Sans, Spacer } from "components"
-import styled from "styled-components"
-import { color } from "helpers"
 import { PlanFeatures } from "components/Payment/PlanFeatures"
+import { color } from "helpers"
+import React from "react"
+import styled from "styled-components"
+
 import { MembershipCTA } from "./MembershipCTA"
 
 export const PlanCard = ({ plan, userSession, authState }) => {
@@ -38,7 +39,7 @@ export const PlanCard = ({ plan, userSession, authState }) => {
 }
 
 const Wrapper = styled(Box)`
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
   position: relative;
   background-color: ${color("white100")};

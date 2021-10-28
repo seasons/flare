@@ -1,9 +1,12 @@
-import React from "react"
 import { Box, Flex, Sans, Spacer } from "components"
-import { Display } from "../Typography"
-import { Grid, Row, Col } from "../Grid"
+import {
+  BillingIcon, CalendarIcon, DiscordIcon, HeartIcon, MembershipCardIcon, SwapIcon
+} from "components/Icons"
+import React from "react"
+
+import { Col, Grid, Row } from "../Grid"
 import { Media } from "../Responsive"
-import { HeartIcon, SwapIcon, CalendarIcon, MembershipCardIcon, BillingIcon, DiscordIcon } from "components/Icons"
+import { Display } from "../Typography"
 
 export const HOW_IT_WORKS_TEXT = [
   {
@@ -29,7 +32,7 @@ export const HOW_IT_WORKS_TEXT = [
   {
     icon: <HeartIcon />,
     title: "Buy styles you love",
-    text: "Love something? Save on purchases with a members-only discount.",
+    text: "Love something? Apply the $20 membership fee towards any purchase.",
   },
   {
     icon: <DiscordIcon />,
