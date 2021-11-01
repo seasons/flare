@@ -25,7 +25,6 @@ import { GET_PRODUCT } from "queries/productQueries"
 import { ColorFilters } from "components/Browse/ColorFilters"
 import { FixedFilters } from "components/Browse/FixedFilters"
 import { TriageModal } from "components/Browse/TriageModal"
-import { OrderByFilters } from "components/Browse/OrderByFilters"
 import { SortDropDown } from "components/Browse/SortDropDown"
 
 export const Browse_Query = gql`
@@ -255,7 +254,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       >
         <Media lessThan="md">
           <FixedFilters params={params} setParams={setParams} />
-          <OrderByFilters params={params} setParams={setParams} />
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
@@ -310,8 +308,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       currentBrand={currentBrand}
                     />
                     <Spacer mb={5} />
-                    <OrderByFilters params={params} setParams={setParams} />
-                    <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
                     <ColorFilters setParams={setParams} params={params} />
@@ -328,16 +324,19 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 </FixedBox>
               </Media>
             </Col>
-            <Media lessThan="md">
-              <Box px={2} pt={[1, 2]}>
+            <FullWidthMedia lessThan="md">
+              <Flex width="100%" flexDirection="row" justifyContent="space-between" px={2} pt={[1, 2]} pb={5}>
                 <Sans size="4">Browse</Sans>
-              </Box>
-            </Media>
+                <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+              </Flex>
+            </FullWidthMedia>
             <Col md="10" sm="12">
               <Row>
-                <Flex width="100%" flexDirection="row" justifyContent="flex-end" pb={2}>
-                  <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
-                </Flex>
+                <FullWidthMedia greaterThanOrEqual="md">
+                  <Flex width="100%" flexDirection="row" justifyContent="flex-end" pb={2}>
+                    <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+                  </Flex>
+                </FullWidthMedia>
                 {data && !products?.length ? (
                   <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
                     <Sans size="3" style={{ textAlign: "center" }}>
@@ -468,6 +467,10 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
       }
     }
   }
+`
+
+const FullWidthMedia = styled(Media)`
+  width: 100%;
 `
 
 const FixedBox = styled.div`
