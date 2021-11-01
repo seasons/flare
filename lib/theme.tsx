@@ -32,6 +32,7 @@ export const themeProps = {
     blue: "#2B50DF",
     peach: "#F6E3D0",
     darkGreen: "#1f2a1f",
+    grayGreen: "#44524A",
   },
   fontFamily,
   space: {
