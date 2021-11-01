@@ -26,6 +26,7 @@ import { ColorFilters } from "components/Browse/ColorFilters"
 import { FixedFilters } from "components/Browse/FixedFilters"
 import { TriageModal } from "components/Browse/TriageModal"
 import { OrderByFilters } from "components/Browse/OrderByFilters"
+import { SortDropDown } from "components/Browse/SortDropDown"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -242,6 +243,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
 
+  const onClickOrderBy = (value: OrderBy) => {
+    setParams({ ...params, orderBy: value })
+  }
+
   return (
     <>
       <Layout
@@ -330,6 +335,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             </Media>
             <Col md="10" sm="12">
               <Row>
+                <Flex width="100%" flexDirection="row" justifyContent="flex-end" pb={2}>
+                  <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+                </Flex>
                 {data && !products?.length ? (
                   <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
                     <Sans size="3" style={{ textAlign: "center" }}>
