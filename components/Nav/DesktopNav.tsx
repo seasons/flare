@@ -13,7 +13,6 @@ import { Box, Button, MaxWidth, Media, Spacer } from "components"
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
-import { GetTheAppButton } from "components/Button/GetTheApp"
 import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
 
 export const DESKTOP_NAV_HEIGHT = 72
@@ -103,11 +102,7 @@ export const DesktopNav = (props: NavProps) => {
           <NavItem link={{ text: "Sign in" }} color={textColor} />
         </Link>
       </HiddenSignInLink>
-      <Spacer ml={3} />
-      <GetTheAppButton
-        size="medium-x"
-        variant={navStyles?.getTheAppVariant ? navStyles.getTheAppVariant : "primaryWhite"}
-      />
+      <Spacer mr={1} />
       <HiddenApplyNowWrapper hide={navStyles?.hideSignIn}>
         <Button size="medium-x" onClick={() => router.push("/signup")}>
           Apply now
