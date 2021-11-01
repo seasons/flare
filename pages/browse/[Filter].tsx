@@ -325,7 +325,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
               </Media>
             </Col>
             <FullWidthMedia lessThan="md">
-              <Flex width="100%" flexDirection="row" justifyContent="space-between" px={2} pt={[1, 2]} pb={2}>
+              <Flex width="100%" flexDirection="row" justifyContent="space-between" px={2} pt={[0, 2]} pb={2}>
                 <Sans size="4">Browse</Sans>
                 <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
               </Flex>
