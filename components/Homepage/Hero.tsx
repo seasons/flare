@@ -25,7 +25,7 @@ const Content: React.FC<{
   const isUserSignedIn = authState?.isSignedIn
 
   return (
-    <ContentWrapper flex={1} flexDirection="column" justifyContent="space-between" height="100%" px={3} py={5}>
+    <Flex flex={1} flexDirection="column" justifyContent="space-between" height="100%" py={5}>
       <Box />
       <Box>
         <Display color="white100" size={["7", "7", "9", "9", "9"]}>
@@ -55,7 +55,7 @@ const Content: React.FC<{
           </Sans>
         )}
       </Box>
-    </ContentWrapper>
+    </Flex>
   )
 }
 
@@ -67,45 +67,48 @@ export const Hero: React.FC = () => {
   const { authState, userSession, toggleLoginModal } = useAuthContext()
 
   return (
-    <MaxWidth>
-      <Media greaterThanOrEqual="lg">
-        <Grid px={2}>
-          <Row>
-            <Col lg="6" sm="12">
-              <Content
-                version="desktop"
-                authState={authState}
-                userSession={userSession}
-                toggleLoginModal={toggleLoginModal}
-              />
-            </Col>
-            <Col lg="6" sm="12">
-              <HeroImage />
-            </Col>
-          </Row>
-        </Grid>
-      </Media>
-      <Media lessThan="lg">
-        <Grid>
-          <Row>
-            <Col lg="6" sm="12">
-              <HeroImage />
-            </Col>
-            <Col lg="6" sm="12">
-              <Content
-                version="mobile"
-                authState={authState}
-                userSession={userSession}
-                toggleLoginModal={toggleLoginModal}
-              />
-            </Col>
-          </Row>
-        </Grid>
-      </Media>
-    </MaxWidth>
+    <HeroWrapper>
+      <MaxWidth>
+        <Media greaterThanOrEqual="lg">
+          <Grid px={2}>
+            <Row>
+              <Col lg="6" sm="12">
+                <Content
+                  version="desktop"
+                  authState={authState}
+                  userSession={userSession}
+                  toggleLoginModal={toggleLoginModal}
+                />
+              </Col>
+              <Col lg="6" sm="12">
+                <HeroImage />
+              </Col>
+            </Row>
+          </Grid>
+        </Media>
+        <Media lessThan="lg">
+          <Grid>
+            <Row>
+              <Col lg="6" sm="12">
+                <HeroImage />
+              </Col>
+              <Col lg="6" sm="12">
+                <Content
+                  version="mobile"
+                  authState={authState}
+                  userSession={userSession}
+                  toggleLoginModal={toggleLoginModal}
+                />
+              </Col>
+            </Row>
+          </Grid>
+        </Media>
+      </MaxWidth>
+    </HeroWrapper>
   )
 }
 
-const ContentWrapper = styled(Flex)`
+const HeroWrapper = styled(Flex)`
   background-color: ${color("darkGreen")};
+  width: 100%;
 `
