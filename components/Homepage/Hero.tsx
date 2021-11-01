@@ -2,13 +2,13 @@ import { Box, Display, Flex, MaxWidth, Sans, Spacer, Picture } from "components"
 import { useAuthContext } from "lib/auth/AuthContext"
 import React from "react"
 import styled from "styled-components"
-import { seasonAndYear } from "utils/seasonAndYear"
 import { Media } from "../Responsive"
 import { GetTheAppButton } from "components/Button/GetTheApp"
 import { MembershipCTA } from "./MembershipCTA"
 import { color } from "helpers/color"
 import { imageResize } from "utils/imageResize"
 import { Col, Grid, Row } from "components/Grid"
+import { themeProps } from "lib/theme"
 
 const heroImage = require("../../public/images/homepage/hero/JW-Hero-Image.jpg")
 
@@ -25,7 +25,15 @@ const Content: React.FC<{
   const isUserSignedIn = authState?.isSignedIn
 
   return (
-    <Flex flex={1} flexDirection="column" justifyContent="space-between" height="100%" py={5}>
+    <Flex
+      flex={1}
+      flexDirection="column"
+      justifyContent="space-between"
+      height={isDesktop ? "715px" : "auto"}
+      py={5}
+      px={isDesktop ? 0 : 2}
+      style={{ backgroundColor: color("darkGreen") }}
+    >
       <Box />
       <Box>
         <Display color="white100" size={["7", "7", "9", "9", "9"]}>
@@ -68,23 +76,19 @@ export const Hero: React.FC = () => {
 
   return (
     <HeroWrapper>
+      <ImageWrapper>
+        <BackgroundImage />
+      </ImageWrapper>
       <MaxWidth>
         <Media greaterThanOrEqual="lg">
-          <Grid px={2}>
-            <Row>
-              <Col lg="6" sm="12">
-                <Content
-                  version="desktop"
-                  authState={authState}
-                  userSession={userSession}
-                  toggleLoginModal={toggleLoginModal}
-                />
-              </Col>
-              <Col lg="6" sm="12">
-                <HeroImage />
-              </Col>
-            </Row>
-          </Grid>
+          <Box px={2}>
+            <Content
+              version="desktop"
+              authState={authState}
+              userSession={userSession}
+              toggleLoginModal={toggleLoginModal}
+            />
+          </Box>
         </Media>
         <Media lessThan="lg">
           <Grid>
@@ -107,6 +111,25 @@ export const Hero: React.FC = () => {
     </HeroWrapper>
   )
 }
+
+const ImageWrapper = styled(Box)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 715px;
+  width: 50%;
+
+  @media ${themeProps.mediaQueries.xs} {
+    display: none;
+  }
+`
+
+const BackgroundImage = styled(Box)`
+  background: url(${heroImage}) no-repeat center center;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+`
 
 const HeroWrapper = styled(Flex)`
   background-color: ${color("darkGreen")};
