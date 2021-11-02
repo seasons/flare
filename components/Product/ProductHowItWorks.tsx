@@ -1,6 +1,6 @@
 import { Box, Sans, Separator, Spacer } from ".."
 import React from "react"
-import { HOW_IT_WORKS_TEXT } from "components/Homepage/HowItWorks"
+import { HOW_IT_WORKS_TEXT } from "components/Homepage/HowMembershipWorks"
 
 export const ProductHowItWorks = () => {
   return (
