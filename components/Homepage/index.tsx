@@ -1,5 +1,5 @@
 export { Hero } from "./Hero"
-export { HowItWorks } from "./HowItWorks"
+export { HowMembershipWorks } from "./HowMembershipWorks"
 export { TheApp } from "./TheApp"
 export { HomepageCarousel } from "./HomepageCarousel"
 export { HowItWorksSmall } from "./HowItWorksSmall"

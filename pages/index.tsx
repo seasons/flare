@@ -1,5 +1,13 @@
 import { Box, MaxWidth, Media, Separator, Spacer } from "components"
-import { HowItWorksSmall, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans, TheApp } from "components/Homepage"
+import {
+  HowItWorksSmall,
+  FromCommunity,
+  Hero,
+  HomepageFitPics,
+  HowMembershipWorks,
+  Plans,
+  TheApp,
+} from "components/Homepage"
 import { Layout } from "components/Layout"
 import { PartnerModal } from "components/Partner/PartnerModal"
 import { initializeApollo } from "lib/apollo/apollo"
@@ -111,8 +119,8 @@ const Home = screenTrack(() => ({
       <Media greaterThanOrEqual="md">
         <MaxWidth>
           <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-            <Spacer mb="128px" />
-            <HowItWorks />
+            <Spacer mb={5} />
+            <HowMembershipWorks />
             <Spacer mb={10} />
           </Box>
         </MaxWidth>
@@ -144,7 +152,7 @@ const Home = screenTrack(() => ({
           <Discover />
           <Media lessThan="md">
             <Spacer mb={10} />
-            <HowItWorks />
+            <HowMembershipWorks />
             <Spacer mb={10} />
           </Media>
         </Box>
