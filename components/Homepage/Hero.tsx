@@ -44,7 +44,7 @@ const Content: React.FC<{
         </Display>
         <Spacer mb={2} />
         <Sans color="black25" size="4" style={{ maxWidth: "370px" }}>
-          Exclusive rent-to-own access to over 1,000+ designer styles. A new way to discover, wear, & buy.
+          Exclusive rent-to-own access to over 1,000+ styles. A new way to discover, wear, & buy.
         </Sans>
         <Spacer mb={4} />
         <Flex flexDirection={isDesktop ? "row" : "column"}>
