@@ -53,6 +53,26 @@ export class Button extends Component<WebButtonProps> {
 
   getVariant() {
     switch (this.props.variant) {
+      case "green":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+
+            return `
+                background-color: ${colors.green100};
+                border-color: ${colors.green100};
+                color: ${colors.white100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color: ${colors.black100};
+                    border-color: ${colors.black100};
+                    color: ${colors.white100};
+                  }
+                }
+              `
+          }};
+        `
       case "primaryBlack":
         return css`
           ${(props) => {
@@ -226,10 +246,18 @@ export class Button extends Component<WebButtonProps> {
           ${(props) => {
             const { colors } = props.theme
             return `
-                background-color: rgba(255, 255, 255, 0.4);
+                background-color: rgba(255, 255, 255, 0.2);
                 border-color: transparent;
                 backdrop-filter: blur(50px);
-                color: ${colors.black100};
+                color: ${colors.white100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color: ${colors.black100};
+                    border-color: ${colors.black100};
+                    color: ${colors.white100};
+                  }
+                }
               `
           }};
         `

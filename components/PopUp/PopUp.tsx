@@ -16,7 +16,7 @@ export const PopUp: React.FC = () => {
     switch (theme) {
       case "dark":
         return {
-          backgroundColor: color("green"),
+          backgroundColor: color("grayGreen"),
           primaryText: color("white100"),
           secondaryText: color("lightGreen"),
           separator: color("lightGreen"),

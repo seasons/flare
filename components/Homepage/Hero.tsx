@@ -1,17 +1,16 @@
-import { Box, Display, Flex, MaxWidth, Sans, Spacer } from "components"
+import { Box, Display, Flex, MaxWidth, Sans, Spacer, Picture } from "components"
 import { useAuthContext } from "lib/auth/AuthContext"
 import React from "react"
 import styled from "styled-components"
-import { seasonAndYear } from "utils/seasonAndYear"
 import { Media } from "../Responsive"
 import { GetTheAppButton } from "components/Button/GetTheApp"
 import { MembershipCTA } from "./MembershipCTA"
 import { color } from "helpers/color"
+import { imageResize } from "utils/imageResize"
+import { Col, Grid, Row } from "components/Grid"
+import { themeProps } from "lib/theme"
 
-const staticNoise = require("../../public/images/homepage/static-noise.gif")
-const backgroundImageMobile = require("../../public/images/homepage/Flare-mobile-background.jpg")
-const backgroundImageDesktop = require("../../public/images/homepage/Website-hero-2.jpg")
-const fade = require("../../public/images/homepage/Hero-Fade.png")
+const heroImage = require("../../public/images/homepage/hero/JW-Hero-Image.jpg")
 
 export const DESKTOP_HERO_HEIGHT = 760
 export const MOBILE_HERO_HEIGHT = 556
@@ -26,107 +25,113 @@ const Content: React.FC<{
   const isUserSignedIn = authState?.isSignedIn
 
   return (
-    <Background backgroundImage={isDesktop ? backgroundImageDesktop : backgroundImageMobile}>
-      <Static />
-      <FadeBackground isDesktop={isDesktop} />
-      <MaxWidth>
-        <Flex
-          width="100%"
-          px={[2, 2, 2, 2, 2]}
-          py={5}
-          justifyContent="flex-end"
-          flexDirection="column"
-          height={isDesktop ? DESKTOP_HERO_HEIGHT + "px" : MOBILE_HERO_HEIGHT + "px"}
-        >
-          <Flex
-            flexDirection={isDesktop ? "row" : "column"}
-            justifyContent="space-between"
-            alignItems={isDesktop ? "flex-end" : "flex-start"}
-          >
-            <Box>
-              <Display color="white100" size={["8", "8", "10", "10", "10"]}>
-                Wear. Swap. Repeat.
-              </Display>
-              <Spacer mb={1} />
-              <Display color="black10" size={["6", "6", "7", "7", "7"]} style={{ maxWidth: "668px" }}>
-                Seasons is a private rental service exploring the shared access of fashion.{" "}
-                <span style={{ textDecoration: "underline", color: color("white100") }}>{seasonAndYear()}</span>{" "}
-                memberships are now open.
-              </Display>
-            </Box>
-            <Spacer mr={50} mt={5} />
-            <Box width={isDesktop ? "343px" : "100%"}>
-              <MembershipCTA userSession={userSession} authState={authState} />
-              {!isDesktop && (
-                <>
-                  <Spacer mb={1} />
-                  <GetTheAppButton block size="large" variant="blur" />
-                </>
-              )}
-              {!isUserSignedIn && (
-                <>
-                  <Spacer mb={2} />
-                  <Sans size="4" color="white100" textAlign="center">
-                    Already a member?{" "}
-                    <span
-                      style={{ textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => toggleLoginModal(true)}
-                    >
-                      Sign in here
-                    </span>
-                  </Sans>
-                </>
-              )}
-            </Box>
-          </Flex>
+    <Flex
+      flex={1}
+      flexDirection="column"
+      justifyContent="space-between"
+      height={isDesktop ? "715px" : "auto"}
+      py={5}
+      px={isDesktop ? 0 : 2}
+      style={{ backgroundColor: color("darkGreen") }}
+    >
+      <Box />
+      <Box>
+        <Display color="white100" size={["7", "7", "9", "9", "9"]}>
+          Rent, wear, & buy
+        </Display>
+        <Display color="white100" size={["7", "7", "9", "9", "9"]}>
+          your next favorite <span style={{ textDecoration: "underline" }}>sweater</span>
+        </Display>
+        <Spacer mb={2} />
+        <Sans color="black25" size="4" style={{ maxWidth: "320px" }}>
+          Exclusive rent-to-own access to over 1,000+ designer styles. Try on & discover new styles.
+        </Sans>
+        <Spacer mb={4} />
+        <Flex flexDirection={isDesktop ? "row" : "column"}>
+          <MembershipCTA variant="green" block={!isDesktop} userSession={userSession} authState={authState} />
+          <Spacer mr={isDesktop ? 2 : 0} mt={isDesktop ? 0 : 1} />
+          <GetTheAppButton size="large" variant="blur" block={!isDesktop} />
         </Flex>
-      </MaxWidth>
-    </Background>
+      </Box>
+      <Box mt={isDesktop ? 0 : 3}>
+        {!isUserSignedIn && (
+          <Sans size="4" color="white100">
+            Already a member?{" "}
+            <span style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => toggleLoginModal(true)}>
+              Sign in here
+            </span>
+          </Sans>
+        )}
+      </Box>
+    </Flex>
   )
+}
+
+const HeroImage = () => {
+  return <Picture style={{ width: "100%", height: "auto" }} src={imageResize(heroImage, "large")} />
 }
 
 export const Hero: React.FC = () => {
   const { authState, userSession, toggleLoginModal } = useAuthContext()
 
   return (
-    <>
-      <Media greaterThanOrEqual="md">
-        <Content
-          version="desktop"
-          authState={authState}
-          userSession={userSession}
-          toggleLoginModal={toggleLoginModal}
-        />
-      </Media>
-      <Media lessThan="md">
-        <Content version="mobile" authState={authState} userSession={userSession} toggleLoginModal={toggleLoginModal} />
-      </Media>
-    </>
+    <HeroWrapper>
+      <ImageWrapper>
+        <BackgroundImage />
+      </ImageWrapper>
+      <MaxWidth>
+        <Media greaterThanOrEqual="lg">
+          <Box px={2}>
+            <Content
+              version="desktop"
+              authState={authState}
+              userSession={userSession}
+              toggleLoginModal={toggleLoginModal}
+            />
+          </Box>
+        </Media>
+        <Media lessThan="lg">
+          <Grid>
+            <Row>
+              <Col lg="6" sm="12">
+                <HeroImage />
+              </Col>
+              <Col lg="6" sm="12">
+                <Content
+                  version="mobile"
+                  authState={authState}
+                  userSession={userSession}
+                  toggleLoginModal={toggleLoginModal}
+                />
+              </Col>
+            </Row>
+          </Grid>
+        </Media>
+      </MaxWidth>
+    </HeroWrapper>
   )
 }
 
-const Background = styled.div<{ backgroundImage: string }>`
-  width: 100%;
-  position: relative;
-  background: url(${(p) => p.backgroundImage}) no-repeat center center;
-  background-size: cover;
+const ImageWrapper = styled(Box)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 715px;
+  width: 50%;
+
+  @media ${themeProps.mediaQueries.xs} {
+    display: none;
+  }
 `
 
-const Static = styled.div`
-  width: 100%;
+const BackgroundImage = styled(Box)`
+  background: url(${heroImage}) no-repeat center center;
+  background-size: cover;
   height: 100%;
-  position: absolute;
-  opacity: 0.1;
-  background: url(${staticNoise}) repeat center center;
-  background-size: 90px;
+  width: 100%;
 `
 
-const FadeBackground = styled.div<{ isDesktop: boolean }>`
+const HeroWrapper = styled(Flex)`
+  background-color: ${color("darkGreen")};
   width: 100%;
-  height: 100%;
-  position: absolute;
-  background: url(${fade}) no-repeat center center;
-  background-size: 90px;
-  background-size: cover;
-  opacity: ${(p) => (p.isDesktop ? 1 : 0.2)};
 `

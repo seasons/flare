@@ -1,5 +1,10 @@
 export const seasonAndYear = () => {
   const now = new Date()
+  return `${currentSeason()} ${now.getFullYear()}`
+}
+
+export const currentSeason = () => {
+  const now = new Date()
   let season = ""
   switch (now.getMonth()) {
     case 11:
@@ -23,5 +28,5 @@ export const seasonAndYear = () => {
       season = "Fall"
       break
   }
-  return `${season} ${now.getFullYear()}`
+  return season
 }
