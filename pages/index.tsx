@@ -24,6 +24,7 @@ import { color } from "helpers"
 import { ButtonVariant } from "components/Button/Button.shared"
 import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
 import { DESKTOP_HERO_HEIGHT } from "components/Homepage/Hero"
+import { PromoBar } from "components/Homepage/PromoBar"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -93,6 +94,7 @@ const Home = screenTrack(() => ({
 
   return (
     <Layout showIntercom navStyles={navStyles} hideNavPadding>
+      <PromoBar />
       <Hero />
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
