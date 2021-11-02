@@ -57,39 +57,41 @@ const Item = ({ step, index, breakpoint }) => {
   )
 }
 
-export const HowMembershipWorks: React.FC = () => {
+const Content = ({ breakpoint }) => {
   const { openDrawer } = useDrawerContext()
 
+  const isDesktop = breakpoint === "desktop"
+
   return (
-    <Grid>
-      <Media greaterThanOrEqual="lg">
-        <Flex flexDirection="row" justifyContent="space-between" px={2}>
-          <Display size={["7", "9"]}>How membership works</Display>
+    <>
+      <Flex flexDirection="row" justifyContent="space-between" px={2}>
+        <Display size={["7", "9"]}>How membership works</Display>
+        {isDesktop && (
           <Display size={["7", "9"]} underline pointer onClick={() => openDrawer("faq")}>
             See FAQ
           </Display>
-        </Flex>
-        <Spacer mb={2} />
-        <Row px={[2, 2, 2, 2, 2]}>
-          {HOW_IT_WORKS_TEXT?.map((step, index) => (
-            <Col md="3" xs="12" key={index} pb={5}>
-              <Item index={index} step={step} breakpoint="desktop" />
-            </Col>
-          ))}
-        </Row>
+        )}
+      </Flex>
+      <Spacer mb={2} />
+      <Row px={[2, 2, 2, 2, 2]}>
+        {HOW_IT_WORKS_TEXT?.map((step, index) => (
+          <Col md={isDesktop ? "3" : "6"} xs="12" key={index} pb={5}>
+            <Item index={index} step={step} breakpoint={breakpoint} />
+          </Col>
+        ))}
+      </Row>
+    </>
+  )
+}
+
+export const HowMembershipWorks: React.FC = () => {
+  return (
+    <Grid>
+      <Media greaterThanOrEqual="lg">
+        <Content breakpoint="desktop" />
       </Media>
       <Media lessThan="lg">
-        <Flex flexDirection="row" px={2}>
-          <Display size={["7", "9"]}>How membership works</Display>
-        </Flex>
-        <Spacer mb={2} />
-        <Row px={[2, 2, 2, 2, 2]}>
-          {HOW_IT_WORKS_TEXT?.map((step, index) => (
-            <Col md="6" xs="12" key={index}>
-              <Item index={index} step={step} breakpoint="mobile" />
-            </Col>
-          ))}
-        </Row>
+        <Content breakpoint="mobile" />
       </Media>
     </Grid>
   )
