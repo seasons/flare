@@ -37,14 +37,14 @@ const Content: React.FC<{
       <Box />
       <Box>
         <Display color="white100" size={["7", "7", "9", "9", "9"]}>
-          Rent, wear, & buy
+          Rent it, wear it, love it,
         </Display>
         <Display color="white100" size={["7", "7", "9", "9", "9"]}>
-          your next favorite <span style={{ textDecoration: "underline" }}>sweater</span>
+          buy it or swap it out.
         </Display>
         <Spacer mb={2} />
         <Sans color="black25" size="4" style={{ maxWidth: "320px" }}>
-          Exclusive rent-to-own access to over 1,000+ designer styles. Try on & discover new styles.
+          Exclusive rent-to-own access to over 1,000+ designer styles. A new way to discover, wear, & buy.
         </Sans>
         <Spacer mb={4} />
         <Flex flexDirection={isDesktop ? "row" : "column"}>
