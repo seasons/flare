@@ -58,7 +58,7 @@ const Content: React.FC<{
           <Sans size="4" color="white100">
             Already a member?{" "}
             <span style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => toggleLoginModal(true)}>
-              Sign in here
+              Sign in
             </span>
           </Sans>
         )}
