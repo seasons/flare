@@ -2,13 +2,11 @@ import * as React from "react"
 
 export const BillingIcon = (props) => {
   return (
-    <svg width={56} height={56} viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <title>{"Billing"}</title>
+    <svg width={38} height={38} xmlns="http://www.w3.org/2000/svg" {...props}>
       <g fill="none" fillRule="evenodd">
-        <path fill="#FFF" d="M0 0h56v56H0z" />
-        <circle stroke="#000" strokeWidth={1.5} fill="#FFF" cx={28} cy={28} r={18.25} />
+        <circle stroke="#000" strokeWidth={1.5} fill="#FFF" cx={19} cy={19} r={18.25} />
         <text fontFamily="ProximaNova-Medium, Proxima Nova" fontSize={16} fontWeight={400} fill="#000">
-          <tspan x={23.208} y={33.5}>
+          <tspan x={14.208} y={24.5}>
             {"$"}
           </tspan>
         </text>

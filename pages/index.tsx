@@ -1,5 +1,13 @@
 import { Box, MaxWidth, Media, Separator, Spacer } from "components"
-import { FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans, TheApp } from "components/Homepage"
+import {
+  HowItWorksSmall,
+  FromCommunity,
+  Hero,
+  HomepageFitPics,
+  HowMembershipWorks,
+  Plans,
+  TheApp,
+} from "components/Homepage"
 import { Layout } from "components/Layout"
 import { PartnerModal } from "components/Partner/PartnerModal"
 import { initializeApollo } from "lib/apollo/apollo"
@@ -16,6 +24,7 @@ import { color } from "helpers"
 import { ButtonVariant } from "components/Button/Button.shared"
 import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
 import { DESKTOP_HERO_HEIGHT } from "components/Homepage/Hero"
+import { PromoBar } from "components/Homepage/PromoBar"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -81,23 +90,15 @@ const Home = screenTrack(() => ({
     }
   }, [isUserSignedIn])
 
-  const SeparatorWithPadding = () => {
-    return (
-      <Box px={[2, 2, 2, 2, 2]}>
-        <Separator />
-      </Box>
-    )
-  }
-
   const partnerData = getPartnerDataFromUTMCampaign(router.query["utm_campaign"])
 
   return (
     <Layout showIntercom navStyles={navStyles} hideNavPadding>
+      <PromoBar />
       <Hero />
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-          <FeaturedIn />
-          <SeparatorWithPadding />
+          <HowItWorksSmall />
         </Box>
       </MaxWidth>
 
@@ -120,8 +121,8 @@ const Home = screenTrack(() => ({
       <Media greaterThanOrEqual="md">
         <MaxWidth>
           <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-            <Spacer mb="128px" />
-            <HowItWorks />
+            <Spacer mb={5} />
+            <HowMembershipWorks />
             <Spacer mb={10} />
           </Box>
         </MaxWidth>
@@ -153,7 +154,7 @@ const Home = screenTrack(() => ({
           <Discover />
           <Media lessThan="md">
             <Spacer mb={10} />
-            <HowItWorks />
+            <HowMembershipWorks />
             <Spacer mb={10} />
           </Media>
         </Box>

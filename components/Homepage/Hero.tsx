@@ -134,4 +134,5 @@ const BackgroundImage = styled(Box)`
 const HeroWrapper = styled(Flex)`
   background-color: ${color("darkGreen")};
   width: 100%;
+  position: relative;
 `
