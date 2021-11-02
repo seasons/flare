@@ -4,7 +4,7 @@ export const CalendarIcon = (props) => {
   return (
     <svg width={36} height={36} xmlns="http://www.w3.org/2000/svg" {...props}>
       <g fill="none" fillRule="evenodd">
-        <rect stroke="#000" strokeWidth={1.5} fill="#FFF" x={0.75} y={0.75} width={34.5} height={34.5} rx={4} />
+        <rect stroke="#000" strokeWidth={1.5} x={0.75} y={0.75} width={34.5} height={34.5} rx={4} />
         <rect fill="#000" opacity={0.2} x={4} y={12} width={4} height={4} rx={1} />
         <rect fill="#000" opacity={0.2} x={12} y={12} width={4} height={4} rx={1} />
         <rect fill="#000" opacity={0.2} x={20} y={12} width={4} height={4} rx={1} />
