@@ -1,4 +1,4 @@
-import { Flex, Media, Sans } from "components"
+import { Flex, Sans } from "components"
 import { color } from "helpers/color"
 import React from "react"
 
@@ -11,16 +11,9 @@ export const PromoBar = () => {
       width="100%"
       py={1}
     >
-      <Media greaterThanOrEqual="md">
-        <Sans size="3" color="white100" textAlign="center">
-          Get 15% off your first month of membership with code FALL15 🍁
-        </Sans>
-      </Media>
-      <Media lessThan="md">
-        <Sans size="3" color="white100" textAlign="center">
-          Get 15% off your first month with code FALL15 🍁
-        </Sans>
-      </Media>
+      <Sans size="3" color="white100" textAlign="center">
+        Refer a friend & get $20 in credits each ✨
+      </Sans>
     </Flex>
   )
 }
