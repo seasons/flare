@@ -1,5 +1,5 @@
 import { Box, MaxWidth, Media, Separator, Spacer } from "components"
-import { FeaturedIn, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans, TheApp } from "components/Homepage"
+import { HowItWorksSmall, FromCommunity, Hero, HomepageFitPics, HowItWorks, Plans, TheApp } from "components/Homepage"
 import { Layout } from "components/Layout"
 import { PartnerModal } from "components/Partner/PartnerModal"
 import { initializeApollo } from "lib/apollo/apollo"
@@ -81,14 +81,6 @@ const Home = screenTrack(() => ({
     }
   }, [isUserSignedIn])
 
-  const SeparatorWithPadding = () => {
-    return (
-      <Box px={[2, 2, 2, 2, 2]}>
-        <Separator />
-      </Box>
-    )
-  }
-
   const partnerData = getPartnerDataFromUTMCampaign(router.query["utm_campaign"])
 
   return (
@@ -96,8 +88,7 @@ const Home = screenTrack(() => ({
       <Hero />
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
-          <FeaturedIn />
-          <SeparatorWithPadding />
+          <HowItWorksSmall />
         </Box>
       </MaxWidth>
 
