@@ -33,7 +33,7 @@ const Item = ({ item }) => {
       <Spacer mr={2} />
       <Flex flexDirection="column" flex={1} px={3}>
         <Display size="4">{item.title}</Display>
-        <Spacer mb={1} />
+        <Spacer mb={0.5} />
         <Sans size="3" color="black50" style={{ maxWidth: "280px" }}>
           {item.text}
         </Sans>
