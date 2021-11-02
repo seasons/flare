@@ -75,7 +75,7 @@ const Content = ({ breakpoint }) => {
       <Spacer mb={2} />
       <Row px={[2, 2, 2, 2, 2]}>
         {HOW_IT_WORKS_TEXT?.map((step, index) => (
-          <Col md={isDesktop ? "3" : "6"} xs="12" key={index} pb={5}>
+          <Col md={isDesktop ? "3" : "6"} xs="12" key={index} pb={isDesktop ? 5 : 0}>
             <Item index={index} step={step} breakpoint={breakpoint} />
           </Col>
         ))}
