@@ -147,7 +147,7 @@ export const Reservation = screenTrack()((props) => {
   const [shippingCode, setShippingCode] = useState("UPSGround")
   const { openDrawer } = useDrawerContext()
 
-  const { previousData, data = previousData } = useQuery(GET_CUSTOMER, {
+  const { previousData, data = previousData, refetch } = useQuery(GET_CUSTOMER, {
     variables: {
       shippingCode: shippingCode || "UPSGround",
     },
@@ -224,7 +224,11 @@ export const Reservation = screenTrack()((props) => {
   useEffect(() => {
     if (shippingOptions?.length > 0) {
       const selectedShippingOption = shippingOptions[shippingOptionIndex]
-      setShippingCode(selectedShippingOption?.shippingMethod?.code)
+      const updatedShippingCode = selectedShippingOption?.shippingMethod?.code
+      setShippingCode(updatedShippingCode)
+      refetch({
+        shippingCode: updatedShippingCode,
+      })
     }
   }, [shippingOptionIndex, shippingOptions])
 
@@ -275,7 +279,7 @@ export const Reservation = screenTrack()((props) => {
             <Box mb={4}>
               <SectionHeader title="Payment method" onEdit={() => {}} />
               <Sans size="4" color="black50" mt={1}>
-                {`${billingInfo.brand} ending in ${billingInfo.last_digits}`}
+                {`${billingInfo?.brand || "card"} ending in ${billingInfo?.last_digits}`}
               </Sans>
             </Box>
             {address && (
