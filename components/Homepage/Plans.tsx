@@ -63,9 +63,10 @@ const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ 
   )
 }
 
-const Image = () => {
+const Image = ({ breakpoint }) => {
+  const isDesktop = breakpoint === "desktop"
   return (
-    <ImageWrapper>
+    <ImageWrapper isDesktop={isDesktop}>
       <Picture src={imageResize(image, "large")} alt="Model leaning against car in fall" />
     </ImageWrapper>
   )
@@ -81,7 +82,7 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
               <PlanTabs plans={plans} breakpoint="desktop" />
             </Col>
             <Col md="6" xs="12" pb={2}>
-              <Image />
+              <Image breakpoint="desktop" />
             </Col>
           </Row>
         </Grid>
@@ -92,7 +93,7 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
       </Media>
       <Media lessThan="lg">
         <Box px={2}>
-          <Image />
+          <Image breakpoint="mobile" />
           <Spacer mb={5} />
           <Display size="9">Membership plans</Display>
           <Spacer mb={3} />
@@ -107,9 +108,16 @@ const StyledSpan = styled.span`
   font-size: 14px;
 `
 
-const ImageWrapper = styled.div`
+const ImageWrapper = styled.div<{ isDesktop: boolean }>`
   border-radius: 8px;
   overflow: hidden;
+  height: ${(p) => (p.isDesktop ? "700px" : "auto")};
+  display: flex;
+  justify-content: flex-end;
+
+  img {
+    max-height: 100%;
+  }
 `
 
 const Tabs = styled(Flex)`
