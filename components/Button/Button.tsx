@@ -133,6 +133,27 @@ export class Button extends Component<WebButtonProps> {
               `
           }};
         `
+
+      case "primaryGray":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+
+            return `
+                background-color: ${colors.black10};
+                border-color: ${colors.black10};
+                color: ${colors.black100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color: ${colors.black30};
+                    border-color: ${colors.black100};
+                    color: ${colors.black100};
+                  }
+                }
+              `
+          }};
+        `
       case "secondaryGray":
         return css`
           ${(props) => {

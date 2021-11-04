@@ -4,36 +4,26 @@ import { color } from "helpers"
 import React from "react"
 import styled from "styled-components"
 
-import { MembershipCTA } from "./MembershipCTA"
-
-export const PlanCard = ({ plan, userSession, authState }) => {
-  const discount = "18.75% Off"
+export const PlanCard = ({ plan, isDesktop }) => {
   const isYearlyPlan = plan?.planID === "access-yearly"
-  const notActive = userSession?.customer?.status !== "Active"
 
   return (
-    <Wrapper px={3} pt={5} pb={3}>
-      {isYearlyPlan && (
-        <DiscountWrapper px={2} py={1}>
-          <Sans size="4">{discount}</Sans>
-        </DiscountWrapper>
+    <Wrapper>
+      {isDesktop && (
+        <>
+          <Sans size="9">{plan.name} membership</Sans>
+          <Spacer mb={5} />
+        </>
       )}
-      <Sans size="7">{plan.name}</Sans>
-      <Spacer mb={5} />
       <Sans size="10">
         ${plan.price / 100}
         <Sans size="4" color="black50" style={{ display: "inline" }}>
           {" "}
-          / {isYearlyPlan ? "year" : "month"}
+          / {isYearlyPlan ? "year" : "month with a 3-month minimum"}
         </Sans>
       </Sans>
-      <Sans size={["3", "4"]} color="black50">
-        {plan.caption}
-      </Sans>
-      <Spacer mb={5} />
+      <Spacer mb={3} />
       <PlanFeatures features={plan?.features} />
-      <Spacer mb={notActive ? 5 : 3} />
-      {notActive && <MembershipCTA variant="primaryBlack" userSession={userSession} authState={authState} />}
     </Wrapper>
   )
 }
@@ -43,8 +33,6 @@ const Wrapper = styled(Box)`
   width: 100%;
   position: relative;
   background-color: ${color("white100")};
-  border-radius: 8px;
-  box-shadow: 0 0 48px 0 rgba(0, 0, 0, 0.12);
 `
 
 const DiscountWrapper = styled(Box)`

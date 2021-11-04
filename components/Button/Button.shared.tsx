@@ -21,6 +21,7 @@ export type ButtonVariant =
   | "green"
   | "secondaryGraySelected"
   | "blur"
+  | "primaryGray"
 /** Default button color variant */
 export const defaultVariant: ButtonVariant = "primaryBlack"
 
