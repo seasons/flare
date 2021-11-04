@@ -1,65 +1,138 @@
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { useRouter } from "next/router"
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { PlanCard } from "./PlanCard"
-import { seasonAndYear } from "utils/seasonAndYear"
-import { Box, Display, Flex, Media, Sans, Spacer } from "components"
+import { Box, Button, Display, Flex, Media, Picture, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
+import { imageResize } from "utils/imageResize"
+import { MembershipCTA } from "./MembershipCTA"
+import { FeaturedIn } from "./FeaturedIn"
+import { Separator } from "@seasons/eclipse"
 
-const image = require("../../public/images/homepage/PlanBackground.jpg")
+const image = require("../../public/images/homepage/plans/BG-Right.jpg")
 
-export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
+const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ plans, breakpoint }) => {
+  const isDesktop = breakpoint === "desktop"
+  const [tabIndex, setTabIndex] = useState(0)
   const { openDrawer } = useDrawerContext()
   const { authState, userSession } = useAuthContext()
 
+  const plan = plans?.[tabIndex]
+
   return (
-    <Background>
-      <Grid px={[2, 2, 2, 100, 158]} pt={[10, 15, 15, 15, 15]}>
-        <Flex width="100%" alignItems="center" justifyContent="center" flexDirection="row" pb={5}>
-          <Flex flexDirection="column" justifyContent="center" alignItems="center">
-            <Display size={["7", "9"]}>{`${seasonAndYear()} Membership`}</Display>
-            <Sans size={["3", "4"]} color="black50">
-              Have a question not covered here? Check out our{" "}
-              <span
-                style={{ textDecoration: "underline", cursor: "pointer", color: color("black100") }}
-                onClick={() => openDrawer("faq")}
+    <Box pr={isDesktop ? "100px" : 0}>
+      <Tabs>
+        {plans?.map((plan, index) => {
+          const selected = index === tabIndex
+          return (
+            <Flex py="12px" onClick={() => setTabIndex(index)} flex={2} style={{ cursor: "pointer" }}>
+              <Sans
+                size={["4", "5"]}
+                color={selected ? "white100" : "black100"}
+                textAlign="center"
+                style={{ width: "100%" }}
               >
-                FAQ
-              </span>
-            </Sans>
-          </Flex>
-        </Flex>
-        <Row>
-          {plans.map((plan, index) => (
-            <Col md="6" xs="12" key={index} px={[0, 0, 1, 1, 1]} pb={5}>
-              <Flex flexDirection="row" justifyContent={index % 2 === 0 ? "flex-end" : "flex-start"}>
-                <PlanCard plan={plan} authState={authState} userSession={userSession} />
-              </Flex>
-            </Col>
-          ))}
-        </Row>
-        <Flex flexDirection="row" justifyContent="center">
-          <Sans size="3" color="black50" style={{ textAlign: "center", maxWidth: "720px" }}>
-            Cancel for any reason within your first 24 hours to receive a full refund. Free shipping and dry cleaning
-            are only included on one order per month. Questions about membership? Contact{" "}
-            <span
-              onClick={() => window.open(`mailto:membership@seasons.nyc?subject=Membership`)}
-              style={{ cursor: "pointer" }}
-            >
-              membership@seasons.nyc
-            </span>
-          </Sans>
-        </Flex>
-        <Spacer mb={[10, 15, 15, 15, 15]} />
-      </Grid>
-    </Background>
+                Pay {plan.name}
+                <StyledSpan>{plan.name === "Yearly" ? " (Save 20%)" : ""}</StyledSpan>
+              </Sans>
+            </Flex>
+          )
+        })}
+        <TabToggle tabIndex={tabIndex}>
+          <ToggleBackground />
+        </TabToggle>
+      </Tabs>
+      <Spacer mb={isDesktop ? "120px" : 4} />
+      <PlanCard plan={plan} isDesktop={isDesktop} />
+      <Spacer mb={4} />
+      <Flex flexDirection={isDesktop ? "row" : "column"}>
+        <MembershipCTA variant="primaryBlack" authState={authState} userSession={userSession} />
+        <Spacer mb={isDesktop ? 0 : 2} mr={isDesktop ? 2 : 0} />
+        <Button variant="primaryGray" size="large" onClick={() => openDrawer("faq")}>
+          See our FAQ
+        </Button>
+      </Flex>
+      <Spacer mb="3" />
+      <Sans size="3" color="black50" style={{ maxWidth: "460px" }}>
+        Cancel for any reason within your first 24 hours to receive a full refund. Free shipping and dry cleaning are
+        only included on one order per month.
+      </Sans>
+    </Box>
   )
 }
 
-const Background = styled(Box)`
-  background: url(${image}) no-repeat center center;
-  background-size: cover;
+const Image = () => {
+  return (
+    <ImageWrapper>
+      <Picture src={imageResize(image, "large")} alt="Model leaning against car in fall" />
+    </ImageWrapper>
+  )
+}
+
+export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
+  return (
+    <>
+      <Media greaterThan="md">
+        <Grid px={2}>
+          <Row>
+            <Col md="6" xs="12" pb={2}>
+              <PlanTabs plans={plans} breakpoint="desktop" />
+            </Col>
+            <Col md="6" xs="12" pb={2}>
+              <Image />
+            </Col>
+          </Row>
+        </Grid>
+        <FeaturedIn />
+        <Box px={[2, 2, 2, 2, 2]} pb={2}>
+          <Separator />
+        </Box>
+      </Media>
+      <Media lessThan="lg">
+        <Box px={2}>
+          <Image />
+          <Spacer mb={5} />
+          <Display size="9">Membership plans</Display>
+          <Spacer mb={3} />
+          <PlanTabs plans={plans} breakpoint="mobile" />
+        </Box>
+      </Media>
+    </>
+  )
+}
+
+const StyledSpan = styled.span`
+  font-size: 14px;
+`
+
+const ImageWrapper = styled.div`
+  border-radius: 8px;
+  overflow: hidden;
+`
+
+const Tabs = styled(Flex)`
+  border-radius: 8px;
+  position: relative;
+  border: 1px solid ${color("black10")};
+  flex-direction: row;
+  align-items: center;
+`
+
+const TabToggle = styled.div<{ tabIndex: number }>`
+  position: absolute;
+  width: calc(50%);
+  height: calc(100%);
+  padding: 4px;
+  z-index: -1;
+  transition: 300ms ease-in;
+  transform: translateX(${(p) => (p.tabIndex === 0 ? "0" : "100%")});
+`
+
+const ToggleBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background-color: ${color("brown100")};
 `

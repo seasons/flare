@@ -81,7 +81,6 @@ export const Home_Query = gql`
       name
       features {
         included
-        excluded
       }
       caption
       price
