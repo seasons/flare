@@ -39,7 +39,7 @@ export const GetTheAppButton: React.FC<Props> = ({ block, width, variant, size =
   }
 
   return (
-    <GetAppWrapper block={block}>
+    <GetAppWrapper block={block} variant={variant}>
       <Button
         variant={variant ? variant : "primaryWhite"}
         width={_width}
@@ -64,27 +64,20 @@ export const GetTheAppButton: React.FC<Props> = ({ block, width, variant, size =
   )
 }
 
-const GetAppWrapper = styled("div")<{ block: boolean }>`
+const GetAppWrapper = styled("div")<{ block: boolean; variant: ButtonVariant }>`
   width: ${(p) => (p.block ? "100%" : "auto")};
   svg {
     path {
       transition: fill ${GLOBAL_TRANSITION};
+    }
+    .apple-fill {
+      fill: ${(p) => (p.variant === "blur" ? color("white100") : color("black100"))};
     }
   }
   &:hover {
     svg {
       .apple-fill {
         fill: ${color("white100")};
-      }
-    }
-  }
-
-  @media screen and (max-width: 767px) {
-    &:hover {
-      svg {
-        .apple-fill {
-          fill: ${color("black100")};
-        }
       }
     }
   }

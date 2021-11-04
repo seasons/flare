@@ -232,6 +232,6 @@ const BagItemContainer = styled(Box)`
 const ColoredDot = styled(Box)<{ reservable?: boolean }>`
   height: 10px;
   width: 10px;
-  background-color: ${(p) => (!!p.reservable ? color("green") : color("black50"))};
+  background-color: ${(p) => (!!p.reservable ? color("grayGreen") : color("black50"))};
   border-radius: 5px;
 `

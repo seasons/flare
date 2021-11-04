@@ -1,31 +1,25 @@
-import { Box, Flex, Sans, Separator, Skeleton, Spacer } from "components"
+import { Box, Button, Flex, Sans, Separator, Skeleton, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import {
-  ChevronIcon,
-  LogoutIcon,
-  MembershipInfoIcon,
-  PaymentShippingIcon,
-  PersonalPreferencesIcon,
-  PrivacyPolicy,
-  QuestionMark,
-  TermsOfService,
+  ChevronIcon, LogoutIcon, MembershipInfoIcon, PaymentShippingIcon, PersonalPreferencesIcon,
+  PrivacyPolicy, QuestionMark, TermsOfService
 } from "components/Icons"
+import { AppleSVG, InstagramSVG } from "components/SVGs"
 import gql from "graphql-tag"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { DateTime } from "luxon"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import { ScrollView } from "react-native"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-import { DateTime } from "luxon"
 
 import { useQuery } from "@apollo/client"
+import { WaitlistedCTA } from "@seasons/eclipse"
 
 import { Container } from "../Container"
-import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
-import { AuthorizedCTA, WaitlistedCTA } from "@seasons/eclipse"
-import { AppleSVG, InstagramSVG } from "components/SVGs"
-import { ReferAFriend } from "./Components/ReferAFriend"
 import { CreditBalance, CreditBalanceFragment_Customer } from "./Components/CreditBalance"
+import { ReferAFriend } from "./Components/ReferAFriend"
+import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
 
 export enum UserState {
   Undetermined,
@@ -239,26 +233,38 @@ export const Account = screenTrack()(({ navigation }) => {
         return <OnboardingChecklist userState={userState} />
       case CustomerStatus.Authorized:
         return (
-          <AuthorizedCTA
-            authorizedAt={DateTime.fromISO(customer?.authorizedAt)}
-            authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
-            onPressLearnMore={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames.LearnMoreTapped,
-                actionType: Schema.ActionTypes.Tap,
-              })
-              router.push("/signup")
-              closeDrawer()
-            }}
-            onPressChoosePlan={() => {
-              tracking.trackEvent({
-                actionName: Schema.ActionNames.ChoosePlanTapped,
-                actionType: Schema.ActionTypes.Tap,
-              })
-              router.push("/signup")
-              closeDrawer()
-            }}
-          />
+          <Box pb={1}>
+            <Sans size="4">You're in.</Sans>
+            <Spacer mb={3} />
+            <Button
+              block
+              onClick={() => {
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.ChoosePlanTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+                router.push("/signup")
+                closeDrawer()
+              }}
+            >
+              Choose plan
+            </Button>
+            <Spacer mb={1} />
+            <Button
+              block
+              variant="primaryWhite"
+              onClick={() => {
+                tracking.trackEvent({
+                  actionName: Schema.ActionNames.LearnMoreTapped,
+                  actionType: Schema.ActionTypes.Tap,
+                })
+                router.push("/signup")
+                closeDrawer()
+              }}
+            >
+              FAQ
+            </Button>
+          </Box>
         )
       case CustomerStatus.Invited:
       case CustomerStatus.Active:

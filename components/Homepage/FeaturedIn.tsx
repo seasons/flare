@@ -24,92 +24,33 @@ export const FeaturedIn: React.FC = () => {
     },
   ]
 
-  const mobileItems = [
-    { logo: vogue, link: "https://www.vogue.com/article/seasons-menswear-fashion-rental-expansion" },
-    { logo: nyt, link: "https://www.nytimes.com/2020/01/08/style/men-rent-rental-clothing.html" },
-    {
-      logo: wwd,
-      link:
-        "https://wwd.com/menswear-news/mens-retail-business/what-to-watch-mens-rental-services-begin-to-emerge-1203409178/",
-    },
-  ]
-
-  const Desktop = () => {
-    return (
-      <MaxWidth>
-        <Box width="100%" px={[2, 2, 2, 2, 2]} py={2}>
-          <Flex
-            style={{ width: "100%" }}
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
-            flexWrap="wrap"
-          >
-            <Flex pr={1} flexDirection="row" justifyContent="flex-end" alignItems="center" py={3}>
-              <Sans size="4" color="black50">
-                Featured in
-              </Sans>
-            </Flex>
-            {items.map((item, index) => {
-              return (
-                <StyledAnchor href={item.link} target="_blank" key={item.link}>
-                  <Box pr={2} py={3}>
-                    <Image src={item.logo} />
-                  </Box>
-                </StyledAnchor>
-              )
-            })}
-          </Flex>
-        </Box>
-      </MaxWidth>
-    )
-  }
-
-  const Mobile = () => {
-    return (
-      <MaxWidth>
-        <Box width="100%" px={[2, 2, 2, 2, 2]} py={4}>
-          <Flex
-            style={{ width: "100%" }}
-            flexDirection="row"
-            alignItems="center"
-            flexWrap="wrap"
-            justifyContent="space-between"
-          >
-            <Sans size="4" color="black50" textAlign="center" style={{ width: "100%" }}>
+  return (
+    <MaxWidth>
+      <Box width="100%" pb={2} px={2}>
+        <Flex
+          style={{ width: "100%" }}
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+        >
+          <Flex pr={1} flexDirection="row" justifyContent="flex-end" alignItems="center" py={3}>
+            <Sans size="4" color="black50">
               Featured in
             </Sans>
-            <Flex
-              mt={3}
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center"
-              flexWrap="nowrap"
-              width="100%"
-            >
-              {mobileItems.map((item, index) => {
-                return (
-                  <StyledAnchor href={item.link} target="_blank" key={item.link}>
-                    <MobileImage src={item.logo} />
-                  </StyledAnchor>
-                )
-              })}
-            </Flex>
           </Flex>
-        </Box>
-      </MaxWidth>
-    )
-  }
-
-  return (
-    <>
-      <Media greaterThan="sm">
-        <Desktop />
-      </Media>
-      <Media lessThan="md">
-        <Mobile />
-      </Media>
-    </>
+          {items.map((item, index) => {
+            return (
+              <StyledAnchor href={item.link} target="_blank" key={item.link}>
+                <Box pr={2} py={3}>
+                  <Image src={item.logo} />
+                </Box>
+              </StyledAnchor>
+            )
+          })}
+        </Flex>
+      </Box>
+    </MaxWidth>
   )
 }
 

@@ -3,21 +3,27 @@ import { ButtonVariant } from "components/Button/Button.shared"
 import Link from "next/link"
 import React from "react"
 import { Schema, useTracking } from "utils/analytics"
+import { currentSeason } from "utils/seasonAndYear"
 import { useDrawerContext } from "../../components/Drawer/DrawerContext"
 import { Button } from "../Button"
 
-export const MembershipCTA: React.FC<{ variant?: ButtonVariant; userSession: any; authState: any }> = ({
-  userSession,
-  authState,
-  variant = "primaryWhiteNoBorder",
-}) => {
+export const MembershipCTA: React.FC<{
+  variant?: ButtonVariant
+  block?: boolean
+  userSession: any
+  authState: any
+}> = ({ userSession, authState, variant = "primaryWhiteNoBorder", block = true }) => {
   const tracking = useTracking()
   const isUserSignedIn = authState?.isSignedIn
 
   const { openDrawer } = useDrawerContext()
 
   const browseData = { text: "Browse the collection", link: "/browse", actionName: "BrowseTheCollectionTapped" }
-  const applyData = { text: "Apply for membership", link: "/signup", actionName: "ApplyForMembershipTapped" }
+  const applyData = {
+    text: `Apply for ${currentSeason()} membership`,
+    link: "/signup",
+    actionName: "ApplyForMembershipTapped",
+  }
 
   let ctaData = browseData as any
   if (isUserSignedIn) {
@@ -47,11 +53,11 @@ export const MembershipCTA: React.FC<{ variant?: ButtonVariant; userSession: any
   }
 
   return (
-    <Flex flexDirection="row" justifyContent="flex-end">
+    <Flex flexDirection="row">
       <Link href={ctaData.link}>
         <Button
           size="large"
-          block
+          block={block}
           variant={variant}
           onClick={() => {
             tracking.trackEvent({

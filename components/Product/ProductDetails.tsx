@@ -49,6 +49,12 @@ export const ProductDetails: React.FC<{
   const waistByLengthDisplay =
     displayShort !== internalSize?.display && internalSize?.type === "WxL" && internalSize?.display
 
+  const manufacturerSize = selectedVariant?.manufacturerSizes?.[0]
+  const manufacturerSizeDisplay = manufacturerSize?.display
+  const manufacturerSizeType = manufacturerSize?.type
+  const manufacturerSizeDiff = manufacturerSize !== selectedVariant?.displayShort
+  const sizeConversionDisplay = `US ${displayShort} = ${manufacturerSizeType} ${manufacturerSizeDisplay}`
+
   const modelDetailValue =
     !!product.modelSize &&
     !!product.modelHeight &&
@@ -150,6 +156,9 @@ export const ProductDetails: React.FC<{
 
       <ProductInfoItem detailType="Product details" detailValue="" />
       {!!waistByLengthDisplay && <ProductInfoItem detailType="Waist by length" detailValue={waistByLengthDisplay} />}
+      {!!manufacturerSizeType && manufacturerSizeDiff && (
+        <ProductInfoItem detailType="Manufacturer size" detailValue={sizeConversionDisplay} />
+      )}
       {product.color && <ProductInfoItem detailType="Color" detailValue={product.color.name} />}
       {!!product.modelSize && !!product.modelHeight && (
         <ProductInfoItem detailType="Fit" detailValue={modelDetailValue} />

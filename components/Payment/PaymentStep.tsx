@@ -23,12 +23,6 @@ import {
 import { PaymentStepPlanSelection } from "./PaymentStepComponents/PaymentStepPlanSelection"
 
 interface PaymentStepProps {
-  plan: {
-    id: string
-    planID: string
-    name: string
-    price: number
-  }
   onSuccess?: (data: any) => void
   onError?: (data: any) => void
   onBack?: () => void
