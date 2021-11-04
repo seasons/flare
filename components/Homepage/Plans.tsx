@@ -56,8 +56,8 @@ const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ 
       </Flex>
       <Spacer mb="3" />
       <Sans size="3" color="black50" style={{ maxWidth: "460px" }}>
-        Cancel for any reason within your first 24 hours to receive a full refund. Free shipping and dry cleaning are
-        only included on one order per month.
+        Cancel for any reason within your first 24 hours to receive a full refund. Free shipping is only included on one
+        order per month.
       </Sans>
     </Box>
   )
