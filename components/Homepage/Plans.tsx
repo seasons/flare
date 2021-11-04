@@ -11,7 +11,7 @@ import { MembershipCTA } from "./MembershipCTA"
 import { FeaturedIn } from "./FeaturedIn"
 import { Separator } from "@seasons/eclipse"
 
-const image = require("../../public/images/signup/CreateAccount.jpg")
+const image = require("../../public/images/homepage/plans/BG-Right.jpg")
 
 const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ plans, breakpoint }) => {
   const isDesktop = breakpoint === "desktop"
