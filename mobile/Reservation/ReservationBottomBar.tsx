@@ -1,4 +1,5 @@
 import { ButtonProps } from "components/Button/Button.shared"
+import { color } from "helpers/color"
 import { formatPrice } from "helpers/formatPrice"
 import React from "react"
 import styled from "styled-components"
@@ -21,13 +22,13 @@ export const ReservationBottomBar: React.FC<ReservationBottomBarProps> = ({ line
   const total = totalLineItem?.price || 0
 
   return (
-    <Wrapper>
+    <>
       <Separator />
-      <Box height={80} pt={2} px={2}>
+      <Box height={80} pt={2} px={2} style={{ backgroundColor: color("white100") }}>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Box>
             <Sans size="3" color="black50">
-              Estimated 30-day total
+              Estimated total
             </Sans>
             <Flex flexDirection="row" alignItems="center">
               <Sans size="6">{formatPrice(total)}</Sans>
@@ -35,13 +36,13 @@ export const ReservationBottomBar: React.FC<ReservationBottomBarProps> = ({ line
           </Box>
 
           <Box>
-            <Button {...buttonProps} variant="primaryBlack" onPress={onReserve}>
+            <Button {...buttonProps} variant="primaryBlack" onClick={onReserve}>
               Confirm Order
             </Button>
           </Box>
         </Flex>
       </Box>
-    </Wrapper>
+    </>
   )
 }
 

@@ -1,41 +1,51 @@
-import { SectionHeader } from "@seasons/eclipse"
-import { Box, Flex, Sans, Spacer } from "components"
+import { Box, Flex, Sans, Separator, Spacer } from "components"
+import { formatPrice } from "helpers/formatPrice"
 import React from "react"
 
+import { SectionHeader } from "@seasons/eclipse"
+
 export const ReservationLineItems = ({ lineItems }) => {
-  let taxTotal = 0
-  let total = 0
+  const check = (l) => ["Credit", "Total"].includes(l.recordType)
+  const items = lineItems.filter((l) => !check(l))
+  const totalLineItems = lineItems.filter(check)
 
   return (
     <Box>
       <SectionHeader title="Order summary" />
       <Spacer mb={1} />
-      {lineItems?.length > 0 && (
-        <Box mb={4}>
-          {lineItems.map((lineItem, index) => {
-            taxTotal = taxTotal + lineItem.taxPrice
-            total = lineItem.taxPrice + total + lineItem.price
-            return (
-              <Flex flexDirection="row" width="100%" justifyContent="space-between" key={index}>
-                <Sans size="3">{lineItem.name}</Sans>
-                <Sans size="3">{`$${lineItem.price / 100}`}</Sans>
-              </Flex>
-            )
-          })}
-          {taxTotal > 0 && (
-            <Flex flexDirection="row" width="100%" justifyContent="space-between">
-              <Sans size="3">Taxes</Sans>
-              <Sans size="3">{`$${taxTotal / 100}`}</Sans>
+
+      <Box mb={4}>
+        {items.map((lineItem, index) => {
+          return (
+            <Flex flexDirection="row" width="100%" justifyContent="space-between" key={index} mb={1}>
+              <Sans size="4" color="black50">
+                {lineItem.name}
+              </Sans>
+              <Sans size="4" color="black50">
+                {`${formatPrice(lineItem.price)}`}
+              </Sans>
             </Flex>
-          )}
-          {(taxTotal !== 0 || lineItems?.length > 1) && (
-            <Flex flexDirection="row" width="100%" justifyContent="space-between">
-              <Sans size="3">Total</Sans>
-              <Sans size="3">{`$${total / 100}`}</Sans>
+          )
+        })}
+        <Spacer mt={1} />
+        <Separator />
+        <Spacer mt={1} />
+        {totalLineItems.map((lineItem, index) => {
+          const isLast = totalLineItems.length - 1 === index
+          const color = isLast ? "black100" : "black50"
+
+          return (
+            <Flex flexDirection="row" width="100%" justifyContent="space-between" key={index} mb={1}>
+              <Sans size="4" color={color}>
+                {lineItem.name}
+              </Sans>
+              <Sans size="4" color={color}>
+                {`${formatPrice(lineItem.price)}`}
+              </Sans>
             </Flex>
-          )}
-        </Box>
-      )}
+          )
+        })}
+      </Box>
     </Box>
   )
 }

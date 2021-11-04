@@ -32,7 +32,19 @@ const RESERVE_ITEMS = gql`
 `
 
 const GET_CUSTOMER = gql`
-  query GetCustomer {
+  query GetCustomer($shippingCode: String) {
+    shippingMethods {
+      id
+      displayText
+      code
+      position
+      timeWindows {
+        id
+        startTime
+        endTime
+        display
+      }
+    }
     me {
       id
       nextFreeSwapDate
@@ -48,6 +60,19 @@ const GET_CUSTOMER = gql`
           id
           ...BagItemProductVariant
         }
+      }
+      newBagItems: bag(status: Added) {
+        id
+        productVariant {
+          id
+          ...BagItemProductVariant
+        }
+      }
+      reservationLineItems(filterBy: NewItems, shippingCode: $shippingCode) {
+        id
+        name
+        price
+        recordType
       }
       customer {
         id
@@ -314,40 +339,43 @@ export const Reservation = screenTrack()((props) => {
             </Box>
           </ScrollView>
         </Flex>
-        <ReservationBottomBar
-          lineItems={me.reservationLineItems}
-          onReserve={async () => {
-            if (isMutating) {
-              return
-            }
-            tracking.trackEvent({
-              actionName: Schema.ActionNames.PlaceOrderTapped,
-              actionType: Schema.ActionTypes.Tap,
-            })
-            setIsMutating(true)
-            const itemIDs = items?.map((item) => item?.productVariant?.id)
-            const { data } = await reserveItems({
-              variables: {
-                items: itemIDs,
-                shippingCode: shippingOptions?.[shippingOptionIndex]?.shippingMethod?.code,
-              },
-            })
-            if (data?.reserveItems) {
-              openDrawer("reservationConfirmation", {
-                reservationID: data.reserveItems.id,
+        <ButtonContainer>
+          <ReservationBottomBar
+            lineItems={me.reservationLineItems}
+            onReserve={async () => {
+              if (isMutating) {
+                return
+              }
+              tracking.trackEvent({
+                actionName: Schema.ActionNames.PlaceOrderTapped,
+                actionType: Schema.ActionTypes.Tap,
               })
-            }
-          }}
-          buttonProps={{ loading: isMutating }}
-        />
+              setIsMutating(true)
+              const itemIDs = items?.map((item) => item?.productVariant?.id)
+              const { data } = await reserveItems({
+                variables: {
+                  items: itemIDs,
+                  shippingCode: shippingOptions?.[shippingOptionIndex]?.shippingMethod?.code,
+                },
+              })
+              if (data?.reserveItems) {
+                openDrawer("reservationConfirmation", {
+                  reservationID: data.reserveItems.id,
+                })
+              }
+            }}
+            buttonProps={{ loading: isMutating }}
+          />
+        </ButtonContainer>
       </Container>
     </>
   )
 })
 
 const ButtonContainer = styled(Box)`
-  position: fixed;
+  position: absolute;
   width: 380px;
   bottom: 0;
+  left: 0;
   right: 0;
 `
