@@ -24,16 +24,6 @@ export const FeaturedIn: React.FC = () => {
     },
   ]
 
-  const mobileItems = [
-    { logo: vogue, link: "https://www.vogue.com/article/seasons-menswear-fashion-rental-expansion" },
-    { logo: nyt, link: "https://www.nytimes.com/2020/01/08/style/men-rent-rental-clothing.html" },
-    {
-      logo: wwd,
-      link:
-        "https://wwd.com/menswear-news/mens-retail-business/what-to-watch-mens-rental-services-begin-to-emerge-1203409178/",
-    },
-  ]
-
   return (
     <MaxWidth>
       <Box width="100%" pb={2} px={2}>
