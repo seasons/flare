@@ -13,22 +13,26 @@ export const HOW_IT_WORKS_TEXT = [
   {
     icon: <MembershipCardIcon />,
     title: "Pay for access",
-    text: "Sign up, subscribe, & get rental access to over 1,000 different styles.",
+    text:
+      "Membership includes paid rental access, free delivery on your first order, free dry cleaning, and $20 off any purchase each month.",
   },
   {
     icon: <CalendarIcon />,
     title: "Wear. Swap. Repeat",
-    text: "Rent & swap up to 6 items whenever you want, for as long as you want.",
+    text:
+      "Rent, wear, and swap up to 6 items whenever you want, for as long as you want. We even cover one size related return each month",
   },
   {
     icon: <HeartIcon />,
     title: "Buy styles you love",
-    text: "Love something? Apply the $20 membership fee towards a purchase.",
+    text:
+      "Love something? Buy it. Rental fees go towards any purchase. We’ll even apply your $20 membership fee as a discount once a month.",
   },
   {
     icon: <BillingIcon />,
     title: "Simple & clear billing",
-    text: "You’re only billed for what you use at the end of the month. Like a hotel tab.",
+    text:
+      "You’re only billed for what you use. Like a hotel tab. Easily keep track of any credits and what you’ve spent in your account view.",
   },
 ]
 
