@@ -4,7 +4,7 @@ import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useState } from "react"
 import styled from "styled-components"
 import { PlanCard } from "./PlanCard"
-import { Box, Button, Display, Flex, Media, Picture, Sans, Spacer } from "components"
+import { Box, Button, Display, Flex, MaxWidth, Media, Picture, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
 import { imageResize } from "utils/imageResize"
 import { MembershipCTA } from "./MembershipCTA"
@@ -87,9 +87,6 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
           </Row>
         </Grid>
         <FeaturedIn />
-        <Box px={[2, 2, 2, 2, 2]} pb={2}>
-          <Separator />
-        </Box>
       </Media>
       <Media lessThan="lg">
         <Box px={2}>
