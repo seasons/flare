@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Box, Sans, Flex, MaxWidth, Media, Spacer } from "components"
+import { Box, Sans, Flex, MaxWidth, Media, Spacer, Separator } from "components"
 
 const bi = require("../../public/images/homepage/BusinessInsider.png")
 const nyt = require("../../public/images/homepage/NYT.png")
@@ -49,6 +49,9 @@ export const FeaturedIn: React.FC = () => {
             )
           })}
         </Flex>
+        <Box pt={2}>
+          <Separator />
+        </Box>
       </Box>
     </MaxWidth>
   )
