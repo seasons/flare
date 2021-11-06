@@ -4,7 +4,7 @@ import { useAuthContext } from "lib/auth/AuthContext"
 import React, { useState } from "react"
 import styled from "styled-components"
 import { PlanCard } from "./PlanCard"
-import { Box, Button, Display, Flex, Media, Picture, Sans, Spacer } from "components"
+import { Box, Button, Display, Flex, MaxWidth, Media, Picture, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "../Grid"
 import { imageResize } from "utils/imageResize"
 import { MembershipCTA } from "./MembershipCTA"
@@ -56,16 +56,17 @@ const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ 
       </Flex>
       <Spacer mb="3" />
       <Sans size="3" color="black50" style={{ maxWidth: "460px" }}>
-        Cancel for any reason within your first 24 hours to receive a full refund. Free shipping and dry cleaning are
-        only included on one order per month.
+        Cancel for any reason within your first 24 hours to receive a full refund. Free shipping is only included on one
+        order per month.
       </Sans>
     </Box>
   )
 }
 
-const Image = () => {
+const Image = ({ breakpoint }) => {
+  const isDesktop = breakpoint === "desktop"
   return (
-    <ImageWrapper>
+    <ImageWrapper isDesktop={isDesktop}>
       <Picture src={imageResize(image, "large")} alt="Model leaning against car in fall" />
     </ImageWrapper>
   )
@@ -81,18 +82,15 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
               <PlanTabs plans={plans} breakpoint="desktop" />
             </Col>
             <Col md="6" xs="12" pb={2}>
-              <Image />
+              <Image breakpoint="desktop" />
             </Col>
           </Row>
         </Grid>
         <FeaturedIn />
-        <Box px={[2, 2, 2, 2, 2]} pb={2}>
-          <Separator />
-        </Box>
       </Media>
       <Media lessThan="lg">
         <Box px={2}>
-          <Image />
+          <Image breakpoint="mobile" />
           <Spacer mb={5} />
           <Display size="9">Membership plans</Display>
           <Spacer mb={3} />
@@ -107,9 +105,16 @@ const StyledSpan = styled.span`
   font-size: 14px;
 `
 
-const ImageWrapper = styled.div`
+const ImageWrapper = styled.div<{ isDesktop: boolean }>`
   border-radius: 8px;
   overflow: hidden;
+  height: ${(p) => (p.isDesktop ? "700px" : "auto")};
+  display: flex;
+  justify-content: flex-end;
+
+  img {
+    max-height: 100%;
+  }
 `
 
 const Tabs = styled(Flex)`
