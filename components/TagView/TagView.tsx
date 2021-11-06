@@ -1,21 +1,22 @@
 import { Box, Flex, Layout, Sans, Spacer } from "components"
 import { Col, Grid, Row } from "components/Grid"
+import { HEAD_META_TITLE } from "components/LayoutHead"
 import { ReadMore } from "components/ReadMore"
 import { Media } from "components/Responsive"
 import { Spinner } from "components/Spinner"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { debounce } from "lodash"
 import Head from "next/head"
 import { withRouter } from "next/router"
+import { SavedTab_Query } from "queries/bagQueries"
+import { TagView_Query } from "queries/collectionQueries"
+import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
-import { useAuthContext } from "lib/auth/AuthContext"
+
 import { useQuery } from "@apollo/client"
-import { TagView_Query } from "queries/collectionQueries"
-import { HEAD_META_TITLE } from "components/LayoutHead"
 import { ProductGridItem } from "@seasons/eclipse"
-import { SavedTab_Query } from "queries/bagQueries"
-import { GET_PRODUCT } from "queries/productQueries"
 
 const TagView = screenTrack(({ router }) => {
   return {

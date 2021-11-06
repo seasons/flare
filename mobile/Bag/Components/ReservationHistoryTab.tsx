@@ -1,11 +1,16 @@
 import { Box, Flex, Separator } from "components"
+import gql from "graphql-tag"
 import { color } from "helpers"
 import React from "react"
+
+import { useQuery } from "@apollo/client"
+import { Loader } from "@seasons/eclipse"
+
 import { BagView } from "../Bag"
 import { BagEmptyState } from "./BagEmptyState"
-import { ReservationHistoryItem, ReservationHistoryItemFragment_Reservation } from "./ReservationHistoryItem"
-import gql from "graphql-tag"
-import { Loader } from "@seasons/eclipse"
+import {
+  ReservationHistoryItem, ReservationHistoryItemFragment_Reservation
+} from "./ReservationHistoryItem"
 
 export const ReservationHistoryTabFragment_Customer = gql`
   fragment ReservationHistoryTabFragment_Customer on Customer {
@@ -17,7 +22,23 @@ export const ReservationHistoryTabFragment_Customer = gql`
   ${ReservationHistoryItemFragment_Reservation}
 `
 
-export const ReservationHistoryTab: React.FC<{ items; loading: boolean }> = ({ items, loading }) => {
+export const ReservationHistoryTab_Query = gql`
+  query ReservationHistoryTab_Query {
+    me {
+      id
+      customer {
+        ...ReservationHistoryTabFragment_Customer
+      }
+    }
+  }
+  ${ReservationHistoryTabFragment_Customer}
+`
+
+export const ReservationHistoryTab: React.FC = () => {
+  const { previousData, data = previousData, loading } = useQuery(ReservationHistoryTab_Query)
+
+  const items = data?.me?.customer?.reservations
+
   const wrapperHeight = "calc(100vh - 136px)"
   if (loading) {
     return (

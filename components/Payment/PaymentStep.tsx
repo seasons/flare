@@ -17,7 +17,9 @@ import { gql, useMutation, useQuery } from "@apollo/client"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 import { PaymentStepCheckoutSection } from "./PaymentStepComponents/PaymentStepCheckoutSection"
-import { PaymentStepOrderSummarySection } from "./PaymentStepComponents/PaymentStepOrderSummarySection"
+import {
+  PaymentStepOrderSummarySection
+} from "./PaymentStepComponents/PaymentStepOrderSummarySection"
 import { PaymentStepPlanSelection } from "./PaymentStepComponents/PaymentStepPlanSelection"
 
 interface PaymentStepProps {

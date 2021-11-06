@@ -1,14 +1,17 @@
 import { Box, Flex } from "components"
-import { EditShipping, PaymentAndShipping, EditPaymentMethod } from "mobile/Account"
+import { EditPaymentMethod, EditShipping, PaymentAndShipping } from "mobile/Account"
 import { Account } from "mobile/Account/Account"
 import { ChoosePlanPane } from "mobile/Account/Components/ChoosePlanPane"
 import { ResumeConfirmation } from "mobile/Account/Components/Pause"
 import { MembershipInfo } from "mobile/Account/MembershipInfo"
 import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
-import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
-import { ReviewOrder } from "mobile/ReviewOrder"
+import { DrawerFAQ } from "mobile/DrawerFAQ/DrawerFAQ"
 import { OrderConfirmation } from "mobile/OrderConfirmation"
+import {
+  Reservation, ReservationConfirmation, ReservationShippingAddress
+} from "mobile/Reservation"
+import { ReviewOrder } from "mobile/ReviewOrder"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
@@ -16,7 +19,6 @@ import { Drawer as MuiDrawer } from "@material-ui/core"
 
 import { DrawerBottomButton } from "./DrawerBottomButton"
 import { useDrawerContext } from "./DrawerContext"
-import { DrawerFAQ } from "mobile/DrawerFAQ/DrawerFAQ"
 
 interface DrawerProps {
   open?: boolean
@@ -117,4 +119,5 @@ const StyledDrawer = styled(MuiDrawer)<{ width: number }>`
   #appDrawer {
     width: ${(p) => p.width}px;
   }
+  z-index: 2147483005 !important;
 `
