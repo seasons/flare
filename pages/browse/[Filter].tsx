@@ -1,15 +1,25 @@
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
+import { ColorFilters } from "components/Browse/ColorFilters"
+import { FixedFilters } from "components/Browse/FixedFilters"
+import { SortDropDown } from "components/Browse/SortDropDown"
+import { TriageModal } from "components/Browse/TriageModal"
 import { filter as filterFragment } from "graphql-anywhere"
 import { sans as sansSize } from "helpers/typeSizes"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
+import { SavedTab_Query } from "queries/bagQueries"
+import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useMemo, useState } from "react"
 import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
+
 import { gql, useQuery } from "@apollo/client"
-import { BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
+import {
+  BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product
+} from "@seasons/eclipse"
+
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"
@@ -20,11 +30,6 @@ import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { SavedTab_Query } from "queries/bagQueries"
-import { GET_PRODUCT } from "queries/productQueries"
-import { ColorFilters } from "components/Browse/ColorFilters"
-import { FixedFilters } from "components/Browse/FixedFilters"
-import { TriageModal } from "components/Browse/TriageModal"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -46,12 +51,19 @@ export const Browse_Query = gql`
 
 const pageSize = 24
 
+export enum OrderBy {
+  computedRentalPrice_ASC = "computedRentalPrice_ASC",
+  computedRentalPrice_DESC = "computedRentalPrice_DESC",
+  publishedAt_DESC = "publishedAt_DESC",
+}
+
 export interface SizeFilterParams {
   currentTops: string[]
   currentBottoms: string[]
   availableOnly: boolean
   forSaleOnly: boolean
   currentColors: string[]
+  orderBy: OrderBy
 }
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
@@ -65,6 +77,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const [showWaitlistedModal, setShowWaitlistedModal] = useState(false)
   const tracking = useTracking()
   const router = useRouter()
+  const routerOrderBy = router.query?.orderBy as OrderBy
   const filter = router.query?.Filter || "all+all"
   const _tops = router.query?.tops as string
   const tops = _tops?.split(" ")
@@ -98,10 +111,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     availableOnly: availableRouterQuery ?? null,
     forSaleOnly: forSaleRouterQuery ?? null,
     currentColors: colors ?? null,
+    orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { authState, toggleLoginModal } = useAuthContext()
-  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly } = params
+  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly, orderBy } = params
 
   const skip = (currentPage - 1) * pageSize
 
@@ -116,7 +130,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       brandName: currentBrand,
       categoryName: currentCategory,
       first: pageSize,
-      orderBy: "publishedAt_DESC",
+      orderBy,
       skip,
     },
   })
@@ -145,6 +159,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   useEffect(() => {
     const paramToURL = () => {
+      const orderByParam = routerOrderBy ? `&orderBy=${routerOrderBy}` : ""
       const bottomsParam = currentBottoms?.length ? "&bottoms=" + currentBottoms.join("+") : ""
       const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
       const colorsParam = currentColors?.length ? "&colors=" + currentColors.join("+") : ""
@@ -152,7 +167,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       const forSaleParam = forSaleOnly ? "&forSale=true" : ""
       const triageParam =
         showWaitlistedModal || showApprovedModal ? `&triage=${showWaitlistedModal ? "waitlisted" : "approved"}` : ""
-      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}`
+      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}`
     }
     const newParams = paramToURL()
 
@@ -174,6 +189,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           currentBottoms: !!bottoms?.length && !currentBottoms?.length ? bottoms : [],
           currentTops: tops?.length && !currentTops?.length ? tops : [],
           currentColors: !!colors?.length && !currentColors?.length ? colors : [],
+          orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
         })
         setInitialPageLoad(true)
       } else {
@@ -197,6 +213,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       setParamsString(newParams)
     }
   }, [
+    routerOrderBy,
     filter,
     setCurrentBrand,
     setCurrentCategory,
@@ -228,6 +245,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const categories = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.categories ?? [])], [menuData])
   const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
+
+  const onClickOrderBy = (value: OrderBy) => {
+    setParams({ ...params, orderBy: value })
+  }
 
   return (
     <>
@@ -307,13 +328,19 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                 </FixedBox>
               </Media>
             </Col>
-            <Media lessThan="md">
-              <Box px={2} pt={[1, 2]}>
+            <FullWidthMedia lessThan="md">
+              <Flex width="100%" flexDirection="row" justifyContent="space-between" px={2} pt={[0, 2]} pb={2}>
                 <Sans size="4">Browse</Sans>
-              </Box>
-            </Media>
+                <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+              </Flex>
+            </FullWidthMedia>
             <Col md="10" sm="12">
               <Row>
+                <FullWidthMedia greaterThanOrEqual="md">
+                  <Flex width="100%" flexDirection="row" justifyContent="flex-end" pb={2}>
+                    <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+                  </Flex>
+                </FullWidthMedia>
                 {data && !products?.length ? (
                   <Flex alignItems="center" justifyContent="center" style={{ width: "100%" }}>
                     <Sans size="3" style={{ textAlign: "center" }}>
@@ -444,6 +471,10 @@ const Pagination = styled.div<{ currentPage: number; pageCount: number }>`
       }
     }
   }
+`
+
+const FullWidthMedia = styled(Media)`
+  width: 100%;
 `
 
 const FixedBox = styled.div`

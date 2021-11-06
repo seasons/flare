@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Sans, Spacer } from "components"
 import { Spinner } from "components/Spinner"
+import { Check } from "components/SVGs/Check"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { get, head } from "lodash"
@@ -10,9 +11,9 @@ import React, { useState } from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-import { Check } from "components/SVGs/Check"
 
 import { useMutation } from "@apollo/client"
+import { ProductPriceText } from "@seasons/eclipse"
 
 interface BagItemProps {
   bagItem: any
@@ -93,12 +94,13 @@ export const BagItem: React.FC<BagItemProps> = ({
           <Sans size="3" color="black50">
             {name}
           </Sans>
+          <ProductPriceText size="3" product={product} />
           <Sans size="3" color="black50">
             Size {variantToUse?.displayShort}
           </Sans>
         </Box>
         <Box p={2}>
-          {process.env.ENABLE_BUY_USED && isBuyable && !purchased && (
+          {isBuyable && !purchased && (
             <Button size="small" variant="secondaryOutline" onClick={handleShowBuyAlert}>
               Buy
             </Button>
@@ -124,8 +126,9 @@ export const BagItem: React.FC<BagItemProps> = ({
           <Box style={{ width: "100%" }}>
             <Sans size="3">{`${index + 1}. ${product?.brand?.name}`}</Sans>
             <Sans size="3" color="black50">
-              {product.name}
+              {name}
             </Sans>
+            <ProductPriceText size="3" product={product} />
             <Sans size="3" color="black50">
               Size {variantToUse?.displayShort}
             </Sans>

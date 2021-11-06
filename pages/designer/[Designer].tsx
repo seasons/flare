@@ -13,15 +13,15 @@ import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
 import { withRouter } from "next/router"
+import { SavedTab_Query } from "queries/bagQueries"
 import { Designer_Query, DesignerBrands_Query } from "queries/designerQueries"
+import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import { ProductGridItem } from "@seasons/eclipse"
-import { GET_PRODUCT } from "queries/productQueries"
-import { SavedTab_Query } from "queries/bagQueries"
 
 const isProduction = process.env.ENVIRONMENT === "production"
 

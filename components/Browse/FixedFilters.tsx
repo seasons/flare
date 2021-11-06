@@ -11,7 +11,7 @@ interface Props {
   params: SizeFilterParams
 }
 
-const POSITION_TOP = 59
+const POSITION_TOP = 58
 
 export const FixedFilters: React.FC<Props> = ({ setParams, params }) => {
   const availableOnly = params?.availableOnly

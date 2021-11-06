@@ -23,13 +23,32 @@ module.exports = withSourceMaps(
         SHOW_DISCOVER_BAG_STEP: process.env.SHOW_DISCOVER_BAG_STEP,
       },
       webpack: (config, options) => {
+        const { dir } = options
+
         config.resolve.alias = {
           ...(config.resolve.alias || {}),
           // Transform all direct `react-native` imports to `react-native-web`
           "react-native$": "react-native-web",
           "react-native-svg": "react-native-svg-web-transform",
         }
-        config.resolve.extensions = [".web.js", ".web.ts", ".web.tsx", ...config.resolve.extensions]
+        config.resolve.extensions = [".tsx", ".ts", ".web.js", ".web.ts", ".web.tsx", ...config.resolve.extensions]
+
+        config.module.rules.push({
+          test: /\.(ts)x?$/, // Just `tsx?` file only
+          include: /node_modules/,
+          // exclude: [dir],
+          use: [
+            options.defaultLoaders.babel,
+            {
+              loader: "ts-loader",
+              options: {
+                transpileOnly: true,
+                experimentalWatchApi: true,
+                onlyCompileBundledFiles: true,
+              },
+            },
+          ],
+        })
 
         config.plugins = [
           ...(config.plugins || []),

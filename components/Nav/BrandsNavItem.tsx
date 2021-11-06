@@ -1,13 +1,15 @@
-import React from "react"
-import { NavItem } from "./NavItem"
-import { MENU_HEIGHT } from "./MobileNav"
-import { Sans, Box, Media, Separator, Button } from "components"
-import styled from "styled-components"
-import { ClickAwayListener, Grow, Paper, Popper, Modal } from "@material-ui/core"
+import { Box, Button, Media, Sans, Separator } from "components"
+import gql from "graphql-tag"
 import { color } from "helpers/color"
 import NextLink from "next/link"
-import gql from "graphql-tag"
+import React from "react"
+import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
+
+import { ClickAwayListener, Grow, Modal, Paper, Popper } from "@material-ui/core"
+
+import { MENU_HEIGHT } from "./MobileNav"
+import { NavItem } from "./NavItem"
 
 type Props = {
   brandItems: Array<{ slug: string; name: string }>

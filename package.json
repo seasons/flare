@@ -7,7 +7,7 @@
     ".next/cache"
   ],
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--inspect' next dev",
     "stop-dev": "bash killDevIfAlive.sh",
     "watch-dev": "watch 'yarn stop-dev && yarn dev 3000' --wait=5 ./node_modules",
     "build": "next build",
@@ -94,6 +94,7 @@
     "styled-components": "^5.3.0",
     "styled-system": "^5.1.5",
     "tiny-warning": "1",
+    "ts-loader": "^8",
     "use-state-with-callback": "^2.0.3",
     "watch": "^1.0.2",
     "yup": "^0.29.1"
