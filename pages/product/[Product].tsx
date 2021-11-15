@@ -5,7 +5,6 @@ import { ProgressiveImage } from "components/Image"
 import { HEAD_META_TITLE } from "components/LayoutHead"
 import { PartnerModal } from "components/Partner/PartnerModal"
 import { BreadCrumbs } from "components/Product/BreadCrumbs"
-import { ProductBuyCTA } from "components/Product/ProductBuyCTA"
 import { ProductDetails } from "components/Product/ProductDetails"
 import { ProductHowItWorks } from "components/Product/ProductHowItWorks"
 import { ImageLoader, ProductTextLoader } from "components/Product/ProductLoader"
@@ -23,12 +22,7 @@ import styled from "styled-components"
 import { Schema, screenTrack } from "utils/analytics"
 import { useQuery } from "@apollo/client"
 import { find, head } from "lodash"
-import {
-  ProductBuyCTAFragment_Product,
-  ProductBuyCTAFragment_ProductVariant,
-  ProductConditionSectionFragment_PhysicalProductQualityReport,
-  ProductConditionSection,
-} from "@seasons/eclipse"
+import { ProductConditionSectionFragment_PhysicalProductQualityReport, ProductConditionSection } from "@seasons/eclipse"
 
 const isProduction = process.env.ENVIRONMENT === "production"
 
@@ -90,10 +84,6 @@ const Product = screenTrack(({ router }) => {
     },
     null
   )
-
-  const handleNavigateToBrand = (href: string) => {
-    window.location.href = href
-  }
 
   return (
     <Layout includeDefaultHead={false}>
@@ -164,16 +154,6 @@ const Product = screenTrack(({ router }) => {
                   />
                 ) : (
                   <ProductTextLoader />
-                )}
-                {product && (
-                  <>
-                    <ProductBuyCTA
-                      mt={8}
-                      product={filter(ProductBuyCTAFragment_Product, product)}
-                      selectedVariant={filter(ProductBuyCTAFragment_ProductVariant, selectedVariant)}
-                      onNavigateToBrand={handleNavigateToBrand}
-                    />
-                  </>
                 )}
                 <ProductHowItWorks />
               </Box>
