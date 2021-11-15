@@ -79,6 +79,8 @@ export const ProductBuyCTA = (props: Props) => {
   return (
     <ProductBuyCTABase
       {...props}
+      size="large"
+      variant="primaryWhite"
       buyButtonMutating={buyButtonMutating}
       onBuyNew={() => {
         setBuyButtonMutating(true)

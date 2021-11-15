@@ -5,9 +5,13 @@ import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
 import React from "react"
 import { Schema, useTracking } from "utils/analytics"
-import { color } from "../../helpers"
+import { filter } from "graphql-anywhere"
+
+import { ProductBuyCTA } from "./ProductBuyCTA"
 import { ProductInfoItem } from "./ProductInfoItem"
 import { VariantSelect } from "./VariantSelect"
+import { ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant } from "@seasons/eclipse"
+import { useRouter } from "next/router"
 
 // FIXME: Fix types here
 export const ProductDetails: React.FC<{
@@ -17,6 +21,7 @@ export const ProductDetails: React.FC<{
   data: any
 }> = ({ product, selectedVariant, setSelectedVariant, data }) => {
   const tracking = useTracking()
+  const router = useRouter()
   if (!product || !product.variants) {
     return <></>
   }
@@ -61,6 +66,10 @@ export const ProductDetails: React.FC<{
     `Model is ${modelHeightDisplay(product.modelHeight)} in a ${
       product.modelSize.type === "Letter" ? "" : `${product.modelSize.type} `
     }${product.modelSize.display}`
+
+  const handleNavigateToBrand = (href: string) => {
+    router.push(href)
+  }
 
   return (
     <Box mb={3}>
@@ -151,6 +160,13 @@ export const ProductDetails: React.FC<{
           size="large"
         />
       </Flex>
+
+      <ProductBuyCTA
+        mt={8}
+        product={filter(ProductBuyCTAFragment_Product, product)}
+        selectedVariant={filter(ProductBuyCTAFragment_ProductVariant, selectedVariant)}
+        onNavigateToBrand={handleNavigateToBrand}
+      />
 
       <Spacer mb={10} />
 
