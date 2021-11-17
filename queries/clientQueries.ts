@@ -21,14 +21,20 @@ export const GET_LOCAL_BAG = gql`
 
 export const GET_LOCAL_BAG_ITEMS = gql`
   query GetLocalBagItems($ids: [ID!]) {
-    products(where: { id_in: $ids }) {
+    productVariants(where: { id_in: $ids }) {
       id
-
-      variants {
+      displayShort
+      product {
         id
-        ...BagItemProductVariant
+        slug
+        name
+        rentalPrice
+        retailPrice
+        images {
+          id
+          url
+        }
       }
     }
   }
-  ${BagItemFragment}
 `

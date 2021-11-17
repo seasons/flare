@@ -1,15 +1,25 @@
 import gql from "graphql-tag"
-import { ReservationHistoryTabFragment_Customer } from "mobile/Bag/Components/ReservationHistoryTab"
 
-import { ProductPriceText_Product } from "@seasons/eclipse"
+import { OrderFragment_Order } from "@seasons/eclipse"
 
 import { BagItemFragment } from "./bagItemQueries"
+import { BagSectionFragment_BagSection } from "mobile/Bag/Components/BagSection/BagSection"
 
 export { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_LOCAL_BAG, GET_LOCAL_BAG_ITEMS } from "./clientQueries"
 export const CHECK_ITEMS = gql`
   mutation CheckItemsAvailability($items: [ID!]!) {
     checkItemsAvailability(items: $items)
   }
+`
+
+export const PRODUCT_VARIANT_CREATE_DRAFT_ORDER = gql`
+  mutation ProductVariantCreateDraftOrder($input: CreateDraftedOrderInput!) {
+    createDraftedOrder(input: $input) {
+      id
+      ...OrderFragment_Order
+    }
+  }
+  ${OrderFragment_Order}
 `
 
 export const GET_BAG = gql`
@@ -24,6 +34,9 @@ export const GET_BAG = gql`
     me {
       id
       nextFreeSwapDate
+      bagSections {
+        ...BagSectionFragment_BagSection
+      }
       customer {
         id
         status
@@ -61,47 +74,9 @@ export const GET_BAG = gql`
           }
         }
       }
-      activeReservation {
-        id
-        returnAt
-        shipped
-        createdAt
-        status
-        phase
-        updatedAt
-        products {
-          id
-        }
-        returnedPackage {
-          id
-          shippingLabel {
-            trackingURL
-          }
-        }
-        sentPackage {
-          id
-          shippingLabel {
-            trackingURL
-          }
-        }
-      }
-      bag {
-        id
-        productVariant {
-          id
-          ...BagItemProductVariant
-          product {
-            ...ProductPriceText_Product
-          }
-        }
-        position
-        saved
-        status
-      }
     }
   }
-  ${BagItemFragment}
-  ${ProductPriceText_Product}
+  ${BagSectionFragment_BagSection}
 `
 
 export const SavedTab_Query = gql`
@@ -146,7 +121,7 @@ export const ADD_TO_BAG = gql`
   }
 `
 
-export const REMOVE_FROM_BAG = gql`
+export const DELETE_BAG_ITEM = gql`
   mutation RemoveFromBag($id: ID!, $saved: Boolean!) {
     removeFromBag(item: $id, saved: $saved) {
       id

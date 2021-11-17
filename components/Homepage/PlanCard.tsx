@@ -11,7 +11,7 @@ export const PlanCard = ({ plan, isDesktop }) => {
     <Wrapper>
       {isDesktop && (
         <>
-          <Sans size="9">{plan.name} membership</Sans>
+          <Sans size="9">{plan?.name} membership</Sans>
           <Spacer mb={5} />
         </>
       )}
