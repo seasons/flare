@@ -15,8 +15,7 @@ export const BagBottomBar: React.FC<BagBottomBarProps> = ({ bagItems, onReserve 
     return null
   }
 
-  const rentalPrices =
-    bagItems.filter((a) => a.status === "Added").map((b) => (b.productVariant?.product as any)?.rentalPrice) || []
+  const rentalPrices = bagItems.map((b) => (b.productVariant?.product as any)?.rentalPrice) || []
   const totalRentalPrice = rentalPrices.reduce((acc, curr) => acc + curr, 0)
 
   return (

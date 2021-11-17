@@ -8,9 +8,7 @@ import { PersonalPreferences } from "mobile/Account/PersonalPreferences"
 import { Bag } from "mobile/Bag/Bag"
 import { DrawerFAQ } from "mobile/DrawerFAQ/DrawerFAQ"
 import { OrderConfirmation } from "mobile/OrderConfirmation"
-import {
-  Reservation, ReservationConfirmation, ReservationShippingAddress
-} from "mobile/Reservation"
+import { Reservation, ReservationConfirmation, ReservationShippingAddress } from "mobile/Reservation"
 import { ReviewOrder } from "mobile/ReviewOrder"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
