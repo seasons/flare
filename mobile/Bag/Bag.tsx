@@ -1,11 +1,11 @@
 import { Box } from "components"
 import { Container } from "mobile/Container"
 import { TabBar } from "mobile/TabBar"
-import { REMOVE_FROM_BAG, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
-import React, { useEffect, useState } from "react"
+import { DELETE_BAG_ITEM } from "queries/bagQueries"
+import React, { useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
-import { useMutation, useQuery } from "@apollo/client"
+import { useMutation } from "@apollo/client"
 
 import { BagTab } from "./Components/BagTab"
 import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
@@ -24,13 +24,12 @@ export const Bag = screenTrack()(() => {
 
   const [currentView, setCurrentView] = useState<BagView>(BagView.Bag)
 
-  const [deleteBagItem] = useMutation(REMOVE_FROM_BAG, { awaitRefetchQueries: true })
-  const [removeFromBagAndSaveItem] = useMutation(REMOVE_FROM_BAG_AND_SAVE_ITEM)
+  const [deleteBagItem] = useMutation(DELETE_BAG_ITEM, { awaitRefetchQueries: true })
 
   const CurrentTab = () => {
     switch (currentView) {
       case BagView.Bag:
-        return <BagTab removeFromBagAndSaveItem={removeFromBagAndSaveItem} deleteBagItem={deleteBagItem} />
+        return <BagTab />
       case BagView.Saved:
         return <SavedItemsTab deleteBagItem={deleteBagItem} />
       case BagView.History:

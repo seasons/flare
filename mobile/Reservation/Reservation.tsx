@@ -1,6 +1,4 @@
-import {
-  Box, Button, FixedBackArrow, Flex, Sans, Separator, Spacer, SuggestedAddressPopupNote
-} from "components"
+import { Box, Button, FixedBackArrow, Flex, Sans, Separator, Spacer, SuggestedAddressPopupNote } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { PopUpData } from "components/PopUp/PopUpProvider"

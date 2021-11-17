@@ -13,6 +13,7 @@ export type ButtonVariant =
   | "primaryBlack"
   | "primaryWhite"
   | "primaryWhiteNoBorder"
+  | "secondaryWhite"
   | "secondaryGray"
   | "secondaryOutline"
   | "secondaryOutlineWhite"

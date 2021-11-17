@@ -7,9 +7,7 @@ import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG } from "queries/bagQu
 import { GET_PRODUCT, UPSERT_RESTOCK_NOTIF } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
-
 import { useMutation } from "@apollo/client"
-
 import { ButtonSize } from "./Button/Button.shared"
 import { useDrawerContext } from "./Drawer/DrawerContext"
 import { CheckWithBackground } from "./SVGs"

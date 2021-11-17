@@ -113,6 +113,26 @@ export class Button extends Component<WebButtonProps> {
               `
           }};
         `
+      case "secondaryWhite":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+
+            return `
+                background-color: ${colors.white100};
+                border-color: ${colors.black10};
+                color: ${colors.black100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color: ${colors.black50};
+                    border-color: ${colors.black10};
+                    color: ${colors.black100};
+                  }
+                }
+              `
+          }};
+        `
       case "primaryWhiteNoBorder":
         return css`
           ${(props) => {
