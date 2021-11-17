@@ -16,8 +16,10 @@ export const BagSectionDeliveryStatusFragment_BagSection = gql`
 export const BagSectionDeliveryStatus = ({ section }) => {
   const status = section.status
 
-  const statusColor = status === "CustomerToBusiness" ? color("blue100") : color("lightGreen")
-  const trackText = status === "CustomerToBusiness" ? "Track return" : "Track order"
+  const inbound = status === "ScannedOnInbound" || status === "InTransitInbound" || status === "DeliveredToBusiness"
+
+  const statusColor = inbound ? color("blue100") : color("lightGreen")
+  const trackText = inbound ? "Track return" : "Track order"
 
   const { deliveryStep, deliveryTrackingUrl, deliveryStatusText } = section
 
