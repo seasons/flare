@@ -167,7 +167,6 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
       phoneNumber: customer?.detail?.phoneNumber,
     })
   }
-
   if (customer) {
     const details = customer.detail
     if (details?.shippingAddress) {
@@ -179,20 +178,18 @@ export const PaymentAndShipping = screenTrack()(({ navigation }) => {
       })
     }
 
-    if (customer?.billingInfo) {
-      billingInfo = customer.billingInfo
-      sections.push({
-        title: "Billing address",
-        value: createBillingAddress(customer.billingInfo),
-        onClick: () => openDrawer("editPaymentMethod"),
-      })
+    billingInfo = customer?.billingInfo
+    sections.push({
+      title: "Billing address",
+      value: billingInfo ? createBillingAddress(billingInfo) : "",
+      onClick: () => openDrawer("editPaymentMethod"),
+    })
 
-      sections.push({
-        title: "Payment info",
-        value: `${customer.billingInfo.brand.toUpperCase()} ${customer.billingInfo.last_digits}`,
-        onClick: () => openDrawer("editPaymentMethod"),
-      })
-    }
+    sections.push({
+      title: "Payment info",
+      value: billingInfo ? `${customer.billingInfo.brand.toUpperCase()} ${customer.billingInfo.last_digits}` : "",
+      onClick: () => openDrawer("editPaymentMethod"),
+    })
 
     if (details?.phoneNumber) {
       phoneNumber = details?.phoneNumber

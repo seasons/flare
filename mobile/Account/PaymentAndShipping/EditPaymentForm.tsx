@@ -3,7 +3,8 @@ import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { PaymentForm } from "components/Payment"
 import { PaymentBillingAddress } from "components/Payment/PaymentBillingAddress"
 import {
-  PaymentExpressButtons, PaymentExpressButtonsFragment_PaymentPlan
+  PaymentExpressButtons,
+  PaymentExpressButtonsFragment_PaymentPlan,
 } from "components/Payment/PaymentExpressButtons"
 import { Formik } from "formik"
 import React, { useState } from "react"
@@ -15,8 +16,6 @@ import { useNotificationBarContext } from "@seasons/eclipse"
 import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 import { EditPaymentMethod_Query } from "./EditPaymentMethod"
-
-const EnableExpressCheckout = process.env.ENABLE_EXPRESS_CHECKOUT == "true"
 
 export const EditPaymentFormFragment_Query = gql`
   fragment EditPaymentFormFragment_Query on Query {
@@ -41,8 +40,8 @@ export const EditPaymentFormFragment_Query = gql`
 `
 
 const UpdatePaymentMethod_Mutation = gql`
-  mutation UpdatePaymentMethod_Mutation($paymentMethodID: String!, $planID: String!, $billing: JSON) {
-    updatePaymentMethod(paymentMethodID: $paymentMethodID, planID: $planID, billing: $billing)
+  mutation UpdatePaymentMethod_Mutation($paymentMethodID: String!, $planID: String!, $billing: JSON, $card: JSON) {
+    updatePaymentMethod(paymentMethodID: $paymentMethodID, planID: $planID, billing: $billing, card: $card)
   }
 `
 
@@ -110,16 +109,24 @@ export const EditPaymentForm: React.FC<{ data: any }> = ({ data }) => {
       },
     }
 
-    const response = await updatePaymentMethod({
-      variables: {
-        paymentMethodID: paymentMethod.id,
-        planID,
-        billing,
+    const variables = {
+      paymentMethodID: paymentMethod.id,
+      planID,
+      billing,
+      card: {
+        last4: paymentMethod.card.last4,
+        expYear: paymentMethod.card.exp_year,
+        expMonth: paymentMethod.card.exp_month,
+        brand: paymentMethod.card.brand,
       },
+    }
+
+    const response = await updatePaymentMethod({
+      variables,
     })
 
     const paymentIntent = response.data.updatePaymentMethod
-    const result = await stripe.handleCardAction(paymentIntent.client_secret)
+    await stripe.handleCardAction(paymentIntent.client_secret)
 
     await confirmPaymentMethodUpdate({
       variables: {
