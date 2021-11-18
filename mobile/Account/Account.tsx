@@ -1,8 +1,14 @@
 import { Box, Button, Flex, Sans, Separator, Skeleton, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import {
-  ChevronIcon, LogoutIcon, MembershipInfoIcon, PaymentShippingIcon, PersonalPreferencesIcon,
-  PrivacyPolicy, QuestionMark, TermsOfService
+  ChevronIcon,
+  LogoutIcon,
+  MembershipInfoIcon,
+  PaymentShippingIcon,
+  PersonalPreferencesIcon,
+  PrivacyPolicy,
+  QuestionMark,
+  TermsOfService,
 } from "components/Icons"
 import { AppleSVG, InstagramSVG } from "components/SVGs"
 import gql from "graphql-tag"
@@ -65,12 +71,6 @@ export const GET_USER = gql`
           }
         }
         authorizedAt
-        admissions {
-          id
-          admissable
-          authorizationsCount
-          authorizationWindowClosesAt
-        }
         ...CreditBalanceFragment_Customer
       }
     }
@@ -213,7 +213,6 @@ export const Account = screenTrack()(({ navigation }) => {
           return (
             <WaitlistedCTA
               authorizedAt={!!customer?.authorizedAt ? DateTime.fromISO(customer?.authorizedAt) : null}
-              authorizationWindowClosesAt={DateTime.fromISO(customer?.admissions?.authorizationWindowClosesAt)}
               onPressLearnMore={() =>
                 tracking.trackEvent({
                   actionName: Schema.ActionNames.LearnMoreTapped,

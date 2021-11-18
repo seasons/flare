@@ -79,12 +79,6 @@ const PaymentStep_Query = gql`
           firstName
           lastName
         }
-        admissions {
-          id
-          admissable
-          authorizationsCount
-          authorizationWindowClosesAt
-        }
         coupon {
           id
           amount

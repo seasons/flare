@@ -81,10 +81,6 @@ const GET_CUSTOMER = gql`
             itemCount
           }
         }
-        admissions {
-          id
-          allAccessEnabled
-        }
         detail {
           id
           phoneNumber
