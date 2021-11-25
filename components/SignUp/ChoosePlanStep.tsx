@@ -32,12 +32,6 @@ export const ChoosePlanStep_Query = gql`
     me {
       customer {
         id
-        admissions {
-          id
-          admissable
-          authorizationsCount
-          authorizationWindowClosesAt
-        }
       }
     }
   }

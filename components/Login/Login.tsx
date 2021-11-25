@@ -27,12 +27,6 @@ const LOG_IN = gql`
         bagItems {
           id
         }
-        admissions {
-          id
-          admissable
-          authorizationsCount
-          authorizationWindowClosesAt
-        }
         user {
           id
           email
