@@ -1,9 +1,7 @@
-import { Box, Button, FixedBackArrow, Flex, Sans, Separator, Spacer, SuggestedAddressPopupNote } from "components"
+import { Box, FixedBackArrow, Flex, Sans, Separator, Spacer, SuggestedAddressPopupNote } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { PopUpData } from "components/PopUp/PopUpProvider"
 import gql from "graphql-tag"
-import { DateTime } from "luxon"
 import { UPDATE_PAYMENT_AND_SHIPPING } from "mobile/Account/PaymentAndShipping/EditShipping"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
@@ -13,7 +11,7 @@ import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-
+import { upperFirst } from "lodash"
 import { useMutation, useQuery } from "@apollo/client"
 
 import { ReservationItem } from "./Components/ReservationItem"
@@ -271,9 +269,17 @@ export const Reservation = screenTrack()((props) => {
             </Box>
             <ReservationLineItems lineItems={me.reservationLineItems} />
             <Box mb={4}>
-              <SectionHeader title="Payment method" onEdit={() => {}} />
+              <SectionHeader
+                title="Payment method"
+                onEdit={() => {
+                  openDrawer("editPaymentMethod", {
+                    previousScreen: "reservation",
+                  })
+                }}
+              />
+              <Spacer mb={1} />
               <Sans size="4" color="black50" mt={1}>
-                {`${billingInfo?.brand || "card"} ending in ${billingInfo?.last_digits}`}
+                {`${billingInfo?.brand ? upperFirst(billingInfo.brand) : "Card"} ending in ${billingInfo?.last_digits}`}
               </Sans>
             </Box>
             {address && (
@@ -287,6 +293,7 @@ export const Reservation = screenTrack()((props) => {
                     })
                   }}
                 />
+                <Spacer mb={1} />
                 <Sans size="3" color="black50" mt={1}>
                   {`${address.address1}${address.address2 ? " " + address.address2 : ""},`}
                 </Sans>
@@ -298,7 +305,7 @@ export const Reservation = screenTrack()((props) => {
             {shippingOptions?.length > 0 && (
               <Box mb={4}>
                 <SectionHeader title="Select shipping" />
-                <Spacer mb={1} />{" "}
+                <Spacer mb={1} />
                 {shippingOptions.map((option, index) => {
                   return (
                     <Box key={option?.id || index}>
