@@ -287,10 +287,11 @@ export const Reservation = screenTrack()((props) => {
                     })
                   }}
                 />
-                <Sans size="3" color="black50" mt={1}>
+                <Spacer mb={1} />
+                <Sans size="4" color="black50" mt={1}>
                   {`${address.address1}${address.address2 ? " " + address.address2 : ""},`}
                 </Sans>
-                <Sans size="3" color="black50">
+                <Sans size="4" color="black50">
                   {`${address.city}, ${address.state} ${address.zipCode}`}
                 </Sans>
               </Box>
