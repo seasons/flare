@@ -227,7 +227,7 @@ export const Reservation = screenTrack()((props) => {
   const phoneNumber = customer?.detail?.phoneNumber
   const billingInfo = customer?.billingInfo
   const items = me?.bag
-  const newBagItems = me?.newBagItems
+  const productVariants = me?.newBagItems?.map((i) => i.productVariant)
 
   if (!customer || !items || !address) {
     return (
@@ -329,17 +329,16 @@ export const Reservation = screenTrack()((props) => {
             <Box mb={5}>
               <SectionHeader title="Bag items" />
               <Box mt={1} mb={4}>
-                {!!newBagItems &&
-                  newBagItems.map((item, i) => {
-                    return (
-                      <Box key={item.id}>
-                        <ReservationItem sectionHeight={206} index={i} bagItem={item} navigation={props.navigation} />
-                        <Spacer mb={1} />
-                        {i !== items.length - 1 && <Separator />}
-                        <Spacer mb={1} />
-                      </Box>
-                    )
-                  })}
+                {productVariants?.map((productVariant, i) => {
+                  return (
+                    <Box key={productVariant.id}>
+                      <ReservationItem index={i} productVariant={productVariant} navigation={props.navigation} />
+                      <Spacer mb={1} />
+                      {i !== productVariants.length - 1 && <Separator />}
+                      <Spacer mb={1} />
+                    </Box>
+                  )
+                })}
               </Box>
             </Box>
           </ScrollView>

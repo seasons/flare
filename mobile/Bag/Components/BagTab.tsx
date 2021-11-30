@@ -14,9 +14,10 @@ export const BagTab: React.FC<{
 }> = ({ startReservation, setPrimaryCtaMutating, primaryCtaMutating }) => {
   const { data, bagSections } = useBag()
 
-  const addedItems = bagSections?.find((section) => section.status === "Added")?.bagItems ?? []
+  const totalBagItems = bagSections?.map((section) => section.bagItems.length).reduce((acc, curr) => acc + curr)
+
   const itemCount = data?.me?.customer?.membership?.plan?.itemCount ?? 6
-  const showAddAnItemCard = addedItems?.length < itemCount
+  const showAddAnItemCard = totalBagItems < itemCount
 
   let lastVisibleSection
   bagSections?.forEach((section) => {
