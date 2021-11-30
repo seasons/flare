@@ -124,7 +124,7 @@ export const BagTabFooter = ({ data, sections, startReservation, setPrimaryCtaMu
 
   return (
     button && (
-      <Box width="100%" style={{ position: "absolute", bottom: 0, zIndex: 999 }}>
+      <Box width="100%" px={2} mb={2} style={{ position: "absolute", bottom: 0, zIndex: 999 }}>
         {button}
       </Box>
     )
