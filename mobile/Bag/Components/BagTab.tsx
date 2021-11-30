@@ -7,7 +7,11 @@ import { EmptyBagItem } from "./EmptyBagItem"
 import { BagSection } from "./BagSection/Index"
 import { BagTabFooter } from "./BagTabFooter/BagTabFooter"
 
-export const BagTab: React.FC = () => {
+export const BagTab: React.FC<{
+  startReservation: () => void
+  setPrimaryCtaMutating: (x: boolean) => void
+  primaryCtaMutating: boolean
+}> = ({ startReservation, setPrimaryCtaMutating, primaryCtaMutating }) => {
   const { data, bagSections } = useBag()
 
   const addedItems = bagSections?.find((section) => section.status === "Added")?.bagItems ?? []
@@ -58,7 +62,13 @@ export const BagTab: React.FC = () => {
         <Box mt={3}>{!showAddAnItemCard && <Spacer mb={90} />}</Box>
       </ScrollView>
 
-      <BagTabFooter sections={bagSections} data={data} startReservation={null} />
+      <BagTabFooter
+        sections={bagSections}
+        data={data}
+        startReservation={startReservation}
+        setPrimaryCtaMutating={setPrimaryCtaMutating}
+        primaryCtaMutating={primaryCtaMutating}
+      />
     </>
   )
 }

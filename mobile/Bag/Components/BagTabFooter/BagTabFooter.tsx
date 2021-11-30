@@ -7,7 +7,7 @@ import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
 import { Box, Button, Flex } from "components"
 
-export const BagTabFooter = ({ data, sections, startReservation }) => {
+export const BagTabFooter = ({ data, sections, startReservation, setPrimaryCtaMutating, primaryCtaMutating }) => {
   const router = useRouter()
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
@@ -36,7 +36,10 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
     !!shippingAddress?.address1 && !!shippingAddress?.city && !!shippingAddress?.state && !!shippingAddress?.zipCode
 
   const handleReserve = async () => {
-    setIsMutating(true)
+    if (primaryCtaMutating) {
+      return
+    }
+    setPrimaryCtaMutating(true)
     if (!isSignedIn) {
       showPopUp({
         title: "Sign up to reserve your items",
@@ -46,6 +49,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
           hidePopUp()
         },
       })
+      setPrimaryCtaMutating(false)
     } else if (customerStatus === "Authorized") {
       showPopUp({
         title: "You need to choose a plan first",
@@ -55,6 +59,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
           hidePopUp()
         },
       })
+      setPrimaryCtaMutating(false)
     } else if (addedItems?.length > MAXIMUM_ITEM_COUNT) {
       showPopUp({
         title: "You must remove some items first",
@@ -62,13 +67,13 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
         buttonText: "Got it",
         onClose: () => hidePopUp(),
       })
+      setPrimaryCtaMutating(false)
     } else if (!hasShippingAddress) {
       openDrawer("reservationShippingAddress", { shippingAddress })
-      return
+      setPrimaryCtaMutating(false)
     } else {
       await startReservation()
     }
-    setIsMutating(false)
   }
 
   let button = null
