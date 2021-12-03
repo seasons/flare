@@ -134,7 +134,7 @@ export const ProductDetails: React.FC<{
         </Flex>
       </Flex>
       <Flex paddingTop={6} pb={2}>
-        {product?.variants?.length > 0 && <Sans size={3}>Select a size</Sans>}
+        {product?.variants?.length > 1 && <Sans size={3}>Select a size</Sans>}
       </Flex>
       {productType !== "Accessory" && (
         <Flex flex={1} pb={1}>
