@@ -88,7 +88,7 @@ export const BagTabFooter = ({ data, sections, startReservation, setPrimaryCtaMu
     // } else if (hasAtHomeItems) {
     //   button = (
     //     <Box mx={2} my={2}>
-    //       <Button block onPress={onReturnBagClicked} disabled={isMutating} loading={isMutating} variant="primaryWhite">
+    //       <Button block onClick={onReturnBagClicked} disabled={isMutating} loading={isMutating} variant="primaryWhite">
     //         Return bag
     //       </Button>
     //     </Box>
@@ -96,7 +96,7 @@ export const BagTabFooter = ({ data, sections, startReservation, setPrimaryCtaMu
   } else if (!!inboundTrackingUrl) {
     button = (
       <Button
-        onPress={() => router.push(inboundTrackingUrl)}
+        onClick={() => router.push(inboundTrackingUrl)}
         disabled={isMutating}
         loading={isMutating}
         block
@@ -108,7 +108,7 @@ export const BagTabFooter = ({ data, sections, startReservation, setPrimaryCtaMu
     // } else if (hasReturnPendingsItems) {
     //   button = (
     //     <Flex flexDirection="row" justifyContent="space-between" mx={2} my={2}>
-    //       <Button onPress={handlePress} disabled={isMutating} loading={isMutating} block variant="primaryBlack">
+    //       <Button onClick={handlePress} disabled={isMutating} loading={isMutating} block variant="primaryBlack">
     //         How to return
     //       </Button>
     //     </Flex>
@@ -116,7 +116,7 @@ export const BagTabFooter = ({ data, sections, startReservation, setPrimaryCtaMu
     // }
   } else {
     button = (
-      <Button onPress={() => closeDrawer()} block variant="primaryWhite">
+      <Button onClick={() => closeDrawer()} block variant="primaryWhite">
         Close
       </Button>
     )
@@ -124,7 +124,7 @@ export const BagTabFooter = ({ data, sections, startReservation, setPrimaryCtaMu
 
   return (
     button && (
-      <Box width="100%" style={{ position: "absolute", bottom: 0, zIndex: 999 }}>
+      <Box width="100%" px={2} mb={2} style={{ position: "absolute", bottom: 0, zIndex: 999 }}>
         {button}
       </Box>
     )
