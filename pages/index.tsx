@@ -120,7 +120,7 @@ const Home = screenTrack(() => ({
         </MaxWidth>
       </Media>
 
-      {data?.upcomingProducts.length > 0 && (
+      {data?.upcomingProducts.length > 3 && (
         <>
           <ProductCarousel
             hideViewAll
