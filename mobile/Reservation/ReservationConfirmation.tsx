@@ -141,8 +141,6 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const shippingOption = reservation?.shippingOption
   const shippingDisplayText = shippingOption?.shippingMethod?.displayText
 
-  console.log("reservation", reservation)
-
   const isPickup = reservation?.shippingMethod?.code === "Pickup"
   const timeWindowText = reservation?.pickupWindow?.display
   const pickupDateText = reservation?.pickupDate && DateTime.fromISO(reservation?.pickupDate).toFormat("cccc, MMMM dd")

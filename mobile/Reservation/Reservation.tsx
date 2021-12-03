@@ -106,8 +106,6 @@ export const Reservation = screenTrack()((props) => {
   const productVariants = me?.newBagItems?.map((i) => i.productVariant)
   const bottomBarDisabled = shippingCode === "Pickup" && !dateAndTimeWindow
 
-  console.log("dateAndTimeWindow", dateAndTimeWindow)
-
   if (!customer || !items || !address) {
     return (
       <>
