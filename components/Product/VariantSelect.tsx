@@ -35,8 +35,22 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
             variant = isSelected ? "primaryWhite" : "secondaryOutline"
           }
 
+          let pr
+          let pl
+
+          if ((i % 4 === 0 || i === 1) && i !== 0) {
+            pr = 0.5
+            pl = 0.5
+          } else if (i % 3 === 0) {
+            pr = 1
+            pl = 0
+          } else {
+            pr = 0
+            pl = 1
+          }
+
           return (
-            <Col md="4" xs="6" key={i} px={0.5} pb={1}>
+            <Col md="4" xs="6" key={i} pr={pr} pl={pl} pb={1}>
               <Button
                 boxShadow={isSelected && size.reservable !== 0}
                 block
