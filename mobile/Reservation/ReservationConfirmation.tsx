@@ -6,6 +6,8 @@ import { ProductPriceText_Product } from "@seasons/eclipse"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import React from "react"
+import { DateTime } from "luxon"
+
 import { ScrollView } from "react-native"
 import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
@@ -41,13 +43,14 @@ const GET_CUSTOMER_RESERVATION_CONFIRMATION = gql`
         reservations(where: { id: $reservationID }) {
           id
           reservationNumber
-          shippingOption {
+          pickupDate
+          pickupWindow {
+            display
+          }
+          shippingMethod {
             id
-            externalCost
-            shippingMethod {
-              id
-              displayText
-            }
+            displayText
+            code
           }
           lineItems {
             id
@@ -138,6 +141,12 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const shippingOption = reservation?.shippingOption
   const shippingDisplayText = shippingOption?.shippingMethod?.displayText
 
+  console.log("reservation", reservation)
+
+  const isPickup = reservation?.shippingMethod?.code === "Pickup"
+  const timeWindowText = reservation?.pickupWindow?.display
+  const pickupDateText = reservation?.pickupDate && DateTime.fromISO(reservation?.pickupDate).toFormat("cccc, MMMM dd")
+
   return (
     <Container>
       <Flex px={2}>
@@ -195,12 +204,22 @@ export const ReservationConfirmation = screenTrack()((props) => {
           </Box>
           <Box pt={1}>
             <SectionHeader
-              title="Delivery"
+              title={isPickup ? "In-Office Pickup" : "Delivery"}
               content={
                 <>
-                  {!!shippingDisplayText && (
+                  {!!shippingDisplayText && !isPickup && (
                     <Sans size="4" color="black100" ml="auto" textAlign="right">
                       {shippingDisplayText}
+                    </Sans>
+                  )}
+                  {!!pickupDateText && (
+                    <Sans size="4" color="black100" ml="auto" mt={1} textAlign="right">
+                      {pickupDateText}
+                    </Sans>
+                  )}
+                  {!!timeWindowText && (
+                    <Sans size="4" color="black100" textAlign="right">
+                      {timeWindowText}
                     </Sans>
                   )}
                 </>

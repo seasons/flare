@@ -9,10 +9,16 @@ import { Box, Button, Flex, Sans, Separator } from "@seasons/eclipse"
 interface ReservationBottomBarProps {
   lineItems: any[]
   onReserve: () => void
+  disabled: boolean
   buttonProps?: Omit<ButtonProps, "children">
 }
 
-export const ReservationBottomBar: React.FC<ReservationBottomBarProps> = ({ lineItems, onReserve, buttonProps }) => {
+export const ReservationBottomBar: React.FC<ReservationBottomBarProps> = ({
+  lineItems,
+  onReserve,
+  buttonProps,
+  disabled,
+}) => {
   if (lineItems?.length === 0) {
     return null
   }
@@ -36,8 +42,8 @@ export const ReservationBottomBar: React.FC<ReservationBottomBarProps> = ({ line
           </Box>
 
           <Box>
-            <Button {...buttonProps} variant="primaryBlack" onClick={onReserve}>
-              Confirm Order
+            <Button {...buttonProps} variant="primaryBlack" onClick={onReserve} disabled={disabled}>
+              Confirm order
             </Button>
           </Box>
         </Flex>
