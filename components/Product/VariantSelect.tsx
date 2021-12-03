@@ -39,14 +39,14 @@ export const VariantSelect = ({ setSelectedVariant, selectedVariant, onSizeSelec
           let pl
 
           if ((i % 4 === 0 || i === 1) && i !== 0) {
-            pr = 0.5
-            pl = 0.5
+            pr = "2px"
+            pl = "2px"
           } else if (i % 3 === 0) {
-            pr = 1
+            pr = 0.5
             pl = 0
           } else {
             pr = 0
-            pl = 1
+            pl = 0.5
           }
 
           return (
