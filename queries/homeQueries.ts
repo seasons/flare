@@ -32,24 +32,6 @@ const HomePageProductFragment_Product = gql`
   ${ProductGridItem_Product}
 `
 
-export const HomeMe_Query = gql`
-  query HomeMe_Query {
-    me {
-      id
-      customer {
-        id
-        admissions {
-          id
-          admissable
-          authorizationsCount
-          authorizationWindowClosesAt
-          allAccessEnabled
-        }
-      }
-    }
-  }
-`
-
 export const Home_Query = gql`
   query Home_Query {
     collections(orderBy: updatedAt_DESC, first: 1, where: { published: true }) {

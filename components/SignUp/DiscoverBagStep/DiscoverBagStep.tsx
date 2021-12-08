@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { useMutation, useQuery } from "@apollo/client"
 import { DiscoverBagContent } from "./DiscoverBagContent"
 import { GET_DISCOVERY_BAG, GET_DISCOVERY_PRODUCT_VARIANTS } from "./queries"
-import { ADD_TO_BAG, REMOVE_FROM_BAG } from "queries/bagQueries"
+import { ADD_TO_BAG, DELETE_BAG_ITEM } from "queries/bagQueries"
 
 const PAGE_LENGTH = 16
 
@@ -35,7 +35,7 @@ export const DiscoverBagStep: React.FC<{ onCompleted: () => void }> = ({ onCompl
       },
     ],
   })
-  const [removeFromBag] = useMutation(REMOVE_FROM_BAG, {
+  const [removeFromBag] = useMutation(DELETE_BAG_ITEM, {
     onCompleted: () => {
       setIsMutating(false)
     },

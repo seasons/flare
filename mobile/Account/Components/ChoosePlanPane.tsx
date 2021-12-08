@@ -46,12 +46,6 @@ export const GET_PLANS = gql`
             itemCount
           }
         }
-        admissions {
-          id
-          admissable
-          authorizationsCount
-          authorizationWindowClosesAt
-        }
       }
     }
     faq(sectionType: PaymentPlanPage) {

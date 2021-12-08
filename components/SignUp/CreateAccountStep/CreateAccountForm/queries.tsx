@@ -37,13 +37,6 @@ export const SIGN_UP_USER = gql`
         bagItems {
           id
         }
-        admissions {
-          id
-          admissable
-          authorizationsCount
-          authorizationWindowClosesAt
-          allAccessEnabled
-        }
         user {
           id
           email

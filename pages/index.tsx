@@ -13,7 +13,7 @@ import { PartnerModal } from "components/Partner/PartnerModal"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
-import { HomeMe_Query, Home_Query } from "queries/homeQueries"
+import { Home_Query } from "queries/homeQueries"
 import React, { useEffect, useRef, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
@@ -41,9 +41,8 @@ const Home = screenTrack(() => ({
     getTheAppVariant: "primaryWhite" as ButtonVariant,
     hideSignIn: true,
   }
-  const { previousData, data = previousData, error } = useQuery(Home_Query)
-  const { previousData: mePreviousData, data: meData = mePreviousData, refetch: meRefetch } = useQuery(HomeMe_Query)
-  const { updateUserSession, authState, toggleLoginModal } = useAuthContext()
+  const { previousData, data = previousData } = useQuery(Home_Query)
+  const { authState } = useAuthContext()
   const [navStyles, setNavStyles] = useState(defaultNavStyles)
   const router = useRouter()
 
@@ -77,15 +76,8 @@ const Home = screenTrack(() => ({
   const showPartnerModal = SHOW_PARTNER_MODAL_CAMPAIGNS.includes(router.query["utm_campaign"] as string)
 
   useEffect(() => {
-    if (!!meData?.me?.customer) {
-      updateUserSession({ cust: meData?.me?.customer })
-    }
-  }, [meData])
-
-  useEffect(() => {
     // Keep track of when a user signs in and refresh the page if they do
     if (isUserSignedIn !== userSignedIn.current) {
-      meRefetch()
       userSignedIn.current = isUserSignedIn
     }
   }, [isUserSignedIn])
@@ -128,7 +120,7 @@ const Home = screenTrack(() => ({
         </MaxWidth>
       </Media>
 
-      {data?.upcomingProducts.length > 0 && (
+      {data?.upcomingProducts.length > 3 && (
         <>
           <ProductCarousel
             hideViewAll
