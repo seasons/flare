@@ -105,6 +105,7 @@ export function createApolloClient() {
     typeDefs,
     resolvers,
     cache,
+    name: "Flare",
   })
 }
 
