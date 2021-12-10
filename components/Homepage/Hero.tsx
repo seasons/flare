@@ -5,7 +5,6 @@ import styled from "styled-components"
 import { Media } from "../Responsive"
 import { GetTheAppButton } from "components/Button/GetTheApp"
 import { MembershipCTA } from "./MembershipCTA"
-import { color } from "helpers/color"
 import { imageResize } from "utils/imageResize"
 import { Col, Grid, Row } from "components/Grid"
 import { themeProps } from "lib/theme"
@@ -69,10 +68,6 @@ const Content: React.FC<{
   )
 }
 
-const HeroImage = () => {
-  return <Picture style={{ width: "100%", height: "auto" }} src={imageResize(heroImage, "large")} />
-}
-
 export const Hero: React.FC = () => {
   const { authState, userSession, toggleLoginModal } = useAuthContext()
 
@@ -96,7 +91,7 @@ export const Hero: React.FC = () => {
           <Grid>
             <Row>
               <Col lg="6" sm="12">
-                <HeroImage />
+                <Picture style={{ width: "100%", height: "auto" }} src={imageResize(heroImage, "large")} />
               </Col>
               <Col lg="6" sm="12">
                 <Content
