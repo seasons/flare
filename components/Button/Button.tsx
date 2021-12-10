@@ -53,6 +53,26 @@ export class Button extends Component<WebButtonProps> {
 
   getVariant() {
     switch (this.props.variant) {
+      case "blue":
+        return css`
+          ${(props) => {
+            const { colors } = props.theme
+
+            return `
+                background-color: ${colors.blue100};
+                border-color: ${colors.blue100};
+                color: ${colors.white100};
+
+                @media ${themeProps.mediaQueries.hover} {
+                  &:hover {
+                    background-color: ${colors.black100};
+                    border-color: ${colors.black100};
+                    color: ${colors.white100};
+                  }
+                }
+              `
+          }};
+        `
       case "green":
         return css`
           ${(props) => {

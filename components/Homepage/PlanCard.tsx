@@ -1,6 +1,5 @@
 import { Box, Sans, Spacer } from "components"
 import { PlanFeatures } from "components/Payment/PlanFeatures"
-import { color } from "helpers"
 import React from "react"
 import styled from "styled-components"
 
@@ -12,7 +11,7 @@ export const PlanCard = ({ plan, isDesktop }) => {
       {isDesktop && (
         <>
           <Sans size="9">{plan?.name} membership</Sans>
-          <Spacer mb={5} />
+          <Spacer mb={4} />
         </>
       )}
       <Sans size="10">
@@ -29,16 +28,6 @@ export const PlanCard = ({ plan, isDesktop }) => {
 }
 
 const Wrapper = styled(Box)`
-  max-width: 500px;
   width: 100%;
   position: relative;
-  background-color: ${color("white100")};
-`
-
-const DiscountWrapper = styled(Box)`
-  background-color: ${color("peach")};
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  border-radius: 8px;
 `
