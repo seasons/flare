@@ -10,7 +10,7 @@ import { imageResize } from "utils/imageResize"
 import { MembershipCTA } from "./MembershipCTA"
 import { FeaturedIn } from "./FeaturedIn"
 
-const image = require("../../public/images/homepage/plans/plans-image.jpg")
+const image = require("../../public/images/homepage/plans/plans-image2.jpg")
 
 const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ plans, breakpoint }) => {
   const isDesktop = breakpoint === "desktop"
@@ -122,11 +122,12 @@ const StyledSpan = styled.span`
 
 const ImageWrapper = styled.div<{ isDesktop: boolean }>`
   height: ${(p) => (p.isDesktop ? "700px" : "auto")};
-  display: flex;
-  justify-content: flex-end;
+  width: 100%;
 
   img {
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `
 
