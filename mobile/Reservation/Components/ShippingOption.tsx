@@ -1,18 +1,12 @@
 import { Box, Flex, Sans, Spacer } from "components"
-import { color } from "helpers"
 import { CheckCircledIcon } from "components/Icons"
+import { color } from "helpers"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components"
 
 export const ShippingOption = ({ option, index, onSelect, selected }) => {
   const method = option?.shippingMethod
-  let price
-  if (option?.externalCost === 0) {
-    price = "Free"
-  } else {
-    price = "$" + option?.externalCost / 100
-  }
 
   return (
     <TouchableWithoutFeedback onPress={onSelect}>
@@ -22,9 +16,6 @@ export const ShippingOption = ({ option, index, onSelect, selected }) => {
             {method?.displayText}
           </Sans>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Sans size="3" color="black100">
-              {price}
-            </Sans>
             <Spacer mr={1} />
             {selected ? <CheckCircledIcon width={24} height={24} /> : <EmptyCircle />}
           </Flex>
