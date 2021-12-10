@@ -26,7 +26,7 @@ export const FeaturedIn: React.FC = () => {
 
   return (
     <MaxWidth>
-      <Box width="100%" pb={2} px={2}>
+      <Box width="100%" py={2} px={2}>
         <Flex
           style={{ width: "100%" }}
           flexDirection="row"

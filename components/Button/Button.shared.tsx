@@ -20,6 +20,7 @@ export type ButtonVariant =
   | "noOutline"
   | "transparentBlackOutline"
   | "green"
+  | "blue"
   | "secondaryGraySelected"
   | "blur"
   | "primaryGray"

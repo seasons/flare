@@ -9,9 +9,8 @@ import { Col, Grid, Row } from "../Grid"
 import { imageResize } from "utils/imageResize"
 import { MembershipCTA } from "./MembershipCTA"
 import { FeaturedIn } from "./FeaturedIn"
-import { Separator } from "@seasons/eclipse"
 
-const image = require("../../public/images/homepage/plans/BG-Right.jpg")
+const image = require("../../public/images/homepage/plans/plans-image2.jpg")
 
 const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ plans, breakpoint }) => {
   const isDesktop = breakpoint === "desktop"
@@ -22,44 +21,46 @@ const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ 
   const plan = plans?.[tabIndex]
 
   return (
-    <Box pr={isDesktop ? "100px" : 0}>
-      <Tabs>
-        {plans?.map((plan, index) => {
-          const selected = index === tabIndex
-          return (
-            <Flex py="12px" onClick={() => setTabIndex(index)} flex={2} style={{ cursor: "pointer" }}>
-              <Sans
-                size={["4", "5"]}
-                color={selected ? "white100" : "black100"}
-                textAlign="center"
-                style={{ width: "100%" }}
-              >
-                Pay {plan.name}
-                <StyledSpan>{plan.name === "Yearly" ? " (Save 20%)" : ""}</StyledSpan>
-              </Sans>
-            </Flex>
-          )
-        })}
-        <TabToggle tabIndex={tabIndex}>
-          <ToggleBackground />
-        </TabToggle>
-      </Tabs>
-      <Spacer mb={isDesktop ? "120px" : 4} />
-      <PlanCard plan={plan} isDesktop={isDesktop} />
-      <Spacer mb={4} />
-      <Flex flexDirection={isDesktop ? "row" : "column"}>
-        <MembershipCTA variant="primaryBlack" authState={authState} userSession={userSession} />
-        <Spacer mb={isDesktop ? 0 : 2} mr={isDesktop ? 2 : 0} />
-        <Button variant="primaryGray" size="large" onClick={() => openDrawer("faq")}>
-          See our FAQ
-        </Button>
-      </Flex>
-      <Spacer mb="3" />
+    <Flex pr={isDesktop ? "100px" : 0} p={4} height="700px" flexDirection="column" justifyContent="space-between">
+      <TabOuterWrapper>
+        <Tabs>
+          {plans?.map((plan, index) => {
+            const selected = index === tabIndex
+            return (
+              <Flex py="12px" onClick={() => setTabIndex(index)} flex={2} style={{ cursor: "pointer", zIndex: 4 }}>
+                <Sans
+                  size={["4", "5"]}
+                  color={selected ? "white100" : "black100"}
+                  textAlign="center"
+                  style={{ width: "100%" }}
+                >
+                  Pay {plan.name}
+                  <StyledSpan>{plan.name === "Yearly" ? " (Save 20%)" : ""}</StyledSpan>
+                </Sans>
+              </Flex>
+            )
+          })}
+          <TabToggle tabIndex={tabIndex}>
+            <ToggleBackground />
+          </TabToggle>
+        </Tabs>
+      </TabOuterWrapper>
+      <Box>
+        <PlanCard plan={plan} isDesktop={isDesktop} />
+        <Spacer mb={2} />
+        <Flex flexDirection={isDesktop ? "row" : "column"}>
+          <MembershipCTA variant="blue" authState={authState} userSession={userSession} />
+          <Spacer mb={isDesktop ? 0 : 2} mr={isDesktop ? 2 : 0} />
+          <Button variant="primaryWhiteNoBorder" size="large" onClick={() => openDrawer("faq")}>
+            See our FAQ
+          </Button>
+        </Flex>
+      </Box>
       <Sans size="3" color="black50" style={{ maxWidth: "460px" }}>
         Cancel for any reason within your first 24 hours to receive a full refund. Free shipping is only included on one
         order per month.
       </Sans>
-    </Box>
+    </Flex>
   )
 }
 
@@ -77,14 +78,16 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
     <>
       <Media greaterThan="md">
         <Grid px={2}>
-          <Row>
-            <Col md="6" xs="12" pb={2}>
-              <PlanTabs plans={plans} breakpoint="desktop" />
-            </Col>
-            <Col md="6" xs="12" pb={2}>
-              <Image breakpoint="desktop" />
-            </Col>
-          </Row>
+          <PlanWrapper>
+            <Row>
+              <Col md="6" xs="12">
+                <PlanTabs plans={plans} breakpoint="desktop" />
+              </Col>
+              <Col md="6" xs="12">
+                <Image breakpoint="desktop" />
+              </Col>
+            </Row>
+          </PlanWrapper>
         </Grid>
         <FeaturedIn />
       </Media>
@@ -101,37 +104,49 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   )
 }
 
+const TabOuterWrapper = styled(Box)`
+  background-color: ${color("white100")};
+  border-radius: 8px;
+  padding: 4px;
+`
+
+const PlanWrapper = styled(Box)`
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: ${color("black04")};
+`
+
 const StyledSpan = styled.span`
   font-size: 14px;
 `
 
 const ImageWrapper = styled.div<{ isDesktop: boolean }>`
-  border-radius: 8px;
-  overflow: hidden;
   height: ${(p) => (p.isDesktop ? "700px" : "auto")};
-  display: flex;
-  justify-content: flex-end;
+  width: 100%;
 
   img {
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `
 
 const Tabs = styled(Flex)`
-  border-radius: 8px;
   position: relative;
-  border: 1px solid ${color("black10")};
   flex-direction: row;
   align-items: center;
+  width: 100%;
+  height: 40px;
 `
 
 const TabToggle = styled.div<{ tabIndex: number }>`
   position: absolute;
-  width: calc(50%);
-  height: calc(100%);
-  padding: 4px;
-  z-index: -1;
+  width: 50%;
+  height: 100%;
+  background-color: ${color("blue100")};
+  z-index: 1;
   transition: 300ms ease-in;
+  border-radius: 8px;
   transform: translateX(${(p) => (p.tabIndex === 0 ? "0" : "100%")});
 `
 
@@ -139,5 +154,5 @@ const ToggleBackground = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 8px;
-  background-color: ${color("brown100")};
+  z-index: 1;
 `

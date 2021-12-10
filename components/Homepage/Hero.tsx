@@ -10,10 +10,12 @@ import { imageResize } from "utils/imageResize"
 import { Col, Grid, Row } from "components/Grid"
 import { themeProps } from "lib/theme"
 
-const heroImage = require("../../public/images/homepage/hero/JW-Hero-Image.jpg")
+const heroImage = require("../../public/images/homepage/hero/Hero-Background-Image.jpg")
 
 export const DESKTOP_HERO_HEIGHT = 760
 export const MOBILE_HERO_HEIGHT = 556
+
+const backgroundColor = "#D7DFEE"
 
 const Content: React.FC<{
   version: "mobile" | "desktop"
@@ -32,30 +34,30 @@ const Content: React.FC<{
       height={isDesktop ? "715px" : "auto"}
       py={5}
       px={isDesktop ? 0 : 2}
-      style={{ backgroundColor: color("darkGreen") }}
+      style={{ backgroundColor }}
     >
       <Box />
       <Box>
-        <Display color="white100" size={["7", "7", "9", "9", "9"]}>
+        <Display color="black100" size={["7", "7", "9", "9", "9"]}>
           Rent it, wear it, love it,
         </Display>
-        <Display color="white100" size={["7", "7", "9", "9", "9"]}>
+        <Display color="black100" size={["7", "7", "9", "9", "9"]}>
           buy it or swap it out.
         </Display>
         <Spacer mb={2} />
-        <Sans color="black25" size="4" style={{ maxWidth: "370px" }}>
+        <Sans color="black50" size="4" style={{ maxWidth: "370px" }}>
           Exclusive rent-to-own access to over 1,000+ styles. A new way to discover, wear, & buy.
         </Sans>
         <Spacer mb={4} />
         <Flex flexDirection={isDesktop ? "row" : "column"}>
-          <MembershipCTA variant="green" block={!isDesktop} userSession={userSession} authState={authState} />
+          <MembershipCTA variant="blue" block={!isDesktop} userSession={userSession} authState={authState} />
           <Spacer mr={isDesktop ? 2 : 0} mt={isDesktop ? 0 : 1} />
-          <GetTheAppButton size="large" variant="blur" block={!isDesktop} />
+          <GetTheAppButton size="large" variant="primaryWhiteNoBorder" block={!isDesktop} />
         </Flex>
       </Box>
       <Box mt={isDesktop ? 0 : 3}>
         {!isUserSignedIn && (
-          <Sans size="4" color="white100">
+          <Sans size="4" color="black100">
             Already a member?{" "}
             <span style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => toggleLoginModal(true)}>
               Sign in
@@ -132,7 +134,7 @@ const BackgroundImage = styled(Box)`
 `
 
 const HeroWrapper = styled(Flex)`
-  background-color: ${color("darkGreen")};
+  background-color: ${backgroundColor};
   width: 100%;
   position: relative;
 `
