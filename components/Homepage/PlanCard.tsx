@@ -8,12 +8,8 @@ export const PlanCard = ({ plan, isDesktop }) => {
 
   return (
     <Wrapper>
-      {isDesktop && (
-        <>
-          <Sans size="9">{plan?.name} membership</Sans>
-          <Spacer mb={4} />
-        </>
-      )}
+      {isDesktop && <Sans size="9">{plan?.name} membership</Sans>}
+      <Spacer mb={4} />
       <Sans size="10">
         ${plan.price / 100}
         <Sans size="4" color="black50" style={{ display: "inline" }}>

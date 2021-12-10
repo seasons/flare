@@ -21,8 +21,14 @@ const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ 
   const plan = plans?.[tabIndex]
 
   return (
-    <Flex pr={isDesktop ? "100px" : 0} p={4} height="700px" flexDirection="column" justifyContent="space-between">
-      <TabOuterWrapper>
+    <Flex
+      pr={isDesktop ? "100px" : 0}
+      p={[0, 0, 0, 4, 4]}
+      height={["auto", "auto", "auto", "700px", "700px"]}
+      flexDirection="column"
+      justifyContent="space-between"
+    >
+      <TabOuterWrapper isDesktop={isDesktop}>
         <Tabs>
           {plans?.map((plan, index) => {
             const selected = index === tabIndex
@@ -45,18 +51,22 @@ const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ 
           </TabToggle>
         </Tabs>
       </TabOuterWrapper>
-      <Box>
+      <Box py={2}>
         <PlanCard plan={plan} isDesktop={isDesktop} />
         <Spacer mb={2} />
         <Flex flexDirection={isDesktop ? "row" : "column"}>
           <MembershipCTA variant="blue" authState={authState} userSession={userSession} />
           <Spacer mb={isDesktop ? 0 : 2} mr={isDesktop ? 2 : 0} />
-          <Button variant="primaryWhiteNoBorder" size="large" onClick={() => openDrawer("faq")}>
+          <Button
+            variant={isDesktop ? "primaryWhiteNoBorder" : "primaryGray"}
+            size="large"
+            onClick={() => openDrawer("faq")}
+          >
             See our FAQ
           </Button>
         </Flex>
       </Box>
-      <Sans size="3" color="black50" style={{ maxWidth: "460px" }}>
+      <Sans size={["2", "2", "3", "3", "3"]} color="black50" style={{ maxWidth: "460px" }}>
         Cancel for any reason within your first 24 hours to receive a full refund. Free shipping is only included on one
         order per month.
       </Sans>
@@ -104,10 +114,11 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
   )
 }
 
-const TabOuterWrapper = styled(Box)`
+const TabOuterWrapper = styled(Box)<{ isDesktop: boolean }>`
   background-color: ${color("white100")};
   border-radius: 8px;
   padding: 4px;
+  border: ${(p) => (p.isDesktop ? "none" : `1px solid ${color("black10")}`)};
 `
 
 const PlanWrapper = styled(Box)`
