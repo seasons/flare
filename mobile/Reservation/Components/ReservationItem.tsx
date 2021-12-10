@@ -8,21 +8,14 @@ import { Schema, useTracking } from "utils/analytics"
 const PRODUCT_ASPECT_RATIO = 1.3
 
 interface ReservationItemProps {
-  bagItem: any
+  productVariant: any
   index?: number
-  sectionHeight: number
   navigation?: any
 }
 
-export const ReservationItem: React.FC<ReservationItemProps> = ({ bagItem, index, sectionHeight, navigation }) => {
+export const ReservationItem: React.FC<ReservationItemProps> = ({ productVariant, index, navigation }) => {
   const tracking = useTracking()
-  const product = bagItem?.productVariant?.product
-  const variantToUse = head(
-    (bagItem?.productVariant?.product?.variants || []).filter((a) => a.id === bagItem?.productVariant?.id)
-  )
-  if (!product || !variantToUse) {
-    return null
-  }
+  const product = productVariant?.product
 
   const imageURL = product?.images?.[0]?.url
 
@@ -48,9 +41,9 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ bagItem, index
                 <Sans size="3" color="black50">
                   {product.name}
                 </Sans>
-                {!!variantToUse?.displayShort && (
+                {!!productVariant?.displayShort && (
                   <Sans size="3" color="black50">
-                    Size {variantToUse.displayShort}
+                    Size {productVariant.displayShort}
                   </Sans>
                 )}
               </Box>

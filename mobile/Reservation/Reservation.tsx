@@ -1,147 +1,33 @@
-import { Box, Button, FixedBackArrow, Flex, Sans, Separator, Spacer, SuggestedAddressPopupNote } from "components"
+import { Box, FixedBackArrow, Flex, Sans, Separator, Spacer, SuggestedAddressPopupNote } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { PopUpData } from "components/PopUp/PopUpProvider"
-import gql from "graphql-tag"
-import { DateTime } from "luxon"
 import { UPDATE_PAYMENT_AND_SHIPPING } from "mobile/Account/PaymentAndShipping/EditShipping"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
-import { BagItemFragment } from "queries/bagItemQueries"
 import { GET_BAG } from "queries/bagQueries"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-
+import { upperFirst } from "lodash"
 import { useMutation, useQuery } from "@apollo/client"
 
 import { ReservationItem } from "./Components/ReservationItem"
-import { ShippingOption } from "./Components/ShippingOption"
 import { ReservationBottomBar } from "./ReservationBottomBar"
 import { ReservationLineItems } from "./ReservationLineItems"
-
-const RESERVE_ITEMS = gql`
-  mutation ReserveItems($items: [ID!]!, $options: ReserveItemsOptions, $shippingCode: ShippingCode) {
-    reserveItems(items: $items, options: $options, shippingCode: $shippingCode) {
-      id
-    }
-  }
-`
-
-const GET_CUSTOMER = gql`
-  query GetCustomer($shippingCode: String) {
-    shippingMethods {
-      id
-      displayText
-      code
-      position
-      timeWindows {
-        id
-        startTime
-        endTime
-        display
-      }
-    }
-    me {
-      id
-      nextFreeSwapDate
-      user {
-        id
-        firstName
-        lastName
-        email
-      }
-      bag {
-        id
-        productVariant {
-          id
-          ...BagItemProductVariant
-        }
-      }
-      newBagItems: bag(status: Added) {
-        id
-        productVariant {
-          id
-          ...BagItemProductVariant
-        }
-      }
-      reservationLineItems(filterBy: NewItems, shippingCode: $shippingCode) {
-        id
-        name
-        price
-        recordType
-      }
-      customer {
-        id
-        membership {
-          id
-          plan {
-            id
-            itemCount
-          }
-        }
-        detail {
-          id
-          phoneNumber
-          shippingAddress {
-            id
-            name
-            address1
-            address2
-            city
-            state
-            zipCode
-            shippingOptions {
-              id
-              externalCost
-              averageDuration
-              shippingMethod {
-                id
-                code
-                displayText
-              }
-            }
-          }
-        }
-        billingInfo {
-          id
-          last_digits
-        }
-      }
-    }
-  }
-  ${BagItemFragment}
-`
-
-const SectionHeader: React.FC<{ title: string; onEdit?: () => void }> = ({ title, onEdit }) => {
-  return (
-    <>
-      <Flex flexDirection="row" width="100%" justifyContent={!!onEdit ? "space-between" : "flex-start"}>
-        <Sans size="3" color="black">
-          {title}
-        </Sans>
-        {!!onEdit && (
-          <Sans size="3" color="black" style={{ textDecorationLine: "underline", cursor: "pointer" }} onClick={onEdit}>
-            Edit
-          </Sans>
-        )}
-      </Flex>
-      <Spacer mb={1} />
-      <Separator />
-    </>
-  )
-}
+import { ReservationShippingOptionsSection } from "./Components/ReservationShippingOptionSection"
+import { SectionHeader } from "./Components/SectionHeader"
+import { GET_CUSTOMER, RESERVE_ITEMS } from "./queries"
 
 export const Reservation = screenTrack()((props) => {
   const [isMutating, setIsMutating] = useState(false)
   const tracking = useTracking()
+  const [dateAndTimeWindow, setDateAndTimeWindow] = useState(null)
 
-  const [shippingOptionIndex, setShippingOptionIndex] = useState(0)
   const [shippingCode, setShippingCode] = useState("UPSGround")
   const { openDrawer } = useDrawerContext()
 
-  const { previousData, data = previousData, refetch } = useQuery(GET_CUSTOMER, {
+  const { previousData, data = previousData } = useQuery(GET_CUSTOMER, {
     variables: {
       shippingCode: shippingCode || "UPSGround",
     },
@@ -214,22 +100,11 @@ export const Reservation = screenTrack()((props) => {
   const customer = me?.customer
   const address = me?.customer?.detail?.shippingAddress
   const shippingOptions = customer?.detail?.shippingAddress?.shippingOptions
-
-  useEffect(() => {
-    if (shippingOptions?.length > 0) {
-      const selectedShippingOption = shippingOptions[shippingOptionIndex]
-      const updatedShippingCode = selectedShippingOption?.shippingMethod?.code
-      setShippingCode(updatedShippingCode)
-      refetch({
-        shippingCode: updatedShippingCode,
-      })
-    }
-  }, [shippingOptionIndex, shippingOptions])
-
   const phoneNumber = customer?.detail?.phoneNumber
   const billingInfo = customer?.billingInfo
   const items = me?.bag
-  const newBagItems = me?.newBagItems
+  const productVariants = me?.newBagItems?.map((i) => i.productVariant)
+  const bottomBarDisabled = shippingCode === "Pickup" && !dateAndTimeWindow
 
   if (!customer || !items || !address) {
     return (
@@ -271,16 +146,26 @@ export const Reservation = screenTrack()((props) => {
             </Box>
             <ReservationLineItems lineItems={me.reservationLineItems} />
             <Box mb={4}>
-              <SectionHeader title="Payment method" onEdit={() => {}} />
+              <SectionHeader
+                title="Payment method"
+                rightText="Edit"
+                onPressRightText={() => {
+                  openDrawer("editPaymentMethod", {
+                    previousScreen: "reservation",
+                  })
+                }}
+              />
+              <Spacer mb={1} />
               <Sans size="4" color="black50" mt={1}>
-                {`${billingInfo?.brand || "card"} ending in ${billingInfo?.last_digits}`}
+                {`${billingInfo?.brand ? upperFirst(billingInfo.brand) : "Card"} ending in ${billingInfo?.last_digits}`}
               </Sans>
             </Box>
             {address && (
               <Box mb={4}>
                 <SectionHeader
+                  rightText="Edit"
                   title="Shipping address"
-                  onEdit={() => {
+                  onPressRightText={() => {
                     openDrawer("reservationShippingAddress", {
                       shippingAddress: address,
                       previousScreen: "reservation",
@@ -296,50 +181,35 @@ export const Reservation = screenTrack()((props) => {
                 </Sans>
               </Box>
             )}
-            {shippingOptions?.length > 0 && (
-              <Box mb={4}>
-                <SectionHeader title="Select shipping" />
-                <Spacer mb={1} />{" "}
-                {shippingOptions.map((option, index) => {
+            <ReservationShippingOptionsSection
+              shippingOptions={shippingOptions}
+              onShippingOptionSelected={(option) => {
+                setShippingCode(option.shippingMethod.code)
+              }}
+              onTimeWindowSelected={(data) => {
+                setDateAndTimeWindow(data)
+              }}
+            />
+            <Box mb={10}>
+              <SectionHeader title="Bag items" />
+              <Box mt={1} mb={4}>
+                {productVariants?.map((productVariant, i) => {
                   return (
-                    <Box key={option?.id || index}>
-                      <ShippingOption
-                        option={option}
-                        index={index}
-                        setShippingOptionIndex={setShippingOptionIndex}
-                        shippingOptionIndex={shippingOptionIndex}
-                      />
-                      <Separator />
+                    <Box key={productVariant.id}>
+                      <ReservationItem index={i} productVariant={productVariant} navigation={props.navigation} />
+                      <Spacer mb={1} />
+                      {i !== productVariants.length - 1 && <Separator />}
+                      <Spacer mb={1} />
                     </Box>
                   )
                 })}
-                <Spacer mb={2} />
-                <Sans size="3" color="black50">
-                  UPS Ground shipping averages 1-2 days in the NY metro area, 3-4 days for the Midwest + Southeast, and
-                  5-7 days on the West coast.
-                </Sans>
-              </Box>
-            )}
-            <Box mb={5}>
-              <SectionHeader title="Bag items" />
-              <Box mt={1} mb={4}>
-                {!!newBagItems &&
-                  newBagItems.map((item, i) => {
-                    return (
-                      <Box key={item.id}>
-                        <ReservationItem sectionHeight={206} index={i} bagItem={item} navigation={props.navigation} />
-                        <Spacer mb={1} />
-                        {i !== items.length - 1 && <Separator />}
-                        <Spacer mb={1} />
-                      </Box>
-                    )
-                  })}
               </Box>
             </Box>
           </ScrollView>
         </Flex>
         <ButtonContainer>
           <ReservationBottomBar
+            disabled={bottomBarDisabled}
             lineItems={me.reservationLineItems}
             onReserve={async () => {
               if (isMutating) {
@@ -353,8 +223,11 @@ export const Reservation = screenTrack()((props) => {
               const itemIDs = items?.map((item) => item?.productVariant?.id)
               const { data } = await reserveItems({
                 variables: {
-                  items: itemIDs,
-                  shippingCode: shippingOptions?.[shippingOptionIndex]?.shippingMethod?.code,
+                  options: {
+                    timeWindowID: dateAndTimeWindow?.timeWindow?.id,
+                    pickupDate: dateAndTimeWindow?.date,
+                  },
+                  shippingCode,
                 },
               })
               if (data?.reserveItems) {

@@ -246,17 +246,11 @@ export const EditShipping: React.FC<{
         </Box>
         <FixedKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={space(2)}>
           <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" p={2}>
-            <Button variant="primaryWhite" size="large" block style={{ flex: 1 }} onClick={goBack}>
+            <Button variant="primaryWhite" block style={{ flex: 1 }} onClick={goBack}>
               Cancel
             </Button>
             <Spacer ml={1} />
-            <Button
-              loading={isMutating}
-              variant="secondaryOutline"
-              size="large"
-              onClick={handleSaveBtnPressed}
-              style={{ flex: 1 }}
-            >
+            <Button loading={isMutating} variant="secondaryOutline" onClick={handleSaveBtnPressed} style={{ flex: 1 }}>
               Save
             </Button>
           </Flex>

@@ -7,7 +7,7 @@ import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useRouter } from "next/router"
 import { Box, Button, Flex } from "components"
 
-export const BagTabFooter = ({ data, sections, startReservation }) => {
+export const BagTabFooter = ({ data, sections, startReservation, setPrimaryCtaMutating, primaryCtaMutating }) => {
   const router = useRouter()
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
@@ -36,7 +36,10 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
     !!shippingAddress?.address1 && !!shippingAddress?.city && !!shippingAddress?.state && !!shippingAddress?.zipCode
 
   const handleReserve = async () => {
-    setIsMutating(true)
+    if (primaryCtaMutating) {
+      return
+    }
+    setPrimaryCtaMutating(true)
     if (!isSignedIn) {
       showPopUp({
         title: "Sign up to reserve your items",
@@ -46,6 +49,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
           hidePopUp()
         },
       })
+      setPrimaryCtaMutating(false)
     } else if (customerStatus === "Authorized") {
       showPopUp({
         title: "You need to choose a plan first",
@@ -55,6 +59,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
           hidePopUp()
         },
       })
+      setPrimaryCtaMutating(false)
     } else if (addedItems?.length > MAXIMUM_ITEM_COUNT) {
       showPopUp({
         title: "You must remove some items first",
@@ -62,13 +67,13 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
         buttonText: "Got it",
         onClose: () => hidePopUp(),
       })
+      setPrimaryCtaMutating(false)
     } else if (!hasShippingAddress) {
       openDrawer("reservationShippingAddress", { shippingAddress })
-      return
+      setPrimaryCtaMutating(false)
     } else {
       await startReservation()
     }
-    setIsMutating(false)
   }
 
   let button = null
@@ -83,7 +88,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
     // } else if (hasAtHomeItems) {
     //   button = (
     //     <Box mx={2} my={2}>
-    //       <Button block onPress={onReturnBagClicked} disabled={isMutating} loading={isMutating} variant="primaryWhite">
+    //       <Button block onClick={onReturnBagClicked} disabled={isMutating} loading={isMutating} variant="primaryWhite">
     //         Return bag
     //       </Button>
     //     </Box>
@@ -91,7 +96,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
   } else if (!!inboundTrackingUrl) {
     button = (
       <Button
-        onPress={() => router.push(inboundTrackingUrl)}
+        onClick={() => router.push(inboundTrackingUrl)}
         disabled={isMutating}
         loading={isMutating}
         block
@@ -103,7 +108,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
     // } else if (hasReturnPendingsItems) {
     //   button = (
     //     <Flex flexDirection="row" justifyContent="space-between" mx={2} my={2}>
-    //       <Button onPress={handlePress} disabled={isMutating} loading={isMutating} block variant="primaryBlack">
+    //       <Button onClick={handlePress} disabled={isMutating} loading={isMutating} block variant="primaryBlack">
     //         How to return
     //       </Button>
     //     </Flex>
@@ -111,7 +116,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
     // }
   } else {
     button = (
-      <Button onPress={() => closeDrawer()} block variant="primaryWhite">
+      <Button onClick={() => closeDrawer()} block variant="primaryWhite">
         Close
       </Button>
     )
@@ -119,7 +124,7 @@ export const BagTabFooter = ({ data, sections, startReservation }) => {
 
   return (
     button && (
-      <Box width="100%" style={{ position: "absolute", bottom: 0, zIndex: 999 }}>
+      <Box width="100%" px={2} mb={2} style={{ position: "absolute", bottom: 0, zIndex: 999 }}>
         {button}
       </Box>
     )

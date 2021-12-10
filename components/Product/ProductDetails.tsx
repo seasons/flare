@@ -57,7 +57,7 @@ export const ProductDetails: React.FC<{
   const manufacturerSize = selectedVariant?.manufacturerSizes?.[0]
   const manufacturerSizeDisplay = manufacturerSize?.display
   const manufacturerSizeType = manufacturerSize?.type
-  const manufacturerSizeDiff = manufacturerSize !== selectedVariant?.displayShort
+  const manufacturerSizeDiff = manufacturerSizeDisplay !== selectedVariant?.displayShort
   const sizeConversionDisplay = `US ${displayShort} = ${manufacturerSizeType} ${manufacturerSizeDisplay}`
 
   const modelDetailValue =
@@ -134,7 +134,7 @@ export const ProductDetails: React.FC<{
         </Flex>
       </Flex>
       <Flex paddingTop={6} pb={2}>
-        <Sans size={3}>Select a size</Sans>
+        {product?.variants?.length > 1 && <Sans size={3}>Select a size</Sans>}
       </Flex>
       {productType !== "Accessory" && (
         <Flex flex={1} pb={1}>

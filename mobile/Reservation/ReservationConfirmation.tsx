@@ -2,10 +2,12 @@ import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { CheckWithBackground } from "components/SVGs"
 import gql from "graphql-tag"
-import { color } from "helpers/color"
+import { ProductPriceText_Product } from "@seasons/eclipse"
 import { Container } from "mobile/Container"
 import { Loader } from "mobile/Loader"
 import React from "react"
+import { DateTime } from "luxon"
+
 import { ScrollView } from "react-native"
 import styled from "styled-components"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
@@ -41,13 +43,14 @@ const GET_CUSTOMER_RESERVATION_CONFIRMATION = gql`
         reservations(where: { id: $reservationID }) {
           id
           reservationNumber
-          shippingOption {
+          pickupDate
+          pickupWindow {
+            display
+          }
+          shippingMethod {
             id
-            externalCost
-            shippingMethod {
-              id
-              displayText
-            }
+            displayText
+            code
           }
           lineItems {
             id
@@ -55,29 +58,33 @@ const GET_CUSTOMER_RESERVATION_CONFIRMATION = gql`
             price
             taxPrice
           }
-          products {
+          reservationPhysicalProducts {
             id
-            productVariant {
+            physicalProduct {
               id
-              product {
+              productVariant {
                 id
-                name
-                modelSize {
-                  id
-                  display
-                }
-                brand {
+                product {
                   id
                   name
-                }
-                images {
-                  id
-                  url
-                }
-                variants {
-                  id
-                  size
-                  displayShort
+                  modelSize {
+                    id
+                    display
+                  }
+                  brand {
+                    id
+                    name
+                  }
+                  images {
+                    id
+                    url
+                  }
+                  variants {
+                    id
+                    displayShort
+                    displayLong
+                  }
+                  ...ProductPriceText_Product
                 }
               }
             }
@@ -86,6 +93,7 @@ const GET_CUSTOMER_RESERVATION_CONFIRMATION = gql`
       }
     }
   }
+  ${ProductPriceText_Product}
 `
 
 export const ReservationConfirmation = screenTrack()((props) => {
@@ -108,14 +116,15 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const customer = data?.me?.customer
   const address = customer?.detail?.shippingAddress
   const reservation = customer?.reservations?.[0]
-  const items = reservation?.products
+  const productVariants = reservation?.reservationPhysicalProducts.map((rpp) => rpp.physicalProduct.productVariant)
+
   const lineItems = reservation?.lineItems
 
   const SectionHeader = ({ title, content = null, bottomSpacing = 1, hideSeparator = false }) => {
     return (
       <>
         <Flex flexDirection="row" width="100%">
-          <Sans size="3" color="black100">
+          <Sans size="4" color="black100">
             {title}
           </Sans>
           {content && <Box ml="auto">{content}</Box>}
@@ -132,6 +141,10 @@ export const ReservationConfirmation = screenTrack()((props) => {
   const shippingOption = reservation?.shippingOption
   const shippingDisplayText = shippingOption?.shippingMethod?.displayText
 
+  const isPickup = reservation?.shippingMethod?.code === "Pickup"
+  const timeWindowText = reservation?.pickupWindow?.display
+  const pickupDateText = reservation?.pickupDate && DateTime.fromISO(reservation?.pickupDate).toFormat("cccc, MMMM dd")
+
   return (
     <Container>
       <Flex px={2}>
@@ -139,16 +152,16 @@ export const ReservationConfirmation = screenTrack()((props) => {
           <Spacer mb={52} />
           <CheckWithBackground />
           <Box my={4}>
-            <Sans size="3" color="black100">
+            <Sans size="4" color="black100">
               We've got your order!
             </Sans>
-            <Sans size="3" color="black50">
+            <Sans size="4" color="black50">
               We've emailed you a confirmation and we'll notify you when its out for delivery.
             </Sans>
           </Box>
           {lineItems?.length > 0 && (
             <>
-              <Spacer pb={4} />
+              <Spacer pb={2} />
               <ReservationLineItems lineItems={lineItems} />
               <Spacer mb={2} />
             </>
@@ -159,7 +172,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
               content={
                 <>
                   {!!reservation.reservationNumber && (
-                    <Sans size="3" color="black100" textAlign="right" ml="auto">
+                    <Sans size="4" color="black100" textAlign="right" ml="auto">
                       {reservation.reservationNumber}
                     </Sans>
                   )}
@@ -173,12 +186,12 @@ export const ReservationConfirmation = screenTrack()((props) => {
               content={
                 <>
                   {!!formatedAddress1 && (
-                    <Sans size="3" color="black100" textAlign="right">
+                    <Sans size="4" color="black100" textAlign="right">
                       {formatedAddress1}
                     </Sans>
                   )}
                   {!!formatedAddress2 && (
-                    <Sans size="3" color="black100" textAlign="right">
+                    <Sans size="4" color="black100" textAlign="right">
                       {formatedAddress2}
                     </Sans>
                   )}
@@ -189,12 +202,22 @@ export const ReservationConfirmation = screenTrack()((props) => {
           </Box>
           <Box pt={1}>
             <SectionHeader
-              title="Delivery"
+              title={isPickup ? "In-Office Pickup" : "Delivery"}
               content={
                 <>
-                  {!!shippingDisplayText && (
-                    <Sans size="3" color="black100" ml="auto" textAlign="right">
+                  {!!shippingDisplayText && !isPickup && (
+                    <Sans size="4" color="black100" ml="auto" textAlign="right">
                       {shippingDisplayText}
+                    </Sans>
+                  )}
+                  {!!pickupDateText && (
+                    <Sans size="4" color="black100" ml="auto" mt={1} textAlign="right">
+                      {pickupDateText}
+                    </Sans>
+                  )}
+                  {!!timeWindowText && (
+                    <Sans size="4" color="black100" textAlign="right">
+                      {timeWindowText}
                     </Sans>
                   )}
                 </>
@@ -206,12 +229,12 @@ export const ReservationConfirmation = screenTrack()((props) => {
           <Box mb={5}>
             <SectionHeader title="Items" />
             <Box mt={1} mb={4}>
-              {items?.map((item, i) => {
+              {productVariants?.map((productVariant, i) => {
                 return (
-                  <Box key={item.id}>
-                    <ReservationItem sectionHeight={206} index={i} bagItem={item} navigation={props.navigation} />
+                  <Box key={productVariant.id}>
+                    <ReservationItem index={i} productVariant={productVariant} navigation={props.navigation} />
                     <Spacer mb={1} />
-                    {i !== items.length - 1 && <Separator />}
+                    {i !== productVariants.length - 1 && <Separator />}
                     <Spacer mb={1} />
                   </Box>
                 )
