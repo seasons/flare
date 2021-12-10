@@ -91,7 +91,9 @@ export const Hero: React.FC = () => {
           <Grid>
             <Row>
               <Col lg="6" sm="12">
-                <Picture style={{ width: "100%", height: "auto" }} src={imageResize(heroImage, "large")} />
+                <MobileImageWrapper>
+                  <Picture src={imageResize(heroImage, "large")} />
+                </MobileImageWrapper>
               </Col>
               <Col lg="6" sm="12">
                 <Content
@@ -108,6 +110,14 @@ export const Hero: React.FC = () => {
     </HeroWrapper>
   )
 }
+
+const MobileImageWrapper = styled(Box)`
+  img {
+    width: 100vw;
+    height: 100vw;
+    object-fit: cover;
+  }
+`
 
 const ImageWrapper = styled(Box)`
   position: absolute;
