@@ -175,6 +175,7 @@ interface StyledTextProps extends Partial<TextProps> {
   weight?: null | FontWeights
   italic?: boolean
   underline?: boolean
+  inline?: boolean
   pointer?: boolean
 }
 
@@ -206,7 +207,7 @@ function createStyledText<P extends StyledTextProps>(
   selectFontFamilyType: typeof _selectFontFamilyType = _selectFontFamilyType
 ): StyledComponent<any, any, any, any> {
   // @ts-ignore
-  return styled<P>(({ size, weight, italic, underline, element, pointer, ...textProps }: StyledTextProps) => {
+  return styled<P>(({ size, weight, italic, underline, element, pointer, inline, ...textProps }: StyledTextProps) => {
     const fontFamilyType = selectFontFamilyType(_fontWeight(weight), italic)
     // This is mostly to narrow the type of `fontFamilyType` to remove `null`.
     if (fontFamilyType === null) {
@@ -216,6 +217,7 @@ function createStyledText<P extends StyledTextProps>(
       transition: `color ${GLOBAL_TRANSITION}`,
       ...(underline ? { textDecoration: "underline" } : {}),
       ...(pointer ? { cursor: "pointer" } : {}),
+      ...(inline ? { display: "inline" } : {}),
       ...textProps.style,
     }
 

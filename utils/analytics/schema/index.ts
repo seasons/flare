@@ -171,6 +171,11 @@ export enum ActionNames {
   SaveProductModalSaveTapped = "Save Product Modal Save Tapped",
   ApplyPromoCodeTapped = "Apply Promo Code Tapped",
   InstagramButtonTapped = "Instagram Button Tapped",
+
+  HistoryTabTapped = "History Tab Tapped",
+
+  SavedItemRemoved = "Saved Item Removed",
+  NotifyMeTapped = "Notify Me Tapped",
 }
 
 /**

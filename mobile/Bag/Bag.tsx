@@ -1,11 +1,11 @@
 import { Box } from "components"
 import { Container } from "mobile/Container"
 import { TabBar } from "mobile/TabBar"
-import { CHECK_ITEMS, DELETE_BAG_ITEM, GET_BAG } from "queries/bagQueries"
+import { CHECK_ITEMS, CREATE_DRAFT_ORDER, DELETE_BAG_ITEM, GET_BAG } from "queries/bagQueries"
 import React, { useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 
-import { useMutation } from "@apollo/client"
+import { gql, useMutation } from "@apollo/client"
 
 import { BagTab } from "./Components/BagTab"
 import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
@@ -15,33 +15,66 @@ import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useBag } from "./useBag"
 
 export enum BagView {
-  Bag = 0,
-  Saved = 1,
-  History = 2,
+  Rent = 0,
+  Buy = 1,
 }
+
+export const BagFragment_Me = gql`
+  fragment BagFragment_Me on Me {
+    id
+    customer {
+      id
+      user {
+        id
+      }
+    }
+  }
+`
 
 export const MAXIMUM_ITEM_COUNT = 6
 
 export const Bag = screenTrack()(() => {
   const tracking = useTracking()
-  const [currentView, setCurrentView] = useState<BagView>(BagView.Bag)
+  const [currentView, setCurrentView] = useState<BagView>(BagView.Rent)
   const [deleteBagItem] = useMutation(DELETE_BAG_ITEM, { awaitRefetchQueries: true })
-  const [primaryCtaMutating, setPrimaryCtaMutating] = useState(false)
+  const [isPrimaryCTAMutating, setIsPrimaryCtaMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
-  const { bagSections } = useBag()
+  const { bagSections, data } = useBag()
 
+  const me = data?.me
   const addedItems = bagSections?.find((section) => section.status === "Added")?.bagItems
+
+  const [createDraftOrder] = useMutation(CREATE_DRAFT_ORDER, {
+    onCompleted: (res) => {
+      setIsPrimaryCtaMutating(false)
+      if (res?.createDraftedOrder) {
+        openDrawer("reviewOrder", { order: res.createDraftedOrder })
+      }
+    },
+    onError: (error) => {
+      showPopUp({
+        title: "Sorry!",
+        note: "There was an issue creating the order, please try again.",
+        buttonText: "Okay",
+        onClose: () => {
+          hidePopUp()
+        },
+      })
+      console.log("error createDraftOrder ", error)
+      setIsPrimaryCtaMutating(false)
+    },
+  })
 
   const [checkItemsAvailability] = useMutation(CHECK_ITEMS, {
     onCompleted: (res) => {
-      setPrimaryCtaMutating(false)
+      setIsPrimaryCtaMutating(false)
       if (res.checkItemsAvailability) {
         openDrawer("reservation")
       }
     },
     onError: (e) => {
-      setPrimaryCtaMutating(false)
+      setIsPrimaryCtaMutating(false)
       const { graphQLErrors } = e
       console.log("Bag.tsx handleReserve: ", graphQLErrors)
       const error = graphQLErrors.length > 0 ? graphQLErrors[0] : null
@@ -69,18 +102,10 @@ export const Bag = screenTrack()(() => {
 
   const CurrentTab = () => {
     switch (currentView) {
-      case BagView.Bag:
-        return (
-          <BagTab
-            startReservation={startReservation}
-            setPrimaryCtaMutating={setPrimaryCtaMutating}
-            primaryCtaMutating={primaryCtaMutating}
-          />
-        )
-      case BagView.Saved:
-        return <SavedItemsTab deleteBagItem={deleteBagItem} />
-      case BagView.History:
-        return <ReservationHistoryTab />
+      case BagView.Buy:
+        return <BuyTab items={item.data} />
+      case BagView.Rent:
+        return <RentTab />
     }
   }
 
@@ -96,6 +121,21 @@ export const Bag = screenTrack()(() => {
       ],
       update(cache, { data, errors }) {
         console.log(data, errors)
+      },
+    })
+  }
+
+  const onCartCheckout = () => {
+    if (isPrimaryCTAMutating) {
+      return
+    }
+    setIsPrimaryCtaMutating(true)
+    createDraftOrder({
+      variables: {
+        input: {
+          productVariantIds: me?.cartItems?.map((item) => item.productVariant.id),
+          orderType: "Used",
+        },
       },
     })
   }

@@ -1,8 +1,5 @@
 import gql from "graphql-tag"
-
 import { OrderFragment_Order } from "@seasons/eclipse"
-
-import { BagItemFragment } from "./bagItemQueries"
 import { BagSectionFragment_BagSection } from "mobile/Bag/Components/BagSection/BagSection"
 
 export { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_LOCAL_BAG, GET_LOCAL_BAG_ITEMS } from "./clientQueries"
@@ -10,6 +7,16 @@ export const CHECK_ITEMS = gql`
   mutation CheckItemsAvailability($items: [ID!]!) {
     checkItemsAvailability(items: $items)
   }
+`
+
+export const CREATE_DRAFT_ORDER = gql`
+  mutation ProductVariantCreateDraftOrder($input: CreateDraftedOrderInput!) {
+    createDraftedOrder(input: $input) {
+      id
+      ...OrderFragment_Order
+    }
+  }
+  ${OrderFragment_Order}
 `
 
 export const PRODUCT_VARIANT_CREATE_DRAFT_ORDER = gql`
@@ -77,40 +84,6 @@ export const GET_BAG = gql`
     }
   }
   ${BagSectionFragment_BagSection}
-`
-
-export const SavedTab_Query = gql`
-  query SavedTab_Query {
-    me {
-      id
-      activeReservation {
-        id
-      }
-      savedItems {
-        id
-        saved
-        productVariant {
-          id
-          reservable
-          displayLong
-          hasRestockNotification
-          product {
-            id
-            slug
-            name
-            brand {
-              id
-              name
-            }
-            images(size: Thumb) {
-              id
-              url
-            }
-          }
-        }
-      }
-    }
-  }
 `
 
 export const ADD_TO_BAG = gql`
