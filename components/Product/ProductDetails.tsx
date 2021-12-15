@@ -1,19 +1,22 @@
-import { VariantSizes } from "@seasons/eclipse"
+import { ProductBuyCTA, VariantSizes } from "@seasons/eclipse"
 import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { AddToBagButton } from "components/AddToBagButton"
 import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
-import React from "react"
+import React, { useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
 import { filter } from "graphql-anywhere"
-
-import { ProductBuyCTA } from "./ProductBuyCTA"
 import { ProductInfoItem } from "./ProductInfoItem"
 import { VariantSelect } from "./VariantSelect"
 import { ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant } from "@seasons/eclipse"
 import { useRouter } from "next/router"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { GET_PRODUCT, UPSERT_CART_ITEM } from "queries/productQueries"
+import { useMutation } from "@apollo/client"
+import { GET_BAG } from "queries/bagQueries"
+import { useAuthContext } from "lib/auth/AuthContext"
+import { BuyButton } from "components/BuyButton"
 
-// FIXME: Fix types here
 export const ProductDetails: React.FC<{
   product: any
   selectedVariant: any
@@ -21,6 +24,7 @@ export const ProductDetails: React.FC<{
   data: any
 }> = ({ product, selectedVariant, setSelectedVariant, data }) => {
   const tracking = useTracking()
+
   const router = useRouter()
   if (!product || !product.variants) {
     return <></>
@@ -66,10 +70,6 @@ export const ProductDetails: React.FC<{
     `Model is ${modelHeightDisplay(product.modelHeight)} in a ${
       product.modelSize.type === "Letter" ? "" : `${product.modelSize.type} `
     }${product.modelSize.display}`
-
-  const handleNavigateToBrand = (href: string) => {
-    router.push(href)
-  }
 
   return (
     <Box mb={3}>
@@ -160,13 +160,9 @@ export const ProductDetails: React.FC<{
           size="large"
         />
       </Flex>
+      <Spacer mb={1} />
 
-      <ProductBuyCTA
-        mt={8}
-        product={filter(ProductBuyCTAFragment_Product, product)}
-        selectedVariant={filter(ProductBuyCTAFragment_ProductVariant, selectedVariant)}
-        onNavigateToBrand={handleNavigateToBrand}
-      />
+      <BuyButton size="large" data={data} selectedVariant={selectedVariant} />
 
       <Spacer mb={10} />
 

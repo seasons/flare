@@ -91,7 +91,7 @@ export const Drawer = (props: DrawerProps) => {
     }
   }
 
-  const showCloseButton = ["bag", "profile"].includes(currentView)
+  const showCloseButton = ["profile"].includes(currentView)
 
   return (
     <StyledDrawer

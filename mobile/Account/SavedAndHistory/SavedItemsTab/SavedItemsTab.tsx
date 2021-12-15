@@ -1,7 +1,5 @@
-import { useMutation } from "@apollo/client"
 import { Box } from "components"
 import gql from "graphql-tag"
-import { DELETE_BAG_ITEM } from "queries/bagQueries"
 import React from "react"
 import { SavedAndHistoryView } from "../SavedAndHistory"
 import { SavedAndHistoryEmptyState } from "../SavedAndHistoryEmptyState"

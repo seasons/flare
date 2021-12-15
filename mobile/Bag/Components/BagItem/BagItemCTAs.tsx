@@ -4,16 +4,12 @@ import React, { useState } from "react"
 import { useMutation } from "@apollo/client"
 import { BagItemRemoveButton, BagItemRemoveButtonFragment_BagItem } from "./BagItemRemoveButton"
 import { Schema, useTracking } from "utils/analytics"
-import {
-  GET_BAG,
-  PRODUCT_VARIANT_CREATE_DRAFT_ORDER,
-  REMOVE_FROM_BAG_AND_SAVE_ITEM,
-  SavedTab_Query,
-} from "queries/bagQueries"
+import { GET_BAG, PRODUCT_VARIANT_CREATE_DRAFT_ORDER, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { GET_PRODUCT } from "queries/productQueries"
 import { GET_BROWSE_PRODUCTS } from "queries/brandQueries"
+import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 
 enum OrderType {
   BUY_USED = "Used",

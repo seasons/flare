@@ -234,13 +234,10 @@ const Overlay = styled(Box)`
   background-color: rgba(255, 255, 255, 0.5);
 `
 
-const BagItemContainer = styled(Flex)`
+const BagItemContainer = styled(Box)`
+  display: flex;
   overflow: hidden;
   height: 210px;
-`
-
-const ImageContainer = styled("img")`
-  height: 214;
 `
 
 const ColoredDot = styled(Box)<{ reservable: boolean }>`

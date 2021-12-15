@@ -3,6 +3,8 @@ import gql from "graphql-tag"
 import { Box, Flex, Separator } from "components"
 import { BagItemFragment_BagItem, SmallBagItem } from "../Components/BagItem/SmallBagItem"
 import { EmptyBagItem } from "../Components/EmptyBagItem"
+import { BagTabHeader } from "../Components/BagTabHeader"
+import { BagBottomBarFragment_BagItem } from "../Components/BagBottomBar"
 
 export const BuyTabFragment_Me = gql`
   fragment BuyTabFragment_Me on Me {
@@ -27,7 +29,7 @@ export const BuyTab: React.FC<{ items }> = ({ items }) => {
   const hasItemsInCart = items?.length > 0
 
   return (
-    <Flex height="100%">
+    <Flex height="100%" flexDirection="column">
       <BagTabHeader title="Buy" />
       {items?.map((bagItem, index) => {
         return (
@@ -41,7 +43,7 @@ export const BuyTab: React.FC<{ items }> = ({ items }) => {
       })}
 
       {!hasItemsInCart && (
-        <Flex style={{ flex: 1 }} pt={100}>
+        <Flex style={{ flex: 1 }} justifyContent="center" alignItems="center">
           <EmptyBagItem text="Continue shopping" />
         </Flex>
       )}

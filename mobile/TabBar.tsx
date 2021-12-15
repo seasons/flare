@@ -86,6 +86,7 @@ export class TabBar extends React.Component<TabBarProps, null> {
       <Wrapper>
         <Tabs>
           {this.props.tabs.map(({ name, badgeCount }, index) => {
+            console.log("name", name)
             const isTabActive = this.props.activeTab === index
             const isTabDisabled = this.props.disabledTabs?.includes(name)
             const withStrikeThrough = this.props.strikethroughTabs?.includes(name)
@@ -114,8 +115,9 @@ const Wrapper = styled(Box)`
   border-bottom-color: #e5e5e5;
 `
 
-const BadgeCount = styled(Flex)<{ badgeCount: number }>`
+const BadgeCount = styled(Box)<{ badgeCount: number }>`
   position: absolute;
+  display: flex;
   right: -26;
   top: ${(p) => (p.badgeCount > 9 ? "4px" : "6px")};
   background-color: ${color("black100")};

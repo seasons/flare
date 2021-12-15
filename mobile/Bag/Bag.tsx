@@ -1,18 +1,16 @@
-import { Box } from "components"
+import { Box, CloseButton, Spacer } from "components"
 import { Container } from "mobile/Container"
 import { TabBar } from "mobile/TabBar"
 import { CHECK_ITEMS, CREATE_DRAFT_ORDER, DELETE_BAG_ITEM, GET_BAG } from "queries/bagQueries"
 import React, { useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
-
 import { gql, useMutation } from "@apollo/client"
-
-import { BagTab } from "./Components/BagTab"
-import { ReservationHistoryTab } from "./Components/ReservationHistoryTab"
-import { SavedItemsTab } from "./Components/SavedItemsTab"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useBag } from "./useBag"
+import { BuyTab } from "./BuyTab/BuyTab"
+import { RentTab } from "./RentTab/RentTab"
+import { BagTabPrimaryCTA } from "./Components/BagTabPrimaryCTA"
 
 export enum BagView {
   Rent = 0,
@@ -103,7 +101,7 @@ export const Bag = screenTrack()(() => {
   const CurrentTab = () => {
     switch (currentView) {
       case BagView.Buy:
-        return <BuyTab items={item.data} />
+        return <BuyTab items={me?.cartItems} />
       case BagView.Rent:
         return <RentTab />
     }
@@ -143,9 +141,11 @@ export const Bag = screenTrack()(() => {
   return (
     <Container insetsBottom={false}>
       <Box>
+        <CloseButton variant="light" />
+        <Spacer mb={8} />
         <TabBar
           spaceEvenly
-          tabs={["Bag", "Saved", "History"]}
+          tabs={[{ name: "Rent" }, { name: "Buy", badgeCount: me?.cartItems?.length }]}
           activeTab={currentView}
           goToPage={(page: BagView) => {
             tracking.trackEvent({
@@ -167,6 +167,16 @@ export const Bag = screenTrack()(() => {
       </Box>
 
       <CurrentTab />
+
+      <BagTabPrimaryCTA
+        activeTab={currentView}
+        data={data}
+        sections={bagSections}
+        isMutating={isPrimaryCTAMutating}
+        setIsMutating={setIsPrimaryCtaMutating}
+        startReservation={startReservation}
+        onCartCheckout={onCartCheckout}
+      />
     </Container>
   )
 })

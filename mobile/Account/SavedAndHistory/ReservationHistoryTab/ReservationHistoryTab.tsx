@@ -1,12 +1,11 @@
 import React from "react"
 import { ReservationHistoryItem, ReservationHistoryItemFragment_Reservation } from "./ReservationHistoryItem"
 import { gql } from "@apollo/client"
-import { Dimensions } from "react-native"
 import { Flex, Box, Separator } from "components"
 import { Loader } from "mobile/Loader"
-import { BagEmptyState } from "mobile/Bag/Components/BagEmptyState"
 import { color } from "helpers"
 import { SavedAndHistoryView } from "../SavedAndHistory"
+import { SavedAndHistoryEmptyState } from "../SavedAndHistoryEmptyState"
 
 export const ReservationHistoryTabFragment_Customer = gql`
   fragment ReservationHistoryTabFragment_Customer on Customer {
@@ -39,7 +38,7 @@ export const ReservationHistoryTab: React.FC<{ items; loading: boolean }> = ({ i
           )
         })
       ) : (
-        <BagEmptyState currentView={SavedAndHistoryView.History} />
+        <SavedAndHistoryEmptyState currentView={SavedAndHistoryView.History} />
       )}
     </Flex>
   )

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react"
-import { FlatList, RefreshControl, StatusBar, View } from "react-native"
+import { FlatList, RefreshControl, View } from "react-native"
 import { ReservationHistoryTab } from "./ReservationHistoryTab/ReservationHistoryTab"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { Container, FixedBackArrow, Spacer } from "components"

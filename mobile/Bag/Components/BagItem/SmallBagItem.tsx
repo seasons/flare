@@ -31,7 +31,7 @@ export const BagItemFragment_BagItem = gql`
   ${BagItemCTAsFragment_BagItem}
 `
 
-export const SmallBagItem = ({ bagItem, sectionStatus }) => {
+export const SmallBagItem = ({ bagItem, sectionStatus, showBuyPrice }) => {
   const variant = bagItem?.productVariant
   const product = variant?.product
   const imageUrl = product?.images?.[0]?.url || ""
@@ -52,7 +52,7 @@ export const SmallBagItem = ({ bagItem, sectionStatus }) => {
           </Box>
         )}
         <Flex alignItems="flex-end" flexDirection="column" justifyContent="space-between" px={2} flex={1}>
-          <BagItemProductMetaData variant={variant} />
+          <BagItemProductMetaData variant={variant} showBuyPrice={showBuyPrice} />
           <BagItemCTAs bagItem={bagItem} sectionStatus={sectionStatus} size="small" />
         </Flex>
       </Wrapper>
