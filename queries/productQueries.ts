@@ -79,6 +79,7 @@ export const GET_PRODUCT = gql`
         reserved
         isInBag
         isSaved
+        isInCart
         hasRestockNotification
         manufacturerSizes {
           id

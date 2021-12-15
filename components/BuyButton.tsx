@@ -1,17 +1,12 @@
 import { Button } from "components/Button"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { MAXIMUM_ITEM_COUNT } from "mobile/Bag/Bag"
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG } from "queries/bagQueries"
-import { GET_PRODUCT, UPSERT_CART_ITEM, UPSERT_RESTOCK_NOTIF } from "queries/productQueries"
-import React, { useEffect, useState } from "react"
+import { GET_BAG } from "queries/bagQueries"
+import { GET_PRODUCT, UPSERT_CART_ITEM } from "queries/productQueries"
+import React, { useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
 import { useMutation } from "@apollo/client"
 import { ButtonSize } from "./Button/Button.shared"
-import { useDrawerContext } from "./Drawer/DrawerContext"
-import { CheckWithBackground } from "./SVGs"
-import { ListCheck } from "./SVGs/ListCheck"
 
 interface Props {
   disabled?: boolean
@@ -27,9 +22,7 @@ export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, si
   const { authState, toggleLoginModal } = useAuthContext()
   const isUserSignedIn = authState?.isSignedIn
   const product = data?.product
-
   const isInCart = selectedVariant?.isInCart
-
   const isBuyUsed = Boolean(selectedVariant?.price?.buyUsedEnabled && selectedVariant?.price?.buyUsedAdjustedPrice)
 
   const [upsertCartItem] = useMutation(UPSERT_CART_ITEM, {
@@ -41,12 +34,7 @@ export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, si
     refetchQueries: [
       {
         query: GET_PRODUCT,
-        variables: {
-          where: {
-            id: product.id,
-            slug: product.slug,
-          },
-        },
+        variables: { slug: product?.slug },
       },
       {
         query: GET_BAG,

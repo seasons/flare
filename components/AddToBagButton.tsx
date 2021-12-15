@@ -129,9 +129,10 @@ export const AddToBagButton: React.FC<Props> = ({
   }
 
   const _disabled = disabled || added || isMutating
+  const isInCart = selectedVariant?.isInCart
 
   let text = "Rent"
-  if (added) {
+  if (added && !isInCart) {
     text = "Added to bag"
   } else if (hasRestockNotification) {
     text = "We'll notify you when it's back"
