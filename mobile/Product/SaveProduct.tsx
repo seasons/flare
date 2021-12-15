@@ -1,9 +1,6 @@
-import {
-  Box, Button, FixedBackArrow, Flex, ProgressiveImage, Sans, Separator, Spacer
-} from "components"
+import { Box, Button, FixedBackArrow, Flex, ProgressiveImage, Sans, Separator, Spacer } from "components"
 import { color, space } from "helpers"
 import { Loader } from "mobile/Loader"
-import { SavedTab_Query } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useState } from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
@@ -14,6 +11,7 @@ import { useMutation } from "@apollo/client"
 import Radio from "@material-ui/core/Radio"
 
 import { SAVE_ITEM } from "./SaveProductButton"
+import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 
 interface SaveProductProps {
   onDismiss: () => void
