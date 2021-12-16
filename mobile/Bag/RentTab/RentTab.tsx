@@ -1,5 +1,5 @@
 import React from "react"
-import { Box } from "@seasons/eclipse"
+import { Box, Spacer } from "@seasons/eclipse"
 import { useBag } from "../useBag"
 import { Flex } from "components"
 import { BagSection } from "../Components/BagSection/BagSection"
@@ -26,7 +26,7 @@ export const RentTab: React.FC = () => {
 
       {showAddAnItemCard && (
         <Flex style={{ flex: 1 }} justifyContent="center" alignItems="center">
-          <EmptyBagItem text="Add an item" />
+          <EmptyBagItem text="Add an item" view="rent" />
         </Flex>
       )}
     </Flex>

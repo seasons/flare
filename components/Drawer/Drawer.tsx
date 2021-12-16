@@ -55,7 +55,7 @@ export const Drawer = (props: DrawerProps) => {
   const view = () => {
     switch (currentView) {
       case "bag":
-        return <Bag />
+        return <Bag initialTab={params?.initialTab} />
       case "savedAndHistory":
         return <SavedAndHistory />
       case "reservationShippingAddress":

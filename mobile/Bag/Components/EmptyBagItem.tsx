@@ -7,16 +7,18 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components"
 
-export const EmptyBagItem: React.FC<{ text: string }> = ({ text }) => {
+export const EmptyBagItem: React.FC<{ text: string; view: "buy" | "rent" }> = ({ text, view }) => {
   const router = useRouter()
   const { closeDrawer } = useDrawerContext()
+  const isBuyView = view === "buy"
 
   return (
     <EmptyBagItemContainer>
       <Flex height="100%" flexDirection="row" alignItems="center" justifyContent="center" style={{ flex: 1 }}>
         <TouchableOpacity
           onPress={() => {
-            router.push("/browse")
+            isBuyView ? router.push("/browse/all+all?page=1&available=true&forSale=true") : router.push("/browse")
+
             closeDrawer()
           }}
         >

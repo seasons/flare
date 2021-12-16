@@ -62,10 +62,12 @@ const Product = screenTrack(({ router }) => {
   }, [isSignedIn])
 
   useEffect(() => {
-    if (!selectedVariant?.id && data) {
+    if (data) {
       const variants = data?.product?.variants
       const firstAvailableSize =
-        find(variants, (size) => size.isInBag) || find(variants, (size) => size.reservable > 0) || head(variants)
+        find(variants, (size) => size.isInBag || size.isInCart) ||
+        find(variants, (size) => size.reservable > 0) ||
+        head(variants)
       if (firstAvailableSize) {
         setSelectedVariant(firstAvailableSize)
       }

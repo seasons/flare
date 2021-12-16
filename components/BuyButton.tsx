@@ -7,6 +7,8 @@ import React, { useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
 import { useMutation } from "@apollo/client"
 import { ButtonSize } from "./Button/Button.shared"
+import { useDrawerContext } from "./Drawer/DrawerContext"
+import { BagView } from "mobile/Bag/Bag"
 
 interface Props {
   disabled?: boolean
@@ -18,6 +20,7 @@ interface Props {
 export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, size }) => {
   const [isMutating, setIsMutating] = useState(false)
   const tracking = useTracking()
+  const { openDrawer } = useDrawerContext()
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { authState, toggleLoginModal } = useAuthContext()
   const isUserSignedIn = authState?.isSignedIn
@@ -42,6 +45,7 @@ export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, si
     ],
     onCompleted: () => {
       setIsMutating(false)
+      openDrawer("bag", { initialTab: BagView.Buy })
     },
     onError: (error) => {
       console.log("error upsertRestockNotification Product.tsx", error)

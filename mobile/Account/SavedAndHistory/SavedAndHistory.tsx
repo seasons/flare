@@ -43,7 +43,7 @@ export const SavedAndHistory = screenTrack()(() => {
         <FixedBackArrow
           variant="whiteBackground"
           onPress={() => {
-            openDrawer("Account")
+            openDrawer("account")
           }}
         />
         <Loader />
@@ -71,7 +71,7 @@ export const SavedAndHistory = screenTrack()(() => {
       <FixedBackArrow
         variant="whiteBackground"
         onPress={() => {
-          openDrawer("Account")
+          openDrawer("account")
         }}
       />
       <View style={{ flexDirection: "column", flex: 1 }}>

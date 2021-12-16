@@ -44,7 +44,7 @@ export const BuyTab: React.FC<{ items }> = ({ items }) => {
 
       {!hasItemsInCart && (
         <Flex style={{ flex: 1 }} justifyContent="center" alignItems="center">
-          <EmptyBagItem text="Continue shopping" />
+          <EmptyBagItem text="Continue shopping" view="buy" />
         </Flex>
       )}
     </Flex>

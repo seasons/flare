@@ -185,5 +185,9 @@ export const BagTabPrimaryCTA = ({
     )
   }
 
-  return button && <>{button}</>
+  return (
+    <Box width="100%" style={{ position: "absolute", bottom: 0, zIndex: 999 }}>
+      {button}
+    </Box>
+  )
 }

@@ -1,13 +1,14 @@
-import { Box, CloseButton, Spacer } from "components"
+import { Box, CloseButton, Flex, Spacer } from "components"
 import { Container } from "mobile/Container"
 import { TabBar } from "mobile/TabBar"
 import { CHECK_ITEMS, CREATE_DRAFT_ORDER, DELETE_BAG_ITEM, GET_BAG } from "queries/bagQueries"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { gql, useMutation } from "@apollo/client"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useBag } from "./useBag"
+import { FlatList } from "react-native"
 import { BuyTab } from "./BuyTab/BuyTab"
 import { RentTab } from "./RentTab/RentTab"
 import { BagTabPrimaryCTA } from "./Components/BagTabPrimaryCTA"
@@ -32,10 +33,9 @@ export const BagFragment_Me = gql`
 
 export const MAXIMUM_ITEM_COUNT = 6
 
-export const Bag = screenTrack()(() => {
+export const Bag = screenTrack()(({ initialTab }) => {
   const tracking = useTracking()
   const [currentView, setCurrentView] = useState<BagView>(BagView.Rent)
-  const [deleteBagItem] = useMutation(DELETE_BAG_ITEM, { awaitRefetchQueries: true })
   const [isPrimaryCTAMutating, setIsPrimaryCtaMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
@@ -43,6 +43,14 @@ export const Bag = screenTrack()(() => {
 
   const me = data?.me
   const addedItems = bagSections?.find((section) => section.status === "Added")?.bagItems
+
+  const isBuyView = currentView === BagView.Buy
+
+  console.log("initialTab", initialTab)
+
+  useEffect(() => {
+    setCurrentView(initialTab)
+  }, [initialTab, setCurrentView])
 
   const [createDraftOrder] = useMutation(CREATE_DRAFT_ORDER, {
     onCompleted: (res) => {
@@ -99,15 +107,6 @@ export const Bag = screenTrack()(() => {
     },
   })
 
-  const CurrentTab = () => {
-    switch (currentView) {
-      case BagView.Buy:
-        return <BuyTab items={me?.cartItems} />
-      case BagView.Rent:
-        return <RentTab />
-    }
-  }
-
   const startReservation = async () => {
     await checkItemsAvailability({
       variables: {
@@ -148,36 +147,50 @@ export const Bag = screenTrack()(() => {
     )
   }
 
+  const renderItem = () => {
+    if (isBuyView) {
+      return <BuyTab items={me?.cartItems} />
+    } else {
+      return <RentTab />
+    }
+  }
+
   return (
     <Container insetsBottom={false}>
-      <Box>
-        <CloseButton variant="light" />
-        <Spacer mb={8} />
-        <TabBar
-          spaceEvenly
-          tabs={[{ name: "Rent" }, { name: "Buy", badgeCount: me?.cartItems?.length }]}
-          activeTab={currentView}
-          goToPage={(page: BagView) => {
-            tracking.trackEvent({
-              actionName: () => {
-                if (page === 0) {
-                  return Schema.ActionNames.BagTabTapped
-                } else if (page === 1) {
-                  return Schema.ActionNames.SavedTabTapped
-                } else {
-                  return Schema.ActionNames.ReservationHistoryTabTapped
-                }
-              },
-              actionType: Schema.ActionTypes.Tap,
-            })
+      <CloseButton variant="light" />
+      <Spacer mb={8} />
+      <TabBar
+        spaceEvenly
+        tabs={[{ name: "Rent" }, { name: "Buy", badgeCount: me?.cartItems?.length }]}
+        activeTab={currentView}
+        goToPage={(page: BagView) => {
+          tracking.trackEvent({
+            actionName: () => {
+              if (page === 0) {
+                return Schema.ActionNames.BagTabTapped
+              } else if (page === 1) {
+                return Schema.ActionNames.SavedTabTapped
+              } else {
+                return Schema.ActionNames.ReservationHistoryTabTapped
+              }
+            },
+            actionType: Schema.ActionTypes.Tap,
+          })
 
-            setCurrentView(page)
-          }}
-        />
-      </Box>
+          setCurrentView(page)
+        }}
+      />
 
-      <CurrentTab />
+      <FlatList
+        data={[{ data: null }]}
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyExtractor={(item, index) => String(index) + String(currentView)}
+        renderItem={() => {
+          return renderItem()
+        }}
+      />
 
+      <Spacer mb="100px" />
       <BagTabPrimaryCTA
         activeTab={currentView}
         data={data}

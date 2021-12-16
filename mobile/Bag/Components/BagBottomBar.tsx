@@ -40,7 +40,7 @@ export const BagBottomBar: React.FC<BagBottomBarProps> = ({
     price = buyUsedPrices?.reduce((acc, curr) => acc + curr, 0) ?? 0
   }
 
-  const onPress = () => {
+  const onClick = () => {
     if (isMutating) {
       return
     }
@@ -77,7 +77,7 @@ export const BagBottomBar: React.FC<BagBottomBarProps> = ({
               </Box>
             </Flex>
           </Box>
-          <Button variant="primaryBlack" onPress={onPress} loading={isMutating} disabled={isMutating || !hasBagItems}>
+          <Button variant="primaryBlack" onClick={onClick} loading={isMutating} disabled={isMutating || !hasBagItems}>
             {isRentView ? "Reserve" : "Checkout"}
           </Button>
         </Flex>
