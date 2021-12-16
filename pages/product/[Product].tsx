@@ -44,6 +44,7 @@ const Product = screenTrack(({ router }) => {
   const { query } = useRouter()
 
   const isFromTryWithSeasons = query["try-with-seasons"] === "true"
+  const isSignedIn = authState?.isSignedIn
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState({
@@ -58,7 +59,7 @@ const Product = screenTrack(({ router }) => {
 
   useEffect(() => {
     refetch()
-  }, [authState.isSignedIn])
+  }, [isSignedIn])
 
   useEffect(() => {
     if (!selectedVariant?.id && data) {
@@ -69,7 +70,7 @@ const Product = screenTrack(({ router }) => {
         setSelectedVariant(firstAvailableSize)
       }
     }
-  })
+  }, [data])
 
   let metaTitle = HEAD_META_TITLE
   if (product?.name && product?.brand?.name) {
@@ -85,10 +86,6 @@ const Product = screenTrack(({ router }) => {
     },
     null
   )
-
-  console.log("product", product)
-
-  console.log("sel", selectedVariant)
 
   return (
     <Layout includeDefaultHead={false}>

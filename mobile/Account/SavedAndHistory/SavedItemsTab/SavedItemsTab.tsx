@@ -20,7 +20,7 @@ export const SavedItemsTab: React.FC<{
   items
 }> = ({ items }) => {
   return (
-    <Box>
+    <Box height="100%">
       {items?.length ? (
         items.map((bagItem, index) => {
           return (

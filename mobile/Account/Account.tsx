@@ -150,7 +150,7 @@ export const Account = screenTrack()(({ navigation }) => {
     {
       title: "Saved items & order history",
       icon: <SaveAndHistoryIcon />,
-      onPress: () => openDrawer("SavedAndHistory"),
+      onPress: () => openDrawer("savedAndHistory"),
       tracking: Schema.ActionNames.PaymentAndShippingTapped,
     },
   ]

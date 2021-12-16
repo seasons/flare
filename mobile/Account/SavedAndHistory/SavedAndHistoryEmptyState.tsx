@@ -11,18 +11,23 @@ export const SavedAndHistoryEmptyState: React.FC<{ currentView: SavedAndHistoryV
       : "You haven't placed any reservations yet."
 
   return (
-    <Box p={2}>
-      <Flex style={{ flex: 1 }} justifyContent="center" alignItems="center" flexDirection="column">
-        <Box>
-          <Sans size="4" style={{ textAlign: "center" }}>
-            {title}
-          </Sans>
-          <Spacer mb={1} />
-          <Sans size="4" color={color("black50")} style={{ textAlign: "center" }}>
-            {text}
-          </Sans>
-        </Box>
-      </Flex>
-    </Box>
+    <Flex
+      style={{ flex: 1, height: "100%" }}
+      justifyContent="center"
+      alignItems="center"
+      flexDirection="column"
+      px={2}
+      pt={5}
+    >
+      <Box>
+        <Sans size="4" style={{ textAlign: "center" }}>
+          {title}
+        </Sans>
+        <Spacer mb={1} />
+        <Sans size="4" color={color("black50")} style={{ textAlign: "center" }}>
+          {text}
+        </Sans>
+      </Box>
+    </Flex>
   )
 }

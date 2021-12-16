@@ -75,7 +75,7 @@ export const SavedAndHistory = screenTrack()(() => {
         }}
       />
       <View style={{ flexDirection: "column", flex: 1 }}>
-        <Spacer mb={4} />
+        <Spacer mb={8} />
         <TabBar
           spaceEvenly
           tabs={[{ name: "Saved items" }, { name: "History" }]}

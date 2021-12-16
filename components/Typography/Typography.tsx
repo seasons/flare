@@ -217,7 +217,6 @@ function createStyledText<P extends StyledTextProps>(
       transition: `color ${GLOBAL_TRANSITION}`,
       ...(underline ? { textDecoration: "underline" } : {}),
       ...(pointer ? { cursor: "pointer" } : {}),
-      ...(inline ? { display: "inline" } : {}),
       ...textProps.style,
     }
 

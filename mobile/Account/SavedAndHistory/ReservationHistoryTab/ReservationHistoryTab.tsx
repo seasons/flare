@@ -6,6 +6,7 @@ import { Loader } from "mobile/Loader"
 import { color } from "helpers"
 import { SavedAndHistoryView } from "../SavedAndHistory"
 import { SavedAndHistoryEmptyState } from "../SavedAndHistoryEmptyState"
+import { getDrawerWidth } from "components/Drawer/Drawer"
 
 export const ReservationHistoryTabFragment_Customer = gql`
   fragment ReservationHistoryTabFragment_Customer on Customer {
@@ -27,7 +28,7 @@ export const ReservationHistoryTab: React.FC<{ items; loading: boolean }> = ({ i
   }
 
   return (
-    <Flex style={{ flex: 1 }}>
+    <Flex style={{ flex: 1, overflow: "hidden" }} flexDirection="column" width={getDrawerWidth() + "px"}>
       {items?.length ? (
         items?.map((bagItem, index) => {
           return (
