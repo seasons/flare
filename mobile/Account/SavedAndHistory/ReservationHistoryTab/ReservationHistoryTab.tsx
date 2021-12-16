@@ -28,7 +28,7 @@ export const ReservationHistoryTab: React.FC<{ items; loading: boolean }> = ({ i
   }
 
   return (
-    <Flex style={{ flex: 1, overflow: "hidden" }} flexDirection="column" width={getDrawerWidth() + "px"}>
+    <Flex style={{ flex: 1, overflow: "hidden" }} flexDirection="column" width="100%">
       {items?.length ? (
         items?.map((bagItem, index) => {
           return (
