@@ -4,11 +4,12 @@ import React, { useState } from "react"
 import { useMutation } from "@apollo/client"
 import { BagItemRemoveButton, BagItemRemoveButtonFragment_BagItem } from "./BagItemRemoveButton"
 import { Schema, useTracking } from "utils/analytics"
-import { GET_BAG, PRODUCT_VARIANT_CREATE_DRAFT_ORDER, REMOVE_FROM_BAG_AND_SAVE_ITEM } from "queries/bagQueries"
+import { GET_BAG, PRODUCT_VARIANT_CREATE_DRAFT_ORDER } from "queries/bagQueries"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { GET_PRODUCT } from "queries/productQueries"
 import { GET_BROWSE_PRODUCTS } from "queries/brandQueries"
+import { SAVE_ITEM } from "@seasons/eclipse/src/components/SaveProductButton/queries"
 import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 
 enum OrderType {
@@ -54,7 +55,7 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
   const [isMutating, setIsMutating] = useState(false)
   const { authState } = useAuthContext()
   const tracking = useTracking()
-  const [removeFromBagAndSaveItem] = useMutation(REMOVE_FROM_BAG_AND_SAVE_ITEM)
+  const [saveItem] = useMutation(SAVE_ITEM)
   const [cancelReturn] = useMutation(CANCEL_RETURN, {
     onCompleted: () => {
       setIsMutating(false)
@@ -90,25 +91,21 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
         productId: product.id,
         variantId: variant.id,
       })
-      removeFromBagAndSaveItem({
+      saveItem({
         variables: {
-          id: variant.id,
-          saved: false,
+          item: bagItem.id,
+          save: true,
         },
         awaitRefetchQueries: true,
         refetchQueries: [
+          { query: SavedTab_Query },
           {
             query: GET_BAG,
           },
           {
-            query: SavedTab_Query,
-          },
-          {
             query: GET_PRODUCT,
             variables: {
-              where: {
-                id: product.id,
-              },
+              slug: product.slug,
             },
           },
           {

@@ -98,20 +98,7 @@ export const ADD_TO_BAG = gql`
 `
 
 export const DELETE_BAG_ITEM = gql`
-  mutation RemoveFromBag($id: ID!, $saved: Boolean!) {
-    removeFromBag(item: $id, saved: $saved) {
-      id
-    }
-  }
-`
-
-export const REMOVE_FROM_BAG_AND_SAVE_ITEM = gql`
-  mutation RemoveFromBagAndSaveItem($id: ID!, $saved: Boolean!) {
-    removeFromBag(item: $id, saved: $saved) {
-      id
-    }
-    saveProduct(item: $id, save: true) {
-      id
-    }
+  mutation deleteBagItem($itemID: ID!) {
+    deleteBagItem(itemID: $itemID)
   }
 `

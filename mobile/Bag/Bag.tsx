@@ -11,6 +11,7 @@ import { useBag } from "./useBag"
 import { BuyTab } from "./BuyTab/BuyTab"
 import { RentTab } from "./RentTab/RentTab"
 import { BagTabPrimaryCTA } from "./Components/BagTabPrimaryCTA"
+import { Loader } from "mobile/Loader"
 
 export enum BagView {
   Rent = 0,
@@ -136,6 +137,15 @@ export const Bag = screenTrack()(() => {
         },
       },
     })
+  }
+
+  if (!data) {
+    return (
+      <>
+        <CloseButton variant="light" />
+        <Loader />
+      </>
+    )
   }
 
   return (

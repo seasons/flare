@@ -58,24 +58,29 @@ export class TabBar extends React.Component<TabBarProps, null> {
         onPress={() => (isTabDisabled ? null : onPressHandler(page))}
       >
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive} tabColor={tabColorProps}>
-          <Box style={{ position: "relative" }}>
+          <Flex style={{ position: "relative" }} justifyContent="center" alignItems="center">
             <Sans
               numberOfLines={1}
+              inline
               weight="medium"
               size="5"
               color={tabTextColor}
-              style={withStrikeThrough ? { textDecorationLine: "line-through", textDecorationStyle: "solid" } : {}}
+              style={
+                withStrikeThrough
+                  ? { textDecorationLine: "line-through", textDecorationStyle: "solid", position: "relative" }
+                  : { position: "relative" }
+              }
             >
               {name}
+              {!!badgeCount && badgeCount > 0 && (
+                <BadgeCount badgeCount={badgeCount}>
+                  <Sans size="2" color="white100" style={{ top: badgeCount > 9 ? 1 : -1 }}>
+                    {badgeCount}
+                  </Sans>
+                </BadgeCount>
+              )}
             </Sans>
-            {!!badgeCount && badgeCount > 0 && (
-              <BadgeCount badgeCount={badgeCount}>
-                <Sans size="2" color="white100" style={{ top: badgeCount > 9 ? 1 : -1 }}>
-                  {badgeCount}
-                </Sans>
-              </BadgeCount>
-            )}
-          </Box>
+          </Flex>
         </TabButton>
       </Button>
     )
@@ -86,7 +91,6 @@ export class TabBar extends React.Component<TabBarProps, null> {
       <Wrapper>
         <Tabs>
           {this.props.tabs.map(({ name, badgeCount }, index) => {
-            console.log("name", name)
             const isTabActive = this.props.activeTab === index
             const isTabDisabled = this.props.disabledTabs?.includes(name)
             const withStrikeThrough = this.props.strikethroughTabs?.includes(name)
@@ -118,13 +122,13 @@ const Wrapper = styled(Box)`
 const BadgeCount = styled(Box)<{ badgeCount: number }>`
   position: absolute;
   display: flex;
-  right: -26;
-  top: ${(p) => (p.badgeCount > 9 ? "4px" : "6px")};
+  right: -24px;
+  top: 20px;
   background-color: ${color("black100")};
-  border-radius: 100;
+  border-radius: 100%;
   padding: 2px;
-  height: ${(p) => (p.badgeCount > 9 ? "20px" : "16px")};
-  width: ${(p) => (p.badgeCount > 9 ? "20px" : "16px")};
+  height: 16px;
+  width: 16px;
   align-items: center;
   justify-content: center;
 `
