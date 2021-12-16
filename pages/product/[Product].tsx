@@ -52,6 +52,7 @@ const Product = screenTrack(({ router }) => {
     size: "",
     stock: 0,
     isInBag: false,
+    isInCart: false,
     nextReservablePhysicalProduct: null,
   })
 
@@ -84,6 +85,10 @@ const Product = screenTrack(({ router }) => {
     },
     null
   )
+
+  console.log("product", product)
+
+  console.log("sel", selectedVariant)
 
   return (
     <Layout includeDefaultHead={false}>

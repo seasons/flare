@@ -152,6 +152,7 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
   const CTAs = () => {
     switch (sectionStatus) {
       case "Added":
+      case "Cart":
         return (
           <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" alignItems="center" width="100%">
             <Box onClick={onSaveForLater}>

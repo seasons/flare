@@ -53,7 +53,7 @@ export const ProductDetails: React.FC<{
   const internalSize = selectedVariant?.internalSize
   const displayShort = selectedVariant?.displayShort
   const variantInStock = selectedVariant?.reservable > 0
-  const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
+  const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant?.id)
   const isInBag = updatedVariant?.isInBag || false
   const waistByLengthDisplay =
     displayShort !== internalSize?.display && internalSize?.type === "WxL" && internalSize?.display
