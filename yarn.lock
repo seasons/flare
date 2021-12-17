@@ -1473,10 +1473,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.6.0.tgz#dd5f19601eb3684c6bcdd3df3d0c04cf44c24cff"
   integrity sha512-emBGKvhJ0h++lLJQ5ejsj+od9G67nEaihjvfSx7/JWvNrQGAhP9U0OZqgb9dkKzor9Ufaj9SGt8RNY97cGzttw==
 
-"@seasons/eclipse@1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.5.3.tgz#753e85692114dbecb085b0159357998935296b34"
-  integrity sha512-bOTGkhWthXE4GKQlWM5QWT8a7aBv3rZZHcfYBb9S5lOOt+uquPhRjgohfbJ/nC9kRPE9iuFBaql/0z6OxdqGwg==
+"@seasons/eclipse@1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@seasons/eclipse/-/eclipse-1.5.4.tgz#e77823ec59043a5cc95e07864a7a31f2d65d3919"
+  integrity sha512-o3w+0YLrA/jMm31nttOndrTv2ObA/bFGgb4y2Ew5hwgRHVGeam+bcc+U2e6rDl7HPgDBPoWyAoDEmndrABeuuQ==
   dependencies:
     dripsy "^1.4.6"
 
