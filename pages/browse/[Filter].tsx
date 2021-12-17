@@ -1,11 +1,13 @@
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 import { ColorFilters } from "components/Browse/ColorFilters"
 import { FixedFilters } from "components/Browse/FixedFilters"
+import { PriceFilters } from "components/Browse/PriceFilters"
 import { SortDropDown } from "components/Browse/SortDropDown"
 import { TriageModal } from "components/Browse/TriageModal"
 import { filter as filterFragment } from "graphql-anywhere"
 import { sans as sansSize } from "helpers/typeSizes"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { GET_PRODUCT } from "queries/productQueries"
@@ -15,7 +17,9 @@ import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
 
 import { gql, useQuery } from "@apollo/client"
-import { BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
+import {
+  BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product
+} from "@seasons/eclipse"
 
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
@@ -27,7 +31,6 @@ import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -62,6 +65,7 @@ export interface SizeFilterParams {
   forSaleOnly: boolean
   currentColors: string[]
   orderBy: OrderBy
+  priceRange?: [number, number]
 }
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
@@ -110,10 +114,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     forSaleOnly: forSaleRouterQuery ?? null,
     currentColors: colors ?? null,
     orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
+    priceRange: null,
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { authState, toggleLoginModal } = useAuthContext()
-  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly, orderBy } = params
+  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly, orderBy, priceRange } = params
 
   const skip = (currentPage - 1) * pageSize
 
@@ -124,6 +129,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       colors: currentColors,
       bottoms: currentBottoms,
       available: availableOnly,
+      priceRange,
       forSaleOnly,
       brandName: currentBrand,
       categoryName: currentCategory,
@@ -183,11 +189,13 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         // These are the initial params set on page load which happen after the page mounts since it's SSG
         setParams({
           availableOnly: !!availableRouterQuery && availableRouterQuery !== availableOnly ? availableRouterQuery : null,
-          forSaleOnly: !!forSaleRouterQuery && forSaleRouterQuery !== forSaleOnly ? forSaleRouterQuery : null,
+          // forSaleOnly: !!forSaleRouterQuery && forSaleRouterQuery !== forSaleOnly ? forSaleRouterQuery : null,
           currentBottoms: !!bottoms?.length && !currentBottoms?.length ? bottoms : [],
           currentTops: tops?.length && !currentTops?.length ? tops : [],
           currentColors: !!colors?.length && !currentColors?.length ? colors : [],
           orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
+          forSaleOnly: true,
+          priceRange: null,
         })
         setInitialPageLoad(true)
       } else {
@@ -309,6 +317,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       listItems={categories}
                       currentBrand={currentBrand}
                     />
+                    <Spacer mb={5} />
+                    <PriceFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
