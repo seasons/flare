@@ -1,10 +1,10 @@
-import { Sans, Spacer } from "../../components"
 import { Box } from "components/Box"
-import { color } from "../../helpers"
-import styled from "styled-components"
-import React from "react"
 import { SizeFilterParams } from "pages/browse/[Filter]"
-import { Checkbox } from "components/Checkbox"
+import React from "react"
+import styled from "styled-components"
+
+import { Sans, Spacer } from "../../components"
+import { color } from "../../helpers"
 
 interface Props {
   setParams: (params: SizeFilterParams) => void
@@ -45,33 +45,10 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
   const letterSizes = ["XS", "S", "M", "L", "XL", "XXL"]
   const waistSizes = ["28", "29", "30", "31", "32", "33", "34", "35", "36", "37"]
 
-  const { currentTops, currentBottoms, availableOnly, forSaleOnly } = params
+  const { currentTops, currentBottoms } = params
 
   return (
     <Box style={{ maxWidth: "148px" }}>
-      <Sans size="3">Filter by</Sans>
-      <Spacer mb={[0, 2]} />
-      <FlexWrapper mb={2}>
-        <Checkbox
-          onClick={() => {
-            setParams({ ...params, availableOnly: !availableOnly })
-          }}
-          isActive={availableOnly}
-        />
-        <Spacer ml={1} />
-        <Sans size="3">Available now</Sans>
-      </FlexWrapper>
-      <Spacer mb={[0, 2]} />
-      <FlexWrapper mb={5}>
-        <Checkbox
-          onClick={() => {
-            setParams({ ...params, forSaleOnly: !forSaleOnly })
-          }}
-          isActive={forSaleOnly}
-        />
-        <Spacer ml={1} />
-        <Sans size="3">For sale</Sans>
-      </FlexWrapper>
       <Spacer mb={5} />
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>
@@ -102,12 +79,6 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
     </Box>
   )
 }
-
-const FlexWrapper = styled(Box)`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-`
 
 const SizeButtonContainer = styled.div`
   display: flex;

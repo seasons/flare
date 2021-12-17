@@ -1,3 +1,4 @@
+import { AvailabilityFilters } from "components/Browse/AvailabilityFilters"
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 import { ColorFilters } from "components/Browse/ColorFilters"
 import { FixedFilters } from "components/Browse/FixedFilters"
@@ -317,6 +318,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       listItems={categories}
                       currentBrand={currentBrand}
                     />
+                    <Spacer mb={5} />
+                    <AvailabilityFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
                     <PriceFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
