@@ -11,12 +11,16 @@ export const PriceFilters = ({ setParams, params }) => {
       value: [0, 100],
     },
     {
-      text: "Between $100 - $200",
-      value: [100, 200],
+      text: "Between $100 - $250",
+      value: [100, 250],
     },
     {
-      text: "Over $200",
-      value: [200, 1000000],
+      text: "Between $250 - $500",
+      value: [200, 500],
+    },
+    {
+      text: "Over $500",
+      value: [500, 100000000],
     },
   ]
 
@@ -29,10 +33,11 @@ export const PriceFilters = ({ setParams, params }) => {
             selectedOptions[i] = !selectedOptions[i]
             setSelectedOptions(selectedOptions)
           }}
+          alignItems="center"
         >
           <Checkbox isActive={selectedOptions[i]} size="default" />
           <Spacer ml={1} />
-          <Sans size="2">{option.text}</Sans>
+          <Sans size="3">{option.text}</Sans>
         </Flex>
       </Box>
     )
