@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 
 export type DrawerView =
+  | "savedAndHistory"
   | "bag"
   | "faq"
   | "reservation"

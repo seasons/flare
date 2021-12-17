@@ -101,7 +101,7 @@ const persistedQueryLink = createPersistedQueryLink({ useGETForHashedQueries: tr
 export function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: ApolloLink.from([persistedQueryLink, authLink, errorLink, httpLink]) as any,
+    link: ApolloLink.from([authLink, errorLink, httpLink]) as any,
     typeDefs,
     resolvers,
     cache,

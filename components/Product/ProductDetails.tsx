@@ -1,19 +1,26 @@
-import { VariantSizes } from "@seasons/eclipse"
 import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { AddToBagButton } from "components/AddToBagButton"
+import { BuyButton } from "components/BuyButton"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { filter } from "graphql-anywhere"
+import { color } from "helpers/color"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
-import React from "react"
+import { useRouter } from "next/router"
+import { GET_BAG } from "queries/bagQueries"
+import { GET_PRODUCT, UPSERT_CART_ITEM } from "queries/productQueries"
+import React, { useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
-import { filter } from "graphql-anywhere"
 
-import { ProductBuyCTA } from "./ProductBuyCTA"
+import { useMutation } from "@apollo/client"
+import {
+  ProductBuyCTA, ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant, VariantSizes
+} from "@seasons/eclipse"
+
 import { ProductInfoItem } from "./ProductInfoItem"
 import { VariantSelect } from "./VariantSelect"
-import { ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant } from "@seasons/eclipse"
-import { useRouter } from "next/router"
 
-// FIXME: Fix types here
 export const ProductDetails: React.FC<{
   product: any
   selectedVariant: any
@@ -21,6 +28,7 @@ export const ProductDetails: React.FC<{
   data: any
 }> = ({ product, selectedVariant, setSelectedVariant, data }) => {
   const tracking = useTracking()
+
   const router = useRouter()
   if (!product || !product.variants) {
     return <></>
@@ -49,7 +57,7 @@ export const ProductDetails: React.FC<{
   const internalSize = selectedVariant?.internalSize
   const displayShort = selectedVariant?.displayShort
   const variantInStock = selectedVariant?.reservable > 0
-  const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant.id)
+  const updatedVariant = product?.variants?.find((a) => a.id === selectedVariant?.id)
   const isInBag = updatedVariant?.isInBag || false
   const waistByLengthDisplay =
     displayShort !== internalSize?.display && internalSize?.type === "WxL" && internalSize?.display
@@ -60,16 +68,15 @@ export const ProductDetails: React.FC<{
   const manufacturerSizeDiff = manufacturerSizeDisplay !== selectedVariant?.displayShort
   const sizeConversionDisplay = `US ${displayShort} = ${manufacturerSizeType} ${manufacturerSizeDisplay}`
 
+  const discountPercentage = product?.discountPercentage
+  const discountedPrice = product?.discountedPrice
+
   const modelDetailValue =
     !!product.modelSize &&
     !!product.modelHeight &&
     `Model is ${modelHeightDisplay(product.modelHeight)} in a ${
       product.modelSize.type === "Letter" ? "" : `${product.modelSize.type} `
     }${product.modelSize.display}`
-
-  const handleNavigateToBrand = (href: string) => {
-    router.push(href)
-  }
 
   return (
     <Box mb={3}>
@@ -111,7 +118,7 @@ export const ProductDetails: React.FC<{
 
       <Flex flexDirection="row" width="100%" pt={6}>
         <Flex flexDirection="column" width="100%">
-          <Sans size={3}>Member price</Sans>
+          <Sans size={3}>Rent</Sans>
           <Box pr={2}>
             <Separator mb={2} width="100%" />
           </Box>
@@ -126,15 +133,51 @@ export const ProductDetails: React.FC<{
           </Flex>
         </Flex>
         <Flex flexDirection="column" width="100%">
-          <Sans size={3}>Retail value</Sans>
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+            <Sans size={3}>Buy</Sans>
+
+            {discountPercentage && (
+              <Box>
+                <Sans size={3} color="black100">
+                  <span style={{ color: "#f83131" }}>{discountPercentage}% off</span>
+
+                  <span
+                    style={{
+                      color: `${color("black50")}`,
+                    }}
+                  >
+                    {" "}
+                    |{" "}
+                  </span>
+                  <span
+                    style={{
+                      color: `${color("black50")}`,
+                      textDecorationLine: "line-through",
+                      textDecorationStyle: "solid",
+                    }}
+                  >
+                    ${retailPrice}
+                  </span>
+                </Sans>
+              </Box>
+            )}
+          </Flex>
           <Separator mb={2} width="100%" />
-          <Sans size={9} color="black25">
-            ${retailPrice}
-          </Sans>
+          <Flex flexDirection="row" alignItems="flex-end">
+            <Sans size={9} color="black100">
+              ${discountedPrice ? discountedPrice : retailPrice}
+            </Sans>
+            <Flex pb="6px" pl="5px">
+              <Sans size={3} color="black100">
+                {" "}
+                + tax
+              </Sans>
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
       <Flex paddingTop={6} pb={2}>
-        {product?.variants?.length > 1 && <Sans size={3}>Select a size</Sans>}
+        <Sans size={3}>Select a size</Sans>
       </Flex>
       {productType !== "Accessory" && (
         <Flex flex={1} pb={1}>
@@ -160,13 +203,9 @@ export const ProductDetails: React.FC<{
           size="large"
         />
       </Flex>
+      <Spacer mb={1} />
 
-      <ProductBuyCTA
-        mt={8}
-        product={filter(ProductBuyCTAFragment_Product, product)}
-        selectedVariant={filter(ProductBuyCTAFragment_ProductVariant, selectedVariant)}
-        onNavigateToBrand={handleNavigateToBrand}
-      />
+      <BuyButton size="large" data={data} selectedVariant={selectedVariant} />
 
       <Spacer mb={10} />
 

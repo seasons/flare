@@ -26,6 +26,7 @@ import { Container } from "../Container"
 import { CreditBalance, CreditBalanceFragment_Customer } from "./Components/CreditBalance"
 import { ReferAFriend } from "./Components/ReferAFriend"
 import { AccountList, CustomerStatus, OnboardingChecklist } from "./Lists"
+import { SaveAndHistoryIcon } from "components/Icons/SaveAndHistoryIcon"
 
 export enum UserState {
   Undetermined,
@@ -147,14 +148,20 @@ export const Account = screenTrack()(({ navigation }) => {
       tracking: Schema.ActionNames.PaymentAndShippingTapped,
     },
     {
+      title: "Saved items & order history",
+      icon: <SaveAndHistoryIcon />,
+      onPress: () => openDrawer("savedAndHistory"),
+      tracking: Schema.ActionNames.PaymentAndShippingTapped,
+    },
+  ]
+
+  const middleList = [
+    {
       title: "Frequently asked questions",
       icon: <PaymentShippingIcon />,
       onPress: () => openDrawer("faq", { previousScreen: "profile" }),
       tracking: Schema.ActionNames.FAQTapped,
     },
-  ]
-
-  const middleList = [
     {
       title: "Follow us on Instagram",
       icon: <InstagramSVG opaque />,

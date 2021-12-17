@@ -1,9 +1,17 @@
 import gql from "graphql-tag"
+
 import {
-  ProductBuyCTAFragment_Product,
-  ProductBuyCTAFragment_ProductVariant,
-  ProductConditionSectionFragment_PhysicalProductQualityReport,
+  ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant,
+  ProductConditionSectionFragment_PhysicalProductQualityReport
 } from "@seasons/eclipse"
+
+export const UPSERT_CART_ITEM = gql`
+  mutation upsertCartItem($productVariantId: ID!, $addToCart: Boolean!) {
+    upsertCartItem(productVariantId: $productVariantId, addToCart: $addToCart) {
+      id
+    }
+  }
+`
 
 export const UPSERT_RESTOCK_NOTIF = gql`
   mutation UpsertRestockNotification($variantID: ID!, $shouldNotify: Boolean!) {
@@ -25,6 +33,8 @@ export const GET_PRODUCT = gql`
       rentalPrice
       type
       retailPrice
+      discountedPrice
+      discountPercentage
       category {
         id
         name
@@ -71,6 +81,7 @@ export const GET_PRODUCT = gql`
         reserved
         isInBag
         isSaved
+        isInCart
         hasRestockNotification
         manufacturerSizes {
           id

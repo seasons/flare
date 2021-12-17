@@ -1,7 +1,6 @@
 import { Box, Flex, Link, MaxWidth, Media, Picture, Sans, Spacer } from "components"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { head } from "lodash"
-import { SavedTab_Query } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React from "react"
 import { imageResize } from "utils/imageResize"
@@ -9,6 +8,7 @@ import { imageResize } from "utils/imageResize"
 import { ProductGridItem } from "@seasons/eclipse"
 
 import { Display } from "../Typography"
+import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 
 export const FeaturedCollection: React.FC<{ collections: any }> = ({ collections }) => {
   const { authState, toggleLoginModal } = useAuthContext()
