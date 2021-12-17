@@ -1,21 +1,25 @@
-import { ProductBuyCTA, VariantSizes } from "@seasons/eclipse"
 import { Box, Flex, Sans, Separator, Spacer } from "components"
 import { AddToBagButton } from "components/AddToBagButton"
+import { BuyButton } from "components/BuyButton"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { filter } from "graphql-anywhere"
+import { color } from "helpers/color"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { SaveProductButton } from "mobile/Product/SaveProductButton"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { GET_BAG } from "queries/bagQueries"
+import { GET_PRODUCT, UPSERT_CART_ITEM } from "queries/productQueries"
 import React, { useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
-import { filter } from "graphql-anywhere"
+
+import { useMutation } from "@apollo/client"
+import {
+  ProductBuyCTA, ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant, VariantSizes
+} from "@seasons/eclipse"
+
 import { ProductInfoItem } from "./ProductInfoItem"
 import { VariantSelect } from "./VariantSelect"
-import { ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant } from "@seasons/eclipse"
-import { useRouter } from "next/router"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { GET_PRODUCT, UPSERT_CART_ITEM } from "queries/productQueries"
-import { useMutation } from "@apollo/client"
-import { GET_BAG } from "queries/bagQueries"
-import { useAuthContext } from "lib/auth/AuthContext"
-import { BuyButton } from "components/BuyButton"
 
 export const ProductDetails: React.FC<{
   product: any
@@ -64,6 +68,9 @@ export const ProductDetails: React.FC<{
   const manufacturerSizeDiff = manufacturerSizeDisplay !== selectedVariant?.displayShort
   const sizeConversionDisplay = `US ${displayShort} = ${manufacturerSizeType} ${manufacturerSizeDisplay}`
 
+  const discountPercentage = product?.discountPercentage
+  const discountedPrice = product?.discountedPrice
+
   const modelDetailValue =
     !!product.modelSize &&
     !!product.modelHeight &&
@@ -111,7 +118,7 @@ export const ProductDetails: React.FC<{
 
       <Flex flexDirection="row" width="100%" pt={6}>
         <Flex flexDirection="column" width="100%">
-          <Sans size={3}>Member price</Sans>
+          <Sans size={3}>Rent</Sans>
           <Box pr={2}>
             <Separator mb={2} width="100%" />
           </Box>
@@ -126,11 +133,47 @@ export const ProductDetails: React.FC<{
           </Flex>
         </Flex>
         <Flex flexDirection="column" width="100%">
-          <Sans size={3}>Retail value</Sans>
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+            <Sans size={3}>Buy</Sans>
+
+            {discountPercentage && (
+              <Box>
+                <Sans size={3} color="black100">
+                  <span style={{ color: "#f83131" }}>{discountPercentage}% off</span>
+
+                  <span
+                    style={{
+                      color: `${color("black50")}`,
+                    }}
+                  >
+                    {" "}
+                    |{" "}
+                  </span>
+                  <span
+                    style={{
+                      color: `${color("black50")}`,
+                      textDecorationLine: "line-through",
+                      textDecorationStyle: "solid",
+                    }}
+                  >
+                    ${retailPrice}
+                  </span>
+                </Sans>
+              </Box>
+            )}
+          </Flex>
           <Separator mb={2} width="100%" />
-          <Sans size={9} color="black25">
-            ${retailPrice}
-          </Sans>
+          <Flex flexDirection="row" alignItems="flex-end">
+            <Sans size={9} color="black100">
+              ${discountedPrice}
+            </Sans>
+            <Flex pb="6px" pl="5px">
+              <Sans size={3} color="black100">
+                {" "}
+                + tax
+              </Sans>
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
       <Flex paddingTop={6} pb={2}>
