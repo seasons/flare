@@ -26,22 +26,29 @@ export const PriceFilters = ({ setParams, params }) => {
 
   const renderOption = (option, i) => {
     return (
-      <Box my={1}>
-        <Flex
-          onClick={() => {
-            setParams({ ...params, priceRange: option.value })
-            selectedOptions[i] = !selectedOptions[i]
-            setSelectedOptions(selectedOptions)
-          }}
-          alignItems="center"
-        >
-          <Checkbox isActive={selectedOptions[i]} size="default" />
-          <Spacer ml={1} />
-          <Sans size="3">{option.text}</Sans>
-        </Flex>
-      </Box>
+      <>
+        <Box my={1}>
+          <Flex
+            onClick={() => {
+              setParams({ ...params, priceRange: option.value })
+              selectedOptions[i] = !selectedOptions[i]
+              setSelectedOptions(selectedOptions)
+            }}
+            alignItems="center"
+          >
+            <Checkbox isActive={selectedOptions[i]} size="default" />
+            <Spacer ml={1} />
+            <Sans size="3">{option.text}</Sans>
+          </Flex>
+        </Box>
+      </>
     )
   }
 
-  return <Box>{options.map((option, i) => renderOption(option, i))}</Box>
+  return (
+    <Box>
+      <Sans size="3">Price</Sans>
+      {options.map((option, i) => renderOption(option, i))}
+    </Box>
+  )
 }
