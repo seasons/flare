@@ -17,6 +17,7 @@ import { Drawer as MuiDrawer } from "@material-ui/core"
 
 import { DrawerBottomButton } from "./DrawerBottomButton"
 import { useDrawerContext } from "./DrawerContext"
+import { SavedAndHistory } from "mobile/Account/SavedAndHistory/SavedAndHistory"
 
 interface DrawerProps {
   open?: boolean
@@ -54,7 +55,9 @@ export const Drawer = (props: DrawerProps) => {
   const view = () => {
     switch (currentView) {
       case "bag":
-        return <Bag />
+        return <Bag initialTab={params?.initialTab} />
+      case "savedAndHistory":
+        return <SavedAndHistory />
       case "reservationShippingAddress":
         return (
           <ReservationShippingAddress
@@ -91,7 +94,7 @@ export const Drawer = (props: DrawerProps) => {
     }
   }
 
-  const showCloseButton = ["bag", "profile"].includes(currentView)
+  const showCloseButton = ["profile"].includes(currentView)
 
   return (
     <StyledDrawer

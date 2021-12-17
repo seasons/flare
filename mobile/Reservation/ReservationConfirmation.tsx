@@ -127,7 +127,11 @@ export const ReservationConfirmation = screenTrack()((props) => {
           <Sans size="4" color="black100">
             {title}
           </Sans>
-          {content && <Box ml="auto">{content}</Box>}
+          {content && (
+            <Flex ml="auto" flexDirection="column">
+              {content}
+            </Flex>
+          )}
         </Flex>
         <Spacer mb={bottomSpacing} />
         {!hideSeparator && <Separator />}
@@ -184,7 +188,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
             <SectionHeader
               title="Shipping"
               content={
-                <>
+                <Box>
                   {!!formatedAddress1 && (
                     <Sans size="4" color="black100" textAlign="right">
                       {formatedAddress1}
@@ -195,7 +199,7 @@ export const ReservationConfirmation = screenTrack()((props) => {
                       {formatedAddress2}
                     </Sans>
                   )}
-                </>
+                </Box>
               }
               bottomSpacing={3}
             />

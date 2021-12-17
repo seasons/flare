@@ -50,7 +50,7 @@ export const AddToBagButton: React.FC<Props> = ({
 
   const [upsertRestockNotification] = useMutation(UPSERT_RESTOCK_NOTIF, {
     variables: {
-      variantID: selectedVariant.id,
+      variantID: selectedVariant?.id,
       shouldNotify: !hasRestockNotification,
     },
     awaitRefetchQueries: true,
@@ -71,9 +71,9 @@ export const AddToBagButton: React.FC<Props> = ({
 
   const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
     variables: {
-      id: selectedVariant.id,
+      id: selectedVariant?.id,
       productID: product?.id,
-      variantID: selectedVariant.id,
+      variantID: selectedVariant?.id,
     },
     awaitRefetchQueries: true,
     refetchQueries: [
@@ -123,16 +123,33 @@ export const AddToBagButton: React.FC<Props> = ({
 
   const handleReserve = () => {
     if (!isMutating) {
-      setIsMutating(true)
-      addToBag()
+      if (isInCart) {
+        showPopUp({
+          title: "You aleady have this in your cart",
+          note:
+            "You've already added this item to your cart to buy. If you'd like to rent it instead, add it to your bag.",
+          buttonText: "Cancel",
+          secondaryButtonText: "Add to bag",
+          secondaryButtonOnPress: () => {
+            setIsMutating(true)
+            addToBag()
+            hidePopUp()
+          },
+          onClose: () => hidePopUp(),
+        })
+      } else {
+        setIsMutating(true)
+        addToBag()
+      }
     }
   }
 
   const _disabled = disabled || added || isMutating
+  const isInCart = selectedVariant?.isInCart
 
-  let text = "Add to bag"
-  if (added) {
-    text = "Added"
+  let text = "Rent"
+  if (added && !isInCart) {
+    text = "Added to bag"
   } else if (hasRestockNotification) {
     text = "We'll notify you when it's back"
   } else if (!variantInStock) {

@@ -13,7 +13,6 @@ import { debounce } from "lodash"
 import { DateTime } from "luxon"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { SavedTab_Query } from "queries/bagQueries"
 import { Designer_Query, DesignerBrands_Query } from "queries/designerQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useRef, useState } from "react"
@@ -22,6 +21,7 @@ import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import { ProductGridItem } from "@seasons/eclipse"
+import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 
 const isProduction = process.env.ENVIRONMENT === "production"
 

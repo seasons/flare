@@ -5,6 +5,14 @@ import {
   ProductConditionSectionFragment_PhysicalProductQualityReport,
 } from "@seasons/eclipse"
 
+export const UPSERT_CART_ITEM = gql`
+  mutation upsertCartItem($productVariantId: ID!, $addToCart: Boolean!) {
+    upsertCartItem(productVariantId: $productVariantId, addToCart: $addToCart) {
+      id
+    }
+  }
+`
+
 export const UPSERT_RESTOCK_NOTIF = gql`
   mutation UpsertRestockNotification($variantID: ID!, $shouldNotify: Boolean!) {
     upsertRestockNotification(variantID: $variantID, shouldNotify: $shouldNotify) {
@@ -71,6 +79,7 @@ export const GET_PRODUCT = gql`
         reserved
         isInBag
         isSaved
+        isInCart
         hasRestockNotification
         manufacturerSizes {
           id

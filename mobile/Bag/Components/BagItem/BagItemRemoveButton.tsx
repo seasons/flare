@@ -44,7 +44,7 @@ export const BagItemRemoveButton = ({ bagItem }) => {
       },
       {
         query: GET_PRODUCT,
-        variables: { where: { id: product?.id } },
+        variables: { slug: product?.slug },
       },
     ],
   })
@@ -59,7 +59,7 @@ export const BagItemRemoveButton = ({ bagItem }) => {
       variant="secondaryWhite"
       loading={isMutating}
       disabled={isMutating}
-      onPress={() => {
+      onClick={() => {
         setIsMutating(true)
         tracking.trackEvent({
           actionName: Schema.ActionNames.BagItemRemoved,
@@ -82,9 +82,7 @@ export const BagItemRemoveButton = ({ bagItem }) => {
               {
                 query: GET_PRODUCT,
                 variables: {
-                  where: {
-                    id: product?.id,
-                  },
+                  slug: product?.slug,
                 },
               },
             ],
