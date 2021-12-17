@@ -165,7 +165,7 @@ export const ProductDetails: React.FC<{
           <Separator mb={2} width="100%" />
           <Flex flexDirection="row" alignItems="flex-end">
             <Sans size={9} color="black100">
-              ${discountedPrice}
+              ${discountedPrice ? discountedPrice : retailPrice}
             </Sans>
             <Flex pb="6px" pl="5px">
               <Sans size={3} color="black100">
