@@ -1,6 +1,7 @@
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 import { ColorFilters } from "components/Browse/ColorFilters"
 import { FixedFilters } from "components/Browse/FixedFilters"
+import { PriceFilters } from "components/Browse/PriceFilters"
 import { SortDropDown } from "components/Browse/SortDropDown"
 import { TriageModal } from "components/Browse/TriageModal"
 import { filter as filterFragment } from "graphql-anywhere"
@@ -64,6 +65,7 @@ export interface SizeFilterParams {
   forSaleOnly: boolean
   currentColors: string[]
   orderBy: OrderBy
+  priceRange: [number, number]
 }
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
@@ -112,10 +114,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     forSaleOnly: forSaleRouterQuery ?? null,
     currentColors: colors ?? null,
     orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
+    priceRange: null,
   })
   const [initialPageLoad, setInitialPageLoad] = useState(false)
   const { authState, toggleLoginModal } = useAuthContext()
-  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly, orderBy } = params
+  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly, orderBy, priceRange } = params
 
   const skip = (currentPage - 1) * pageSize
 
@@ -126,6 +129,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
       colors: currentColors,
       bottoms: currentBottoms,
       available: availableOnly,
+      priceRange,
       forSaleOnly,
       brandName: currentBrand,
       categoryName: currentCategory,
@@ -311,6 +315,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       listItems={categories}
                       currentBrand={currentBrand}
                     />
+                    <Spacer mb={5} />
+                    <PriceFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
