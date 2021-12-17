@@ -18,6 +18,7 @@ import { ReservationLineItems } from "./ReservationLineItems"
 import { ReservationShippingOptionsSection } from "./Components/ReservationShippingOptionSection"
 import { SectionHeader } from "./Components/SectionHeader"
 import { GET_CUSTOMER, RESERVE_ITEMS } from "./queries"
+import { PopUpData } from "@seasons/eclipse"
 
 export const Reservation = screenTrack()((props) => {
   const [isMutating, setIsMutating] = useState(false)
@@ -61,7 +62,8 @@ export const Reservation = screenTrack()((props) => {
         note: "We couldn't process your order because of an unexpected error, please try again later",
         buttonText: "Close",
         onClose: () => hidePopUp(),
-      }
+      } as PopUpData
+      const errorCodes = error.graphQLErrors.map((e) => e.extensions.code)
       if (error.message === "Need to Suggest Address") {
         const suggestedAddress = error.graphQLErrors?.[0]?.extensions?.suggestedAddress
         if (!!suggestedAddress) {
@@ -88,6 +90,22 @@ export const Reservation = screenTrack()((props) => {
               hidePopUp()
             },
           }
+        }
+      }
+      if (errorCodes.includes("PAYMENT_FAILED_RESERVE_MINIMUM") || errorCodes.includes("PAYMENT_FAILED_STATUS")) {
+        const note = errorCodes.includes("PAYMENT_FAILED_RESERVE_MINIMUM")
+          ? "We were unable to process the initial payment for this reservation. Please update your payment info and try again."
+          : "Your account has an outstanding failed payment. Please update your payment info and try again."
+        popUpData = {
+          title: "Payment Failed",
+          note,
+          buttonText: "Update Payment",
+          secondaryButtonText: "Close",
+          secondaryButtonOnPress: () => hidePopUp(),
+          onClose: () => {
+            openDrawer("editPaymentMethod")
+            hidePopUp()
+          },
         }
       }
       showPopUp(popUpData)
@@ -220,8 +238,7 @@ export const Reservation = screenTrack()((props) => {
                 actionType: Schema.ActionTypes.Tap,
               })
               setIsMutating(true)
-              const itemIDs = items?.map((item) => item?.productVariant?.id)
-              const { data } = await reserveItems({
+              const result = await reserveItems({
                 variables: {
                   options: {
                     timeWindowID: dateAndTimeWindow?.timeWindow?.id,
@@ -230,9 +247,9 @@ export const Reservation = screenTrack()((props) => {
                   shippingCode,
                 },
               })
-              if (data?.reserveItems) {
+              if (result?.data?.reserveItems) {
                 openDrawer("reservationConfirmation", {
-                  reservationID: data.reserveItems.id,
+                  reservationID: result.data.reserveItems.id,
                 })
               }
             }}
