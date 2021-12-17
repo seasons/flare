@@ -11,11 +11,11 @@ export const PriceFilters = ({ setParams, params }) => {
       value: [0, 100],
     },
     {
-      text: "Between $100 - $250",
+      text: "$100 - $250",
       value: [100, 250],
     },
     {
-      text: "Between $250 - $500",
+      text: "$250 - $500",
       value: [200, 500],
     },
     {
@@ -47,7 +47,7 @@ export const PriceFilters = ({ setParams, params }) => {
 
   return (
     <Box>
-      <Sans size="3">Price</Sans>
+      <Sans size="3">Purchase price</Sans>
       {options.map((option, i) => renderOption(option, i))}
     </Box>
   )
