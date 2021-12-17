@@ -31,7 +31,11 @@ export const BagItemFragment_BagItem = gql`
   ${BagItemCTAsFragment_BagItem}
 `
 
-export const SmallBagItem = ({ bagItem, sectionStatus, showBuyPrice }) => {
+export const SmallBagItem: React.FC<{ sectionStatus: any; bagItem: any; showBuyPrice?: boolean }> = ({
+  bagItem,
+  sectionStatus,
+  showBuyPrice,
+}) => {
   const variant = bagItem?.productVariant
   const product = variant?.product
   const imageUrl = product?.images?.[0]?.url || ""

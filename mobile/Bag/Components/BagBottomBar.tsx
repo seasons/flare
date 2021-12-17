@@ -8,7 +8,7 @@ import { gql } from "@apollo/client"
 import { BagView } from "../Bag"
 
 interface BagBottomBarProps {
-  bagItems: GetBagAndSavedItems_me_bag[]
+  bagItems: any[]
   onReserve: () => void
   onCartCheckout: () => void
   activeTab: BagView

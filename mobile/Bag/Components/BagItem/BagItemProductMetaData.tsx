@@ -26,7 +26,10 @@ export const BagItemProductMetaDataFragment_BagItem = gql`
   }
 `
 
-export const BagItemProductMetaData = ({ variant, showBuyPrice }) => {
+export const BagItemProductMetaData: React.FC<{ variant: any; showBuyPrice?: boolean }> = ({
+  variant,
+  showBuyPrice,
+}) => {
   const product = variant?.product
 
   if (!product) {
