@@ -38,7 +38,7 @@ export const ReservationHistoryItemFragment_Reservation = gql`
 
 export const ReservationHistoryItem = ({ item }) => {
   const date = item?.createdAt && DateTime.fromISO(item?.createdAt).toUTC().toFormat("MM/dd")
-  const imageWidth = 100
+  const imageWidth = 113
 
   const items = [...item.products]
   if (items.length === 1) {
@@ -63,7 +63,7 @@ export const ReservationHistoryItem = ({ item }) => {
         )}
       </Box>
       <Spacer mb={3} />
-      <Flex flexDirection="row" flexWrap="nowrap" px={0.5}>
+      <Flex flexDirection="row" flexWrap="wrap" px={0.5}>
         {items?.map((physicalProduct) => {
           const variant = physicalProduct?.productVariant
           const variantSizeDisplay = variant?.displayLong
@@ -72,15 +72,15 @@ export const ReservationHistoryItem = ({ item }) => {
           const image = product?.images?.[0]
           const imageURL = image?.url || ""
           return (
-            <Flex key={physicalProduct.id} style={{ flex: 3 }}>
+            <Flex key={physicalProduct.id} width={imageWidth + "px"}>
               <Box p={0.5}>
                 {!!imageURL && (
                   <Image
                     source={{ uri: imageURL }}
                     style={{
                       backgroundColor: color("black04"),
-                      height: imageWidth * PRODUCT_ASPECT_RATIO,
-                      width: imageWidth,
+                      height: imageWidth * PRODUCT_ASPECT_RATIO + "px",
+                      width: imageWidth + "px",
                     }}
                   />
                 )}

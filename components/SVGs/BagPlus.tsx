@@ -1,19 +1,14 @@
+import { color } from "helpers/color"
 import * as React from "react"
 
 export const BagPlus = (props) => {
   return (
-    <svg width={56} height={56} viewBox="0 0 56 56" {...props}>
+    <svg width={45} height={45} {...props} viewBox="0 0 66 66">
       <g fill="none" fillRule="evenodd">
-        <circle fill="#F6F6F6" cx={28} cy={28} r={28} />
-        <g transform="translate(18 18)" fill="#000">
-          <rect
-            transform="rotate(90 10 10)"
-            x={9}
-            width={2}
-            height={20}
-            rx={1}
-          />
-          <rect x={9} width={2} height={20} rx={1} />
+        <circle stroke={color("black10")} fill={color("black10")} cx={32} cy={32} r={32} />
+        <g transform="translate(20 20)" fill={color("black100")}>
+          <rect x={11} width={2} height={24} rx={1} />
+          <rect transform="rotate(90 12 12)" x={11} width={2} height={24} rx={1} />
         </g>
       </g>
     </svg>

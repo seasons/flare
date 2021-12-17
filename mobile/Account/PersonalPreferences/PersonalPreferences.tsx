@@ -78,7 +78,12 @@ export const PersonalPreferences = screenTrack()(({ navigation, initialTab }) =>
   if (!data) {
     return (
       <Flex>
-        <FixedBackArrow navigation={navigation} variant="whiteBackground" />
+        <FixedBackArrow
+          variant="whiteBackground"
+          onPress={() => {
+            openDrawer("Account")
+          }}
+        />
         <Loader />
       </Flex>
     )
@@ -135,7 +140,7 @@ export const PersonalPreferences = screenTrack()(({ navigation, initialTab }) =>
       </Box>
       <TabBar
         spaceEvenly
-        tabs={["Personal", "Sizing"]}
+        tabs={[{ name: "Personal" }, { name: "Sizing" }]}
         disabledTabs={[]}
         activeTab={activeTab}
         goToPage={(tab: Tab) => {

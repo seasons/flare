@@ -8,7 +8,6 @@ import { useAuthContext } from "lib/auth/AuthContext"
 import { debounce } from "lodash"
 import Head from "next/head"
 import { withRouter } from "next/router"
-import { SavedTab_Query } from "queries/bagQueries"
 import { TagView_Query } from "queries/collectionQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useRef, useState } from "react"
@@ -17,6 +16,7 @@ import { Schema, screenTrack } from "utils/analytics"
 
 import { useQuery } from "@apollo/client"
 import { ProductGridItem } from "@seasons/eclipse"
+import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 
 const TagView = screenTrack(({ router }) => {
   return {

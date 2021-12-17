@@ -44,6 +44,7 @@ const Product = screenTrack(({ router }) => {
   const { query } = useRouter()
 
   const isFromTryWithSeasons = query["try-with-seasons"] === "true"
+  const isSignedIn = authState?.isSignedIn
 
   const product = data && data?.product
   const [selectedVariant, setSelectedVariant] = useState({
@@ -52,23 +53,26 @@ const Product = screenTrack(({ router }) => {
     size: "",
     stock: 0,
     isInBag: false,
+    isInCart: false,
     nextReservablePhysicalProduct: null,
   })
 
   useEffect(() => {
     refetch()
-  }, [authState.isSignedIn])
+  }, [isSignedIn])
 
   useEffect(() => {
-    if (!selectedVariant?.id && data) {
+    if (data) {
       const variants = data?.product?.variants
       const firstAvailableSize =
-        find(variants, (size) => size.isInBag) || find(variants, (size) => size.reservable > 0) || head(variants)
+        find(variants, (size) => size.isInBag || size.isInCart) ||
+        find(variants, (size) => size.reservable > 0) ||
+        head(variants)
       if (firstAvailableSize) {
         setSelectedVariant(firstAvailableSize)
       }
     }
-  })
+  }, [data])
 
   let metaTitle = HEAD_META_TITLE
   if (product?.name && product?.brand?.name) {
