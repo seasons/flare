@@ -40,6 +40,9 @@ export const GiftPage = screenTrack(() => ({
             <Skeleton width={512} height={40} />
             <Spacer mt={2} />
             <Skeleton width={512} height={40} />
+            <Spacer mt={2} />
+            <Skeleton width={512} height={80} />
+            <Spacer mt={4} />
           </Placeholder>
           <div className="gift-up-target" data-site-id={siteID} data-platform="Other" data-language="en-US"></div>
           <script type="text/javascript" src="/js/giftup.js"></script>
@@ -72,10 +75,12 @@ const Container = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    min-height: 1088px;
+    min-height: 2100px;
   }
 `
 
-const Placeholder = styled.div``
+const Placeholder = styled.div`
+  min-height: 1088px;
+`
 
 export default GiftPage
