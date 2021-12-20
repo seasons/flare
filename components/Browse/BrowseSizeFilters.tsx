@@ -3,19 +3,19 @@ import { Box } from "components/Box"
 import { color } from "../../helpers"
 import styled from "styled-components"
 import React from "react"
-import { SizeFilterParams } from "pages/browse/[Filter]"
+import { FilterParams } from "pages/browse/[Filter]"
 import { Checkbox } from "components/Checkbox"
 
 interface Props {
-  setParams: (params: SizeFilterParams) => void
-  params: SizeFilterParams
+  setParams: (params: FilterParams) => void
+  params: FilterParams
 }
 
 interface SizeButtonProps {
   size: string
   items: string[]
-  setParams: (params: SizeFilterParams) => void
-  params: SizeFilterParams
+  setParams: (params: FilterParams) => void
+  params: FilterParams
   type: "bottoms" | "tops"
 }
 
@@ -28,9 +28,9 @@ const SizeButton: React.FC<SizeButtonProps> = ({ size, items, setParams, params,
       onClick={() => {
         const newParamsArray = isActive ? itemArray.filter((i) => i !== size) : [size, ...itemArray]
         if (type === "bottoms") {
-          setParams({ ...params, currentBottoms: newParamsArray })
+          setParams({ ...params, bottoms: newParamsArray })
         } else {
-          setParams({ ...params, currentTops: newParamsArray })
+          setParams({ ...params, tops: newParamsArray })
         }
       }}
     >
@@ -45,40 +45,14 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
   const letterSizes = ["XS", "S", "M", "L", "XL", "XXL"]
   const waistSizes = ["28", "29", "30", "31", "32", "33", "34", "35", "36", "37"]
 
-  const { currentTops, currentBottoms, availableOnly, forSaleOnly } = params
+  const { tops, bottoms } = params
 
   return (
     <Box style={{ maxWidth: "148px" }}>
-      <Sans size="3">Filter by</Sans>
-      <Spacer mb={[0, 2]} />
-      <FlexWrapper mb={2}>
-        <Checkbox
-          onClick={() => {
-            setParams({ ...params, availableOnly: !availableOnly })
-          }}
-          isActive={availableOnly}
-        />
-        <Spacer ml={1} />
-        <Sans size="3">Available now</Sans>
-      </FlexWrapper>
-      <Spacer mb={[0, 2]} />
-      <FlexWrapper mb={5}>
-        <Checkbox
-          onClick={() => {
-            setParams({ ...params, forSaleOnly: !forSaleOnly })
-          }}
-          isActive={forSaleOnly}
-        />
-        <Spacer ml={1} />
-        <Sans size="3">For sale</Sans>
-      </FlexWrapper>
-      <Spacer mb={5} />
       <Sans size="3">Tops</Sans>
       <SizeButtonContainer>
         {letterSizes.map((size) => {
-          return (
-            <SizeButton key={size} size={size} items={currentTops} params={params} setParams={setParams} type="tops" />
-          )
+          return <SizeButton key={size} size={size} items={tops} params={params} setParams={setParams} type="tops" />
         })}
       </SizeButtonContainer>
       <Spacer mb={5} />
@@ -88,14 +62,7 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
           .filter((i) => i !== "XXL")
           .map((size) => {
             return (
-              <SizeButton
-                key={size}
-                size={size}
-                items={currentBottoms}
-                params={params}
-                setParams={setParams}
-                type="bottoms"
-              />
+              <SizeButton key={size} size={size} items={bottoms} params={params} setParams={setParams} type="bottoms" />
             )
           })}
       </SizeButtonContainer>

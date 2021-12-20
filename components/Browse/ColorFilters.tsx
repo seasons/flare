@@ -1,12 +1,12 @@
 import { Box, Flex, Sans, Spacer } from "components"
-import { SizeFilterParams } from "pages/browse/[Filter]"
+import { FilterParams } from "pages/browse/[Filter]"
 import React from "react"
 import styled from "styled-components"
 import { color as themeColor } from "../../helpers"
 
 interface Props {
-  setParams: (params: SizeFilterParams) => void
-  params: SizeFilterParams
+  setParams: (params: FilterParams) => void
+  params: FilterParams
 }
 
 export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
@@ -30,8 +30,8 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
       <Spacer mb={0.5} />
       <Flex width="100%" flexWrap="wrap">
         {colors.map((color, index) => {
-          let isActive = params?.currentColors?.includes(color.name)
-          const currentColors = params?.currentColors ?? []
+          let isActive = params?.colors?.includes(color.name)
+          const currentColors = params?.colors ?? []
 
           return (
             <ColorButton
@@ -41,9 +41,9 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
               className={`color-button-${color.name}`}
               onClick={() => {
                 const newColors: string[] = isActive
-                  ? params?.currentColors?.filter((i) => i !== color.name)
+                  ? params?.colors?.filter((i) => i !== color.name)
                   : [color.name, ...currentColors]
-                setParams({ ...params, currentColors: newColors })
+                setParams({ ...params, colors: newColors })
               }}
             >
               <Sans size="3" my="2" color={isActive ? themeColor("white100") : themeColor("black100")}>
