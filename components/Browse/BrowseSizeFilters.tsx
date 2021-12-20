@@ -1,10 +1,9 @@
-import { Sans, Spacer } from "../../components"
 import { Box } from "components/Box"
 import { color } from "../../helpers"
 import styled from "styled-components"
 import React from "react"
 import { FilterParams } from "pages/browse/[Filter]"
-import { Checkbox } from "components/Checkbox"
+import { Sans, Spacer } from "../../components"
 
 interface Props {
   setParams: (params: FilterParams) => void
@@ -69,12 +68,6 @@ export const BrowseSizeFilters: React.FC<Props> = ({ setParams, params }) => {
     </Box>
   )
 }
-
-const FlexWrapper = styled(Box)`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-`
 
 const SizeButtonContainer = styled.div`
   display: flex;

@@ -6,7 +6,7 @@ import styled from "styled-components"
 
 import { Paper, Slide } from "@material-ui/core"
 
-const twoButtonWidth = 160 - (space(2) + space(0.5))
+const twoButtonWidth = 180 - (space(2) + space(0.5))
 
 export const PopUp: React.FC = () => {
   const { popUpState, hidePopUp } = usePopUpContext()

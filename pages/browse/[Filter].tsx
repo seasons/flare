@@ -1,10 +1,13 @@
+import { AvailabilityFilters } from "components/Browse/AvailabilityFilters"
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 import { ColorFilters } from "components/Browse/ColorFilters"
+import { PriceFilters } from "components/Browse/PriceFilters"
 import { SortDropDown } from "components/Browse/SortDropDown"
 import { TriageModal } from "components/Browse/TriageModal"
 import { filter as filterFragment } from "graphql-anywhere"
 import { sans as sansSize } from "helpers/typeSizes"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { GET_PRODUCT } from "queries/productQueries"
@@ -25,8 +28,6 @@ import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
-import { BrowseBooleanFilters } from "components/Browse/BrowseBooleanFilters"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -65,6 +66,7 @@ export interface FilterParams {
   triage?: "waitlisted" | "approved"
   page: number
   orderBy: OrderBy
+  priceRange?: [number, number]
 }
 
 const setInitialUrl = ({ query, isSignedIn, setParams }) => {
@@ -81,6 +83,11 @@ const setInitialUrl = ({ query, isSignedIn, setParams }) => {
     routerAvailableOnly = isSignedIn
   }
 
+  const priceRange = query.priceRange
+    ?.toString()
+    ?.split("-")
+    ?.map((x) => parseInt(x))
+
   setParams({
     tops: query?.tops?.toString().split(" "),
     bottoms: query?.bottoms?.toString().split(" "),
@@ -92,11 +99,24 @@ const setInitialUrl = ({ query, isSignedIn, setParams }) => {
     brandName: brand ?? "all",
     page: query?.page ?? 1,
     triage: query.triage ?? null,
+    priceRange: priceRange ?? null,
   } as FilterParams)
 }
 
 const updateUrl = ({ router, params }) => {
-  const { tops, colors, bottoms, available, forSaleOnly, brandName, categoryName, page, orderBy, triage } = params
+  const {
+    tops,
+    colors,
+    bottoms,
+    available,
+    forSaleOnly,
+    brandName,
+    categoryName,
+    page,
+    orderBy,
+    triage,
+    priceRange,
+  } = params
 
   const orderByParam = orderBy ? `&orderBy=${orderBy}` : ""
   const bottomsParam = bottoms?.length ? "&bottoms=" + bottoms.join("+") : ""
@@ -105,9 +125,10 @@ const updateUrl = ({ router, params }) => {
   const availableParam = available ? "&available=true" : ""
   const forSaleParam = forSaleOnly ? "&forSale=true" : ""
   const triageParam = triage ? `&triage=${triage}` : ""
+  const priceRangeParam = priceRange?.length === 2 ? `&priceRange=${priceRange[0]}-${priceRange[1]}` : ""
   const categoryParam = categoryName ?? "all"
   const brandParam = brandName ?? "all"
-  const url = `/browse/${categoryParam}+${brandParam}?page=${page}${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}`
+  const url = `/browse/${categoryParam}+${brandParam}?page=${page}${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}${priceRangeParam}`
 
   router.push(url, undefined, {
     shallow: true,
@@ -133,6 +154,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     bottoms: null,
     available: null,
     forSaleOnly: null,
+    priceRange: null,
     colors: null,
     categoryName: "all",
     brandName: "all",
@@ -141,10 +163,20 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     page: 1,
   })
   const { authState, toggleLoginModal } = useAuthContext()
-
   const routerQuery = router?.query
-
-  const { tops, colors, bottoms, available, forSaleOnly, brandName, categoryName, page, orderBy, triage } = params
+  const {
+    tops,
+    colors,
+    bottoms,
+    available,
+    forSaleOnly,
+    brandName,
+    categoryName,
+    page,
+    orderBy,
+    triage,
+    priceRange,
+  } = params
 
   useEffect(() => {
     if (!isEmpty(routerQuery) && !mounted) {
@@ -155,13 +187,16 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   const skip = page ? (page - 1) * pageSize : 0
 
-  const [getBrowseProducts, { previousData, data = previousData, error, loading }] = useLazyQuery(GET_BROWSE_PRODUCTS, {
+  console.log("params", params)
+
+  const { previousData, data = previousData, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
     notifyOnNetworkStatusChange: true,
     variables: {
       tops,
       colors,
       bottoms,
       available,
+      priceRange,
       forSaleOnly,
       brandName,
       categoryName,
@@ -181,7 +216,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   useEffect(() => {
     updateUrl({ router, params })
-    getBrowseProducts()
   }, [params])
 
   useEffect(() => {
@@ -210,7 +244,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         PageNotificationBar={() => <BrowseProductsNotificationBar isLoggedIn={isSignedIn} />}
       >
         <Media lessThan="md">
-          <BrowseBooleanFilters params={params} setParams={onSetParams} breakpoint="mobile" />
+          <AvailabilityFilters params={params} setParams={onSetParams} breakpoint="mobile" />
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
@@ -266,9 +300,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                       currentBrand={brandName}
                     />
                     <Spacer mb={5} />
-                    <BrowseBooleanFilters setParams={onSetParams} params={params} breakpoint="desktop" />
+                    <AvailabilityFilters setParams={setParams} params={params} breakpoint="desktop" />
                     <Spacer mb={5} />
-                    <BrowseSizeFilters setParams={onSetParams} params={params} />
+                    <PriceFilters setParams={setParams} params={params} />
+                    <Spacer mb={5} />
+                    <BrowseSizeFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
                     <ColorFilters setParams={onSetParams} params={params} />
                     <Spacer mb={5} />

@@ -17,6 +17,7 @@ export const GET_BROWSE_PRODUCTS = gql`
     $first: Int!
     $skip: Int!
     $orderBy: ProductOrderByInput!
+    $priceRange: [Int]
     $tops: [String]
     $bottoms: [String]
     $colors: [String]
@@ -31,6 +32,7 @@ export const GET_BROWSE_PRODUCTS = gql`
       category: $categoryName
       colors: $colors
       brand: $brandName
+      priceRange: $priceRange
       where: { status: Available }
     ) {
       aggregate {
@@ -48,6 +50,7 @@ export const GET_BROWSE_PRODUCTS = gql`
       orderBy: $orderBy
       first: $first
       skip: $skip
+      priceRange: $priceRange
       where: { status: Available }
     ) {
       edges {
@@ -59,6 +62,7 @@ export const GET_BROWSE_PRODUCTS = gql`
             id
             url
           }
+          discountedPrice
           description
           modelSize {
             display
