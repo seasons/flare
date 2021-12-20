@@ -61,7 +61,7 @@ export async function getStaticProps() {
 
 const Container = styled.div`
   min-height: 100vh;
-  width: 342px;
+  width: 520px;
   margin: 20px auto;
 `
 
