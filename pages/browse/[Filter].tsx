@@ -10,9 +10,10 @@ import { useRouter } from "next/router"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useMemo, useState } from "react"
 import Paginate from "react-paginate"
+import { isEmpty } from "lodash"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
-import { gql, useQuery } from "@apollo/client"
+import { gql, useLazyQuery, useQuery } from "@apollo/client"
 import { BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
@@ -66,7 +67,7 @@ export interface FilterParams {
   orderBy: OrderBy
 }
 
-const setRouterParams = ({ query, isSignedIn, setParams }) => {
+const setInitialUrl = ({ query, isSignedIn, setParams }) => {
   const filter = query?.Filter || "all+all"
   const baseFilters = filter?.toString().split("+")
   const [category, brand] = baseFilters
@@ -106,9 +107,7 @@ const updateUrl = ({ router, params }) => {
   const triageParam = triage ? `&triage=${triage}` : ""
   const categoryParam = categoryName ?? "all"
   const brandParam = brandName ?? "all"
-  const url = `/browse/${categoryParam}+${brandParam}?page=${
-    page ?? 1
-  }${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}`
+  const url = `/browse/${categoryParam}+${brandParam}?page=${page}${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}`
 
   router.push(url, undefined, {
     shallow: true,
@@ -124,6 +123,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   } = useAuthContext()
   const [showApprovedModal, setShowApprovedModal] = useState(false)
   const [showWaitlistedModal, setShowWaitlistedModal] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const tracking = useTracking()
   const router = useRouter()
 
@@ -142,17 +142,20 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   })
   const { authState, toggleLoginModal } = useAuthContext()
 
-  useEffect(() => {
-    setRouterParams({ query: router.query, isSignedIn, setParams })
-  }, [setParams])
+  const routerQuery = router?.query
 
   const { tops, colors, bottoms, available, forSaleOnly, brandName, categoryName, page, orderBy, triage } = params
 
-  console.log("params", params)
+  useEffect(() => {
+    if (!isEmpty(routerQuery) && !mounted) {
+      setInitialUrl({ query: routerQuery, isSignedIn, setParams })
+      setMounted(true)
+    }
+  }, [routerQuery, setParams])
 
   const skip = page ? (page - 1) * pageSize : 0
 
-  const { previousData, data = previousData, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
+  const [getBrowseProducts, { previousData, data = previousData, error, loading }] = useLazyQuery(GET_BROWSE_PRODUCTS, {
     notifyOnNetworkStatusChange: true,
     variables: {
       tops,
@@ -178,6 +181,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
 
   useEffect(() => {
     updateUrl({ router, params })
+    getBrowseProducts()
   }, [params])
 
   useEffect(() => {
@@ -195,8 +199,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
 
-  const onClickOrderBy = (value: OrderBy) => {
-    setParams({ ...params, orderBy: value })
+  const onSetParams = (newParams) => {
+    setParams(newParams)
   }
 
   return (
@@ -206,11 +210,11 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         PageNotificationBar={() => <BrowseProductsNotificationBar isLoggedIn={isSignedIn} />}
       >
         <Media lessThan="md">
-          <BrowseBooleanFilters params={params} setParams={setParams} breakpoint="mobile" />
+          <BrowseBooleanFilters params={params} setParams={onSetParams} breakpoint="mobile" />
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
-                setParam={(brandName) => setParams({ ...params, brandName })}
+                setParam={(brandName) => onSetParams({ ...params, brandName })}
                 listItems={brands}
                 title="Designers"
                 hideTitle
@@ -228,7 +232,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             }
             CategoriesListComponent={
               <BrowseFilters
-                setParam={(categoryName) => setParams({ ...params, categoryName })}
+                setParam={(categoryName) => onSetParams({ ...params, categoryName })}
                 title="Categories"
                 currentCategory={categoryName}
                 listItems={categories}
@@ -257,20 +261,20 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     <BrowseFilters
                       currentCategory={categoryName}
                       title="Categories"
-                      setParam={(categoryName) => setParams({ ...params, categoryName })}
+                      setParam={(categoryName) => onSetParams({ ...params, categoryName })}
                       listItems={categories}
                       currentBrand={brandName}
                     />
                     <Spacer mb={5} />
-                    <BrowseBooleanFilters setParams={setParams} params={params} breakpoint="desktop" />
+                    <BrowseBooleanFilters setParams={onSetParams} params={params} breakpoint="desktop" />
                     <Spacer mb={5} />
-                    <BrowseSizeFilters setParams={setParams} params={params} />
+                    <BrowseSizeFilters setParams={onSetParams} params={params} />
                     <Spacer mb={5} />
-                    <ColorFilters setParams={setParams} params={params} />
+                    <ColorFilters setParams={onSetParams} params={params} />
                     <Spacer mb={5} />
                     <BrowseFilters
                       title="Designers"
-                      setParam={(brandName) => setParams({ ...params, brandName })}
+                      setParam={(brandName) => onSetParams({ ...params, brandName })}
                       currentCategory={categoryName}
                       listItems={brands}
                       currentBrand={brandName}
@@ -283,14 +287,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             <FullWidthMedia lessThan="md">
               <Flex width="100%" flexDirection="row" justifyContent="space-between" px={2} pt={[0, 2]} pb={2}>
                 <Sans size="4">Browse</Sans>
-                <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+                <SortDropDown orderBy={orderBy} onClickOrderBy={(v) => onSetParams({ ...params, orderBy: v })} />
               </Flex>
             </FullWidthMedia>
             <Col md="10" sm="12">
               <Row>
                 <FullWidthMedia greaterThanOrEqual="md">
                   <Flex width="100%" flexDirection="row" justifyContent="flex-end" pb={2}>
-                    <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+                    <SortDropDown orderBy={orderBy} onClickOrderBy={(v) => onSetParams({ ...params, orderBy: v })} />
                   </Flex>
                 </FullWidthMedia>
                 {data && !products?.length ? (
@@ -334,7 +338,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                         forcePage={params.page - 1}
                         onPageChange={(data) => {
                           const nextPage = data.selected + 1
-                          setParams({ ...params, page: nextPage })
+                          onSetParams({ ...params, page: nextPage })
                           tracking.trackEvent({
                             actionName: Schema.ActionNames.ProductPageNumberChanged,
                             actionType: Schema.ActionTypes.Tap,
