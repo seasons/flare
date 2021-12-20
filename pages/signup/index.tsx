@@ -37,7 +37,7 @@ enum Steps {
   PaymentStep = "PaymentStep",
 }
 
-const browseURL = "/browse/all+all?page=1&tops=M&available=true"
+const browseURL = "/browse?page=1&category=all&brand=all&available=true&forSale=true&orderBy=publishedAt_DESC"
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
 const SignUpPage = screenTrack(() => ({

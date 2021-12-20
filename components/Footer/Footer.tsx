@@ -33,7 +33,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               </Sans>
             </Link>
             <Spacer mb={1} />
-            <Link href="/browse/all+all">
+            <Link href="/browse">
               <Sans size="3" color="white100" underline pointer>
                 Browse
               </Sans>
@@ -125,7 +125,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               <DesktopBrandsContainer>
                 {resortedBrands?.map(({ name, slug }, index) => {
                   return (
-                    <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index} prefetch={false}>
+                    <Link href={slug === "all" ? "/browse" : `/designer/${slug}`} key={index} prefetch={false}>
                       <Sans color="white100" size={3} underline pointer>
                         {name}
                       </Sans>
@@ -139,7 +139,7 @@ export const Footer: React.FC<{ footerBottomPadding?: string | string[]; brandIt
               <MobileBrandsContainer>
                 {resortedBrands?.map(({ name, slug }, index) => {
                   return (
-                    <Link href={slug === "all" ? "/browse/all+all" : `/designer/${slug}`} key={index}>
+                    <Link href={slug === "all" ? "/browse" : `/designer/${slug}`} key={index}>
                       <Box mr={4}>
                         <Sans size={3} color="white100" underline pointer>
                           {name}
