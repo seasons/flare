@@ -18,7 +18,7 @@ export const GiftPage = screenTrack(() => ({
           <Box mb={5}>
             <Display size="9">Seasons Gift</Display>
           </Box>
-          <div className="gift-up-target" data-site-id={siteID} data-platform="Other" data-language="en-US">
+          <Placeholder>
             <Skeleton width={512} height={314} />
             <Spacer mt={2} />
             <Skeleton width={512} height={40} />
@@ -40,7 +40,8 @@ export const GiftPage = screenTrack(() => ({
             <Skeleton width={512} height={40} />
             <Spacer mt={2} />
             <Skeleton width={512} height={40} />
-          </div>
+          </Placeholder>
+          <div className="gift-up-target" data-site-id={siteID} data-platform="Other" data-language="en-US"></div>
           <script type="text/javascript" src="/js/giftup.js"></script>
         </Container>
       </Grid>
@@ -63,6 +64,18 @@ const Container = styled.div`
   min-height: 100vh;
   width: 520px;
   margin: 20px auto;
+  position: relative;
+
+  .gift-up-target {
+    margin-top: 80px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
 `
+
+const Placeholder = styled.div``
 
 export default GiftPage
