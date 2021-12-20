@@ -18,7 +18,9 @@ export const EmptyBagItem: React.FC<{ text: string; view: "buy" | "rent" }> = ({
         <TouchableOpacity
           onPress={() => {
             isBuyView
-              ? router.push("/browse/all+all?page=1&available=true&forSale=true&orderBy=publishedAt_DESC")
+              ? router.push(
+                  "/browse?page=1&category=all&brand=all&available=true&forSale=true&orderBy=publishedAt_DESC"
+                )
               : router.push("/browse")
 
             closeDrawer()
