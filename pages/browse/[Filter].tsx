@@ -1,7 +1,6 @@
 import { AvailabilityFilters } from "components/Browse/AvailabilityFilters"
 import { BrowseSizeFilters } from "components/Browse/BrowseSizeFilters"
 import { ColorFilters } from "components/Browse/ColorFilters"
-import { FixedFilters } from "components/Browse/FixedFilters"
 import { PriceFilters } from "components/Browse/PriceFilters"
 import { SortDropDown } from "components/Browse/SortDropDown"
 import { TriageModal } from "components/Browse/TriageModal"
@@ -14,14 +13,11 @@ import { useRouter } from "next/router"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useMemo, useState } from "react"
 import Paginate from "react-paginate"
+import { isEmpty } from "lodash"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
-
-import { gql, useQuery } from "@apollo/client"
-import {
-  BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product
-} from "@seasons/eclipse"
-
+import { gql, useLazyQuery, useQuery } from "@apollo/client"
+import { BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"
@@ -59,14 +55,84 @@ export enum OrderBy {
   publishedAt_DESC = "publishedAt_DESC",
 }
 
-export interface SizeFilterParams {
-  currentTops: string[]
-  currentBottoms: string[]
-  availableOnly: boolean
-  forSaleOnly: boolean
-  currentColors: string[]
+export interface FilterParams {
+  tops?: string[]
+  bottoms?: string[]
+  available?: boolean
+  forSaleOnly?: boolean
+  colors?: string[]
+  categoryName?: string
+  brandName?: string
+  triage?: "waitlisted" | "approved"
+  page: number
   orderBy: OrderBy
   priceRange?: [number, number]
+}
+
+const setInitialUrl = ({ query, isSignedIn, setParams }) => {
+  const filter = query?.Filter || "all+all"
+  const baseFilters = filter?.toString().split("+")
+  const [category, brand] = baseFilters
+
+  let routerAvailableOnly
+  if (query?.available && query?.available === "true") {
+    routerAvailableOnly = true
+  } else if (query?.available && query?.available === "false") {
+    routerAvailableOnly = null
+  } else if (isSignedIn !== null) {
+    routerAvailableOnly = isSignedIn
+  }
+
+  const priceRange = query.priceRange
+    ?.toString()
+    ?.split("-")
+    ?.map((x) => parseInt(x))
+
+  setParams({
+    tops: query?.tops?.toString().split(" "),
+    bottoms: query?.bottoms?.toString().split(" "),
+    available: routerAvailableOnly ?? null,
+    forSaleOnly: (query?.forSale && query?.forSale === "true") ?? null,
+    colors: query?.colors?.toString().split(" ") ?? null,
+    orderBy: (query?.orderBy as OrderBy) ?? OrderBy.publishedAt_DESC,
+    categoryName: category ?? "all",
+    brandName: brand ?? "all",
+    page: query?.page ?? 1,
+    triage: query.triage ?? null,
+    priceRange: priceRange ?? null,
+  } as FilterParams)
+}
+
+const updateUrl = ({ router, params }) => {
+  const {
+    tops,
+    colors,
+    bottoms,
+    available,
+    forSaleOnly,
+    brandName,
+    categoryName,
+    page,
+    orderBy,
+    triage,
+    priceRange,
+  } = params
+
+  const orderByParam = orderBy ? `&orderBy=${orderBy}` : ""
+  const bottomsParam = bottoms?.length ? "&bottoms=" + bottoms.join("+") : ""
+  const topsParam = tops?.length ? "&tops=" + tops.join("+") : ""
+  const colorsParam = colors?.length ? "&colors=" + colors.join("+") : ""
+  const availableParam = available ? "&available=true" : ""
+  const forSaleParam = forSaleOnly ? "&forSale=true" : ""
+  const triageParam = triage ? `&triage=${triage}` : ""
+  const priceRangeParam = priceRange?.length === 2 ? `&priceRange=${priceRange[0]}-${priceRange[1]}` : ""
+  const categoryParam = categoryName ?? "all"
+  const brandParam = brandName ?? "all"
+  const url = `/browse/${categoryParam}+${brandParam}?page=${page}${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}${priceRangeParam}`
+
+  router.push(url, undefined, {
+    shallow: true,
+  })
 }
 
 export const BrowsePage: NextPage<{}> = screenTrack(() => ({
@@ -78,65 +144,65 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   } = useAuthContext()
   const [showApprovedModal, setShowApprovedModal] = useState(false)
   const [showWaitlistedModal, setShowWaitlistedModal] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const tracking = useTracking()
   const router = useRouter()
-  const routerOrderBy = router.query?.orderBy as OrderBy
-  const filter = router.query?.Filter || "all+all"
-  const _tops = router.query?.tops as string
-  const tops = _tops?.split(" ")
-  const _bottoms = router.query?.bottoms as string
-  const bottoms = _bottoms?.split(" ")
-  const _colors = router.query?.colors as string
-  const colors = _colors?.split(" ")
-  let availableRouterQuery
-  const triage = router.query.triage
-  if (router.query?.available && router.query?.available === "true") {
-    availableRouterQuery = true
-  } else if (router.query?.available && router.query?.available === "false") {
-    availableRouterQuery = null
-  } else if (isSignedIn !== null) {
-    availableRouterQuery = isSignedIn
-  }
-  const forSaleRouterQuery = (router.query?.forSale && router.query?.forSale === "forSale") ?? null
-  const page = router.query?.page || 1
-  const baseFilters = filter?.toString().split("+")
-  const [category, brand] = baseFilters
-  const [mounted, setMounted] = useState(false)
-  const [currentCategory, setCurrentCategory] = useState(category)
-  const [currentBrand, setCurrentBrand] = useState(brand)
-  const [currentPage, setCurrentPage] = useState(Number(page))
-  const { previousData: previousMenuData, data: menuData = previousMenuData } = useQuery(Browse_Query)
-  const [currentURL, setCurrentURL] = useState("")
-  const [paramsString, setParamsString] = useState("")
-  const [params, setParams] = useState<SizeFilterParams>({
-    currentTops: tops ?? null,
-    currentBottoms: bottoms ?? null,
-    availableOnly: availableRouterQuery ?? null,
-    forSaleOnly: forSaleRouterQuery ?? null,
-    currentColors: colors ?? null,
-    orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
-    priceRange: null,
-  })
-  const [initialPageLoad, setInitialPageLoad] = useState(false)
-  const { authState, toggleLoginModal } = useAuthContext()
-  const { currentTops, currentBottoms, availableOnly = true, currentColors, forSaleOnly, orderBy, priceRange } = params
 
-  const skip = (currentPage - 1) * pageSize
+  const { previousData: previousMenuData, data: menuData = previousMenuData } = useQuery(Browse_Query)
+  const [params, setParams] = useState<FilterParams>({
+    tops: null,
+    bottoms: null,
+    available: null,
+    forSaleOnly: null,
+    priceRange: null,
+    colors: null,
+    categoryName: "all",
+    brandName: "all",
+    triage: null,
+    orderBy: OrderBy.publishedAt_DESC,
+    page: 1,
+  })
+  const { authState, toggleLoginModal } = useAuthContext()
+  const routerQuery = router?.query
+  const {
+    tops,
+    colors,
+    bottoms,
+    available,
+    forSaleOnly,
+    brandName,
+    categoryName,
+    page,
+    orderBy,
+    triage,
+    priceRange,
+  } = params
+
+  useEffect(() => {
+    if (!isEmpty(routerQuery) && !mounted) {
+      setInitialUrl({ query: routerQuery, isSignedIn, setParams })
+      setMounted(true)
+    }
+  }, [routerQuery, setParams])
+
+  const skip = page ? (page - 1) * pageSize : 0
+
+  console.log("params", params)
 
   const { previousData, data = previousData, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
     notifyOnNetworkStatusChange: true,
     variables: {
-      tops: currentTops,
-      colors: currentColors,
-      bottoms: currentBottoms,
-      available: availableOnly,
+      tops,
+      colors,
+      bottoms,
+      available,
       priceRange,
       forSaleOnly,
-      brandName: currentBrand,
-      categoryName: currentCategory,
-      first: pageSize,
+      brandName,
+      categoryName,
       orderBy,
       skip,
+      first: pageSize,
     },
   })
 
@@ -149,100 +215,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   }, [triage])
 
   useEffect(() => {
+    updateUrl({ router, params })
+  }, [params])
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       window?.scrollTo(0, 0)
     }
-  }, [currentPage])
-
-  if (error) {
-    console.log("error browse.tsx ", error)
-  }
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    const paramToURL = () => {
-      const orderByParam = routerOrderBy ? `&orderBy=${routerOrderBy}` : ""
-      const bottomsParam = currentBottoms?.length ? "&bottoms=" + currentBottoms.join("+") : ""
-      const topsParam = currentTops?.length ? "&tops=" + currentTops.join("+") : ""
-      const colorsParam = currentColors?.length ? "&colors=" + currentColors.join("+") : ""
-      const availableParam = availableOnly ? "&available=true" : "&available=false"
-      const forSaleParam = forSaleOnly ? "&forSale=true" : ""
-      const triageParam =
-        showWaitlistedModal || showApprovedModal ? `&triage=${showWaitlistedModal ? "waitlisted" : "approved"}` : ""
-      return `${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}`
-    }
-    const newParams = paramToURL()
-
-    if (mounted) {
-      const queries = filter?.toString().split("+")
-      const [category, brand] = queries
-      let newURL
-      if (
-        !initialPageLoad &&
-        ((!!availableRouterQuery && availableRouterQuery !== availableOnly) ||
-          (bottoms?.length && !currentBottoms?.length) ||
-          (tops?.length && !currentTops?.length) ||
-          (colors?.length && !currentColors?.length))
-      ) {
-        // These are the initial params set on page load which happen after the page mounts since it's SSG
-        setParams({
-          availableOnly: !!availableRouterQuery && availableRouterQuery !== availableOnly ? availableRouterQuery : null,
-          // forSaleOnly: !!forSaleRouterQuery && forSaleRouterQuery !== forSaleOnly ? forSaleRouterQuery : null,
-          currentBottoms: !!bottoms?.length && !currentBottoms?.length ? bottoms : [],
-          currentTops: tops?.length && !currentTops?.length ? tops : [],
-          currentColors: !!colors?.length && !currentColors?.length ? colors : [],
-          orderBy: routerOrderBy ? routerOrderBy : OrderBy.publishedAt_DESC,
-          forSaleOnly: true,
-          priceRange: null,
-        })
-        setInitialPageLoad(true)
-      } else {
-        // After the initial page load handle the URL and params through state
-        if ((!!newParams && newParams !== paramsString) || category !== currentCategory || currentBrand !== brand) {
-          setCurrentPage(1)
-          newURL = `/browse/${currentCategory}+${currentBrand}?page=1${newParams}`
-          if (typeof window !== "undefined") {
-            window?.scrollTo(0, 0)
-          }
-        } else {
-          newURL = `/browse/${currentCategory}+${currentBrand}?page=${currentPage}${newParams}`
-        }
-        if (currentURL !== newURL) {
-          setCurrentURL(newURL)
-          router.push(newURL, undefined, {
-            shallow: true,
-          })
-        }
-      }
-      setParamsString(newParams)
-    }
-  }, [
-    routerOrderBy,
-    filter,
-    setCurrentBrand,
-    setCurrentCategory,
-    setParamsString,
-    paramsString,
-    currentPage,
-    setCurrentPage,
-    currentBrand,
-    currentColors,
-    currentCategory,
-    currentTops,
-    currentBottoms,
-    availableOnly,
-    forSaleOnly,
-    colors,
-    tops,
-    bottoms,
-    availableRouterQuery,
-    forSaleRouterQuery,
-    mounted,
-    initialPageLoad,
-  ])
+  }, [page])
 
   const aggregateCount = data?.connection?.aggregate?.count
   const pageCount = Math.ceil(aggregateCount / pageSize)
@@ -253,8 +233,8 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   const brands = useMemo(() => [{ slug: "all", name: "All" }, ...(menuData?.brands ?? [])], [menuData])
   const showPagination = !!products?.length && aggregateCount > 20
 
-  const onClickOrderBy = (value: OrderBy) => {
-    setParams({ ...params, orderBy: value })
+  const onSetParams = (newParams) => {
+    setParams(newParams)
   }
 
   return (
@@ -264,16 +244,16 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         PageNotificationBar={() => <BrowseProductsNotificationBar isLoggedIn={isSignedIn} />}
       >
         <Media lessThan="md">
-          <FixedFilters params={params} setParams={setParams} />
+          <AvailabilityFilters params={params} setParams={onSetParams} breakpoint="mobile" />
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
-                setParam={setCurrentBrand}
+                setParam={(brandName) => onSetParams({ ...params, brandName })}
                 listItems={brands}
                 title="Designers"
                 hideTitle
-                currentBrand={currentBrand}
-                currentCategory={currentCategory}
+                currentBrand={brandName}
+                currentCategory={categoryName}
                 listItemStyle={{
                   textDecoration: "underline",
                   fontSize: `${sansSize("7").fontSize}px`,
@@ -286,12 +266,12 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             }
             CategoriesListComponent={
               <BrowseFilters
-                setParam={setCurrentCategory}
+                setParam={(categoryName) => onSetParams({ ...params, categoryName })}
                 title="Categories"
-                currentCategory={currentCategory}
+                currentCategory={categoryName}
                 listItems={categories}
                 hideTitle
-                currentBrand={currentBrand}
+                currentBrand={brandName}
                 listItemStyle={{
                   textDecoration: "underline",
                   fontSize: `${sansSize("7").fontSize}px`,
@@ -311,28 +291,29 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
               <Media greaterThanOrEqual="md">
                 <FixedBox>
                   <Box pr={1}>
+                    <Spacer mb={5} />
                     <BrowseFilters
-                      currentCategory={currentCategory}
+                      currentCategory={categoryName}
                       title="Categories"
-                      setParam={setCurrentCategory}
+                      setParam={(categoryName) => onSetParams({ ...params, categoryName })}
                       listItems={categories}
-                      currentBrand={currentBrand}
+                      currentBrand={brandName}
                     />
                     <Spacer mb={5} />
-                    <AvailabilityFilters setParams={setParams} params={params} />
+                    <AvailabilityFilters setParams={setParams} params={params} breakpoint="desktop" />
                     <Spacer mb={5} />
                     <PriceFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
                     <BrowseSizeFilters setParams={setParams} params={params} />
                     <Spacer mb={5} />
-                    <ColorFilters setParams={setParams} params={params} />
+                    <ColorFilters setParams={onSetParams} params={params} />
                     <Spacer mb={5} />
                     <BrowseFilters
                       title="Designers"
-                      setParam={setCurrentBrand}
-                      currentCategory={currentCategory}
+                      setParam={(brandName) => onSetParams({ ...params, brandName })}
+                      currentCategory={categoryName}
                       listItems={brands}
-                      currentBrand={currentBrand}
+                      currentBrand={brandName}
                     />
                     <Spacer mb={2} />
                   </Box>
@@ -342,14 +323,14 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             <FullWidthMedia lessThan="md">
               <Flex width="100%" flexDirection="row" justifyContent="space-between" px={2} pt={[0, 2]} pb={2}>
                 <Sans size="4">Browse</Sans>
-                <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+                <SortDropDown orderBy={orderBy} onClickOrderBy={(v) => onSetParams({ ...params, orderBy: v })} />
               </Flex>
             </FullWidthMedia>
             <Col md="10" sm="12">
               <Row>
                 <FullWidthMedia greaterThanOrEqual="md">
                   <Flex width="100%" flexDirection="row" justifyContent="flex-end" pb={2}>
-                    <SortDropDown orderBy={orderBy} onClickOrderBy={onClickOrderBy} />
+                    <SortDropDown orderBy={orderBy} onClickOrderBy={(v) => onSetParams({ ...params, orderBy: v })} />
                   </Flex>
                 </FullWidthMedia>
                 {data && !products?.length ? (
@@ -382,7 +363,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
               <Row>
                 <Flex alignItems="center" mt={2} mb={[0, 4]} width="100%" justifyContent="center">
                   {showPagination && (
-                    <Pagination currentPage={currentPage} pageCount={pageCount}>
+                    <Pagination currentPage={params.page} pageCount={pageCount}>
                       <Paginate
                         previousLabel="previous"
                         nextLabel="next"
@@ -390,10 +371,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                         pageCount={pageCount}
                         marginPagesDisplayed={0}
                         pageRangeDisplayed={14}
-                        forcePage={currentPage - 1}
+                        forcePage={params.page - 1}
                         onPageChange={(data) => {
                           const nextPage = data.selected + 1
-                          setCurrentPage(nextPage)
+                          onSetParams({ ...params, page: nextPage })
                           tracking.trackEvent({
                             actionName: Schema.ActionNames.ProductPageNumberChanged,
                             actionType: Schema.ActionTypes.Tap,

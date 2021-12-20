@@ -21,6 +21,7 @@ module.exports = withSourceMaps(
         ENABLE_EXPRESS_CHECKOUT: process.env.ENABLE_EXPRESS_CHECKOUT,
         ENABLE_BUY_USED: process.env.ENABLE_BUY_USED,
         SHOW_DISCOVER_BAG_STEP: process.env.SHOW_DISCOVER_BAG_STEP,
+        GIFTUP_SITE_ID: process.env.GIFTUP_SITE_ID,
       },
       webpack: (config, options) => {
         const { dir } = options
