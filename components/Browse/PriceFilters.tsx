@@ -3,8 +3,6 @@ import { Checkbox } from "components/Checkbox"
 import React, { useState } from "react"
 
 export const PriceFilters = ({ setParams, params }) => {
-  const [selectedOptions, setSelectedOptions] = useState([])
-
   const options = [
     {
       text: "Under $100",
@@ -31,12 +29,10 @@ export const PriceFilters = ({ setParams, params }) => {
           <Flex
             onClick={() => {
               setParams({ ...params, priceRange: option.value })
-              selectedOptions[i] = !selectedOptions[i]
-              setSelectedOptions(selectedOptions)
             }}
             alignItems="center"
           >
-            <Checkbox isActive={selectedOptions[i]} size="default" />
+            <Checkbox isActive={params?.priceRange?.[1] === option.value?.[1]} size="default" />
             <Spacer ml={1} />
             <Sans size="3">{option.text}</Sans>
           </Flex>
