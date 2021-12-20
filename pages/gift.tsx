@@ -80,7 +80,7 @@ const Container = styled.div`
 `
 
 const Placeholder = styled.div`
-  min-height: 1088px;
+  min-height: 1350px;
 `
 
 export default GiftPage

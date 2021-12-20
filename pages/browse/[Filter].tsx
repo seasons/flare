@@ -13,7 +13,6 @@ import { useRouter } from "next/router"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useMemo, useState } from "react"
 import Paginate from "react-paginate"
-import { isEmpty } from "lodash"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
 import { gql, useLazyQuery, useQuery } from "@apollo/client"
@@ -69,36 +68,38 @@ export interface FilterParams {
   priceRange?: [number, number]
 }
 
-const setInitialUrl = ({ query, isSignedIn, setParams }) => {
-  const filter = query?.Filter || "all+all"
-  const baseFilters = filter?.toString().split("+")
-  const [category, brand] = baseFilters
+const setInitialUrl = ({ isSignedIn, setParams }) => {
+  const params = new URLSearchParams(document.location.search)
+
+  const availableParam = params.get("available")
+  const priceRangeParam = params.get("priceRange")
+  const forSaleParam = params.get("forSale")
 
   let routerAvailableOnly
-  if (query?.available && query?.available === "true") {
+  if (availableParam && availableParam === "true") {
     routerAvailableOnly = true
-  } else if (query?.available && query?.available === "false") {
+  } else if (availableParam && availableParam === "false") {
     routerAvailableOnly = null
   } else if (isSignedIn !== null) {
     routerAvailableOnly = isSignedIn
   }
 
-  const priceRange = query.priceRange
+  const priceRange = priceRangeParam
     ?.toString()
     ?.split("-")
     ?.map((x) => parseInt(x))
 
   setParams({
-    tops: query?.tops?.toString().split(" "),
-    bottoms: query?.bottoms?.toString().split(" "),
+    tops: params.get("tops")?.toString().split(" "),
+    bottoms: params.get("bottoms")?.toString().split(" "),
     available: routerAvailableOnly ?? null,
-    forSaleOnly: (query?.forSale && query?.forSale === "true") ?? null,
-    colors: query?.colors?.toString().split(" ") ?? null,
-    orderBy: (query?.orderBy as OrderBy) ?? OrderBy.publishedAt_DESC,
-    categoryName: category ?? "all",
-    brandName: brand ?? "all",
-    page: query?.page ?? 1,
-    triage: query.triage ?? null,
+    forSaleOnly: (forSaleParam && forSaleParam === "true") ?? null,
+    colors: params.get("colors")?.toString().split(" ") ?? null,
+    orderBy: (params.get("orderBy") as OrderBy) ?? OrderBy.publishedAt_DESC,
+    categoryName: params.get("category") ?? "all",
+    brandName: params.get("brand") ?? "all",
+    page: params.get("page") ?? 1,
+    triage: params.get("triage") ?? null,
     priceRange: priceRange ?? null,
   } as FilterParams)
 }
@@ -126,9 +127,9 @@ const updateUrl = ({ router, params }) => {
   const forSaleParam = forSaleOnly ? "&forSale=true" : ""
   const triageParam = triage ? `&triage=${triage}` : ""
   const priceRangeParam = priceRange?.length === 2 ? `&priceRange=${priceRange[0]}-${priceRange[1]}` : ""
-  const categoryParam = categoryName ?? "all"
-  const brandParam = brandName ?? "all"
-  const url = `/browse/${categoryParam}+${brandParam}?page=${page}${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}${priceRangeParam}`
+  const categoryParam = `&category=${categoryName ? categoryName : "all"}`
+  const brandParam = `&brand=${brandName ? brandName : "all"}`
+  const url = `/browse?page=${page}${categoryParam}${brandParam}${bottomsParam}${topsParam}${availableParam}${colorsParam}${forSaleParam}${triageParam}${orderByParam}${priceRangeParam}`
 
   router.push(url, undefined, {
     shallow: true,
@@ -163,7 +164,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
     page: 1,
   })
   const { authState, toggleLoginModal } = useAuthContext()
-  const routerQuery = router?.query
+
   const {
     tops,
     colors,
@@ -179,15 +180,15 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   } = params
 
   useEffect(() => {
-    if (!isEmpty(routerQuery) && !mounted) {
-      setInitialUrl({ query: routerQuery, isSignedIn, setParams })
+    if (!mounted) {
+      if (typeof document !== "undefined") {
+        setInitialUrl({ isSignedIn, setParams })
+      }
       setMounted(true)
     }
-  }, [routerQuery, setParams])
+  }, [setInitialUrl, setMounted])
 
   const skip = page ? (page - 1) * pageSize : 0
-
-  console.log("params", params)
 
   const { previousData, data = previousData, error, loading } = useQuery(GET_BROWSE_PRODUCTS, {
     notifyOnNetworkStatusChange: true,
@@ -215,7 +216,9 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
   }, [triage])
 
   useEffect(() => {
-    updateUrl({ router, params })
+    if (mounted) {
+      updateUrl({ router, params })
+    }
   }, [params])
 
   useEffect(() => {
