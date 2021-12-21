@@ -106,7 +106,7 @@ export const MembershipInfo = screenTrack()(({ navigation }) => {
               <Separator />
               <Spacer mb={2} />
               <Sans size="4" color={color("black50")}>
-                {`$${plan.price / 100} / per ${onMonthlyPlan ? "month" : "year"}`}
+                {`$${plan?.price / 100} / per ${onMonthlyPlan ? "month" : "year"}`}
               </Sans>
             </>
           )}

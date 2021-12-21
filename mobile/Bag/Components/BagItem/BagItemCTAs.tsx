@@ -197,7 +197,8 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
                 size="small"
                 loading={isMutating}
                 variant="secondaryWhite"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   if (isMutating) {
                     return
                   }
