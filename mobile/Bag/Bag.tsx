@@ -46,8 +46,6 @@ export const Bag = screenTrack()(({ initialTab }) => {
 
   const isBuyView = currentView === BagView.Buy
 
-  console.log("initialTab", initialTab)
-
   useEffect(() => {
     setCurrentView(initialTab)
   }, [initialTab, setCurrentView])

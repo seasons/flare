@@ -11,7 +11,7 @@ export const PlanCard = ({ plan, isDesktop }) => {
       {isDesktop && <Sans size="9">{plan?.name} membership</Sans>}
       <Spacer mb={4} />
       <Sans size="10">
-        ${plan.price / 100}
+        ${plan?.price / 100}
         <Sans size="4" color="black50" style={{ display: "inline" }}>
           {" "}
           / {isYearlyPlan ? "year" : "month with a 3-month minimum"}
