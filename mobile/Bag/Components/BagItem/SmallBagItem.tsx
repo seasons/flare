@@ -4,7 +4,7 @@ import gql from "graphql-tag"
 import React from "react"
 import styled from "styled-components"
 import { imageResize } from "utils/imageResize"
-import { BagItemCTAs, BagItemCTAsFragment_BagItem } from "./BagItemCTAs"
+import { BagItemCTAsFragment_BagItem, BagItemCTAs } from "./BagItemCTAs"
 import { BagItemProductMetaData, BagItemProductMetaDataFragment_BagItem } from "./BagItemProductMetaData"
 
 const SMALL_BAG_ITEM_HEIGHT = 148
@@ -27,8 +27,8 @@ export const BagItemFragment_BagItem = gql`
     ...BagItemProductMetaDataFragment_BagItem
     ...BagItemCTAsFragment_BagItem
   }
-  ${BagItemProductMetaDataFragment_BagItem}
   ${BagItemCTAsFragment_BagItem}
+  ${BagItemProductMetaDataFragment_BagItem}
 `
 
 export const SmallBagItem: React.FC<{ sectionStatus: any; bagItem: any; showBuyPrice?: boolean }> = ({
