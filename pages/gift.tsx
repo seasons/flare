@@ -2,6 +2,7 @@ import { Box, Display, Layout, Skeleton, Spacer } from "components"
 import { Grid } from "components/Grid"
 import { initializeApollo } from "lib/apollo/apollo"
 import React from "react"
+import { media } from "styled-bootstrap-grid"
 import styled from "styled-components"
 
 import { Schema, screenTrack } from "../utils/analytics"
@@ -13,7 +14,7 @@ export const GiftPage = screenTrack(() => ({
   const siteID = process.env.GIFTUP_SITE_ID
   return (
     <Layout>
-      <Grid px={[2, 2, 2, 2, 2]}>
+      <Grid px={[0, 0, 2, 2, 2]}>
         <Container>
           <Box mb={5}>
             <Display size="9">Seasons Gift</Display>
@@ -68,6 +69,16 @@ const Container = styled.div`
   width: 520px;
   margin: 20px auto;
   position: relative;
+
+  ${media.xs`
+    margin: 0;
+    width: 100%;
+  `}
+
+  ${media.sm`
+    margin: 0;
+    width: 100%;
+  `}
 
   .gift-up-target {
     margin-top: 80px;
