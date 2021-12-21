@@ -4,18 +4,13 @@ import React, { useState } from "react"
 import { useMutation } from "@apollo/client"
 import { BagItemRemoveButton, BagItemRemoveButtonFragment_BagItem } from "./BagItemRemoveButton"
 import { Schema, useTracking } from "utils/analytics"
-import { GET_BAG, PRODUCT_VARIANT_CREATE_DRAFT_ORDER } from "queries/bagQueries"
+import { GET_BAG } from "queries/bagQueries"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { GET_PRODUCT } from "queries/productQueries"
+import { GET_PRODUCT, UPSERT_CART_ITEM } from "queries/productQueries"
 import { GET_BROWSE_PRODUCTS } from "queries/brandQueries"
 import { SAVE_ITEM } from "@seasons/eclipse/src/components/SaveProductButton/queries"
 import { SavedTab_Query } from "mobile/Account/SavedAndHistory/queries"
-
-enum OrderType {
-  BUY_USED = "Used",
-  BUY_NEW = "New",
-}
 
 const CANCEL_RETURN = gql`
   mutation CancelReturn($bagItemId: ID!) {
@@ -31,6 +26,7 @@ export const BagItemCTAsFragment_BagItem = gql`
     productVariant {
       id
       purchased
+      isInCart
       price {
         id
         buyNewEnabled
@@ -64,22 +60,36 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
       setIsMutating(false)
     },
   })
-  const [createDraftOrder] = useMutation(PRODUCT_VARIANT_CREATE_DRAFT_ORDER, {
-    onCompleted: (res) => {
-      setIsMutating(false)
-      if (res?.createDraftedOrder) {
-        openDrawer("reviewOrder", { order: res.createDraftedOrder })
-      }
-    },
-    onError: (error) => {
-      console.log("error createDraftOrder ", error)
-      setIsMutating(false)
-    },
-  })
 
   const userHasSession = !!authState?.userSession
   const variant = bagItem?.productVariant
   const product = variant?.product
+  const isInCart = variant?.isInCart
+
+  const [upsertCartItem] = useMutation(UPSERT_CART_ITEM, {
+    variables: {
+      productVariantId: variant?.id,
+      addToCart: !isInCart,
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      {
+        query: GET_PRODUCT,
+        variables: { slug: product?.slug },
+      },
+      {
+        query: GET_BAG,
+      },
+    ],
+    onCompleted: () => {
+      setIsMutating(false)
+      openDrawer("bag", { initialTab: 1 })
+    },
+    onError: (error) => {
+      console.log("error upsertRestockNotification Product.tsx", error)
+      setIsMutating(false)
+    },
+  })
 
   const onSaveForLater = () => {
     if (!isMutating) {
@@ -124,21 +134,6 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
     }
   }
 
-  const handleCreateDraftOrder = (orderType: "Used" | "New") => {
-    if (isMutating) {
-      return
-    }
-    setIsMutating(true)
-    return createDraftOrder({
-      variables: {
-        input: {
-          productVariantID: variant?.id,
-          orderType,
-        },
-      },
-    })
-  }
-
   const isBuyNewEnabled = bagItem?.productVariant?.price?.buyNewEnabled
   const isBuyUsedEnabled = bagItem?.productVariant?.price?.buyUsedEnabled
   const buyNewPrice = bagItem?.productVariant?.price?.buyNewPrice
@@ -168,10 +163,10 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
           <Box
             onClick={async (e) => {
               e.stopPropagation()
-              setIsMutating(true)
               if (isMutating) {
                 return
               }
+              setIsMutating(true)
               await cancelReturn({
                 variables: {
                   bagItemId: bagItem.id,
@@ -200,8 +195,15 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
               <Sans size="3">${price / 100} to buy</Sans>
               <Button
                 size="small"
+                loading={isMutating}
                 variant="secondaryWhite"
-                onPress={() => handleCreateDraftOrder(isBuyUsedEnabled ? OrderType.BUY_USED : OrderType.BUY_NEW)}
+                onClick={() => {
+                  if (isMutating) {
+                    return
+                  }
+                  setIsMutating(true)
+                  upsertCartItem()
+                }}
               >
                 Buy
               </Button>
