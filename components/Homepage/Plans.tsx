@@ -28,29 +28,31 @@ const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ 
       flexDirection="column"
       justifyContent="space-between"
     >
-      <TabOuterWrapper isDesktop={isDesktop}>
-        <Tabs>
-          {plans?.map((plan, index) => {
-            const selected = index === tabIndex
-            return (
-              <Flex py="12px" onClick={() => setTabIndex(index)} flex={2} style={{ cursor: "pointer", zIndex: 4 }}>
-                <Sans
-                  size={["4", "5"]}
-                  color={selected ? "white100" : "black100"}
-                  textAlign="center"
-                  style={{ width: "100%" }}
-                >
-                  Pay {plan.name}
-                  <StyledSpan>{plan.name === "Yearly" ? " (Save 20%)" : ""}</StyledSpan>
-                </Sans>
-              </Flex>
-            )
-          })}
-          <TabToggle tabIndex={tabIndex}>
-            <ToggleBackground />
-          </TabToggle>
-        </Tabs>
-      </TabOuterWrapper>
+      {plans?.length > 1 && (
+        <TabOuterWrapper isDesktop={isDesktop}>
+          <Tabs>
+            {plans?.map((plan, index) => {
+              const selected = index === tabIndex
+              return (
+                <Flex py="12px" onClick={() => setTabIndex(index)} flex={2} style={{ cursor: "pointer", zIndex: 4 }}>
+                  <Sans
+                    size={["4", "5"]}
+                    color={selected ? "white100" : "black100"}
+                    textAlign="center"
+                    style={{ width: "100%" }}
+                  >
+                    Pay {plan.name}
+                    <StyledSpan>{plan.name === "Yearly" ? " (Save 20%)" : ""}</StyledSpan>
+                  </Sans>
+                </Flex>
+              )
+            })}
+            <TabToggle tabIndex={tabIndex}>
+              <ToggleBackground />
+            </TabToggle>
+          </Tabs>
+        </TabOuterWrapper>
+      )}
       <Box py={2}>
         <PlanCard plan={plan} isDesktop={isDesktop} />
         <Spacer mb={2} />
