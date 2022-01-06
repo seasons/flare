@@ -5,15 +5,19 @@ import React, { useEffect, useState, useRef } from "react"
 import styled from "styled-components"
 
 enum OrderBy {
-  computedRentalPrice_ASC = "computedRentalPrice_ASC",
-  computedRentalPrice_DESC = "computedRentalPrice_DESC",
   publishedAt_DESC = "publishedAt_DESC",
+  retailPrice_ASC = "retailPrice_ASC",
+  retailPrice_DESC = "retailPrice_DESC",
+  discountedPrice_ASC = "discountedPrice_ASC",
+  discountedPrice_DESC = "discountedPrice_DESC",
 }
 
 export const PRODUCT_SORTS = [
   { display: "New Arrivals", value: OrderBy.publishedAt_DESC },
-  { display: "Price per month: High to low", value: OrderBy.computedRentalPrice_DESC },
-  { display: "Price per month: Low to high", value: OrderBy.computedRentalPrice_ASC },
+  { display: "Retail price: High to low", value: OrderBy.retailPrice_DESC },
+  { display: "Retail price: Low to high", value: OrderBy.retailPrice_ASC },
+  { display: "Sale price: High to low", value: OrderBy.discountedPrice_DESC },
+  { display: "Sale price: Low to high", value: OrderBy.discountedPrice_ASC }
 ]
 
 export const SortDropDown: React.FC<{ orderBy: OrderBy; onClickOrderBy: (value: OrderBy) => void }> = ({
