@@ -3,7 +3,7 @@ import { OrderFragment_Order } from "@seasons/eclipse"
 import { BagSectionFragment_BagSection } from "mobile/Bag/Components/BagSection/BagSection"
 import { BuyTabFragment_Me } from "mobile/Bag/BuyTab/BuyTab"
 
-export { ADD_OR_REMOVE_FROM_LOCAL_BAG, GET_LOCAL_BAG, GET_LOCAL_BAG_ITEMS } from "./clientQueries"
+export { GET_LOCAL_CART, GET_LOCAL_CART_PRODUCTS } from "./clientQueries"
 export const CHECK_ITEMS = gql`
   mutation CheckItemsAvailability($items: [ID!]!) {
     checkItemsAvailability(items: $items)

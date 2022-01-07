@@ -3,7 +3,7 @@ import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { color } from "helpers"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { MAXIMUM_ITEM_COUNT } from "mobile/Bag/Bag"
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, ADD_TO_BAG, GET_BAG } from "queries/bagQueries"
+import { ADD_TO_BAG, GET_BAG } from "queries/bagQueries"
 import { GET_PRODUCT, UPSERT_RESTOCK_NOTIF } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
@@ -69,7 +69,7 @@ export const AddToBagButton: React.FC<Props> = ({
     },
   })
 
-  const [addToBag] = useMutation(isUserSignedIn ? ADD_TO_BAG : ADD_OR_REMOVE_FROM_LOCAL_BAG, {
+  const [addToBag] = useMutation(ADD_TO_BAG, {
     variables: {
       id: selectedVariant?.id,
       productID: product?.id,
@@ -123,7 +123,16 @@ export const AddToBagButton: React.FC<Props> = ({
 
   const handleReserve = () => {
     if (!isMutating) {
-      if (isInCart) {
+      if (!isUserSignedIn) {
+        showPopUp({
+          title: "Sign up to rent",
+          note: "You must be a member to use this feature.",
+          buttonText: "Got it",
+          onClose: () => {
+            hidePopUp()
+          },
+        })
+      } else if (isInCart) {
         showPopUp({
           title: "You aleady have this in your cart",
           note:

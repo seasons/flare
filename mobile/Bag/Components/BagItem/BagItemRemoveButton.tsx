@@ -1,10 +1,11 @@
 import { gql, useMutation } from "@apollo/client"
 import { Button } from "components"
 import { useAuthContext } from "lib/auth/AuthContext"
-import { ADD_OR_REMOVE_FROM_LOCAL_BAG, DELETE_BAG_ITEM, GET_BAG } from "queries/bagQueries"
+import { DELETE_BAG_ITEM, GET_BAG } from "queries/bagQueries"
 import { GET_PRODUCT } from "queries/productQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
+import { removeLocalCartItem } from "utils/localCart"
 
 export const BagItemRemoveButtonFragment_BagItem = gql`
   fragment BagItemRemoveButtonFragment_BagItem on BagItem {
@@ -22,8 +23,9 @@ export const BagItemRemoveButtonFragment_BagItem = gql`
 export const BagItemRemoveButton = ({ bagItem }) => {
   const [isMutating, setIsMutating] = useState(false)
   const tracking = useTracking()
-  const { authState } = useAuthContext()
   const [deleteBagItem] = useMutation(DELETE_BAG_ITEM, { awaitRefetchQueries: true })
+  const { authState } = useAuthContext()
+  const isUserSignedIn = authState?.isSignedIn
 
   useEffect(() => {
     return setIsMutating(false)
@@ -31,23 +33,6 @@ export const BagItemRemoveButton = ({ bagItem }) => {
 
   const variant = bagItem?.productVariant
   const product = variant?.product
-
-  const [removeFromLocalBag] = useMutation(ADD_OR_REMOVE_FROM_LOCAL_BAG, {
-    variables: {
-      productID: product?.id,
-      variantID: variant?.id,
-    },
-    awaitRefetchQueries: true,
-    refetchQueries: [
-      {
-        query: GET_BAG,
-      },
-      {
-        query: GET_PRODUCT,
-        variables: { slug: product?.slug },
-      },
-    ],
-  })
 
   if (!product) {
     return null
@@ -68,9 +53,7 @@ export const BagItemRemoveButton = ({ bagItem }) => {
           productId: product.id,
           variantId: variant.id,
         })
-        if (!authState.isSignedIn) {
-          removeFromLocalBag()
-        } else {
+        if (isUserSignedIn) {
           deleteBagItem({
             variables: {
               itemID: bagItem?.id,
@@ -87,6 +70,8 @@ export const BagItemRemoveButton = ({ bagItem }) => {
               },
             ],
           })
+        } else {
+          removeLocalCartItem(variant.id)
         }
       }}
     >

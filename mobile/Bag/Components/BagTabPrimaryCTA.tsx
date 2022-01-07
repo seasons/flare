@@ -52,14 +52,16 @@ export const BagTabPrimaryCTA = ({
   setIsMutating,
   activeTab,
   onCartCheckout,
+  cartItems,
 }) => {
   const { authState } = useAuthContext()
   const { openDrawer, closeDrawer } = useDrawerContext()
   const router = useRouter()
 
   const { showPopUp, hidePopUp } = usePopUpContext()
-  const tracking = useTracking()
   const isSignedIn = authState.isSignedIn
+
+  console.log("cart", cartItems)
 
   const addedItems = sections?.find((section) => section.status === "Added")?.bagItems
   const hasAddedItems = addedItems?.length > 0
@@ -138,7 +140,7 @@ export const BagTabPrimaryCTA = ({
   if (hasAddedItems || isBuyView) {
     button = (
       <BagBottomBar
-        bagItems={isBuyView ? me?.cartItems : addedItems}
+        bagItems={isBuyView ? cartItems : addedItems}
         onReserve={handleReserve}
         isMutating={isMutating}
         activeTab={activeTab}

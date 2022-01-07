@@ -1,6 +1,6 @@
 import React from "react"
 import gql from "graphql-tag"
-import { Box, Flex, Separator } from "components"
+import { Box, Flex, Sans, Separator } from "components"
 import { BagItemFragment_BagItem, SmallBagItem } from "../Components/BagItem/SmallBagItem"
 import { EmptyBagItem } from "../Components/EmptyBagItem"
 import { BagTabHeader } from "../Components/BagTabHeader"
@@ -29,7 +29,7 @@ export const BuyTab: React.FC<{ items }> = ({ items }) => {
   const hasItemsInCart = items?.length > 0
 
   return (
-    <Flex height="100%" flexDirection="column">
+    <Flex height="100%" flexDirection="column" style={{ flex: 1 }}>
       <BagTabHeader title="Buy" />
       {items?.map((bagItem, index) => {
         return (

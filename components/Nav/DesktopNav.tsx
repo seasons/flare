@@ -115,13 +115,6 @@ export const DesktopNav = (props: NavProps) => {
     <>
       <Link
         onClick={() => {
-          openDrawer("bag")
-        }}
-      >
-        <NavItem link={{ text: "Bag" }} color={textColor} />
-      </Link>
-      <Link
-        onClick={() => {
           openDrawer("faq")
         }}
       >
@@ -158,6 +151,13 @@ export const DesktopNav = (props: NavProps) => {
               </Media>
               <Flex ml="auto" flexDirection="row" alignItems="center">
                 {links.map(renderLink)}
+                <Link
+                  onClick={() => {
+                    openDrawer("bag")
+                  }}
+                >
+                  <NavItem link={{ text: "Bag" }} color={textColor} />
+                </Link>
                 {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
               </Flex>
             </Flex>
