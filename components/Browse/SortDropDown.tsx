@@ -14,8 +14,6 @@ enum OrderBy {
 
 export const PRODUCT_SORTS = [
   { display: "New Arrivals", value: OrderBy.publishedAt_DESC },
-  { display: "Retail price: High to low", value: OrderBy.retailPrice_DESC },
-  { display: "Retail price: Low to high", value: OrderBy.retailPrice_ASC },
   { display: "Sale price: High to low", value: OrderBy.discountedPrice_DESC },
   { display: "Sale price: Low to high", value: OrderBy.discountedPrice_ASC }
 ]
