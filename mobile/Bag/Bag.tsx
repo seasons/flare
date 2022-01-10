@@ -25,6 +25,7 @@ export const BagFragment_Me = gql`
     id
     customer {
       id
+      status
       user {
         id
       }
@@ -46,6 +47,7 @@ export const Bag = screenTrack()(({ initialTab }) => {
   const isLoggedIn = !!authState.isSignedIn
 
   const me = data?.me
+  const customerIsActive = me?.customer?.status === "Active"
   const addedItems = bagSections?.find((section) => section.status === "Added")?.bagItems
 
   const isBuyView = currentView === BagView.Buy
@@ -132,14 +134,18 @@ export const Bag = screenTrack()(({ initialTab }) => {
       return
     }
     setIsPrimaryCtaMutating(true)
-    createDraftOrder({
-      variables: {
-        input: {
-          productVariantIds: me?.cartItems?.map((item) => item.productVariant.id),
-          orderType: "Used",
+    if (isLoggedIn && customerIsActive) {
+      createDraftOrder({
+        variables: {
+          input: {
+            productVariantIds: me?.cartItems?.map((item) => item.productVariant.id),
+            orderType: "Used",
+          },
         },
-      },
-    })
+      })
+    } else {
+      openDrawer("guestShipping")
+    }
   }
 
   if (!data) {

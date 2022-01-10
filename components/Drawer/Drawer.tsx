@@ -18,6 +18,8 @@ import { Drawer as MuiDrawer } from "@material-ui/core"
 import { DrawerBottomButton } from "./DrawerBottomButton"
 import { useDrawerContext } from "./DrawerContext"
 import { SavedAndHistory } from "mobile/Account/SavedAndHistory/SavedAndHistory"
+import { GuestShipping } from "components/GuestCheckout/GuestShipping"
+import { GuestPayment } from "components/GuestCheckout/GuestPayment"
 
 interface DrawerProps {
   open?: boolean
@@ -91,6 +93,10 @@ export const Drawer = (props: DrawerProps) => {
         return <ReviewOrder order={params.order} />
       case "orderConfirmation":
         return <OrderConfirmation order={params.order} customer={params.customer} />
+      case "guestShipping":
+        return <GuestShipping />
+      case "guestPayment":
+        return <GuestPayment />
     }
   }
 
