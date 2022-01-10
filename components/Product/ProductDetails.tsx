@@ -136,7 +136,7 @@ export const ProductDetails: React.FC<{
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Sans size={3}>Buy</Sans>
 
-            {discountPercentage && (
+            {!!discountPercentage && (
               <Box>
                 <Sans size={3} color="black100">
                   <span style={{ color: "#f83131" }}>{discountPercentage}% off</span>
