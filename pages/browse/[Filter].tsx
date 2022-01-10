@@ -49,9 +49,11 @@ export const Browse_Query = gql`
 const pageSize = 24
 
 export enum OrderBy {
-  computedRentalPrice_ASC = "computedRentalPrice_ASC",
-  computedRentalPrice_DESC = "computedRentalPrice_DESC",
   publishedAt_DESC = "publishedAt_DESC",
+  retailPrice_ASC = "retailPrice_ASC",
+  retailPrice_DESC = "retailPrice_DESC",
+  discountedPrice_ASC = "discountedPrice_ASC",
+  discountedPrice_DESC = "discountedPrice_DESC",
 }
 
 export interface FilterParams {
