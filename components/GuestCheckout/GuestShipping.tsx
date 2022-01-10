@@ -10,6 +10,16 @@ export const GuestShipping = () => {
   const { openDrawer } = useDrawerContext()
   const [isMutating, setIsMutating] = useState(false)
 
+  const initialValues = {
+    shippingFirstName: "",
+    shippingLastName: "",
+    shippingState: "",
+    shippingCity: "",
+    shippingPostalCode: "",
+    shippingAddress1: "",
+    email: "",
+  }
+
   const valuesToAddressDetails = (values): { shippingDetails: any } => {
     const shippingDetails = {
       name: `${values.shippingFirstName} ${values.shippingLastName}`,
@@ -41,11 +51,17 @@ export const GuestShipping = () => {
       <FixedBackArrow
         variant="whiteBackground"
         onPress={() => {
-          openDrawer("profile")
+          openDrawer("bag")
         }}
       />
 
-      <Formik onSubmit={handleSubmit} initialValues={{}} validationSchema={shippingValidation} height="100%">
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={initialValues}
+        validationSchema={shippingValidation}
+        height="100%"
+        validateOnMount={true}
+      >
         {({ handleSubmit, isValid, values }) => (
           <form onSubmit={handleSubmit} style={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <Flex flexDirection="column" justifyContent="space-between" flex={1} height="100%">
