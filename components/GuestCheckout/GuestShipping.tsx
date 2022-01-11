@@ -5,31 +5,51 @@ import { Formik } from "formik"
 import React, { useState } from "react"
 import * as Yup from "yup"
 import { PaymentField } from "components/Payment/PaymentBillingAddress"
+import { useMutation } from "@apollo/client"
+import { CREATE_DRAFT_ORDER } from "queries/bagQueries"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { useBag } from "mobile/Bag/useBag"
 
 export const GuestShipping = () => {
   const { openDrawer } = useDrawerContext()
   const [isMutating, setIsMutating] = useState(false)
+  const { showPopUp, hidePopUp } = usePopUpContext()
+  const { localCartItems } = useBag()
 
-  const initialValues = {
-    shippingFirstName: "",
-    shippingLastName: "",
-    shippingState: "",
-    shippingCity: "",
-    shippingPostalCode: "",
-    shippingAddress1: "",
-    email: "",
-  }
+  const [createDraftOrder] = useMutation(CREATE_DRAFT_ORDER, {
+    onCompleted: (res) => {
+      setIsMutating(false)
+      if (res?.createDraftedOrder) {
+        openDrawer("reviewOrder", { order: res.createDraftedOrder })
+      }
+    },
+    onError: (error) => {
+      showPopUp({
+        title: "Sorry!",
+        note: "There was an issue creating the order, please try again.",
+        buttonText: "Okay",
+        onClose: () => {
+          hidePopUp()
+        },
+      })
+      console.log("error createDraftOrder ", error)
+      setIsMutating(false)
+    },
+  })
+
+  console.log("localCartItems", localCartItems)
+
+  const initialValues = {}
 
   const valuesToAddressDetails = (values): { shippingDetails: any } => {
     const shippingDetails = {
-      name: `${values.shippingFirstName} ${values.shippingLastName}`,
       address: {
-        line1: values.shippingAddress1,
-        line2: values.shippingAddress2,
+        name: `${values.shippingFirstName} ${values.shippingLastName}`,
+        street1: values.shippingAddress1,
+        street2: values.shippingAddress2,
         city: values.shippingCity,
         state: values.shippingState,
-        postal_code: values.shippingPostalCode,
-        country: "US",
+        postalCode: values.shippingPostalCode,
       },
       email: values.email,
     }
@@ -42,7 +62,18 @@ export const GuestShipping = () => {
       setIsMutating(true)
       const { shippingDetails } = valuesToAddressDetails(values)
 
-      //   processPayment(payload.paymentMethod, values, billingDetails, shippingDetails)
+      createDraftOrder({
+        variables: {
+          input: {
+            productVariantIds: localCartItems.map((i) => i.id),
+            orderType: "Used",
+            guest: {
+              email: shippingDetails.email,
+              shippingAddress: shippingDetails.address,
+            },
+          },
+        },
+      })
     }
   }
 

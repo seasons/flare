@@ -34,7 +34,6 @@ export const useLocalCart = () => {
     cartItems:
       data?.productVariants?.map((item, i) => {
         return {
-          ...ids?.[i],
           ...data?.productVariants?.[i],
           productVariant: item,
           status: "Added",

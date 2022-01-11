@@ -20,11 +20,15 @@ import { useDrawerContext } from "./DrawerContext"
 import { SavedAndHistory } from "mobile/Account/SavedAndHistory/SavedAndHistory"
 import { GuestShipping } from "components/GuestCheckout/GuestShipping"
 import { GuestPayment } from "components/GuestCheckout/GuestPayment"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 
 interface DrawerProps {
   open?: boolean
   onClose?: () => void
 }
+
+const stripePromise = loadStripe(process.env.STRIPE_API_KEY)
 
 export const getDrawerWidth = () => {
   if (typeof window !== "undefined") {
@@ -96,7 +100,11 @@ export const Drawer = (props: DrawerProps) => {
       case "guestShipping":
         return <GuestShipping />
       case "guestPayment":
-        return <GuestPayment />
+        return (
+          <Elements stripe={stripePromise}>
+            <GuestPayment order={params.order} customer={params.customer} />
+          </Elements>
+        )
     }
   }
 

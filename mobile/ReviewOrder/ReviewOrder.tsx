@@ -35,11 +35,12 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
   }
 
   const handleOrderSubmitted = async ({ order, customer }) => {
-    try {
-      tracking.trackEvent({
-        actionName: Schema.ActionNames.PlaceOrderTapped,
-        actionType: Schema.ActionTypes.Tap,
-      })
+    tracking.trackEvent({
+      actionName: Schema.ActionNames.PlaceOrderTapped,
+      actionType: Schema.ActionTypes.Tap,
+    })
+
+    if (customer.status === "Active") {
       const result = await submitOrder({
         variables: {
           input: {
@@ -50,14 +51,12 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
 
       if (result.errors) {
         handleError((result.errors as any) as readonly ApolloError[])
-        return
+      } else {
+        openDrawer("orderConfirmation", { order, customer })
       }
-    } catch (e) {
-      handleError(e)
-      return
+    } else {
+      openDrawer("guestPayment", { order, customer })
     }
-
-    openDrawer("orderConfirmation", { order, customer })
   }
 
   const handleError = (error) => {
@@ -73,7 +72,7 @@ export const ReviewOrder: React.FC<Props> = ({ order }) => {
   }
 
   const handleNavigateToBrand = (href: string) => {
-    window.location.href = href
+    router.push(href)
   }
 
   return (

@@ -92,7 +92,7 @@ const PaymentStep_Query = gql`
 `
 const showDiscoverBag = process.env.SHOW_DISCOVER_BAG_STEP === "true"
 
-const SubmitPayment_Mutation = gql`
+export const SubmitPayment_Mutation = gql`
   mutation SubmitPayment(
     $paymentMethodID: String!
     $planID: String!
@@ -110,7 +110,7 @@ const SubmitPayment_Mutation = gql`
   }
 `
 
-const ConfirmPayment_Mutation = gql`
+export const ConfirmPayment_Mutation = gql`
   mutation ConfirmPayment(
     $paymentIntentID: String!
     $planID: String!
