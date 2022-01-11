@@ -9,30 +9,40 @@ import { PaymentBillingAddress } from "components/Payment/PaymentBillingAddress"
 import { PaymentForm } from "components/Payment"
 import { Collapse } from "components/Collapse"
 import { Checkbox } from "components/Checkbox"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
 import styled from "styled-components"
 import { InputLabel } from "@material-ui/core"
-import { gql, useMutation, useQuery } from "@apollo/client"
-import { ConfirmPayment_Mutation, SubmitPayment_Mutation } from "components/Payment/PaymentStep"
+import { useMutation } from "@apollo/client"
+import { SUBMIT_ORDER } from "queries/orderQueries"
 
-export const GuestPayment = ({ order, customer }) => {
+export const GuestPayment = ({ order, email, shippingAddress }) => {
   const { openDrawer } = useDrawerContext()
   const elements = useElements()
+  const { showPopUp, hidePopUp } = usePopUpContext()
   const stripe = useStripe()
   const [isMutating, setIsMutating] = useState(false)
   const [sameAsShipping, setSameAsShipping] = useState(false)
   const [coupon, setCoupon] = useState("")
-
-  console.log("guest payment customer", customer)
-
-  const [submitPayment] = useMutation(SubmitPayment_Mutation)
-  const [confirmPayment] = useMutation(ConfirmPayment_Mutation, {
-    onError: (error) => {
-      console.error(error)
-    },
+  const [submitOrder] = useMutation(SUBMIT_ORDER, {
     onCompleted: () => {
-      openDrawer("orderConfirmation", { order, customer })
+      setIsMutating(false)
+      openDrawer("orderConfirmation", { order, shippingAddress })
+    },
+    onError: (e) => {
+      setIsMutating(false)
+      showPopUp({
+        title: "Oops! Try again!",
+        note: "There was an issue purchasing this item. Please retry or contact us.",
+        buttonText: "Close",
+        onClose: () => {
+          hidePopUp()
+        },
+      })
     },
   })
+
+  console.log("order 3", order)
+  console.log("email 3", email)
 
   const initialValues = {}
 
@@ -74,36 +84,18 @@ export const GuestPayment = ({ order, customer }) => {
       console.log("[error]", payload.error)
     } else {
       console.log("[PaymentMethod]", payload.paymentMethod)
-      processPayment(payload.paymentMethod, values, billingDetails)
+      await submitOrder({
+        variables: {
+          input: {
+            orderID: order.id,
+            guest: {
+              email,
+              paymentMethodID: payload.paymentMethod.id,
+            },
+          },
+        },
+      })
     }
-  }
-
-  const processPayment = async (paymentMethod, values, billingDetails) => {
-    const billing = {
-      ...billingDetails,
-      user: {
-        firstName: sameAsShipping ? values.shippingFirstName : values.firstName,
-        lastName: sameAsShipping ? values.shippingLastName : values.lastName,
-        email: billingDetails.email,
-      },
-    }
-
-    const response = await submitPayment({
-      variables: {
-        paymentMethodID: paymentMethod.id,
-        billing,
-      },
-    })
-
-    const paymentIntent = response.data.processPayment
-    await stripe.handleCardAction(paymentIntent.client_secret)
-
-    await confirmPayment({
-      variables: {
-        paymentIntentID: paymentIntent.id,
-        billing,
-      },
-    })
   }
 
   return (
@@ -118,11 +110,11 @@ export const GuestPayment = ({ order, customer }) => {
       <Formik
         onSubmit={handleSubmit}
         initialValues={initialValues}
-        validationSchema={billingValidation}
+        validationSchema={sameAsShipping ? billingValidation : billingValidationWithAddress}
         height="100%"
         validateOnMount={true}
       >
-        {({ handleSubmit, isValid, values }) => (
+        {({ handleSubmit, isValid, values, validateForm }) => (
           <form onSubmit={handleSubmit} style={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <Flex flexDirection="column" justifyContent="space-between" flex={1} height="100%">
               <Box px={2} pt={100}>
@@ -139,6 +131,9 @@ export const GuestPayment = ({ order, customer }) => {
                           isActive={sameAsShipping}
                           onClick={() => {
                             setSameAsShipping(!sameAsShipping)
+                            setTimeout(() => {
+                              validateForm()
+                            }, 100)
                           }}
                         />
                       </Box>
@@ -167,10 +162,9 @@ const Label = styled(InputLabel)`
   margin: 10px 0 5px 0;
 `
 
-const billingValidation = Yup.object().shape({
-  cardCVC: Yup.string().trim().required("Required"),
-  expiry: Yup.string().trim().required("Required"),
-  cardNumber: Yup.string().trim().required("Required"),
+const billingValidation = Yup.object().shape({})
+
+const billingValidationWithAddress = Yup.object().shape({
   firstName: Yup.string().trim().required("Required"),
   lastName: Yup.string().trim().required("Required"),
   address1: Yup.string().trim().required("Required"),

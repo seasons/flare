@@ -94,15 +94,17 @@ export const Drawer = (props: DrawerProps) => {
       case "editPaymentMethod":
         return <EditPaymentMethod />
       case "reviewOrder":
-        return <ReviewOrder order={params.order} />
+        return <ReviewOrder order={params.order} email={params.email} shippingAddress={params.shippingAddress} />
       case "orderConfirmation":
-        return <OrderConfirmation order={params.order} customer={params.customer} />
+        return (
+          <OrderConfirmation order={params.order} customer={params.customer} shippingAddress={params.shippingAddress} />
+        )
       case "guestShipping":
         return <GuestShipping />
       case "guestPayment":
         return (
           <Elements stripe={stripePromise}>
-            <GuestPayment order={params.order} customer={params.customer} />
+            <GuestPayment order={params.order} email={params.email} shippingAddress={params.shippingAddress} />
           </Elements>
         )
     }

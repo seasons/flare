@@ -13,6 +13,7 @@ import { useBag } from "mobile/Bag/useBag"
 export const GuestShipping = () => {
   const { openDrawer } = useDrawerContext()
   const [isMutating, setIsMutating] = useState(false)
+  const [email, setEmail] = useState("")
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { localCartItems } = useBag()
 
@@ -20,7 +21,7 @@ export const GuestShipping = () => {
     onCompleted: (res) => {
       setIsMutating(false)
       if (res?.createDraftedOrder) {
-        openDrawer("reviewOrder", { order: res.createDraftedOrder })
+        openDrawer("reviewOrder", { order: res.createDraftedOrder, email })
       }
     },
     onError: (error) => {
@@ -58,6 +59,7 @@ export const GuestShipping = () => {
   }
 
   const handleSubmit = async (values) => {
+    setEmail(values.email)
     if (!isMutating) {
       setIsMutating(true)
       const { shippingDetails } = valuesToAddressDetails(values)
