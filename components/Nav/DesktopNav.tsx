@@ -14,6 +14,7 @@ import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
 import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
+import { useBag } from "mobile/Bag/useBag"
 
 export const DESKTOP_NAV_HEIGHT = 72
 
@@ -111,6 +112,8 @@ export const DesktopNav = (props: NavProps) => {
     </>
   )
 
+  const { bagSections, data } = useBag()
+
   const renderLoggedInNavLinks = () => (
     <>
       <Link
@@ -118,7 +121,7 @@ export const DesktopNav = (props: NavProps) => {
           openDrawer("bag")
         }}
       >
-        <NavItem link={{ text: "Bag" }} color={textColor} />
+        <NavItem link={{ text: "Bag" }} color={textColor} badgeCount={!!data ? data?.me?.cartItems?.length : bagSections?.bagItems?.length} />
       </Link>
       <Link
         onClick={() => {

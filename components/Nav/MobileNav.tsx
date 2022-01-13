@@ -1,6 +1,7 @@
 import { useDrawerContext } from "components/Drawer/DrawerContext"
 import { LoginModal } from "components/Login/LoginModal"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { useBag } from "mobile/Bag/useBag"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import React, { useState, useEffect } from "react"
@@ -26,7 +27,7 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
   useEffect(() => {
     toggleOpen(false)
   }, [router.asPath])
-
+  const { bagSections, data } = useBag()
   return (
     <>
       <Box style={{ width: "100%" }} height={["58px", "58px", "58px", "58px", "58px"]} />
@@ -54,6 +55,7 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
           openLogin={() => {
             toggleLogin(true)
           }}
+          badgeCount={!!data ? data?.me?.cartItems?.length : bagSections?.bagItems?.length}
         />
         <LoginModal
           open={isLoginOpen}
@@ -66,7 +68,7 @@ export const MobileNav: React.FC<NavProps> = ({ links }) => {
   )
 }
 
-const Menu = ({ items, open, onSelect, openLogin }) => {
+const Menu = ({ items, open, onSelect, openLogin, badgeCount }) => {
   const router = useRouter()
   const tracking = useTracking()
   const { userSession } = useAuthContext()
@@ -166,10 +168,21 @@ const Menu = ({ items, open, onSelect, openLogin }) => {
                   onSelect()
                 }}
               >
-                <Box py={2}>
+                <Box py={2} style={{ display: "flex" }}>
                   <Sans size="3" py={2} color="black">
                     Bag
                   </Sans>
+                  {!!badgeCount && badgeCount > 0 && (
+                    <Box style={{ paddingLeft: "4px", paddingTop: "2px" }}>
+                      <BadgeCount badgeCount={badgeCount}>
+                        <Box style={{ display: "flex", paddingLeft: "4px", paddingTop: "1px" }}>
+                          <Sans size="2" color="white100" style={{ top: badgeCount > 9 ? 1 : -1 }}>
+                            {badgeCount}
+                          </Sans>
+                        </Box>
+                      </BadgeCount>
+                    </Box>
+                  )}
                 </Box>
               </MenuItem>
               <MenuItem
@@ -288,6 +301,16 @@ const MenuItem = styled.div<BoxProps & { active?: boolean }>`
   width: 100%;
   align-items: center;
   text-align: center;
+`
+const BadgeCount = styled(Box)<{ badgeCount: number }>`
+  /* position: absolute; */
+  display: flex;
+  right: -18px;
+  top: 20px;
+  background-color: ${color("black100")};
+  border-radius: 100%;
+  height: 16px;
+  width: 16px;
 `
 
 const AnimatedContainer = animated((props) => <MenuContainer {...props} />)
