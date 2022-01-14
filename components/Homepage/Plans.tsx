@@ -15,8 +15,6 @@ const image = require("../../public/images/homepage/plans/plans-image2.jpg")
 const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ plans, breakpoint }) => {
   const isDesktop = breakpoint === "desktop"
   const [tabIndex, setTabIndex] = useState(0)
-  const { openDrawer } = useDrawerContext()
-  const { authState, userSession } = useAuthContext()
 
   const plan = plans?.[tabIndex]
 
@@ -53,21 +51,9 @@ const PlanTabs: React.FC<{ plans: any; breakpoint: "desktop" | "mobile" }> = ({ 
           </Tabs>
         </TabOuterWrapper>
       )}
-      <Box py={2}>
+      <Flex py={2} flex={1}>
         <PlanCard plan={plan} isDesktop={isDesktop} />
-        <Spacer mb={2} />
-        <Flex flexDirection={isDesktop ? "row" : "column"}>
-          <MembershipCTA variant="blue" authState={authState} userSession={userSession} />
-          <Spacer mb={isDesktop ? 0 : 2} mr={isDesktop ? 2 : 0} />
-          <Button
-            variant={isDesktop ? "primaryWhiteNoBorder" : "primaryGray"}
-            size="large"
-            onClick={() => openDrawer("faq")}
-          >
-            See our FAQ
-          </Button>
-        </Flex>
-      </Box>
+      </Flex>
       <Sans size={["2", "2", "3", "3", "3"]} color="black50" style={{ maxWidth: "460px" }}>
         Cancel for any reason within your first 24 hours to receive a full refund. Free shipping is only included on one
         order per month.
@@ -107,8 +93,6 @@ export const Plans: React.FC<{ plans: any }> = ({ plans }) => {
         <Box px={2}>
           <Image breakpoint="mobile" />
           <Spacer mb={5} />
-          <Display size="9">Membership plans</Display>
-          <Spacer mb={3} />
           <PlanTabs plans={plans} breakpoint="mobile" />
         </Box>
       </Media>
