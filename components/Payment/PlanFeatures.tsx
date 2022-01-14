@@ -10,7 +10,7 @@ interface Features {
 
 export const PlanFeatures: React.FC<{ features: Features }> = ({ features }) => {
   return (
-    <>
+    <Box>
       {features?.included?.map((feature, index) => {
         return (
           <Flex flexDirection="row" pb={2} alignItems="center" key={index} width="100%">
@@ -35,6 +35,6 @@ export const PlanFeatures: React.FC<{ features: Features }> = ({ features }) => 
           </Flex>
         )
       })}
-    </>
+    </Box>
   )
 }
