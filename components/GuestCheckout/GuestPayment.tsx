@@ -74,23 +74,21 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
     const cardElement = elements.getElement(CardNumberElement)
     const { billingDetails } = valuesToAddressDetails(values)
 
-    const payload = await stripe.createPaymentMethod({
+    const payload = await stripe.createSource(cardElement, {
       type: "card",
-      card: cardElement,
-      billing_details: billingDetails,
     })
 
     if (payload.error) {
       console.log("[error]", payload.error)
     } else {
-      console.log("[PaymentMethod]", payload.paymentMethod)
+      console.log("[Source]", payload.source)
       await submitOrder({
         variables: {
           input: {
             orderID: order.id,
             guest: {
               email,
-              paymentMethodID: payload.paymentMethod.id,
+              paymentMethodID: payload.source.id,
             },
           },
         },
