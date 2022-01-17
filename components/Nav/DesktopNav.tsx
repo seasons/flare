@@ -14,6 +14,7 @@ import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
 import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
+import { useBag } from "mobile/Bag/useBag"
 
 export const DESKTOP_NAV_HEIGHT = 72
 
@@ -22,6 +23,7 @@ export const DesktopNav = (props: NavProps) => {
   const backgroundColor = navStyles?.backgroundColor ? navStyles?.backgroundColor : color("white100")
   const textColor = navStyles?.textColor ? navStyles?.textColor : color("black100")
 
+  const { bagSections, data, localCartItems } = useBag()
   const router = useRouter()
 
   const tracking = useTracking()
@@ -111,6 +113,11 @@ export const DesktopNav = (props: NavProps) => {
     </>
   )
 
+  const cartItemCount = (data?.me?.cartItems?.length || localCartItems?.length) ?? 0
+  const bagItemCount = bagSections?.filter((s) => s.status === "Added")?.bagItems?.length ?? 0
+  const badgeCount = cartItemCount + bagItemCount
+  console.log("badgeCount", badgeCount)
+
   const renderLoggedInNavLinks = () => (
     <>
       <Link
@@ -156,7 +163,7 @@ export const DesktopNav = (props: NavProps) => {
                     openDrawer("bag")
                   }}
                 >
-                  <NavItem link={{ text: "Bag" }} color={textColor} />
+                  <NavItem link={{ text: "Bag" }} color={textColor} badgeCount={badgeCount} />
                 </Link>
                 {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
               </Flex>
