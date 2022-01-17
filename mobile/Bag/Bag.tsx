@@ -1,19 +1,21 @@
 import { CloseButton, Spacer } from "components"
+import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { Container } from "mobile/Container"
+import { Loader } from "mobile/Loader"
 import { TabBar } from "mobile/TabBar"
 import { CHECK_ITEMS, CREATE_DRAFT_ORDER, GET_BAG } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
-import { Schema, screenTrack, useTracking } from "utils/analytics"
-import { gql, useMutation } from "@apollo/client"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { useBag } from "./useBag"
 import { FlatList } from "react-native"
+import { Schema, screenTrack, useTracking } from "utils/analytics"
+
+import { gql, useMutation } from "@apollo/client"
+
 import { BuyTab } from "./BuyTab/BuyTab"
-import { RentTab } from "./RentTab/RentTab"
 import { BagTabPrimaryCTA } from "./Components/BagTabPrimaryCTA"
-import { Loader } from "mobile/Loader"
-import { useAuthContext } from "lib/auth/AuthContext"
+import { RentTab } from "./RentTab/RentTab"
+import { useBag } from "./useBag"
 
 export enum BagView {
   Buy = 0,
@@ -175,7 +177,7 @@ export const Bag = screenTrack()(({ initialTab }) => {
       {isLoggedIn && (
         <TabBar
           spaceEvenly
-          tabs={[{ name: "Rent" }, { name: "Buy", badgeCount: me?.cartItems?.length }]}
+          tabs={[{ name: "Buy", badgeCount: me?.cartItems?.length }, { name: "Rent" }]}
           activeTab={currentView}
           goToPage={(page: BagView) => {
             tracking.trackEvent({
