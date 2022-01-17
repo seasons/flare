@@ -2,16 +2,16 @@ import { InMemoryCache, makeVar } from "@apollo/client"
 import { concatPagination } from "@apollo/client/utilities"
 import { isEmpty } from "lodash"
 
-export const localBagVar = makeVar([])
+export const localCartVar = makeVar([])
 
 export const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
         allPosts: concatPagination(),
-        localBagItems: {
+        localCartItems: {
           read() {
-            return localBagVar()
+            return localCartVar()
           },
         },
         products: {

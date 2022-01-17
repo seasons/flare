@@ -1,7 +1,7 @@
-import { Box, CloseButton, Flex, Spacer } from "components"
+import { CloseButton, Spacer } from "components"
 import { Container } from "mobile/Container"
 import { TabBar } from "mobile/TabBar"
-import { CHECK_ITEMS, CREATE_DRAFT_ORDER, DELETE_BAG_ITEM, GET_BAG } from "queries/bagQueries"
+import { CHECK_ITEMS, CREATE_DRAFT_ORDER, GET_BAG } from "queries/bagQueries"
 import React, { useEffect, useState } from "react"
 import { Schema, screenTrack, useTracking } from "utils/analytics"
 import { gql, useMutation } from "@apollo/client"
@@ -13,10 +13,11 @@ import { BuyTab } from "./BuyTab/BuyTab"
 import { RentTab } from "./RentTab/RentTab"
 import { BagTabPrimaryCTA } from "./Components/BagTabPrimaryCTA"
 import { Loader } from "mobile/Loader"
+import { useAuthContext } from "lib/auth/AuthContext"
 
 export enum BagView {
-  Rent = 0,
-  Buy = 1,
+  Buy = 0,
+  Rent = 1,
 }
 
 export const BagFragment_Me = gql`
@@ -24,6 +25,7 @@ export const BagFragment_Me = gql`
     id
     customer {
       id
+      status
       user {
         id
       }
@@ -35,19 +37,25 @@ export const MAXIMUM_ITEM_COUNT = 6
 
 export const Bag = screenTrack()(({ initialTab }) => {
   const tracking = useTracking()
-  const [currentView, setCurrentView] = useState<BagView>(BagView.Rent)
+  const [currentView, setCurrentView] = useState<BagView>(BagView.Buy)
   const [isPrimaryCTAMutating, setIsPrimaryCtaMutating] = useState(false)
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { openDrawer } = useDrawerContext()
-  const { bagSections, data } = useBag()
+  const { bagSections, data, localCartItems } = useBag()
+  const { authState } = useAuthContext()
+
+  const isLoggedIn = !!authState.isSignedIn
 
   const me = data?.me
+  const customerIsActive = me?.customer?.status === "Active"
   const addedItems = bagSections?.find((section) => section.status === "Added")?.bagItems
 
   const isBuyView = currentView === BagView.Buy
 
   useEffect(() => {
-    setCurrentView(initialTab)
+    if (initialTab === BagView.Buy || initialTab === BagView.Rent) {
+      setCurrentView(initialTab)
+    }
   }, [initialTab, setCurrentView])
 
   const [createDraftOrder] = useMutation(CREATE_DRAFT_ORDER, {
@@ -126,14 +134,18 @@ export const Bag = screenTrack()(({ initialTab }) => {
       return
     }
     setIsPrimaryCtaMutating(true)
-    createDraftOrder({
-      variables: {
-        input: {
-          productVariantIds: me?.cartItems?.map((item) => item.productVariant.id),
-          orderType: "Used",
+    if (isLoggedIn && customerIsActive) {
+      createDraftOrder({
+        variables: {
+          input: {
+            productVariantIds: me?.cartItems?.map((item) => item.productVariant.id),
+            orderType: "Used",
+          },
         },
-      },
-    })
+      })
+    } else {
+      openDrawer("guestShipping")
+    }
   }
 
   if (!data) {
@@ -145,9 +157,12 @@ export const Bag = screenTrack()(({ initialTab }) => {
     )
   }
 
+  const remoteCartItems = me?.cartItems ?? []
+  const cartItems = [...remoteCartItems, ...localCartItems]
+
   const renderItem = () => {
     if (isBuyView) {
-      return <BuyTab items={me?.cartItems} />
+      return <BuyTab items={cartItems} />
     } else {
       return <RentTab />
     }
@@ -157,31 +172,34 @@ export const Bag = screenTrack()(({ initialTab }) => {
     <Container insetsBottom={false}>
       <CloseButton variant="light" />
       <Spacer mb={8} />
-      <TabBar
-        spaceEvenly
-        tabs={[{ name: "Rent" }, { name: "Buy", badgeCount: me?.cartItems?.length }]}
-        activeTab={currentView}
-        goToPage={(page: BagView) => {
-          tracking.trackEvent({
-            actionName: () => {
-              if (page === 0) {
-                return Schema.ActionNames.BagTabTapped
-              } else if (page === 1) {
-                return Schema.ActionNames.SavedTabTapped
-              } else {
-                return Schema.ActionNames.ReservationHistoryTabTapped
-              }
-            },
-            actionType: Schema.ActionTypes.Tap,
-          })
+      {isLoggedIn && (
+        <TabBar
+          spaceEvenly
+          tabs={[{ name: "Rent" }, { name: "Buy", badgeCount: me?.cartItems?.length }]}
+          activeTab={currentView}
+          goToPage={(page: BagView) => {
+            tracking.trackEvent({
+              actionName: () => {
+                if (page === 0) {
+                  return Schema.ActionNames.BagTabTapped
+                } else if (page === 1) {
+                  return Schema.ActionNames.SavedTabTapped
+                } else {
+                  return Schema.ActionNames.ReservationHistoryTabTapped
+                }
+              },
+              actionType: Schema.ActionTypes.Tap,
+            })
 
-          setCurrentView(page)
-        }}
-      />
+            setCurrentView(page)
+          }}
+        />
+      )}
 
       <FlatList
+        style={{ flex: 1 }}
         data={[{ data: null }]}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, flex: 1 }}
         keyExtractor={(item, index) => String(index) + String(currentView)}
         renderItem={() => {
           return renderItem()
@@ -192,6 +210,7 @@ export const Bag = screenTrack()(({ initialTab }) => {
       <BagTabPrimaryCTA
         activeTab={currentView}
         data={data}
+        cartItems={cartItems}
         sections={bagSections}
         isMutating={isPrimaryCTAMutating}
         setIsMutating={setIsPrimaryCtaMutating}

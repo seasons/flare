@@ -1,4 +1,3 @@
-import { GetBagAndSavedItems_me_bag } from "__generated__/GetBagAndSavedItems"
 import { Button } from "components/Button"
 import { color } from "helpers/color"
 import React from "react"

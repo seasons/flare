@@ -1,9 +1,9 @@
+import { Box, Sans } from "components"
+import { color } from "helpers"
 import React from "react"
 import styled from "styled-components"
-import { GLOBAL_TRANSITION } from "../../lib/theme"
-import { color } from "helpers"
 
-import { Box, Sans } from "components"
+import { GLOBAL_TRANSITION } from "../../lib/theme"
 
 type Props = {
   link: { text: string }
@@ -25,10 +25,10 @@ export const NavItem: React.FC<Props> = ({ link, active, color, badgeCount }) =>
           {link.text}
         </Sans>
         {!!badgeCount && badgeCount > 0 && (
-          <Box style={{paddingTop: "20px", paddingLeft: "3px"}}>
+          <Box style={{ paddingTop: "15px", paddingLeft: "2px" }}>
             <BadgeCount badgeCount={badgeCount}>
               <Box style={{ display: "flex", justifyContent: "center" }}>
-                <Sans size="2" color="white100" style={{ top: badgeCount > 9 ? 1 : -1 }}>
+                <Sans size="1" color="white100">
                   {badgeCount}
                 </Sans>
               </Box>
@@ -70,6 +70,6 @@ const Underline = styled.div<{ color: string }>`
 const BadgeCount = styled(Box)<{ badgeCount: number }>`
   background-color: ${color("black100")};
   border-radius: 100%;
-  height: 16px;
-  width: 16px;
+  height: 13px;
+  width: 13px;
 `

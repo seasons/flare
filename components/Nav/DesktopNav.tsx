@@ -1,20 +1,21 @@
+import { Box, Button, MaxWidth, Media, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
 import { LoginModal } from "components/Login/LoginModal"
 import { SearchBar } from "components/Search/SearchBar"
 import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { useBag } from "mobile/Bag/useBag"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-import { Box, Button, MaxWidth, Media, Spacer } from "components"
+
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
-import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
-import { useBag } from "mobile/Bag/useBag"
 
 export const DESKTOP_NAV_HEIGHT = 72
 
@@ -23,6 +24,7 @@ export const DesktopNav = (props: NavProps) => {
   const backgroundColor = navStyles?.backgroundColor ? navStyles?.backgroundColor : color("white100")
   const textColor = navStyles?.textColor ? navStyles?.textColor : color("black100")
 
+  const { bagSections, data, localCartItems } = useBag()
   const router = useRouter()
 
   const tracking = useTracking()
@@ -112,17 +114,12 @@ export const DesktopNav = (props: NavProps) => {
     </>
   )
 
-  const { bagSections, data } = useBag()
+  const cartItemCount = (data?.me?.cartItems?.length || localCartItems?.length) ?? 0
+  const bagItemCount = bagSections?.filter((s) => s.status === "Added")?.bagItems?.length ?? 0
+  const badgeCount = cartItemCount + bagItemCount
 
   const renderLoggedInNavLinks = () => (
     <>
-      <Link
-        onClick={() => {
-          openDrawer("bag")
-        }}
-      >
-        <NavItem link={{ text: "Bag" }} color={textColor} badgeCount={!!data ? data?.me?.cartItems?.length : bagSections?.bagItems?.length} />
-      </Link>
       <Link
         onClick={() => {
           openDrawer("faq")
@@ -161,6 +158,13 @@ export const DesktopNav = (props: NavProps) => {
               </Media>
               <Flex ml="auto" flexDirection="row" alignItems="center">
                 {links.map(renderLink)}
+                <Link
+                  onClick={() => {
+                    openDrawer("bag")
+                  }}
+                >
+                  <NavItem link={{ text: "Bag" }} color={textColor} badgeCount={badgeCount} />
+                </Link>
                 {isLoggedIn ? renderLoggedInNavLinks() : renderLoggedOutNavLinks()}
               </Flex>
             </Flex>
