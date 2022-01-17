@@ -1,20 +1,17 @@
 import { Box, Button, Container, FixedBackArrow, Flex, Sans, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { Formik } from "formik"
-import React, { useState } from "react"
-import * as Yup from "yup"
-import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
-
-import { PaymentBillingAddress } from "components/Payment/PaymentBillingAddress"
 import { PaymentForm } from "components/Payment"
-import { Collapse } from "components/Collapse"
-import { Checkbox } from "components/Checkbox"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
-import styled from "styled-components"
-import { InputLabel } from "@material-ui/core"
-import { useMutation } from "@apollo/client"
-import { SUBMIT_ORDER } from "queries/orderQueries"
+import { Formik } from "formik"
 import { localCartVar } from "lib/apollo/cache"
+import { SUBMIT_ORDER } from "queries/orderQueries"
+import React, { useState } from "react"
+import styled from "styled-components"
+import * as Yup from "yup"
+
+import { useMutation } from "@apollo/client"
+import { InputLabel } from "@material-ui/core"
+import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 export const GuestPayment = ({ order, email, shippingAddress }) => {
   const { openDrawer } = useDrawerContext()
@@ -45,22 +42,6 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
   })
 
   const initialValues = {}
-
-  // const valuesToAddressDetails = (values): { billingDetails: any } => {
-  //   const billingDetails = {
-  //     name: `${values.firstName} ${values.lastName}`,
-  //     address: {
-  //       line1: values.address1,
-  //       line2: values.address2,
-  //       city: values.city,
-  //       state: values.state,
-  //       postal_code: values.postalCode,
-  //       country: "US",
-  //     },
-  //   }
-
-  //   return { billingDetails }
-  // }
 
   const handleSubmit = async (values) => {
     if (!stripe || !elements || isMutating) {
@@ -118,32 +99,6 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
               <Box px={2} pt={100}>
                 <Sans size="7">Payment details</Sans>
                 <PaymentForm />
-                {/* <>
-                <Box width="100%" py={[2, 2, 4]}>
-                  <Sans size="7">Billing address</Sans>
-                  <Spacer mt={2} />
-                  <Flex flexDirection="row" alignItems="center" width="100%" maxWidth="600px">
-                    <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" width="50%">
-                      <Label>Same as shipping address</Label>
-                      <Box ml={3}>
-                        <Checkbox
-                          isActive={sameAsShipping}
-                          onClick={() => {
-                            setSameAsShipping(!sameAsShipping)
-                            setTimeout(() => {
-                              validateForm()
-                            }, 100)
-                          }}
-                          />
-                      </Box>
-                    </Flex>
-                  </Flex>
-                  <Collapse open={!sameAsShipping}>
-                    <Spacer mt={2} />
-                    <PaymentBillingAddress />
-                  </Collapse>
-                </Box>
-                          </> */}
               </Box>
               <Box p={2}>
                 <Button size="medium" type="submit" disabled={isMutating || !isValid} loading={isMutating} block>

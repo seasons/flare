@@ -1,20 +1,21 @@
+import { Box, Button, MaxWidth, Media, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
 import { LoginModal } from "components/Login/LoginModal"
 import { SearchBar } from "components/Search/SearchBar"
 import { color } from "helpers/color"
 import { useAuthContext } from "lib/auth/AuthContext"
+import { useBag } from "mobile/Bag/useBag"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Schema, useTracking } from "utils/analytics"
-import { Box, Button, MaxWidth, Media, Spacer } from "components"
+
 import { Flex } from "../Flex"
 import { NavItem } from "./NavItem"
 import { NavProps } from "./Types"
-import { SeasonsLogoTextIcon } from "components/Icons/SeasonsLogoTextIcon"
-import { useBag } from "mobile/Bag/useBag"
 
 export const DESKTOP_NAV_HEIGHT = 72
 
@@ -116,7 +117,6 @@ export const DesktopNav = (props: NavProps) => {
   const cartItemCount = (data?.me?.cartItems?.length || localCartItems?.length) ?? 0
   const bagItemCount = bagSections?.filter((s) => s.status === "Added")?.bagItems?.length ?? 0
   const badgeCount = cartItemCount + bagItemCount
-  console.log("badgeCount", badgeCount)
 
   const renderLoggedInNavLinks = () => (
     <>

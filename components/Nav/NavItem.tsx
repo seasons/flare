@@ -1,9 +1,9 @@
+import { Box, Sans } from "components"
+import { color } from "helpers"
 import React from "react"
 import styled from "styled-components"
-import { GLOBAL_TRANSITION } from "../../lib/theme"
-import { color } from "helpers"
 
-import { Box, Sans } from "components"
+import { GLOBAL_TRANSITION } from "../../lib/theme"
 
 type Props = {
   link: { text: string }
@@ -13,7 +13,6 @@ type Props = {
 }
 
 export const NavItem: React.FC<Props> = ({ link, active, color, badgeCount }) => {
-  console.log("badgeCount", badgeCount)
   return (
     <>
       <Wrapper
