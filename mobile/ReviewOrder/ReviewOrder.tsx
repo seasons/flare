@@ -50,8 +50,6 @@ export const ReviewOrder: React.FC<Props> = ({ order, email, shippingAddress }) 
     awaitRefetchQueries: true,
   })
 
-  console.log("review order order", order)
-
   const customer = data?.me?.customer
   const isGuestCheckout = !customer || customer.status !== "Active"
 
@@ -80,7 +78,7 @@ export const ReviewOrder: React.FC<Props> = ({ order, email, shippingAddress }) 
         openDrawer("orderConfirmation", { order, customer })
       }
     } else {
-      openDrawer("guestPayment", { order, email })
+      openDrawer("guestPayment", { order, email, shippingAddress })
     }
   }
 
@@ -236,7 +234,7 @@ export const ReviewOrder: React.FC<Props> = ({ order, email, shippingAddress }) 
             )}
             <Box mb={5}>
               <SectionHeader title={productVariantItems?.length === 1 ? "Item" : "Items"} />
-              <Box mt={2} mb={4}>
+              <Box mt={2} mb={4} pb={6}>
                 {productVariantItems?.map((item, i) => {
                   return (
                     <Box key={i}>

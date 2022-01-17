@@ -79,7 +79,7 @@ export const OrderConfirmation: React.FC<Props> = ({ order, customer, shippingAd
                     Shipping
                   </Sans>
                 </Flex>
-                <Flex style={{ maxWidth: windowWidth - 120 }}>
+                <Flex style={{ maxWidth: windowWidth - 120 }} flexDirection="column">
                   <Sans size="4" color="black100" style={{ textAlign: "right" }}>
                     {`${address.address1}${address.address2 ? " " + address.address2 : ""},`}
                   </Sans>
@@ -88,12 +88,12 @@ export const OrderConfirmation: React.FC<Props> = ({ order, customer, shippingAd
                   </Sans>
                 </Flex>
               </Flex>
+              <Spacer mb={1} />
+              <Separator />
             </Box>
           )}
           {needsShipping && (
             <Box mb={2}>
-              <Spacer mb={1} />
-              <Separator />
               <Spacer mb={1} />
               <Flex flexDirection="row" width="100%" justifyContent="space-between">
                 <Flex flexDirection="row" pr={2}>

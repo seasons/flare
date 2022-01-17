@@ -14,6 +14,7 @@ import styled from "styled-components"
 import { InputLabel } from "@material-ui/core"
 import { useMutation } from "@apollo/client"
 import { SUBMIT_ORDER } from "queries/orderQueries"
+import { localCartVar } from "lib/apollo/cache"
 
 export const GuestPayment = ({ order, email, shippingAddress }) => {
   const { openDrawer } = useDrawerContext()
@@ -21,11 +22,13 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
   const { showPopUp, hidePopUp } = usePopUpContext()
   const stripe = useStripe()
   const [isMutating, setIsMutating] = useState(false)
-  const [sameAsShipping, setSameAsShipping] = useState(false)
+  const [sameAsShipping, setSameAsShipping] = useState(true)
   const [coupon, setCoupon] = useState("")
   const [submitOrder] = useMutation(SUBMIT_ORDER, {
     onCompleted: () => {
       setIsMutating(false)
+      localCartVar([])
+      localStorage.setItem("localCartItems", "[]")
       openDrawer("orderConfirmation", { order, shippingAddress })
     },
     onError: (e) => {
@@ -41,26 +44,23 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
     },
   })
 
-  console.log("order 3", order)
-  console.log("email 3", email)
-
   const initialValues = {}
 
-  const valuesToAddressDetails = (values): { billingDetails: any } => {
-    const billingDetails = {
-      name: `${values.firstName} ${values.lastName}`,
-      address: {
-        line1: values.address1,
-        line2: values.address2,
-        city: values.city,
-        state: values.state,
-        postal_code: values.postalCode,
-        country: "US",
-      },
-    }
+  // const valuesToAddressDetails = (values): { billingDetails: any } => {
+  //   const billingDetails = {
+  //     name: `${values.firstName} ${values.lastName}`,
+  //     address: {
+  //       line1: values.address1,
+  //       line2: values.address2,
+  //       city: values.city,
+  //       state: values.state,
+  //       postal_code: values.postalCode,
+  //       country: "US",
+  //     },
+  //   }
 
-    return { billingDetails }
-  }
+  //   return { billingDetails }
+  // }
 
   const handleSubmit = async (values) => {
     if (!stripe || !elements || isMutating) {
@@ -72,7 +72,7 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
     setIsMutating(true)
 
     const cardElement = elements.getElement(CardNumberElement)
-    const { billingDetails } = valuesToAddressDetails(values)
+    // const { billingDetails } = valuesToAddressDetails(values)
 
     const payload = await stripe.createSource(cardElement, {
       type: "card",
@@ -118,6 +118,7 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
               <Box px={2} pt={100}>
                 <Sans size="7">Payment details</Sans>
                 <PaymentForm />
+                {/* <>
                 <Box width="100%" py={[2, 2, 4]}>
                   <Sans size="7">Billing address</Sans>
                   <Spacer mt={2} />
@@ -133,7 +134,7 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
                               validateForm()
                             }, 100)
                           }}
-                        />
+                          />
                       </Box>
                     </Flex>
                   </Flex>
@@ -142,6 +143,7 @@ export const GuestPayment = ({ order, email, shippingAddress }) => {
                     <PaymentBillingAddress />
                   </Collapse>
                 </Box>
+                          </> */}
               </Box>
               <Box p={2}>
                 <Button size="medium" type="submit" disabled={isMutating || !isValid} loading={isMutating} block>

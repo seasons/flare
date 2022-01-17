@@ -24,7 +24,7 @@ export const useLocalCart = () => {
   useEffect(() => {
     if (localStateItems.length === 0) {
       const storedItems = JSON.parse(localStorage.getItem("localCartItems"))
-      if (storedItems.length > 0) {
+      if (storedItems?.length > 0) {
         localCartVar(storedItems)
       }
     }

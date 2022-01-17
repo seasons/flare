@@ -16,29 +16,40 @@ export const GuestShipping = () => {
   const [email, setEmail] = useState("")
   const { showPopUp, hidePopUp } = usePopUpContext()
   const { localCartItems } = useBag()
+  const [shippingAddress, setShippingAddress] = useState(null)
 
   const [createDraftOrder] = useMutation(CREATE_DRAFT_ORDER, {
     onCompleted: (res) => {
       setIsMutating(false)
       if (res?.createDraftedOrder) {
-        openDrawer("reviewOrder", { order: res.createDraftedOrder, email })
+        openDrawer("reviewOrder", { order: res.createDraftedOrder, email, shippingAddress })
       }
     },
     onError: (error) => {
-      showPopUp({
-        title: "Sorry!",
-        note: "There was an issue creating the order, please try again.",
-        buttonText: "Okay",
-        onClose: () => {
-          hidePopUp()
-        },
-      })
+      console.log("err", error)
+      if (error.message.includes("Customer is not a guest")) {
+        showPopUp({
+          title: "Please sign in",
+          note: "To use this email, sign into your account before placing the order.",
+          buttonText: "Okay",
+          onClose: () => {
+            hidePopUp()
+          },
+        })
+      } else {
+        showPopUp({
+          title: "Sorry!",
+          note: "There was an issue creating the order, please try again.",
+          buttonText: "Okay",
+          onClose: () => {
+            hidePopUp()
+          },
+        })
+      }
       console.log("error createDraftOrder ", error)
       setIsMutating(false)
     },
   })
-
-  console.log("localCartItems", localCartItems)
 
   const initialValues = {}
 
@@ -63,6 +74,12 @@ export const GuestShipping = () => {
     if (!isMutating) {
       setIsMutating(true)
       const { shippingDetails } = valuesToAddressDetails(values)
+      setShippingAddress({
+        ...shippingDetails.address,
+        address1: values.shippingAddress1,
+        address2: values.shippingAddress2,
+        zipCode: values.shippingPostalCode,
+      })
 
       createDraftOrder({
         variables: {
