@@ -17,6 +17,8 @@ export type DrawerView =
   | "reviewOrder"
   | "orderConfirmation"
   | "editPaymentMethod"
+  | "guestShipping"
+  | "guestPayment"
 
 export const DrawerContext = React.createContext({
   isOpen: false,

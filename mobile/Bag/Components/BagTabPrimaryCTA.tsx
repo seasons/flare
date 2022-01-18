@@ -1,12 +1,13 @@
-import React from "react"
-import gql from "graphql-tag"
 import { Box, Button, Flex } from "components"
-import { useAuthContext } from "lib/auth/AuthContext"
-import { usePopUpContext } from "components/PopUp/PopUpContext"
-import { Schema as TrackSchema, useTracking } from "utils/analytics"
-import { BagView, MAXIMUM_ITEM_COUNT } from "../Bag"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
+import { usePopUpContext } from "components/PopUp/PopUpContext"
+import gql from "graphql-tag"
+import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
+import React from "react"
+import { Schema as TrackSchema, useTracking } from "utils/analytics"
+
+import { BagView, MAXIMUM_ITEM_COUNT } from "../Bag"
 import { BagBottomBar } from "./BagBottomBar"
 
 export const BagTabPrimaryCTAFragment_Me = gql`
@@ -52,13 +53,13 @@ export const BagTabPrimaryCTA = ({
   setIsMutating,
   activeTab,
   onCartCheckout,
+  cartItems,
 }) => {
   const { authState } = useAuthContext()
   const { openDrawer, closeDrawer } = useDrawerContext()
   const router = useRouter()
 
   const { showPopUp, hidePopUp } = usePopUpContext()
-  const tracking = useTracking()
   const isSignedIn = authState.isSignedIn
 
   const addedItems = sections?.find((section) => section.status === "Added")?.bagItems
@@ -138,21 +139,13 @@ export const BagTabPrimaryCTA = ({
   if (hasAddedItems || isBuyView) {
     button = (
       <BagBottomBar
-        bagItems={isBuyView ? me?.cartItems : addedItems}
+        bagItems={isBuyView ? cartItems : addedItems}
         onReserve={handleReserve}
         isMutating={isMutating}
         activeTab={activeTab}
         onCartCheckout={onCartCheckout}
       />
     )
-    //   } else if (hasAtHomeItems) {
-    //     button = (
-    //       <Box mx={2} my={2}>
-    //         <Button block onPress={handlePress} disabled={isMutating} loading={isMutating} variant="primaryWhite">
-    //           Return bag
-    //         </Button>
-    //       </Box>
-    //     )
   } else if (!!labelImage) {
     button = (
       <Button
@@ -165,14 +158,6 @@ export const BagTabPrimaryCTA = ({
         Return label
       </Button>
     )
-    //   } else if (hasReturnPendingsItems) {
-    //     button = (
-    //       <Flex flexDirection="row" justifyContent="space-between" mx={2} my={2}>
-    //         <Button onPress={handlePress} disabled={isMutating} loading={isMutating} block variant="primaryBlack">
-    //           How to return
-    //         </Button>
-    //       </Flex>
-    //     )
   } else {
     button = (
       <BagBottomBar

@@ -1,31 +1,43 @@
 import { useAuthContext } from "lib/auth/AuthContext"
-import { GET_BAG, GET_LOCAL_BAG, GET_LOCAL_BAG_ITEMS } from "queries/bagQueries"
+import { GET_BAG, GET_LOCAL_CART, GET_LOCAL_CART_PRODUCTS } from "queries/bagQueries"
 import { useEffect } from "react"
 
 import { useLazyQuery, useQuery } from "@apollo/client"
+import { localCartVar } from "lib/apollo/cache"
 
-export const useLocalBag = () => {
-  const { data: getLocalBagData } = useQuery(GET_LOCAL_BAG)
-  const ids = getLocalBagData?.localBagItems
+export const useLocalCart = () => {
+  const { data: getLocalCartData } = useQuery(GET_LOCAL_CART)
+  const ids = getLocalCartData?.localCartItems
 
-  const [getLocalBag, { data, refetch, loading }] = useLazyQuery(GET_LOCAL_BAG_ITEMS, {
+  const localStateItems = localCartVar()
+
+  const [getLocalCart, { data, refetch, loading }] = useLazyQuery(GET_LOCAL_CART_PRODUCTS, {
     variables: {
-      ids: ids?.map((i) => i.variantID),
+      ids,
     },
   })
 
   useEffect(() => {
-    getLocalBag()
+    getLocalCart()
   }, [ids])
 
+  useEffect(() => {
+    if (localStateItems.length === 0) {
+      const storedItems = JSON.parse(localStorage.getItem("localCartItems"))
+      if (storedItems?.length > 0) {
+        localCartVar(storedItems)
+      }
+    }
+  }, [localStateItems])
+
   return {
-    bagItems:
+    cartItems:
       data?.productVariants?.map((item, i) => {
         return {
-          ...ids?.[i],
           ...data?.productVariants?.[i],
           productVariant: item,
           status: "Added",
+          isInCart: true,
         }
       }) || [],
     refetch,
@@ -56,15 +68,14 @@ export const useBag = () => {
   const { authState } = useAuthContext()
 
   const isSignedIn = authState.isSignedIn
-  const { bagItems: localItems, loading: localLoading } = useLocalBag()
-  const { bagSections: remoteSections, data, refetch, loading } = useRemoteBag()
-
-  const bagSections = !isSignedIn ? [{ status: "Added", title: "Reserving", bagItems: localItems }] : remoteSections
+  const { cartItems: localItems, loading: localLoading } = useLocalCart()
+  const { bagSections, data, refetch, loading } = useRemoteBag()
 
   return {
     data,
     refetch,
     bagSections,
     loading: !isSignedIn ? localLoading : loading,
+    localCartItems: localItems,
   }
 }

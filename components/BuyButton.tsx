@@ -11,6 +11,8 @@ import { useMutation } from "@apollo/client"
 
 import { ButtonSize } from "./Button/Button.shared"
 import { useDrawerContext } from "./Drawer/DrawerContext"
+import { localCartVar } from "lib/apollo/cache"
+import { addToLocalCart } from "utils/localCart"
 
 interface Props {
   disabled?: boolean
@@ -24,7 +26,7 @@ export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, si
   const tracking = useTracking()
   const { openDrawer } = useDrawerContext()
   const { showPopUp, hidePopUp } = usePopUpContext()
-  const { authState, toggleLoginModal } = useAuthContext()
+  const { authState } = useAuthContext()
   const isUserSignedIn = authState?.isSignedIn
   const product = data?.product
   const isInCart = selectedVariant?.isInCart
@@ -38,27 +40,34 @@ export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, si
     awaitRefetchQueries: true,
     refetchQueries: [
       {
+        query: GET_BAG,
+      },
+      {
         query: GET_PRODUCT,
         variables: { slug: product?.slug },
       },
-      {
-        query: GET_BAG,
-      },
     ],
-    onCompleted: () => {
+    onCompleted: (res) => {
       setIsMutating(false)
       openDrawer("bag", { initialTab: BagView.Buy })
     },
-    onError: (error) => {
-      console.log("error upsertRestockNotification Product.tsx", error)
+    onError: (err) => {
       setIsMutating(false)
+      console.log("AddToBagButton: Error", err)
     },
   })
+
+  const onAddToLocalCart = () => {
+    addToLocalCart(selectedVariant.id)
+
+    openDrawer("bag", { initialTab: BagView.Buy })
+    setIsMutating(false)
+  }
 
   const onAddToCart = () => {
     const isInBag = selectedVariant?.isInBag && !selectedVariant?.isInCart
 
-    if (isInBag && isUserSignedIn) {
+    if (isInBag) {
       showPopUp({
         title: "You aleady have this in your bag",
         note:
@@ -67,23 +76,22 @@ export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, si
         secondaryButtonText: "Add to cart",
         secondaryButtonOnPress: () => {
           setIsMutating(true)
-          upsertCartItem()
+          if (isUserSignedIn) {
+            upsertCartItem()
+          } else {
+            onAddToLocalCart()
+          }
           hidePopUp()
         },
         onClose: () => hidePopUp(),
       })
-    } else if (isUserSignedIn) {
-      setIsMutating(true)
-      upsertCartItem()
     } else {
-      showPopUp({
-        title: "Sign up to add to cart",
-        note: "You must be a member to use this feature.",
-        buttonText: "Got it",
-        onClose: () => {
-          hidePopUp()
-        },
-      })
+      setIsMutating(true)
+      if (isUserSignedIn) {
+        upsertCartItem()
+      } else {
+        onAddToLocalCart()
+      }
     }
   }
   const handleBuy = () => {
@@ -122,11 +130,7 @@ export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, si
           actionName: Schema.ActionNames.ProductAddedToBag,
           actionType: Schema.ActionTypes.Tap,
         })
-        if (authState.isSignedIn) {
-          handleBuy()
-        } else {
-          toggleLoginModal(true)
-        }
+        handleBuy()
       }}
       borderRadius={8}
     >

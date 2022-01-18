@@ -18,11 +18,17 @@ import { Drawer as MuiDrawer } from "@material-ui/core"
 import { DrawerBottomButton } from "./DrawerBottomButton"
 import { useDrawerContext } from "./DrawerContext"
 import { SavedAndHistory } from "mobile/Account/SavedAndHistory/SavedAndHistory"
+import { GuestShipping } from "components/GuestCheckout/GuestShipping"
+import { GuestPayment } from "components/GuestCheckout/GuestPayment"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 
 interface DrawerProps {
   open?: boolean
   onClose?: () => void
 }
+
+const stripePromise = loadStripe(process.env.STRIPE_API_KEY)
 
 export const getDrawerWidth = () => {
   if (typeof window !== "undefined") {
@@ -88,9 +94,19 @@ export const Drawer = (props: DrawerProps) => {
       case "editPaymentMethod":
         return <EditPaymentMethod />
       case "reviewOrder":
-        return <ReviewOrder order={params.order} />
+        return <ReviewOrder order={params.order} email={params.email} shippingAddress={params.shippingAddress} />
       case "orderConfirmation":
-        return <OrderConfirmation order={params.order} customer={params.customer} />
+        return (
+          <OrderConfirmation order={params.order} customer={params.customer} shippingAddress={params.shippingAddress} />
+        )
+      case "guestShipping":
+        return <GuestShipping />
+      case "guestPayment":
+        return (
+          <Elements stripe={stripePromise}>
+            <GuestPayment order={params.order} email={params.email} shippingAddress={params.shippingAddress} />
+          </Elements>
+        )
     }
   }
 
