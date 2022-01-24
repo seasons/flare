@@ -137,7 +137,7 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
   const isBuyNewEnabled = bagItem?.productVariant?.price?.buyNewEnabled
   const isBuyUsedEnabled = bagItem?.productVariant?.price?.buyUsedEnabled
   const buyNewPrice = bagItem?.productVariant?.price?.buyNewPrice
-  const buyUsedPrice = bagItem?.productVariant?.price?.buyUsedPrice
+  const buyUsedPrice = bagItem?.productVariant?.price?.buyUsedAdjustedPrice
   const isBuyable = isBuyNewEnabled || isBuyUsedEnabled
   const purchased = bagItem?.productVariant?.purchased
   const price = isBuyNewEnabled ? buyNewPrice : buyUsedPrice
