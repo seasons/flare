@@ -56,7 +56,7 @@ export const ProductDetails: React.FC<{
 
   const productType = product?.category?.productType
   const rentalPrice = product?.rentalPrice
-  const buyPrice = selectedVariant?.price?.buyUsedAdjustedPrice
+  const retailPrice = product?.retailPrice
   const internalSize = selectedVariant?.internalSize
   const displayShort = selectedVariant?.displayShort
   const variantInStock = selectedVariant?.reservable > 0
@@ -136,47 +136,51 @@ export const ProductDetails: React.FC<{
           </Flex>
         </Flex>
         <Flex flexDirection="column" width="100%">
-          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Sans size={3}>Buy</Sans>
+          {!!discountedPrice && (
+            <>
+              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Sans size={3}>Buy</Sans>
 
-            {!!discountPercentage && (
-              <Box>
-                <Sans size={3} color="black100">
-                  <span style={{ color: "#f83131" }}>{discountPercentage}% off</span>
+                {!!discountPercentage && (
+                  <Box>
+                    <Sans size={3} color="black100">
+                      <span style={{ color: "#f83131" }}>{discountPercentage}% off</span>
 
-                  <span
-                    style={{
-                      color: `${color("black50")}`,
-                    }}
-                  >
-                    {" "}
-                    |{" "}
-                  </span>
-                  <span
-                    style={{
-                      color: `${color("black50")}`,
-                      textDecorationLine: "line-through",
-                      textDecorationStyle: "solid",
-                    }}
-                  >
-                    ${buyPrice}
-                  </span>
+                      <span
+                        style={{
+                          color: `${color("black50")}`,
+                        }}
+                      >
+                        {" "}
+                        |{" "}
+                      </span>
+                      <span
+                        style={{
+                          color: `${color("black50")}`,
+                          textDecorationLine: "line-through",
+                          textDecorationStyle: "solid",
+                        }}
+                      >
+                        ${retailPrice}
+                      </span>
+                    </Sans>
+                  </Box>
+                )}
+              </Flex>
+              <Separator mb={2} width="100%" />
+              <Flex flexDirection="row" alignItems="flex-end">
+                <Sans size={9} color="black100">
+                  ${discountedPrice}
                 </Sans>
-              </Box>
-            )}
-          </Flex>
-          <Separator mb={2} width="100%" />
-          <Flex flexDirection="row" alignItems="flex-end">
-            <Sans size={9} color="black100">
-              ${discountedPrice && discountedPrice < buyPrice ? discountedPrice : buyPrice}
-            </Sans>
-            <Flex pb="6px" pl="5px">
-              <Sans size={3} color="black100">
-                {" "}
-                + tax
-              </Sans>
-            </Flex>
-          </Flex>
+                <Flex pb="6px" pl="5px">
+                  <Sans size={3} color="black100">
+                    {" "}
+                    + tax
+                  </Sans>
+                </Flex>
+              </Flex>
+            </>
+          )}
         </Flex>
       </Flex>
       <Flex paddingTop={6} pb={2}>
