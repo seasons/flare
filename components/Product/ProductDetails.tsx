@@ -15,7 +15,10 @@ import { Schema, useTracking } from "utils/analytics"
 
 import { useMutation } from "@apollo/client"
 import {
-  ProductBuyCTA, ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant, VariantSizes
+  ProductBuyCTA,
+  ProductBuyCTAFragment_Product,
+  ProductBuyCTAFragment_ProductVariant,
+  VariantSizes,
 } from "@seasons/eclipse"
 
 import { ProductInfoItem } from "./ProductInfoItem"
@@ -52,8 +55,8 @@ export const ProductDetails: React.FC<{
   }
 
   const productType = product?.category?.productType
-  const retailPrice = product?.retailPrice
   const rentalPrice = product?.rentalPrice
+  const buyPrice = selectedVariant?.price?.buyUsedAdjustedPrice
   const internalSize = selectedVariant?.internalSize
   const displayShort = selectedVariant?.displayShort
   const variantInStock = selectedVariant?.reservable > 0
@@ -156,7 +159,7 @@ export const ProductDetails: React.FC<{
                       textDecorationStyle: "solid",
                     }}
                   >
-                    ${retailPrice}
+                    ${buyPrice}
                   </span>
                 </Sans>
               </Box>
@@ -165,7 +168,7 @@ export const ProductDetails: React.FC<{
           <Separator mb={2} width="100%" />
           <Flex flexDirection="row" alignItems="flex-end">
             <Sans size={9} color="black100">
-              ${discountedPrice ? discountedPrice : retailPrice}
+              ${discountedPrice && discountedPrice < buyPrice ? discountedPrice : buyPrice}
             </Sans>
             <Flex pb="6px" pl="5px">
               <Sans size={3} color="black100">
