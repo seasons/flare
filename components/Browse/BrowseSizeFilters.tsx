@@ -27,9 +27,9 @@ const SizeButton: React.FC<SizeButtonProps> = ({ size, items, setParams, params,
       onClick={() => {
         const newParamsArray = isActive ? itemArray.filter((i) => i !== size) : [size, ...itemArray]
         if (type === "bottoms") {
-          setParams({ ...params, bottoms: newParamsArray })
+          setParams({ ...params, bottoms: newParamsArray, page: 1 })
         } else {
-          setParams({ ...params, tops: newParamsArray })
+          setParams({ ...params, tops: newParamsArray, page: 1 })
         }
       }}
     >

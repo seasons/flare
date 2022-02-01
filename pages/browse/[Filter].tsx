@@ -253,7 +253,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
           <MobileFilters
             BrandsListComponent={
               <BrowseFilters
-                setParam={(brandName) => onSetParams({ ...params, brandName })}
+                setParam={(brandName) => onSetParams({ ...params, brandName, page: 1 })}
                 listItems={brands}
                 title="Designers"
                 hideTitle
@@ -271,7 +271,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
             }
             CategoriesListComponent={
               <BrowseFilters
-                setParam={(categoryName) => onSetParams({ ...params, categoryName })}
+                setParam={(categoryName) => onSetParams({ ...params, categoryName, page: 1 })}
                 title="Categories"
                 currentCategory={categoryName}
                 listItems={categories}
@@ -300,7 +300,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     <BrowseFilters
                       currentCategory={categoryName}
                       title="Categories"
-                      setParam={(categoryName) => onSetParams({ ...params, categoryName })}
+                      setParam={(categoryName) => onSetParams({ ...params, categoryName, page: 1 })}
                       listItems={categories}
                       currentBrand={brandName}
                     />
@@ -315,7 +315,7 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
                     <Spacer mb={5} />
                     <BrowseFilters
                       title="Designers"
-                      setParam={(brandName) => onSetParams({ ...params, brandName })}
+                      setParam={(brandName) => onSetParams({ ...params, brandName, page: 1 })}
                       currentCategory={categoryName}
                       listItems={brands}
                       currentBrand={brandName}

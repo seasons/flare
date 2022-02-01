@@ -15,7 +15,7 @@ export const AvailabilityFilters = ({ setParams, params, breakpoint }) => {
       <FlexWrapper mb={isMobile ? 0 : 2}>
         <Checkbox
           onClick={() => {
-            setParams({ ...params, available: !available })
+            setParams({ ...params, available: !available, page: 1 })
           }}
           isActive={available}
         />
@@ -26,7 +26,7 @@ export const AvailabilityFilters = ({ setParams, params, breakpoint }) => {
       <FlexWrapper mb={isMobile ? 0 : 5}>
         <Checkbox
           onClick={() => {
-            setParams({ ...params, forSaleOnly: !forSaleOnly })
+            setParams({ ...params, forSaleOnly: !forSaleOnly, page: 1 })
           }}
           isActive={forSaleOnly}
         />
