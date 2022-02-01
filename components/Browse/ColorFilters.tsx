@@ -43,7 +43,7 @@ export const ColorFilters: React.FC<Props> = ({ setParams, params }) => {
                 const newColors: string[] = isActive
                   ? params?.colors?.filter((i) => i !== color.name)
                   : [color.name, ...currentColors]
-                setParams({ ...params, colors: newColors })
+                setParams({ ...params, colors: newColors, page: 1 })
               }}
             >
               <Sans size="3" my="2" color={isActive ? themeColor("white100") : themeColor("black100")}>

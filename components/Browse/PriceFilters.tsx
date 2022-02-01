@@ -28,7 +28,7 @@ export const PriceFilters = ({ setParams, params }) => {
         <Box my={1}>
           <Flex
             onClick={() => {
-              setParams({ ...params, priceRange: option.value })
+              setParams({ ...params, priceRange: option.value, page: 1 })
             }}
             alignItems="center"
           >
