@@ -1,8 +1,9 @@
 import gql from "graphql-tag"
 
 import {
-  ProductBuyCTAFragment_Product, ProductBuyCTAFragment_ProductVariant,
-  ProductConditionSectionFragment_PhysicalProductQualityReport
+  ProductBuyCTAFragment_Product,
+  ProductBuyCTAFragment_ProductVariant,
+  ProductConditionSectionFragment_PhysicalProductQualityReport,
 } from "@seasons/eclipse"
 
 export const UPSERT_CART_ITEM = gql`
@@ -27,6 +28,7 @@ export const GET_PRODUCT = gql`
       id
       slug
       name
+      isRentable
       createdAt
       updatedAt
       description

@@ -120,21 +120,23 @@ export const ProductDetails: React.FC<{
       </Sans>
 
       <Flex flexDirection="row" width="100%" pt={6}>
-        <Flex flexDirection="column" width="100%">
-          <Sans size={3}>Rent</Sans>
-          <Box pr={2}>
-            <Separator mb={2} width="100%" />
-          </Box>
-          <Flex flexDirection="row" alignItems="flex-end">
-            <Sans size={9}>${rentalPrice}</Sans>
-            <Flex pb="6px" pl="5px">
-              <Sans size={3} color="black50">
-                {" "}
-                / month
-              </Sans>
+        {product?.isRentable && (
+          <Flex flexDirection="column" width="100%">
+            <Sans size={3}>Rent</Sans>
+            <Box pr={2}>
+              <Separator mb={2} width="100%" />
+            </Box>
+            <Flex flexDirection="row" alignItems="flex-end">
+              <Sans size={9}>${rentalPrice}</Sans>
+              <Flex pb="6px" pl="5px">
+                <Sans size={3} color="black50">
+                  {" "}
+                  / month
+                </Sans>
+              </Flex>
             </Flex>
           </Flex>
-        </Flex>
+        )}
         <Flex flexDirection="column" width="100%">
           {!!discountedPrice && (
             <>
@@ -201,15 +203,17 @@ export const ProductDetails: React.FC<{
       )}
 
       <Spacer mr={2} />
-      <Flex flex={1}>
-        <AddToBagButton
-          selectedVariant={selectedVariant}
-          data={data}
-          variantInStock={variantInStock}
-          isInBag={isInBag}
-          size="large"
-        />
-      </Flex>
+      {product?.isRentable && (
+        <Flex flex={1}>
+          <AddToBagButton
+            selectedVariant={selectedVariant}
+            data={data}
+            variantInStock={variantInStock}
+            isInBag={isInBag}
+            size="large"
+          />
+        </Flex>
+      )}
       <Spacer mb={1} />
 
       <BuyButton size="large" data={data} selectedVariant={selectedVariant} />
