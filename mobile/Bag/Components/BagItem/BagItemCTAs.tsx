@@ -150,11 +150,15 @@ export const BagItemCTAs = ({ bagItem, sectionStatus, size }) => {
       case "Cart":
         return (
           <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between" alignItems="center" width="100%">
-            <Box onClick={onSaveForLater}>
-              <Sans size="3" style={{ textDecorationLine: "underline" }}>
-                Save for later
-              </Sans>
-            </Box>
+            {userHasSession ? (
+              <Box onClick={onSaveForLater}>
+                <Sans size="3" style={{ textDecorationLine: "underline" }}>
+                  Save for later
+                </Sans>
+              </Box>
+            ) : (
+              <Box />
+            )}
             <BagItemRemoveButton bagItem={bagItem} />
           </Flex>
         )

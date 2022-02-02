@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Sans, Separator, Spacer } from "components"
+import { Box, Button, Flex, Link, Sans, Separator, Spacer } from "components"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { Spinner } from "components/Spinner"
 import gql from "graphql-tag"
@@ -31,6 +31,7 @@ export const SavedItemFragment_BagItem = gql`
         id
         slug
         name
+        isRentable
         brand {
           id
           name
@@ -58,7 +59,7 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagItem }) => {
   const product = variant?.product
   const imageURL = product?.images?.[0]?.url || ""
   const variantSize = variant?.displayLong?.toLowerCase()
-  const reservable = variant?.reservable > 0
+  const reservable = variant?.reservable > 0 && product?.isRentable
   const hasRestockNotification = variant?.hasRestockNotification
 
   const [upsertRestockNotification] = useMutation(UPSERT_RESTOCK_NOTIF, {
@@ -205,7 +206,9 @@ export const SavedItem: React.FC<BagItemProps> = ({ bagItem }) => {
           </Flex>
           <Flex style={{ flex: 2 }} flexDirection="row" justifyContent="flex-end" alignItems="center">
             {!!imageURL && (
-              <Image style={{ height: 170 * 1.3, width: 170 }} resizeMode="contain" source={{ uri: imageURL }} />
+              <Link href="/product/[Product]" as={`/product/${product.slug}`}>
+                <Image style={{ height: 170 * 1.3, width: 170 }} resizeMode="contain" source={{ uri: imageURL }} />
+              </Link>
             )}
           </Flex>
         </Flex>
