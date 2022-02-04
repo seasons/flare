@@ -11,7 +11,6 @@ import { useMutation } from "@apollo/client"
 
 import { ButtonSize } from "./Button/Button.shared"
 import { useDrawerContext } from "./Drawer/DrawerContext"
-import { localCartVar } from "lib/apollo/cache"
 import { addToLocalCart } from "utils/localCart"
 
 interface Props {
