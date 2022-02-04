@@ -6,7 +6,7 @@ import React, { useState } from "react"
 import * as Yup from "yup"
 import { PaymentField } from "components/Payment/PaymentBillingAddress"
 import { useMutation } from "@apollo/client"
-import { CREATE_DRAFT_ORDER } from "queries/bagQueries"
+import { CREATE_DRAFT_ORDER, GET_BAG } from "queries/bagQueries"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useBag } from "mobile/Bag/useBag"
 import { localCartVar } from "lib/apollo/cache"
@@ -27,16 +27,6 @@ export const GuestShipping = () => {
       }
     },
     onError: (error) => {
-      console.log("err", error)
-
-      let unavailableItemPopUp = {
-        title: "Sorry!",
-        note: "One or more items is no longer available. It has been removed from your cart.",
-        buttonText: "Okay",
-        onClose: () => {
-          hidePopUp()
-        },
-      }
       if (error.message.includes("Customer is not a guest")) {
         showPopUp({
           title: "Please sign in",
@@ -52,9 +42,14 @@ export const GuestShipping = () => {
         const newStoredItems = (storedItems as Array<string>).filter((item) => item !== idToRemove)
         localCartVar(newStoredItems)
         localStorage.setItem("localCartItems", `[${newStoredItems}]`)
-        showPopUp(unavailableItemPopUp)
-      } else if (error.message === "Could not find reservable unit to sell") {
-        showPopUp(unavailableItemPopUp)
+        showPopUp({
+          title: "Sorry!",
+          note: "One or more items is no longer available. It has been removed from your cart.",
+          buttonText: "Okay",
+          onClose: () => {
+            hidePopUp()
+          },
+        })
       } else {
         showPopUp({
           title: "Sorry!",
