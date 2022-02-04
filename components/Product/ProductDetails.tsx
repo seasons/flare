@@ -74,6 +74,9 @@ export const ProductDetails: React.FC<{
   const discountPercentage = product?.discountPercentage
   const discountedPrice = product?.discountedPrice
 
+  const availPhysProdCount = selectedVariant?.reservable
+  const availPhysLessThanThree = availPhysProdCount && availPhysProdCount < 3
+
   const modelDetailValue =
     !!product.modelSize &&
     !!product.modelHeight &&
@@ -185,8 +188,17 @@ export const ProductDetails: React.FC<{
           )}
         </Flex>
       </Flex>
-      <Flex paddingTop={6} pb={2}>
+      <Flex paddingTop={6} pb={2} justifyContent="space-between">
         <Sans size={3}>Select a size</Sans>
+        {!!availPhysProdCount ? (
+          <Sans size={3} color={availPhysLessThanThree ? "red" : "black100"}>
+            {availPhysLessThanThree
+              ? `Only ${availPhysProdCount} left in this size`
+              : `${availPhysProdCount} left in this size`}
+          </Sans>
+        ) : (
+          <Box />
+        )}
       </Flex>
       {productType !== "Accessory" && (
         <Flex flex={1} pb={1}>
