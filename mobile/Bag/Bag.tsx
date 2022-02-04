@@ -67,15 +67,33 @@ export const Bag = screenTrack()(({ initialTab }) => {
         openDrawer("reviewOrder", { order: res.createDraftedOrder })
       }
     },
+    refetchQueries: [
+      {
+        query: GET_BAG,
+      },
+    ],
     onError: (error) => {
-      showPopUp({
-        title: "Sorry!",
-        note: "There was an issue creating the order, please try again.",
-        buttonText: "Okay",
-        onClose: () => {
-          hidePopUp()
-        },
-      })
+      if (error.message.includes("Could not find reservable unit to sell")) {
+        showPopUp({
+          title: "Sorry!",
+          note: "One or more items is no longer available. It has been removed from your cart.",
+          buttonText: "Okay",
+          onClose: () => {
+            hidePopUp()
+            window.location.reload()
+          },
+        })
+      } else {
+        showPopUp({
+          title: "Sorry!",
+          note: "There was an issue creating the order, please try again.",
+          buttonText: "Okay",
+          onClose: () => {
+            hidePopUp()
+          },
+        })
+      }
+
       console.log("error createDraftOrder ", error)
       setIsPrimaryCtaMutating(false)
     },

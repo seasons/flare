@@ -6,9 +6,10 @@ import React, { useState } from "react"
 import * as Yup from "yup"
 import { PaymentField } from "components/Payment/PaymentBillingAddress"
 import { useMutation } from "@apollo/client"
-import { CREATE_DRAFT_ORDER } from "queries/bagQueries"
+import { CREATE_DRAFT_ORDER, GET_BAG } from "queries/bagQueries"
 import { usePopUpContext } from "components/PopUp/PopUpContext"
 import { useBag } from "mobile/Bag/useBag"
+import { localCartVar } from "lib/apollo/cache"
 
 export const GuestShipping = () => {
   const { openDrawer } = useDrawerContext()
@@ -26,11 +27,24 @@ export const GuestShipping = () => {
       }
     },
     onError: (error) => {
-      console.log("err", error)
       if (error.message.includes("Customer is not a guest")) {
         showPopUp({
           title: "Please sign in",
           note: "To use this email, sign into your account before placing the order.",
+          buttonText: "Okay",
+          onClose: () => {
+            hidePopUp()
+          },
+        })
+      } else if (error.message === "Please remove unreservable unit from local cart") {
+        const idToRemove = error.graphQLErrors?.[0]?.extensions?.productVariantId
+        const storedItems = JSON.parse(localStorage.getItem("localCartItems"))
+        const newStoredItems = (storedItems as Array<string>).filter((item) => item !== idToRemove)
+        localCartVar(newStoredItems)
+        localStorage.setItem("localCartItems", `[${newStoredItems}]`)
+        showPopUp({
+          title: "Sorry!",
+          note: "One or more items is no longer available. It has been removed from your cart.",
           buttonText: "Okay",
           onClose: () => {
             hidePopUp()
