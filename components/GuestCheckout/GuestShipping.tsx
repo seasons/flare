@@ -28,6 +28,15 @@ export const GuestShipping = () => {
     },
     onError: (error) => {
       console.log("err", error)
+
+      let unavailableItemPopUp = {
+        title: "Sorry!",
+        note: "One or more items is no longer available. It has been removed from your cart.",
+        buttonText: "Okay",
+        onClose: () => {
+          hidePopUp()
+        },
+      }
       if (error.message.includes("Customer is not a guest")) {
         showPopUp({
           title: "Please sign in",
@@ -43,14 +52,9 @@ export const GuestShipping = () => {
         const newStoredItems = (storedItems as Array<string>).filter((item) => item !== idToRemove)
         localCartVar(newStoredItems)
         localStorage.setItem("localCartItems", `[${newStoredItems}]`)
-        showPopUp({
-          title: "Sorry!",
-          note: "One or more items is no longer available. It has been removed from your cart.",
-          buttonText: "Okay",
-          onClose: () => {
-            hidePopUp()
-          },
-        })
+        showPopUp(unavailableItemPopUp)
+      } else if (error.message === "Could not find reservable unit to sell") {
+        showPopUp(unavailableItemPopUp)
       } else {
         showPopUp({
           title: "Sorry!",
