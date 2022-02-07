@@ -27,6 +27,7 @@ import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
+import { PromoBar } from "components/Homepage/PromoBar"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -248,6 +249,10 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         footerBottomPadding={["59px", "0px"]}
         PageNotificationBar={() => <BrowseProductsNotificationBar isLoggedIn={isSignedIn} />}
       >
+        <Media lessThan="md">
+          <Spacer mb={54} />
+        </Media>
+        <PromoBar />
         <Media lessThan="md">
           <AvailabilityFilters params={params} setParams={onSetParams} breakpoint="mobile" />
           <MobileFilters
