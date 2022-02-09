@@ -8,10 +8,7 @@ import { imageResize } from "utils/imageResize"
 import { CloseXIcon } from "components/Icons/CloseXIcon"
 import { useRouter } from "next/router"
 
-export const ClosingModal: React.FC<{ onClose: () => void; show: boolean; type: "approved" | "waitlisted" }> = ({
-  onClose,
-  show,
-}) => {
+export const ClosingModal: React.FC<{ onClose: () => void; show: boolean }> = ({ onClose, show }) => {
   const router = useRouter()
   const tracking = useTracking()
   const headerText = "Closing time"
