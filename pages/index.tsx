@@ -25,6 +25,7 @@ import { ButtonVariant } from "components/Button/Button.shared"
 import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
 import { DESKTOP_HERO_HEIGHT } from "components/Homepage/Hero"
 import { PromoBar } from "components/Homepage/PromoBar"
+import { ClosingModal } from "components/Homepage/ClosingModal"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -33,6 +34,7 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
+  const [showClosingModal, setShowClosingModal] = useState(true)
   // FIXME: Add back the transparent background once we fix the notification bar
   const defaultNavStyles = {
     backgroundColor: "rgba(255, 255, 255, 1)",
@@ -109,7 +111,6 @@ const Home = screenTrack(() => ({
           <Spacer mb={10} />
         </>
       )}
-
       <Media greaterThanOrEqual="md">
         <MaxWidth>
           <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
@@ -119,7 +120,6 @@ const Home = screenTrack(() => ({
           </Box>
         </MaxWidth>
       </Media>
-
       {data?.upcomingProducts.length > 3 && (
         <>
           <ProductCarousel
@@ -140,7 +140,6 @@ const Home = screenTrack(() => ({
           <Spacer mb={10} />
         </>
       )}
-
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
           <Discover />
@@ -151,11 +150,9 @@ const Home = screenTrack(() => ({
           </Media>
         </Box>
       </MaxWidth>
-
       <Spacer mb={[0, 0, 160, 160, 160]} />
       <Plans plans={data?.paymentPlans} />
       <Spacer mb={[10, 10, 160, 160, 160]} />
-
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
           {data?.fitPics?.length > 0 && (
@@ -174,6 +171,7 @@ const Home = screenTrack(() => ({
           <PartnerModal open={showPartnerModal} {...partnerData} />
         </Box>
       </MaxWidth>
+      <ClosingModal onClose={() => setShowClosingModal(false)} show={showClosingModal} />
     </Layout>
   )
 })
