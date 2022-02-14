@@ -1,19 +1,26 @@
-import { Modal, Fade, styled as MuiStyled } from "@material-ui/core"
-import React from "react"
-import { Box, Spacer, Sans, Flex, Button, Media } from "components"
-import { Schema, useTracking } from "utils/analytics"
-import styled from "styled-components"
+import { Box, Button, Flex, Media, Sans, Spacer } from "components"
 import { useDrawerContext } from "components/Drawer/DrawerContext"
-import { imageResize } from "utils/imageResize"
 import { CloseXIcon } from "components/Icons/CloseXIcon"
 import { useRouter } from "next/router"
+import React from "react"
+import styled from "styled-components"
+import { Schema, useTracking } from "utils/analytics"
+import { imageResize } from "utils/imageResize"
+
+import { Fade, Modal, styled as MuiStyled } from "@material-ui/core"
 
 export const ClosingModal: React.FC<{ onClose: () => void; show: boolean }> = ({ onClose, show }) => {
   const router = useRouter()
   const tracking = useTracking()
   const headerText = "Closing time"
-  const subText =
-    "On March 11th, 2022, Seasons will be closing up shop. In the meantime, rental will no longer be supported and all items will be marked down for sale (excluding select brands). Thank you to everyone that made Seasons what it was and participating in this crazy experiment. It was really special to watch. ❤️"
+  const subText = (
+    <>
+      {`On March 11th, 2022, Seasons will be closing up shop. In the meantime, rental will no longer be supported and all items will be marked down for sale (excluding select brands). All sales are final.`}
+      <br />
+      <br />
+      {`Thank you to everyone that made Seasons what it was and participating in this crazy experiment. It was really special to watch. ❤️`}
+    </>
+  )
   const breakText = "With love, Seasons"
   const imageURL = require("../../public/images/homepage/ClosingImage.jpg")
 
