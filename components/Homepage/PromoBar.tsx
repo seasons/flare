@@ -7,7 +7,7 @@ export const PromoBar = () => {
       <Link href="/browse?page=1&category=all&brand=all&available=true&forSale=true&orderBy=publishedAt_DESC">
         <Sans size="3" color="white100" textAlign="center">
           Seasons is shutting down on March 11th, 2022. Everything is 50-75% off (excluding select brands). No
-          membership required to buy.
+          membership required to buy. All sales are final.
         </Sans>
       </Link>
     </Flex>
