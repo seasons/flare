@@ -1,15 +1,16 @@
 import { Box, MaxWidth, Media, Separator, Spacer } from "components"
+import { ButtonVariant } from "components/Button/Button.shared"
 import {
-  HowItWorksSmall,
-  FromCommunity,
-  Hero,
-  HomepageFitPics,
-  HowMembershipWorks,
-  Plans,
-  TheApp,
+  FromCommunity, Hero, HomepageFitPics, HowItWorksSmall, HowMembershipWorks, Plans, TheApp
 } from "components/Homepage"
+import { Discover } from "components/Homepage/Discover"
+import { DESKTOP_HERO_HEIGHT } from "components/Homepage/Hero"
+import { PromoBar } from "components/Homepage/PromoBar"
 import { Layout } from "components/Layout"
+import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
 import { PartnerModal } from "components/Partner/PartnerModal"
+import { ProductCarousel } from "components/ProductCarousel"
+import { color } from "helpers"
 import { initializeApollo } from "lib/apollo/apollo"
 import { useAuthContext } from "lib/auth/AuthContext"
 import { useRouter } from "next/router"
@@ -17,15 +18,8 @@ import { Home_Query } from "queries/homeQueries"
 import React, { useEffect, useRef, useState } from "react"
 import { Schema, screenTrack } from "utils/analytics"
 import { imageResize } from "utils/imageResize"
+
 import { useQuery } from "@apollo/client"
-import { ProductCarousel } from "components/ProductCarousel"
-import { Discover } from "components/Homepage/Discover"
-import { color } from "helpers"
-import { ButtonVariant } from "components/Button/Button.shared"
-import { DESKTOP_NAV_HEIGHT } from "components/Nav/DesktopNav"
-import { DESKTOP_HERO_HEIGHT } from "components/Homepage/Hero"
-import { PromoBar } from "components/Homepage/PromoBar"
-import { ClosingModal } from "components/Homepage/ClosingModal"
 
 // TODO: Make this not hardcoded later
 const SHOW_PARTNER_MODAL_CAMPAIGNS = ["onedapperstreet", "threadability"]
@@ -34,7 +28,6 @@ const Home = screenTrack(() => ({
   page: Schema.PageNames.HomePage,
   path: "/",
 }))(() => {
-  const [showClosingModal, setShowClosingModal] = useState(true)
   // FIXME: Add back the transparent background once we fix the notification bar
   const defaultNavStyles = {
     backgroundColor: "rgba(255, 255, 255, 1)",
@@ -88,7 +81,6 @@ const Home = screenTrack(() => ({
 
   return (
     <Layout showIntercom navStyles={navStyles} hideNavPadding>
-      <PromoBar />
       <Hero />
       <MaxWidth>
         <Box style={{ flexGrow: 1, position: "relative", width: "100%" }}>
@@ -171,7 +163,6 @@ const Home = screenTrack(() => ({
           <PartnerModal open={showPartnerModal} {...partnerData} />
         </Box>
       </MaxWidth>
-      <ClosingModal onClose={() => setShowClosingModal(false)} show={showClosingModal} />
     </Layout>
   )
 })

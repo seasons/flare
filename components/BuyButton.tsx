@@ -6,12 +6,12 @@ import { GET_BAG } from "queries/bagQueries"
 import { GET_PRODUCT, UPSERT_CART_ITEM } from "queries/productQueries"
 import React, { useState } from "react"
 import { Schema, useTracking } from "utils/analytics"
+import { addToLocalCart } from "utils/localCart"
 
 import { useMutation } from "@apollo/client"
 
 import { ButtonSize } from "./Button/Button.shared"
 import { useDrawerContext } from "./Drawer/DrawerContext"
-import { addToLocalCart } from "utils/localCart"
 
 interface Props {
   disabled?: boolean
@@ -120,7 +120,7 @@ export const BuyButton: React.FC<Props> = ({ disabled, selectedVariant, data, si
   return (
     <Button
       loading={isMutating}
-      disabled={_disabled}
+      disabled={true}
       size={size}
       variant="primaryWhite"
       block
