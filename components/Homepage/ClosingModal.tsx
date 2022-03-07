@@ -57,21 +57,6 @@ export const ClosingModal: React.FC<{ onClose: () => void; show: boolean }> = ({
             {breakText}
           </Sans>
           <Spacer mb={5} />
-          <Flex flexDirection={isDesktop ? "row" : "column"} justifyContent="space-between">
-            <Button
-              variant="secondaryOutline"
-              block
-              onClick={() => {
-                tracking.trackEvent({
-                  actionName: Schema.ActionNames.GetTheIOSAppTapped,
-                  actionType: Schema.ActionTypes.Tap,
-                })
-                router.push("/browse")
-              }}
-            >
-              Shop the sale
-            </Button>
-          </Flex>
 
           <Spacer mb={3} />
           <Sans size="4" textAlign="center">
