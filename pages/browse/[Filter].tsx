@@ -15,8 +15,12 @@ import React, { useEffect, useMemo, useState } from "react"
 import Paginate from "react-paginate"
 import { media } from "styled-bootstrap-grid"
 import styled, { CSSObject } from "styled-components"
+
 import { gql, useLazyQuery, useQuery } from "@apollo/client"
-import { BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product } from "@seasons/eclipse"
+import {
+  BrowseProductsNotificationBar, ProductGridItem, ProductGridItem_Product
+} from "@seasons/eclipse"
+
 import { Flex, Layout, Spacer } from "../../components"
 import { Box } from "../../components/Box"
 import { BrowseFilters } from "../../components/Browse"
@@ -27,7 +31,6 @@ import { fontFamily, Sans } from "../../components/Typography/Typography"
 import { color } from "../../helpers"
 import { GET_BROWSE_PRODUCTS } from "../../queries/brandQueries"
 import { Schema, screenTrack, useTracking } from "../../utils/analytics"
-import { PromoBar } from "components/Homepage/PromoBar"
 
 export const Browse_Query = gql`
   query Browse_Query {
@@ -252,7 +255,6 @@ export const BrowsePage: NextPage<{}> = screenTrack(() => ({
         <Media lessThan="md">
           <Spacer mb={54} />
         </Media>
-        <PromoBar />
         <Media lessThan="md">
           <AvailabilityFilters params={params} setParams={onSetParams} breakpoint="mobile" />
           <MobileFilters
