@@ -12,16 +12,16 @@ import { Fade, Modal, styled as MuiStyled } from "@material-ui/core"
 export const ClosingModal: React.FC<{ onClose: () => void; show: boolean }> = ({ onClose, show }) => {
   const router = useRouter()
   const tracking = useTracking()
-  const headerText = "Closing time"
+  const headerText = "Goodbye for now"
   const subText = (
     <>
-      {`On March 11th, 2022, Seasons will be closing up shop. In the meantime, rental will no longer be supported and all items will be marked down for sale (excluding select brands). All sales are final.`}
+      {`On March 4th, 2022, Seasons officially closed it’s doors after 2.5 years. Thank you to everyone that made our community what it was and for participating in this crazy experiment. It was really special to watch.`}
       <br />
       <br />
-      {`Thank you to everyone that made Seasons what it was and participating in this crazy experiment. It was really special to watch. ❤️`}
+      {`If you want to get in touch or just say hi, feel free to reach out below!`}
     </>
   )
-  const breakText = "With love, Seasons"
+  const breakText = "With love, Seasons ❤️"
   const imageURL = require("../../public/images/homepage/ClosingImage.jpg")
 
   const Content = ({ type }) => {

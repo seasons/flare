@@ -3,6 +3,7 @@ import { ButtonVariant } from "components/Button/Button.shared"
 import {
   FromCommunity, Hero, HomepageFitPics, HowItWorksSmall, HowMembershipWorks, Plans, TheApp
 } from "components/Homepage"
+import { ClosingModal } from "components/Homepage/ClosingModal"
 import { Discover } from "components/Homepage/Discover"
 import { DESKTOP_HERO_HEIGHT } from "components/Homepage/Hero"
 import { PromoBar } from "components/Homepage/PromoBar"
@@ -39,6 +40,7 @@ const Home = screenTrack(() => ({
   const { previousData, data = previousData } = useQuery(Home_Query)
   const { authState } = useAuthContext()
   const [navStyles, setNavStyles] = useState(defaultNavStyles)
+  const [showClosingModal, setShowClosingModal] = useState(true)
   const router = useRouter()
 
   const onScroll = () => {
@@ -163,6 +165,7 @@ const Home = screenTrack(() => ({
           <PartnerModal open={showPartnerModal} {...partnerData} />
         </Box>
       </MaxWidth>
+      <ClosingModal onClose={() => setShowClosingModal(false)} show={showClosingModal} />
     </Layout>
   )
 })
